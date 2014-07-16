@@ -1,0 +1,15 @@
+Multimedia technologies are often covered by various patents which are most of the time hard to identify. These patents may or may not apply in your local jurisdiction. By installing this software, you acknowledge that you may have to pay royaltee fees in order to legally use this software. 
+
+Do not proceed with this setup if you do not understand or do not agree with these terms. In any case, the authors and/or distributors bears no liability for any infringing usage of this software, which is provided for educational or research purposes.
+
+This encoder using these component, refer to our website for more info:
+1. faac
+2. ffmpeg
+3. flac
+4. flac opencl
+5. mkvmerge (hevc support)
+6. mp4box (hevc support)
+7. ogg
+8. opus
+9. x265
+10. MediaInfo

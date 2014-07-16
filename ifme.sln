@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme", "ifme\ifme.csproj", "{F7100564-3512-421C-BE56-B81C5491CAE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme.hitoha", "ifme.hitoha\ifme.hitoha.csproj", "{6439CD79-8419-4B2B-AC8C-8CDA935CE8F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme.hitoha.kawaii", "ifme.hitoha.kawaii\ifme.hitoha.kawaii.csproj", "{2DFD009A-9603-4247-9BD4-DB71E35A9B20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7100564-3512-421C-BE56-B81C5491CAE7}.Debug|x64.ActiveCfg = Debug|x64
+		{F7100564-3512-421C-BE56-B81C5491CAE7}.Debug|x64.Build.0 = Debug|x64
+		{F7100564-3512-421C-BE56-B81C5491CAE7}.Release|x64.ActiveCfg = Release|x64
+		{F7100564-3512-421C-BE56-B81C5491CAE7}.Release|x64.Build.0 = Release|x64
+		{6439CD79-8419-4B2B-AC8C-8CDA935CE8F1}.Debug|x64.ActiveCfg = Debug|x64
+		{6439CD79-8419-4B2B-AC8C-8CDA935CE8F1}.Debug|x64.Build.0 = Debug|x64
+		{6439CD79-8419-4B2B-AC8C-8CDA935CE8F1}.Release|x64.ActiveCfg = Release|x64
+		{6439CD79-8419-4B2B-AC8C-8CDA935CE8F1}.Release|x64.Build.0 = Release|x64
+		{2DFD009A-9603-4247-9BD4-DB71E35A9B20}.Debug|x64.ActiveCfg = Debug|x64
+		{2DFD009A-9603-4247-9BD4-DB71E35A9B20}.Debug|x64.Build.0 = Debug|x64
+		{2DFD009A-9603-4247-9BD4-DB71E35A9B20}.Release|x64.ActiveCfg = Release|x64
+		{2DFD009A-9603-4247-9BD4-DB71E35A9B20}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

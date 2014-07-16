@@ -1,0 +1,12 @@
+Version 4.0.0.0
+---------------
+Improved program, totally re-write new code and stuff
+Added multi-language file using ISO standard, now can be editable
+Added function addons/plugins, you can add your own stuff too!
+Added function auto-update each installed encoder
+Added CPU Affinity! You can encode on specific CPU core!
+Added CPU Priority, encode which level as you want!
+Removed DVD-Rip support
+Removed command prompt/DOS window
+Removed CPU Instruction Set
+FIX SO MANY BUG AND GLITCH!
