@@ -161,7 +161,7 @@ namespace ifme.hitoha
 
 			if (temp != Properties.Settings.Default.DefaultLang)
 			{
-				ActionRestart();
+				Options.RestartNow = true;
 			}
 		}
 
@@ -321,25 +321,6 @@ namespace ifme.hitoha
 			}
 		}
 
-		private void ActionRestart()
-		{
-			var resbox = MessageBox.Show(Language.IMessage.Restart, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-			if (resbox == DialogResult.Yes)
-			{
-				Properties.Settings.Default.Save();
-
-				System.Diagnostics.Process P = new System.Diagnostics.Process();
-				P.StartInfo.FileName = "cmd.exe";
-				P.StartInfo.Arguments = String.Format("/c PING 127.0.0.1 & start \"\" \"{0}\\ifme.exe\"", Globals.AppInfo.CurrentFolder);
-				P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
-				P.StartInfo.CreateNoWindow = true;
-				P.StartInfo.UseShellExecute = false;
-
-				P.Start();
-				Application.ExitThread();
-			}
-		}
-
 		private void btnOK_Click(object sender, EventArgs e)
 		{
 			this.Close();
@@ -356,8 +337,13 @@ namespace ifme.hitoha
 			if (msg == DialogResult.Yes)
 			{
 				Properties.Settings.Default.Reset();
-				ActionRestart();
+				this.Close();
 			}
 		}
+	}
+
+	class Options
+	{
+		public static bool RestartNow = false;
 	}
 }

@@ -75,7 +75,7 @@
 			// btnCancel
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnCancel.Location = new System.Drawing.Point(512, 411);
+			this.btnCancel.Location = new System.Drawing.Point(512, 407);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(100, 23);
 			this.btnCancel.TabIndex = 5;
@@ -86,7 +86,7 @@
 			// btnOK
 			// 
 			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnOK.Location = new System.Drawing.Point(406, 411);
+			this.btnOK.Location = new System.Drawing.Point(406, 407);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(100, 23);
 			this.btnOK.TabIndex = 4;
@@ -105,7 +105,7 @@
 			this.tabOptions.Location = new System.Drawing.Point(12, 12);
 			this.tabOptions.Name = "tabOptions";
 			this.tabOptions.SelectedIndex = 0;
-			this.tabOptions.Size = new System.Drawing.Size(600, 393);
+			this.tabOptions.Size = new System.Drawing.Size(600, 389);
 			this.tabOptions.TabIndex = 3;
 			// 
 			// tabGeneral
@@ -117,7 +117,7 @@
 			this.tabGeneral.Location = new System.Drawing.Point(4, 22);
 			this.tabGeneral.Name = "tabGeneral";
 			this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-			this.tabGeneral.Size = new System.Drawing.Size(592, 367);
+			this.tabGeneral.Size = new System.Drawing.Size(592, 363);
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "{0}";
 			this.tabGeneral.UseVisualStyleBackColor = true;
@@ -126,7 +126,7 @@
 			// 
 			this.grpUpdate.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.grpUpdate.Controls.Add(this.chkUpdate);
-			this.grpUpdate.Location = new System.Drawing.Point(299, 218);
+			this.grpUpdate.Location = new System.Drawing.Point(299, 216);
 			this.grpUpdate.Name = "grpUpdate";
 			this.grpUpdate.Size = new System.Drawing.Size(287, 143);
 			this.grpUpdate.TabIndex = 3;
@@ -149,7 +149,7 @@
 			this.grpFormat.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.grpFormat.Controls.Add(this.rdoUseMkv);
 			this.grpFormat.Controls.Add(this.rdoUseMp4);
-			this.grpFormat.Location = new System.Drawing.Point(6, 218);
+			this.grpFormat.Location = new System.Drawing.Point(6, 216);
 			this.grpFormat.Name = "grpFormat";
 			this.grpFormat.Size = new System.Drawing.Size(287, 143);
 			this.grpFormat.TabIndex = 2;
@@ -183,7 +183,7 @@
 			this.grpTemp.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.grpTemp.Controls.Add(this.btnTempFindFolder);
 			this.grpTemp.Controls.Add(this.txtTempDir);
-			this.grpTemp.Location = new System.Drawing.Point(6, 112);
+			this.grpTemp.Location = new System.Drawing.Point(6, 110);
 			this.grpTemp.Name = "grpTemp";
 			this.grpTemp.Size = new System.Drawing.Size(580, 100);
 			this.grpTemp.TabIndex = 1;
@@ -215,7 +215,7 @@
 			this.grpLang.Controls.Add(this.lblLangWho);
 			this.grpLang.Controls.Add(this.lblLangDisplay);
 			this.grpLang.Controls.Add(this.cboLang);
-			this.grpLang.Location = new System.Drawing.Point(6, 6);
+			this.grpLang.Location = new System.Drawing.Point(6, 4);
 			this.grpLang.Name = "grpLang";
 			this.grpLang.Size = new System.Drawing.Size(580, 100);
 			this.grpLang.TabIndex = 0;
@@ -270,7 +270,7 @@
 			this.tabPerformance.Location = new System.Drawing.Point(4, 22);
 			this.tabPerformance.Name = "tabPerformance";
 			this.tabPerformance.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPerformance.Size = new System.Drawing.Size(592, 367);
+			this.tabPerformance.Size = new System.Drawing.Size(592, 363);
 			this.tabPerformance.TabIndex = 1;
 			this.tabPerformance.Text = "{0}";
 			this.tabPerformance.UseVisualStyleBackColor = true;
@@ -288,7 +288,7 @@
 			// lblCPUInfo
 			// 
 			this.lblCPUInfo.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.lblCPUInfo.Location = new System.Drawing.Point(6, 338);
+			this.lblCPUInfo.Location = new System.Drawing.Point(6, 336);
 			this.lblCPUInfo.Name = "lblCPUInfo";
 			this.lblCPUInfo.Size = new System.Drawing.Size(580, 26);
 			this.lblCPUInfo.TabIndex = 4;
@@ -298,7 +298,7 @@
 			// 
 			this.lblCPUAffinity.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblCPUAffinity.AutoSize = true;
-			this.lblCPUAffinity.Location = new System.Drawing.Point(218, 114);
+			this.lblCPUAffinity.Location = new System.Drawing.Point(218, 112);
 			this.lblCPUAffinity.Name = "lblCPUAffinity";
 			this.lblCPUAffinity.Size = new System.Drawing.Size(23, 13);
 			this.lblCPUAffinity.TabIndex = 3;
@@ -309,7 +309,7 @@
 			this.clbCPU.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.clbCPU.CheckOnClick = true;
 			this.clbCPU.FormattingEnabled = true;
-			this.clbCPU.Location = new System.Drawing.Point(221, 130);
+			this.clbCPU.Location = new System.Drawing.Point(221, 128);
 			this.clbCPU.Name = "clbCPU";
 			this.clbCPU.Size = new System.Drawing.Size(150, 116);
 			this.clbCPU.TabIndex = 2;
@@ -318,7 +318,7 @@
 			// 
 			this.lblCPUPriority.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblCPUPriority.AutoSize = true;
-			this.lblCPUPriority.Location = new System.Drawing.Point(218, 74);
+			this.lblCPUPriority.Location = new System.Drawing.Point(218, 72);
 			this.lblCPUPriority.Name = "lblCPUPriority";
 			this.lblCPUPriority.Size = new System.Drawing.Size(23, 13);
 			this.lblCPUPriority.TabIndex = 1;
@@ -337,7 +337,7 @@
             "NORMAL",
             "BELOW NORMAL",
             "LOW"});
-			this.cboPerf.Location = new System.Drawing.Point(221, 90);
+			this.cboPerf.Location = new System.Drawing.Point(221, 88);
 			this.cboPerf.Name = "cboPerf";
 			this.cboPerf.Size = new System.Drawing.Size(150, 21);
 			this.cboPerf.TabIndex = 0;
@@ -350,7 +350,7 @@
 			this.tabAddons.Location = new System.Drawing.Point(4, 22);
 			this.tabAddons.Name = "tabAddons";
 			this.tabAddons.Padding = new System.Windows.Forms.Padding(3);
-			this.tabAddons.Size = new System.Drawing.Size(592, 367);
+			this.tabAddons.Size = new System.Drawing.Size(592, 363);
 			this.tabAddons.TabIndex = 2;
 			this.tabAddons.Text = "{0}";
 			this.tabAddons.UseVisualStyleBackColor = true;
@@ -358,7 +358,7 @@
 			// btnAddonRemove
 			// 
 			this.btnAddonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnAddonRemove.Location = new System.Drawing.Point(152, 338);
+			this.btnAddonRemove.Location = new System.Drawing.Point(152, 334);
 			this.btnAddonRemove.Name = "btnAddonRemove";
 			this.btnAddonRemove.Size = new System.Drawing.Size(100, 23);
 			this.btnAddonRemove.TabIndex = 2;
@@ -369,7 +369,7 @@
 			// btnAddonInstall
 			// 
 			this.btnAddonInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnAddonInstall.Location = new System.Drawing.Point(6, 338);
+			this.btnAddonInstall.Location = new System.Drawing.Point(6, 334);
 			this.btnAddonInstall.Name = "btnAddonInstall";
 			this.btnAddonInstall.Size = new System.Drawing.Size(140, 23);
 			this.btnAddonInstall.TabIndex = 1;
@@ -391,7 +391,7 @@
 			this.lstAddons.FullRowSelect = true;
 			this.lstAddons.Location = new System.Drawing.Point(6, 6);
 			this.lstAddons.Name = "lstAddons";
-			this.lstAddons.Size = new System.Drawing.Size(580, 326);
+			this.lstAddons.Size = new System.Drawing.Size(580, 322);
 			this.lstAddons.TabIndex = 0;
 			this.lstAddons.UseCompatibleStateImageBehavior = false;
 			this.lstAddons.View = System.Windows.Forms.View.Details;
@@ -424,7 +424,7 @@
 			// btnResetSettings
 			// 
 			this.btnResetSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnResetSettings.Location = new System.Drawing.Point(12, 411);
+			this.btnResetSettings.Location = new System.Drawing.Point(12, 407);
 			this.btnResetSettings.Name = "btnResetSettings";
 			this.btnResetSettings.Size = new System.Drawing.Size(150, 23);
 			this.btnResetSettings.TabIndex = 6;
@@ -436,14 +436,14 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(624, 446);
+			this.ClientSize = new System.Drawing.Size(624, 442);
 			this.Controls.Add(this.btnResetSettings);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.tabOptions);
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.MinimumSize = new System.Drawing.Size(640, 408);
+			this.MaximumSize = new System.Drawing.Size(640, 480);
+			this.MinimumSize = new System.Drawing.Size(640, 480);
 			this.Name = "frmOptions";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "{0}";

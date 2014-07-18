@@ -28,24 +28,11 @@ namespace ifme.hitoha
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			var msgbox = MessageBox.Show(Language.IMessage.Quit, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
 			if (msgbox == DialogResult.No)
 				e.Cancel = true;
-			
-			Properties.Settings.Default.FormSize = this.Size;
 
-			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
-			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
-			Properties.Settings.Default.VideoRateType = cboVideoRateCtrl.SelectedIndex;
-			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
-			Properties.Settings.Default.VideoCmd = txtVideoAdvCmd.Text;
-
-			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
-			Properties.Settings.Default.AudioBitRate = cboAudioBitRate.SelectedIndex;
-			Properties.Settings.Default.AudioFreq = cboAudioFreq.SelectedIndex;
-			Properties.Settings.Default.AudioChan = cboAudioChan.SelectedIndex;
-			Properties.Settings.Default.AudioMode = cboAudioMode.SelectedIndex;
-
-			Properties.Settings.Default.Save();
+			UserSettingsSave();
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -66,8 +53,8 @@ namespace ifme.hitoha
 				PrintLog(Log.OK, "Previous settings has been upgraded!");
 			}
 
-			// TempFolder
-			if (Properties.Settings.Default.TemporaryFolder == "" || Properties.Settings.Default.TemporaryFolder == "none" || !System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
+			// Temp Folder
+			if (Properties.Settings.Default.TemporaryFolder == "none" || !System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
 			{
 				System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);
 				Properties.Settings.Default.TemporaryFolder = Globals.AppInfo.TempFolder;
@@ -79,7 +66,7 @@ namespace ifme.hitoha
 			// Check for updates
 			if (Properties.Settings.Default.UpdateAlways)
 			{
-				// Load Addons + Buildin
+				// Load Addons + Build-in
 				Addons.Installed.Get();
 
 				// Check addons for any updates
@@ -115,7 +102,7 @@ namespace ifme.hitoha
 				PrintLog(Log.Error, ex.Message);
 			}
 
-			// Load Addons + Buildin again
+			// Load Addons + Build-in again
 			try
 			{
 				PrintLog(Log.OK, Addons.Installed.Get().ToString() + " Addons has been loaded!");
@@ -131,40 +118,20 @@ namespace ifme.hitoha
 			//CreateLang(); // Developer tool, Create new empty language
 			LoadLang(); // Load language, GUI must use {0} as place-holder
 
-			// Load defualt/previous settings
-			this.Size = Properties.Settings.Default.FormSize;
-
-			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
-			cboVideoTune.SelectedIndex = Properties.Settings.Default.VideoTune;
-			cboVideoRateCtrl.SelectedIndex = Properties.Settings.Default.VideoRateType;
-			txtVideoRate.Text = Properties.Settings.Default.VideoRateValue.ToString();
-			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
-
-			if (cboAudioFormat.SelectedIndex == Properties.Settings.Default.AudioFormat)
-				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
-			else
-				cboAudioFormat.SelectedIndex = 0;
-
-			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
-			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
-			cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;
-			cboAudioMode.SelectedIndex = Properties.Settings.Default.AudioMode;
-
-			// CPU Affinity, Load previous, if none, set default all CPU
-			if (Properties.Settings.Default.CPUAffinity == "none" || Properties.Settings.Default.CPUAffinity == null)
-			{
-				Properties.Settings.Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
-				Properties.Settings.Default.Save();
-			}
-
-			string[] aff = Properties.Settings.Default.CPUAffinity.Split(',');
-			for (int i = 0; i < Environment.ProcessorCount; i++)
-			{
-				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
-			}
+			// Load Settings
+			UserSettingsLoad();
 
 			// Display console
 			tabEncoding.SelectedTab = tabStatus;
+		}
+
+		private void frmMain_Shown(object sender, EventArgs e)
+		{
+			if (!Globals.AppInfo.VersionEqual)
+			{
+				proTip.ToolTipTitle = Language.IMessage.ProTipTitle;
+				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 25, 8, 10000);
+			}
 		}
 
 		private void btnQueueAdd_Click(object sender, EventArgs e)
@@ -601,7 +568,28 @@ namespace ifme.hitoha
 		private void btnOptions_Click(object sender, EventArgs e)
 		{
 			frmOptions frm = new frmOptions();
-			frm.ShowDialog();
+			frm.ShowDialog(); // This blocking mode, when Form close, going to next line of code
+
+			if (Options.RestartNow)
+			{
+				var resbox = MessageBox.Show(Language.IMessage.Restart, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				if (resbox == DialogResult.Yes)
+				{
+					UserSettingsSave();
+
+					System.Diagnostics.Process P = new System.Diagnostics.Process();
+					P.StartInfo.FileName = "cmd.exe";
+					P.StartInfo.Arguments = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\\ifme.exe\"", Globals.AppInfo.CurrentFolder);
+					P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
+					P.StartInfo.CreateNoWindow = true;
+					P.StartInfo.UseShellExecute = false;
+
+					P.Start();
+					Application.ExitThread();
+
+					return;
+				}
+			}
 
 			cboAudioFormat.Items.Clear();
 			AddAudio();
@@ -689,20 +677,21 @@ namespace ifme.hitoha
 					queue[i] = lstQueue.Items[i].SubItems[5].Text;
 				}
 
-				for (int i = 0; i < subtitle.Length; i++)
+				for (int s = 0; s < subtitle.GetLength(0); s++)
 				{
-					subtitle[i, 0] = lstSubtitle.Items[i].SubItems[0].Text; //File Name
-					subtitle[i, 1] = lstSubtitle.Items[i].SubItems[2].Text; //Language
-					subtitle[i, 2] = lstSubtitle.Items[i].SubItems[3].Text; //Path
+					subtitle[s, 0] = lstSubtitle.Items[s].SubItems[0].Text;					//File Name
+					subtitle[s, 1] = lstSubtitle.Items[s].SubItems[2].Text.Substring(0, 3); //Language
+					subtitle[s, 2] = lstSubtitle.Items[s].SubItems[3].Text;					//Path
 				}
 
-				for (int i = 0; i < attachment.Length; i++)
+				for (int x = 0; x < attachment.GetLength(0); x++)
 				{
-					attachment[i, 0] = lstAttachment.Items[i].SubItems[0].Text; //File Name
-					attachment[i, 1] = lstAttachment.Items[i].SubItems[2].Text; //MIME
-					attachment[i, 2] = lstAttachment.Items[i].SubItems[3].Text; //Path
+					attachment[x, 0] = lstAttachment.Items[x].SubItems[0].Text; //File Name
+					attachment[x, 1] = lstAttachment.Items[x].SubItems[2].Text; //MIME
+					attachment[x, 2] = lstAttachment.Items[x].SubItems[3].Text; //Path
 				}
 
+				// All data become one object, and send to Threading
 				List<object> something = new List<object>
 				{
 					queue,	
@@ -1002,7 +991,7 @@ namespace ifme.hitoha
 							sp[0] = subtitle[x, 1]; //lang
 							sp[1] = subtitle[x, 0]; //file name only
 							sp[2] = subtitle[x, 2]; //full path
-							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ");
+							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 							trackorder += id.ToString() + ":0,";
 						}
 
@@ -1200,49 +1189,22 @@ namespace ifme.hitoha
 			EncodingStarted(false);
 		}
 
-		private void AddAudio()
+		public string Duration(System.DateTime pastTime)
 		{
-			for (int i = 0; i < Addons.Installed.Data.Length; i++)
-			{
-				if (Addons.Installed.Data[i, 0] == null)
-					break;
+			// Calculate past time - present time and return the result.
+			TimeSpan timeSpan = System.DateTime.Now.Subtract(pastTime);
+			string returnTime = null;
 
-				if (Addons.Installed.Data[i, 1] == "audio")
-					if (Properties.Settings.Default.UseMkv)
-						cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
-					else
-						if (Addons.Installed.Data[i, 6] == "mp4")
-							cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
-			}
-		}
+			if (timeSpan.Days.ToString() != "0")
+				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days.ToString(), timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+			else if (timeSpan.Hours.ToString() != "0")
+				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+			else if (timeSpan.Minutes.ToString() != "0")
+				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+			else
+				returnTime = timeSpan.Seconds.ToString() + " seconds";
 
-		public void PrintLog(int type, string message)
-		{
-			rtfLog.SelectionColor = Color.White;
-			rtfLog.SelectedText = "[";
-
-			switch (type)
-			{
-				case 0:
-					rtfLog.SelectionColor = Color.Cyan;
-					rtfLog.SelectedText = "info";
-					break;
-				case 1:
-					rtfLog.SelectionColor = Color.LightGreen;
-					rtfLog.SelectedText = " ok ";
-					break;
-				case 2:
-					rtfLog.SelectionColor = Color.Gold;
-					rtfLog.SelectedText = "warn";
-					break;
-				default:
-					rtfLog.SelectionColor = Color.Red;
-					rtfLog.SelectedText = "erro";
-					break;
-			}
-
-			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "] " + message + "\n";
+			return returnTime;
 		}
 
 		private void EncodingStarted(bool x)
@@ -1277,8 +1239,80 @@ namespace ifme.hitoha
 			btnStart.Visible = !x;
 			btnStop.Visible = x;
 			btnPause.Visible = x;
+
+			// Also not forget about Attchment Enable, must disable if subtitle not checked
+			chkAttachEnable.Enabled = chkSubEnable.Checked;
 		}
 
+		private void AddAudio()
+		{
+			for (int i = 0; i < Addons.Installed.Data.Length; i++)
+			{
+				if (Addons.Installed.Data[i, 0] == null)
+					break;
+
+				if (Addons.Installed.Data[i, 1] == "audio")
+					if (Properties.Settings.Default.UseMkv)
+						cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
+					else
+						if (Addons.Installed.Data[i, 6] == "mp4")
+							cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
+			}
+		}
+
+		#region User Settings Section, Load and Save
+		private void UserSettingsLoad()
+		{
+			// CPU Affinity, Load previous, if none, set default all CPU
+			if (Properties.Settings.Default.CPUAffinity == "none" || Properties.Settings.Default.CPUAffinity == null)
+			{
+				Properties.Settings.Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
+				Properties.Settings.Default.Save();
+			}
+
+			string[] aff = Properties.Settings.Default.CPUAffinity.Split(',');
+			for (int i = 0; i < Environment.ProcessorCount; i++)
+			{
+				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
+			}
+
+			// Form default
+			this.Size = Properties.Settings.Default.FormSize;
+
+			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
+			cboVideoTune.SelectedIndex = Properties.Settings.Default.VideoTune;
+			cboVideoRateCtrl.SelectedIndex = Properties.Settings.Default.VideoRateType;
+			txtVideoRate.Text = Properties.Settings.Default.VideoRateValue.ToString();
+			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
+
+			cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
+			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
+			cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;
+			cboAudioMode.SelectedIndex = Properties.Settings.Default.AudioMode;
+		}
+
+		private void UserSettingsSave()
+		{
+			Properties.Settings.Default.FormSize = this.Size;
+
+			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
+			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
+			Properties.Settings.Default.VideoRateType = cboVideoRateCtrl.SelectedIndex;
+			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
+			Properties.Settings.Default.VideoCmd = txtVideoAdvCmd.Text;
+
+			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
+			Properties.Settings.Default.AudioBitRate = cboAudioBitRate.SelectedIndex;
+			Properties.Settings.Default.AudioFreq = cboAudioFreq.SelectedIndex;
+			Properties.Settings.Default.AudioChan = cboAudioChan.SelectedIndex;
+			Properties.Settings.Default.AudioMode = cboAudioMode.SelectedIndex;
+
+			Properties.Settings.Default.Save();
+		}
+		#endregion
+
+		#region Interface Language Section (Load and Create)
 		private void LoadLang()
 		{
 			string Path = Language.Path.Folder + "\\" + Language.Default + ".ini";
@@ -1386,30 +1420,35 @@ namespace ifme.hitoha
 
 			parser.WriteFile(Language.Path.FileENG, data, System.Text.Encoding.Unicode);
 		}
+		#endregion
 
-		private void frmMain_Shown(object sender, EventArgs e)
+		public void PrintLog(int type, string message)
 		{
-			if (!Globals.AppInfo.VersionEqual)
-				proTip.ToolTipTitle = Language.IMessage.ProTipTitle;
-				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 25, 8, 10000);
-		}
+			rtfLog.SelectionColor = Color.White;
+			rtfLog.SelectedText = "[";
 
-		public string Duration(System.DateTime pastTime)
-		{
-			// Calculate past time - present time and return the result.
-			TimeSpan timeSpan = System.DateTime.Now.Subtract(pastTime);
-			string returnTime = null;
+			switch (type)
+			{
+				case 0:
+					rtfLog.SelectionColor = Color.Cyan;
+					rtfLog.SelectedText = "info";
+					break;
+				case 1:
+					rtfLog.SelectionColor = Color.LightGreen;
+					rtfLog.SelectedText = " ok ";
+					break;
+				case 2:
+					rtfLog.SelectionColor = Color.Gold;
+					rtfLog.SelectedText = "warn";
+					break;
+				default:
+					rtfLog.SelectionColor = Color.Red;
+					rtfLog.SelectedText = "erro";
+					break;
+			}
 
-			if (timeSpan.Days.ToString() != "0")
-				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days.ToString(), timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
-			else if (timeSpan.Hours.ToString() != "0")
-				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
-			else if (timeSpan.Minutes.ToString() != "0")
-				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
-			else
-				returnTime = timeSpan.Seconds.ToString() + " seconds";
-
-			return returnTime;
+			rtfLog.SelectionColor = Color.LightGray;
+			rtfLog.SelectedText = "] " + message + "\n";
 		}
 	}
 }

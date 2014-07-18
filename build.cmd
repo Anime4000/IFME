@@ -9,7 +9,7 @@ echo                   1. ifme.exe
 echo                   2. ifme.hitoha.dll
 echo                   3. ifme.hitoha.kawaii.dll
 echo.
-echo IFME require some file, download and save it to "%BUILDDIR%" folder after complete.
+echo Please download these file and put on "prerequisite" folder!
 echo                   1. MediaInfo.dll (64bit)
 echo                   2. 7za.exe (rename to za.dll)
 echo.
@@ -29,6 +29,8 @@ rmdir /s %BUILDDIR%
 mkdir %BUILDDIR%
 mkdir %BUILDDIR%\addons
 mkdir %BUILDDIR%\lang
+echo.
+echo Copy IFME main file
 copy installer\text_gpl2.txt %BUILDDIR%\LICENSE
 copy ifme\bin\x64\Debug\lang\*.* %BUILDDIR%\lang
 copy ifme\bin\x64\Debug\ifme.exe %BUILDDIR%\
@@ -36,8 +38,9 @@ copy ifme\bin\x64\Debug\ifme.hitoha.dll %BUILDDIR%\
 copy ifme\bin\x64\Debug\ifme.hitoha.kawaii.dll %BUILDDIR%\
 copy ifme\bin\x64\Debug\iso.gg %BUILDDIR%\
 echo.
-echo DONE! Now copy "7za.exe" (rename to za.dll) 
-echo and copy "MediaInfo.dll" to "%BUILDDIR%" folder
+echo Copy Prerequisite
+copy prerequisite\MediaInfo.dll %BUILDDIR%\MediaInfo.dll
+copy prerequisite\7za.exe %BUILDDIR%\za.dll
 echo.
 echo After that, download IFME addons and extract to "addons" folder.
 echo Then can be release via Installer or Archive :)
