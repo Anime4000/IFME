@@ -108,9 +108,21 @@ namespace ifme.hitoha
 			if (!System.IO.Directory.Exists(tmp + "\\ifme"))
 				System.IO.Directory.CreateDirectory(tmp + "\\ifme");
 
-			System.IO.File.Copy("za.dll", tmp + "\\ifme\\7za.exe");
-			System.IO.File.Copy("unins000.exe", tmp + "\\ifme\\unins000.exe");
-			System.IO.File.Copy("unins000.dat", tmp + "\\ifme\\unins000.dat");
+			if (!System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\za.dll"))
+			{
+				MessageBox.Show("Error: za.dll missing!");
+				return;
+			}
+			else
+			{
+				System.IO.File.Copy("za.dll", tmp + "\\ifme\\7za.exe", true);
+			}
+
+			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unins000.exe"))
+				System.IO.File.Copy("unins000.exe", tmp + "\\ifme\\unins000.exe", true);
+
+			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unins000.dat"))
+				System.IO.File.Copy("unins000.dat", tmp + "\\ifme\\unins000.dat", true);
 
 			foreach (var item in System.IO.Directory.GetDirectories(Globals.AppInfo.CurrentFolder))
 			{
@@ -119,12 +131,12 @@ namespace ifme.hitoha
 
 			System.Diagnostics.Process P = new System.Diagnostics.Process();
 			P.StartInfo.FileName = "cmd.exe";
-			P.StartInfo.Arguments = String.Format("/c TIMEOUT /T 3 /NOBREAK & del /F /S /Q *.* & {0}\\ifme\\7za.exe -x y {0}\\ifme\\saishin.jp & copy {0}\\ifme\\unins000.exe unins000.exe & copy {0}\\ifme\\unins000.dat unins000.dat & del /F /S /Q {0} & TIMEOUT /T 3 /NOBREAK & call ifme.exe", tmp);
+			P.StartInfo.Arguments = String.Format("/c title Update in progress! PLEASE WAIT! & TIMEOUT /T 3 /NOBREAK & del /F /S /Q *.* & \"{0}\\ifme\\7za.exe\" x -y -o\"{1}\" \"{0}\\ifme\\saishin.jp\" & copy \"{0}\\ifme\\unins000.exe\" \"{1}\\unins000.exe\" & copy \"{0}\\ifme\\unins000.dat\" \"{1}\\unins000.dat\" & del /F /S /Q \"{0}\\ifme\\*.*\" & TIMEOUT /T 5 /NOBREAK & start \"\" \"{1}\\ifme.exe\"", tmp, Globals.AppInfo.CurrentFolder);
 			P.StartInfo.CreateNoWindow = true;
 			P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 
 			P.Start();
-			Application.Exit();
+			Application.ExitThread();
 		}
 	}
 }
