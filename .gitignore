@@ -212,3 +212,8 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# IFME build files.
+prerequisite/MediaInfo.dll
+prerequisite/7za.exe
+_build
