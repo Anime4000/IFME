@@ -95,7 +95,7 @@ namespace ifme.hitoha
 			// Get Lang
 			try
 			{
-				PrintLog(Log.OK, Language.Installed.Get().ToString() + " Installed language detected!");
+				PrintLog(Log.OK, Language.Installed.GetCount() + " Installed language detected!");
 			}
 			catch (Exception ex)
 			{
@@ -105,7 +105,7 @@ namespace ifme.hitoha
 			// Load Addons + Build-in again
 			try
 			{
-				PrintLog(Log.OK, Addons.Installed.Get().ToString() + " Addons has been loaded!");
+				PrintLog(Log.OK, Addons.Installed.GetCount() + " Addons has been loaded!");
 			}
 			catch (Exception ex)
 			{
@@ -171,6 +171,11 @@ namespace ifme.hitoha
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
+
+			if (lstQueue.Items.Count != 0)
+				btnStart.Enabled = true;
+			else
+				btnStart.Enabled = false;
 		}
 
 		private void btnQueueRemove_Click(object sender, EventArgs e)
@@ -179,11 +184,17 @@ namespace ifme.hitoha
 			{
 				lstQueue.Items.Remove(lstQueue.SelectedItems[i]);
 			}
+
+			if (lstQueue.Items.Count != 0)
+				btnStart.Enabled = true;
+			else
+				btnStart.Enabled = false;
 		}
 
 		private void btnQueueClear_Click(object sender, EventArgs e)
 		{
 			lstQueue.Items.Clear();
+			btnStart.Enabled = false;
 		}
 
 		private void btnQueueUp_Click(object sender, EventArgs e)
@@ -645,11 +656,11 @@ namespace ifme.hitoha
 					return;
 				}
 
-				if (lstQueue.Items.Count == 0)
-				{
-					MessageBox.Show(Language.IMessage.EmptyQueue, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
+				//if (lstQueue.Items.Count == 0)
+				//{
+				//	MessageBox.Show(Language.IMessage.EmptyQueue, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
 				if (chkSubEnable.Checked && lstSubtitle.Items.Count == 0)
 				{
 					MessageBox.Show(Language.IMessage.EmptySubtitle, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);

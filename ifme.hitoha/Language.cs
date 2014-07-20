@@ -65,6 +65,11 @@ namespace ifme.hitoha
 				return i;
 			}
 
+			public static int GetCount()
+			{
+				return System.IO.Directory.GetFiles(Path.Folder).Count();
+			}
+
 			public static string FullName(string code)
 			{
 				foreach (var item in System.IO.File.ReadAllLines(Globals.Files.ISO))

@@ -171,6 +171,7 @@
 			// btnStart
 			// 
 			this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnStart.Enabled = false;
 			this.btnStart.Location = new System.Drawing.Point(528, 445);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(100, 23);
@@ -1072,6 +1073,7 @@
 			// 
 			// btnStop
 			// 
+			this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnStop.Location = new System.Drawing.Point(528, 445);
 			this.btnStop.Name = "btnStop";
 			this.btnStop.Size = new System.Drawing.Size(100, 23);
