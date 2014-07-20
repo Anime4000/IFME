@@ -624,7 +624,6 @@ namespace ifme.hitoha
 			if (msgbox == DialogResult.Yes)
 			{
 				TaskManager.CPU.Kill(TaskManager.ImageName.Current);
-				EncodingStarted(false);
 				BGThread.CancelAsync();
 			}
 		}
@@ -1194,6 +1193,7 @@ namespace ifme.hitoha
 
 			// Reset
 			this.Text = Globals.AppInfo.Name;
+			EncodingStarted(false);
 		}
 
 		public string Duration(System.DateTime pastTime)
