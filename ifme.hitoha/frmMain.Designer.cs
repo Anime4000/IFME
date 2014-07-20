@@ -858,6 +858,8 @@
 			this.lstSubtitle.UseCompatibleStateImageBehavior = false;
 			this.lstSubtitle.View = System.Windows.Forms.View.Details;
 			this.lstSubtitle.Visible = false;
+			this.lstSubtitle.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstSubtitle_DragDrop);
+			this.lstSubtitle.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstSubtitle_DragEnter);
 			// 
 			// colSubFile
 			// 
@@ -960,6 +962,8 @@
 			this.lstAttachment.UseCompatibleStateImageBehavior = false;
 			this.lstAttachment.View = System.Windows.Forms.View.Details;
 			this.lstAttachment.Visible = false;
+			this.lstAttachment.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstAttachment_DragDrop);
+			this.lstAttachment.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstAttachment_DragEnter);
 			// 
 			// colAttachFile
 			// 
@@ -1085,6 +1089,7 @@
 			// 
 			// btnResume
 			// 
+			this.btnResume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnResume.Location = new System.Drawing.Point(422, 445);
 			this.btnResume.Name = "btnResume";
 			this.btnResume.Size = new System.Drawing.Size(100, 23);

@@ -1,3 +1,18 @@
+Version 4.0.0.3
+---------------
+Fixed issue where MP4 video not saved, reported by webvid md and LaruYan
+Added Drag n Drop for Subtitle and Attachment
+Improved Chinese Language UI, mistake has been corrected (by LEaver)
+
+GitHub changes:
+HeHeHunter (Performance and UX change):
+    1. Optimized loading by delaying loading of 
+       languages and addons. [PERF]
+    2. Start button will only be enabled when media is added, 
+       disabled when there is no media. Reduce Error Prompt. [UI]
+    3. Resolved issue where stop button 
+       goes missing when you maximize window. [UI]
+
 Version 4.0.0.2
 ---------------
 Improved Splash Screen, displaying download progress

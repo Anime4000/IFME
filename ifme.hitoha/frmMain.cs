@@ -283,6 +283,11 @@ namespace ifme.hitoha
 
 				lstQueue.Items.Add(QueueList);
 			}
+
+			if (lstQueue.Items.Count != 0)
+				btnStart.Enabled = true;
+			else
+				btnStart.Enabled = false;
 		}
 
 		private void chkQueueSaveTo_CheckedChanged(object sender, EventArgs e)
@@ -385,6 +390,30 @@ namespace ifme.hitoha
 			}
 			lblSubtitleNotice.Visible = !chkSubEnable.Checked;
 			chkAttachEnable.Enabled = chkSubEnable.Checked;
+
+			if (!chkSubEnable.Checked)
+				chkAttachEnable.CheckState = CheckState.Unchecked;
+		}
+
+		private void lstSubtitle_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstSubtitle_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var item in files)
+			{
+				string[] d = GetMetaData.SubtitleData(item);
+
+				ListViewItem SubList = new ListViewItem(d[0]);
+				SubList.SubItems.Add(d[1]);
+				SubList.SubItems.Add(d[2]);
+				SubList.SubItems.Add(d[3]);
+				lstSubtitle.Items.Add(SubList);
+			}
 		}
 
 		private void btnSubAdd_Click(object sender, EventArgs e)
@@ -512,14 +541,32 @@ namespace ifme.hitoha
 
 		private void chkAttachEnable_CheckedChanged(object sender, EventArgs e)
 		{
-			if (chkSubEnable.Checked)
+			foreach (Control ctrl in tabAttachment.Controls)
 			{
-				foreach (Control ctrl in tabAttachment.Controls)
-				{
-					if (!(ctrl is CheckBox))
-						ctrl.Visible = chkAttachEnable.Checked;
-				}
-				lblAttachNotice.Visible = !chkAttachEnable.Checked;
+				if (!(ctrl is CheckBox))
+					ctrl.Visible = chkAttachEnable.Checked;
+			}
+			lblAttachNotice.Visible = !chkAttachEnable.Checked;
+		}
+
+		private void lstAttachment_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstAttachment_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var item in files)
+			{
+				string[] d = GetMetaData.AttachmentData(item);
+
+				ListViewItem SubList = new ListViewItem(d[0]);
+				SubList.SubItems.Add(d[1]);
+				SubList.SubItems.Add(d[2]);
+				SubList.SubItems.Add(d[3]);
+				lstAttachment.Items.Add(SubList);
 			}
 		}
 
@@ -1030,10 +1077,10 @@ namespace ifme.hitoha
 						string command = "";
 						int i = 0;
 						// Video
-						command = String.Format("-add \"{0}\video.hvc#video:name={1}:fmt=HEVC:fps={2}\" ", tmp, Globals.AppInfo.CurrentFolder, video[0].frameRate.ToString());
+						command = String.Format("-add \"{0}\\video.hvc#video:name={1}:fmt=HEVC:fps={2}\" ", tmp, Globals.AppInfo.WritingApp, video[0].frameRate.ToString());
 
 						// Audio
-						foreach (var item in System.IO.Directory.GetFiles(tmp, "audio*.aac"))
+						foreach (var item in System.IO.Directory.GetFiles(tmp, "*.mp4"))
 						{
 							command += String.Format("-add \"{0}#audio:name=Track {1}\" ", item, i.ToString());
 							i++;
