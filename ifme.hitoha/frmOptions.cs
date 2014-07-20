@@ -58,6 +58,8 @@ namespace ifme.hitoha
 		{
 			cboLang.Items.Clear();
 
+			Language.Installed.Get();
+
 			// List langauge in drop down
 			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
 			{
@@ -91,6 +93,8 @@ namespace ifme.hitoha
 		{
 			// Clear
 			lstAddons.Items.Clear();
+
+			Addons.Installed.Get();
 
 			// Display installed addons
 			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)

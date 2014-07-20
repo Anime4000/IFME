@@ -72,6 +72,11 @@ namespace ifme.hitoha
 				return GetBuildin(i);
 			}
 
+			public static int GetCount()
+			{
+				return System.IO.Directory.GetDirectories(Path.Folder).Count();
+			}
+
 			public static int GetBuildin(int x)
 			{
 				int k = x;
