@@ -1,6 +1,7 @@
 Version 4.0.0.2
 ---------------
 Improved Splash Screen, displaying download progress
+Improved Chinese Simplified UI Language.
 Fixed "Pause" button not hide after stop encoding
 Fixed Audio encoding mode where audio ID in wrong place
 
@@ -9,7 +10,7 @@ Version 4.0.0.1
 Fixed Updater issue!!!
 Fixed that Subtitle and Attachment blocking encoding process
 Fixed that button acting weird
-Fixed update ballon message
+Fixed update balloon message
 
 Version 4.0.0.0
 ---------------
