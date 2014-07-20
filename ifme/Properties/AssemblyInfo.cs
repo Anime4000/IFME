@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]
-[assembly: AssemblyCopyright("GNU GPL v2 (Selling not allowed)")]
+[assembly: AssemblyCopyright("Anime4000 (GNU GPL v2)")]
 [assembly: AssemblyTrademark("I Found My Ecchi")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.0.0.1")]
-[assembly: AssemblyFileVersion("4.0.0.1")]
+[assembly: AssemblyVersion("4.0.0.2")]
+[assembly: AssemblyFileVersion("4.0.0.2")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

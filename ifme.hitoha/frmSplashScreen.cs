@@ -17,6 +17,7 @@ namespace ifme.hitoha
 	{
 		WebClient client = new WebClient();
 		private int wait = 2500;
+		bool finish = false;
 
 		public frmSplashScreen()
 		{
@@ -70,7 +71,13 @@ namespace ifme.hitoha
 				try
 				{
 					InvokeStatus("Downloading updates", Addons.Installed.Data[i, 2]);
-					client.DownloadFile(new Uri(Addons.Installed.Data[i, 9]), Addons.Path.Folder + "\\addons.ifz");
+					client.DownloadFileAsync(new Uri(Addons.Installed.Data[i, 9]), Addons.Path.Folder + "\\addons.ifz");
+					finish = false;
+
+					while (finish == false)
+					{
+						// block and do noting...
+					}
 
 					InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
 					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
@@ -124,12 +131,24 @@ namespace ifme.hitoha
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			lblProgress.Text = String.Format("    ► {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive);
+			if (lblProgress.InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => lblProgress.Text = String.Format("    ► {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0))));
+			else
+				lblProgress.Text = String.Format("    ► {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0));
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
-			lblProgress.Text = "";
+			if (lblProgress.InvokeRequired)
+			{
+				BeginInvoke(new MethodInvoker(() => lblProgress.Text = ""));
+				finish = true;
+			}
+			else
+			{
+				lblProgress.Text = "";
+				finish = true;
+			}
 		}
 
 		private void tmrFadeIn_Tick(object sender, EventArgs e)

@@ -1108,8 +1108,6 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(640, 480);
-			this.Controls.Add(this.btnResume);
-			this.Controls.Add(this.btnStop);
 			this.Controls.Add(this.pictBannerRight);
 			this.Controls.Add(this.pictBannerLeft);
 			this.Controls.Add(this.btnOptions);
@@ -1117,6 +1115,8 @@
 			this.Controls.Add(this.btnPause);
 			this.Controls.Add(this.btnStart);
 			this.Controls.Add(this.tabEncoding);
+			this.Controls.Add(this.btnStop);
+			this.Controls.Add(this.btnResume);
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmMain";

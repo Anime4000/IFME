@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "4.0.0.1"
+#define MyAppVersion "4.0.0.2"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "http://ifme.sf.net/"
 #define MyAppExeName "ifme.exe"
@@ -28,7 +28,7 @@ ArchitecturesInstallIn64BitMode=x64
 SourceDir=_build
 LicenseFile=LICENSE
 InfoBeforeFile=..\installer\text_patents_and_royalties.txt
-InfoAfterFile=..\installer\text_whatsnew.txt
+InfoAfterFile=..\installer\text_changelog.txt
 SetupIconFile=..\installer\download.ico
 
 Compression=lzma2/ultra64

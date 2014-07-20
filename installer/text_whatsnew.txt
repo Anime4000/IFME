@@ -1,6 +1,0 @@
-Version 4.0.0.1
----------------
-Fixed Updater issue!!!
-Fixed that Subtitle and Attachment blocking encoding process
-Fixed that button acting weird
-Fixed update ballon message

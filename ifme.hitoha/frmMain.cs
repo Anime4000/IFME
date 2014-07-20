@@ -624,6 +624,7 @@ namespace ifme.hitoha
 			if (msgbox == DialogResult.Yes)
 			{
 				TaskManager.CPU.Kill(TaskManager.ImageName.Current);
+				EncodingStarted(false);
 				BGThread.CancelAsync();
 			}
 		}
@@ -784,6 +785,13 @@ namespace ifme.hitoha
 				{
 					if (audio.Count >= 1)
 					{
+						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
+						int[] AudioMapID = new int[100];
+						for (int i = 0; i < audio.Count; i++)
+						{
+							AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
+						}
+
 						// Decode Audio
 						switch (AudMode)
 						{
@@ -797,7 +805,7 @@ namespace ifme.hitoha
 								string map = null;
 								for (int i = 0; i < audio.Count; i++)
 								{
-									map += String.Format("-map 0:{0} ", i);
+									map += String.Format("-map 0:{0} ", AudioMapID[i].ToString());
 								}
 								map = map.Remove(map.Length - 1);
 								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\\audio1.wav\"", queue[x], map, audio.Count, AudFreq, tmp);
@@ -811,7 +819,7 @@ namespace ifme.hitoha
 
 								for (int i = 0; i < audio.Count; i++)
 								{
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\\audio{4}.wav\"", queue[x], i.ToString(), AudFreq, tmp, (i + 1).ToString()));
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\\audio{4}.wav\"", queue[x], AudioMapID[i].ToString(), AudFreq, tmp, (i + 1).ToString()));
 								}
 
 								break;
@@ -1186,7 +1194,6 @@ namespace ifme.hitoha
 
 			// Reset
 			this.Text = Globals.AppInfo.Name;
-			EncodingStarted(false);
 		}
 
 		public string Duration(System.DateTime pastTime)
@@ -1210,6 +1217,14 @@ namespace ifme.hitoha
 		private void EncodingStarted(bool x)
 		{
 			btnOptions.Enabled = !x;
+
+			btnStart.Visible = !x;
+			btnStop.Visible = x;
+			btnPause.Visible = x;
+			btnResume.Visible = x;
+
+			// Also not forget about Attchment Enable, must disable if subtitle not checked
+			chkAttachEnable.Enabled = chkSubEnable.Checked;
 
 			foreach (Control ctl in tabQueue.Controls)
 			{
@@ -1235,13 +1250,6 @@ namespace ifme.hitoha
 			{
 				ctl.Enabled = !x;
 			}
-
-			btnStart.Visible = !x;
-			btnStop.Visible = x;
-			btnPause.Visible = x;
-
-			// Also not forget about Attchment Enable, must disable if subtitle not checked
-			chkAttachEnable.Enabled = chkSubEnable.Checked;
 		}
 
 		private void AddAudio()

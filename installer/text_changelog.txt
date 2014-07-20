@@ -1,0 +1,141 @@
+Version 4.0.0.2
+---------------
+Improved Splash Screen, displaying download progress
+Fixed "Pause" button not hide after stop encoding
+Fixed Audio encoding mode where audio ID in wrong place
+
+Version 4.0.0.1
+---------------
+Fixed Updater issue!!!
+Fixed that Subtitle and Attachment blocking encoding process
+Fixed that button acting weird
+Fixed update ballon message
+
+Version 4.0.0.0
+---------------
+Improved program, totally re-write new code and stuff
+Added multi-language file using ISO standard, now can be editable
+Added function addons/plugins, you can add your own stuff too!
+Added function auto-update each installed encoder
+Added CPU Affinity! You can encode on specific CPU core!
+Added CPU Priority, encode which level as you want!
+Removed DVD-Rip support
+Removed command prompt/DOS window
+Removed CPU Instruction Set
+FIX SO MANY BUG AND GLITCH!
+
+Version 3.2.1.0
+---------------
+Updated x265 (1.0+139-a5998df9b12e)
+Added Dithering option
+
+Version 3.2.0.0
+---------------
+Updated x265 (0.9+134-f3585fd81c3b)
+Updated mp4box (0.5.1)
+Removed video decoding process!
+Added Realtime video decoding-encoding!
+Fixed DVD RIP encoding
+
+Version 3.1.0.6
+---------------
+Updated x265 (0.9+126-4f7658b3c78a)
+
+Version 3.1.0.5
+---------------
+Updated x265 (0.9+19-b5caca9954f3)
+Added DVD RIP support
+Added CPU Instruction Set support
+
+Version 3.1.0.4
+---------------
+Updated x265 (0.7+289-734f106295df)
+
+Version 3.1.0.3
+---------------
+Updated x265 (0.7+59-def14c0234f5)
+Updated opus (tool 0.1.8/lib 1.1)
+Now opus will be default audio encoder for MKV
+Fixed Norwegian grammar mistake's
+Fixed termination bug on 10bit encoding
+
+Version 3.1.0.2
+---------------
+Updated x265 (0.6+335-3568c1b19947)
+Added support OpenType Font and Web Open Font Format
+
+Version 3.1.0.1
+---------------
+Updated x265 (0.6+284-c88314c4a1a1)
+Fixed language glitch cause attachment become buggy making MKV not process properly!
+
+Version 3.1.0.0
+---------------
+Updated x265 (0.6+282-385560ac328d)
+Added multi language support for first time!
+Added Chinese Simplified by LEaver.
+Added Indonesian by Sandy Nicko Mac Corzeta
+Added Japanese (machine translated)
+Added Malaysia by Omamori Himari
+Added Norwegian by Christoffer Boothby
+
+Version 3.0.0.3
+---------------
+Updated x265 (0.6+262-b2e7d8da2838)
+Fixed MediaInfo give invalid fps, thanks Christoffer Boothby!
+Added reset settings to default, suggested by Danny Sabrak. 
+Added new video tuning "zero-latency"
+Added new video property on advanced tab
+Added 10 bit encoding support, default 8 bit.
+
+Note: IFME always use 8 bit encoding even 10 bit input will encoded into 8 bit, due to "high bit depth" not yet fully optimized for performance. This can be adjust on "Advanced" tab by enable "use auto detect" or choose 10 bit, force 10 bit also cause 8 bit input will encoded into 10 bit, suggested to use auto detect!
+
+Version 3.0.0.2
+---------------
+Updated x265 (0.6+241-99f28c405b5c)
+Changed default CRF\QP value to 26 (50:50)
+Removed Taskbar balloon, due icon stuck when application close.
+Fixed video configuration due to CRF only even choose different option.
+Fixed total encoding time, missing day(s).
+Fixed queue button (move down).
+Fixed program quit when encoding in progress, unload component from process before exit
+Added feature multiple select and remove.
+Added feature where queue will highlight where media file done encoding.
+Added function where window control get disabled when encoding in progress.
+
+Version 3.0.0.1
+---------------
+Starting here, only 64bit supported and .NET Framework 4.0 build.
+Updated x265 (0.6+240-f96c85f03b77)
+Updated console splash screen
+Fixed MKV command for video only encoding.
+Added experimental support for subtitle and font (attachment)
+Added override MediaInfo detection (fps override)
+
+Version 3.0.0.0
+---------------
+Changed debug console to Windows Console mode.
+Removed support separate stream encoding
+Added support multiple audio stream, able to merge or multi stream
+
+Version 2.0.2.3
+---------------
+Fixed code bug
+
+Version 2.0.2.2
+---------------
+Added Splash Screen for component startup and update check
+
+Version 2.0.2.1
+---------------
+Added auto update support
+
+Version 2.0.0.0 - 2.0.1.1
+-------------------------
+Added feature debug console
+Added feature queue encoding!
+Fixed code and improvement!
+
+Version 1.0.0.0
+---------------
+IFME was born

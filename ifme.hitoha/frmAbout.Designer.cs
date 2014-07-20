@@ -39,6 +39,7 @@
 			this.lblTitle = new System.Windows.Forms.Label();
 			this.btnUpdate = new System.Windows.Forms.Button();
 			this.timer = new System.Windows.Forms.Timer(this.components);
+			this.lnkChangeLog = new System.Windows.Forms.LinkLabel();
 			this.SuspendLayout();
 			// 
 			// lblMascot
@@ -152,12 +153,27 @@
 			this.btnUpdate.Visible = false;
 			this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
 			// 
+			// lnkChangeLog
+			// 
+			this.lnkChangeLog.AutoSize = true;
+			this.lnkChangeLog.BackColor = System.Drawing.Color.Transparent;
+			this.lnkChangeLog.LinkColor = System.Drawing.Color.White;
+			this.lnkChangeLog.Location = new System.Drawing.Point(474, 94);
+			this.lnkChangeLog.Name = "lnkChangeLog";
+			this.lnkChangeLog.Size = new System.Drawing.Size(65, 15);
+			this.lnkChangeLog.TabIndex = 28;
+			this.lnkChangeLog.TabStop = true;
+			this.lnkChangeLog.Text = "Changelog";
+			this.lnkChangeLog.Visible = false;
+			this.lnkChangeLog.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkChangeLog_LinkClicked);
+			// 
 			// frmAbout
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ifme.hitoha.Properties.Resources.ImgAbout;
 			this.ClientSize = new System.Drawing.Size(648, 297);
+			this.Controls.Add(this.lnkChangeLog);
 			this.Controls.Add(this.btnUpdate);
 			this.Controls.Add(this.lblMascot);
 			this.Controls.Add(this.lnkPrivacy);
@@ -193,5 +209,6 @@
 		private System.Windows.Forms.Label lblTitle;
 		internal System.Windows.Forms.Button btnUpdate;
 		private System.Windows.Forms.Timer timer;
+		private System.Windows.Forms.LinkLabel lnkChangeLog;
 	}
 }

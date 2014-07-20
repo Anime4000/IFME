@@ -59,6 +59,7 @@ namespace ifme.hitoha
 			{
 				lblUpdateInfo.Visible = false;
 				btnUpdate.Visible = true;
+				lnkChangeLog.Visible = true;
 			}
 		}
 
@@ -137,6 +138,11 @@ namespace ifme.hitoha
 
 			P.Start();
 			Application.ExitThread();
+		}
+
+		private void lnkChangeLog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://raw.githubusercontent.com/Anime4000/IFME/master/installer/text_changelog.txt");
 		}
 	}
 }
