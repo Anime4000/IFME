@@ -144,5 +144,14 @@ namespace ifme.hitoha
 		{
 			System.Diagnostics.Process.Start("https://raw.githubusercontent.com/Anime4000/IFME/master/installer/text_changelog.txt");
 		}
+
+		private void timer_Tick(object sender, EventArgs e)
+		{
+			if (progressDialog.HasUserCancelled)
+			{
+				timer.Stop();
+				progressDialog.Close();
+			}
+		}
 	}
 }

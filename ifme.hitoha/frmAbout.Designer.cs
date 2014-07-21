@@ -153,6 +153,10 @@
 			this.btnUpdate.Visible = false;
 			this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
 			// 
+			// timer
+			// 
+			this.timer.Tick += new System.EventHandler(this.timer_Tick);
+			// 
 			// lnkChangeLog
 			// 
 			this.lnkChangeLog.AutoSize = true;
