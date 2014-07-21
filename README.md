@@ -90,7 +90,7 @@ Currently IFME compiled under "Debug". x265 encoder has issue with "Release", th
 ### Building
 Make sure all prerequisite stuff in `prerequisite` folder is fulfill
 
-* If release a latest version, change File and Assembly version for `ifme` and `ifme.hitoha` properties. (I change manually =P)
+* If release a latest version, change File and Assembly version for `ifme` and `ifme.hitoha` properties.
 * Before start compiling, run `build_clean_bin.cmd` script to remove last compiled.
 * Then start compiling.
 * Run `build.cmd` to start copy required file (including `addons` inside `prerequisite` folder).

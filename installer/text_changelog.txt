@@ -1,3 +1,16 @@
+Version 4.0.0.4
+---------------
+Fixed issue when user disable update check, result addons not load.
+Fixed issue where user in full screen not able back to window mode with previous size.
+Improved file and media validation:
+    1. Accept file that contain atleast one video.
+    2. Subtitle drag n drop (prevent non subtitle file)
+    3. Attachment drag n drop (prevent non font file)
+
+Added Indonesia language (by Sandy Nicko Mac Corzeta)
+Added function where console now capable to save log and clear
+Updated Console font (now use Consolas)
+
 Version 4.0.0.3
 ---------------
 Fixed issue where MP4 video not saved, reported by webvid md and LaruYan
