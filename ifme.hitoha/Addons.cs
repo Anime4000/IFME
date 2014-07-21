@@ -30,6 +30,7 @@ namespace ifme.hitoha
 		{
 			private static string[,] _Data = new string[500, 15];
 			public static int Count = 0;
+			public static bool IsUpdated = false;
 
 			public static string[,] Data
 			{

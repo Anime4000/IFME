@@ -38,7 +38,7 @@ IFME require these file to work:
 * Get all addons [here](https://sourceforge.net/projects/ifme/files/addons/) and [extract](http://www.7-zip.org/) to `prerequisite` > `addons`, structure will be like this:
 ![alt text](http://ifme.sourceforge.net/images/preq.png)
 
-* Or you can create your own, example `addons\\mp3\\addon.ini`.
+* Or you can create your own, example `addons\mp3\addon.ini`.
 ```
 [addon]
 type = audio
@@ -90,6 +90,7 @@ Currently IFME compiled under "Debug". x265 encoder has issue with "Release", th
 ### Building
 Make sure all prerequisite stuff in `prerequisite` folder is fulfill
 
+* If release a latest version, change File and Assembly version for `ifme` and `ifme.hitoha` properties. (I change manually =P)
 * Before start compiling, run `build_clean_bin.cmd` script to remove last compiled.
 * Then start compiling.
 * Run `build.cmd` to start copy required file (including `addons` inside `prerequisite` folder).

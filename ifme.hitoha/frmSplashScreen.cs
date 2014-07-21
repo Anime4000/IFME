@@ -53,7 +53,7 @@ namespace ifme.hitoha
 				try
 				{
 					// Get version
-					InvokeStatus("Checking", Addons.Installed.Data[i, 2]);
+					InvokeStatus("Checking version", Addons.Installed.Data[i, 2]);
 					string GetVersion = client.DownloadString(Addons.Installed.Data[i, 8]);
 					if (GetVersion == Addons.Installed.Data[i, 4] || GetVersion == null)
 						continue;
@@ -82,6 +82,9 @@ namespace ifme.hitoha
 					InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
 					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
 					ZipFile.ExtractToDirectory(Addons.Path.Folder + "\\addons.ifz", Addons.Path.Folder);
+
+					// Tell startup there are got addon update
+					Addons.Installed.IsUpdated = true;
 				}
 				catch (WebException ex)
 				{
@@ -113,6 +116,13 @@ namespace ifme.hitoha
 				InvokeStatus("Error", ex.Message);
 				System.Threading.Thread.Sleep(wait);
 			}
+
+			// Re-run, get latest addons
+			if (Addons.Installed.IsUpdated)
+			{
+				InvokeStatus("Initialising Addons!", "Please Wait...");
+				Addons.Installed.Get();
+			}
 		}
 
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -124,17 +134,17 @@ namespace ifme.hitoha
 		private void InvokeStatus(string status, string thing)
 		{
 			if (this.InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lblStatus.Text = String.Format("Status: {0}\n    ► {1}", status, thing)));
+				BeginInvoke(new MethodInvoker(() => lblStatus.Text = String.Format("Status: {0}\n    ≈ {1}", status, thing)));
 			else
-				lblStatus.Text = String.Format("Status: {0}\n    ► {1}", status, thing);
+				lblStatus.Text = String.Format("Status: {0}\n    ≈ {1}", status, thing);
 		}
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
 			if (lblProgress.InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lblProgress.Text = String.Format("    ► {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0))));
+				BeginInvoke(new MethodInvoker(() => lblProgress.Text = String.Format("    » {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0))));
 			else
-				lblProgress.Text = String.Format("    ► {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0));
+				lblProgress.Text = String.Format("    » {2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0));
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

@@ -20,6 +20,9 @@ namespace ifme.hitoha
 		public frmMain()
 		{
 			InitializeComponent();
+
+			// Form Init.
+			this.Size = Properties.Settings.Default.FormSize;
 			this.Icon = Properties.Resources.aruuie_ifme;
 			this.Text = Globals.AppInfo.Name;
 			pictBannerRight.Parent = pictBannerLeft;
@@ -63,12 +66,12 @@ namespace ifme.hitoha
 				PrintLog(Log.OK, "New default temporary folder created!");
 			}
 
+			// Get installed addons, this code has been moved here since 4.0.0.4, issue are when disable update check cause addons not to load
+			Addons.Installed.Get();
+
 			// Check for updates
 			if (Properties.Settings.Default.UpdateAlways)
 			{
-				// Load Addons + Build-in
-				Addons.Installed.Get();
-
 				// Check addons for any updates
 				PrintLog(Log.Info, "Checking for updates");
 				frmSplashScreen SS = new frmSplashScreen();
@@ -111,6 +114,9 @@ namespace ifme.hitoha
 			{
 				PrintLog(Log.Error, ex.Message);
 			}
+
+			// Console log now can be save and clear
+			PrintLog(Log.Info, "Save this log? Click here and press CTRL+S (once save, log will be empty)");
 
 			// After addons has been load, now display it on UI
 			AddAudio();
@@ -159,6 +165,12 @@ namespace ifme.hitoha
 				foreach (var item in GetFiles.FileNames)
 				{
 					string[] h = GetMetaData.MediaData(item);
+
+					if (h[0] == null)	// try and catach, if media not supported or missing DLL, leaving array with null
+						PrintLog(Log.Error, String.Format("File \"{0}\" not loaded:\n\t{1}", item, h[1]));
+
+					if (h[2] == null)	// make sure required data
+						continue;
 
 					ListViewItem QueueList = new ListViewItem(h[0]);
 					QueueList.SubItems.Add(h[1]);
@@ -273,6 +285,12 @@ namespace ifme.hitoha
 			foreach (string file in files)
 			{
 				string[] h = GetMetaData.MediaData(file);
+
+				if (h[0] == null)	// try and catach, if media not supported or missing DLL, leaving array with null
+					PrintLog(Log.Error, String.Format("File \"{0}\" not loaded:\n\t{1}", file, h[1]));
+
+				if (h[2] == null)	// make sure required data
+					continue;
 
 				ListViewItem QueueList = new ListViewItem(h[0]);
 				QueueList.SubItems.Add(h[1]);
@@ -413,6 +431,11 @@ namespace ifme.hitoha
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var item in files)
 			{
+				// Get valid files
+				if (!GetMetaData.SubtitleValid(item))
+					return;
+
+				// Get valid file
 				string[] d = GetMetaData.SubtitleData(item);
 
 				ListViewItem SubList = new ListViewItem(d[0]);
@@ -443,6 +466,9 @@ namespace ifme.hitoha
 			{
 				foreach (var item in GetFiles.FileNames)
 				{
+					if (!GetMetaData.SubtitleValid(item))
+						return;
+
 					string[] d = GetMetaData.SubtitleData(item);
 
 					ListViewItem SubList = new ListViewItem(d[0]);
@@ -567,6 +593,11 @@ namespace ifme.hitoha
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var item in files)
 			{
+				// Check if drag n drop file is valid
+				if (!GetMetaData.AttachmentValid(item))
+					return;
+				
+				// Process only valid file
 				string[] d = GetMetaData.AttachmentData(item);
 
 				ListViewItem SubList = new ListViewItem(d[0]);
@@ -599,6 +630,11 @@ namespace ifme.hitoha
 			{
 				foreach (var item in GetFiles.FileNames)
 				{
+					// Valid the file
+					if (!GetMetaData.AttachmentValid(item))
+						return;
+
+					// Get
 					string[] d = GetMetaData.AttachmentData(item);
 
 					ListViewItem SubList = new ListViewItem(d[0]);
@@ -622,6 +658,26 @@ namespace ifme.hitoha
 		private void btnAttachClear_Click(object sender, EventArgs e)
 		{
 			lstAttachment.Items.Clear();
+		}
+
+		private void rtfLog_KeyUp(object sender, KeyEventArgs e)
+		{
+			if ((e.KeyData == (Keys.Control | Keys.S)))
+			{
+				SaveFileDialog SaveMe = new SaveFileDialog();
+
+				SaveMe.FileName = "ifme_log.log";
+				SaveMe.Filter = "Console Log (in plain text)|*.log";
+				SaveMe.FilterIndex = 0;
+
+				if (SaveMe.ShowDialog() == DialogResult.OK)
+				{
+					rtfLog.SaveFile(SaveMe.FileName, RichTextBoxStreamType.PlainText);
+
+					rtfLog.Clear();
+					PrintLog(Log.Info, "Console log has been saved and cleared!");
+				}
+			}
 		}
 
 		private void rtfLog_TextChanged(object sender, EventArgs e)
@@ -1353,8 +1409,6 @@ namespace ifme.hitoha
 			if (Properties.Settings.Default.FormFullScreen)
 				this.WindowState = FormWindowState.Maximized;
 
-			this.Size = Properties.Settings.Default.FormSize;
-
 			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
 			cboVideoTune.SelectedIndex = Properties.Settings.Default.VideoTune;
 			cboVideoRateCtrl.SelectedIndex = Properties.Settings.Default.VideoRateType;
@@ -1371,9 +1425,14 @@ namespace ifme.hitoha
 		private void UserSettingsSave()
 		{
 			if (this.WindowState == FormWindowState.Maximized)
+			{
 				Properties.Settings.Default.FormFullScreen = true;
-
-			Properties.Settings.Default.FormSize = this.Size;
+			}
+			else
+			{
+				Properties.Settings.Default.FormFullScreen = false;
+				Properties.Settings.Default.FormSize = this.Size;
+			}
 
 			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
 			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
@@ -1524,6 +1583,7 @@ namespace ifme.hitoha
 				default:
 					rtfLog.SelectionColor = Color.Red;
 					rtfLog.SelectedText = "erro";
+					tabEncoding.SelectedTab = tabStatus;
 					break;
 			}
 

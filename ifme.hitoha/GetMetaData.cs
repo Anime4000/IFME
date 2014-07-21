@@ -14,20 +14,28 @@ namespace ifme.hitoha
 		{
 			string[] GFI = new string[6];
 
-			MediaFile AviFile = new MediaFile(file);
-			GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
-			GFI[1] = System.IO.Path.GetExtension(file);
+			try
+			{
+				MediaFile AviFile = new MediaFile(file);
+				GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
+				GFI[1] = System.IO.Path.GetExtension(file);
 
-			if (AviFile.Video.Count == 0)
+				if (AviFile.Video.Count == 0)
+					return GFI;
+
+				var v = AviFile.Video[0];
+				GFI[2] = v.format;
+				GFI[3] = v.width.ToString() + "x" + v.height.ToString();
+				GFI[4] = v.bitDepth.ToString();
+				GFI[5] = file;
+
 				return GFI;
-
-			var v = AviFile.Video[0];
-			GFI[2] = v.format;
-			GFI[3] = v.width.ToString() + "x" + v.height.ToString();
-			GFI[4] = v.bitDepth.ToString();
-			GFI[5] = file;
-
-			return GFI;
+			}
+			catch (Exception ex)
+			{
+				GFI[1] = ex.Message;
+				return GFI;
+			}
 		}
 
 		public static string[] SubtitleData(string file)
@@ -57,6 +65,24 @@ namespace ifme.hitoha
 			return SB;
 		}
 
+		// This block detect subtitle file, due performance issue detect via file extension,
+		// there will consume process to check file is binary or plain text
+		public static bool SubtitleValid(string file)
+		{
+			var ext = System.IO.Path.GetExtension(file);
+
+			if (ext == ".ass")
+				return true;
+
+			if (ext == ".ssa")
+				return true;
+
+			if (ext == ".srt")
+				return true;
+
+			return false;
+		}
+
 		public static string[] AttachmentData(string file)
 		{
 			string[] AD = new string[4];
@@ -83,6 +109,34 @@ namespace ifme.hitoha
 
 			AD[3] = file;
 			return AD;
+		}
+
+		// This block will detect font magic number, much more better then detect file extension
+		// useful for binary file
+		public static bool AttachmentValid(string file)
+		{
+			System.IO.FileInfo f = new System.IO.FileInfo(file);
+			if (f.Length >= 1073741824)							// Detect 1GiB file enough, no font that large
+				return false;
+
+			byte[] data = System.IO.File.ReadAllBytes(file);
+			byte[] MagicTTF = { 0x00, 0x01, 0x00, 0x00, 0x00 };
+			byte[] MagicOTF = { 0x4F, 0x54, 0x54, 0x4F, 0x00 };
+			byte[] MagicWOFF = { 0x77, 0x4F, 0x46, 0x46, 0x00 };
+			byte[] check = new byte[5];
+
+			Buffer.BlockCopy(data, 0, check, 0, 5);
+
+			if (MagicTTF.SequenceEqual(check))
+				return true;
+
+			if (MagicOTF.SequenceEqual(check))
+				return true;
+
+			if (MagicWOFF.SequenceEqual(check))
+				return true;
+
+			return false;
 		}
 	}
 }

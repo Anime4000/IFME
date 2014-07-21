@@ -424,9 +424,10 @@
 			// btnResetSettings
 			// 
 			this.btnResetSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.btnResetSettings.AutoSize = true;
 			this.btnResetSettings.Location = new System.Drawing.Point(12, 407);
 			this.btnResetSettings.Name = "btnResetSettings";
-			this.btnResetSettings.Size = new System.Drawing.Size(150, 23);
+			this.btnResetSettings.Size = new System.Drawing.Size(200, 23);
 			this.btnResetSettings.TabIndex = 6;
 			this.btnResetSettings.Text = "{0}";
 			this.btnResetSettings.UseVisualStyleBackColor = true;
@@ -461,6 +462,7 @@
 			this.tabPerformance.PerformLayout();
 			this.tabAddons.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 

@@ -82,10 +82,10 @@ namespace ifme.hitoha
 		{
 			try
 			{
-				progressDialog.Show();
+				progressDialog.Show();		// Using build-in progress dialog, Windows 8 still have Windows Vista style.
 				progressDialog.AutoClose = true;
 				progressDialog.Title = "Updating";
-				timer.Start();
+				timer.Start();	// Start timer to detect user cancel download updates
 
 				string LATEST = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
 				client.DownloadFileAsync(new Uri("http://master.dl.sourceforge.net/project/ifme/encoder-gui/" + LATEST + "/x265ui.7z"), tmp + "\\ifme\\saishin.jp");
