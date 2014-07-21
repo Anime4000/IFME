@@ -10,6 +10,7 @@ Improved file and media validation:
 Added Indonesia language (by Sandy Nicko Mac Corzeta)
 Added function where console now capable to save log and clear
 Updated Console font (now use Consolas)
+Some small change...
 
 Version 4.0.0.3
 ---------------

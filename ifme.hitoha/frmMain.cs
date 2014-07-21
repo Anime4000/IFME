@@ -116,7 +116,7 @@ namespace ifme.hitoha
 			}
 
 			// Console log now can be save and clear
-			PrintLog(Log.Info, "Save this log? Click here and press CTRL+S (once save, log will be empty)");
+			PrintLog(Log.Info, "Save this log? Click here and press CTRL+S (console will be clear after save)");
 
 			// After addons has been load, now display it on UI
 			AddAudio();
@@ -136,7 +136,7 @@ namespace ifme.hitoha
 			if (!Globals.AppInfo.VersionEqual)
 			{
 				proTip.ToolTipTitle = Language.IMessage.ProTipTitle;
-				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 25, 8, 10000);
+				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 50, 18, 15000);
 			}
 		}
 
@@ -558,6 +558,14 @@ namespace ifme.hitoha
 			}
 		}
 
+		private void lstSubtitle_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			for (int i = 0; i < lstSubtitle.SelectedItems.Count; i++)	// This for loop really need to get SelectedItem (no "s")
+			{
+				cboSubLang.Text = lstSubtitle.SelectedItems[i].SubItems[2].Text;
+			}
+		}
+
 		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstSubtitle.SelectedIndices.Count <= 0)
@@ -568,7 +576,10 @@ namespace ifme.hitoha
 			int i = lstSubtitle.SelectedIndices[0];
 			if (i >= 0)
 			{
-				lstSubtitle.Items[i].SubItems[2].Text = cboSubLang.Text;
+				if (cboSubLang.Text.Contains("---"))
+					lstSubtitle.Items[i].SubItems[2].Text = "und (Undetermined)";
+				else
+					lstSubtitle.Items[i].SubItems[2].Text = cboSubLang.Text;
 			}
 		}
 

@@ -858,6 +858,7 @@
 			this.lstSubtitle.UseCompatibleStateImageBehavior = false;
 			this.lstSubtitle.View = System.Windows.Forms.View.Details;
 			this.lstSubtitle.Visible = false;
+			this.lstSubtitle.SelectedIndexChanged += new System.EventHandler(this.lstSubtitle_SelectedIndexChanged);
 			this.lstSubtitle.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstSubtitle_DragDrop);
 			this.lstSubtitle.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstSubtitle_DragEnter);
 			// 
@@ -1109,7 +1110,6 @@
 			// 
 			// proTip
 			// 
-			this.proTip.IsBalloon = true;
 			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			// 
 			// frmMain
