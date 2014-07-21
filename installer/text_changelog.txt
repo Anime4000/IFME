@@ -1,5 +1,6 @@
 Version 4.0.0.4
 ---------------
+Fixed issue where attachment cause video encoding to fail
 Fixed issue when user disable update check, result addons not load.
 Fixed issue where user in full screen not able back to window mode with previous size.
 Improved file and media validation:

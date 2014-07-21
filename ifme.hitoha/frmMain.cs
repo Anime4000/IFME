@@ -1090,15 +1090,15 @@ namespace ifme.hitoha
 						string attach = "";
 						if (IsAttachEnable)
 						{
-							for (int i = 0; i < attachment[i, 0].Length; i++)
+							for (int i = 0; i < attachment.GetLength(0); i++)
 							{
-								string[] place = new string[3];
+								string[] place = new string[4];
 								place[0] = attachment[i, 0]; //file name only
 								place[1] = attachment[i, 2]; //full path
 								place[2] = attachment[i, 1]; //MIME
-								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{0}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
+								place[3] = AttachDesc;
+								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{3}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
 							}
-							attach = attach.Remove(attach.Length - 1);
 						}
 
 
@@ -1109,7 +1109,7 @@ namespace ifme.hitoha
 						vp[2] = video[0].frameRate.ToString();
 						vp[3] = tmp;
 						command = String.Format("-o \"{0}.mkv\"  --track-name \"0:{1}\" --forced-track 0:no --default-duration 0:{2}p -d 0 -A -S -T --no-global-tags --no-chapters ( \"{3}\\video.hvc\" ) ", vp);
-						trackorder = "--track-order 0:0,";
+						trackorder = "--track-order 0:0";
 
 						// Audio
 						int id = 1;
@@ -1119,7 +1119,7 @@ namespace ifme.hitoha
 							ap[0] = id.ToString();
 							ap[1] = item;
 							command += String.Format("--track-name \"0:Track {0}\" --forced-track 0:no --sync 0:-1 -a 0 -D -S -T --no-global-tags --no-chapters ( \"{1}\" ) ", ap);
-							trackorder += id.ToString() + ":0,";
+							trackorder = trackorder + "," + id.ToString() + ":0";
 							id++;
 						}
 
@@ -1131,15 +1131,13 @@ namespace ifme.hitoha
 							sp[1] = subtitle[x, 0]; //file name only
 							sp[2] = subtitle[x, 2]; //full path
 							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
-							trackorder += id.ToString() + ":0,";
+							trackorder = trackorder + "," + id.ToString() + ":0";
 						}
 
-						// Remove last comma either by audio or subtitle.
-						trackorder = trackorder.Remove(trackorder.Length - 1);
 
 						// Build command for mkvmerge
 						if (IsAttachEnable)
-							command = command + trackorder + " " + attachment;
+							command = command + attach + trackorder;
 						else
 							command = command + trackorder;
 
