@@ -1096,7 +1096,7 @@ namespace ifme.hitoha
 								place[0] = attachment[i, 0]; //file name only
 								place[1] = attachment[i, 2]; //full path
 								place[2] = attachment[i, 1]; //MIME
-								attach += String.Format("--attachment-mime-type \"{3}\" --attachment-description \"{0}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
+								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{0}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
 							}
 							attach = attach.Remove(attach.Length - 1);
 						}
