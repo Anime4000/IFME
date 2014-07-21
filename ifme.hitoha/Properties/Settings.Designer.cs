@@ -274,5 +274,17 @@ namespace ifme.hitoha.Properties {
                 this["UpdateAlways"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FormFullScreen {
+            get {
+                return ((bool)(this["FormFullScreen"]));
+            }
+            set {
+                this["FormFullScreen"] = value;
+            }
+        }
     }
 }

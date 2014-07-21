@@ -10,12 +10,10 @@ echo                   2. ifme.hitoha.dll
 echo                   3. ifme.hitoha.kawaii.dll
 echo.
 echo Please download these file and put on "prerequisite" folder!
-echo                   1. MediaInfo.dll (64bit)
-echo                   2. 7za.exe (rename to za.dll)
+echo                   1. addons\* (all addons)
+echo                   2. MediaInfo.dll (64bit)
+echo                   3. 7za.exe (rename to za.dll)
 echo.
-echo IFME will create empty folder:
-echo                   1. addons
-echo                   2. lang
 echo.
 echo IFME will use dummy addon, you need actual addon, get from webpage
 echo.
@@ -25,7 +23,8 @@ echo.
 echo.
 echo.
 echo DELETEING %BUILDDIR%!
-rmdir /s %BUILDDIR%
+rmdir /s /q %BUILDDIR%
+timeout /T 3 /NOBREAK
 mkdir %BUILDDIR%
 mkdir %BUILDDIR%\addons
 mkdir %BUILDDIR%\lang
@@ -42,7 +41,11 @@ echo Copy Prerequisite
 copy prerequisite\MediaInfo.dll %BUILDDIR%\MediaInfo.dll
 copy prerequisite\7za.exe %BUILDDIR%\za.dll
 echo.
-echo After that, download IFME addons and extract to "addons" folder.
-echo Then can be release via Installer or Archive :)
+echo Copy Addons
+xcopy /i /s prerequisite\addons\* %BUILDDIR%\addons
+echo.
+echo.
+echo If got error, please check what you missed.
+echo All ok? Now can be release via Installer or Archive :)
 echo.
 pause

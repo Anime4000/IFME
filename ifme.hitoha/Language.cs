@@ -103,6 +103,7 @@ namespace ifme.hitoha
 			public static string ResetSettingsOK = "";
 			public static string ProTipTitle = "";
 			public static string ProTipUpdate = "";
+			public static string MKVOnly = "";
 		}
 
 		public static class IOptions

@@ -21,17 +21,52 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 
 ## Requirement
 ### Basics
-IFME only release under 64bit and Windows XP is not supported (due WinXP end it's life).
-
-IFME using .NET Framework 4.5 (Windows Vista and 7 require to install, meanwhile Windows 8 already build-in).
-
-IFME need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File folder, it need write access.
+* IFME only release under 64bit and Windows XP is not supported (due WinXP end it's life).
+* IFME using .NET Framework 4.5 (Windows Vista and 7 require to install, meanwhile Windows 8 already build-in).
+* IFME need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
 
 
 ### Prerequisite
 IFME require these file to work:
-* MediaInfo.dll (used for detecting video and audio properties)
-* 7za.exe (used for download main program updates)
+
+#### Binary
+* [MediaInfo (64bit DLL)](http://mediaarea.net/en/MediaInfo/Download/Windows) (used for detecting video and audio properties)
+* [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for download main program updates)
+
+#### Addons
+* First, create `addons` folder inside `prerequisite`.
+* Get all addons [here](https://sourceforge.net/projects/ifme/files/addons/) and [extract](http://www.7-zip.org/) to `prerequisite` > `addons`, structure will be like this:
+![alt text](http://ifme.sourceforge.net/images/preq.png)
+
+* Or you can create your own, example `addons\\mp3\\addon.ini`.
+```
+[addon]
+type = audio
+
+[profile]
+name = MPEG Layer 3 (MP3)
+dev = LAME
+version = 3.99.5
+homepage = http://lame.sf.net
+container = mp4
+
+[provider]
+name = Gamedude
+update = http://ifme.sourceforge.net/update/addons/mp3.txt
+download = http://master.dl.sourceforge.net/project/ifme/addons/mp3.ifz
+
+; Please refer to IFME documentation on project page (http://ifme.sf.net)
+; {0} for basic command, such as quality or bitrate
+; {1} output file, require | in between, it will converted to "
+; {2} for input file, also require |
+; {3} used for extra command (adv)
+[data]
+app = lame.exe
+cmd = {3} -b {0} |{2}| |{1}.mp3| 
+adv = --preset insane
+quality = 32,45,64,80,96,112,128,160,192,224,256,320
+default = 128
+```
 
 
 ## Development
@@ -45,3 +80,18 @@ Using Microsoft VisualStudio 2013 (.NET 4.5)
 
 ### Known bugs
 Currently IFME compiled under "Debug". x265 encoder has issue with "Release", the symptom is still unknown.
+
+
+### Debugging
+* To make IFME fully working, get `MediaInfo.dll` and `za.dll` (7za.exe renamed) in `ifme.exe` root folder (where `ifme.exe` is located, put there)
+* Don't forget about `addons` stuff, put everything in `addons` folder
+
+
+### Building
+Make sure all prerequisite stuff in `prerequisite` folder is fulfill
+
+* Before start compiling, run `build_clean_bin.cmd` script to remove last compiled.
+* Then start compiling.
+* Run `build.cmd` to start copy required file (including `addons` inside `prerequisite` folder).
+* New folder `_build` created.
+* Create an installer by opening `build_installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed

@@ -383,6 +383,13 @@ namespace ifme.hitoha
 
 		private void chkSubEnable_CheckedChanged(object sender, EventArgs e)
 		{
+			if (!Properties.Settings.Default.UseMkv && chkSubEnable.Checked)
+			{
+				MessageBox.Show(Language.IMessage.MKVOnly, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				chkSubEnable.Checked = false;
+				return;
+			}
+
 			foreach (Control ctrl in tabSubtitle.Controls)
 			{
 				if (!(ctrl is CheckBox))
@@ -1343,6 +1350,9 @@ namespace ifme.hitoha
 			}
 
 			// Form default
+			if (Properties.Settings.Default.FormFullScreen)
+				this.WindowState = FormWindowState.Maximized;
+
 			this.Size = Properties.Settings.Default.FormSize;
 
 			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
@@ -1360,6 +1370,9 @@ namespace ifme.hitoha
 
 		private void UserSettingsSave()
 		{
+			if (this.WindowState == FormWindowState.Maximized)
+				Properties.Settings.Default.FormFullScreen = true;
+
 			Properties.Settings.Default.FormSize = this.Size;
 
 			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
@@ -1448,6 +1461,7 @@ namespace ifme.hitoha
 			Language.IMessage.Restart = data[Language.Section.Msg]["Restart"];
 			Language.IMessage.ResetSettingsAsk = data[Language.Section.Msg]["ResetSettingsAsk"];
 			Language.IMessage.ResetSettingsOK = data[Language.Section.Msg]["ResetSettingsOK"];
+			Language.IMessage.MKVOnly = data[Language.Section.Msg]["MKVOnly"];
 			// ToolTip
 			Language.IMessage.ProTipTitle = data[Language.Section.Pro]["Title"];
 			Language.IMessage.ProTipUpdate = data[Language.Section.Pro]["TellUpdate"];
