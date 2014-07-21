@@ -1046,7 +1046,6 @@
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
 			this.rtfLog.TabIndex = 1;
 			this.rtfLog.Text = "";
-			this.rtfLog.WordWrap = false;
 			this.rtfLog.TextChanged += new System.EventHandler(this.rtfLog_TextChanged);
 			this.rtfLog.KeyUp += new System.Windows.Forms.KeyEventHandler(this.rtfLog_KeyUp);
 			// 
