@@ -1108,7 +1108,7 @@ namespace ifme.hitoha
 						vp[1] = Globals.AppInfo.WritingApp;
 						vp[2] = video[0].frameRate.ToString();
 						vp[3] = tmp;
-						command = String.Format("-o \"{0}.mkv\"  --track-name \"0:{1}\" --forced-track 0:no --default-duration 0:{2}p -d 0 -A -S -T --no-global-tags --no-chapters ( \"{3}\\video.hvc\" ) ", vp);
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no --default-duration 0:{2}p -d 0 -A -S -T --no-global-tags --no-chapters ( \"{3}\\video.hvc\" ) ", vp);
 						trackorder = "--track-order 0:0";
 
 						// Audio
