@@ -30,8 +30,8 @@ IFME need administrator access due changing encoder CPU Priority and Affinity, i
 
 ### Prerequisite
 IFME require these file to work:
-* MediaInfo.dll (used for detecting video and audio properties)
-* 7za.exe (used for download main program updates)
+* [MediaInfo.dll](http://mediaarea.net/en/MediaInfo/Download) (used for detecting video and audio properties)
+* [7za.exe](http://www.7-zip.org/download.html) (used for download main program updates)
 
 
 ## Development
