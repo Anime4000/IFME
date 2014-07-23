@@ -506,6 +506,7 @@
 			this.cboVideoPreset.FormattingEnabled = true;
 			this.cboVideoPreset.Items.AddRange(new object[] {
             "ultrafast",
+            "superfast",
             "veryfast",
             "faster",
             "fast",
