@@ -57,7 +57,7 @@ namespace ifme.hitoha
 			}
 
 			// Temp Folder
-			if (Properties.Settings.Default.TemporaryFolder == "none" || !System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
+			if (String.IsNullOrEmpty(Properties.Settings.Default.TemporaryFolder) || !System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
 			{
 				System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);
 				Properties.Settings.Default.TemporaryFolder = Globals.AppInfo.TempFolder;
@@ -707,7 +707,8 @@ namespace ifme.hitoha
 				var resbox = MessageBox.Show(Language.IMessage.Restart, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (resbox == DialogResult.Yes)
 				{
-					UserSettingsSave();
+					if (!Options.ResetDefault)
+						UserSettingsSave();
 
 					System.Diagnostics.Process P = new System.Diagnostics.Process();
 					P.StartInfo.FileName = "cmd.exe";

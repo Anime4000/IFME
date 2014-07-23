@@ -141,6 +141,10 @@ namespace ifme.hitoha
 
 		private void frmOptions_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			// incase user reset to default, skip code below
+			if (Options.ResetDefault)
+				return;
+
 			string temp = Properties.Settings.Default.DefaultLang;
 
 			// Save stuff
@@ -341,6 +345,8 @@ namespace ifme.hitoha
 			if (msg == DialogResult.Yes)
 			{
 				Properties.Settings.Default.Reset();
+				Properties.Settings.Default.Save();
+				Options.ResetDefault = true;
 				this.Close();
 			}
 		}
@@ -349,5 +355,6 @@ namespace ifme.hitoha
 	class Options
 	{
 		public static bool RestartNow = false;
+		public static bool ResetDefault = false;
 	}
 }

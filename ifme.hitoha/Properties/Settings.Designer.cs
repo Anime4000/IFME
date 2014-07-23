@@ -85,7 +85,7 @@ namespace ifme.hitoha.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("none")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string TemporaryFolder {
             get {
                 return ((string)(this["TemporaryFolder"]));
