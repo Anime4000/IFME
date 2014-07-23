@@ -43,6 +43,28 @@ namespace ifme.hitoha
 
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
 		{
+			// Get IFME version
+			try
+			{
+				InvokeStatus("Checking version", "IFME Core");
+				string GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
+				Globals.AppInfo.VersionNew = GetVersion;
+
+				if (GetVersion == Globals.AppInfo.Version)
+					Globals.AppInfo.VersionEqual = true;
+				else
+					Globals.AppInfo.VersionEqual = false;
+			}
+			catch (WebException ex)
+			{
+				InvokeStatus("Error", ex.Message);
+				System.Threading.Thread.Sleep(wait);
+			}
+
+			// IFME have new version, dont proceed check addons verions
+			if (!Globals.AppInfo.VersionEqual)
+				return;
+
 			// Get addons version and update
 			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
 			{
@@ -98,23 +120,6 @@ namespace ifme.hitoha
 					if (ex.Status == WebExceptionStatus.ConnectFailure)
 						break;
 				}
-			}
-
-			// Get IFME version
-			try
-			{
-				string GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
-				Globals.AppInfo.VersionNew = GetVersion;
-
-				if (GetVersion == Globals.AppInfo.Version)
-					Globals.AppInfo.VersionEqual = true; 
-				else
-					Globals.AppInfo.VersionEqual = false;
-			}
-			catch (WebException ex)
-			{
-				InvokeStatus("Error", ex.Message);
-				System.Threading.Thread.Sleep(wait);
 			}
 
 			// Re-run, get latest addons
