@@ -1035,7 +1035,7 @@ namespace ifme.hitoha
 				{
 					if (video.Count >= 1)
 					{
-						string cmd = "-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} -t {3} --{4} {5} --fps {6} -f {7} {9} -o \"{8}\\video.hvc\" --y4m -";
+						string cmd = "-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} --fps {6} -f {7} {9} -o \"{8}\\video.hvc\" --y4m -";
 						string[] args = new string[10];
 						args[0] = queue[x];
 
@@ -1045,7 +1045,12 @@ namespace ifme.hitoha
 							args[1] = Addons.BuildIn.HEVC10;
 
 						args[2] = VidPreset;
-						args[3] = VidTune;
+
+						if (VidTune.Equals("off"))
+							args[3] = "";
+						else
+							args[3] = "-t " + VidTune;
+
 						args[4] = VidType;
 						args[5] = VidValue;
 						args[6] = video[0].frameRate.ToString();

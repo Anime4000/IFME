@@ -483,6 +483,7 @@
 			this.cboVideoTune.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoTune.FormattingEnabled = true;
 			this.cboVideoTune.Items.AddRange(new object[] {
+            "off",
             "psnr",
             "ssim",
             "zero-latency"});
