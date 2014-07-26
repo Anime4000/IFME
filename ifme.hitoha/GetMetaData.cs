@@ -12,7 +12,7 @@ namespace ifme.hitoha
 	{
 		public static string[] MediaData(string file)
 		{
-			string[] GFI = new string[6];
+			string[] GFI = new string[7];
 
 			try
 			{
@@ -26,8 +26,9 @@ namespace ifme.hitoha
 				var v = AviFile.Video[0];
 				GFI[2] = v.format;
 				GFI[3] = v.width.ToString() + "x" + v.height.ToString();
-				GFI[4] = v.bitDepth.ToString();
-				GFI[5] = file;
+				GFI[4] = v.frameRate.ToString();
+				GFI[5] = v.bitDepth.ToString();
+				GFI[6] = file;
 
 				return GFI;
 			}

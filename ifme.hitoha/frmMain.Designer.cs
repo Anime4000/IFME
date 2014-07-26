@@ -117,6 +117,7 @@
 			this.btnResume = new System.Windows.Forms.Button();
 			this.BGThread = new System.ComponentModel.BackgroundWorker();
 			this.proTip = new System.Windows.Forms.ToolTip(this.components);
+			this.colQueueFPS = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabEncoding.SuspendLayout();
 			this.tabQueue.SuspendLayout();
 			this.tabVideo.SuspendLayout();
@@ -315,6 +316,7 @@
             this.colQueueExt,
             this.colQueueCodec,
             this.colQueueRes,
+            this.colQueueFPS,
             this.colQueueBitDepth,
             this.colQueuePath});
 			this.lstQueue.FullRowSelect = true;
@@ -1113,6 +1115,11 @@
 			// 
 			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			// 
+			// colQueueFPS
+			// 
+			this.colQueueFPS.Text = "FPS";
+			this.colQueueFPS.Width = 70;
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1252,5 +1259,6 @@
 		private System.ComponentModel.BackgroundWorker BGThread;
 		private System.Windows.Forms.RichTextBox rtfLog;
 		private System.Windows.Forms.ToolTip proTip;
+		private System.Windows.Forms.ColumnHeader colQueueFPS;
 	}
 }

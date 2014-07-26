@@ -176,8 +176,9 @@ namespace ifme.hitoha
 					QueueList.SubItems.Add(h[1]);
 					QueueList.SubItems.Add(h[2]);
 					QueueList.SubItems.Add(h[3]);
-					QueueList.SubItems.Add(h[4] + " bit");
-					QueueList.SubItems.Add(h[5]);
+					QueueList.SubItems.Add(h[4] + " fps");
+					QueueList.SubItems.Add(h[5] + " bit");
+					QueueList.SubItems.Add(h[6]);
 
 					lstQueue.Items.Add(QueueList);
 				}
@@ -296,8 +297,9 @@ namespace ifme.hitoha
 				QueueList.SubItems.Add(h[1]);
 				QueueList.SubItems.Add(h[2]);
 				QueueList.SubItems.Add(h[3]);
-				QueueList.SubItems.Add(h[4] + " bit");
-				QueueList.SubItems.Add(h[5]);
+				QueueList.SubItems.Add(h[4] + " fps");
+				QueueList.SubItems.Add(h[5] + " bit");
+				QueueList.SubItems.Add(h[6]);
 
 				lstQueue.Items.Add(QueueList);
 			}
@@ -807,7 +809,7 @@ namespace ifme.hitoha
 
 				for (int i = 0; i < queue.Length; i++)
 				{
-					queue[i] = lstQueue.Items[i].SubItems[5].Text;
+					queue[i] = lstQueue.Items[i].SubItems[6].Text;
 				}
 
 				for (int s = 0; s < subtitle.GetLength(0); s++)
@@ -1035,7 +1037,7 @@ namespace ifme.hitoha
 				{
 					if (video.Count >= 1)
 					{
-						string cmd = "-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} --fps {6} -f {7} {9} -o \"{8}\\video.hvc\" --y4m -";
+						string cmd = "-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -";
 						string[] args = new string[10];
 						args[0] = queue[x];
 
@@ -1053,10 +1055,9 @@ namespace ifme.hitoha
 
 						args[4] = VidType;
 						args[5] = VidValue;
-						args[6] = video[0].frameRate.ToString();
-						args[7] = video[0].frameCount.ToString();
-						args[8] = tmp;
-						args[9] = VidXcmd;
+						args[6] = video[0].frameCount.ToString();
+						args[7] = tmp;
+						args[8] = VidXcmd;
 
 						PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(cmd, args));
 					}
@@ -1112,9 +1113,8 @@ namespace ifme.hitoha
 						string[] vp = new string[4];
 						vp[0] = FileOut;
 						vp[1] = Globals.AppInfo.WritingApp;
-						vp[2] = video[0].frameRate.ToString();
-						vp[3] = tmp;
-						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no --default-duration 0:{2}p -d 0 -A -S -T --no-global-tags --no-chapters ( \"{3}\\video.hvc\" ) ", vp);
+						vp[2] = tmp;
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no -d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hvc\" ) ", vp);
 						trackorder = "--track-order 0:0";
 
 						// Audio
@@ -1155,7 +1155,7 @@ namespace ifme.hitoha
 						string command = "";
 						int i = 0;
 						// Video
-						command = String.Format("-add \"{0}\\video.hvc#video:name={1}:fmt=HEVC:fps={2}\" ", tmp, Globals.AppInfo.WritingApp, video[0].frameRate.ToString());
+						command = String.Format("-add \"{0}\\video.hvc#video:name={1}:fmt=HEVC\" ", tmp, Globals.AppInfo.WritingApp);
 
 						// Audio
 						foreach (var item in System.IO.Directory.GetFiles(tmp, "*.mp4"))
@@ -1359,6 +1359,10 @@ namespace ifme.hitoha
 			btnPause.Visible = x;
 			btnResume.Visible = x;
 
+			// Button, if quete not empty, dont disable
+			if (lstQueue.Items.Count == 0)
+				btnStart.Enabled = x;
+
 			// Also not forget about Attchment Enable, must disable if subtitle not checked
 			chkAttachEnable.Enabled = chkSubEnable.Checked;
 
@@ -1504,8 +1508,9 @@ namespace ifme.hitoha
 			lstQueue.Columns[1].Text = data[Language.Section.Lst]["Ext"];
 			lstQueue.Columns[2].Text = data[Language.Section.Lst]["Codec"];
 			lstQueue.Columns[3].Text = data[Language.Section.Lst]["Res"];
-			lstQueue.Columns[4].Text = data[Language.Section.Lst]["BitDepth"];
-			lstQueue.Columns[5].Text = data[Language.Section.Lst]["Path"];
+			/* FPS was here, 4 */
+			lstQueue.Columns[5].Text = data[Language.Section.Lst]["BitDepth"];
+			lstQueue.Columns[6].Text = data[Language.Section.Lst]["Path"];
 			// Sub
 			lstSubtitle.Columns[0].Text = data[Language.Section.Lst]["FileName"];
 			lstSubtitle.Columns[1].Text = data[Language.Section.Lst]["Ext"];
