@@ -4,6 +4,10 @@ Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that suppor
 
 Binary (Installer/Archive) can be [found here!](https://sourceforge.net/projects/ifme/)
 
+## License
+* Source Code are under [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/).
+* Mascot, Illustration and graphics under [Creative Common Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
+* For more info, [click here](http://ifme.sourceforge.net/index.html?page/rights.html).
 
 ## History
 IFME was originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
