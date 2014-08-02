@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO.Compression;
 using ifme.hitoha;
 using IniParser;
 using IniParser.Model;
@@ -227,7 +226,7 @@ namespace ifme.hitoha
 			{
 				try
 				{
-					ZipFile.ExtractToDirectory(GetFile.FileName, Addons.Path.Folder);
+					Addons.Extract(GetFile.FileName, Addons.Path.Folder);
 					MessageBox.Show(Language.IMessage.InstallMsg, "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 					// Get new addon into action

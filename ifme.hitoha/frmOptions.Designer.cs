@@ -137,9 +137,9 @@
 			// 
 			this.chkUpdate.Checked = true;
 			this.chkUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkUpdate.Location = new System.Drawing.Point(30, 31);
+			this.chkUpdate.Location = new System.Drawing.Point(18, 31);
 			this.chkUpdate.Name = "chkUpdate";
-			this.chkUpdate.Size = new System.Drawing.Size(227, 80);
+			this.chkUpdate.Size = new System.Drawing.Size(250, 80);
 			this.chkUpdate.TabIndex = 0;
 			this.chkUpdate.Text = "{0}";
 			this.chkUpdate.UseVisualStyleBackColor = true;

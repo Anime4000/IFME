@@ -39,7 +39,7 @@ copy ifme\bin\x64\Debug\iso.gg %BUILDDIR%\
 echo.
 echo Copy Prerequisite
 copy prerequisite\MediaInfo.dll %BUILDDIR%\MediaInfo.dll
-copy prerequisite\7za.exe %BUILDDIR%\za.dll
+copy prerequisite\7za.exe %BUILDDIR%\unpack.exe
 echo.
 echo Copy Addons
 xcopy /i /s prerequisite\addons\* %BUILDDIR%\addons

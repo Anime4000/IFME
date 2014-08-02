@@ -70,13 +70,9 @@ namespace ifme.hitoha
 			Addons.Installed.Get();
 
 			// Check for updates
-			if (Properties.Settings.Default.UpdateAlways)
-			{
-				// Check addons for any updates
-				PrintLog(Log.Info, "Checking for updates");
-				frmSplashScreen SS = new frmSplashScreen();
-				SS.ShowDialog();
-			}
+			PrintLog(Log.Info, "Checking for updates");
+			frmSplashScreen SS = new frmSplashScreen();
+			SS.ShowDialog();
 
 			// Display that IFME has new version
 			if (!Globals.AppInfo.VersionEqual)
@@ -121,7 +117,7 @@ namespace ifme.hitoha
 			// After addons has been load, now display it on UI
 			AddAudio();
 
-			//CreateLang(); // Developer tool, Create new empty language
+			//CreateLang(); // Developer tool, Scan and Create new empty language
 			LoadLang(); // Load language, GUI must use {0} as place-holder
 
 			// Load Settings
@@ -176,11 +172,13 @@ namespace ifme.hitoha
 					QueueList.SubItems.Add(h[1]);
 					QueueList.SubItems.Add(h[2]);
 					QueueList.SubItems.Add(h[3]);
-					QueueList.SubItems.Add(h[4] + " fps");
-					QueueList.SubItems.Add(h[5] + " bit");
+					QueueList.SubItems.Add(h[4]);
+					QueueList.SubItems.Add(h[5]);
 					QueueList.SubItems.Add(h[6]);
 
 					lstQueue.Items.Add(QueueList);
+
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n\tFormat: {2} ({1}). RES: {3}. FPS: {4}. BPC: {5}", h));
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
@@ -297,11 +295,13 @@ namespace ifme.hitoha
 				QueueList.SubItems.Add(h[1]);
 				QueueList.SubItems.Add(h[2]);
 				QueueList.SubItems.Add(h[3]);
-				QueueList.SubItems.Add(h[4] + " fps");
-				QueueList.SubItems.Add(h[5] + " bit");
+				QueueList.SubItems.Add(h[4]);
+				QueueList.SubItems.Add(h[5]);
 				QueueList.SubItems.Add(h[6]);
 
 				lstQueue.Items.Add(QueueList);
+
+				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n\tFormat: {2} ({1}). RES: {3}. FPS: {4}. BPC: {5}", h));
 			}
 
 			if (lstQueue.Items.Count != 0)
@@ -1037,7 +1037,6 @@ namespace ifme.hitoha
 				{
 					if (video.Count >= 1)
 					{
-						string cmd = "-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -";
 						string[] args = new string[10];
 						args[0] = queue[x];
 
@@ -1057,9 +1056,17 @@ namespace ifme.hitoha
 						args[5] = VidValue;
 						args[6] = video[0].frameCount.ToString();
 						args[7] = tmp;
-						args[8] = VidXcmd;
+						args[8] = VidXcmd; //x265 extra command-line
+						args[9] = video[0].frameRate.ToString();
 
-						PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(cmd, args));
+						string cmd;
+
+						if (video[0].frameRateMode == "VFR")
+							cmd = String.Format("-i \"{0}\" -r {9} -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -", args);
+						else
+							cmd = String.Format("-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -", args);
+
+						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 					}
 
 					if (PEC == 1)
@@ -1608,7 +1615,7 @@ namespace ifme.hitoha
 			}
 
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "] " + message + "\n";
+			rtfLog.SelectedText = "]\t" + message + "\n";
 		}
 	}
 }

@@ -11,6 +11,23 @@ namespace ifme.hitoha
 {
 	class Addons
 	{
+		public static void Extract(string Archive, string Output)
+		{
+			System.Diagnostics.Process P = new System.Diagnostics.Process();
+
+			P.StartInfo.FileName = "unpack.exe";
+			P.StartInfo.Arguments = String.Format("x -y -o\"{0}\" \"{1}\"", Output, Archive);
+			P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
+			P.StartInfo.UseShellExecute = false;
+			P.StartInfo.CreateNoWindow = true;
+			P.StartInfo.RedirectStandardOutput = true;
+			P.StartInfo.RedirectStandardError = true;
+
+			P.Start();
+			P.WaitForExit();
+			P.Close();
+		}
+
 		public static class Path
 		{
 			public static string Folder = Globals.AppInfo.CurrentFolder + "\\addons";

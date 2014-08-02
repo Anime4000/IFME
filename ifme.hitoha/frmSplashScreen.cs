@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
-using System.IO.Compression;
 
 namespace ifme.hitoha
 {
@@ -43,6 +42,10 @@ namespace ifme.hitoha
 
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
 		{
+			// Delete old old stuff
+			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\za.dll"))
+				System.IO.File.Delete(Globals.AppInfo.CurrentFolder + "\\za.dll");
+
 			// Get IFME version
 			try
 			{
@@ -63,6 +66,10 @@ namespace ifme.hitoha
 
 			// IFME have new version, dont proceed check addons verions
 			if (!Globals.AppInfo.VersionEqual)
+				return;
+
+			// If use disable update, dont proceed
+			if (!Properties.Settings.Default.UpdateAlways)
 				return;
 
 			// Get addons version and update
@@ -103,7 +110,7 @@ namespace ifme.hitoha
 
 					InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
 					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
-					ZipFile.ExtractToDirectory(Addons.Path.Folder + "\\addons.ifz", Addons.Path.Folder);
+					Addons.Extract(Addons.Path.Folder + "\\addons.ifz", Addons.Path.Folder);
 
 					// Tell startup there are got addon update
 					Addons.Installed.IsUpdated = true;

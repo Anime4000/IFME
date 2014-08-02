@@ -1,3 +1,13 @@
+Version 4.0.0.5
+---------------
+Added missing x265 "superfast" preset.
+Added missing x265 tuning, now can disable/off due some player dont like it.
+Improved IFME updating, when got new version, checking addon version will skip (increase load time)
+Improved Japanese Language UI, grammar mistake has been corrected by Yukipone.
+Fixed bug that reset setting wont reset properly.
+Fixed FPS detection, since Y4M did contain Metadata, x265 can read.
+Workaround Variable FPS issue, all VFR video will be in CFR after encoded.
+
 Version 4.0.0.4
 ---------------
 Fixed issue where attachment cause video encoding to fail

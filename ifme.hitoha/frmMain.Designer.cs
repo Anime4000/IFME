@@ -48,6 +48,7 @@
 			this.colQueueExt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueueCodec = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueueRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colQueueFPS = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueueBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueuePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabVideo = new System.Windows.Forms.TabPage();
@@ -117,7 +118,6 @@
 			this.btnResume = new System.Windows.Forms.Button();
 			this.BGThread = new System.ComponentModel.BackgroundWorker();
 			this.proTip = new System.Windows.Forms.ToolTip(this.components);
-			this.colQueueFPS = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabEncoding.SuspendLayout();
 			this.tabQueue.SuspendLayout();
 			this.tabVideo.SuspendLayout();
@@ -332,7 +332,7 @@
 			// colQueueFName
 			// 
 			this.colQueueFName.Text = "";
-			this.colQueueFName.Width = 240;
+			this.colQueueFName.Width = 230;
 			// 
 			// colQueueExt
 			// 
@@ -347,6 +347,11 @@
 			// 
 			this.colQueueRes.Text = "";
 			this.colQueueRes.Width = 70;
+			// 
+			// colQueueFPS
+			// 
+			this.colQueueFPS.Text = "FPS";
+			this.colQueueFPS.Width = 80;
 			// 
 			// colQueueBitDepth
 			// 
@@ -1114,11 +1119,6 @@
 			// proTip
 			// 
 			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-			// 
-			// colQueueFPS
-			// 
-			this.colQueueFPS.Text = "FPS";
-			this.colQueueFPS.Width = 70;
 			// 
 			// frmMain
 			// 
