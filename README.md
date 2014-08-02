@@ -77,24 +77,28 @@ default = 128
 ### Language migrating
 First IFME was written in VB.NET from version 1.0 until 3.2 and version 4.0 written in C#, completely start from scratch.
 
+Feel free port to Linux or Mac OS
 
-### IDE
-Using Microsoft VisualStudio 2013 (.NET 4.5)
+
+### Supported IDE
+* Microsoft VisualStudio 2013 (.NET 4.0)
+* MonoDevelop/Xamarin Studio
 
 
 ### Known bugs
-Currently IFME compiled under "Debug". x265 encoder has issue with "Release", the symptom is still unknown.
+* Currently IFME compiled under "Debug". x265 encoder has issue with "Release", the symptom is still unknown.
+* File/Path issue, some data no read due Linux use `/` while Windows use `\`,
 
 
 ### Debugging
-* To make IFME fully working, get `MediaInfo.dll` and `za.dll` (7za.exe renamed) in `ifme.exe` root folder (where `ifme.exe` is located, put there)
+* To make IFME fully working, get `MediaInfo.dll` and `unpack.exe` (7za.exe renamed) in root folder (where `ifme.exe` is located)
 * Don't forget about `addons` stuff, put everything in `addons` folder
 
 
 ### Building
-Make sure all prerequisite stuff in `prerequisite` folder is fulfill
+Make sure all prerequisite stuff in `prerequisite` folder is fulfil
 
-* If release a latest version, change File and Assembly version for `ifme` and `ifme.hitoha` properties.
+* If release a latest version, change File and Assembly version for `ifme` properties.
 * Before start compiling, run `build_clean_bin.cmd` script to remove last compiled.
 * Then start compiling.
 * Run `build.cmd` to start copy required file (including `addons` inside `prerequisite` folder).
