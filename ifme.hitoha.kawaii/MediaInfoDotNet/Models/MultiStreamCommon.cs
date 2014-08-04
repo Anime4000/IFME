@@ -275,6 +275,42 @@ namespace MediaInfoDotNet.Models
 				return _frameRate;
 			}
 		}
+
+		float _frameRateNom = float.MinValue;
+		/// <summary>Nominal frame rate of the stream in frames per second.</summary>
+		public float frameRateNom
+		{
+			get
+			{
+				if (_frameRateNom == float.MinValue)
+					_frameRateNom = miGetFloat("FrameRate_Nominal");
+				return _frameRateNom;
+			}
+		}
+
+		float _frameRateMin = float.MinValue;
+		/// <summary>Minimum frame rate of the stream in frames per second.</summary>
+		public float frameRateMin
+		{
+			get
+			{
+				if (_frameRateMin == float.MinValue)
+					_frameRateMin = miGetFloat("FrameRate_Minimum");
+				return _frameRateMin;
+			}
+		}
+
+		float _frameRateMax = float.MinValue;
+		/// <summary>Maximum frame rate of the stream in frames per second.</summary>
+		public float frameRateMax
+		{
+			get
+			{
+				if (_frameRateMax == float.MinValue)
+					_frameRateMax = miGetFloat("FrameRate_Maximum");
+				return _frameRateMax;
+			}
+		}
 		#endregion
 
 		#region VideoAudioTextImageCommon

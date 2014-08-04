@@ -110,6 +110,15 @@ namespace MediaInfoDotNet.Models
 
 		///<summary>Frame rate of the stream in frames per second.</summary>
 		public float frameRate { get { return streamCommon.frameRate; } }
+
+		/// <summary>Nominal frame rate of the stream in frames per second.</summary>
+		public float frameRateNom { get { return streamCommon.frameRateNom; } }
+
+		/// <summary>Minimum frame rate of the stream in frames per second.</summary>
+		public float frameRateMin { get { return streamCommon.frameRateMin; } }
+
+		/// <summary>Maximum frame rate of the stream in frames per second.</summary>
+		public float frameRateMax { get { return streamCommon.frameRateMax; } }
 		#endregion
 
 		#region VideoAudioTextImageCommon

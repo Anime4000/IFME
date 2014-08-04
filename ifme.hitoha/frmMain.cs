@@ -1018,18 +1018,10 @@ namespace ifme.hitoha
 					break;
 				}
 
-				// Delete wav file
-				if (!BGThread.CancellationPending)
+				// Delete all wav file
+				foreach (var item in System.IO.Directory.GetFiles(tmp, "*.wav"))
 				{
-					foreach (var item in System.IO.Directory.GetFiles(tmp, "*.wav"))
-					{
-						System.IO.File.Delete(item);
-					}
-				}
-				else
-				{
-					e.Cancel = true;
-					break;
+					System.IO.File.Delete(item);
 				}
 
 				// Realtime decoding-encoding
@@ -1037,34 +1029,59 @@ namespace ifme.hitoha
 				{
 					if (video.Count >= 1)
 					{
-						string[] args = new string[10];
-						args[0] = queue[x];
+						string cmd = "";
+						int totalFrame = int.MinValue;
+						string[] args = new string[12];
 
-						if (video[0].bitDepth == 8)
-							args[1] = Addons.BuildIn.HEVC;
+						// What is this?
+						var v = video[0];
+
+						// FFmpeg part
+						args[0] = String.Format("-i \"{0}\"", queue[x]);
+
+						if (v.frameRateMode.Equals("VFR"))
+						{
+							args[1] = String.Format("-r {0}", v.frameRateMax);
+							totalFrame = (int)((float)v.duration * (v.frameRateMax / 1000));
+						}
 						else
-							args[1] = Addons.BuildIn.HEVC10;
+						{
+							args[1] = null;
+							totalFrame = v.frameCount;
+						}
 
-						args[2] = VidPreset;
+						args[2] = String.Format("-pix_fmt {0}", "yuv420p");
+						args[3] = String.Format("-f {0}", "yuv4mpegpipe");
 
-						if (VidTune.Equals("off"))
-							args[3] = "";
+						// x265 part
+						if (v.bitDepth == 8)
+							args[4] = String.Format("\"{0}\"", Addons.BuildIn.HEVC);
 						else
-							args[3] = "-t " + VidTune;
+							args[4] = String.Format("\"{0}\"", Addons.BuildIn.HEVCHI);
 
-						args[4] = VidType;
-						args[5] = VidValue;
-						args[6] = video[0].frameCount.ToString();
-						args[7] = tmp;
-						args[8] = VidXcmd; //x265 extra command-line
-						args[9] = video[0].frameRate.ToString();
+						args[5] = String.Format("-p {0}", VidPreset);
 
-						string cmd;
-
-						if (video[0].frameRateMode == "VFR")
-							cmd = String.Format("-i \"{0}\" -r {9} -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -", args);
+						if (!VidTune.Equals("off"))
+							args[6] = String.Format("-t {0}", VidTune);
 						else
-							cmd = String.Format("-i \"{0}\" -pix_fmt yuv420p -f yuv4mpegpipe - 2> nul | \"{1}\" -p {2} {3} --{4} {5} -f {6} {8} -o \"{7}\\video.hvc\" --y4m -", args);
+							args[6] = null;
+
+						args[7] = String.Format("--{0} {1}", VidType, VidValue);
+						args[8] = String.Format("-f {0}", totalFrame);
+						args[9] = String.Format("-o \"{0}\\video.hvc\"", tmp);
+						args[10] = VidXcmd;
+
+						// Add space
+						for (int i = 0; i < args.GetLength(0); i++)
+						{
+							if (i == 3 || i == 11)
+								continue;
+
+							if (args[i] != null)
+								args[i] = args[i] + " ";
+						}
+
+						cmd = String.Format("{0}{1}{2}{3} - 2> nul | {4}{5}{6}{7}{8}{9}{10} --y4m -", args);
 
 						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 					}
@@ -1131,7 +1148,7 @@ namespace ifme.hitoha
 							string[] ap = new string[2];
 							ap[0] = id.ToString();
 							ap[1] = item;
-							command += String.Format("--track-name \"0:Track {0}\" --forced-track 0:no --sync 0:-1 -a 0 -D -S -T --no-global-tags --no-chapters ( \"{1}\" ) ", ap);
+							command += String.Format("--track-name \"0:Track {0}\" --forced-track 0:no -a 0 -D -S -T --no-global-tags --no-chapters ( \"{1}\" ) ", ap);
 							trackorder = trackorder + "," + id.ToString() + ":0";
 							id++;
 						}
@@ -1146,7 +1163,6 @@ namespace ifme.hitoha
 							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 							trackorder = trackorder + "," + id.ToString() + ":0";
 						}
-
 
 						// Build command for mkvmerge
 						if (IsAttachEnable)
@@ -1182,6 +1198,12 @@ namespace ifme.hitoha
 					{
 						e.Cancel = true;
 						break;
+					}
+
+					// Delete all temp file
+					foreach (var item in System.IO.Directory.GetFiles(tmp))
+					{
+						System.IO.File.Delete(item);
 					}
 				}
 				else

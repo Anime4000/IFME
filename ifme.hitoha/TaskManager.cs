@@ -162,7 +162,7 @@ namespace ifme.hitoha
 			System.Threading.Thread.Sleep(100);
 
 			string hevc = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC);
-			string hevc10 = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC10);
+			string hevc10 = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
 
 			if (args.Contains(hevc))
 			{

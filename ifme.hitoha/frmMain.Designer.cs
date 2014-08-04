@@ -493,7 +493,8 @@
             "off",
             "psnr",
             "ssim",
-            "zero-latency"});
+            "zerolatency",
+            "fastdecode"});
 			this.cboVideoTune.Location = new System.Drawing.Point(303, 48);
 			this.cboVideoTune.Name = "cboVideoTune";
 			this.cboVideoTune.Size = new System.Drawing.Size(121, 21);

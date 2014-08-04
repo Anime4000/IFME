@@ -38,7 +38,7 @@ namespace ifme.hitoha
 		{
 			public static string FFmpeg = Path.Folder + "\\ffmpeg\\ffmpeg.exe";
 			public static string HEVC = Path.Folder + "\\x265\\x265.exe";
-			public static string HEVC10 = Path.Folder + "\\x265\\x265hi.exe";
+			public static string HEVCHI = Path.Folder + "\\x265\\x265hi.exe";
 			public static string MKV = Path.Folder + "\\mkvmerge\\mkvmerge.exe";
 			public static string MP4 = Path.Folder + "\\mp4box\\mp4box.exe";
 		}

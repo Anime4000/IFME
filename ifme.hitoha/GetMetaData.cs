@@ -26,8 +26,8 @@ namespace ifme.hitoha
 				var v = AviFile.Video[0];
 				GFI[2] = v.format;
 				GFI[3] = v.width.ToString() + "x" + v.height.ToString();
-				GFI[4] = v.frameRateMode + ": " + v.frameRate.ToString();
-				GFI[5] = v.bitDepth.ToString() + " Bit";
+				GFI[4] = "[" + v.frameRateMode + "] " + v.frameRate.ToString();
+				GFI[5] = v.bitDepth.ToString() + " bits";
 				GFI[6] = file;
 
 				return GFI;
