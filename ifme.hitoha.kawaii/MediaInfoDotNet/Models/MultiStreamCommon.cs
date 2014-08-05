@@ -355,6 +355,18 @@ namespace MediaInfoDotNet.Models
 				return _language;
 			}
 		}
+
+		string _languageThree = null;
+		///<summary>3-letter ISO 639-2 if exists, else empty.</summary>
+		public string languageThree
+		{
+			get
+			{
+				if (_languageThree == null)
+					_languageThree = miGetString("Language/String3");
+				return _languageThree;
+			}
+		}
 		#endregion
 
 		#region VideoImageCommon
