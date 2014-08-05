@@ -409,17 +409,17 @@
 			// colAddVer
 			// 
 			this.colAddVer.Text = "{0}";
-			this.colAddVer.Width = 100;
+			this.colAddVer.Width = 131;
 			// 
 			// colAddDev
 			// 
 			this.colAddDev.Text = "{0}";
-			this.colAddDev.Width = 150;
+			this.colAddDev.Width = 145;
 			// 
 			// colAddMaintainBy
 			// 
 			this.colAddMaintainBy.Text = "{0}";
-			this.colAddMaintainBy.Width = 126;
+			this.colAddMaintainBy.Width = 100;
 			// 
 			// btnResetSettings
 			// 
@@ -448,7 +448,6 @@
 			this.Name = "frmOptions";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "{0}";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmOptions_FormClosing);
 			this.Load += new System.EventHandler(this.frmOptions_Load);
 			this.tabOptions.ResumeLayout(false);
 			this.tabGeneral.ResumeLayout(false);

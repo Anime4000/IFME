@@ -709,8 +709,8 @@ namespace ifme.hitoha
 				var resbox = MessageBox.Show(Language.IMessage.Restart, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (resbox == DialogResult.Yes)
 				{
-					if (!Options.ResetDefault)
-						UserSettingsSave();
+					if (Options.ResetDefault)
+						Properties.Settings.Default.Reset();
 
 					System.Diagnostics.Process P = new System.Diagnostics.Process();
 					P.StartInfo.FileName = "cmd.exe";
@@ -726,9 +726,14 @@ namespace ifme.hitoha
 				}
 			}
 
+			// Reload audio encoder
 			cboAudioFormat.Items.Clear();
 			AddAudio();
 			cboAudioFormat.SelectedIndex = 0;
+
+			// If user choose MP4, uncheck Subtitle
+			if (!Properties.Settings.Default.UseMkv)
+				chkSubEnable.Checked = false;
 		}
 
 		private void btnAbout_Click(object sender, EventArgs e)
@@ -906,7 +911,7 @@ namespace ifme.hitoha
 				MediaFile Avi = new MediaFile(queue[x]);
 				var audio = Avi.Audio;
 				var video = Avi.Video;
-				var stext = Avi.Text;
+				var stext = Avi.Text; // subtitle
 
 				// Set current queue, this will display during x265 encoding
 				ListQueue.Current = x + 1;
@@ -918,70 +923,76 @@ namespace ifme.hitoha
 				// Extract MKV
 				if (!BGThread.CancellationPending)
 				{
-					// Set title
-					FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", (x + 1).ToString(), queue.Length.ToString()));
-
-					// Proceed when Subtitle and Attachment is disabled also Mkv is selected
-					if (!IsSubtitleEnable && Properties.Settings.Default.UseMkv)
+					// Make sure only MKV can proceed
+					if (Avi.format.Equals("Matroska", StringComparison.CurrentCultureIgnoreCase))
 					{
-						// Chapters!
-						PEC = StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
-
-						// Print mkv stream
-						PEC = StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
-
-						// Attachment
-						int q = 0;
-						string cmdath = null;
-						foreach (var k in System.IO.File.ReadAllLines(tmp + "\\meta.if"))
+						// Proceed when Subtitle and Attachment is disabled also MKV option is selected
+						if (Properties.Settings.Default.UseMkv && !IsSubtitleEnable)
 						{
-							if (!k.Contains("Attachment"))
-								continue;
+							// Set title
+							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", (x + 1).ToString(), queue.Length.ToString()));
 
-							string[] ath = MkvExtractId.Attachment(k);
+							// Chapters!
+							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
 
-							int id = int.Parse(ath[2]);
-							string file = ath[0];
-							string mime = ath[1];
-							string path = tmp + "\\" + ath[0]; // full path
+							// Print mkv stream
+							PEC = StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
 
-							MkvExtractId.AttachmentData[q, 0] = file;
-							MkvExtractId.AttachmentData[q, 1] = mime;
-							MkvExtractId.AttachmentData[q, 2] = path;
+							// Attachment
+							string cmdath = null;
+							MkvExtractId.AttachmentDataGet(tmp + "\\meta.if");
+							for (int q = 0; q < MkvExtractId.AttachmentData.GetLength(0); q++)
+							{
+								if (MkvExtractId.AttachmentData[q, 0] == null)
+									break;
 
-							cmdath += String.Format("{0}:\"{1}\" ", id, path);
+								int id = int.Parse(MkvExtractId.AttachmentData[q, 2]);
+								string file = MkvExtractId.AttachmentData[q, 0];
+								string mime = MkvExtractId.AttachmentData[q, 1];
 
-							q++;
+								cmdath += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
 
-							// Now this video has attachment in it, change to true
-							if (!HasAttachment)
-								HasAttachment = true;
+								// Now this video has attachment in it, change to true
+								if (!HasAttachment)
+									HasAttachment = true;
+							}
+
+							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
+
+							// Subtitle
+							string cmdsub = null;
+							for (int s = 0; s < stext.Count; s++)
+							{
+								int id = stext[s].Id - 1;
+								string iso = stext[s].languageThree;
+								string fmt = stext[s].format.ToLower();
+								string file = String.Format("subtitle_id_{0}_{1}.{2}", id, iso, fmt);
+
+								MkvExtractId.SubtitleData[s, 0] = iso;
+								MkvExtractId.SubtitleData[s, 1] = file;
+								MkvExtractId.SubtitleData[s, 2] = id.ToString();
+
+								cmdsub += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
+
+								// Now this video has subtitle in it, change to true
+								if (!HasSubtitle)
+									HasSubtitle = true;
+							}
+
+							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
 						}
-
-						PEC = StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
-
-						// Subtitle
-						string cmdsub = null;
-						for (int s = 0; s < stext.Count; s++)
-						{
-							int id = stext[s].Id - 1;
-							string iso = stext[s].languageThree;
-							string fmt = stext[s].format.ToLower();
-							string file = String.Format("subtitle_id_{0}_{1}.{2}", id, iso, fmt);
-
-							MkvExtractId.SubtitleData[s, 0] = iso;
-							MkvExtractId.SubtitleData[s, 1] = file;
-							MkvExtractId.SubtitleData[s, 2] = id.ToString();
-
-							cmdsub += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
-
-							// Now this video has subtitle in it, change to true
-							if (!HasSubtitle)
-								HasSubtitle = true;
-						}
-
-						PEC = StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
 					}
+
+					if (PEC == 1)
+					{
+						e.Cancel = true;
+						break;
+					}
+				}
+				else
+				{
+					e.Cancel = true;
+					break;
 				}
 
 				// Set title
@@ -1187,6 +1198,7 @@ namespace ifme.hitoha
 					// Mux by MKV or MP4
 					if (Properties.Settings.Default.UseMkv)
 					{
+						// MKV most powerful container format!
 						string command = null;
 						string trackorder = null;
 
@@ -1249,7 +1261,7 @@ namespace ifme.hitoha
 						{
 							string[] sp = new string[3];
 							sp[0] = subtitle[x, 1]; //lang
-							sp[1] = subtitle[x, 0]; //file name only
+							sp[1] = subtitle[x, 0]; //file name only (description?)
 							sp[2] = subtitle[x, 2]; //full path
 							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 							trackorder = trackorder + "," + id.ToString() + ":0";
@@ -1266,7 +1278,7 @@ namespace ifme.hitoha
 
 								string[] sp = new string[3];
 								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
-								sp[1] = MkvExtractId.SubtitleData[i, 1]; //file name only
+								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper(); //file name only (description?)
 								sp[2] = tmp + "\\" + MkvExtractId.SubtitleData[i, 1]; //full path
 								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 								trackorder = trackorder + "," + id.ToString() + ":0";
@@ -1275,7 +1287,7 @@ namespace ifme.hitoha
 							}
 						}
 
-						// chapters! proceed when file is exist and not empty
+						// Chapters! proceed when file is exist and not empty
 						string chapters = null;
 						if (System.IO.File.Exists(tmp + "\\chapters.xml"))
 						{
@@ -1292,8 +1304,10 @@ namespace ifme.hitoha
 					}
 					else
 					{
+						// MP4, not awesome :(
 						string command = "";
 						int i = 0;
+
 						// Video
 						command = String.Format("-add \"{0}\\video.hvc#video:name={1}:fmt=HEVC\" ", tmp, Globals.AppInfo.WritingApp);
 
@@ -1489,17 +1503,18 @@ namespace ifme.hitoha
 			string returnTime = null;
 
 			if (timeSpan.Days.ToString() != "0")
-				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days.ToString(), timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 			else if (timeSpan.Hours.ToString() != "0")
-				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours.ToString(), timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
 			else if (timeSpan.Minutes.ToString() != "0")
-				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes.ToString(), timeSpan.Seconds.ToString());
+				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes, timeSpan.Seconds);
 			else
-				returnTime = timeSpan.Seconds.ToString() + " seconds";
+				returnTime = String.Format("{0} seconds!", timeSpan.Seconds);
 
 			return returnTime;
 		}
 
+		#region When encoding running, disable control or enable when finish
 		private void EncodingStarted(bool x)
 		{
 			btnOptions.Enabled = !x;
@@ -1541,7 +1556,9 @@ namespace ifme.hitoha
 				ctl.Enabled = !x;
 			}
 		}
+		#endregion
 
+		#region Add and filter all installed audio addons to Combo Box
 		private void AddAudio()
 		{
 			for (int i = 0; i < Addons.Installed.Data.Length; i++)
@@ -1557,6 +1574,7 @@ namespace ifme.hitoha
 							cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
 			}
 		}
+		#endregion
 
 		#region User Settings Section, Load and Save
 		private void UserSettingsLoad()
@@ -1731,6 +1749,7 @@ namespace ifme.hitoha
 		}
 		#endregion
 
+		#region Console and Log Printing
 		public void PrintLog(int type, string message)
 		{
 			rtfLog.SelectionColor = Color.White;
@@ -1760,5 +1779,6 @@ namespace ifme.hitoha
 			rtfLog.SelectionColor = Color.LightGray;
 			rtfLog.SelectedText = "]\t" + message + "\n";
 		}
+		#endregion
 	}
 }

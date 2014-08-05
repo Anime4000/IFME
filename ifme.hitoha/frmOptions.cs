@@ -138,40 +138,6 @@ namespace ifme.hitoha
 				cboLang.SelectedIndex = 0;
 		}
 
-		private void frmOptions_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			// incase user reset to default, skip code below
-			if (Options.ResetDefault)
-				return;
-
-			string temp = Properties.Settings.Default.DefaultLang;
-
-			// Save stuff
-			Properties.Settings.Default.DefaultLang = Language.Installed.Data[cboLang.SelectedIndex, 0];
-			Properties.Settings.Default.TemporaryFolder = txtTempDir.Text;
-			Properties.Settings.Default.UseMkv = rdoUseMkv.Checked;
-			Properties.Settings.Default.UpdateAlways = chkUpdate.Checked;
-
-			// Save CPU affinity
-			string aff = "";
-			for (int i = 0; i < Environment.ProcessorCount; i++)
-			{
-				TaskManager.CPU.Affinity[i] = clbCPU.GetItemChecked(i);
-				aff += clbCPU.GetItemChecked(i).ToString() + ",";
-			}
-			aff = aff.Remove(aff.Length - 1);
-			Properties.Settings.Default.CPUAffinity = aff;
-			Properties.Settings.Default.Nice = cboPerf.SelectedIndex;
-
-			// Save settings
-			Properties.Settings.Default.Save();
-
-			if (temp != Properties.Settings.Default.DefaultLang)
-			{
-				Options.RestartNow = true;
-			}
-		}
-
 		private void cboLang_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int i = cboLang.SelectedIndex;
@@ -330,6 +296,33 @@ namespace ifme.hitoha
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
+			string temp = Properties.Settings.Default.DefaultLang;
+
+			// Save stuff
+			Properties.Settings.Default.DefaultLang = Language.Installed.Data[cboLang.SelectedIndex, 0];
+			Properties.Settings.Default.TemporaryFolder = txtTempDir.Text;
+			Properties.Settings.Default.UseMkv = rdoUseMkv.Checked;
+			Properties.Settings.Default.UpdateAlways = chkUpdate.Checked;
+
+			// Save CPU affinity
+			string aff = "";
+			for (int i = 0; i < Environment.ProcessorCount; i++)
+			{
+				TaskManager.CPU.Affinity[i] = clbCPU.GetItemChecked(i);
+				aff += clbCPU.GetItemChecked(i).ToString() + ",";
+			}
+			aff = aff.Remove(aff.Length - 1);
+			Properties.Settings.Default.CPUAffinity = aff;
+			Properties.Settings.Default.Nice = cboPerf.SelectedIndex;
+
+			// Save settings
+			Properties.Settings.Default.Save();
+
+			if (temp != Properties.Settings.Default.DefaultLang)
+			{
+				Options.RestartNow = true;
+			}
+
 			this.Close();
 		}
 
@@ -343,9 +336,8 @@ namespace ifme.hitoha
 			var msg = MessageBox.Show(Language.IMessage.ResetSettingsAsk, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 			if (msg == DialogResult.Yes)
 			{
-				Properties.Settings.Default.Reset();
-				Properties.Settings.Default.Save();
 				Options.ResetDefault = true;
+				Options.RestartNow = true;
 				this.Close();
 			}
 		}
