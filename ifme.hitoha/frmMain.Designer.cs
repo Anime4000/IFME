@@ -383,6 +383,7 @@
 			this.txtVideoAdvCmd.Name = "txtVideoAdvCmd";
 			this.txtVideoAdvCmd.Size = new System.Drawing.Size(596, 21);
 			this.txtVideoAdvCmd.TabIndex = 6;
+			this.txtVideoAdvCmd.TextChanged += new System.EventHandler(this.txtVideoAdvCmd_TextChanged);
 			// 
 			// lblVideoAdvCmd
 			// 
@@ -447,6 +448,7 @@
 			this.txtVideoRate.Size = new System.Drawing.Size(100, 21);
 			this.txtVideoRate.TabIndex = 4;
 			this.txtVideoRate.Text = "26";
+			this.txtVideoRate.TextChanged += new System.EventHandler(this.txtVideoRate_TextChanged);
 			// 
 			// lblVideoRateFactor
 			// 
@@ -470,6 +472,7 @@
 			this.cboVideoRateCtrl.Size = new System.Drawing.Size(500, 21);
 			this.cboVideoRateCtrl.TabIndex = 3;
 			this.cboVideoRateCtrl.SelectedIndexChanged += new System.EventHandler(this.cboVideoRateCtrl_SelectedIndexChanged);
+			this.cboVideoRateCtrl.DropDownClosed += new System.EventHandler(this.cboVideoRateCtrl_DropDownClosed);
 			// 
 			// grpVideoBasic
 			// 
@@ -499,6 +502,7 @@
 			this.cboVideoTune.Name = "cboVideoTune";
 			this.cboVideoTune.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoTune.TabIndex = 2;
+			this.cboVideoTune.DropDownClosed += new System.EventHandler(this.cboVideoTune_DropDownClosed);
 			// 
 			// lblVideoTune
 			// 
@@ -528,6 +532,7 @@
 			this.cboVideoPreset.Name = "cboVideoPreset";
 			this.cboVideoPreset.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoPreset.TabIndex = 1;
+			this.cboVideoPreset.DropDownClosed += new System.EventHandler(this.cboVideoPreset_DropDownClosed);
 			// 
 			// lblVideoPreset
 			// 
@@ -590,6 +595,7 @@
 			this.cboAudioMode.Name = "cboAudioMode";
 			this.cboAudioMode.Size = new System.Drawing.Size(375, 21);
 			this.cboAudioMode.TabIndex = 5;
+			this.cboAudioMode.DropDownClosed += new System.EventHandler(this.cboAudioMode_DropDownClosed);
 			// 
 			// grpAudioQuality
 			// 
@@ -629,6 +635,7 @@
 			this.cboAudioChan.Name = "cboAudioChan";
 			this.cboAudioChan.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioChan.TabIndex = 4;
+			this.cboAudioChan.DropDownClosed += new System.EventHandler(this.cboAudioChan_DropDownClosed);
 			// 
 			// lblAudioFreq
 			// 
@@ -659,6 +666,7 @@
 			this.cboAudioFreq.Name = "cboAudioFreq";
 			this.cboAudioFreq.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioFreq.TabIndex = 3;
+			this.cboAudioFreq.DropDownClosed += new System.EventHandler(this.cboAudioFreq_DropDownClosed);
 			// 
 			// cboAudioBitRate
 			// 
@@ -669,6 +677,7 @@
 			this.cboAudioBitRate.Name = "cboAudioBitRate";
 			this.cboAudioBitRate.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioBitRate.TabIndex = 2;
+			this.cboAudioBitRate.DropDownClosed += new System.EventHandler(this.cboAudioBitRate_DropDownClosed);
 			// 
 			// lblAudioBitRate
 			// 
@@ -722,6 +731,7 @@
 			this.cboAudioFormat.Size = new System.Drawing.Size(375, 21);
 			this.cboAudioFormat.TabIndex = 1;
 			this.cboAudioFormat.SelectedIndexChanged += new System.EventHandler(this.cboAudioFormat_SelectedIndexChanged);
+			this.cboAudioFormat.DropDownClosed += new System.EventHandler(this.cboAudioFormat_DropDownClosed);
 			// 
 			// tabSubtitle
 			// 
@@ -1045,9 +1055,11 @@
 			// 
 			// rtfLog
 			// 
+			this.rtfLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.rtfLog.BackColor = System.Drawing.Color.Black;
 			this.rtfLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtfLog.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rtfLog.ForeColor = System.Drawing.Color.LightGray;
 			this.rtfLog.Location = new System.Drawing.Point(3, 3);

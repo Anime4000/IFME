@@ -27,7 +27,7 @@
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="VideoPreset" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="VideoTune" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

@@ -387,9 +387,35 @@ namespace ifme.hitoha
 				txtVideoRate.Text = Convert.ToString(trkVideoRate.Value);
 		}
 
+		private void cboVideoPreset_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
+		}
+
+		private void cboVideoTune_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
+		}
+
+		private void cboVideoRateCtrl_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoRateType = cboVideoRateCtrl.SelectedIndex;
+		}
+
+		private void txtVideoRate_TextChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
+		}
+
+		private void txtVideoAdvCmd_TextChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoCmd = txtVideoAdvCmd.Text;
+		}
+
 		private void cboAudioFormat_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int i = cboAudioFormat.SelectedIndex;
+
 			lblAudioFInfo.Text = Addons.Installed.Data[i, 3] + "\n"
 				+ Addons.Installed.Data[i, 4] + "\n"
 				+ Addons.Installed.Data[i, 5];
@@ -399,6 +425,31 @@ namespace ifme.hitoha
 			cboAudioBitRate.Items.Clear();
 			cboAudioBitRate.Items.AddRange(Addons.Installed.Data[i, 13].Split(','));
 			cboAudioBitRate.Text = Addons.Installed.Data[i, 14];
+		}
+
+		private void cboAudioFormat_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
+		}
+
+		private void cboAudioBitRate_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AudioBitRate = cboAudioBitRate.SelectedIndex;
+		}
+
+		private void cboAudioFreq_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AudioFreq = cboAudioFreq.SelectedIndex;
+		}
+
+		private void cboAudioChan_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AudioChan = cboAudioFreq.SelectedIndex;
+		}
+
+		private void cboAudioMode_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AudioMode = cboAudioMode.SelectedIndex;
 		}
 
 		private void chkSubEnable_CheckedChanged(object sender, EventArgs e)
@@ -729,7 +780,6 @@ namespace ifme.hitoha
 			// Reload audio encoder
 			cboAudioFormat.Items.Clear();
 			AddAudio();
-			cboAudioFormat.SelectedIndex = 0;
 
 			// If user choose MP4, uncheck Subtitle
 			if (!Properties.Settings.Default.UseMkv)
@@ -933,10 +983,10 @@ namespace ifme.hitoha
 							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", (x + 1).ToString(), queue.Length.ToString()));
 
 							// Chapters!
-							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
+							StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
 
 							// Print mkv stream
-							PEC = StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
+							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
 
 							// Attachment
 							string cmdath = null;
@@ -957,7 +1007,7 @@ namespace ifme.hitoha
 									HasAttachment = true;
 							}
 
-							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
+							StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
 
 							// Subtitle
 							string cmdsub = null;
@@ -979,20 +1029,9 @@ namespace ifme.hitoha
 									HasSubtitle = true;
 							}
 
-							PEC = StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
+							StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
 						}
 					}
-
-					if (PEC == 1)
-					{
-						e.Cancel = true;
-						break;
-					}
-				}
-				else
-				{
-					e.Cancel = true;
-					break;
 				}
 
 				// Set title
@@ -1573,6 +1612,14 @@ namespace ifme.hitoha
 						if (Addons.Installed.Data[i, 6] == "mp4")
 							cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
 			}
+
+			if (cboAudioFormat.SelectedIndex == -1)
+				if (cboAudioFormat.Items.Count >= Properties.Settings.Default.AudioFormat)
+					cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+				else
+					cboAudioFormat.SelectedIndex = 0;
+			else
+				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
 		}
 		#endregion
 
@@ -1620,18 +1667,6 @@ namespace ifme.hitoha
 				Properties.Settings.Default.FormFullScreen = false;
 				Properties.Settings.Default.FormSize = this.Size;
 			}
-
-			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
-			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
-			Properties.Settings.Default.VideoRateType = cboVideoRateCtrl.SelectedIndex;
-			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
-			Properties.Settings.Default.VideoCmd = txtVideoAdvCmd.Text;
-
-			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
-			Properties.Settings.Default.AudioBitRate = cboAudioBitRate.SelectedIndex;
-			Properties.Settings.Default.AudioFreq = cboAudioFreq.SelectedIndex;
-			Properties.Settings.Default.AudioChan = cboAudioChan.SelectedIndex;
-			Properties.Settings.Default.AudioMode = cboAudioMode.SelectedIndex;
 
 			Properties.Settings.Default.Save();
 		}
