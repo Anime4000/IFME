@@ -1,16 +1,32 @@
 # Internet Friendly Media Encoder
+## History
+Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
+
 ## Introduction
-Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that support audio manipulation, subtitle and attachment support. Making user easy to convert their media files to latest format!
+### Downloads
+Binary (Installer/Archive) can be [found here!](http://ifme.sourceforge.net/?page/download.html)
 
-Binary (Installer/Archive) can be [found here!](https://sourceforge.net/projects/ifme/)
+### License
+IFME have 2 different license, one for `Source Code` another one `Artwork`
 
-## License
 * Source Code are under [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/).
-* Mascot, Illustration and graphics under [Creative Common Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
+* Artwork under [Creative Common Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
 * For more info, [click here](http://ifme.sourceforge.net/index.html?page/rights.html).
 
-## History
-IFME was originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
+### Uses
+Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that support audio manipulation, subtitle and attachment support.
+
+Making user easy to convert their media files and standardise their collection to the latest format!
+
+IFME is a queue based converter, in order easy to use, IFME will keep original properties, such as:
+
+* Video Resolution
+* Video Bit Depth
+* Video Frame Rate value
+* Video Frame Rate mode (CFR/VFR)
+* MKV Subtitle
+* MKV Attachment
+* MKV Chapters
 
 
 ## Contribution
@@ -20,7 +36,6 @@ IFME will more happy if have multiple language support, allow non-English user c
 
 ### Addons
 IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can add your own, by read sample on `addons` folder or read our documentation
-
 
 
 ## Requirement
@@ -34,6 +49,8 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 IFME require these file to work:
 
 #### Binary
+Put these at `prerequisite` folder:
+
 * [MediaInfo (64bit DLL)](http://mediaarea.net/en/MediaInfo/Download/Windows) (used for detecting video and audio properties)
 * [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for download main program updates)
 
@@ -75,10 +92,7 @@ default = 128
 
 ## Development
 ### Language migrating
-First IFME was written in VB.NET from version 1.0 until 3.2 and version 4.0 written in C#, completely start from scratch.
-
-Feel free port to Linux or Mac OS
-
+First IFME was written in VB.NET from version 1.0 until 3.0+ and version 4.0 written in C#, completely start from scratch.
 
 ### Supported IDE
 * Microsoft VisualStudio 2013 (.NET 4.0)
@@ -95,12 +109,10 @@ Feel free port to Linux or Mac OS
 * Don't forget about `addons` stuff, put everything in `addons` folder
 
 
-### Building
+### Release
 Make sure all prerequisite stuff in `prerequisite` folder is fulfil
 
 * If release a latest version, change File and Assembly version for `ifme` properties.
-* Before start compiling, run `build_clean_bin.cmd` script to remove last compiled.
-* Then start compiling.
-* Run `build.cmd` to start copy required file (including `addons` inside `prerequisite` folder).
+* Run `build.cmd` to start compile (require MSBuild 12.0, this included via Visual Studio 2012/2013)
 * New folder `_build` created.
 * Create an installer by opening `build_installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed
