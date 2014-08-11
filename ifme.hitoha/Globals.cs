@@ -48,6 +48,11 @@ namespace ifme.hitoha
 				get { return "IFME"; }
 			}
 
+			public static string NameCode
+			{
+				get { return "Himari-chan desu"; }
+			}
+
 			public static string BuildDate
 			{
 				get { return RetrieveLinkerTimestamp().Date.ToString("d"); }

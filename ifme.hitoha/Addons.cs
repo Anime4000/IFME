@@ -37,11 +37,13 @@ namespace ifme.hitoha
 		public static class BuildIn
 		{
 			public static string FFmpeg = Path.Folder + "\\ffmpeg\\ffmpeg.exe";
+			public static string FFms = Path.Folder + "\\ffmsindex\\ffmsindex.exe";
 			public static string HEVC = Path.Folder + "\\x265\\x265.exe";
 			public static string HEVCHI = Path.Folder + "\\x265\\x265hi.exe";
 			public static string MKV = Path.Folder + "\\mkvmerge\\mkvmerge.exe";
 			public static string MKE = Path.Folder + "\\mkvmerge\\mkvextract.exe";
 			public static string MP4 = Path.Folder + "\\mp4box\\mp4box.exe";
+			public static string MP4FPS = Path.Folder + "\\mp4fpsmod\\mp4fpsmod.exe";
 		}
 
 		public static class Installed

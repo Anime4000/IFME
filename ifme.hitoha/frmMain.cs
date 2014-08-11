@@ -24,7 +24,8 @@ namespace ifme.hitoha
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
 			this.Icon = Properties.Resources.aruuie_ifme;
-			this.Text = Globals.AppInfo.Name;
+			this.Text = String.Format("{0} v{1} - ♪ {2} ♫", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
+
 			pictBannerRight.Parent = pictBannerLeft;
 		}
 
@@ -65,9 +66,6 @@ namespace ifme.hitoha
 
 				PrintLog(Log.OK, "New default temporary folder created!");
 			}
-
-			// Get installed addons, this code has been moved here since 4.0.0.4, issue are when disable update check cause addons not to load
-			Addons.Installed.Get();
 
 			// Check for updates
 			PrintLog(Log.Info, "Checking for updates");
@@ -131,6 +129,7 @@ namespace ifme.hitoha
 		{
 			if (!Globals.AppInfo.VersionEqual)
 			{
+				btnAbout.Text = "&Update!";
 				proTip.ToolTipTitle = Language.IMessage.ProTipTitle;
 				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 50, 18, 15000);
 			}
@@ -178,7 +177,7 @@ namespace ifme.hitoha
 
 					lstQueue.Items.Add(QueueList);
 
-					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n\tFormat: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n       Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
@@ -301,19 +300,13 @@ namespace ifme.hitoha
 
 				lstQueue.Items.Add(QueueList);
 
-				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n\tFormat: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n       Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 			}
 
 			if (lstQueue.Items.Count != 0)
 				btnStart.Enabled = true;
 			else
 				btnStart.Enabled = false;
-		}
-
-		private void chkQueueSaveTo_CheckedChanged(object sender, EventArgs e)
-		{
-			txtDestDir.Enabled = chkQueueSaveTo.Checked;
-			btnQueueBrowseDest.Enabled = chkQueueSaveTo.Checked;
 		}
 
 		private void btnQueueBrowseDest_Click(object sender, EventArgs e)
@@ -333,6 +326,18 @@ namespace ifme.hitoha
 			{
 				txtDestDir.Text = GetDir.SelectedPath;
 			}
+		}
+
+		private void chkQueueSaveTo_CheckedChanged(object sender, EventArgs e)
+		{
+			txtDestDir.Enabled = chkQueueSaveTo.Checked;
+			btnQueueBrowseDest.Enabled = chkQueueSaveTo.Checked;
+			Properties.Settings.Default.OutputDirEnable = chkQueueSaveTo.Checked;
+		}
+
+		private void txtDestDir_TextChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.OutputDirPath = txtDestDir.Text;
 		}
 
 		private void cboVideoRateCtrl_SelectedIndexChanged(object sender, EventArgs e)
@@ -400,11 +405,6 @@ namespace ifme.hitoha
 		private void cboVideoRateCtrl_DropDownClosed(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.VideoRateType = cboVideoRateCtrl.SelectedIndex;
-		}
-
-		private void txtVideoRate_TextChanged(object sender, EventArgs e)
-		{
-			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
 		}
 
 		private void txtVideoAdvCmd_TextChanged(object sender, EventArgs e)
@@ -730,8 +730,8 @@ namespace ifme.hitoha
 			{
 				SaveFileDialog SaveMe = new SaveFileDialog();
 
-				SaveMe.FileName = "ifme_log.log";
-				SaveMe.Filter = "Console Log (in plain text)|*.log";
+				SaveMe.FileName = "ifme_log.rtf";
+				SaveMe.Filter = "Poor Text Format|*.rtf|Console Log (in plain text)|*.log";
 				SaveMe.FilterIndex = 0;
 
 				if (SaveMe.ShowDialog() == DialogResult.OK)
@@ -742,12 +742,6 @@ namespace ifme.hitoha
 					PrintLog(Log.Info, "Console log has been saved and cleared!");
 				}
 			}
-		}
-
-		private void rtfLog_TextChanged(object sender, EventArgs e)
-		{
-			rtfLog.SelectionStart = rtfLog.TextLength;
-			rtfLog.ScrollToCaret();
 		}
 
 		private void btnOptions_Click(object sender, EventArgs e)
@@ -970,6 +964,26 @@ namespace ifme.hitoha
 				// Set Time
 				System.DateTime CurrentQ = System.DateTime.Now;
 
+				// Extract timecodes (current video will converted to mkv and get timecodes)
+				if (!BGThread.CancellationPending)
+				{
+					// Tell user
+					FormTitle(String.Format("Queue {0} of {1}: Get timecodes for synchronisation", x + 1, queue.Length));
+					InvokeLog(Log.Info, "Currently save source frame time codes. Please Wait...");
+
+					// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
+					//FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
+					//StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -copyts -vsync 0 -an -f mkvtimestamp_v2 \"{1}\\timecodes.txt\" -y", queue[x], tmp));
+					StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\\timecodes\" > nul", queue[x], tmp));
+
+					// Move FFms timecodes track id to timecodes.txt
+					// Delete if exist
+					if (System.IO.File.Exists(String.Format("{0}\\timecodes.txt", tmp)))
+						System.IO.File.Delete(String.Format("{0}\\timecodes.txt", tmp));
+					// Move while rename
+					System.IO.File.Move(String.Format("{0}\\timecodes_track0{1}.tc.txt", tmp, video[0].Id - 1), String.Format("{0}\\timecodes.txt", tmp));
+				}
+
 				// Extract MKV
 				if (!BGThread.CancellationPending)
 				{
@@ -980,11 +994,12 @@ namespace ifme.hitoha
 						if (Properties.Settings.Default.UseMkv && !IsSubtitleEnable)
 						{
 							// Set title
-							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", (x + 1).ToString(), queue.Length.ToString()));
+							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", x + 1, queue.Length));
+							InvokeLog(Log.Info, "Currently detect and extracting MKV stream(s). Please Wait...");
 
 							// Chapters!
 							StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
-
+							
 							// Print mkv stream
 							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
 
@@ -1034,12 +1049,13 @@ namespace ifme.hitoha
 					}
 				}
 
-				// Set title
-				FormTitle(String.Format("Queue {0} of {1}: Decoding all audio...", (x + 1).ToString(), queue.Length.ToString()));
-
 				// Decode audio and process multiple streams
 				if (!BGThread.CancellationPending)
 				{
+					// Set title
+					FormTitle(String.Format("Queue {0} of {1}: Decoding all audio...", x + 1, queue.Length));
+					InvokeLog(Log.Info, "Now decoding audio~ Please Wait...");
+
 					if (audio.Count >= 1)
 					{
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
@@ -1076,7 +1092,7 @@ namespace ifme.hitoha
 
 								for (int i = 0; i < audio.Count; i++)
 								{
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\\audio{4}.wav\"", queue[x], AudioMapID[i].ToString(), AudFreq, tmp, (i + 1).ToString()));
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\\audio{4}.wav\"", queue[x], AudioMapID[i], AudFreq, tmp, i + 1));
 								}
 
 								break;
@@ -1098,12 +1114,13 @@ namespace ifme.hitoha
 					break;
 				}
 
-				// Set title
-				FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", (x + 1).ToString(), queue.Length.ToString()));
-
 				// Encode all decoded audio
 				if (!BGThread.CancellationPending)
 				{
+					// Set title
+					FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", x + 1, queue.Length));
+					InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
+
 					//                      Folder\app.exe
 					string app = String.Format("{0}\\{1}", Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
 					string cmd = Addons.Installed.Data[AudFormat, 11];
@@ -1150,61 +1167,46 @@ namespace ifme.hitoha
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
+					// Tell user
+					InvokeLog(Log.Info, "Now decoding video, can take very long time. Just be patient...");
+
 					if (video.Count >= 1)
 					{
 						string cmd = "";
-						int totalFrame = int.MinValue;
-						string[] args = new string[12];
-
-						// What is this?
-						var v = video[0];
+						string[] args = new string[10];
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
-
-						if (v.frameRateMode.Equals("VFR"))
-						{
-							args[1] = String.Format("-r {0}", v.frameRateMax);
-							totalFrame = (int)((float)v.duration * (v.frameRateMax / 1000));
-						}
-						else
-						{
-							args[1] = null;
-							totalFrame = v.frameCount;
-						}
-
-						args[2] = String.Format("-pix_fmt {0}", "yuv420p");
-						args[3] = String.Format("-f {0}", "yuv4mpegpipe");
+						args[1] = String.Format("-pix_fmt {0}", "yuv420p");
+						args[2] = String.Format("-f {0}", "yuv4mpegpipe");
 
 						// x265 part
-						if (v.bitDepth == 8)
-							args[4] = String.Format("\"{0}\"", Addons.BuildIn.HEVC);
-						else
-							args[4] = String.Format("\"{0}\"", Addons.BuildIn.HEVCHI);
-
-						args[5] = String.Format("-p {0}", VidPreset);
+						args[3] = String.Format("-p {0}", VidPreset);
 
 						if (!VidTune.Equals("off"))
-							args[6] = String.Format("-t {0}", VidTune);
-						else
-							args[6] = null;
+							args[4] = String.Format("-t {0}", VidTune);
 
-						args[7] = String.Format("--{0} {1}", VidType, VidValue);
-						args[8] = String.Format("-f {0}", totalFrame);
-						args[9] = String.Format("-o \"{0}\\video.hvc\"", tmp);
-						args[10] = VidXcmd;
+						args[5] = String.Format("--{0} {1}", VidType, VidValue);
+						args[6] = String.Format("-f {0}", video[0].frameCount);
+						args[7] = String.Format("-o \"{0}\\video.hevc\"", tmp);
+						args[8] = VidXcmd;
+
+						if (video[0].bitDepth > 8)
+							args[9] = Addons.BuildIn.HEVCHI;
+						else
+							args[9] = Addons.BuildIn.HEVC;
 
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
 						{
-							if (i == 3 || i == 11)
+							if (i == 2 || i == 8)
 								continue;
 
 							if (args[i] != null)
 								args[i] = args[i] + " ";
 						}
 
-						cmd = String.Format("{0}{1}{2}{3} - 2> nul | {4}{5}{6}{7}{8}{9}{10} --y4m -", args);
+						cmd = String.Format("{0}{1}{2} - 2> nul | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
 
 						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 					}
@@ -1221,12 +1223,13 @@ namespace ifme.hitoha
 					break;
 				}
 
-				// Set title
-				FormTitle(String.Format("Queue {0} of {1}: Merge encoded files...", (x + 1).ToString(), queue.Length.ToString()));
-
 				// Muxing
 				if (!BGThread.CancellationPending)
 				{
+					// Tell user
+					FormTitle(String.Format("Queue {0} of {1}: Merge encoded files...", x + 1, queue.Length));
+					InvokeLog(Log.Info, "Now merge some stuff and synchronise video and audio~ Almost there!");
+
 					// Ready path for destination folder
 					string FileOut = null;
 					if (IsDestDir)
@@ -1259,12 +1262,10 @@ namespace ifme.hitoha
 						{
 							// Change back to false, prevent error that video dont have attachment
 							HasAttachment = false;
-
 							for (int i = 0; i < MkvExtractId.AttachmentData.GetLength(0); i++)
 							{
 								if (MkvExtractId.AttachmentData[i, 0] == null)
 									break;
-
 								string[] place = new string[4];
 								place[0] = MkvExtractId.AttachmentData[i, 0]; //file name only
 								place[1] = tmp + "//" + MkvExtractId.AttachmentData[i, 0]; //full path
@@ -1274,15 +1275,14 @@ namespace ifme.hitoha
 							}
 						}
 
-
 						// Video
 						string[] vp = new string[4];
 						vp[0] = FileOut;
 						vp[1] = Globals.AppInfo.WritingApp;
 						vp[2] = tmp;
-						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no -d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hvc\" ) ", vp);
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no --timecodes 0:\"{2}\\timecodes.txt\" -d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hevc\" ) ", vp);
 						trackorder = "--track-order 0:0";
-
+						
 						// Audio
 						int id = 1;
 						foreach (var item in System.IO.Directory.GetFiles(tmp, "audio*"))
@@ -1294,7 +1294,7 @@ namespace ifme.hitoha
 							trackorder = trackorder + "," + id.ToString() + ":0";
 							id++;
 						}
-
+						
 						// Subtitle
 						if (IsSubtitleEnable)
 						{
@@ -1309,23 +1309,20 @@ namespace ifme.hitoha
 						{
 							// Turn to disable
 							HasSubtitle = false;
-
 							for (int i = 0; i < MkvExtractId.SubtitleData.GetLength(0); i++)
 							{
 								if (MkvExtractId.SubtitleData[i, 0] == null)
 									break;
-
 								string[] sp = new string[3];
 								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
 								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper(); //file name only (description?)
 								sp[2] = tmp + "\\" + MkvExtractId.SubtitleData[i, 1]; //full path
 								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 								trackorder = trackorder + "," + id.ToString() + ":0";
-
 								id++;
 							}
 						}
-
+						
 						// Chapters! proceed when file is exist and not empty
 						string chapters = null;
 						if (System.IO.File.Exists(tmp + "\\chapters.xml"))
@@ -1334,10 +1331,10 @@ namespace ifme.hitoha
 							if (ChapLen.Length > 20)
 								chapters = String.Format("--chapters \"{0}\\chapters.xml\" ", tmp);
 						}
-
+						
 						// Build command for mkvmerge
 						command = command + attach + chapters + trackorder;
-
+						
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
 					}
@@ -1346,22 +1343,23 @@ namespace ifme.hitoha
 						// MP4, not awesome :(
 						string command = "";
 						int i = 0;
-
+						
 						// Video
-						command = String.Format("-add \"{0}\\video.hvc#video:name={1}:fmt=HEVC\" ", tmp, Globals.AppInfo.WritingApp);
-
+						command = String.Format("-add \"{0}\\video.hevc#video:name={1}:fmt=HEVC\"", tmp, Globals.AppInfo.WritingApp);
+						
 						// Audio
 						foreach (var item in System.IO.Directory.GetFiles(tmp, "*.mp4"))
 						{
-							command += String.Format("-add \"{0}#audio:name=Track {1}\" ", item, i.ToString());
+							command += " ";
+							command += String.Format("-add \"{0}#audio:name=Track {1}\"", item, i.ToString());
 							i++;
 						}
 
-						// Build command
-						command += String.Format("\"{0}.mp4\"", FileOut);
-
 						// Send to mp4box
-						PEC = StartProcess(Addons.BuildIn.MP4, command);
+						PEC = StartProcess(Addons.BuildIn.MP4, String.Format("{1} \"{0}\\mod.mp4\"", tmp, command));
+
+						// Modify FPS
+						PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\\timecodes.txt\" \"{0}\\mod.mp4\" -o \"{1}.mp4\"", tmp, FileOut));
 					}
 
 					if (PEC == 1)
@@ -1383,7 +1381,7 @@ namespace ifme.hitoha
 				}
 
 				// Display total wasted time
-				InvokeLog(Log.Info, "This queue take", CurrentQ);
+				InvokeLogDuration(Log.Info, "This queue take", CurrentQ);
 
 				// One file finished
 				if (this.InvokeRequired)
@@ -1444,7 +1442,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (outputString.Contains("%]"))
+				if (outputString.Contains("frames"))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, outputString);
 				else
 					rtfLog.AppendText(string.Concat(outputString, Environment.NewLine));
@@ -1475,7 +1473,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (errorString.Contains("%]"))
+				if (errorString.Contains("frames"))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, errorString);
 				else
 					rtfLog.AppendText(string.Concat(errorString, Environment.NewLine));
@@ -1501,7 +1499,15 @@ namespace ifme.hitoha
 				this.Text = s;
 		}
 
-		private void InvokeLog(int status, string word, System.DateTime LastTime)
+		private void InvokeLog(int status, string word)
+		{
+			if (this.InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => PrintLog(status, String.Format("{0}", word))));
+			else
+				PrintLog(status, String.Format("{0}", word));
+		}
+
+		private void InvokeLogDuration(int status, string word, System.DateTime LastTime)
 		{
 			if (this.InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => PrintLog(status, String.Format("{0} {1}", word, Duration(LastTime)))));
@@ -1531,7 +1537,7 @@ namespace ifme.hitoha
 			}
 
 			// Reset
-			this.Text = Globals.AppInfo.Name;
+			this.Text = String.Format("{0} v{1} - ♪ {2} ♫", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
 			EncodingStarted(false);
 		}
 
@@ -1643,12 +1649,21 @@ namespace ifme.hitoha
 			if (Properties.Settings.Default.FormFullScreen)
 				this.WindowState = FormWindowState.Maximized;
 
+			// Output Dir
+			if (Properties.Settings.Default.OutputDirPath == "")
+				Properties.Settings.Default.OutputDirPath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+
+			txtDestDir.Text = Properties.Settings.Default.OutputDirPath;
+			chkQueueSaveTo.Checked = Properties.Settings.Default.OutputDirEnable;
+
+			// Video
 			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
 			cboVideoTune.SelectedIndex = Properties.Settings.Default.VideoTune;
 			cboVideoRateCtrl.SelectedIndex = Properties.Settings.Default.VideoRateType;
 			txtVideoRate.Text = Properties.Settings.Default.VideoRateValue.ToString();
 			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
 
+			// Audio
 			cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
 			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
 			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
@@ -1668,6 +1683,10 @@ namespace ifme.hitoha
 				Properties.Settings.Default.FormSize = this.Size;
 			}
 
+			// This one cannot put in event of Text Change
+			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
+
+			// Save
 			Properties.Settings.Default.Save();
 		}
 		#endregion
@@ -1787,7 +1806,7 @@ namespace ifme.hitoha
 		#region Console and Log Printing
 		public void PrintLog(int type, string message)
 		{
-			rtfLog.SelectionColor = Color.White;
+			rtfLog.SelectionColor = Color.LightGray;
 			rtfLog.SelectedText = "[";
 
 			switch (type)
@@ -1812,7 +1831,7 @@ namespace ifme.hitoha
 			}
 
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "]\t" + message + "\n";
+			rtfLog.SelectedText = "] " + message + "\n";
 		}
 		#endregion
 	}

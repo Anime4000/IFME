@@ -164,12 +164,12 @@ namespace ifme.hitoha
 			string hevc = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC);
 			string hevc10 = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
 
-			if (args.Contains(hevc))
+			if (args.Contains(hevc + ".exe"))
 			{
 				TaskManager.ImageName.Current = hevc;
 				TaskManager.CPU.SetPerformance(hevc);
 			}
-			else if (args.Contains(hevc10))
+			else if (args.Contains(hevc10 + ".exe"))
 			{
 				TaskManager.ImageName.Current = hevc10;
 				TaskManager.CPU.SetPerformance(hevc10);

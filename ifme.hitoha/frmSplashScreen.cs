@@ -42,6 +42,9 @@ namespace ifme.hitoha
 
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
 		{
+			// Move here, let another thread do his job
+			Addons.Installed.Get();
+
 			// Delete old old stuff
 			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\za.dll"))
 				System.IO.File.Delete(Globals.AppInfo.CurrentFolder + "\\za.dll");
@@ -49,7 +52,7 @@ namespace ifme.hitoha
 			// Get IFME version
 			try
 			{
-				InvokeStatus("Checking version", "IFME Core");
+				InvokeStatus("Checking version", Globals.AppInfo.Name);
 				string GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
 				Globals.AppInfo.VersionNew = GetVersion;
 

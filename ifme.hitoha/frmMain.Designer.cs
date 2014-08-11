@@ -220,6 +220,7 @@
 			// btnQueueBrowseDest
 			// 
 			this.btnQueueBrowseDest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueBrowseDest.Enabled = false;
 			this.btnQueueBrowseDest.Location = new System.Drawing.Point(575, 315);
 			this.btnQueueBrowseDest.Name = "btnQueueBrowseDest";
 			this.btnQueueBrowseDest.Size = new System.Drawing.Size(27, 23);
@@ -232,12 +233,14 @@
 			// 
 			this.txtDestDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtDestDir.Enabled = false;
 			this.txtDestDir.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtDestDir.Location = new System.Drawing.Point(27, 316);
 			this.txtDestDir.Name = "txtDestDir";
 			this.txtDestDir.ReadOnly = true;
 			this.txtDestDir.Size = new System.Drawing.Size(542, 21);
 			this.txtDestDir.TabIndex = 0;
+			this.txtDestDir.TextChanged += new System.EventHandler(this.txtDestDir_TextChanged);
 			// 
 			// chkQueueSaveTo
 			// 
@@ -448,7 +451,6 @@
 			this.txtVideoRate.Size = new System.Drawing.Size(100, 21);
 			this.txtVideoRate.TabIndex = 4;
 			this.txtVideoRate.Text = "26";
-			this.txtVideoRate.TextChanged += new System.EventHandler(this.txtVideoRate_TextChanged);
 			// 
 			// lblVideoRateFactor
 			// 
@@ -1044,6 +1046,7 @@
 			// 
 			// tabStatus
 			// 
+			this.tabStatus.BackColor = System.Drawing.Color.White;
 			this.tabStatus.Controls.Add(this.rtfLog);
 			this.tabStatus.Location = new System.Drawing.Point(4, 22);
 			this.tabStatus.Name = "tabStatus";
@@ -1051,24 +1054,20 @@
 			this.tabStatus.Size = new System.Drawing.Size(608, 343);
 			this.tabStatus.TabIndex = 5;
 			this.tabStatus.Text = "{0}";
-			this.tabStatus.UseVisualStyleBackColor = true;
 			// 
 			// rtfLog
 			// 
-			this.rtfLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.rtfLog.BackColor = System.Drawing.Color.Black;
-			this.rtfLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.rtfLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rtfLog.ForeColor = System.Drawing.Color.LightGray;
+			this.rtfLog.HideSelection = false;
 			this.rtfLog.Location = new System.Drawing.Point(3, 3);
 			this.rtfLog.Name = "rtfLog";
 			this.rtfLog.ReadOnly = true;
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
 			this.rtfLog.TabIndex = 1;
 			this.rtfLog.Text = "";
-			this.rtfLog.TextChanged += new System.EventHandler(this.rtfLog_TextChanged);
 			this.rtfLog.KeyUp += new System.Windows.Forms.KeyEventHandler(this.rtfLog_KeyUp);
 			// 
 			// pictBannerLeft
@@ -1151,7 +1150,6 @@
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "{0}";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.Shown += new System.EventHandler(this.frmMain_Shown);

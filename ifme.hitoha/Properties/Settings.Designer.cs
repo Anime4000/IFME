@@ -286,5 +286,29 @@ namespace ifme.hitoha.Properties {
                 this["FormFullScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OutputDirEnable {
+            get {
+                return ((bool)(this["OutputDirEnable"]));
+            }
+            set {
+                this["OutputDirEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OutputDirPath {
+            get {
+                return ((string)(this["OutputDirPath"]));
+            }
+            set {
+                this["OutputDirPath"] = value;
+            }
+        }
     }
 }
