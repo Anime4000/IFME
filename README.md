@@ -40,8 +40,8 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 
 ## Requirement
 ### Basics
-* IFME only release under 64bit and Windows XP is not supported (due WinXP end it's life).
-* IFME using .NET Framework 4.5 (Windows Vista and 7 require to install, meanwhile Windows 8 already build-in).
+* IFME only release under 64bit OS, Windows XP to 8.1
+* IFME using .NET Framework 4.0
 * IFME need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
 
 
