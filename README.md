@@ -43,7 +43,7 @@ IFME will more happy if have multiple language support, allow non-English user c
 
 
 ### Addons
-IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](#Addons), by read sample on `addons` folder or read our documentation
+IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](#addons-1), by read sample on `addons` folder or read our documentation
 
 
 ## Requirement
