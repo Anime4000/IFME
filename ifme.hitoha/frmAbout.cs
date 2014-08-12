@@ -109,14 +109,14 @@ namespace ifme.hitoha
 			if (!System.IO.Directory.Exists(tmp + "\\ifme"))
 				System.IO.Directory.CreateDirectory(tmp + "\\ifme");
 
-			if (!System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\za.dll"))
+			if (!System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unpack.exe"))
 			{
-				MessageBox.Show("Error: za.dll missing!");
+				MessageBox.Show("Error: unpack.exe missing!");
 				return;
 			}
 			else
 			{
-				System.IO.File.Copy("za.dll", tmp + "\\ifme\\7za.exe", true);
+				System.IO.File.Copy("unpack.exe", tmp + "\\ifme\\7za.exe", true);
 			}
 
 			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unins000.exe"))
