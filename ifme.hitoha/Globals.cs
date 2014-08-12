@@ -50,7 +50,7 @@ namespace ifme.hitoha
 
 			public static string NameCode
 			{
-				get { return "Himari-chan desu"; }
+				get { return "Kouritsu Teki"; }
 			}
 
 			public static string BuildDate
@@ -60,6 +60,7 @@ namespace ifme.hitoha
 
 			public static bool VersionEqual = true;
 			public static string VersionNew = "";
+
 			public static string Version
 			{
 				get { return System.Windows.Forms.Application.ProductVersion; }
@@ -77,7 +78,7 @@ namespace ifme.hitoha
 
 			public static string CPU
 			{
-				get { return System.Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"); }
+				get { return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"); }
 			}
 
 			public static string WritingApp
@@ -92,7 +93,7 @@ namespace ifme.hitoha
 
 			public static string TempFolder
 			{
-				get { return CurrentFolder + "\\ztemp"; }
+				get { return Environment.GetEnvironmentVariable("TEMP") + "\\IFME_Kouritsu-Teki"; }
 			}
 		}
 

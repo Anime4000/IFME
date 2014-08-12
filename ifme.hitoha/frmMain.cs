@@ -817,22 +817,34 @@ namespace ifme.hitoha
 			if (!BGThread.IsBusy)
 			{
 				// Validation
-				if (chkQueueSaveTo.Checked && (txtDestDir.Text == null || txtDestDir.Text == "" || !txtDestDir.Text.Contains('\\')))
+				if (chkQueueSaveTo.Checked)
 				{
-					MessageBox.Show(Language.IMessage.EmptySave, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
+					try
+					{
+						string dir = System.IO.Path.GetFullPath(txtDestDir.Text);
+
+						if (!System.IO.Directory.Exists(dir))
+							System.IO.Directory.CreateDirectory(dir);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(Language.IMessage.EmptySave + "\n" + ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						return;
+					}
 				}
+
 				if (Addons.Installed.Data[cboAudioFormat.SelectedIndex, 6] != "mp4" && !Properties.Settings.Default.UseMkv)
 				{
 					MessageBox.Show(Language.IMessage.WrongCodec, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					return;
 				}
 
-				//if (lstQueue.Items.Count == 0)
-				//{
-				//	MessageBox.Show(Language.IMessage.EmptyQueue, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//	return;
-				//}
+				if (lstQueue.Items.Count == 0)
+				{
+					MessageBox.Show(Language.IMessage.EmptyQueue, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+
 				if (chkSubEnable.Checked && lstSubtitle.Items.Count == 0)
 				{
 					MessageBox.Show(Language.IMessage.EmptySubtitle, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -850,6 +862,12 @@ namespace ifme.hitoha
 					MessageBox.Show(Language.IMessage.NotEqual, Language.IMessage.Invalid, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 				}
+
+				// Below when all if filter are passed, proceed to data collecting and start encoding thread
+
+				// Temp folder check
+				if (!System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
+					System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);					
 
 				// Ready Data
 				string[] queue = new string[lstQueue.Items.Count];
@@ -980,6 +998,7 @@ namespace ifme.hitoha
 					// Delete if exist
 					if (System.IO.File.Exists(String.Format("{0}\\timecodes.txt", tmp)))
 						System.IO.File.Delete(String.Format("{0}\\timecodes.txt", tmp));
+
 					// Move while rename
 					System.IO.File.Move(String.Format("{0}\\timecodes_track0{1}.tc.txt", tmp, video[0].Id - 1), String.Format("{0}\\timecodes.txt", tmp));
 				}
@@ -1442,7 +1461,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (outputString.Contains("frames"))
+				if (outputString.Contains(" frames, "))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, outputString);
 				else
 					rtfLog.AppendText(string.Concat(outputString, Environment.NewLine));
@@ -1473,7 +1492,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (errorString.Contains("frames"))
+				if (errorString.Contains(" frames, "))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, errorString);
 				else
 					rtfLog.AppendText(string.Concat(errorString, Environment.NewLine));

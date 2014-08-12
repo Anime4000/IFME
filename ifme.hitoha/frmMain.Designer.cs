@@ -220,7 +220,6 @@
 			// btnQueueBrowseDest
 			// 
 			this.btnQueueBrowseDest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnQueueBrowseDest.Enabled = false;
 			this.btnQueueBrowseDest.Location = new System.Drawing.Point(575, 315);
 			this.btnQueueBrowseDest.Name = "btnQueueBrowseDest";
 			this.btnQueueBrowseDest.Size = new System.Drawing.Size(27, 23);
