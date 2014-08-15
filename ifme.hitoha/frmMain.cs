@@ -135,6 +135,16 @@ namespace ifme.hitoha
 			}
 		}
 
+		private void frmMain_SizeChanged(object sender, EventArgs e)
+		{
+			// List View for Queue, fast way
+			// Get size
+			var lst = lstQueue.Columns;
+
+			// We want auto size on last column
+			lst[6].Width = (lstQueue.Width - 4) - (lst[0].Width + lst[1].Width + lst[2].Width + lst[3].Width + lst[4].Width + lst[5].Width);
+		}
+
 		private void btnQueueAdd_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
@@ -330,8 +340,6 @@ namespace ifme.hitoha
 
 		private void chkQueueSaveTo_CheckedChanged(object sender, EventArgs e)
 		{
-			txtDestDir.Enabled = chkQueueSaveTo.Checked;
-			btnQueueBrowseDest.Enabled = chkQueueSaveTo.Checked;
 			Properties.Settings.Default.OutputDirEnable = chkQueueSaveTo.Checked;
 		}
 

@@ -232,7 +232,6 @@
 			// 
 			this.txtDestDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtDestDir.Enabled = false;
 			this.txtDestDir.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtDestDir.Location = new System.Drawing.Point(27, 316);
 			this.txtDestDir.Name = "txtDestDir";
@@ -362,7 +361,7 @@
 			// colQueuePath
 			// 
 			this.colQueuePath.Text = "";
-			this.colQueuePath.Width = 400;
+			this.colQueuePath.Width = 52;
 			// 
 			// tabVideo
 			// 
@@ -1045,7 +1044,7 @@
 			// 
 			// tabStatus
 			// 
-			this.tabStatus.BackColor = System.Drawing.Color.White;
+			this.tabStatus.BackColor = System.Drawing.Color.Transparent;
 			this.tabStatus.Controls.Add(this.rtfLog);
 			this.tabStatus.Location = new System.Drawing.Point(4, 22);
 			this.tabStatus.Name = "tabStatus";
@@ -1152,6 +1151,7 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.Shown += new System.EventHandler(this.frmMain_Shown);
+			this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
 			this.tabEncoding.ResumeLayout(false);
 			this.tabQueue.ResumeLayout(false);
 			this.tabQueue.PerformLayout();
