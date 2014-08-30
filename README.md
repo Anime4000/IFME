@@ -7,10 +7,8 @@ Originally developed for compressing FRAPS game recording by using x264, often f
 Binary (Installer/Archive) can be [found here!](http://ifme.sourceforge.net/?page/download.html)
 
 ### License
-IFME have 2 different license, one for `Source Code` another one `Artwork`
+IFME using [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/). for both `Source Code` and `Artwork`.
 
-* Source Code are under [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/).
-* Artwork under [Creative Common Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
 * For more info, [click here](http://ifme.sourceforge.net/index.html?page/rights.html).
 
 ### Uses
@@ -28,6 +26,19 @@ IFME is a queue based converter, in order easy to use, IFME will keep original p
 * MKV Attachment
 * MKV Chapters
 
+Also IFME capable automatically de-interlaced by detecting metadata, make sure video in true interlace, not interlaced image but save in progressive. De-interlaced quality follow by video configuration preset:
+| x265 preset | De-interlaced | Value |
+| :---------: | :-----------: | :---: |
+| ultrafast   | fast          | 0     |
+| superfast   |               |       |
+| veryfast    |               |       |
+| faster      | medium        | 1     |
+| fast        |               |       |
+| medium      |               |       |
+| slow        | slow          | 2     |
+| slower      |               |       |
+| veryslow    |               |       |
+| placebo     | extra_slow    | 3     |
 
 ## Contribution
 ### Fork

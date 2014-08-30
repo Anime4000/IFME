@@ -26,7 +26,7 @@ AllowNoIcons=yes
 ArchitecturesInstallIn64BitMode=x64
 
 SourceDir=_build
-LicenseFile=LICENSE
+LicenseFile=LICENSE.TXT
 InfoBeforeFile=..\installer\text_patents_and_royalties.txt
 InfoAfterFile=..\installer\text_changelog.txt
 SetupIconFile=..\installer\download.ico

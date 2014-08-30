@@ -2,6 +2,7 @@ Version 4.5.0.0
 ---------------
 There huge improvment could't list, here some of it:
 
+New IFME mascot illustrated by ray-en, refer "About" window for more info.
 Fixed bug that reset setting wont reset properly.
 Fixed FPS detection, since Y4M did contain Metadata, x265 can read.
 Added missing x265 "superfast" preset.

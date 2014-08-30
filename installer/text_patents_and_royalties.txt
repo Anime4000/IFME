@@ -3,13 +3,15 @@ Multimedia technologies are often covered by various patents which are most of t
 Do not proceed with this setup if you do not understand or do not agree with these terms. In any case, the authors and/or distributors bears no liability for any infringing usage of this software, which is provided for educational or research purposes.
 
 This encoder using these component, refer to our website for more info:
-1. faac
-2. ffmpeg
-3. flac
-4. flac opencl
-5. mkvmerge (hevc support)
-6. mp4box (hevc support)
-7. ogg
-8. opus
-9. x265
-10. MediaInfo
+01. faac
+02. ffmpeg
+03. ffms
+04. flac
+05. flac opencl
+06. mkvmerge (hevc support)
+07. mp4box (hevc support)
+08. mp4fpsmod
+09. ogg
+10. opus
+11. x265
+12. MediaInfo
