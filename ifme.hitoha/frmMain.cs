@@ -23,8 +23,8 @@ namespace ifme.hitoha
 
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
-			this.Icon = Properties.Resources.aruuie_ifme;
-			this.Text = String.Format("{0} v{1} - ♪ {2} ♫", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
+			this.Icon = Properties.Resources.ifme_green;
+			this.Text = String.Format("{0} v{1} ( '{2}' )", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
 
 			pictBannerRight.Parent = pictBannerLeft;
 		}
@@ -990,25 +990,46 @@ namespace ifme.hitoha
 				// Set Time
 				System.DateTime CurrentQ = System.DateTime.Now;
 
+				// Change string to int/bool for easy code
+				bool IsInterlaced = false;
+				bool IsTopFF = true;
+
+				if (video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase))
+					IsInterlaced = true;
+
+				if (video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase))
+					IsTopFF = false;
+
 				// Extract timecodes (current video will converted to mkv and get timecodes)
 				if (!BGThread.CancellationPending)
 				{
-					// Tell user
-					FormTitle(String.Format("Queue {0} of {1}: Get timecodes for synchronisation", x + 1, queue.Length));
-					InvokeLog(Log.Info, "Currently save source frame time codes. Please Wait...");
+					// Only progressive video can be extract timecodes
+					if (!IsInterlaced)
+					{
+						// Tell user
+						FormTitle(String.Format("Queue {0} of {1}: Get timecodes for synchronisation", x + 1, queue.Length));
+						InvokeLog(Log.Info, "Reading source time codes for reference. Please Wait...");
 
-					// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
-					//FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
-					//StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -copyts -vsync 0 -an -f mkvtimestamp_v2 \"{1}\\timecodes.txt\" -y", queue[x], tmp));
-					StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\\timecodes\" > nul", queue[x], tmp));
+						// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
+						// FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
+						//StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -copyts -vsync 0 -an -f mkvtimestamp_v2 \"{1}\\timecodes.txt\" -y", queue[x], tmp));
+						StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\\timecodes\" > nul", queue[x], tmp));
 
-					// Move FFms timecodes track id to timecodes.txt
-					// Delete if exist
-					if (System.IO.File.Exists(String.Format("{0}\\timecodes.txt", tmp)))
-						System.IO.File.Delete(String.Format("{0}\\timecodes.txt", tmp));
+						// Move FFms timecodes track id to timecodes.txt
+						// Delete if exist
+						if (System.IO.File.Exists(String.Format("{0}\\timecodes.txt", tmp)))
+							System.IO.File.Delete(String.Format("{0}\\timecodes.txt", tmp));
 
-					// Move while rename
-					System.IO.File.Move(String.Format("{0}\\timecodes_track0{1}.tc.txt", tmp, video[0].Id - 1), String.Format("{0}\\timecodes.txt", tmp));
+						// Check index Id
+						int id;
+						if (video[0].Id == 0)
+							id = 0;
+						else
+							id = video[0].Id - 1;
+
+						// Move while rename
+						System.IO.File.Move(String.Format("{0}\\timecodes_track0{1}.tc.txt", tmp, id), String.Format("{0}\\timecodes.txt", tmp));
+					}
 				}
 
 				// Extract MKV
@@ -1029,6 +1050,9 @@ namespace ifme.hitoha
 							
 							// Print mkv stream
 							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
+
+							// Reset list
+							MkvExtractId.ClearList();
 
 							// Attachment
 							string cmdath = null;
@@ -1067,7 +1091,7 @@ namespace ifme.hitoha
 								cmdsub += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
 
 								// Now this video has subtitle in it, change to true
-								if (!HasSubtitle)
+								if (stext.Count != 0)
 									HasSubtitle = true;
 							}
 
@@ -1223,6 +1247,40 @@ namespace ifme.hitoha
 						else
 							args[9] = Addons.BuildIn.HEVC;
 
+						// Due x265 limitation of interlaced video, do deinterlaced by keep both field
+						if (IsInterlaced)
+						{
+							// Ready data and default
+							var xp = VidPreset.ToLower();
+							var qp = Int32.Parse(VidValue);
+							int fi = 0;
+							int mo = 0;
+
+							// Apply deinterlaced filter after
+							if (!IsTopFF)
+								fi = 1;
+
+							// Deinterlace by following x265 preset 
+							if (xp == "faster" || xp == "fast" || xp == "medium")
+								mo = 1;
+							else if (xp == "slow" || xp == "slower" || xp == "veryslow")
+								mo = 2;
+							else if (xp == "placebo")
+								mo = 3;
+							else
+								mo = 0;
+
+							// Make sure value not more then 51 if user choose bitrate
+							if (qp > 51)
+								qp = 10;
+
+							// Split field into seperate frame
+							args[2] += String.Format(" -vf \"yadif=1:{0}:0, mcdeint={1}:{0}:{2}, pp=lb\"", fi, mo, qp);
+
+							// Since split field to each frame, total frame become double
+							args[6] = String.Format("-f {0}", video[0].frameCount * 2);
+						}
+
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
 						{
@@ -1293,6 +1351,7 @@ namespace ifme.hitoha
 							{
 								if (MkvExtractId.AttachmentData[i, 0] == null)
 									break;
+
 								string[] place = new string[4];
 								place[0] = MkvExtractId.AttachmentData[i, 0]; //file name only
 								place[1] = tmp + "//" + MkvExtractId.AttachmentData[i, 0]; //full path
@@ -1307,7 +1366,12 @@ namespace ifme.hitoha
 						vp[0] = FileOut;
 						vp[1] = Globals.AppInfo.WritingApp;
 						vp[2] = tmp;
-						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no --timecodes 0:\"{2}\\timecodes.txt\" -d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hevc\" ) ", vp);
+						vp[3] = null;
+
+						if (System.IO.File.Exists(tmp + "\\timecodes.txt"))
+							vp[3] = String.Format("--timecodes 0:\"{0}\\timecodes.txt\" ", tmp);
+
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no {3}-d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hevc\" ) ", vp);
 						trackorder = "--track-order 0:0";
 						
 						// Audio
@@ -1518,6 +1582,7 @@ namespace ifme.hitoha
 		}
 		#endregion
 
+		#region BGThread Invoke/Delegate UI (use for access winforms controls from different thread)
 		private void FormTitle(string s)
 		{
 			if (this.InvokeRequired)
@@ -1541,6 +1606,7 @@ namespace ifme.hitoha
 			else
 				PrintLog(status, String.Format("{0} {1}", word, Duration(LastTime)));
 		}
+		#endregion
 
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
@@ -1564,8 +1630,9 @@ namespace ifme.hitoha
 			}
 
 			// Reset
-			this.Text = String.Format("{0} v{1} - ♪ {2} ♫", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
 			EncodingStarted(false);
+			MkvExtractId.ClearList();
+			this.Text = String.Format("{0} v{1} ( '{2}' )", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
 		}
 
 		public string Duration(System.DateTime pastTime)
@@ -1590,6 +1657,7 @@ namespace ifme.hitoha
 		private void EncodingStarted(bool x)
 		{
 			btnOptions.Enabled = !x;
+			btnAbout.Enabled = !x;
 
 			btnStart.Visible = !x;
 			btnStop.Visible = x;

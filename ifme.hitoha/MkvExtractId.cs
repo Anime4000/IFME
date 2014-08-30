@@ -10,6 +10,12 @@ namespace ifme.hitoha
 		public static string[,] SubtitleData = new string[128, 3]; //ISO, File, ID
 		public static string[,] AttachmentData = new string[128, 3]; //File, MIME, ID
 
+		public static void ClearList()
+		{
+			Array.Clear(SubtitleData, 0, SubtitleData.Length);
+			Array.Clear(AttachmentData, 0, AttachmentData.Length);
+		}
+
 		public static void AttachmentDataGet(string input)
 		{
 			int q = 0;

@@ -143,6 +143,10 @@ namespace MediaInfoDotNet.Models
 		#region VideoImageCommon
 		///<summary>Ratio of pixel width to pixel height.</summary>
 		public float pixelAspectRatio { get { return streamCommon.pixelAspectRatio; } }
+		/// <summary>Scan type of source video either Progressive or Interlaced</summary>
+		public string scanType { get { return streamCommon.scanType; } }
+		/// <summary>Scan order either Top Field First or Bottom Field First</summary>
+		public string scanOrder { get { return streamCommon.scanOrder; } }
 		#endregion
 
 		#region VideoTextCommon

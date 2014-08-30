@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "4.0.0.4"
+#define MyAppVersion "4.5.0.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "http://ifme.sf.net/"
 #define MyAppExeName "ifme.exe"
@@ -118,7 +118,7 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-    if not IsDotNetDetected('v4.5', 0) then begin
+    if not IsDotNetDetected('v4\Full', 0) then begin
         MsgBox('{#MyAppName} requires Microsoft .NET Framework 4.5!'#13#13
             'Please install and then re-run the setup program.', mbInformation, MB_OK);
         result := false;

@@ -50,7 +50,7 @@ namespace ifme.hitoha
 
 			public static string NameCode
 			{
-				get { return "Kouritsu Teki"; }
+				get { return "Overwrite the Innocence"; }
 			}
 
 			public static string BuildDate
@@ -76,9 +76,15 @@ namespace ifme.hitoha
 				get { return "http://ifme.sf.net/"; }
 			}
 
+			#if DEBUG
+			private const string Md = "DEBUG";
+			#else
+			private const string Md = "RELEASE";
+			#endif
+
 			public static string CPU
 			{
-				get { return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"); }
+				get { return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE") + "/" + Md; }
 			}
 
 			public static string WritingApp

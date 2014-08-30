@@ -379,6 +379,30 @@ namespace MediaInfoDotNet.Models
 				return _pixelAspectRatio;
 			}
 		}
+
+		string _scanType = null;
+		/// <summary>Scan type of source video either Progressive or Interlaced</summary>
+		public string scanType
+		{
+			get
+			{
+				if (_scanType == null)
+					_scanType = miGetString("ScanType");
+				return _scanType;
+			}
+		}
+
+		string _scanOder = null;
+		/// <summary>Scan order either Top Field First or Bottom Field First</summary>
+		public string scanOrder
+		{
+			get
+			{
+				if (_scanOder == null)
+					_scanOder = miGetString("ScanOrder");
+				return _scanOder;
+			}
+		}
 		#endregion
 
 		#region VideoTextCommon

@@ -57,8 +57,6 @@ namespace ifme.hitoha
 		{
 			cboLang.Items.Clear();
 
-			Language.Installed.Get();
-
 			// List langauge in drop down
 			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
 			{

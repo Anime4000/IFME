@@ -333,7 +333,7 @@
 			// colQueueFName
 			// 
 			this.colQueueFName.Text = "";
-			this.colQueueFName.Width = 230;
+			this.colQueueFName.Width = 225;
 			// 
 			// colQueueExt
 			// 
@@ -347,7 +347,7 @@
 			// colQueueRes
 			// 
 			this.colQueueRes.Text = "";
-			this.colQueueRes.Width = 70;
+			this.colQueueRes.Width = 75;
 			// 
 			// colQueueFPS
 			// 
@@ -1044,14 +1044,14 @@
 			// 
 			// tabStatus
 			// 
-			this.tabStatus.BackColor = System.Drawing.Color.Transparent;
 			this.tabStatus.Controls.Add(this.rtfLog);
 			this.tabStatus.Location = new System.Drawing.Point(4, 22);
 			this.tabStatus.Name = "tabStatus";
 			this.tabStatus.Padding = new System.Windows.Forms.Padding(3);
 			this.tabStatus.Size = new System.Drawing.Size(608, 343);
-			this.tabStatus.TabIndex = 5;
+			this.tabStatus.TabIndex = 6;
 			this.tabStatus.Text = "{0}";
+			this.tabStatus.UseVisualStyleBackColor = true;
 			// 
 			// rtfLog
 			// 
@@ -1064,9 +1064,8 @@
 			this.rtfLog.Name = "rtfLog";
 			this.rtfLog.ReadOnly = true;
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
-			this.rtfLog.TabIndex = 1;
+			this.rtfLog.TabIndex = 2;
 			this.rtfLog.Text = "";
-			this.rtfLog.KeyUp += new System.Windows.Forms.KeyEventHandler(this.rtfLog_KeyUp);
 			// 
 			// pictBannerLeft
 			// 
@@ -1074,7 +1073,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerLeft.BackColor = System.Drawing.Color.Black;
 			this.pictBannerLeft.ErrorImage = null;
-			this.pictBannerLeft.Image = global::ifme.hitoha.Properties.Resources.BannerLeft;
+			this.pictBannerLeft.Image = global::ifme.hitoha.Properties.Resources.BannerBLeft;
 			this.pictBannerLeft.InitialImage = null;
 			this.pictBannerLeft.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerLeft.Name = "pictBannerLeft";
@@ -1088,7 +1087,7 @@
 			this.pictBannerRight.BackColor = System.Drawing.Color.Transparent;
 			this.pictBannerRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.pictBannerRight.ErrorImage = null;
-			this.pictBannerRight.Image = global::ifme.hitoha.Properties.Resources.BannerRight;
+			this.pictBannerRight.Image = global::ifme.hitoha.Properties.Resources.BannerBRight;
 			this.pictBannerRight.InitialImage = null;
 			this.pictBannerRight.Location = new System.Drawing.Point(6, 0);
 			this.pictBannerRight.Name = "pictBannerRight";
@@ -1135,8 +1134,6 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(640, 480);
-			this.Controls.Add(this.pictBannerRight);
-			this.Controls.Add(this.pictBannerLeft);
 			this.Controls.Add(this.btnOptions);
 			this.Controls.Add(this.btnAbout);
 			this.Controls.Add(this.btnPause);
@@ -1144,6 +1141,8 @@
 			this.Controls.Add(this.tabEncoding);
 			this.Controls.Add(this.btnStop);
 			this.Controls.Add(this.btnResume);
+			this.Controls.Add(this.pictBannerRight);
+			this.Controls.Add(this.pictBannerLeft);
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmMain";
@@ -1261,14 +1260,14 @@
 		private System.Windows.Forms.Button btnAttachClear;
 		private System.Windows.Forms.Button btnAttachRemove;
 		private System.Windows.Forms.Button btnAttachAdd;
-		private System.Windows.Forms.TabPage tabStatus;
 		private System.Windows.Forms.PictureBox pictBannerLeft;
 		private System.Windows.Forms.PictureBox pictBannerRight;
 		private System.Windows.Forms.Button btnStop;
 		private System.Windows.Forms.Button btnResume;
 		private System.ComponentModel.BackgroundWorker BGThread;
-		private System.Windows.Forms.RichTextBox rtfLog;
 		private System.Windows.Forms.ToolTip proTip;
 		private System.Windows.Forms.ColumnHeader colQueueFPS;
+		private System.Windows.Forms.TabPage tabStatus;
+		private System.Windows.Forms.RichTextBox rtfLog;
 	}
 }

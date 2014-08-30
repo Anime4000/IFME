@@ -146,31 +146,34 @@
     <None Include="Resources\list_remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BannerLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BannerRight.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ifme.hitoha.kawaii\ifme.hitoha.kawaii.csproj">
       <Project>{2dfd009a-9603-4247-9bd4-db71e35a9b20}</Project>
       <Name>ifme.hitoha.kawaii</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ImgAbout.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\aruuie_ifme.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreen4btm.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ifme_green.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen4.png" />
+    <None Include="Resources\BannerBLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerBRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreenB.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

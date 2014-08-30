@@ -47,8 +47,9 @@ start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBui
 echo.
 
 echo COPY IFME MAIN FILE
-copy installer\text_gpl2.txt %BUILDDIR%\LICENSE
-copy ifme\bin\x64\%CompileMode%\lang\*.* %BUILDDIR%\lang
+copy installer\text_addon_license.txt %BUILDDIR%\LICENSE_ADDONS.TXT
+copy installer\text_gpl2.txt %BUILDDIR%\LICENSE.TXT
+copy ifme\lang\*.* %BUILDDIR%\lang
 copy ifme\bin\x64\%CompileMode%\ifme.exe %BUILDDIR%\
 copy ifme\bin\x64\%CompileMode%\ifme.hitoha.dll %BUILDDIR%\
 copy ifme\bin\x64\%CompileMode%\ifme.hitoha.kawaii.dll %BUILDDIR%\
@@ -62,6 +63,10 @@ echo.
 
 echo COPY ADDONS
 xcopy /i /s prerequisite\addons\* %BUILDDIR%\addons
+echo.
+
+echo CLEAN UP
+del /f /s /q %BUILDDIR%\*.ifz
 
 echo.
 echo.

@@ -61,6 +61,26 @@ namespace ifme.hitoha.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AboutBackground {
+            get {
+                object obj = ResourceManager.GetObject("AboutBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AboutLeft {
+            get {
+                object obj = ResourceManager.GetObject("AboutLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon aruuie_ifme {
@@ -73,9 +93,9 @@ namespace ifme.hitoha.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BannerLeft {
+        internal static System.Drawing.Bitmap BannerBLeft {
             get {
-                object obj = ResourceManager.GetObject("BannerLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("BannerBLeft", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +103,9 @@ namespace ifme.hitoha.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BannerRight {
+        internal static System.Drawing.Bitmap BannerBRight {
             get {
-                object obj = ResourceManager.GetObject("BannerRight", resourceCulture);
+                object obj = ResourceManager.GetObject("BannerBRight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,16 +143,6 @@ namespace ifme.hitoha.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ImgAbout {
-            get {
-                object obj = ResourceManager.GetObject("ImgAbout", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap list_add {
             get {
                 object obj = ResourceManager.GetObject("list_add", resourceCulture);
@@ -163,9 +173,9 @@ namespace ifme.hitoha.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen4 {
+        internal static System.Drawing.Bitmap Loading {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen4", resourceCulture);
+                object obj = ResourceManager.GetObject("Loading", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +183,9 @@ namespace ifme.hitoha.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen4btm {
+        internal static System.Drawing.Bitmap SplashScreenB {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen4btm", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreenB", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

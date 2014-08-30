@@ -14,19 +14,34 @@ namespace ifme.hitoha
 		{
 			string[] GFI = new string[7];
 
+			MediaFile AviFile = new MediaFile(file);
+			GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
+			GFI[1] = System.IO.Path.GetExtension(file);
+
+			if (AviFile.Video.Count == 0)
+				return GFI;
+
 			try
 			{
-				MediaFile AviFile = new MediaFile(file);
-				GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
-				GFI[1] = System.IO.Path.GetExtension(file);
-
-				if (AviFile.Video.Count == 0)
-					return GFI;
-
 				var v = AviFile.Video[0];
+				var st = v.scanType;
+				var fm = v.frameRateMode;
+
+				// Scan Type
+				if (st == "" || st == null)
+					st = "p";
+				else
+					st = v.scanType.Remove(1).ToLower();
+
+				// Frame Rate Mode
+				if (fm == "" || fm == null)
+					fm = null;
+				else
+					fm = "[" + fm + "] ";
+
 				GFI[2] = v.format;
-				GFI[3] = v.width.ToString() + "x" + v.height.ToString();
-				GFI[4] = "[" + v.frameRateMode + "] " + v.frameRate.ToString();
+				GFI[3] = v.width.ToString() + "x" + v.height.ToString() + st;
+				GFI[4] = fm + v.frameRate.ToString();
 				GFI[5] = v.bitDepth.ToString() + " bits";
 				GFI[6] = file;
 
@@ -34,7 +49,7 @@ namespace ifme.hitoha
 			}
 			catch (Exception ex)
 			{
-				GFI[1] = ex.Message;
+				GFI[2] = ex.Message;
 				return GFI;
 			}
 		}
