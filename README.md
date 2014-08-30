@@ -16,17 +16,10 @@ Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that suppor
 
 Making user easy to convert their media files and standardise their collection to the latest format!
 
-IFME is a queue based converter, in order easy to use, IFME will keep original properties, such as:
+IFME capable detect interlace video by **detecting metadata** and automatically deinterlaced as is. Sometime interlace video can be very frustrated if improper encoding, If you backup DVD, [MakeMKV](http://makemkv.com/) capable to keep interlace data that IFME can de-interlaced properly.
 
-* Video Resolution
-* Video Bit Depth
-* Video Frame Rate value
-* Video Frame Rate mode (CFR/VFR)
-* MKV Subtitle
-* MKV Attachment
-* MKV Chapters
+De-interlaced quality follow by video configuration preset:
 
-Also IFME capable automatically de-interlaced by detecting metadata, make sure video in true interlace, not interlaced image but save in progressive. De-interlaced quality follow by video configuration preset:
 | x265 preset | De-interlaced | Value |
 | :---------: | :-----------: | :---: |
 | ultrafast   | fast          | 0     |
@@ -39,6 +32,16 @@ Also IFME capable automatically de-interlaced by detecting metadata, make sure v
 | slower      |               |       |
 | veryslow    |               |       |
 | placebo     | extra_slow    | 3     |
+
+IFME is a queue based converter, in order easy to use, IFME will keep original properties, such as:
+
+* Video Resolution
+* Video Bit Depth
+* Video Frame Rate value
+* Video Frame Rate mode (CFR/VFR)
+* MKV Subtitle
+* MKV Attachment
+* MKV Chapters
 
 ## Contribution
 ### Fork
