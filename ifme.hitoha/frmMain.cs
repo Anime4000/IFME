@@ -1278,7 +1278,7 @@ namespace ifme.hitoha
 							args[2] += String.Format(" -vf \"yadif=1:{0}:0, mcdeint={1}:{0}:{2}, pp=lb\"", fi, mo, qp);
 
 							// Since split field to each frame, total frame become double
-							args[6] = String.Format("-f {0}", video[0].frameCount * 2);
+							args[6] = String.Format("-f {0}", (video[0].frameCount * 2));
 						}
 
 						// Add space

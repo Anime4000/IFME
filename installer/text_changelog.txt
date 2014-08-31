@@ -1,3 +1,7 @@
+Version 4.5.1.0
+---------------
+Fixed video encoder didn't report progress
+
 Version 4.5.0.0
 ---------------
 There huge improvment could't list, here some of it:
