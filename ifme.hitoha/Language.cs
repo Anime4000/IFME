@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 // Asset
 using ifme.hitoha;
 using IniParser;
@@ -18,10 +19,14 @@ namespace ifme.hitoha
 			set { _Default = value; }
 		}
 
-		public static class Path
+		public static string Folder
 		{
-			public static string Folder = Globals.AppInfo.CurrentFolder + "\\lang";
-			public static string FileENG = Folder + "\\eng.ini";
+			get { return Path.GetFullPath("lang"); }
+		}
+
+		public static string FileEng
+		{
+			get { return Path.Combine(Folder, "eng.ini"); }
 		}
 
 		public static class Section
@@ -49,7 +54,7 @@ namespace ifme.hitoha
 			public static int Get()
 			{
 				int i = 0;
-				foreach (var item in System.IO.Directory.GetFiles(Path.Folder))
+				foreach (var item in System.IO.Directory.GetFiles(Folder))
 				{
 					var parser = new FileIniDataParser();
 					IniData data = parser.ReadFile(item);
@@ -67,7 +72,7 @@ namespace ifme.hitoha
 
 			public static int GetCount()
 			{
-				return System.IO.Directory.GetFiles(Path.Folder).Count();
+				return System.IO.Directory.GetFiles(Folder).Count();
 			}
 
 			public static string FullName(string code)

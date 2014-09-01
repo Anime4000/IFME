@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 // Asset
 using ifme.hitoha;
 using IniParser;
@@ -17,7 +18,7 @@ namespace ifme.hitoha
 
 			P.StartInfo.FileName = "unpack.exe";
 			P.StartInfo.Arguments = String.Format("x -y -o\"{0}\" \"{1}\"", Output, Archive);
-			P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
+			P.StartInfo.WorkingDirectory = Path.GetFullPath(".");
 			P.StartInfo.UseShellExecute = false;
 			P.StartInfo.CreateNoWindow = true;
 			P.StartInfo.RedirectStandardOutput = true;
@@ -28,22 +29,26 @@ namespace ifme.hitoha
 			P.Close();
 		}
 
-		public static class Path
+		public static string Folder
 		{
-			public static string Folder = Globals.AppInfo.CurrentFolder + "\\addons";
-			public static string File = "\\addon.ini";
+			get { return Path.GetFullPath("addons"); }
+		}
+
+		public static string IniFile
+		{
+			get { return "addon.ini"; }
 		}
 
 		public static class BuildIn
 		{
-			public static string FFmpeg = Path.Folder + "\\ffmpeg\\ffmpeg.exe";
-			public static string FFms = Path.Folder + "\\ffmsindex\\ffmsindex.exe";
-			public static string HEVC = Path.Folder + "\\x265\\x265.exe";
-			public static string HEVCHI = Path.Folder + "\\x265\\x265hi.exe";
-			public static string MKV = Path.Folder + "\\mkvmerge\\mkvmerge.exe";
-			public static string MKE = Path.Folder + "\\mkvmerge\\mkvextract.exe";
-			public static string MP4 = Path.Folder + "\\mp4box\\mp4box.exe";
-			public static string MP4FPS = Path.Folder + "\\mp4fpsmod\\mp4fpsmod.exe";
+			public static string FFmpeg = Path.Combine(Folder, "ffmpeg", "ffmpeg.exe");
+			public static string FFms = Path.Combine(Folder, "ffmsindex", "ffmsindex.exe");
+			public static string HEVC = Path.Combine(Folder, "x265", "x265.exe");
+			public static string HEVCHI = Path.Combine(Folder, "x265", "x265hi.exe");
+			public static string MKV = Path.Combine(Folder, "mkvmerge", "mkvmerge.exe");
+			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract.exe");
+			public static string MP4 = Path.Combine(Folder, "mp4box", "mp4box.exe");
+			public static string MP4FPS = Path.Combine(Folder, "mp4fpsmod", "mp4fpsmod.exe");
 		}
 
 		public static class Installed
@@ -61,13 +66,13 @@ namespace ifme.hitoha
 			public static int Get()
 			{
 				int i = 0;
-				foreach (var item in System.IO.Directory.GetDirectories(Path.Folder))
+				foreach (var item in Directory.GetDirectories(Folder))
 				{
-					if (!System.IO.File.Exists(item + Path.File))
+					if (!System.IO.File.Exists(Path.Combine(item, IniFile)))
 						continue;
 
 					var parser = new FileIniDataParser();
-					IniData data = parser.ReadFile(item + Path.File);
+					IniData data = parser.ReadFile(Path.Combine(item, IniFile));
 
 					if (data["addon"]["type"] != "audio")
 						continue;
@@ -95,22 +100,22 @@ namespace ifme.hitoha
 
 			public static int GetCount()
 			{
-				return System.IO.Directory.GetDirectories(Path.Folder).Count();
+				return System.IO.Directory.GetDirectories(Folder).Count();
 			}
 
 			public static int GetBuildin(int x)
 			{
 				int k = x;
-				foreach (var item in System.IO.Directory.GetDirectories(Path.Folder))
+				foreach (var item in System.IO.Directory.GetDirectories(Folder))
 				{
 					// GetFileName works with folder, just dont get "/"
 					string name = System.IO.Path.GetFileName(item);
 
-					if (!System.IO.File.Exists(item + "//" + name + ".aai"))
+					if (!File.Exists(Path.Combine(item, name + ".aai")))
 						continue;
 
 					var parser = new FileIniDataParser();
-					IniData data = parser.ReadFile(item + "//" + name + ".aai");
+					IniData data = parser.ReadFile(Path.Combine(item, name + ".aai"));
 
 					if (data["addon"]["type"] == "audio")
 						continue;

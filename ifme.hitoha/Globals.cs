@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace ifme.hitoha
 {
@@ -53,6 +54,11 @@ namespace ifme.hitoha
 				get { return "Overwrite the Innocence"; }
 			}
 
+			public static string NameTitle
+			{
+				get { return String.Format("{0} v{1} ( '{2}' )", NameShort, Version, NameCode); }
+			}
+
 			public static string BuildDate
 			{
 				get { return RetrieveLinkerTimestamp().Date.ToString("d"); }
@@ -99,7 +105,7 @@ namespace ifme.hitoha
 
 			public static string TempFolder
 			{
-				get { return Environment.GetEnvironmentVariable("TEMP") + "\\IFME_Kouritsu-Teki"; }
+				get { return Path.Combine(CurrentFolder, "temp"); }
 			}
 		}
 
@@ -107,7 +113,7 @@ namespace ifme.hitoha
 		{
 			public static string ISO
 			{
-				get { return AppInfo.CurrentFolder + "\\iso.gg"; }
+				get { return Path.Combine(Globals.AppInfo.CurrentFolder, "iso.gg"); }
 			}
 		}
 	}

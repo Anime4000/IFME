@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Net;
 // Asset
@@ -43,7 +44,8 @@ namespace ifme.hitoha
 		private void LoadLang()
 		{
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Language.Path.Folder + "\\" + Language.Default + ".ini");
+
+			IniData data = parser.ReadFile(Path.Combine(Language.Folder, Language.Default + ".ini"));
 
 			lblUpdateInfo.Text = String.Format(lblUpdateInfo.Text, Globals.AppInfo.Name, data[Language.Section.Abt]["Latest"]);
 
@@ -138,24 +140,24 @@ namespace ifme.hitoha
 
 		private void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
-			if (!System.IO.Directory.Exists(tmp + "\\ifme"))
-				System.IO.Directory.CreateDirectory(tmp + "\\ifme");
+			if (!Directory.Exists(Path.Combine(tmp, "ifme")))
+				Directory.CreateDirectory(Path.Combine(tmp, "ifme"));
 
-			if (!System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unpack.exe"))
+			if (!File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe")))
 			{
 				MessageBox.Show("Error: unpack.exe missing!");
 				return;
 			}
 			else
 			{
-				System.IO.File.Copy("unpack.exe", tmp + "\\ifme\\7za.exe", true);
+				File.Copy("unpack.exe", Path.Combine(tmp, "ifme", "7za.exe"), true);
 			}
 
-			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unins000.exe"))
-				System.IO.File.Copy("unins000.exe", tmp + "\\ifme\\unins000.exe", true);
+			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unins000.exe")))
+				File.Copy("unins000.exe", Path.Combine(tmp, "ifme", "unins000.exe"), true);
 
-			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\unins000.dat"))
-				System.IO.File.Copy("unins000.dat", tmp + "\\ifme\\unins000.dat", true);
+			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unins000.dat")))
+				File.Copy("unins000.dat", Path.Combine(tmp, "ifme", "unins000.dat"), true);
 
 			foreach (var item in System.IO.Directory.GetDirectories(Globals.AppInfo.CurrentFolder))
 			{

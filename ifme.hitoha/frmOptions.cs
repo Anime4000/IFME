@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 using ifme.hitoha;
 using IniParser;
 using IniParser.Model;
@@ -23,7 +24,7 @@ namespace ifme.hitoha
 		private void LoadLang()
 		{
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Language.Path.Folder + "\\" + Language.Default + ".ini");
+			IniData data = parser.ReadFile(Path.Combine(Language.Folder, Language.Default + ".ini"));
 
 			Control ctrl = this;
 			do
@@ -190,7 +191,7 @@ namespace ifme.hitoha
 			{
 				try
 				{
-					Addons.Extract(GetFile.FileName, Addons.Path.Folder);
+					Addons.Extract(GetFile.FileName, Addons.Folder);
 					MessageBox.Show(Language.IMessage.InstallMsg, "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 					// Get new addon into action
@@ -231,7 +232,7 @@ namespace ifme.hitoha
 
 						string ID = data[I]["iso"];
 
-						System.IO.File.Copy(item, Language.Path.Folder + "\\" + ID + ".ini", false);
+						System.IO.File.Copy(item, Path.Combine(Language.Folder, ID + ".ini"), false);
 
 						for (int i = 0; i < L.GetLength(0); i++)
 						{

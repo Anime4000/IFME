@@ -47,8 +47,8 @@ namespace ifme.hitoha
 			Language.Installed.Get();
 
 			// Delete old old stuff
-			if (System.IO.File.Exists(Globals.AppInfo.CurrentFolder + "\\za.dll"))
-				System.IO.File.Delete(Globals.AppInfo.CurrentFolder + "\\za.dll");
+			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "za.dll")))
+				File.Delete(Path.Combine(Globals.AppInfo.CurrentFolder, "za.dll"));
 
 			// Get IFME version
 			try
@@ -100,7 +100,7 @@ namespace ifme.hitoha
 				try
 				{
 					InvokeStatus("Downloading updates", Addons.Installed.Data[i, 2]);
-					client.DownloadFileAsync(new Uri(Addons.Installed.Data[i, 9]), Addons.Path.Folder + "\\addons.ifz");
+					client.DownloadFileAsync(new Uri(Addons.Installed.Data[i, 9]), Path.Combine(Addons.Folder, "addons.ifz"));
 					finish = false;
 
 					while (finish == false)
@@ -110,7 +110,7 @@ namespace ifme.hitoha
 
 					InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
 					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
-					Addons.Extract(Addons.Path.Folder + "\\addons.ifz", Addons.Path.Folder);
+					Addons.Extract(Path.Combine(Addons.Folder, "addons.ifz"), Addons.Folder);
 
 					// Tell startup there are got addon update
 					Addons.Installed.IsUpdated = true;

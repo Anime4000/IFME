@@ -112,12 +112,12 @@
 			this.btnAttachAdd = new System.Windows.Forms.Button();
 			this.tabStatus = new System.Windows.Forms.TabPage();
 			this.rtfLog = new System.Windows.Forms.RichTextBox();
-			this.pictBannerLeft = new System.Windows.Forms.PictureBox();
-			this.pictBannerRight = new System.Windows.Forms.PictureBox();
 			this.btnStop = new System.Windows.Forms.Button();
 			this.btnResume = new System.Windows.Forms.Button();
 			this.BGThread = new System.ComponentModel.BackgroundWorker();
 			this.proTip = new System.Windows.Forms.ToolTip(this.components);
+			this.pictBannerMain = new System.Windows.Forms.PictureBox();
+			this.pictBannerRight = new System.Windows.Forms.PictureBox();
 			this.tabEncoding.SuspendLayout();
 			this.tabQueue.SuspendLayout();
 			this.tabVideo.SuspendLayout();
@@ -131,7 +131,7 @@
 			this.tabSubtitle.SuspendLayout();
 			this.tabAttachment.SuspendLayout();
 			this.tabStatus.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictBannerLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictBannerMain)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerRight)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -1057,7 +1057,7 @@
 			// 
 			this.rtfLog.BackColor = System.Drawing.Color.Black;
 			this.rtfLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.rtfLog.Font = new System.Drawing.Font("Ubuntu Mono", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rtfLog.ForeColor = System.Drawing.Color.LightGray;
 			this.rtfLog.HideSelection = false;
 			this.rtfLog.Location = new System.Drawing.Point(3, 3);
@@ -1066,34 +1066,6 @@
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
 			this.rtfLog.TabIndex = 2;
 			this.rtfLog.Text = "";
-			// 
-			// pictBannerLeft
-			// 
-			this.pictBannerLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.pictBannerLeft.BackColor = System.Drawing.Color.Black;
-			this.pictBannerLeft.ErrorImage = null;
-			this.pictBannerLeft.Image = global::ifme.hitoha.Properties.Resources.BannerBLeft;
-			this.pictBannerLeft.InitialImage = null;
-			this.pictBannerLeft.Location = new System.Drawing.Point(0, 0);
-			this.pictBannerLeft.Name = "pictBannerLeft";
-			this.pictBannerLeft.Size = new System.Drawing.Size(640, 64);
-			this.pictBannerLeft.TabIndex = 35;
-			this.pictBannerLeft.TabStop = false;
-			// 
-			// pictBannerRight
-			// 
-			this.pictBannerRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.pictBannerRight.BackColor = System.Drawing.Color.Transparent;
-			this.pictBannerRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerRight.ErrorImage = null;
-			this.pictBannerRight.Image = global::ifme.hitoha.Properties.Resources.BannerBRight;
-			this.pictBannerRight.InitialImage = null;
-			this.pictBannerRight.Location = new System.Drawing.Point(6, 0);
-			this.pictBannerRight.Name = "pictBannerRight";
-			this.pictBannerRight.Size = new System.Drawing.Size(634, 64);
-			this.pictBannerRight.TabIndex = 36;
-			this.pictBannerRight.TabStop = false;
 			// 
 			// btnStop
 			// 
@@ -1129,11 +1101,38 @@
 			// 
 			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			// 
+			// pictBannerMain
+			// 
+			this.pictBannerMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pictBannerMain.BackColor = System.Drawing.Color.Black;
+			this.pictBannerMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.pictBannerMain.Image = global::ifme.hitoha.Properties.Resources.BannerBLeft;
+			this.pictBannerMain.Location = new System.Drawing.Point(0, 0);
+			this.pictBannerMain.Name = "pictBannerMain";
+			this.pictBannerMain.Size = new System.Drawing.Size(640, 64);
+			this.pictBannerMain.TabIndex = 39;
+			this.pictBannerMain.TabStop = false;
+			// 
+			// pictBannerRight
+			// 
+			this.pictBannerRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.pictBannerRight.BackColor = System.Drawing.Color.Transparent;
+			this.pictBannerRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.pictBannerRight.Image = global::ifme.hitoha.Properties.Resources.BannerBRight;
+			this.pictBannerRight.Location = new System.Drawing.Point(0, 0);
+			this.pictBannerRight.Name = "pictBannerRight";
+			this.pictBannerRight.Size = new System.Drawing.Size(640, 64);
+			this.pictBannerRight.TabIndex = 40;
+			this.pictBannerRight.TabStop = false;
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(640, 480);
+			this.Controls.Add(this.pictBannerRight);
+			this.Controls.Add(this.pictBannerMain);
 			this.Controls.Add(this.btnOptions);
 			this.Controls.Add(this.btnAbout);
 			this.Controls.Add(this.btnPause);
@@ -1141,8 +1140,7 @@
 			this.Controls.Add(this.tabEncoding);
 			this.Controls.Add(this.btnStop);
 			this.Controls.Add(this.btnResume);
-			this.Controls.Add(this.pictBannerRight);
-			this.Controls.Add(this.pictBannerLeft);
+			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmMain";
@@ -1172,7 +1170,7 @@
 			this.tabAttachment.ResumeLayout(false);
 			this.tabAttachment.PerformLayout();
 			this.tabStatus.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pictBannerLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictBannerMain)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerRight)).EndInit();
 			this.ResumeLayout(false);
 
@@ -1260,8 +1258,6 @@
 		private System.Windows.Forms.Button btnAttachClear;
 		private System.Windows.Forms.Button btnAttachRemove;
 		private System.Windows.Forms.Button btnAttachAdd;
-		private System.Windows.Forms.PictureBox pictBannerLeft;
-		private System.Windows.Forms.PictureBox pictBannerRight;
 		private System.Windows.Forms.Button btnStop;
 		private System.Windows.Forms.Button btnResume;
 		private System.ComponentModel.BackgroundWorker BGThread;
@@ -1269,5 +1265,7 @@
 		private System.Windows.Forms.ColumnHeader colQueueFPS;
 		private System.Windows.Forms.TabPage tabStatus;
 		private System.Windows.Forms.RichTextBox rtfLog;
+		private System.Windows.Forms.PictureBox pictBannerMain;
+		private System.Windows.Forms.PictureBox pictBannerRight;
 	}
 }

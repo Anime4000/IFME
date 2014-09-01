@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 using System.Diagnostics;
 // Asset
 using IniParser;
@@ -24,9 +25,8 @@ namespace ifme.hitoha
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
 			this.Icon = Properties.Resources.ifme_green;
-			this.Text = String.Format("{0} v{1} ( '{2}' )", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
-
-			pictBannerRight.Parent = pictBannerLeft;
+			this.Text = Globals.AppInfo.NameTitle;
+			pictBannerRight.Parent = pictBannerMain;
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -767,7 +767,7 @@ namespace ifme.hitoha
 
 					System.Diagnostics.Process P = new System.Diagnostics.Process();
 					P.StartInfo.FileName = "cmd.exe";
-					P.StartInfo.Arguments = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\\ifme.exe\"", Globals.AppInfo.CurrentFolder);
+					P.StartInfo.Arguments = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\"", Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.exe"));
 					P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 					P.StartInfo.CreateNoWindow = true;
 					P.StartInfo.UseShellExecute = false;
@@ -1013,12 +1013,12 @@ namespace ifme.hitoha
 						// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
 						// FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
 						//StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -copyts -vsync 0 -an -f mkvtimestamp_v2 \"{1}\\timecodes.txt\" -y", queue[x], tmp));
-						StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\\timecodes\" > nul", queue[x], tmp));
+						StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\" > nul", queue[x], Path.Combine(tmp, "timecodes")));
 
 						// Move FFms timecodes track id to timecodes.txt
 						// Delete if exist
-						if (System.IO.File.Exists(String.Format("{0}\\timecodes.txt", tmp)))
-							System.IO.File.Delete(String.Format("{0}\\timecodes.txt", tmp));
+						if (File.Exists(Path.Combine(tmp, "timecodes.txt")))
+							File.Delete(Path.Combine(tmp, "timecodes.txt"));
 
 						// Check index Id
 						int id;
@@ -1028,7 +1028,7 @@ namespace ifme.hitoha
 							id = video[0].Id - 1;
 
 						// Move while rename
-						System.IO.File.Move(String.Format("{0}\\timecodes_track0{1}.tc.txt", tmp, id), String.Format("{0}\\timecodes.txt", tmp));
+						File.Move(Path.Combine(tmp, String.Format("timecodes_track0{0}.tc.txt", id)), Path.Combine(tmp, "timecodes.txt"));
 					}
 				}
 
@@ -1046,17 +1046,17 @@ namespace ifme.hitoha
 							InvokeLog(Log.Info, "Currently detect and extracting MKV stream(s). Please Wait...");
 
 							// Chapters!
-							StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\\chapters.xml\"", queue[x], tmp));
+							StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\"", queue[x], Path.Combine(tmp, "chapters.xml")));
 							
 							// Print mkv stream
-							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\\meta.if\"", queue[x], tmp));
+							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\"", queue[x], Path.Combine(tmp, "meta.if")));
 
 							// Reset list
 							MkvExtractId.ClearList();
 
 							// Attachment
 							string cmdath = null;
-							MkvExtractId.AttachmentDataGet(tmp + "\\meta.if");
+							MkvExtractId.AttachmentDataGet(Path.Combine(tmp, "meta.if"));
 							for (int q = 0; q < MkvExtractId.AttachmentData.GetLength(0); q++)
 							{
 								if (MkvExtractId.AttachmentData[q, 0] == null)
@@ -1066,7 +1066,7 @@ namespace ifme.hitoha
 								string file = MkvExtractId.AttachmentData[q, 0];
 								string mime = MkvExtractId.AttachmentData[q, 1];
 
-								cmdath += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
+								cmdath += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
 
 								// Now this video has attachment in it, change to true
 								if (!HasAttachment)
@@ -1088,7 +1088,7 @@ namespace ifme.hitoha
 								MkvExtractId.SubtitleData[s, 1] = file;
 								MkvExtractId.SubtitleData[s, 2] = id.ToString();
 
-								cmdsub += String.Format("{0}:\"{1}\\{2}\" ", id, tmp, file);
+								cmdsub += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
 
 								// Now this video has subtitle in it, change to true
 								if (stext.Count != 0)
@@ -1132,7 +1132,7 @@ namespace ifme.hitoha
 									map += String.Format("-map 0:{0} ", AudioMapID[i].ToString());
 								}
 								map = map.Remove(map.Length - 1);
-								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\\audio1.wav\"", queue[x], map, audio.Count, AudFreq, tmp);
+								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\"", queue[x], map, audio.Count, AudFreq, Path.Combine(tmp, "audio1.wav"));
 
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, arg);
 
@@ -1143,12 +1143,12 @@ namespace ifme.hitoha
 
 								for (int i = 0; i < audio.Count; i++)
 								{
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\\audio{4}.wav\"", queue[x], AudioMapID[i], AudFreq, tmp, i + 1));
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\"", queue[x], AudioMapID[i], AudFreq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
 								}
 
 								break;
 							default:
-								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\\audio1.wav\"", queue[x], AudFreq, tmp));
+								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
 								break;
 						}
 					}
@@ -1173,11 +1173,11 @@ namespace ifme.hitoha
 					InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
 
 					//                      Folder\app.exe
-					string app = String.Format("{0}\\{1}", Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
+					string app = Path.Combine(Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
 					string cmd = Addons.Installed.Data[AudFormat, 11];
 
 					// get all wav file
-					foreach (var item in System.IO.Directory.GetFiles(tmp, "*.wav"))
+					foreach (var item in Directory.GetFiles(tmp, "*.wav"))
 					{
 						/* example of ogg
 						 * {3} -b {0} "{2}" -o "{1}.ogg"
@@ -1190,7 +1190,7 @@ namespace ifme.hitoha
 						 */
 						string[] args = new string[4];
 						args[0] = AudBitR;
-						args[1] = tmp + "\\" + System.IO.Path.GetFileNameWithoutExtension(item);
+						args[1] = Path.Combine(tmp, Path.GetFileNameWithoutExtension(item));
 						args[2] = item;
 						args[3] = Addons.Installed.Data[AudFormat, 12];
 
@@ -1210,10 +1210,8 @@ namespace ifme.hitoha
 				}
 
 				// Delete all wav file
-				foreach (var item in System.IO.Directory.GetFiles(tmp, "*.wav"))
-				{
-					System.IO.File.Delete(item);
-				}
+				foreach (var item in Directory.GetFiles(tmp, "*.wav"))
+					File.Delete(item);
 
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
@@ -1239,14 +1237,14 @@ namespace ifme.hitoha
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
 						args[6] = String.Format("-f {0}", video[0].frameCount);
-						args[7] = String.Format("-o \"{0}\\video.hevc\"", tmp);
+						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
 						if (video[0].bitDepth > 8)
 							args[9] = Addons.BuildIn.HEVCHI;
 						else
 							args[9] = Addons.BuildIn.HEVC;
-
+						
 						// Due x265 limitation of interlaced video, do deinterlaced by keep both field
 						if (IsInterlaced)
 						{
@@ -1318,9 +1316,9 @@ namespace ifme.hitoha
 					// Ready path for destination folder
 					string FileOut = null;
 					if (IsDestDir)
-						FileOut = DestDir + "\\" + System.IO.Path.GetFileNameWithoutExtension(queue[x]);
+						FileOut = Path.Combine(DestDir, Path.GetFileNameWithoutExtension(queue[x]));
 					else
-						FileOut = System.IO.Path.GetDirectoryName(queue[x]) + "\\_encoded_" + System.IO.Path.GetFileNameWithoutExtension(queue[x]);
+						FileOut = Path.Combine(Path.GetDirectoryName(queue[x]), "[encoded] " + Path.GetFileNameWithoutExtension(queue[x]));
 
 					// Mux by MKV or MP4
 					if (Properties.Settings.Default.UseMkv)
@@ -1354,7 +1352,7 @@ namespace ifme.hitoha
 
 								string[] place = new string[4];
 								place[0] = MkvExtractId.AttachmentData[i, 0]; //file name only
-								place[1] = tmp + "//" + MkvExtractId.AttachmentData[i, 0]; //full path
+								place[1] = Path.Combine(tmp, MkvExtractId.AttachmentData[i, 0]); //full path
 								place[2] = MkvExtractId.AttachmentData[i, 1]; //MIME
 								place[3] = "Build-in Transfer";
 								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{3}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
@@ -1365,13 +1363,13 @@ namespace ifme.hitoha
 						string[] vp = new string[4];
 						vp[0] = FileOut;
 						vp[1] = Globals.AppInfo.WritingApp;
-						vp[2] = tmp;
+						vp[2] = Path.Combine(tmp, "video.hevc");
 						vp[3] = null;
 
-						if (System.IO.File.Exists(tmp + "\\timecodes.txt"))
-							vp[3] = String.Format("--timecodes 0:\"{0}\\timecodes.txt\" ", tmp);
+						if (File.Exists(Path.Combine(tmp, "timecodes.txt")))
+							vp[3] = String.Format("--timecodes 0:\"{0}\" ", Path.Combine(tmp, "timecodes.txt"));
 
-						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no {3}-d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\\video.hevc\" ) ", vp);
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no {3}-d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\" ) ", vp);
 						trackorder = "--track-order 0:0";
 						
 						// Audio
@@ -1407,7 +1405,7 @@ namespace ifme.hitoha
 								string[] sp = new string[3];
 								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
 								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper(); //file name only (description?)
-								sp[2] = tmp + "\\" + MkvExtractId.SubtitleData[i, 1]; //full path
+								sp[2] = Path.Combine(tmp, MkvExtractId.SubtitleData[i, 1]); //full path
 								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
 								trackorder = trackorder + "," + id.ToString() + ":0";
 								id++;
@@ -1416,11 +1414,11 @@ namespace ifme.hitoha
 						
 						// Chapters! proceed when file is exist and not empty
 						string chapters = null;
-						if (System.IO.File.Exists(tmp + "\\chapters.xml"))
+						if (File.Exists(Path.Combine(tmp, "chapters.xml")))
 						{
-							System.IO.FileInfo ChapLen = new System.IO.FileInfo(tmp + "\\chapters.xml");
+							FileInfo ChapLen = new FileInfo(Path.Combine(tmp, "chapters.xml"));
 							if (ChapLen.Length > 20)
-								chapters = String.Format("--chapters \"{0}\\chapters.xml\" ", tmp);
+								chapters = String.Format("--chapters \"{0}\" ", Path.Combine(tmp, "chapters.xml"));
 						}
 						
 						// Build command for mkvmerge
@@ -1436,7 +1434,7 @@ namespace ifme.hitoha
 						int i = 0;
 						
 						// Video
-						command = String.Format("-add \"{0}\\video.hevc#video:name={1}:fmt=HEVC\"", tmp, Globals.AppInfo.WritingApp);
+						command = String.Format("-add \"{0}#video:name={1}:fmt=HEVC\"", Path.Combine(tmp, "video.hevc"), Globals.AppInfo.WritingApp);
 						
 						// Audio
 						foreach (var item in System.IO.Directory.GetFiles(tmp, "*.mp4"))
@@ -1447,10 +1445,10 @@ namespace ifme.hitoha
 						}
 
 						// Send to mp4box
-						PEC = StartProcess(Addons.BuildIn.MP4, String.Format("{1} \"{0}\\mod.mp4\"", tmp, command));
+						PEC = StartProcess(Addons.BuildIn.MP4, String.Format("{0} \"{1}\"", command, Path.Combine(tmp, "mod.mp4")));
 
 						// Modify FPS
-						PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\\timecodes.txt\" \"{0}\\mod.mp4\" -o \"{1}.mp4\"", tmp, FileOut));
+						PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\" \"{1}\" -o \"{2}.mp4\"", Path.Combine(tmp, "timecodes.txt"), Path.Combine(tmp, "mod.mp4"), FileOut));
 					}
 
 					if (PEC == 1)
@@ -1460,9 +1458,9 @@ namespace ifme.hitoha
 					}
 
 					// Delete all temp file
-					foreach (var item in System.IO.Directory.GetFiles(tmp))
+					foreach (var item in Directory.GetFiles(tmp))
 					{
-						System.IO.File.Delete(item);
+						File.Delete(item);
 					}
 				}
 				else
@@ -1489,7 +1487,7 @@ namespace ifme.hitoha
 			Process P = new Process();
 
 			var SI = P.StartInfo;
-			SI.FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\cmd.exe";
+			SI.FileName = "cmd.exe";
 			SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			SI.CreateNoWindow = true;
@@ -1632,7 +1630,7 @@ namespace ifme.hitoha
 			// Reset
 			EncodingStarted(false);
 			MkvExtractId.ClearList();
-			this.Text = String.Format("{0} v{1} ( '{2}' )", Globals.AppInfo.NameShort, Globals.AppInfo.Version, Globals.AppInfo.NameCode);
+			this.Text = Globals.AppInfo.NameTitle;
 		}
 
 		public string Duration(System.DateTime pastTime)
@@ -1789,15 +1787,15 @@ namespace ifme.hitoha
 		#region Interface Language Section (Load and Create)
 		private void LoadLang()
 		{
-			string Path = Language.Path.Folder + "\\" + Language.Default + ".ini";
+			string file = Path.Combine(Language.Folder, Language.Default + ".ini");
 
-			if (!System.IO.File.Exists(Path))
+			if (!System.IO.File.Exists(file))
 				Language.Default = "eng";
 
-			Path = Language.Path.Folder + "\\" + Language.Default + ".ini";
+			file = Path.Combine(Language.Folder, Language.Default + ".ini");
 
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path);
+			IniData data = parser.ReadFile(file);
 
 			Control ctrl = this;
 			do
@@ -1866,10 +1864,10 @@ namespace ifme.hitoha
 		// Developer Use, Capture all valid control for multi language support
 		private void CreateLang()
 		{
-			System.IO.File.WriteAllText(Language.Path.FileENG, "");
+			System.IO.File.WriteAllText(Language.FileEng, "");
 
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Language.Path.FileENG);
+			IniData data = parser.ReadFile(Language.FileEng);
 
 			data.Sections.AddSection(Language.Section.Info);
 			data.Sections[Language.Section.Info].AddKey("iso", "eng"); // file id
@@ -1894,7 +1892,7 @@ namespace ifme.hitoha
 
 			} while (ctrl != null);
 
-			parser.WriteFile(Language.Path.FileENG, data, System.Text.Encoding.Unicode);
+			parser.WriteFile(Language.FileEng, data, System.Text.Encoding.UTF8);
 		}
 		#endregion
 
