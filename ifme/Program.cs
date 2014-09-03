@@ -13,6 +13,7 @@ namespace ifme
 		[STAThread]
 		static void Main()
 		{
+			Console.Write("Starting...");
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new ifme.hitoha.frmMain());

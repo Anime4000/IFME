@@ -35,9 +35,16 @@ namespace ifme.hitoha
 			lblVersion.Parent = pictSS;
 			lblStatus.Parent = pictSS;
 			lblProgress.Parent = pictSS;
-			this.Opacity = 0.0;
 
-			tmrFadeIn.Start();
+			if (OS.IsLinux)
+			{
+				BGThread.RunWorkerAsync();
+			}
+			else
+			{
+				this.Opacity = 0.0;
+				tmrFadeIn.Start();
+			}
 		}
 
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
@@ -140,7 +147,11 @@ namespace ifme.hitoha
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			lblStatus.Text = "";
-			tmrFadeOut.Start();
+
+			if (OS.IsLinux)
+				this.Close();
+			else
+				tmrFadeOut.Start();
 		}
 
 		private void InvokeStatus(string status, string thing)
