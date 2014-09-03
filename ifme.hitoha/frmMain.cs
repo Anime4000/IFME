@@ -28,8 +28,14 @@ namespace ifme.hitoha
 			this.Text = Globals.AppInfo.NameTitle;
 			pictBannerRight.Parent = pictBannerMain;
 			
+			// Fix Mono WinForms Drawing
 			if (OS.IsLinux)
-				rtfLog.Font = new Font("Ubuntu Mono", 9, FontStyle.Regular);
+			{
+				rtfLog.Font = new Font("Monospace", 9, FontStyle.Regular);
+				pictBannerMain.Height -= 5;
+				pictBannerMain.Width += 9;
+				pictBannerRight.Left += 116;
+			}
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -798,7 +804,10 @@ namespace ifme.hitoha
 
 		private void btnResume_Click(object sender, EventArgs e)
 		{
-			if (BGThread.IsBusy)
+			if (OS.IsLinux)
+				return; // not supported, because using Kernel32.dll
+
+			if (!BGThread.IsBusy)
 				return;
 
 			if (btnResume.Text.Equals(Language.IControl.btnResume))
@@ -1513,21 +1522,27 @@ namespace ifme.hitoha
 
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			SI.CreateNoWindow = true;
-			SI.UseShellExecute = false;
-			SI.RedirectStandardOutput = true;
-			SI.RedirectStandardError = true;
 
-			P.OutputDataReceived += consoleOutputHandler;
-			P.ErrorDataReceived += consoleErrorHandler;
+			if (!OS.IsWindows)
+			{
+				SI.UseShellExecute = false;
+				SI.RedirectStandardOutput = true;
+				SI.RedirectStandardError = true;
+
+				P.OutputDataReceived += consoleOutputHandler;
+				P.ErrorDataReceived += consoleErrorHandler;
+			}
 
 			P.Start();
 
-			P.BeginOutputReadLine();
-			P.BeginErrorReadLine();
+			if (OS.IsWindows)
+			{
+				P.BeginOutputReadLine();
+				P.BeginErrorReadLine();
+			}
 
 			// Set CPU Performance and Affinity
-			if (OS.IsWindows)
-				TaskManager.ProcessPerf(exe, args);
+			TaskManager.ProcessPerf(exe, args);
 
 			P.WaitForExit();
 			int X = P.ExitCode;
