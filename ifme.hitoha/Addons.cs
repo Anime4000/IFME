@@ -31,7 +31,7 @@ namespace ifme.hitoha
 
 		public static string Folder
 		{
-			get { return Path.GetFullPath("addons"); }
+			get { return Path.Combine(Globals.AppInfo.CurrentFolder, "addons"); }
 		}
 
 		public static string IniFile
@@ -41,14 +41,14 @@ namespace ifme.hitoha
 
 		public static class BuildIn
 		{
-			public static string FFmpeg = Path.Combine(Folder, "ffmpeg", "ffmpeg.exe");
-			public static string FFms = Path.Combine(Folder, "ffmsindex", "ffmsindex.exe");
-			public static string HEVC = Path.Combine(Folder, "x265", "x265.exe");
-			public static string HEVCHI = Path.Combine(Folder, "x265", "x265hi.exe");
-			public static string MKV = Path.Combine(Folder, "mkvmerge", "mkvmerge.exe");
-			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract.exe");
-			public static string MP4 = Path.Combine(Folder, "mp4box", "mp4box.exe");
-			public static string MP4FPS = Path.Combine(Folder, "mp4fpsmod", "mp4fpsmod.exe");
+			public static string FFmpeg = Path.Combine(Folder, "ffmpeg", "ffmpeg");
+			public static string FFms = Path.Combine(Folder, "ffmsindex", "ffmsindex");
+			public static string HEVC = Path.Combine(Folder, "x265", "x265lo");
+			public static string HEVCHI = Path.Combine(Folder, "x265", "x265hi");
+			public static string MKV = Path.Combine(Folder, "mkvmerge", "mkvmerge");
+			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract");
+			public static string MP4 = Path.Combine(Folder, "mp4box", "mp4box");
+			public static string MP4FPS = Path.Combine(Folder, "mp4fpsmod", "mp4fpsmod");
 		}
 
 		public static class Installed

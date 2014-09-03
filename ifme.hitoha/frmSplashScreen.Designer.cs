@@ -36,9 +36,9 @@
 			this.lblProgress = new System.Windows.Forms.Label();
 			this.tmrFadeIn = new System.Windows.Forms.Timer(this.components);
 			this.tmrFadeOut = new System.Windows.Forms.Timer(this.components);
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.pictAni = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictSS)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictAni)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// BGThread
@@ -99,15 +99,15 @@
 			this.tmrFadeOut.Interval = 1;
 			this.tmrFadeOut.Tick += new System.EventHandler(this.tmrFadeOut_Tick);
 			// 
-			// pictureBox1
+			// pictAni
 			// 
-			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox1.Image = global::ifme.hitoha.Properties.Resources.Loading;
-			this.pictureBox1.Location = new System.Drawing.Point(0, 297);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(600, 3);
-			this.pictureBox1.TabIndex = 4;
-			this.pictureBox1.TabStop = false;
+			this.pictAni.BackColor = System.Drawing.Color.Transparent;
+			this.pictAni.Image = global::ifme.hitoha.Properties.Resources.Loading;
+			this.pictAni.Location = new System.Drawing.Point(0, 297);
+			this.pictAni.Name = "pictAni";
+			this.pictAni.Size = new System.Drawing.Size(600, 3);
+			this.pictAni.TabIndex = 4;
+			this.pictAni.TabStop = false;
 			// 
 			// frmSplashScreen
 			// 
@@ -116,7 +116,7 @@
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 400);
 			this.ControlBox = false;
-			this.Controls.Add(this.pictureBox1);
+			this.Controls.Add(this.pictAni);
 			this.Controls.Add(this.lblVersion);
 			this.Controls.Add(this.lblProgress);
 			this.Controls.Add(this.lblStatus);
@@ -130,7 +130,7 @@
 			this.Text = "Internet Friendly Media Encoder";
 			this.Load += new System.EventHandler(this.frmSplashScreen_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictSS)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictAni)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -144,6 +144,6 @@
 		private System.Windows.Forms.Label lblProgress;
 		private System.Windows.Forms.Timer tmrFadeIn;
 		private System.Windows.Forms.Timer tmrFadeOut;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox pictAni;
 	}
 }

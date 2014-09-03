@@ -21,7 +21,7 @@ namespace ifme.hitoha
 
 		public static string Folder
 		{
-			get { return Path.GetFullPath("lang"); }
+			get { return Path.Combine(Globals.AppInfo.CurrentFolder, "lang"); }
 		}
 
 		public static string FileEng

@@ -1003,7 +1003,7 @@ namespace ifme.hitoha
 				// Extract timecodes (current video will converted to mkv and get timecodes)
 				if (!BGThread.CancellationPending)
 				{
-					// Only progressive video can be extract timecodes
+					/*// Only progressive video can be extract timecodes
 					if (!IsInterlaced)
 					{
 						// Tell user
@@ -1029,7 +1029,7 @@ namespace ifme.hitoha
 
 						// Move while rename
 						File.Move(Path.Combine(tmp, String.Format("timecodes_track0{0}.tc.txt", id)), Path.Combine(tmp, "timecodes.txt"));
-					}
+					}*/
 				}
 
 				// Extract MKV
@@ -1217,6 +1217,7 @@ namespace ifme.hitoha
 				if (!BGThread.CancellationPending)
 				{
 					// Tell user
+					FormTitle(String.Format("Queue {0} of {1}: Encoding video...", x + 1, queue.Length));
 					InvokeLog(Log.Info, "Now decoding video, can take very long time. Just be patient...");
 
 					if (video.Count >= 1)
@@ -1282,14 +1283,14 @@ namespace ifme.hitoha
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
 						{
-							if (i == 2 || i == 8)
+							if (i == 2 || i == 8 || i == 9)
 								continue;
 
 							if (args[i] != null)
 								args[i] = args[i] + " ";
 						}
 
-						cmd = String.Format("{0}{1}{2} - 2> nul | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
+						cmd = String.Format("{0}{1}{2} - 2> /dev/null | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
 
 						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 					}
@@ -1369,7 +1370,7 @@ namespace ifme.hitoha
 						if (File.Exists(Path.Combine(tmp, "timecodes.txt")))
 							vp[3] = String.Format("--timecodes 0:\"{0}\" ", Path.Combine(tmp, "timecodes.txt"));
 
-						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no {3}-d 0 -A -S -T --no-global-tags --no-chapters ( \"{2}\" ) ", vp);
+						command = String.Format("-o \"{0}.mkv\" --track-name \"0:{1}\" --forced-track 0:no {3}-d 0 -A -S -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", vp);
 						trackorder = "--track-order 0:0";
 						
 						// Audio
@@ -1379,7 +1380,7 @@ namespace ifme.hitoha
 							string[] ap = new string[2];
 							ap[0] = id.ToString();
 							ap[1] = item;
-							command += String.Format("--track-name \"0:Track {0}\" --forced-track 0:no -a 0 -D -S -T --no-global-tags --no-chapters ( \"{1}\" ) ", ap);
+							command += String.Format("--track-name \"0:Track {0}\" --forced-track 0:no -a 0 -D -S -T --no-global-tags --no-chapters \"(\" \"{1}\" \")\" ", ap);
 							trackorder = trackorder + "," + id.ToString() + ":0";
 							id++;
 						}
@@ -1391,7 +1392,7 @@ namespace ifme.hitoha
 							sp[0] = subtitle[x, 1]; //lang
 							sp[1] = subtitle[x, 0]; //file name only (description?)
 							sp[2] = subtitle[x, 2]; //full path
-							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
+							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", sp);
 							trackorder = trackorder + "," + id.ToString() + ":0";
 						}
 						else if (HasSubtitle)
@@ -1406,7 +1407,7 @@ namespace ifme.hitoha
 								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
 								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper(); //file name only (description?)
 								sp[2] = Path.Combine(tmp, MkvExtractId.SubtitleData[i, 1]); //full path
-								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters ( \"{2}\" ) ", sp);
+								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", sp);
 								trackorder = trackorder + "," + id.ToString() + ":0";
 								id++;
 							}
@@ -1487,13 +1488,15 @@ namespace ifme.hitoha
 			Process P = new Process();
 
 			var SI = P.StartInfo;
-			SI.FileName = "cmd.exe";
-			SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+			//SI.FileName = "cmd.exe";
+			//SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+			SI.FileName = "/bin/bash";
+			SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"","\\\""));
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			SI.CreateNoWindow = true;
+			SI.UseShellExecute = false;
 			SI.RedirectStandardOutput = true;
 			SI.RedirectStandardError = true;
-			SI.UseShellExecute = false;
 
 			P.OutputDataReceived += consoleOutputHandler;
 			P.ErrorDataReceived += consoleErrorHandler;
@@ -1900,7 +1903,7 @@ namespace ifme.hitoha
 		public void PrintLog(int type, string message)
 		{
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "[";
+			rtfLog.SelectedText = "ifme [";
 
 			switch (type)
 			{
