@@ -27,6 +27,9 @@ namespace ifme.hitoha
 			this.Icon = Properties.Resources.ifme_green;
 			this.Text = Globals.AppInfo.NameTitle;
 			pictBannerRight.Parent = pictBannerMain;
+			
+			if (OS.IsLinux)
+				rtfLog.Font = new Font("Ubuntu Mono", 9, FontStyle.Regular);
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -43,9 +46,11 @@ namespace ifme.hitoha
 		{
 			// Startup
 			rtfLog.SelectionColor = Color.Yellow;
-			rtfLog.SelectedText = String.Format("{0} - compiled on {1}\nVersion: {2} ({3} build) by {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.BuildDate, Globals.AppInfo.Version, Globals.AppInfo.CPU, Globals.AppInfo.Author, Globals.AppInfo.WebSite); ;
+			rtfLog.SelectedText = String.Format("{0} - by {1} ({2})\nVersion: {3} compiled on {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.Author, Globals.AppInfo.WebSite, Globals.AppInfo.Version, Globals.AppInfo.BuildDate, Globals.AppInfo.CPU);
 			rtfLog.SelectionColor = Color.Red;
-			rtfLog.SelectedText = "Warning: This program still in beta, unexpected event may occur. \n\n";
+			rtfLog.SelectedText = "Warning: This program still in beta, unexpected event may occur.\n";
+			rtfLog.SelectionColor = Color.Aqua;
+			rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
 
 			// Migrate previous settings
 			if (Properties.Settings.Default.UpdateSettings)
@@ -108,9 +113,6 @@ namespace ifme.hitoha
 			{
 				PrintLog(Log.Error, ex.Message);
 			}
-
-			// Console log now can be save and clear
-			PrintLog(Log.Info, "Save this log? Click here and press CTRL+S (console will be clear after save)");
 
 			// After addons has been load, now display it on UI
 			AddAudio();
@@ -187,7 +189,7 @@ namespace ifme.hitoha
 
 					lstQueue.Items.Add(QueueList);
 
-					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n       Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n            Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
@@ -310,7 +312,7 @@ namespace ifme.hitoha
 
 				lstQueue.Items.Add(QueueList);
 
-				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n       Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n            Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 			}
 
 			if (lstQueue.Items.Count != 0)
@@ -794,34 +796,38 @@ namespace ifme.hitoha
 			frm.ShowDialog();
 		}
 
-		private void btnPause_Click(object sender, EventArgs e)
-		{
-			Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
-			TaskManager.Mod.SuspendProcess(App[0]);
-			btnPause.Visible = false;
-			btnResume.Visible = true;
-		}
-
 		private void btnResume_Click(object sender, EventArgs e)
 		{
-			Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
-			TaskManager.Mod.ResumeProcess(App[0]);
-			btnPause.Visible = true;
-			btnResume.Visible = false;
-		}
+			if (BGThread.IsBusy)
+				return;
 
-		private void btnStop_Click(object sender, EventArgs e)
-		{
-			var msgbox = MessageBox.Show(Language.IMessage.Halt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-			if (msgbox == DialogResult.Yes)
+			if (btnResume.Text.Equals(Language.IControl.btnResume))
 			{
-				TaskManager.CPU.Kill(TaskManager.ImageName.Current);
-				BGThread.CancelAsync();
+				btnResume.Text = Language.IControl.btnPause;
+				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
+				TaskManager.Mod.ResumeProcess(App[0]);
+			}
+			else
+			{
+				btnResume.Text = Language.IControl.btnResume;
+				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
+				TaskManager.Mod.SuspendProcess(App[0]);
 			}
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
+			if (btnStart.Text.Equals(Language.IControl.btnStop))
+			{
+				var msgbox = MessageBox.Show(Language.IMessage.Halt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+				if (msgbox == DialogResult.Yes)
+				{
+					PrintLog(Log.Info, "Stopping...");
+					TaskManager.CPU.Kill(TaskManager.ImageName.Current);
+					BGThread.CancelAsync();
+				}
+			}
+
 			if (!BGThread.IsBusy)
 			{
 				// Validation
@@ -1223,7 +1229,7 @@ namespace ifme.hitoha
 					if (video.Count >= 1)
 					{
 						string cmd = "";
-						string[] args = new string[10];
+						string[] args = new string[11];
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
@@ -1283,14 +1289,19 @@ namespace ifme.hitoha
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
 						{
-							if (i == 2 || i == 8 || i == 9)
+							if (i == 2 || i == 8 || i == 9 || i == 10)
 								continue;
 
 							if (args[i] != null)
 								args[i] = args[i] + " ";
 						}
 
-						cmd = String.Format("{0}{1}{2} - 2> /dev/null | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
+						if (OS.IsLinux)
+							args[10] = "/dev/null";
+						else
+							args[10] = "nul";
+
+						cmd = String.Format("{0}{1}{2} - 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
 
 						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 					}
@@ -1486,12 +1497,20 @@ namespace ifme.hitoha
 		private int StartProcess(string exe, string args)
 		{
 			Process P = new Process();
-
 			var SI = P.StartInfo;
-			//SI.FileName = "cmd.exe";
-			//SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
-			SI.FileName = "/bin/bash";
-			SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"","\\\""));
+
+			if (OS.IsWindows)
+			{
+				SI.FileName = "cmd.exe";
+				SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+			}
+			else
+			{
+
+				SI.FileName = "/bin/bash";
+				SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
+			}
+
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			SI.CreateNoWindow = true;
 			SI.UseShellExecute = false;
@@ -1507,7 +1526,8 @@ namespace ifme.hitoha
 			P.BeginErrorReadLine();
 
 			// Set CPU Performance and Affinity
-			TaskManager.ProcessPerf(exe, args);
+			if (OS.IsWindows)
+				TaskManager.ProcessPerf(exe, args);
 
 			P.WaitForExit();
 			int X = P.ExitCode;
@@ -1660,10 +1680,14 @@ namespace ifme.hitoha
 			btnOptions.Enabled = !x;
 			btnAbout.Enabled = !x;
 
-			btnStart.Visible = !x;
-			btnStop.Visible = x;
-			btnPause.Visible = x;
-			btnResume.Visible = x;
+			if (OS.IsWindows)
+				btnResume.Visible = x;
+
+			// Hybrid button
+			if (x)
+				btnStart.Text = Language.IControl.btnStop;
+			else
+				btnStart.Text = Language.IControl.btnStart;
 
 			// Button, if quete not empty, dont disable
 			if (lstQueue.Items.Count == 0)
@@ -1862,6 +1886,13 @@ namespace ifme.hitoha
 			// ToolTip
 			Language.IMessage.ProTipTitle = data[Language.Section.Pro]["Title"];
 			Language.IMessage.ProTipUpdate = data[Language.Section.Pro]["TellUpdate"];
+			// Hybrid button
+			Language.IControl.btnStart = data[Language.Section.Root][btnStart.Name];
+			Language.IControl.btnStop = data[Language.Section.Root]["btnStop"];
+			Language.IControl.btnResume = data[Language.Section.Root][btnResume.Name];
+			Language.IControl.btnPause = data[Language.Section.Root]["btnPause"];
+			btnStart.Text = Language.IControl.btnStart;
+			btnResume.Text = Language.IControl.btnResume;
 		}
 
 		// Developer Use, Capture all valid control for multi language support
@@ -1927,7 +1958,7 @@ namespace ifme.hitoha
 			}
 
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "] " + message + "\n";
+			rtfLog.SelectedText = "]: " + message + "\n";
 		}
 		#endregion
 	}

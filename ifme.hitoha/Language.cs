@@ -86,6 +86,14 @@ namespace ifme.hitoha
 			}
 		}
 
+		public static class IControl
+		{
+			public static string btnStart = "";
+			public static string btnStop = "";
+			public static string btnPause = "";
+			public static string btnResume = "";
+		}
+
 		public static class IMessage
 		{
 			public static string OpenFile = "";

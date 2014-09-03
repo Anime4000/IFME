@@ -83,14 +83,22 @@ namespace ifme.hitoha
 			}
 
 			#if DEBUG
-			private const string Md = "DEBUG";
+			private const string _Bulid = "DEBUG";
 			#else
-			private const string Md = "RELEASE";
+			private const string _Bulid = "RELEASE";
 			#endif
+
+			private static string _CPU = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
 
 			public static string CPU
 			{
-				get { return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE") + "/" + Md; }
+				get
+				{
+					if (String.IsNullOrEmpty(_CPU))
+						return String.Format("{0} {1}", OS.Name, _Bulid);
+					else
+						return String.Format("{0}/{1} {2}", _CPU, OS.Name, _Bulid);
+				}
 			}
 
 			public static string WritingApp
@@ -114,6 +122,46 @@ namespace ifme.hitoha
 			public static string ISO
 			{
 				get { return Path.Combine(Globals.AppInfo.CurrentFolder, "iso.gg"); }
+			}
+		}
+	}
+
+	class OS
+	{
+		private static int p = (int)Environment.OSVersion.Platform;
+		private static bool _IsWindows = false;
+		private static bool _IsLinux = false;
+
+		// Extra note:
+		// Windows 7 and 8 return 2
+		// Ubuntu 14.04.1 return 4
+		public static bool IsWindows
+		{
+			get
+			{
+				if (p == 2)
+					_IsWindows = true;
+				return _IsWindows;
+			}
+		}
+
+		public static bool IsLinux
+		{
+			get
+			{
+				if ((p == 4) || (p == 6) || (p == 128))
+					_IsLinux = true;
+				return _IsLinux;
+			}
+		}
+
+		public static string Name
+		{
+			get
+			{
+				if ((p == 4) || (p == 6) || (p == 128))
+					return "Linux";
+				return "Windows";
 			}
 		}
 	}

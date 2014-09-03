@@ -31,7 +31,6 @@
 			this.components = new System.ComponentModel.Container();
 			this.btnOptions = new System.Windows.Forms.Button();
 			this.btnAbout = new System.Windows.Forms.Button();
-			this.btnPause = new System.Windows.Forms.Button();
 			this.btnStart = new System.Windows.Forms.Button();
 			this.tabEncoding = new System.Windows.Forms.TabControl();
 			this.tabQueue = new System.Windows.Forms.TabPage();
@@ -112,7 +111,6 @@
 			this.btnAttachAdd = new System.Windows.Forms.Button();
 			this.tabStatus = new System.Windows.Forms.TabPage();
 			this.rtfLog = new System.Windows.Forms.RichTextBox();
-			this.btnStop = new System.Windows.Forms.Button();
 			this.btnResume = new System.Windows.Forms.Button();
 			this.BGThread = new System.ComponentModel.BackgroundWorker();
 			this.proTip = new System.Windows.Forms.ToolTip(this.components);
@@ -156,18 +154,6 @@
 			this.btnAbout.Text = "{0}";
 			this.btnAbout.UseVisualStyleBackColor = true;
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-			// 
-			// btnPause
-			// 
-			this.btnPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPause.Location = new System.Drawing.Point(422, 445);
-			this.btnPause.Name = "btnPause";
-			this.btnPause.Size = new System.Drawing.Size(100, 23);
-			this.btnPause.TabIndex = 2;
-			this.btnPause.Text = "{0}";
-			this.btnPause.UseVisualStyleBackColor = true;
-			this.btnPause.Visible = false;
-			this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
 			// 
 			// btnStart
 			// 
@@ -1057,7 +1043,7 @@
 			// 
 			this.rtfLog.BackColor = System.Drawing.Color.Black;
 			this.rtfLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.rtfLog.Font = new System.Drawing.Font("Ubuntu Mono", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rtfLog.ForeColor = System.Drawing.Color.LightGray;
 			this.rtfLog.HideSelection = false;
 			this.rtfLog.Location = new System.Drawing.Point(3, 3);
@@ -1066,18 +1052,6 @@
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
 			this.rtfLog.TabIndex = 2;
 			this.rtfLog.Text = "";
-			// 
-			// btnStop
-			// 
-			this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStop.Location = new System.Drawing.Point(528, 445);
-			this.btnStop.Name = "btnStop";
-			this.btnStop.Size = new System.Drawing.Size(100, 23);
-			this.btnStop.TabIndex = 37;
-			this.btnStop.Text = "{0}";
-			this.btnStop.UseVisualStyleBackColor = true;
-			this.btnStop.Visible = false;
-			this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
 			// 
 			// btnResume
 			// 
@@ -1135,10 +1109,8 @@
 			this.Controls.Add(this.pictBannerMain);
 			this.Controls.Add(this.btnOptions);
 			this.Controls.Add(this.btnAbout);
-			this.Controls.Add(this.btnPause);
 			this.Controls.Add(this.btnStart);
 			this.Controls.Add(this.tabEncoding);
-			this.Controls.Add(this.btnStop);
 			this.Controls.Add(this.btnResume);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1180,7 +1152,6 @@
 
 		private System.Windows.Forms.Button btnOptions;
 		private System.Windows.Forms.Button btnAbout;
-		private System.Windows.Forms.Button btnPause;
 		private System.Windows.Forms.Button btnStart;
 		private System.Windows.Forms.TabControl tabEncoding;
 		private System.Windows.Forms.TabPage tabQueue;
@@ -1258,7 +1229,6 @@
 		private System.Windows.Forms.Button btnAttachClear;
 		private System.Windows.Forms.Button btnAttachRemove;
 		private System.Windows.Forms.Button btnAttachAdd;
-		private System.Windows.Forms.Button btnStop;
 		private System.Windows.Forms.Button btnResume;
 		private System.ComponentModel.BackgroundWorker BGThread;
 		private System.Windows.Forms.ToolTip proTip;
