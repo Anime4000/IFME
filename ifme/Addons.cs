@@ -47,7 +47,7 @@ namespace ifme.hitoha
 			public static string HEVCHI = Path.Combine(Folder, "x265", "x265hi");
 			public static string MKV = Path.Combine(Folder, "mkvmerge", "mkvmerge");
 			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract");
-			public static string MP4 = Path.Combine(Folder, "mp4box", "mp4box");
+			public static string MP4 = Path.Combine(Folder, "mp4box", "MP4Box");
 			public static string MP4FPS = Path.Combine(Folder, "mp4fpsmod", "mp4fpsmod");
 		}
 

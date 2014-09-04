@@ -6,7 +6,7 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Hitoha Asset Framework")]
+[assembly: AssemblyTitle("IFME Framework")]
 [assembly: AssemblyDescription("All asset that allow IFME to run")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("00000000-0000-0000-0000-00000000000f")]
+[assembly: Guid("00000000-face-b00c-beef-000000000001")]
 
 // Version information for an assembly consists of the following four values:
 //

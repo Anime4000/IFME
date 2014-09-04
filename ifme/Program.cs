@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ifme
+namespace ifme.hitoha
 {
 	static class Program
 	{
@@ -13,10 +13,10 @@ namespace ifme
 		[STAThread]
 		static void Main()
 		{
-			Console.Write("Starting...");
+			Console.Write("Starting {0} {1} edition\n", Globals.AppInfo.Name, OS.Name);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new ifme.hitoha.frmMain());
+			Application.Run(new frmMain());
 		}
 	}
 }

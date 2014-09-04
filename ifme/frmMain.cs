@@ -31,7 +31,7 @@ namespace ifme.hitoha
 			// Fix Mono WinForms Drawing
 			if (OS.IsLinux)
 			{
-				rtfLog.Font = new Font("Monospace", 9, FontStyle.Regular);
+				rtfLog.Font = new Font("Monospace", 8, FontStyle.Regular);
 				pictBannerMain.Height -= 5;
 				pictBannerMain.Width += 9;
 				pictBannerRight.Left += 116;
@@ -1015,10 +1015,13 @@ namespace ifme.hitoha
 				if (video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase))
 					IsTopFF = false;
 
+				// Print current file to encode
+				InvokeLog(Log.Info, String.Format("Processing {0}", Path.GetFileName(queue[x])));
+
 				// Extract timecodes (current video will converted to mkv and get timecodes)
 				if (!BGThread.CancellationPending)
 				{
-					/*// Only progressive video can be extract timecodes
+					// Only progressive video can be extract timecodes
 					if (!IsInterlaced)
 					{
 						// Tell user
@@ -1028,7 +1031,7 @@ namespace ifme.hitoha
 						// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
 						// FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
 						//StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -copyts -vsync 0 -an -f mkvtimestamp_v2 \"{1}\\timecodes.txt\" -y", queue[x], tmp));
-						StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\" > nul", queue[x], Path.Combine(tmp, "timecodes")));
+						StartProcess(Addons.BuildIn.FFms, String.Format("-f -c \"{0}\" \"{1}\"", queue[x], Path.Combine(tmp, "timecodes")));
 
 						// Move FFms timecodes track id to timecodes.txt
 						// Delete if exist
@@ -1044,7 +1047,7 @@ namespace ifme.hitoha
 
 						// Move while rename
 						File.Move(Path.Combine(tmp, String.Format("timecodes_track0{0}.tc.txt", id)), Path.Combine(tmp, "timecodes.txt"));
-					}*/
+					}
 				}
 
 				// Extract MKV
@@ -1305,6 +1308,7 @@ namespace ifme.hitoha
 								args[i] = args[i] + " ";
 						}
 
+						// Specify null device for stdout and stdin
 						if (OS.IsLinux)
 							args[10] = "/dev/null";
 						else
@@ -1522,13 +1526,12 @@ namespace ifme.hitoha
 
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			SI.CreateNoWindow = true;
+			SI.UseShellExecute = false;
+			SI.RedirectStandardOutput = OS.IsWindows;
+			SI.RedirectStandardError = OS.IsWindows;
 
-			if (!OS.IsWindows)
+			if (OS.IsWindows)
 			{
-				SI.UseShellExecute = false;
-				SI.RedirectStandardOutput = true;
-				SI.RedirectStandardError = true;
-
 				P.OutputDataReceived += consoleOutputHandler;
 				P.ErrorDataReceived += consoleErrorHandler;
 			}

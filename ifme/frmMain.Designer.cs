@@ -240,7 +240,7 @@
 			// btnQueueDown
 			// 
 			this.btnQueueDown.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnQueueDown.Image = global::ifme.hitoha.Properties.Resources.go_down;
+			this.btnQueueDown.Image = global::ifme.Properties.Resources.go_down;
 			this.btnQueueDown.Location = new System.Drawing.Point(307, 6);
 			this.btnQueueDown.Name = "btnQueueDown";
 			this.btnQueueDown.Size = new System.Drawing.Size(24, 24);
@@ -251,7 +251,7 @@
 			// btnQueueUp
 			// 
 			this.btnQueueUp.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnQueueUp.Image = global::ifme.hitoha.Properties.Resources.go_up;
+			this.btnQueueUp.Image = global::ifme.Properties.Resources.go_up;
 			this.btnQueueUp.Location = new System.Drawing.Point(277, 6);
 			this.btnQueueUp.Name = "btnQueueUp";
 			this.btnQueueUp.Size = new System.Drawing.Size(24, 24);
@@ -262,7 +262,7 @@
 			// btnQueueClear
 			// 
 			this.btnQueueClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnQueueClear.Image = global::ifme.hitoha.Properties.Resources.list_clear;
+			this.btnQueueClear.Image = global::ifme.Properties.Resources.list_clear;
 			this.btnQueueClear.Location = new System.Drawing.Point(578, 6);
 			this.btnQueueClear.Name = "btnQueueClear";
 			this.btnQueueClear.Size = new System.Drawing.Size(24, 24);
@@ -273,7 +273,7 @@
 			// btnQueueRemove
 			// 
 			this.btnQueueRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnQueueRemove.Image = global::ifme.hitoha.Properties.Resources.list_remove;
+			this.btnQueueRemove.Image = global::ifme.Properties.Resources.list_remove;
 			this.btnQueueRemove.Location = new System.Drawing.Point(548, 6);
 			this.btnQueueRemove.Name = "btnQueueRemove";
 			this.btnQueueRemove.Size = new System.Drawing.Size(24, 24);
@@ -284,7 +284,7 @@
 			// btnQueueAdd
 			// 
 			this.btnQueueAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnQueueAdd.Image = global::ifme.hitoha.Properties.Resources.list_add;
+			this.btnQueueAdd.Image = global::ifme.Properties.Resources.list_add;
 			this.btnQueueAdd.Location = new System.Drawing.Point(518, 6);
 			this.btnQueueAdd.Name = "btnQueueAdd";
 			this.btnQueueAdd.Size = new System.Drawing.Size(24, 24);
@@ -752,7 +752,7 @@
 			// btnSubDown
 			// 
 			this.btnSubDown.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnSubDown.Image = global::ifme.hitoha.Properties.Resources.go_down;
+			this.btnSubDown.Image = global::ifme.Properties.Resources.go_down;
 			this.btnSubDown.Location = new System.Drawing.Point(307, 6);
 			this.btnSubDown.Name = "btnSubDown";
 			this.btnSubDown.Size = new System.Drawing.Size(24, 24);
@@ -764,7 +764,7 @@
 			// btnSubUp
 			// 
 			this.btnSubUp.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.btnSubUp.Image = global::ifme.hitoha.Properties.Resources.go_up;
+			this.btnSubUp.Image = global::ifme.Properties.Resources.go_up;
 			this.btnSubUp.Location = new System.Drawing.Point(277, 6);
 			this.btnSubUp.Name = "btnSubUp";
 			this.btnSubUp.Size = new System.Drawing.Size(24, 24);
@@ -811,7 +811,7 @@
 			// btnSubClear
 			// 
 			this.btnSubClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSubClear.Image = global::ifme.hitoha.Properties.Resources.list_clear;
+			this.btnSubClear.Image = global::ifme.Properties.Resources.list_clear;
 			this.btnSubClear.Location = new System.Drawing.Point(578, 6);
 			this.btnSubClear.Name = "btnSubClear";
 			this.btnSubClear.Size = new System.Drawing.Size(24, 24);
@@ -823,7 +823,7 @@
 			// btnSubRemove
 			// 
 			this.btnSubRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSubRemove.Image = global::ifme.hitoha.Properties.Resources.list_remove;
+			this.btnSubRemove.Image = global::ifme.Properties.Resources.list_remove;
 			this.btnSubRemove.Location = new System.Drawing.Point(548, 6);
 			this.btnSubRemove.Name = "btnSubRemove";
 			this.btnSubRemove.Size = new System.Drawing.Size(24, 24);
@@ -835,7 +835,7 @@
 			// btnSubAdd
 			// 
 			this.btnSubAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSubAdd.Image = global::ifme.hitoha.Properties.Resources.list_add;
+			this.btnSubAdd.Image = global::ifme.Properties.Resources.list_add;
 			this.btnSubAdd.Location = new System.Drawing.Point(518, 6);
 			this.btnSubAdd.Name = "btnSubAdd";
 			this.btnSubAdd.Size = new System.Drawing.Size(24, 24);
@@ -995,7 +995,7 @@
 			// btnAttachClear
 			// 
 			this.btnAttachClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAttachClear.Image = global::ifme.hitoha.Properties.Resources.list_clear;
+			this.btnAttachClear.Image = global::ifme.Properties.Resources.list_clear;
 			this.btnAttachClear.Location = new System.Drawing.Point(578, 6);
 			this.btnAttachClear.Name = "btnAttachClear";
 			this.btnAttachClear.Size = new System.Drawing.Size(24, 24);
@@ -1007,7 +1007,7 @@
 			// btnAttachRemove
 			// 
 			this.btnAttachRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAttachRemove.Image = global::ifme.hitoha.Properties.Resources.list_remove;
+			this.btnAttachRemove.Image = global::ifme.Properties.Resources.list_remove;
 			this.btnAttachRemove.Location = new System.Drawing.Point(548, 6);
 			this.btnAttachRemove.Name = "btnAttachRemove";
 			this.btnAttachRemove.Size = new System.Drawing.Size(24, 24);
@@ -1019,7 +1019,7 @@
 			// btnAttachAdd
 			// 
 			this.btnAttachAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAttachAdd.Image = global::ifme.hitoha.Properties.Resources.list_add;
+			this.btnAttachAdd.Image = global::ifme.Properties.Resources.list_add;
 			this.btnAttachAdd.Location = new System.Drawing.Point(518, 6);
 			this.btnAttachAdd.Name = "btnAttachAdd";
 			this.btnAttachAdd.Size = new System.Drawing.Size(24, 24);
@@ -1081,7 +1081,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerMain.BackColor = System.Drawing.Color.Black;
 			this.pictBannerMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerMain.Image = global::ifme.hitoha.Properties.Resources.BannerBLeft;
+			this.pictBannerMain.Image = global::ifme.Properties.Resources.BannerBLeft;
 			this.pictBannerMain.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerMain.Name = "pictBannerMain";
 			this.pictBannerMain.Size = new System.Drawing.Size(640, 64);
@@ -1093,7 +1093,7 @@
 			this.pictBannerRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerRight.BackColor = System.Drawing.Color.Transparent;
 			this.pictBannerRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerRight.Image = global::ifme.hitoha.Properties.Resources.BannerBRight;
+			this.pictBannerRight.Image = global::ifme.Properties.Resources.BannerBRight;
 			this.pictBannerRight.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerRight.Name = "pictBannerRight";
 			this.pictBannerRight.Size = new System.Drawing.Size(640, 64);

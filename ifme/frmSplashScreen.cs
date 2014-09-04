@@ -20,21 +20,32 @@ namespace ifme.hitoha
 
 		public frmSplashScreen()
 		{
+			InitializeComponent();
+
 			this.DoubleBuffered = true;
 			this.Icon = Properties.Resources.ifme_green;
 
-			InitializeComponent();
+			pictAni.Parent = pictSS;
+			//lblStatus.Parent = pictSS;
+			//lblProgress.Parent = pictSS;
+			//lblVersion.Parent = pictSS;
 
 			client.DownloadProgressChanged += client_DownloadProgressChanged;
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
+
+			// Fix Mono WinForms Drawing
+			if (OS.IsLinux)
+			{
+				pictAni.Top -= 23;
+				//lblStatus.Top -= 23;
+				//lblProgress.Top -= 23;
+				//lblVersion.Top -= 23;
+			}
 		}
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
 			lblVersion.Text = String.Format(lblVersion.Text, Globals.AppInfo.Version);
-			lblVersion.Parent = pictSS;
-			lblStatus.Parent = pictSS;
-			lblProgress.Parent = pictSS;
 
 			if (OS.IsLinux)
 			{

@@ -49,9 +49,9 @@
 			// pictSS
 			// 
 			this.pictSS.BackColor = System.Drawing.Color.Transparent;
-			this.pictSS.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pictSS.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.pictSS.ErrorImage = null;
-			this.pictSS.Image = global::ifme.hitoha.Properties.Resources.SplashScreenB;
+			this.pictSS.Image = global::ifme.Properties.Resources.SplashScreenC;
 			this.pictSS.InitialImage = null;
 			this.pictSS.Location = new System.Drawing.Point(0, 0);
 			this.pictSS.Name = "pictSS";
@@ -61,6 +61,7 @@
 			// 
 			// lblVersion
 			// 
+			this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblVersion.BackColor = System.Drawing.Color.Transparent;
 			this.lblVersion.ForeColor = System.Drawing.Color.White;
 			this.lblVersion.Location = new System.Drawing.Point(468, 378);
@@ -72,6 +73,7 @@
 			// 
 			// lblStatus
 			// 
+			this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblStatus.BackColor = System.Drawing.Color.Transparent;
 			this.lblStatus.ForeColor = System.Drawing.Color.White;
 			this.lblStatus.Location = new System.Drawing.Point(15, 360);
@@ -82,6 +84,7 @@
 			// 
 			// lblProgress
 			// 
+			this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblProgress.BackColor = System.Drawing.Color.Transparent;
 			this.lblProgress.ForeColor = System.Drawing.Color.White;
 			this.lblProgress.Location = new System.Drawing.Point(15, 373);
@@ -101,8 +104,10 @@
 			// 
 			// pictAni
 			// 
+			this.pictAni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.pictAni.BackColor = System.Drawing.Color.Transparent;
-			this.pictAni.Image = global::ifme.hitoha.Properties.Resources.Loading;
+			this.pictAni.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.pictAni.Image = global::ifme.Properties.Resources.Loading;
 			this.pictAni.Location = new System.Drawing.Point(0, 297);
 			this.pictAni.Name = "pictAni";
 			this.pictAni.Size = new System.Drawing.Size(600, 3);
@@ -113,6 +118,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.Black;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 400);
 			this.ControlBox = false;
@@ -121,6 +127,7 @@
 			this.Controls.Add(this.lblProgress);
 			this.Controls.Add(this.lblStatus);
 			this.Controls.Add(this.pictSS);
+			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximumSize = new System.Drawing.Size(600, 400);

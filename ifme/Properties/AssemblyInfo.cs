@@ -11,8 +11,8 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]
-[assembly: AssemblyCopyright("Anime4000 (GNU GPL v2)")]
-[assembly: AssemblyTrademark("I Found My Ecchi")]
+[assembly: AssemblyCopyright("GNU GPL v2")]
+[assembly: AssemblyTrademark("I Found My Ecchi, Hitoha")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("12345678-abcd-dcba-faac-b00bfacebeef")]
+[assembly: Guid("00000000-face-b00c-beef-000000000000")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,5 +34,5 @@ using System.Resources;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("4.5.*")]
-[assembly: AssemblyFileVersion("4.5.2.0")]
+[assembly: AssemblyFileVersion("4.5.4.0")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

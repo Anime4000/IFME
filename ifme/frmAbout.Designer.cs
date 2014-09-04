@@ -51,6 +51,7 @@
 			// 
 			// lblUpdateInfo
 			// 
+			this.lblUpdateInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblUpdateInfo.BackColor = System.Drawing.Color.Transparent;
 			this.lblUpdateInfo.Font = new System.Drawing.Font("Segoe UI", 8F);
 			this.lblUpdateInfo.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -63,6 +64,7 @@
 			// 
 			// btnUpdate
 			// 
+			this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
 			this.btnUpdate.Location = new System.Drawing.Point(114, 440);
 			this.btnUpdate.Name = "btnUpdate";
@@ -79,6 +81,7 @@
 			// 
 			// lnkChangeLog
 			// 
+			this.lnkChangeLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lnkChangeLog.BackColor = System.Drawing.Color.Transparent;
 			this.lnkChangeLog.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.lnkChangeLog.LinkColor = System.Drawing.Color.Blue;
@@ -94,6 +97,7 @@
 			// 
 			// lblAuthorInfo
 			// 
+			this.lblAuthorInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblAuthorInfo.BackColor = System.Drawing.Color.Transparent;
 			this.lblAuthorInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.lblAuthorInfo.Location = new System.Drawing.Point(3, 94);
@@ -105,6 +109,7 @@
 			// 
 			// lblTitle
 			// 
+			this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
 			this.lblTitle.Location = new System.Drawing.Point(3, 9);
 			this.lblTitle.Name = "lblTitle";
@@ -115,6 +120,7 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.BackColor = System.Drawing.Color.Transparent;
 			this.panel1.Controls.Add(this.panel3);
 			this.panel1.Controls.Add(this.lblWhoDraw);
@@ -134,6 +140,7 @@
 			// 
 			// panel3
 			// 
+			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel3.Controls.Add(this.lblNames);
 			this.panel3.Location = new System.Drawing.Point(0, 282);
 			this.panel3.Name = "panel3";
@@ -142,6 +149,7 @@
 			// 
 			// lblNames
 			// 
+			this.lblNames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblNames.Location = new System.Drawing.Point(99, 56);
 			this.lblNames.Name = "lblNames";
@@ -152,6 +160,7 @@
 			// 
 			// lblWhoDraw
 			// 
+			this.lblWhoDraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblWhoDraw.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoDraw.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.lblWhoDraw.Location = new System.Drawing.Point(3, 209);
@@ -164,6 +173,7 @@
 			// 
 			// lblSpecialThx
 			// 
+			this.lblSpecialThx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSpecialThx.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblSpecialThx.Location = new System.Drawing.Point(3, 249);
 			this.lblSpecialThx.Name = "lblSpecialThx";
@@ -174,6 +184,7 @@
 			// 
 			// lblWhoChar
 			// 
+			this.lblWhoChar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblWhoChar.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoChar.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.lblWhoChar.Location = new System.Drawing.Point(3, 169);
@@ -186,6 +197,7 @@
 			// 
 			// lblMascotName
 			// 
+			this.lblMascotName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMascotName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
 			this.lblMascotName.Location = new System.Drawing.Point(3, 139);
 			this.lblMascotName.Name = "lblMascotName";
@@ -196,6 +208,7 @@
 			// 
 			// lblInfo
 			// 
+			this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblInfo.Location = new System.Drawing.Point(3, 39);
 			this.lblInfo.Name = "lblInfo";
@@ -210,8 +223,10 @@
 			// 
 			// panel2
 			// 
+			this.panel2.AutoSize = true;
 			this.panel2.BackColor = System.Drawing.Color.Transparent;
-			this.panel2.BackgroundImage = global::ifme.hitoha.Properties.Resources.AboutLeft;
+			this.panel2.BackgroundImage = global::ifme.Properties.Resources.AboutLeft;
+			this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.panel2.Location = new System.Drawing.Point(0, 0);
 			this.panel2.Name = "panel2";
@@ -224,7 +239,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.BackgroundImage = global::ifme.hitoha.Properties.Resources.AboutBackground;
+			this.BackgroundImage = global::ifme.Properties.Resources.AboutBackground;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
 			this.ClientSize = new System.Drawing.Size(640, 480);
 			this.Controls.Add(this.panel2);
@@ -243,6 +258,7 @@
 			this.panel1.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 

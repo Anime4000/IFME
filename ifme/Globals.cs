@@ -51,7 +51,7 @@ namespace ifme.hitoha
 
 			public static string NameCode
 			{
-				get { return "Overwrite the Innocence"; }
+				get { return Properties.Resources.EpicWord; }
 			}
 
 			public static string NameTitle
@@ -82,11 +82,11 @@ namespace ifme.hitoha
 				get { return "http://ifme.sf.net/"; }
 			}
 
-			#if DEBUG
+		#if DEBUG
 			private const string _Bulid = "DEBUG";
-			#else
+		#else
 			private const string _Bulid = "RELEASE";
-			#endif
+		#endif
 
 			private static string _CPU = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
 
@@ -108,7 +108,7 @@ namespace ifme.hitoha
 
 			public static string CurrentFolder
 			{
-				get { return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); }
+				get { return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); }
 			}
 
 			public static string TempFolder

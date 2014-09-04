@@ -7,8 +7,8 @@
     <ProjectGuid>{2DFD009A-9603-4247-9BD4-DB71E35A9B20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ifme.hitoha.kawaii</RootNamespace>
-    <AssemblyName>ifme.hitoha.kawaii</AssemblyName>
+    <RootNamespace>ifme.framework</RootNamespace>
+    <AssemblyName>ifme.framework</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
