@@ -34,7 +34,7 @@ namespace ifme.hitoha
 				rtfLog.Font = new Font("Monospace", 8, FontStyle.Regular);
 				pictBannerMain.Height -= 5;
 				pictBannerMain.Width += 9;
-				pictBannerRight.Left += 116;
+				pictBannerRight.Left += 116; // stupid mono not draw properly
 			}
 		}
 
