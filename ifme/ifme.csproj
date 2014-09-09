@@ -195,16 +195,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\aruuie_ifme.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ifme_green.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Loading.gif" />

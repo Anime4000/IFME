@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Net;
 // Asset
-using ProgressDialogs;
 using IniParser;
 using IniParser.Model;
 
@@ -18,9 +18,6 @@ namespace ifme.hitoha
 {
 	public partial class frmAbout : Form
 	{
-		WebClient client = new WebClient();
-		ProgressDialog progressDialog = new ProgressDialog();
-
 		string tmp = System.IO.Path.GetTempPath();
 		string Title = Globals.AppInfo.Name;
 		string Version = Globals.AppInfo.Version;
@@ -28,16 +25,12 @@ namespace ifme.hitoha
 		string BuildDate = Globals.AppInfo.BuildDate;
 		string Info = null;
 
-		string Names = null;
-		string NamesFormat = "{0}\n";
+		int cnt = 0;
+		string[] Names = new string[100];
 
 		public frmAbout()
 		{
-			this.Icon = Properties.Resources.aruuie_ifme;
-
-			client.DownloadProgressChanged += client_DownloadProgressChanged;
-			client.DownloadFileCompleted += client_DownloadFileCompleted;
-
+			this.Icon = Properties.Resources.ifme_green;
 			InitializeComponent();
 		}
 
@@ -63,7 +56,7 @@ namespace ifme.hitoha
 		{
 			LoadLang();
 			lblTitle.Text = String.Format("{0} {1}",Title, Version);
-			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyleft (ɔ) 2013 - {2} Anime4000, GNU General Public License v2", BuildDate, CPU, DateTime.Today.Year.ToString());
+			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyleft (ɔ) 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year.ToString());
 			this.Text = String.Format(this.Text, "About", Globals.AppInfo.Name);
 
 			if (!Globals.AppInfo.VersionEqual)
@@ -72,6 +65,10 @@ namespace ifme.hitoha
 				btnUpdate.Visible = true;
 				lnkChangeLog.Visible = true;
 			}
+
+			// Get first
+			Names[cnt++] = "People @ MulticoreWare";
+			Names[cnt++] = "People @ United Rig Hunter";
 
 			// Get Names for Langauge author
 			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
@@ -82,7 +79,7 @@ namespace ifme.hitoha
 				if (String.Equals(Language.Installed.Data[i, 2], "Anime4000"))
 					continue;
 
-				Names += String.Format(NamesFormat, Language.Installed.Data[i, 2]);
+				Names[cnt++] = Language.Installed.Data[i, 2];
 			}
 
 			// Get Names for Addons author
@@ -97,78 +94,55 @@ namespace ifme.hitoha
 				if (Addons.Installed.Data[i, 3].Contains("Xiph"))
 					continue;
 
-				Names += String.Format(NamesFormat, Addons.Installed.Data[i, 3]);
+				if (Addons.Installed.Data[i, 3].Contains("FFmpeg"))
+					continue;
+
+				Names[cnt++] = Addons.Installed.Data[i, 3];
 			}
 
-			lblNames.Text = "People @ MulticoreWare\nPeople @ United Rig Hunter\n" + Names + "Xiph.Org Foundation";
-
-			// Use for to capture height
-			lblNames.AutoSize = true;
-			int h = lblNames.Height;
-			lblNames.AutoSize = false;
-			lblNames.Height = h;
-
-			lblNames.Top = panel3.Height;
+			Names[cnt++] = "FFmpeg Team";
+			Names[cnt++] = "Xiph.Org Foundation";
 			tmrScroll.Start();
 		}
 
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
-			try
-			{
-				progressDialog.Show();		// Using build-in progress dialog, Windows 8 still have Windows Vista style.
-				progressDialog.AutoClose = true;
-				progressDialog.Title = "Updating";
-				timer.Start();	// Start timer to detect user cancel download updates
+			var msg = MessageBox.Show(btnUpdate.Text.Remove(btnUpdate.Text.Length - 1).Substring(1) + "?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-				string LATEST = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
-				client.DownloadFileAsync(new Uri("http://master.dl.sourceforge.net/project/ifme/encoder-gui/" + LATEST + "/x265ui.7z"), tmp + "\\ifme\\saishin.jp");
-			}
-			catch (Exception ex)
-			{
-				progressDialog.Close();
-				MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-		}
-		private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-		{
-			progressDialog.Value = e.ProgressPercentage;
-
-			progressDialog.Line1 = String.Format("Downloading {0} KB", Math.Round(Convert.ToDouble(e.TotalBytesToReceive / 1024)));
-			progressDialog.Line2 = "From: master.dl.sourceforge.net";
-		}
-
-		private void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-		{
-			if (!Directory.Exists(Path.Combine(tmp, "ifme")))
-				Directory.CreateDirectory(Path.Combine(tmp, "ifme"));
-
-			if (!File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe")))
-			{
-				MessageBox.Show("Error: unpack.exe missing!");
+			if (msg == System.Windows.Forms.DialogResult.No)
 				return;
+
+			if (!Directory.Exists(Globals.AppInfo.TempFolder))
+				Directory.CreateDirectory(Globals.AppInfo.TempFolder);
+
+			string cmd = null, arg = null, file = null;
+
+			if (OS.IsWindows)
+			{
+				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.cmd"), framework.ShellScript.ScriptWin);
+				cmd = "cmd.exe";
+				arg = "/c START \"\" /B update.cmd \"{0}\" \"{1}\" \"ifme.exe\"";
+				file = "x265ui.7z";
+
+				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe"), Path.Combine(Globals.AppInfo.TempFolder, "7za.exe"), true);
+				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "wget.exe"), Path.Combine(Globals.AppInfo.TempFolder, "wget.exe"), true);
 			}
 			else
 			{
-				File.Copy("unpack.exe", Path.Combine(tmp, "ifme", "7za.exe"), true);
+				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.sh"), framework.ShellScript.ScriptLinux);
+				cmd = "sh";
+				arg = "update.sh \"{0}\" \"{1}\" \"ifme.sh\"";
+				file = "x265ui_linux.tar.gz";
+
+				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack"), Path.Combine(Globals.AppInfo.TempFolder, "7za"), true);
 			}
 
-			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unins000.exe")))
-				File.Copy("unins000.exe", Path.Combine(tmp, "ifme", "unins000.exe"), true);
-
-			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "unins000.dat")))
-				File.Copy("unins000.dat", Path.Combine(tmp, "ifme", "unins000.dat"), true);
-
-			foreach (var item in System.IO.Directory.GetDirectories(Globals.AppInfo.CurrentFolder))
-			{
-				System.IO.Directory.Delete(item, true);
-			}
-
-			System.Diagnostics.Process P = new System.Diagnostics.Process();
-			P.StartInfo.FileName = "cmd.exe";
-			P.StartInfo.Arguments = String.Format("/c title Update in progress! PLEASE WAIT! & TIMEOUT /T 3 /NOBREAK & del /F /S /Q *.* & \"{0}\\ifme\\7za.exe\" x -y -o\"{1}\" \"{0}\\ifme\\saishin.jp\" & copy \"{0}\\ifme\\unins000.exe\" \"{1}\\unins000.exe\" & copy \"{0}\\ifme\\unins000.dat\" \"{1}\\unins000.dat\" & del /F /S /Q \"{0}\\ifme\\*.*\" & TIMEOUT /T 5 /NOBREAK & start \"\" \"{1}\\ifme.exe\"", tmp, Globals.AppInfo.CurrentFolder);
-			P.StartInfo.CreateNoWindow = true;
-			P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
+			Process P = new Process();
+			var SI = P.StartInfo;
+			SI.FileName = cmd;
+			SI.Arguments = String.Format(arg, "http://sourceforge.net/projects/ifme/files/encoder-gui/" + Globals.AppInfo.VersionNew + "/" + file + "/download", Globals.AppInfo.CurrentFolder);
+			SI.WorkingDirectory = Globals.AppInfo.TempFolder;
+			SI.UseShellExecute = false;
 
 			P.Start();
 			Application.ExitThread();
@@ -179,21 +153,12 @@ namespace ifme.hitoha
 			System.Diagnostics.Process.Start("https://raw.githubusercontent.com/Anime4000/IFME/master/installer/text_changelog.txt");
 		}
 
-		private void timer_Tick(object sender, EventArgs e)
-		{
-			if (progressDialog.HasUserCancelled)
-			{
-				timer.Stop();
-				progressDialog.Close();
-			}
-		}
-
 		private void tmrScroll_Tick(object sender, EventArgs e)
 		{
-			if (lblNames.Bottom == 0)
-				lblNames.Top = panel3.Height;
+			if (Names[cnt] == null)
+				cnt = 0;
 			else
-				lblNames.Top -= 1;
+				lblNames.Text = Names[cnt++];
 		}
 
 		private void lblWhoChar_Click(object sender, EventArgs e)

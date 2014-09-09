@@ -63,30 +63,10 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AboutBackground {
-            get {
-                object obj = ResourceManager.GetObject("AboutBackground", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap AboutLeft {
             get {
                 object obj = ResourceManager.GetObject("AboutLeft", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon aruuie_ifme {
-            get {
-                object obj = ResourceManager.GetObject("aruuie_ifme", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -111,7 +91,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overwrite the Innocent.
+        ///   Looks up a localized string similar to Strength to Believe.
         /// </summary>
         internal static string EpicWord {
             get {

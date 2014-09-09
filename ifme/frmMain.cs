@@ -27,7 +27,7 @@ namespace ifme.hitoha
 			this.Icon = Properties.Resources.ifme_green;
 			this.Text = Globals.AppInfo.NameTitle;
 			pictBannerRight.Parent = pictBannerMain;
-			
+
 			// Fix Mono WinForms Drawing
 			if (OS.IsLinux)
 			{
@@ -35,6 +35,11 @@ namespace ifme.hitoha
 				pictBannerMain.Height -= 5;
 				pictBannerMain.Width += 9;
 				pictBannerRight.Left += 116;
+
+				if (Properties.Settings.Default.FormSize.Width < 800)
+					this.Width = 800;
+				if (Properties.Settings.Default.FormSize.Height < 600)
+					this.Height = 600;
 			}
 		}
 
@@ -46,6 +51,7 @@ namespace ifme.hitoha
 				e.Cancel = true;
 
 			UserSettingsSave();
+			Console.Write("Your settings has been saved, {0} exit safely\n\n", Globals.AppInfo.NameShort);
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -69,7 +75,7 @@ namespace ifme.hitoha
 			}
 
 			// Temp Folder
-			if (String.IsNullOrEmpty(Properties.Settings.Default.TemporaryFolder) || !System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
+			if (String.IsNullOrEmpty(Properties.Settings.Default.TemporaryFolder))
 			{
 				System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);
 				Properties.Settings.Default.TemporaryFolder = Globals.AppInfo.TempFolder;
@@ -87,7 +93,7 @@ namespace ifme.hitoha
 			if (!Globals.AppInfo.VersionEqual)
 				PrintLog(Log.Info, "Latest IFME version: " + Globals.AppInfo.VersionNew + "! Click About button to perform update");
 			
-			// ISO
+			// Load list of ISO language file to control
 			try
 			{
 				foreach (var item in System.IO.File.ReadAllLines(Globals.Files.ISO))
@@ -110,7 +116,7 @@ namespace ifme.hitoha
 				PrintLog(Log.Error, ex.Message);
 			}
 
-			// Load Addons + Build-in again
+			// Count how many addons has been load
 			try
 			{
 				PrintLog(Log.OK, Addons.Installed.GetCount() + " Addons has been loaded!");
@@ -770,12 +776,27 @@ namespace ifme.hitoha
 				var resbox = MessageBox.Show(Language.IMessage.Restart, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (resbox == DialogResult.Yes)
 				{
+					string cmd = null, arg = null, app = null;
+
 					if (Options.ResetDefault)
 						Properties.Settings.Default.Reset();
 
+					if (OS.IsWindows)
+					{
+						app = Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.exe");
+						cmd = "cmd.exe";
+						arg = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\"", app);
+					}
+					else
+					{
+						app = Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.sh");
+						cmd = "/bin/bash";
+						arg = String.Format("-c \"sleep 3 & \\\"{0}\\\"\"", app);
+					}
+
 					System.Diagnostics.Process P = new System.Diagnostics.Process();
-					P.StartInfo.FileName = "cmd.exe";
-					P.StartInfo.Arguments = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\"", Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.exe"));
+					P.StartInfo.FileName = cmd;
+					P.StartInfo.Arguments = arg;
 					P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 					P.StartInfo.CreateNoWindow = true;
 					P.StartInfo.UseShellExecute = false;
@@ -1021,8 +1042,8 @@ namespace ifme.hitoha
 				// Extract timecodes (current video will converted to mkv and get timecodes)
 				if (!BGThread.CancellationPending)
 				{
-					// Only progressive video can be extract timecodes
-					if (!IsInterlaced)
+					// Only progressive and VFR video can be extract timecodes
+					if (!IsInterlaced && String.Equals(video[0].frameRateMode, "VFR"))
 					{
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Get timecodes for synchronisation", x + 1, queue.Length));
@@ -1472,8 +1493,11 @@ namespace ifme.hitoha
 						// Send to mp4box
 						PEC = StartProcess(Addons.BuildIn.MP4, String.Format("{0} \"{1}\"", command, Path.Combine(tmp, "mod.mp4")));
 
-						// Modify FPS
-						PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\" \"{1}\" -o \"{2}.mp4\"", Path.Combine(tmp, "timecodes.txt"), Path.Combine(tmp, "mod.mp4"), FileOut));
+						// If timecodes exist, apply.
+						if (File.Exists(Path.Combine(tmp, "timecodes.txt")))
+							PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\" \"{1}\" -o \"{2}.mp4\"", Path.Combine(tmp, "timecodes.txt"), Path.Combine(tmp, "mod.mp4"), FileOut));
+						else
+							File.Move(Path.Combine(tmp, "mod.mp4"), FileOut + ".mp4");
 					}
 
 					if (PEC == 1)
@@ -1650,23 +1674,15 @@ namespace ifme.hitoha
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
-			{
 				PrintLog(Log.Error, "Encoding did not run perfectly, check status log!");
-			}
 			else if (e.Cancelled)
-			{
 				PrintLog(Log.Warn, "Encoding canceled :(");
-			}
 			else
-			{
 				PrintLog(Log.OK, "Encoding completed! Yay!");
-			}
 
 			// Delete everything in temp folder
-			foreach (var item in System.IO.Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
-			{
-				System.IO.File.Delete(item);
-			}
+			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
+				File.Delete(item);
 
 			// Reset
 			EncodingStarted(false);

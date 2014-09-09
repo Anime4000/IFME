@@ -60,6 +60,11 @@ namespace ifme.hitoha
 
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
 		{
+			// Make sure ifme temp folder is clean
+			if (Directory.Exists(Globals.AppInfo.TempFolder))
+				foreach (var item in Directory.GetFiles(Globals.AppInfo.TempFolder))
+					File.Delete(item);
+
 			// Move here, let another thread do his job
 			Addons.Installed.Get();
 			Language.Installed.Get();
@@ -84,6 +89,7 @@ namespace ifme.hitoha
 			{
 				InvokeStatus("Error", ex.Message);
 				System.Threading.Thread.Sleep(wait);
+				return;
 			}
 
 			// IFME have new version, dont proceed check addons verions
@@ -176,9 +182,9 @@ namespace ifme.hitoha
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
 			if (lblProgress.InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lblProgress.Text = String.Format("{2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0))));
+				BeginInvoke(new MethodInvoker(() => lblProgress.Text = String.Format("{2:P}: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, ((double)e.BytesReceived / (double)e.TotalBytesToReceive))));
 			else
-				lblProgress.Text = String.Format("{2}%: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, Math.Round(((double)e.BytesReceived / (double)e.TotalBytesToReceive) * 100.0, 0));
+				lblProgress.Text = String.Format("{2:P}: {0} of {1} bytes completed!", e.BytesReceived, e.TotalBytesToReceive, ((double)e.BytesReceived / (double)e.TotalBytesToReceive));
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

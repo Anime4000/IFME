@@ -10,6 +10,9 @@ namespace ifme.hitoha
 	{
 		public static class AppInfo
 		{
+			/// <summary>
+			/// Read creation date via PE header and return Date datatype
+			/// </summary><returns>Date datatype (without time)</returns>
 			private static DateTime RetrieveLinkerTimestamp()
 			{
 				string filePath = System.Reflection.Assembly.GetCallingAssembly().Location;
@@ -39,44 +42,68 @@ namespace ifme.hitoha
 				return dt;
 			}
 
+			/// <summary>
+			/// Return this program full name
+			/// </summary>
 			public static string Name
 			{
 				get { return System.Windows.Forms.Application.ProductName; }
 			}
 
+			/// <summary>
+			/// Return this program acronym name
+			/// </summary>
 			public static string NameShort
 			{
 				get { return "IFME"; }
 			}
 
+			/// <summary>
+			/// Return program code name
+			/// </summary>
 			public static string NameCode
 			{
 				get { return Properties.Resources.EpicWord; }
 			}
 
+			/// <summary>
+			/// Return preformatted string for title
+			/// </summary>
 			public static string NameTitle
 			{
 				get { return String.Format("{0} v{1} ( '{2}' )", NameShort, Version, NameCode); }
 			}
 
+			/// <summary>
+			/// Return program complied date via PE Header
+			/// </summary>
 			public static string BuildDate
 			{
 				get { return RetrieveLinkerTimestamp().Date.ToString("d"); }
 			}
 
-			public static bool VersionEqual = true;
-			public static string VersionNew = "";
-
+			/// <summary>
+			/// Return current version in string (including dot)
+			/// </summary>
 			public static string Version
 			{
 				get { return System.Windows.Forms.Application.ProductVersion; }
 			}
 
+			public static string VersionNew = null;
+			public static bool VersionEqual = true;
+
+			/// <summary>
+			/// Return author name
+			/// </summary>
 			public static string Author
 			{
 				get { return System.Windows.Forms.Application.CompanyName; }
 			}
 
+			/// <summary>
+			/// Return website address
+			/// </summary>
 			public static string WebSite
 			{
 				get { return "http://ifme.sf.net/"; }
@@ -87,9 +114,11 @@ namespace ifme.hitoha
 		#else
 			private const string _Bulid = "RELEASE";
 		#endif
-
 			private static string _CPU = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
 
+			/// <summary>
+			/// Return machine CPU and program build release
+			/// </summary>
 			public static string CPU
 			{
 				get
@@ -101,24 +130,36 @@ namespace ifme.hitoha
 				}
 			}
 
+			/// <summary>
+			/// Return program name for encoding metadata
+			/// </summary>
 			public static string WritingApp
 			{
 				get { return String.Format("Encoded with IFME v{0}", Version); }
 			}
 
+			/// <summary>
+			/// Return current program folder
+			/// </summary>
 			public static string CurrentFolder
 			{
 				get { return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); }
 			}
 
+			/// <summary>
+			/// Return this program temporary folder
+			/// </summary>
 			public static string TempFolder
 			{
-				get { return Path.Combine(CurrentFolder, "temp"); }
+				get { return Path.Combine(Path.GetTempPath(), "ifme"); }
 			}
 		}
 
 		public static class Files
 		{
+			/// <summary>
+			/// Return list of ISO 639-2B file
+			/// </summary>
 			public static string ISO
 			{
 				get { return Path.Combine(Globals.AppInfo.CurrentFolder, "iso.gg"); }
@@ -135,6 +176,10 @@ namespace ifme.hitoha
 		// Extra note:
 		// Windows 7 and 8 return 2
 		// Ubuntu 14.04.1 return 4
+
+		/// <summary>
+		/// Return true if this program running on Windows OS
+		/// </summary>
 		public static bool IsWindows
 		{
 			get
@@ -145,6 +190,9 @@ namespace ifme.hitoha
 			}
 		}
 
+		/// <summary>
+		/// Return true if this program running on Linux/Unix-like OS
+		/// </summary>
 		public static bool IsLinux
 		{
 			get
@@ -155,6 +203,9 @@ namespace ifme.hitoha
 			}
 		}
 
+		/// <summary>
+		/// Return general OS name
+		/// </summary>
 		public static string Name
 		{
 			get

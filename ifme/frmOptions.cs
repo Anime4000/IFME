@@ -18,7 +18,7 @@ namespace ifme.hitoha
 		public frmOptions()
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.aruuie_ifme;
+			this.Icon = Properties.Resources.ifme_green;
 		}
 
 		private void LoadLang()

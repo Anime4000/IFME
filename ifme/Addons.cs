@@ -14,15 +14,25 @@ namespace ifme.hitoha
 	{
 		public static void Extract(string Archive, string Output)
 		{
+			string cmd = null, arg = null;
 			System.Diagnostics.Process P = new System.Diagnostics.Process();
 
-			P.StartInfo.FileName = "unpack.exe";
-			P.StartInfo.Arguments = String.Format("x -y -o\"{0}\" \"{1}\"", Output, Archive);
-			P.StartInfo.WorkingDirectory = Path.GetFullPath(".");
+			if (OS.IsWindows)
+			{
+				cmd = "cmd.exe";
+				arg = String.Format("/c .\\unpack.exe x -y -o\"{0}\" \"{1}\"", Output, Archive);
+			}
+			else
+			{
+				cmd = "bash";
+				arg = String.Format("-c \"./unpack x \\\"{1}\\\" -so | tar xf - -C \\\"{0}\\\" && echo ONE ADDONS UPDATED!\"", Output, Archive);
+			}
+
+			P.StartInfo.FileName = cmd;
+			P.StartInfo.Arguments = arg;
+			P.StartInfo.WorkingDirectory = Globals.AppInfo.CurrentFolder;
 			P.StartInfo.UseShellExecute = false;
 			P.StartInfo.CreateNoWindow = true;
-			P.StartInfo.RedirectStandardOutput = true;
-			P.StartInfo.RedirectStandardError = true;
 
 			P.Start();
 			P.WaitForExit();

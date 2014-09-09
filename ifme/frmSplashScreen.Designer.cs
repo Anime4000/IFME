@@ -130,11 +130,14 @@
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(600, 400);
+			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(600, 400);
 			this.Name = "frmSplashScreen";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Internet Friendly Media Encoder";
 			this.Load += new System.EventHandler(this.frmSplashScreen_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictSS)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAni)).EndInit();
