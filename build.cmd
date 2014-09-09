@@ -35,11 +35,8 @@ echo.
 
 echo CLEAN PREVIOUS BUILD
 del /f /q ifme\bin\x64\%CompileMode%\ifme.exe
-del /f /q ifme\bin\x64\%CompileMode%\ifme.hitoha.dll
-del /f /q ifme\bin\x64\%CompileMode%\ifme.hitoha.kawaii.dll
-del /f /q ifme.hitoha\bin\x64\%CompileMode%\ifme.hitoha.dll
-del /f /q ifme.hitoha\bin\x64\%CompileMode%\ifme.hitoha.kawaii.dll
-del /f /q ifme.hitoha.kawaii\bin\x64\%CompileMode%\ifme.hitoha.kawaii.dll
+del /f /q ifme\bin\x64\%CompileMode%\ifme.framework.dll
+del /f /q ifme.framework\bin\x64\%CompileMode%\ifme.framework.dll
 echo.
 
 echo COMPILING IFME (VISUAL STUDIO 2012/2013)
@@ -51,18 +48,18 @@ copy installer\text_addon_license.txt %BUILDDIR%\LICENSE_ADDONS.TXT
 copy installer\text_gpl2.txt %BUILDDIR%\LICENSE.TXT
 copy ifme\lang\*.* %BUILDDIR%\lang
 copy ifme\bin\x64\%CompileMode%\ifme.exe %BUILDDIR%\
-copy ifme\bin\x64\%CompileMode%\ifme.hitoha.dll %BUILDDIR%\
-copy ifme\bin\x64\%CompileMode%\ifme.hitoha.kawaii.dll %BUILDDIR%\
+copy ifme\bin\x64\%CompileMode%\ifme.framework.dll %BUILDDIR%\
 copy ifme\bin\x64\%CompileMode%\iso.gg %BUILDDIR%\
 echo.
 
 echo COPY PREREQUISITE
-copy prerequisite\MediaInfo.dll %BUILDDIR%\MediaInfo.dll
-copy prerequisite\7za.exe %BUILDDIR%\unpack.exe
+copy prerequisite\windows\MediaInfo.dll %BUILDDIR%\MediaInfo.dll
+copy prerequisite\windows\7za.exe %BUILDDIR%\unpack.exe
+copy prerequisite\windows\wget.exe %BUILDDIR%\wget.exe
 echo.
 
 echo COPY ADDONS
-xcopy /i /s prerequisite\addons\* %BUILDDIR%\addons
+xcopy /i /s prerequisite\windows\addons\* %BUILDDIR%\addons
 echo.
 
 echo CLEAN UP
