@@ -444,7 +444,6 @@
 			this.Controls.Add(this.tabOptions);
 			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(640, 480);
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(640, 480);
 			this.Name = "frmOptions";

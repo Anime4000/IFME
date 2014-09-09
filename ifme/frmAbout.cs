@@ -32,6 +32,13 @@ namespace ifme.hitoha
 		{
 			this.Icon = Properties.Resources.ifme_green;
 			InitializeComponent();
+
+			// Fix Mono drawings
+			if (OS.IsLinux)
+			{
+				pictIfme.Width = 250;
+				pictIfme.Height = 800;
+			}
 		}
 
 		private void LoadLang()

@@ -41,15 +41,18 @@
 			this.lnkChangeLog = new System.Windows.Forms.LinkLabel();
 			this.lblUpdateInfo = new System.Windows.Forms.Label();
 			this.lblSThx = new System.Windows.Forms.Label();
+			this.pictIfme = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.pictIfme)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblNames
 			// 
 			this.lblNames.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblNames.BackColor = System.Drawing.Color.Transparent;
 			this.lblNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblNames.Location = new System.Drawing.Point(315, 350);
+			this.lblNames.Location = new System.Drawing.Point(308, 350);
 			this.lblNames.Name = "lblNames";
-			this.lblNames.Size = new System.Drawing.Size(313, 30);
+			this.lblNames.Size = new System.Drawing.Size(320, 30);
 			this.lblNames.TabIndex = 36;
 			this.lblNames.Text = "Thank You for using :)";
 			this.lblNames.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -65,9 +68,9 @@
 			this.lblWhoDraw.BackColor = System.Drawing.Color.Transparent;
 			this.lblWhoDraw.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoDraw.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoDraw.Location = new System.Drawing.Point(315, 240);
+			this.lblWhoDraw.Location = new System.Drawing.Point(308, 240);
 			this.lblWhoDraw.Name = "lblWhoDraw";
-			this.lblWhoDraw.Size = new System.Drawing.Size(313, 40);
+			this.lblWhoDraw.Size = new System.Drawing.Size(320, 40);
 			this.lblWhoDraw.TabIndex = 45;
 			this.lblWhoDraw.Text = "Illustration by ray-en\r\nhttp://ray-en.deviantart.com/";
 			this.lblWhoDraw.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -79,9 +82,9 @@
 			this.lblWhoChar.BackColor = System.Drawing.Color.Transparent;
 			this.lblWhoChar.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoChar.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoChar.Location = new System.Drawing.Point(315, 200);
+			this.lblWhoChar.Location = new System.Drawing.Point(308, 200);
 			this.lblWhoChar.Name = "lblWhoChar";
-			this.lblWhoChar.Size = new System.Drawing.Size(313, 40);
+			this.lblWhoChar.Size = new System.Drawing.Size(320, 40);
 			this.lblWhoChar.TabIndex = 43;
 			this.lblWhoChar.Text = "Character by Aruuie Francoise\r\nhttp://www.pixiv.net/member.php?id=6206705";
 			this.lblWhoChar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -92,9 +95,9 @@
 			this.lblMascotName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMascotName.BackColor = System.Drawing.Color.Transparent;
 			this.lblMascotName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-			this.lblMascotName.Location = new System.Drawing.Point(315, 170);
+			this.lblMascotName.Location = new System.Drawing.Point(308, 170);
 			this.lblMascotName.Name = "lblMascotName";
-			this.lblMascotName.Size = new System.Drawing.Size(313, 30);
+			this.lblMascotName.Size = new System.Drawing.Size(320, 30);
 			this.lblMascotName.TabIndex = 42;
 			this.lblMascotName.Text = "Ifme-chan";
 			this.lblMascotName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -104,9 +107,9 @@
 			this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblInfo.BackColor = System.Drawing.Color.Transparent;
 			this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblInfo.Location = new System.Drawing.Point(315, 50);
+			this.lblInfo.Location = new System.Drawing.Point(308, 50);
 			this.lblInfo.Name = "lblInfo";
-			this.lblInfo.Size = new System.Drawing.Size(313, 70);
+			this.lblInfo.Size = new System.Drawing.Size(320, 70);
 			this.lblInfo.TabIndex = 41;
 			this.lblInfo.Text = "A";
 			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -116,9 +119,9 @@
 			this.lblAuthorInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblAuthorInfo.BackColor = System.Drawing.Color.Transparent;
 			this.lblAuthorInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblAuthorInfo.Location = new System.Drawing.Point(315, 120);
+			this.lblAuthorInfo.Location = new System.Drawing.Point(308, 120);
 			this.lblAuthorInfo.Name = "lblAuthorInfo";
-			this.lblAuthorInfo.Size = new System.Drawing.Size(313, 50);
+			this.lblAuthorInfo.Size = new System.Drawing.Size(320, 50);
 			this.lblAuthorInfo.TabIndex = 39;
 			this.lblAuthorInfo.Text = "A\r\nB";
 			this.lblAuthorInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -128,9 +131,9 @@
 			this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblTitle.BackColor = System.Drawing.Color.Transparent;
 			this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-			this.lblTitle.Location = new System.Drawing.Point(315, 9);
+			this.lblTitle.Location = new System.Drawing.Point(308, 9);
 			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(313, 30);
+			this.lblTitle.Size = new System.Drawing.Size(320, 30);
 			this.lblTitle.TabIndex = 40;
 			this.lblTitle.Text = "A";
 			this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -139,9 +142,9 @@
 			// 
 			this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
-			this.btnUpdate.Location = new System.Drawing.Point(388, 443);
+			this.btnUpdate.Location = new System.Drawing.Point(381, 443);
 			this.btnUpdate.Name = "btnUpdate";
-			this.btnUpdate.Size = new System.Drawing.Size(171, 28);
+			this.btnUpdate.Size = new System.Drawing.Size(178, 28);
 			this.btnUpdate.TabIndex = 47;
 			this.btnUpdate.Text = "&Apply Update";
 			this.btnUpdate.UseVisualStyleBackColor = false;
@@ -154,9 +157,9 @@
 			this.lnkChangeLog.BackColor = System.Drawing.Color.Transparent;
 			this.lnkChangeLog.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.lnkChangeLog.LinkColor = System.Drawing.Color.Blue;
-			this.lnkChangeLog.Location = new System.Drawing.Point(315, 427);
+			this.lnkChangeLog.Location = new System.Drawing.Point(308, 427);
 			this.lnkChangeLog.Name = "lnkChangeLog";
-			this.lnkChangeLog.Size = new System.Drawing.Size(313, 13);
+			this.lnkChangeLog.Size = new System.Drawing.Size(320, 13);
 			this.lnkChangeLog.TabIndex = 48;
 			this.lnkChangeLog.TabStop = true;
 			this.lnkChangeLog.Text = "See Changelog";
@@ -170,9 +173,9 @@
 			this.lblUpdateInfo.BackColor = System.Drawing.Color.Transparent;
 			this.lblUpdateInfo.Font = new System.Drawing.Font("Segoe UI", 8F);
 			this.lblUpdateInfo.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.lblUpdateInfo.Location = new System.Drawing.Point(315, 443);
+			this.lblUpdateInfo.Location = new System.Drawing.Point(308, 443);
 			this.lblUpdateInfo.Name = "lblUpdateInfo";
-			this.lblUpdateInfo.Size = new System.Drawing.Size(313, 28);
+			this.lblUpdateInfo.Size = new System.Drawing.Size(320, 28);
 			this.lblUpdateInfo.TabIndex = 46;
 			this.lblUpdateInfo.Text = "{0} {1}";
 			this.lblUpdateInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -180,22 +183,35 @@
 			// lblSThx
 			// 
 			this.lblSThx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblSThx.BackColor = System.Drawing.Color.Transparent;
 			this.lblSThx.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-			this.lblSThx.Location = new System.Drawing.Point(315, 320);
+			this.lblSThx.Location = new System.Drawing.Point(308, 320);
 			this.lblSThx.Name = "lblSThx";
-			this.lblSThx.Size = new System.Drawing.Size(313, 30);
+			this.lblSThx.Size = new System.Drawing.Size(320, 30);
 			this.lblSThx.TabIndex = 49;
 			this.lblSThx.Text = "Special Thanks";
 			this.lblSThx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// pictIfme
+			// 
+			this.pictIfme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.pictIfme.BackColor = System.Drawing.Color.Transparent;
+			this.pictIfme.Image = global::ifme.Properties.Resources.AboutIFME;
+			this.pictIfme.Location = new System.Drawing.Point(0, 0);
+			this.pictIfme.Name = "pictIfme";
+			this.pictIfme.Size = new System.Drawing.Size(250, 800);
+			this.pictIfme.TabIndex = 50;
+			this.pictIfme.TabStop = false;
 			// 
 			// frmAbout
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.Control;
-			this.BackgroundImage = global::ifme.Properties.Resources.AboutLeft;
-			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.BackgroundImage = global::ifme.Properties.Resources.AboutBackground;
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.ClientSize = new System.Drawing.Size(640, 480);
+			this.Controls.Add(this.pictIfme);
 			this.Controls.Add(this.lblSThx);
 			this.Controls.Add(this.lblNames);
 			this.Controls.Add(this.btnUpdate);
@@ -218,6 +234,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "{0} {1}";
 			this.Load += new System.EventHandler(this.frmAbout_Load);
+			((System.ComponentModel.ISupportInitialize)(this.pictIfme)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -236,5 +253,6 @@
 		private System.Windows.Forms.LinkLabel lnkChangeLog;
 		private System.Windows.Forms.Label lblUpdateInfo;
 		private System.Windows.Forms.Label lblSThx;
+		private System.Windows.Forms.PictureBox pictIfme;
 	}
 }

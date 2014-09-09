@@ -19,6 +19,15 @@ namespace ifme.hitoha
 		{
 			InitializeComponent();
 			this.Icon = Properties.Resources.ifme_green;
+
+			// Fix linux drawing
+			if (OS.IsLinux)
+			{
+				if (this.Width < 800)
+					this.Width = 800;
+				if (this.Height < 600)
+					this.Height = 600;
+			}
 		}
 
 		private void LoadLang()

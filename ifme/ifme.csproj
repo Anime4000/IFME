@@ -198,9 +198,6 @@
     <None Include="Resources\ifme_green.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Loading.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +208,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SplashScreenC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutIFME.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

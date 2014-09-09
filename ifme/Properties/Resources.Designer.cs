@@ -63,9 +63,19 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AboutLeft {
+        internal static System.Drawing.Bitmap AboutBackground {
             get {
-                object obj = ResourceManager.GetObject("AboutLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("AboutBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AboutIFME {
+            get {
+                object obj = ResourceManager.GetObject("AboutIFME", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
