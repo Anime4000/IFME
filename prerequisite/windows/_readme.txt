@@ -1,9 +1,9 @@
-Put all IFME prerequisite library and file here!
+Put all IFME prerequisite library, addons and file here!
 
-Main prerequisite for Windows:
-1. MediaInfo.dll (64bit)
-2. 7za.exe (64bit)
-3. wget.exe (32bit, static)
+Main prerequisite for Windows (64bit):
+1. MediaInfo.dll
+2. 7za.exe
+3. wget.exe (get an static build)
 
 Addons:
 1. Create "addons" folder.

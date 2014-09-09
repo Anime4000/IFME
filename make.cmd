@@ -7,8 +7,7 @@ cls
 echo.
 echo This script allowing publish IFME after compile. Using %CompileMode% build.
 echo                   1. ifme.exe
-echo                   2. ifme.hitoha.dll
-echo                   3. ifme.hitoha.kawaii.dll
+echo                   2. ifme.framework.dll
 echo.
 echo Please download these file and put on "prerequisite" folder!
 echo                   1. addons\* (all addons)

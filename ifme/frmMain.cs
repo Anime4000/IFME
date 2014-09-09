@@ -1103,7 +1103,6 @@ namespace ifme.hitoha
 
 								int id = int.Parse(MkvExtractId.AttachmentData[q, 2]);
 								string file = MkvExtractId.AttachmentData[q, 0];
-								string mime = MkvExtractId.AttachmentData[q, 1];
 
 								cmdath += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
 
