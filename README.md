@@ -16,7 +16,7 @@ Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that suppor
 
 Making user easy to convert their media files and standardise their collection to the latest format!
 
-IFME capable detect interlace video by **detecting metadata** and automatically deinterlaced as is. Sometime interlace video can be very frustrated if improper encoding, If you backup DVD, [MakeMKV](http://makemkv.com/) capable to keep interlace data that IFME can de-interlaced properly.
+IFME capable detect interlace video by **detecting metadata** and automatically de-interlaced as is. Sometime interlace video can be very frustrated if improper encoding, If you backup DVD, [MakeMKV](http://makemkv.com/) capable to keep interlace data that IFME can de-interlaced properly.
 
 De-interlaced quality follow by video configuration preset:
 
@@ -65,10 +65,9 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 #### Windows
 * Windows XP to Windows 8.1 (64bit)
 * .NET Framework 4.0
-* Need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
 
 #### Linux
-* Ubuntu 14 (practically can be any 64bit Linux)
+* Ubuntu 14 (practically can be any latest 64bit Linux)
 * Latest Mono Runtime
 
 ### Prerequisite
@@ -80,46 +79,17 @@ Put these at `prerequisite\windows` folder:
 * [wget (Command-Line](https://osspack32.googlecode.com/files/wget-1.14.exe) (used for download updates)
 
 #### Binary (Linux)
-Put these at `prerequisite/linux` folder:
+Extract these at `prerequisite/linux` folder:
 
 * [libmediainfo.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
 * [libzen.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
 * [libgpac.so.3 (64bit)](http://gpac.wp.mines-telecom.fr/downloads/gpac-nightly-builds/#Linux%20x86%2064%20bits)
 * [libmozjs185.so.1.0](http://rpm.pbone.net/index.php3/stat/4/idpl/18522795/dir/opensuse_12.x/com/libmozjs185-1_0-32bit-1.8.5-9.2.2.x86_64.rpm.html)
+* 7za (command-line) *download via `apt-get` and copy from `/usr/lib/p7zip/7za`*
 
 #### Addons
 * First, create `addons` folder inside `prerequisite` either `windows` or `linux`.
 * Get all addons [here (windows)](https://sourceforge.net/projects/ifme/files/addons/) or [here (linux)](https://sourceforge.net/projects/ifme/files/addons/linux) and [extract](http://www.7-zip.org/).
-* Or you can create your own, example `addons\mp3\addon.ini`.
-
-```
-[addon]
-type = audio
-
-[profile]
-name = MPEG Layer 3 (MP3)
-dev = LAME
-version = 3.99.5
-homepage = http://lame.sf.net
-container = mp4
-
-[provider]
-name = Gamedude
-update = http://ifme.sourceforge.net/update/addons/mp3.txt
-download = http://master.dl.sourceforge.net/project/ifme/addons/mp3.ifz
-
-; Please refer to IFME documentation on project page (http://ifme.sf.net)
-; {0} for basic command, such as quality or bitrate
-; {1} output file, require | in between, it will converted to "
-; {2} for input file, also require |
-; {3} used for extra command (adv)
-[data]
-app = lame.exe
-cmd = {3} -b {0} |{2}| |{1}.mp3| 
-adv = --preset insane
-quality = 32,45,64,80,96,112,128,160,192,224,256,320
-default = 128
-```
 
 
 ## Development
