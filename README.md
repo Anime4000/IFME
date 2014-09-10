@@ -62,26 +62,36 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 
 ## Requirement
 ### Basics
-* IFME only release under 64bit OS, Windows XP to 8.1
-* IFME using .NET Framework 4.0
-* IFME need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
+#### Windows
+* Windows XP to Windows 8.1 (64bit)
+* .NET Framework 4.0
+* Need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
 
+#### Linux
+* Ubuntu 14 (practically can be any 64bit Linux)
+* Latest Mono Runtime
 
 ### Prerequisite
-IFME require these file to work:
-
-#### Binary
-Put these at `prerequisite` folder:
+#### Binary (Windows)
+Put these at `prerequisite\windows` folder:
 
 * [MediaInfo (64bit DLL)](http://mediaarea.net/en/MediaInfo/Download/Windows) (used for detecting video and audio properties)
-* [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for download main program updates)
+* [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for extract stuff)
+* [wget (Command-Line](https://osspack32.googlecode.com/files/wget-1.14.exe) (used for download updates)
+
+#### Binary (Linux)
+Put these at `prerequisite/linux` folder:
+
+* [libmediainfo.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
+* [libzen.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
+* [libgpac.so.3 (64bit)](http://gpac.wp.mines-telecom.fr/downloads/gpac-nightly-builds/#Linux%20x86%2064%20bits)
+* [libmozjs185.so.1.0](http://rpm.pbone.net/index.php3/stat/4/idpl/18522795/dir/opensuse_12.x/com/libmozjs185-1_0-32bit-1.8.5-9.2.2.x86_64.rpm.html)
 
 #### Addons
-* First, create `addons` folder inside `prerequisite`.
-* Get all addons [here](https://sourceforge.net/projects/ifme/files/addons/) and [extract](http://www.7-zip.org/) to `prerequisite` > `addons`, structure will be like this:
-![alt text](http://ifme.sourceforge.net/images/preq.png)
-
+* First, create `addons` folder inside `prerequisite` either `windows` or `linux`.
+* Get all addons [here (windows)](https://sourceforge.net/projects/ifme/files/addons/) or [here (linux)](https://sourceforge.net/projects/ifme/files/addons/linux) and [extract](http://www.7-zip.org/).
 * Or you can create your own, example `addons\mp3\addon.ini`.
+
 ```
 [addon]
 type = audio
@@ -113,28 +123,28 @@ default = 128
 
 
 ## Development
-### Language migrating
-First IFME was written in VB.NET from version 1.0 until 3.0+ and version 4.0 written in C#, completely start from scratch.
-
 ### Supported IDE
-* Microsoft VisualStudio 2013 (.NET 4.0)
+* Microsoft VisualStudio 2012/2013
 * MonoDevelop/Xamarin Studio
 
 
-### Known bugs
-* Currently IFME compiled under "Debug". x265 encoder has issue with "Release", the symptom is still unknown.
-* File/Path issue, some data no read due Linux use `/` while Windows use `\`,
-
-
 ### Debugging
-* To make IFME fully working, get `MediaInfo.dll` and `unpack.exe` (7za.exe renamed) in root folder (where `ifme.exe` is located)
+* To make IFME fully working, get `MediaInfo` and `unpack` (`7za` renamed) in root folder (where `ifme` is located)
 * Don't forget about `addons` stuff, put everything in `addons` folder
 
 
 ### Release
-Make sure all prerequisite stuff in `prerequisite` folder is fulfil
+#### Windows
+Make sure all prerequisite stuff in `prerequisite\windows` folder is fulfil
 
 * If release a latest version, change File and Assembly version for `ifme` properties.
-* Run `build.cmd` to start compile (require MSBuild 12.0, this included via Visual Studio 2012/2013)
-* New folder `_build` created.
-* Create an installer by opening `build_installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed
+* Run `make.cmd` to start compile (require MSBuild 12.0, this included via Visual Studio 2012/2013)
+* New folder `_build` will created.
+* Create an installer by opening `installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed
+
+#### Linux
+Make sure all prerequisite stuff in `prerequisite/linux` folder is fulfil
+
+* If release a latest version, change File and Assembly version for `ifme` properties.
+* Run `make.sh` to start compile (require mono-xbuild)
+* New folder `_build` will created.

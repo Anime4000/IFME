@@ -201,7 +201,7 @@ namespace ifme.hitoha
 
 					lstQueue.Items.Add(QueueList);
 
-					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n            Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n             Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
@@ -324,7 +324,7 @@ namespace ifme.hitoha
 
 				lstQueue.Items.Add(QueueList);
 
-				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n            Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n             Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 			}
 
 			if (lstQueue.Items.Count != 0)
