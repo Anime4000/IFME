@@ -61,6 +61,9 @@ namespace ifme.hitoha
 			lstAddons.Columns[2].Text = data[Language.Section.Ops]["colVer"];
 			lstAddons.Columns[3].Text = data[Language.Section.Ops]["colDev"];
 			lstAddons.Columns[4].Text = data[Language.Section.Ops]["colProvider"];
+
+			if (OS.IsLinux)
+				tabPerformance.Text += " (require root)";
 		}
 
 		private void GetUserLang()

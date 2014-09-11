@@ -1689,24 +1689,6 @@ namespace ifme.hitoha
 			this.Text = Globals.AppInfo.NameTitle;
 		}
 
-		public string Duration(System.DateTime pastTime)
-		{
-			// Calculate past time - present time and return the result.
-			TimeSpan timeSpan = System.DateTime.Now.Subtract(pastTime);
-			string returnTime = null;
-
-			if (timeSpan.Days.ToString() != "0")
-				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-			else if (timeSpan.Hours.ToString() != "0")
-				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-			else if (timeSpan.Minutes.ToString() != "0")
-				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes, timeSpan.Seconds);
-			else
-				returnTime = String.Format("{0} seconds!", timeSpan.Seconds);
-
-			return returnTime;
-		}
-
 		#region When encoding running, disable control or enable when finish
 		private void EncodingStarted(bool x)
 		{
@@ -1753,6 +1735,26 @@ namespace ifme.hitoha
 			{
 				ctl.Enabled = !x;
 			}
+		}
+		#endregion
+
+		#region Return total time
+		public string Duration(System.DateTime pastTime)
+		{
+			// Calculate past time - present time and return the result.
+			TimeSpan timeSpan = System.DateTime.Now.Subtract(pastTime);
+			string returnTime = null;
+
+			if (timeSpan.Days != 0)
+				returnTime = String.Format("{0}d {1}h {2}m {3}s", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+			else if (timeSpan.Hours != 0)
+				returnTime = String.Format("{0}h {1}m {2}s", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+			else if (timeSpan.Minutes != 0)
+				returnTime = String.Format("{0} min {1} sec", timeSpan.Minutes, timeSpan.Seconds);
+			else
+				returnTime = String.Format("{0} seconds!", timeSpan.Seconds);
+
+			return returnTime;
 		}
 		#endregion
 
@@ -1967,7 +1969,7 @@ namespace ifme.hitoha
 		public void PrintLog(int type, string message)
 		{
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "ifme [";
+			rtfLog.SelectedText = "[";
 
 			switch (type)
 			{
@@ -1991,7 +1993,7 @@ namespace ifme.hitoha
 			}
 
 			rtfLog.SelectionColor = Color.LightGray;
-			rtfLog.SelectedText = "]: " + message + "\n";
+			rtfLog.SelectedText = "] " + message + "\n";
 		}
 		#endregion
 	}

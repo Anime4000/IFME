@@ -1,6 +1,8 @@
-Version 4.5.1.0
+Version 4.6.0.0
 ---------------
+Introducing IFME for Linux (4.5 -> 4.6)
 Fixed video encoder didn't report progress
+Improved program update, update will choose best CDN
 
 Version 4.5.0.0
 ---------------

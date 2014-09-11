@@ -67,8 +67,9 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 * .NET Framework 4.0
 
 #### Linux
-* Ubuntu 14 (practically can be any latest 64bit Linux)
-* Latest Mono Runtime
+* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any Linux 64bit
+* Latest Mono Runtime (`apt-get install mono-complete`)
+
 
 ### Prerequisite
 #### Binary (Windows)
