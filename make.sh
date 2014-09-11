@@ -60,8 +60,8 @@ cp -avr ./prerequisite/linux/lib* ./$bd/
 
 echo "Adjust permission"
 chmod +x ./$bd/ifme.sh
-chmod +x ./$bd/ifme.exe
-chmod +x ./$bd/ifme.framework.dll
+chmod -x ./$bd/ifme.exe
+chmod -x ./$bd/ifme.framework.dll
 chmod +x ./$bd/unpack
 
 echo " "
