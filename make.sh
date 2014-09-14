@@ -38,7 +38,7 @@ rm -r -f ./ifme/bin/x64/$cm
 mkdir ./ifme/bin/x64/$cm
 
 echo "Compiling..."
-$msbulid /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=$cm
+$msbulid /nologo /verbosity:normal ifme.sln /t:Build /p:DefineConstants="MONO";Configuration=$cm
 
 echo "Copy main files"
 cp ./ifme/bin/x64/$cm/iso.gg ./$bd/iso.gg

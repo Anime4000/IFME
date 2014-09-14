@@ -60,9 +60,12 @@ namespace ifme.hitoha
 			rtfLog.SelectionColor = Color.Yellow;
 			rtfLog.SelectedText = String.Format("{0} - by {1} ({2})\nVersion: {3} compiled on {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.Author, Globals.AppInfo.WebSite, Globals.AppInfo.Version, Globals.AppInfo.BuildDate, Globals.AppInfo.CPU);
 			rtfLog.SelectionColor = Color.Red;
-			rtfLog.SelectedText = "Warning: This program still in beta, unexpected event may occur.\n";
+			rtfLog.SelectedText = "Warning: This program still in beta, unexpected behaviour may occur.\n";
+
+		#if MONO
 			rtfLog.SelectionColor = Color.Aqua;
 			rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
+		#endif
 
 			// Migrate previous settings
 			if (Properties.Settings.Default.UpdateSettings)
@@ -825,23 +828,32 @@ namespace ifme.hitoha
 
 		private void btnResume_Click(object sender, EventArgs e)
 		{
-			if (OS.IsLinux)
-				return; // not supported, because using Kernel32.dll
-
 			if (!BGThread.IsBusy)
 				return;
 
 			if (btnResume.Text.Equals(Language.IControl.btnResume))
 			{
 				btnResume.Text = Language.IControl.btnPause;
+
+			#if !MONO
 				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
 				TaskManager.Mod.ResumeProcess(App[0]);
+			#else
+				TaskManager.ModLinux.ResumeProcess(TaskManager.ImageName.Id);
+			#endif
+
 			}
 			else
 			{
 				btnResume.Text = Language.IControl.btnResume;
+
+			#if !MONO
 				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
 				TaskManager.Mod.SuspendProcess(App[0]);
+			#else
+				TaskManager.ModLinux.SuspendProcess(TaskManager.ImageName.Id);
+			#endif
+
 			}
 		}
 
@@ -1543,7 +1555,7 @@ namespace ifme.hitoha
 			else
 			{
 
-				SI.FileName = "/bin/bash";
+				SI.FileName = "bash";
 				SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
 			}
 
@@ -1553,29 +1565,22 @@ namespace ifme.hitoha
 			SI.RedirectStandardOutput = OS.IsWindows;
 			SI.RedirectStandardError = OS.IsWindows;
 
-			if (OS.IsWindows)
-			{
-				P.OutputDataReceived += consoleOutputHandler;
-				P.ErrorDataReceived += consoleErrorHandler;
-			}
+			P.OutputDataReceived += consoleOutputHandler;
+			P.ErrorDataReceived += consoleErrorHandler;
 
 			P.Start();
 
-			if (OS.IsWindows)
-			{
-				P.BeginOutputReadLine();
-				P.BeginErrorReadLine();
-			}
+			P.BeginOutputReadLine();
+			P.BeginErrorReadLine();
 
 			// Set CPU Performance and Affinity
-			TaskManager.ProcessPerf(exe, args);
+			TaskManager.SetPerformance(exe, args);
 
 			P.WaitForExit();
-			int X = P.ExitCode;
-			P.Close();
 
-			// If process not exited, kill it
-			TaskManager.CPU.Kill(exe);
+			int X = P.ExitCode;
+
+			P.Close();
 
 			return X;
 		}
@@ -1694,9 +1699,7 @@ namespace ifme.hitoha
 		{
 			btnOptions.Enabled = !x;
 			btnAbout.Enabled = !x;
-
-			if (OS.IsWindows)
-				btnResume.Visible = x;
+			btnResume.Enabled = x;
 
 			// Hybrid button
 			if (x)
@@ -1927,7 +1930,7 @@ namespace ifme.hitoha
 			Language.IControl.btnResume = data[Language.Section.Root][btnResume.Name];
 			Language.IControl.btnPause = data[Language.Section.Root]["btnPause"];
 			btnStart.Text = Language.IControl.btnStart;
-			btnResume.Text = Language.IControl.btnResume;
+			btnResume.Text = Language.IControl.btnPause;
 		}
 
 		// Developer Use, Capture all valid control for multi language support
