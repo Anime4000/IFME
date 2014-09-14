@@ -5,13 +5,11 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Collections;
-using System.IO;
 
 namespace ifme.hitoha
 {
 	class TaskManager
 	{
-	#if !MONO
 		public static class Mod
 		{
 			[Flags()]
@@ -66,51 +64,16 @@ namespace ifme.hitoha
 			}
 		}
 
-	#else
-		public static class ModLinux
-		{
-			public static void SuspendProcess(int pid)
-			{
-				Process P = new Process();
-				var SI = P.StartInfo;
-
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"kill -STOP {0}\"", pid);
-				SI.UseShellExecute = false;
-				SI.CreateNoWindow = true;
-				SI.RedirectStandardError = true;
-				SI.RedirectStandardOutput = true;
-
-				P.Start();
-			}
-
-			public static void ResumeProcess(int pid)
-			{
-				Process P = new Process();
-				var SI = P.StartInfo;
-
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"kill -CONT {0}\"", pid);
-				SI.UseShellExecute = false;
-				SI.CreateNoWindow = true;
-				SI.RedirectStandardError = true;
-				SI.RedirectStandardOutput = true;
-
-				P.Start();
-			}
-		}
-	#endif
-
 		public static class ImageName
 		{
-			private static int _Id = 0;
+			private static string[] _IM = new string[64];
 			private static string _SIM = "";
 			private static int _LV = 3;
 
-			public static int Id
+			public static string[] List
 			{
-				get { return _Id; }
-				set { _Id = value; }
+				get { return _IM; }
+				set { _IM = value; }
 			}
 
 			public static string Current
@@ -145,7 +108,7 @@ namespace ifme.hitoha
 
 			public static string GetAffinity()
 			{
-				BitArray bin = new BitArray(CPU.Affinity);
+				BitArray bin = new BitArray(TaskManager.CPU.Affinity);
 				byte[] data = new byte[1];
 				bin.CopyTo(data, 0);
 				return BitConverter.ToString(data, 0);
@@ -160,7 +123,7 @@ namespace ifme.hitoha
 				}
 			}
 
-			public static void Apply(string app)
+			public static void SetPerformance(string app)
 			{
 				var Nice = Properties.Settings.Default.Nice;
 
@@ -170,7 +133,6 @@ namespace ifme.hitoha
 					foreach (Process P in Task)
 					{
 						P.ProcessorAffinity = (IntPtr)Int32.Parse(GetAffinity(), System.Globalization.NumberStyles.HexNumber);
-						ImageName.Id = P.Id;
 
 						if (Nice == 0)
 							P.PriorityClass = ProcessPriorityClass.RealTime;
@@ -195,28 +157,27 @@ namespace ifme.hitoha
 			}
 		}
 
-		public static void SetPerformance(string exe, string args)
+		public static void ProcessPerf(string exe, string args)
 		{
-			System.Threading.Thread.Sleep(10);
+			System.Threading.Thread.Sleep(100);
 
-			string hevclo = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC);
-			string hevchi = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
+			string hevc = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC);
+			string hevc10 = System.IO.Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
 
-			// Due x265 in pipe command
-			if (args.Contains(hevclo))
+			if (args.Contains(hevc + ".exe"))
 			{
-				ImageName.Current = hevclo;
-				CPU.Apply(hevclo);
+				TaskManager.ImageName.Current = hevc;
+				TaskManager.CPU.SetPerformance(hevc);
 			}
-			else if (args.Contains(hevchi))
+			else if (args.Contains(hevc10 + ".exe"))
 			{
-				ImageName.Current = hevchi;
-				CPU.Apply(hevchi);
+				TaskManager.ImageName.Current = hevc10;
+				TaskManager.CPU.SetPerformance(hevc10);
 			}
 			else
 			{
-				ImageName.Current = Path.GetFileNameWithoutExtension(exe);
-				CPU.Apply(Path.GetFileNameWithoutExtension(exe));
+				TaskManager.ImageName.Current = System.IO.Path.GetFileNameWithoutExtension(exe);
+				TaskManager.CPU.SetPerformance(System.IO.Path.GetFileNameWithoutExtension(exe));
 			}
 		}
 	}

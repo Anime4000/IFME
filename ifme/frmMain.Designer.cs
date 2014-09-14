@@ -1056,13 +1056,13 @@
 			// btnResume
 			// 
 			this.btnResume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnResume.Enabled = false;
 			this.btnResume.Location = new System.Drawing.Point(422, 445);
 			this.btnResume.Name = "btnResume";
 			this.btnResume.Size = new System.Drawing.Size(100, 23);
 			this.btnResume.TabIndex = 38;
 			this.btnResume.Text = "{0}";
 			this.btnResume.UseVisualStyleBackColor = true;
+			this.btnResume.Visible = false;
 			this.btnResume.Click += new System.EventHandler(this.btnResume_Click);
 			// 
 			// BGThread
