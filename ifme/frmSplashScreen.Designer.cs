@@ -36,9 +36,7 @@
 			this.lblProgress = new System.Windows.Forms.Label();
 			this.tmrFadeIn = new System.Windows.Forms.Timer(this.components);
 			this.tmrFadeOut = new System.Windows.Forms.Timer(this.components);
-			this.pictAni = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictSS)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictAni)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// BGThread
@@ -102,18 +100,6 @@
 			this.tmrFadeOut.Interval = 1;
 			this.tmrFadeOut.Tick += new System.EventHandler(this.tmrFadeOut_Tick);
 			// 
-			// pictAni
-			// 
-			this.pictAni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.pictAni.BackColor = System.Drawing.Color.Transparent;
-			this.pictAni.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictAni.Image = global::ifme.Properties.Resources.Loading;
-			this.pictAni.Location = new System.Drawing.Point(0, 297);
-			this.pictAni.Name = "pictAni";
-			this.pictAni.Size = new System.Drawing.Size(600, 3);
-			this.pictAni.TabIndex = 4;
-			this.pictAni.TabStop = false;
-			// 
 			// frmSplashScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -122,7 +108,6 @@
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 400);
 			this.ControlBox = false;
-			this.Controls.Add(this.pictAni);
 			this.Controls.Add(this.lblVersion);
 			this.Controls.Add(this.lblProgress);
 			this.Controls.Add(this.lblStatus);
@@ -140,7 +125,6 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Load += new System.EventHandler(this.frmSplashScreen_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictSS)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictAni)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -154,6 +138,5 @@
 		private System.Windows.Forms.Label lblProgress;
 		private System.Windows.Forms.Timer tmrFadeIn;
 		private System.Windows.Forms.Timer tmrFadeOut;
-		private System.Windows.Forms.PictureBox pictAni;
 	}
 }

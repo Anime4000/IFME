@@ -198,9 +198,6 @@
     <None Include="Resources\ifme_green.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Loading.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BannerBLeft.png" />
   </ItemGroup>
   <ItemGroup>

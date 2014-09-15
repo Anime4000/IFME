@@ -114,7 +114,14 @@ namespace ifme.hitoha
 
 		private void btnUpdate_Click(object sender, EventArgs e)
 		{
-			var msg = MessageBox.Show(btnUpdate.Text.Remove(btnUpdate.Text.Length - 1).Substring(1) + "?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			var txt = btnUpdate.Text;
+
+			if (txt.Contains('&'))
+				txt = txt.Remove(txt.Length - 1).Substring(1) + " ?";
+			else
+				txt = txt.Remove(txt.Length - 1) + " ?";
+
+			var msg = MessageBox.Show(txt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 			if (msg == System.Windows.Forms.DialogResult.No)
 				return;

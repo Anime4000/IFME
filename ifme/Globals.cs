@@ -90,6 +90,7 @@ namespace ifme.hitoha
 				get { return System.Windows.Forms.Application.ProductVersion; }
 			}
 
+			public static string VersionMsg = null;
 			public static string VersionNew = null;
 			public static bool VersionEqual = true;
 

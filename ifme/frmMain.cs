@@ -51,7 +51,9 @@ namespace ifme.hitoha
 				e.Cancel = true;
 
 			UserSettingsSave();
-			Console.Write("Your settings has been saved, {0} exit safely\n\n", Globals.AppInfo.NameShort);
+			
+			if (OS.IsLinux)
+				Console.Write("[info] Your settings has been saved, {0} exit safely\n", Globals.AppInfo.NameShort);
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -60,9 +62,13 @@ namespace ifme.hitoha
 			rtfLog.SelectionColor = Color.Yellow;
 			rtfLog.SelectedText = String.Format("{0} - by {1} ({2})\nVersion: {3} compiled on {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.Author, Globals.AppInfo.WebSite, Globals.AppInfo.Version, Globals.AppInfo.BuildDate, Globals.AppInfo.CPU);
 			rtfLog.SelectionColor = Color.Red;
-			rtfLog.SelectedText = "Warning: This program still in beta, unexpected event may occur.\n";
+			rtfLog.SelectedText = "Warning: This program still in beta, unexpected behaviour may occur.\n";
 			rtfLog.SelectionColor = Color.Aqua;
-			rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
+			
+			if(OS.IsWindows)
+				rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
+			else
+				rtfLog.SelectedText = "All encoding will redirect to terminal, make sure start application via termianl\n\n";
 
 			// Migrate previous settings
 			if (Properties.Settings.Default.UpdateSettings)
@@ -90,9 +96,8 @@ namespace ifme.hitoha
 			SS.ShowDialog();
 
 			// Display that IFME has new version
-			if (!Globals.AppInfo.VersionEqual)
-				PrintLog(Log.Info, "Latest IFME version: " + Globals.AppInfo.VersionNew + "! Click About button to perform update");
-			
+			PrintLog(Log.Info, Globals.AppInfo.VersionMsg);
+
 			// Load list of ISO language file to control
 			try
 			{
@@ -825,23 +830,36 @@ namespace ifme.hitoha
 
 		private void btnResume_Click(object sender, EventArgs e)
 		{
-			if (OS.IsLinux)
-				return; // not supported, because using Kernel32.dll
-
 			if (!BGThread.IsBusy)
 				return;
 
 			if (btnResume.Text.Equals(Language.IControl.btnResume))
 			{
 				btnResume.Text = Language.IControl.btnPause;
-				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
-				TaskManager.Mod.ResumeProcess(App[0]);
+				
+				if (OS.IsLinux)
+				{
+					TaskManager.ModLinux.ResumeProcess(TaskManager.ImageName.Id);
+				}
+				else
+				{
+					Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
+					TaskManager.Mod.ResumeProcess(App[0]);
+				}
 			}
 			else
 			{
 				btnResume.Text = Language.IControl.btnResume;
-				Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
-				TaskManager.Mod.SuspendProcess(App[0]);
+				
+				if (OS.IsLinux)
+				{
+					TaskManager.ModLinux.SuspendProcess(TaskManager.ImageName.Id);
+				}
+				else
+				{
+					Process[] App = Process.GetProcessesByName(TaskManager.ImageName.Current);
+					TaskManager.Mod.SuspendProcess(App[0]);
+				}
 			}
 		}
 
@@ -968,7 +986,7 @@ namespace ifme.hitoha
 
 				tabEncoding.SelectedIndex = 5;
 				EncodingStarted(true);
-
+				PrintLog(Log.Info, String.Format("{0}: Encoding started...", DateTime.Now));
 				BGThread.RunWorkerAsync(something);
 			}
 		}
@@ -1518,7 +1536,7 @@ namespace ifme.hitoha
 				}
 
 				// Display total wasted time
-				InvokeLogDuration(Log.Info, "This queue take", CurrentQ);
+				InvokeLogDuration(Log.Info, "This session takes", CurrentQ);
 
 				// One file finished
 				if (this.InvokeRequired)
@@ -1543,7 +1561,7 @@ namespace ifme.hitoha
 			else
 			{
 
-				SI.FileName = "/bin/bash";
+				SI.FileName = "bash";
 				SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
 			}
 
@@ -1553,11 +1571,8 @@ namespace ifme.hitoha
 			SI.RedirectStandardOutput = OS.IsWindows;
 			SI.RedirectStandardError = OS.IsWindows;
 
-			if (OS.IsWindows)
-			{
-				P.OutputDataReceived += consoleOutputHandler;
-				P.ErrorDataReceived += consoleErrorHandler;
-			}
+			P.OutputDataReceived += consoleOutputHandler;
+			P.ErrorDataReceived += consoleErrorHandler;
 
 			P.Start();
 
@@ -1567,19 +1582,14 @@ namespace ifme.hitoha
 				P.BeginErrorReadLine();
 			}
 
-			// Set CPU Performance and Affinity
-			TaskManager.ProcessPerf(exe, args);
+			TaskManager.SetPerformance(exe, args);
 
 			P.WaitForExit();
 			int X = P.ExitCode;
 			P.Close();
 
-			// If process not exited, kill it
-			TaskManager.CPU.Kill(exe);
-
 			return X;
 		}
-
 
 		// Standard Output
 		private delegate void consoleOutputDelegate(string outputString);
@@ -1673,11 +1683,11 @@ namespace ifme.hitoha
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
-				PrintLog(Log.Error, "Encoding did not run perfectly, check status log!");
+				PrintLog(Log.Error, String.Format("{0}: Encoding did not run perfectly, check status log!", DateTime.Now));
 			else if (e.Cancelled)
-				PrintLog(Log.Warn, "Encoding canceled :(");
+				PrintLog(Log.Warn, String.Format("{0}: Encoding canceled...", DateTime.Now));
 			else
-				PrintLog(Log.OK, "Encoding completed! Yay!");
+				PrintLog(Log.OK, String.Format("{0}: Encoding completed!", DateTime.Now));
 
 			// Delete everything in temp folder
 			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
@@ -1694,9 +1704,7 @@ namespace ifme.hitoha
 		{
 			btnOptions.Enabled = !x;
 			btnAbout.Enabled = !x;
-
-			if (OS.IsWindows)
-				btnResume.Visible = x;
+			btnResume.Enabled = x;
 
 			// Hybrid button
 			if (x)
@@ -1927,7 +1935,7 @@ namespace ifme.hitoha
 			Language.IControl.btnResume = data[Language.Section.Root][btnResume.Name];
 			Language.IControl.btnPause = data[Language.Section.Root]["btnPause"];
 			btnStart.Text = Language.IControl.btnStart;
-			btnResume.Text = Language.IControl.btnResume;
+			btnResume.Text = Language.IControl.btnPause;
 		}
 
 		// Developer Use, Capture all valid control for multi language support

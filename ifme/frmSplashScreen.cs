@@ -25,22 +25,8 @@ namespace ifme.hitoha
 			this.DoubleBuffered = true;
 			this.Icon = Properties.Resources.ifme_green;
 
-			pictAni.Parent = pictSS;
-			//lblStatus.Parent = pictSS;
-			//lblProgress.Parent = pictSS;
-			//lblVersion.Parent = pictSS;
-
 			client.DownloadProgressChanged += client_DownloadProgressChanged;
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
-
-			// Fix Mono WinForms Drawing
-			if (OS.IsLinux)
-			{
-				pictAni.Top -= 23;
-				//lblStatus.Top -= 23;
-				//lblProgress.Top -= 23;
-				//lblVersion.Top -= 23;
-			}
 		}
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
@@ -77,13 +63,43 @@ namespace ifme.hitoha
 			try
 			{
 				InvokeStatus("Checking version", Globals.AppInfo.Name);
-				string GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
-				Globals.AppInfo.VersionNew = GetVersion;
+				string[] GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt").Split('.');
+				int[] GetVersionInt = new int[4];
 
-				if (GetVersion == Globals.AppInfo.Version)
-					Globals.AppInfo.VersionEqual = true;
-				else
-					Globals.AppInfo.VersionEqual = false;
+				for (int x = 0; x < 4; x++)
+				{
+					GetVersionInt[x] = int.Parse(GetVersion[x]);
+				}
+
+				string[] NowVersion = Globals.AppInfo.Version.Split('.');
+				int[] NowVersionInt = new int[4];
+
+				for (int i = 0; i < 4; i++)
+				{
+					NowVersionInt[i] = int.Parse(NowVersion[i]);
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					if (NowVersionInt[i] == GetVersionInt[i])
+					{
+						Globals.AppInfo.VersionEqual = true;
+						Globals.AppInfo.VersionMsg = String.Format("{0} is Up-to-date!", Globals.AppInfo.NameShort);
+						continue;
+					}
+					else if (NowVersionInt[i] < GetVersionInt[i])
+					{
+						Globals.AppInfo.VersionEqual = false;
+						Globals.AppInfo.VersionMsg = String.Format("Version {0}.{1}.{2}.{3} is available! click About button to perform updates!", GetVersion);
+						break;
+					}
+					else
+					{
+						Globals.AppInfo.VersionEqual = false;
+						Globals.AppInfo.VersionMsg = String.Format("This version intend for private testing, public version are {0}.{1}.{2}.{3}", GetVersion);
+						break;
+					}
+				}
 			}
 			catch (WebException ex)
 			{
