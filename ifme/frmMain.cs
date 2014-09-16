@@ -40,6 +40,9 @@ namespace ifme.hitoha
 					this.Width = 800;
 				if (Properties.Settings.Default.FormSize.Height < 600)
 					this.Height = 600;
+
+				// In UNIX, shutdown require root
+				chkDoneOffMachine.Visible = false;
 			}
 		}
 
@@ -1697,6 +1700,12 @@ namespace ifme.hitoha
 			EncodingStarted(false);
 			MkvExtractId.ClearList();
 			this.Text = Globals.AppInfo.NameTitle;
+
+			// Shutdown on when encoding job completed
+			if (OS.IsWindows)
+				if (chkDoneOffMachine.Checked)
+					if (!e.Cancelled || e.Error != null)
+						Process.Start("shutdown", "/s /f /t 0");
 		}
 
 		#region When encoding running, disable control or enable when finish

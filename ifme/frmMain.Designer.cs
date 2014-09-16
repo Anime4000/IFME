@@ -34,6 +34,7 @@
 			this.btnStart = new System.Windows.Forms.Button();
 			this.tabEncoding = new System.Windows.Forms.TabControl();
 			this.tabQueue = new System.Windows.Forms.TabPage();
+			this.chkDoneOffMachine = new System.Windows.Forms.CheckBox();
 			this.btnQueueBrowseDest = new System.Windows.Forms.Button();
 			this.txtDestDir = new System.Windows.Forms.TextBox();
 			this.chkQueueSaveTo = new System.Windows.Forms.CheckBox();
@@ -186,6 +187,7 @@
 			// 
 			// tabQueue
 			// 
+			this.tabQueue.Controls.Add(this.chkDoneOffMachine);
 			this.tabQueue.Controls.Add(this.btnQueueBrowseDest);
 			this.tabQueue.Controls.Add(this.txtDestDir);
 			this.tabQueue.Controls.Add(this.chkQueueSaveTo);
@@ -202,6 +204,16 @@
 			this.tabQueue.TabIndex = 0;
 			this.tabQueue.Text = "{0}";
 			this.tabQueue.UseVisualStyleBackColor = true;
+			// 
+			// chkDoneOffMachine
+			// 
+			this.chkDoneOffMachine.AutoSize = true;
+			this.chkDoneOffMachine.Location = new System.Drawing.Point(6, 11);
+			this.chkDoneOffMachine.Name = "chkDoneOffMachine";
+			this.chkDoneOffMachine.Size = new System.Drawing.Size(42, 17);
+			this.chkDoneOffMachine.TabIndex = 9;
+			this.chkDoneOffMachine.Text = "{0}";
+			this.chkDoneOffMachine.UseVisualStyleBackColor = true;
 			// 
 			// btnQueueBrowseDest
 			// 
@@ -450,9 +462,9 @@
 			this.cboVideoRateCtrl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoRateCtrl.FormattingEnabled = true;
 			this.cboVideoRateCtrl.Items.AddRange(new object[] {
-            "Single pass, Ratefactor-based - crf",
-            "Single pass, Quantizer-based - cqp",
-            "Single pass, Bitrate-based - abr"});
+            "Ratefactor-based - crf",
+            "Quantizer-based - cqp",
+            "Bitrate-based - abr"});
 			this.cboVideoRateCtrl.Location = new System.Drawing.Point(48, 34);
 			this.cboVideoRateCtrl.Name = "cboVideoRateCtrl";
 			this.cboVideoRateCtrl.Size = new System.Drawing.Size(500, 21);
@@ -1237,5 +1249,6 @@
 		private System.Windows.Forms.RichTextBox rtfLog;
 		private System.Windows.Forms.PictureBox pictBannerMain;
 		private System.Windows.Forms.PictureBox pictBannerRight;
+		private System.Windows.Forms.CheckBox chkDoneOffMachine;
 	}
 }
