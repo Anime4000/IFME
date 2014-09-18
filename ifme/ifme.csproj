@@ -207,10 +207,10 @@
     <None Include="Resources\SplashScreenC.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutBackground.png" />
+    <None Include="Resources\AboutIFME.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutIFME.png" />
+    <None Include="Resources\AboutBackground.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

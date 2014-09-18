@@ -158,9 +158,9 @@ namespace ifme.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("28")]
-        public int VideoRateValue {
+        public string VideoRateValue {
             get {
-                return ((int)(this["VideoRateValue"]));
+                return ((string)(this["VideoRateValue"]));
             }
             set {
                 this["VideoRateValue"] = value;

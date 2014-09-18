@@ -375,7 +375,7 @@ namespace ifme.hitoha
 			var i = cboVideoRateCtrl.SelectedIndex;
 			if (i == 0)
 			{
-				txtVideoRate.ReadOnly = true;
+				//txtVideoRate.ReadOnly = true;
 				lblVideoRateFH.Visible = true;
 				lblVideoRateFL.Visible = true;
 				trkVideoRate.Visible = true;
@@ -389,7 +389,7 @@ namespace ifme.hitoha
 			}
 			else if (i == 1)
 			{
-				txtVideoRate.ReadOnly = true;
+				//txtVideoRate.ReadOnly = true;
 				lblVideoRateFH.Visible = true;
 				lblVideoRateFL.Visible = true;
 				trkVideoRate.Visible = true;
@@ -420,6 +420,46 @@ namespace ifme.hitoha
 				txtVideoRate.Text = Convert.ToString(Convert.ToDouble(trkVideoRate.Value) * 0.1);
 			else
 				txtVideoRate.Text = Convert.ToString(trkVideoRate.Value);
+		}
+
+		private void txtVideoRate_TextChanged(object sender, EventArgs e)
+		{
+			var i = cboVideoRateCtrl.SelectedIndex;
+
+			if (i == 0)
+				if (!String.IsNullOrEmpty(txtVideoRate.Text))
+					if (Convert.ToDouble(txtVideoRate.Text) > 51.0)
+						txtVideoRate.Text = "51";
+					else if (Convert.ToDouble(txtVideoRate.Text) < 0.0)
+						txtVideoRate.Text = "0";
+					else
+						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(txtVideoRate.Text) * (double)10.0);
+				else
+					trkVideoRate.Value = 0;
+			else if (i == 1)
+				if (!String.IsNullOrEmpty(txtVideoRate.Text))
+					if (Convert.ToInt32(txtVideoRate.Text) > 51)
+						txtVideoRate.Text = "51";
+					else if (Convert.ToInt32(txtVideoRate.Text) < 0)
+						txtVideoRate.Text = "0";
+					else
+						trkVideoRate.Value = Convert.ToInt32(txtVideoRate.Text);
+				else
+					trkVideoRate.Value = 0;
+		}
+
+		private void txtVideoRate_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+			{
+				e.Handled = true;
+			}
+
+			// only allow one decimal point
+			if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
+			{
+				e.Handled = true;
+			}
 		}
 
 		private void cboVideoPreset_DropDownClosed(object sender, EventArgs e)
@@ -1856,7 +1896,7 @@ namespace ifme.hitoha
 			}
 
 			// This one cannot put in event of Text Change
-			Properties.Settings.Default.VideoRateValue = Convert.ToInt32(txtVideoRate.Text);
+			Properties.Settings.Default.VideoRateValue = txtVideoRate.Text;
 
 			// Save
 			Properties.Settings.Default.Save();
@@ -2013,5 +2053,6 @@ namespace ifme.hitoha
 			rtfLog.SelectedText = "] " + message + "\n";
 		}
 		#endregion
+
 	}
 }

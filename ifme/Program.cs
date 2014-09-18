@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
+using System.Globalization;
 
 namespace ifme.hitoha
 {
@@ -13,6 +15,7 @@ namespace ifme.hitoha
 		[STAThread]
 		static void Main()
 		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 			if (OS.IsLinux)
 				Console.Write("[info] All encoding log will display on this terminal\n");
 

@@ -39,6 +39,11 @@ namespace ifme.hitoha
 				pictIfme.Width = 250;
 				pictIfme.Height = 800;
 			}
+			else
+			{
+				this.BackgroundImage = Properties.Resources.AboutBackground;
+				this.BackgroundImageLayout = ImageLayout.None;
+			}
 		}
 
 		private void LoadLang()

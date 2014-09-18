@@ -24,6 +24,7 @@ namespace ifme.hitoha
 
 			this.DoubleBuffered = true;
 			this.Icon = Properties.Resources.ifme_green;
+			this.Text = "Starting " + Globals.AppInfo.NameTitle;
 
 			client.DownloadProgressChanged += client_DownloadProgressChanged;
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
@@ -62,7 +63,7 @@ namespace ifme.hitoha
 			// Get IFME version
 			try
 			{
-				InvokeStatus("Checking version", Globals.AppInfo.Name);
+				InvokeStatus("Checking version", Globals.AppInfo.NameTitle);
 				string[] GetVersion = client.DownloadString("http://ifme.sourceforge.net/update/version.txt").Split('.');
 				int[] GetVersionInt = new int[4];
 

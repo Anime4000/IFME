@@ -444,9 +444,12 @@
 			this.txtVideoRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtVideoRate.Location = new System.Drawing.Point(448, 61);
 			this.txtVideoRate.Name = "txtVideoRate";
+			this.txtVideoRate.ShortcutsEnabled = false;
 			this.txtVideoRate.Size = new System.Drawing.Size(100, 21);
 			this.txtVideoRate.TabIndex = 4;
 			this.txtVideoRate.Text = "26";
+			this.txtVideoRate.TextChanged += new System.EventHandler(this.txtVideoRate_TextChanged);
+			this.txtVideoRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVideoRate_KeyPress);
 			// 
 			// lblVideoRateFactor
 			// 
