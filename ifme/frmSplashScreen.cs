@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
+using System.Diagnostics;
 
 namespace ifme.hitoha
 {
@@ -59,6 +60,36 @@ namespace ifme.hitoha
 			// Delete old old stuff
 			if (File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder, "za.dll")))
 				File.Delete(Path.Combine(Globals.AppInfo.CurrentFolder, "za.dll"));
+
+			// Country restriction, MCMC (actually empty file name can be by pass this, as gov. need, had to do it.)
+			try
+			{
+				string country = client.DownloadString("http://api.hostip.info/country.php");
+				if (String.Equals(country, "MY"))
+				{
+					if (!File.Exists(Path.Combine(Globals.AppInfo.CurrentFolder,"zen.imouto")))
+					{
+						var msg = MessageBox.Show("MCMC (Malaysian Communications and Multimedia Commission) just restricted use of this video encoder inside Malaysia users, it require an activation file.\n\nDo you want to get activation file? (Your name, MyKad, Email and Phone number that will send to MCMC)", "Invalid", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+						if (msg == System.Windows.Forms.DialogResult.Yes)
+						{
+							Process.Start("http://fb.com/internetfriendlymediaencoder");
+						}
+						else
+						{
+							this.Invoke((MethodInvoker)delegate { Application.ExitThread(); });
+						}
+					}
+				}
+				else
+				{
+					File.WriteAllText(Path.Combine(Globals.AppInfo.CurrentFolder, "zen.imouto"), "!MY");
+				}
+			}
+			catch (Exception ex)
+			{
+				InvokeStatus("Error", ex.Message);
+				System.Threading.Thread.Sleep(3000);
+			}
 
 			// Get IFME version
 			try

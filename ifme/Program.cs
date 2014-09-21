@@ -16,6 +16,7 @@ namespace ifme.hitoha
 		static void Main()
 		{
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
 			if (OS.IsLinux)
 				Console.Write("[info] All encoding log will display on this terminal\n");
 

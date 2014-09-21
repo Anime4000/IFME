@@ -1067,6 +1067,7 @@
 			this.rtfLog.Size = new System.Drawing.Size(602, 337);
 			this.rtfLog.TabIndex = 2;
 			this.rtfLog.Text = "";
+			this.rtfLog.KeyUp += new System.Windows.Forms.KeyEventHandler(this.rtfLog_KeyUp);
 			// 
 			// btnResume
 			// 

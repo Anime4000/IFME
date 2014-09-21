@@ -80,7 +80,6 @@ namespace ifme.hitoha
 
 			// Get first
 			Names[cnt++] = "People @ MulticoreWare";
-			Names[cnt++] = "People @ United Rig Hunter";
 
 			// Get Names for Langauge author
 			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
