@@ -25,7 +25,6 @@ namespace ifme.hitoha
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
 			this.Icon = Properties.Resources.ifme_green;
-			this.Text = Globals.AppInfo.NameTitle;
 			pictBannerRight.Parent = pictBannerMain;
 
 			// Fix Mono WinForms Drawing
@@ -36,24 +35,30 @@ namespace ifme.hitoha
 				pictBannerMain.Width += 9;
 				pictBannerRight.Left += 116;
 
-				if (Properties.Settings.Default.FormSize.Width < 800)
-					this.Width = 800;
-				if (Properties.Settings.Default.FormSize.Height < 600)
-					this.Height = 600;
-
 				// In UNIX, shutdown require root
 				chkDoneOffMachine.Visible = false;
 			}
+
+			// Enhanced screen, some text (languages) not fit
+			if (Properties.Settings.Default.FormSize.Width < 800)
+				this.Width = 800;
+			if (Properties.Settings.Default.FormSize.Height < 600)
+				this.Height = 600;
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			var msgbox = MessageBox.Show(Language.IMessage.Quit, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if (BGThread.IsBusy)
+			{
+				e.Cancel = true;
+				return;
+			}
 
+			var msgbox = MessageBox.Show(Language.IMessage.Quit, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 			if (msgbox == DialogResult.No)
 				e.Cancel = true;
-
-			UserSettingsSave();
+			else
+				UserSettingsSave();
 			
 			if (OS.IsLinux)
 				Console.Write("[info] Your settings has been saved, {0} exit safely\n", Globals.AppInfo.NameShort);
@@ -93,13 +98,16 @@ namespace ifme.hitoha
 				PrintLog(Log.OK, "New default temporary folder created!");
 			}
 
-			// Check for updates
+			// Check for updates and load addons
 			PrintLog(Log.Info, "Checking for updates");
 			frmSplashScreen SS = new frmSplashScreen();
 			SS.ShowDialog();
 
 			// Display that IFME has new version
 			PrintLog(Log.Info, Globals.AppInfo.VersionMsg);
+
+			// Update form title
+			this.Text = Globals.AppInfo.NameTitle;
 
 			// Load list of ISO language file to control
 			try
@@ -908,7 +916,7 @@ namespace ifme.hitoha
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
-			if (btnStart.Text.Equals(Language.IControl.btnStop))
+			if (BGThread.IsBusy)
 			{
 				var msgbox = MessageBox.Show(Language.IMessage.Halt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 				if (msgbox == DialogResult.Yes)
@@ -1107,8 +1115,8 @@ namespace ifme.hitoha
 					if (!IsInterlaced && String.Equals(video[0].frameRateMode, "VFR"))
 					{
 						// Tell user
-						FormTitle(String.Format("Queue {0} of {1}: Get timecodes for synchronisation", x + 1, queue.Length));
-						InvokeLog(Log.Info, "Reading source time codes for reference. Please Wait...");
+						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
+						InvokeLog(Log.Info, "Indexing source for future reference. Please Wait...");
 
 						// Get source timecode, this gurantee video and audio in sync (https://github.com/FFMS/ffms2/issues/165)
 						// FFmpeg mkvtimestamp_v2 give wrong timecodes, DTS or duplicate frame issue, using FFms Index to provide timecodes
@@ -1182,6 +1190,10 @@ namespace ifme.hitoha
 								string iso = stext[s].languageThree;
 								string fmt = stext[s].format.ToLower();
 								string file = String.Format("subtitle_id_{0}_{1}.{2}", id, iso, fmt);
+
+								// Just in case
+								if (String.IsNullOrEmpty(iso))
+									iso = "und";
 
 								MkvExtractId.SubtitleData[s, 0] = iso;
 								MkvExtractId.SubtitleData[s, 1] = file;
@@ -1502,7 +1514,7 @@ namespace ifme.hitoha
 						}
 						else if (HasSubtitle)
 						{
-							// Turn to disable
+							// Turn to disable for next queue
 							HasSubtitle = false;
 							for (int i = 0; i < MkvExtractId.SubtitleData.GetLength(0); i++)
 							{
@@ -1510,8 +1522,8 @@ namespace ifme.hitoha
 									break;
 								string[] sp = new string[3];
 								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
-								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper(); //file name only (description?)
-								sp[2] = Path.Combine(tmp, MkvExtractId.SubtitleData[i, 1]); //full path
+								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper().Replace('_', ' '); //file name only (description?)
+								sp[2] = Path.Combine(tmp, MkvExtractId.SubtitleData[i, 1]);	//full path
 								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", sp);
 								trackorder = trackorder + "," + id.ToString() + ":0";
 								id++;
@@ -1598,8 +1610,17 @@ namespace ifme.hitoha
 
 			if (OS.IsWindows)
 			{
-				SI.FileName = "cmd.exe";
-				SI.Arguments = String.Format("/c start \"IFME\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+
+				if (args.Contains('>'))
+				{
+					SI.FileName = "cmd";
+					SI.Arguments = String.Format("/c start \"\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+				}
+				else
+				{
+					SI.FileName = exe;
+					SI.Arguments = args;
+				}
 			}
 			else
 			{
@@ -1975,6 +1996,7 @@ namespace ifme.hitoha
 			Language.IMessage.ResetSettingsAsk = data[Language.Section.Msg]["ResetSettingsAsk"];
 			Language.IMessage.ResetSettingsOK = data[Language.Section.Msg]["ResetSettingsOK"];
 			Language.IMessage.MKVOnly = data[Language.Section.Msg]["MKVOnly"];
+			Language.IMessage.NotEmptyFolder = data[Language.Section.Msg]["NotEmptyFolder"];
 			// ToolTip
 			Language.IMessage.ProTipTitle = data[Language.Section.Pro]["Title"];
 			Language.IMessage.ProTipUpdate = data[Language.Section.Pro]["TellUpdate"];

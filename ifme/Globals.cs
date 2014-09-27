@@ -66,13 +66,7 @@ namespace ifme.hitoha
 				get { return Properties.Resources.EpicWord; }
 			}
 
-			/// <summary>
-			/// Return preformatted string for title
-			/// </summary>
-			public static string NameTitle
-			{
-				get { return String.Format("{0} v{1} ( '{2}' )", NameShort, Version, NameCode); }
-			}
+			public static string NameTitle = String.Format("{0} v{1} ( '{2}' )", NameShort, Version, NameCode);
 
 			/// <summary>
 			/// Return program complied date via PE Header
@@ -90,7 +84,7 @@ namespace ifme.hitoha
 				get { return System.Windows.Forms.Application.ProductVersion; }
 			}
 
-			public static string VersionMsg = null;
+			public static string VersionMsg = "Unable to fetch latest version, no internet connected.";
 			public static string VersionNew = null;
 			public static bool VersionEqual = true;
 

@@ -117,6 +117,7 @@ namespace ifme.hitoha
 			public static string ProTipTitle = "";
 			public static string ProTipUpdate = "";
 			public static string MKVOnly = "";
+			public static string NotEmptyFolder = "";
 		}
 
 		public static class IOptions

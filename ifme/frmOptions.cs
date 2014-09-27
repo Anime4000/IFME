@@ -165,14 +165,21 @@ namespace ifme.hitoha
 			GetFolder.ShowNewFolderButton = true;
 			GetFolder.RootFolder = Environment.SpecialFolder.MyComputer;
 
-			if (txtTempDir.Text != "")
+			if (!String.IsNullOrEmpty(txtTempDir.Text))
 			{
 				GetFolder.SelectedPath = txtTempDir.Text;
 			}
 
 			if (GetFolder.ShowDialog() == DialogResult.OK)
 			{
-				txtTempDir.Text = GetFolder.SelectedPath;
+				if (Directory.EnumerateFileSystemEntries(GetFolder.SelectedPath).Any())
+				{
+					MessageBox.Show(Language.IMessage.NotEmptyFolder, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				}
+				else
+				{
+					txtTempDir.Text = GetFolder.SelectedPath;
+				}
 			}
 		}
 

@@ -80,6 +80,7 @@ namespace ifme.hitoha
 
 			// Get first
 			Names[cnt++] = "People @ MulticoreWare";
+			Names[cnt++] = "Pis Kawaii Neko";
 
 			// Get Names for Langauge author
 			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
@@ -137,21 +138,21 @@ namespace ifme.hitoha
 
 			if (OS.IsWindows)
 			{
-				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.cmd"), framework.ShellScript.ScriptWin);
 				cmd = "cmd.exe";
 				arg = "/c START \"\" /B update.cmd \"{0}\" \"{1}\" \"ifme.exe\"";
 				file = "x265ui.7z";
 
+				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.cmd"), framework.ShellScript.ScriptWin);
 				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe"), Path.Combine(Globals.AppInfo.TempFolder, "7za.exe"), true);
 				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "wget.exe"), Path.Combine(Globals.AppInfo.TempFolder, "wget.exe"), true);
 			}
 			else
 			{
-				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.sh"), framework.ShellScript.ScriptLinux);
 				cmd = "sh";
 				arg = "update.sh \"{0}\" \"{1}\" \"ifme.sh\"";
 				file = "x265ui_linux.tar.gz";
 
+				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.sh"), framework.ShellScript.ScriptLinux);
 				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack"), Path.Combine(Globals.AppInfo.TempFolder, "7za"), true);
 			}
 
