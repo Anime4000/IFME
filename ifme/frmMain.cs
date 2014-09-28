@@ -865,7 +865,6 @@ namespace ifme.hitoha
 			}
 
 			// Reload audio encoder
-			cboAudioFormat.Items.Clear();
 			AddAudio();
 
 			// If user choose MP4, uncheck Subtitle
@@ -1608,25 +1607,23 @@ namespace ifme.hitoha
 			Process P = new Process();
 			var SI = P.StartInfo;
 
-			if (OS.IsWindows)
+			if (args.Contains('>'))
 			{
-
-				if (args.Contains('>'))
+				if (OS.IsWindows)
 				{
 					SI.FileName = "cmd";
 					SI.Arguments = String.Format("/c start \"\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
 				}
 				else
 				{
-					SI.FileName = exe;
-					SI.Arguments = args;
+					SI.FileName = "bash";
+					SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
 				}
 			}
 			else
 			{
-
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
+				SI.FileName = exe;
+				SI.Arguments = args;
 			}
 
 			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
@@ -1839,6 +1836,8 @@ namespace ifme.hitoha
 		#region Add and filter all installed audio addons to Combo Box
 		private void AddAudio()
 		{
+			cboAudioFormat.Items.Clear();
+
 			for (int i = 0; i < Addons.Installed.Data.Length; i++)
 			{
 				if (Addons.Installed.Data[i, 0] == null)
