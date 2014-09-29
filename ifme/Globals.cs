@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace ifme.hitoha
 {
@@ -73,7 +74,7 @@ namespace ifme.hitoha
 			/// </summary>
 			public static string BuildDate
 			{
-				get { return RetrieveLinkerTimestamp().Date.ToString("d"); }
+				get { return RetrieveLinkerTimestamp().Date.ToString("dd/MMM/yyyy"); }
 			}
 
 			/// <summary>

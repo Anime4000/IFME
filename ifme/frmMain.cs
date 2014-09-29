@@ -40,8 +40,8 @@ namespace ifme.hitoha
 			}
 
 			// Enhanced screen, some text (languages) not fit
-			if (Properties.Settings.Default.FormSize.Width < 1024)
-				this.Width = 1024;
+			if (Properties.Settings.Default.FormSize.Width < 800)
+				this.Width = 800;
 			if (Properties.Settings.Default.FormSize.Height < 600)
 				this.Height = 600;
 		}

@@ -43,6 +43,17 @@ namespace ifme.hitoha
 			{
 				this.BackgroundImage = Properties.Resources.AboutBackground;
 				this.BackgroundImageLayout = ImageLayout.None;
+
+				btnUpdate.Left = 350;
+
+				foreach (Control ctl in this.Controls)
+				{
+					if (ctl.GetType() == typeof(Label) || ctl.GetType() == typeof(LinkLabel))
+					{
+						ctl.Left = 256;
+						ctl.Width = 372;
+					}
+				}
 			}
 		}
 

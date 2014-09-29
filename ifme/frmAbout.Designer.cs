@@ -144,7 +144,7 @@
 			// 
 			this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
-			this.btnUpdate.Location = new System.Drawing.Point(381, 443);
+			this.btnUpdate.Location = new System.Drawing.Point(378, 443);
 			this.btnUpdate.Name = "btnUpdate";
 			this.btnUpdate.Size = new System.Drawing.Size(178, 28);
 			this.btnUpdate.TabIndex = 47;
