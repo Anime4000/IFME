@@ -68,7 +68,8 @@
 			this.lblWhoDraw.BackColor = System.Drawing.Color.Transparent;
 			this.lblWhoDraw.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoDraw.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoDraw.Location = new System.Drawing.Point(308, 240);
+			this.lblWhoDraw.ForeColor = System.Drawing.Color.Blue;
+			this.lblWhoDraw.Location = new System.Drawing.Point(309, 200);
 			this.lblWhoDraw.Name = "lblWhoDraw";
 			this.lblWhoDraw.Size = new System.Drawing.Size(320, 40);
 			this.lblWhoDraw.TabIndex = 45;
@@ -82,7 +83,8 @@
 			this.lblWhoChar.BackColor = System.Drawing.Color.Transparent;
 			this.lblWhoChar.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblWhoChar.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoChar.Location = new System.Drawing.Point(308, 200);
+			this.lblWhoChar.ForeColor = System.Drawing.Color.Blue;
+			this.lblWhoChar.Location = new System.Drawing.Point(308, 240);
 			this.lblWhoChar.Name = "lblWhoChar";
 			this.lblWhoChar.Size = new System.Drawing.Size(320, 40);
 			this.lblWhoChar.TabIndex = 43;

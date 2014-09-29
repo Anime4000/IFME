@@ -106,7 +106,7 @@ namespace MediaInfoDotNet.Models
 		public string muxingMode { get { return streamCommon.muxingMode; } }
 
 		///<summary>The total number of frames (e.g. video frames).</summary>
-		public int frameCount { get { return streamCommon.frameCount; } }
+		public ulong frameCount { get { return streamCommon.frameCount; } }
 
 		///<summary>Frame rate of the stream in frames per second.</summary>
 		public float frameRate { get { return streamCommon.frameRate; } }

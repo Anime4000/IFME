@@ -40,8 +40,8 @@ namespace ifme.hitoha
 			}
 
 			// Enhanced screen, some text (languages) not fit
-			if (Properties.Settings.Default.FormSize.Width < 800)
-				this.Width = 800;
+			if (Properties.Settings.Default.FormSize.Width < 1024)
+				this.Width = 1024;
 			if (Properties.Settings.Default.FormSize.Height < 600)
 				this.Height = 600;
 		}
@@ -163,9 +163,16 @@ namespace ifme.hitoha
 				proTip.ToolTipTitle = Language.IMessage.ProTipTitle;
 				proTip.Show(Language.IMessage.ProTipUpdate, this.btnAbout, 50, 18, 15000);
 			}
+
+			adjListBoxColumn();
 		}
 
 		private void frmMain_SizeChanged(object sender, EventArgs e)
+		{
+			adjListBoxColumn();
+		}
+
+		private void adjListBoxColumn()
 		{
 			// List View for Queue, fast way
 			// Get size
@@ -1387,7 +1394,7 @@ namespace ifme.hitoha
 							args[2] += String.Format(" -vf \"yadif=1:{0}:0, mcdeint={1}:{0}:{2}, pp=lb\"", fi, mo, qp);
 
 							// Since split field to each frame, total frame become double
-							args[6] = String.Format("-f {0}", (video[0].frameCount * 2));
+							args[6] = String.Format("-f {0}", (UInt64)(video[0].frameCount * 2));
 						}
 
 						// Add space

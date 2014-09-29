@@ -256,12 +256,12 @@ namespace MediaInfoDotNet.Models
 			}
 		}
 
-		int _frameCount = int.MinValue;
+		ulong _frameCount = ulong.MinValue;
 		///<summary>The total number of frames (e.g. video frames).</summary>
-		public int frameCount {
+		public ulong frameCount {
 			get {
-				if(_frameCount == int.MinValue)
-					_frameCount = miGetInt("FrameCount");
+				if (_frameCount == ulong.MinValue)
+					_frameCount = miGetULong("FrameCount");
 				return _frameCount;
 			}
 		}

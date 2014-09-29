@@ -127,6 +127,16 @@ namespace MediaInfoDotNet.Models
 			return parsedValue;
 		}
 
+		///<summary>Returns a MediaInfo value as a ulong, 0 if error.</summary>
+		///<param name="parameter">The MediaInfo parameter.</param>
+		protected ulong miGetULong(string parameter)
+		{
+			ulong parsedValue;
+			string miResult = mediaInfo.Get(kind, id, parameter);
+			ulong.TryParse(miResult, out parsedValue);
+			return parsedValue;
+		}
+
 
 		///<summary>Returns a MediaInfo value as an int, 0 if error.</summary>
 		///<param name="parameter">The MediaInfo parameter.</param>
