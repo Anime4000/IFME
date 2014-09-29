@@ -16,7 +16,7 @@ Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that suppor
 
 Making user easy to convert their media files and standardise their collection to the latest format!
 
-IFME capable detect interlace video by **detecting metadata** and automatically deinterlaced as is. Sometime interlace video can be very frustrated if improper encoding, If you backup DVD, [MakeMKV](http://makemkv.com/) capable to keep interlace data that IFME can de-interlaced properly.
+IFME capable detect interlace video by **detecting metadata** and automatically de-interlaced as is. Sometime interlace video can be very frustrated if improper encoding, If you backup DVD, [MakeMKV](http://makemkv.com/) capable to keep interlace data that IFME can de-interlaced properly.
 
 De-interlaced quality follow by video configuration preset:
 
@@ -62,79 +62,60 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 
 ## Requirement
 ### Basics
-* IFME only release under 64bit OS, Windows XP to 8.1
-* IFME using .NET Framework 4.0
-* IFME need administrator access due changing encoder CPU Priority and Affinity, if installed on Program File, it need write access.
+#### Windows
+* Windows XP to Windows 8.1 (64bit)
+* .NET Framework 4.0
+
+#### Linux
+* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any Linux 64bit
+* Latest Mono Runtime (`apt-get install mono-complete`)
 
 
 ### Prerequisite
-IFME require these file to work:
-
-#### Binary
-Put these at `prerequisite` folder:
+#### Binary (Windows)
+Put these at `prerequisite\windows` folder:
 
 * [MediaInfo (64bit DLL)](http://mediaarea.net/en/MediaInfo/Download/Windows) (used for detecting video and audio properties)
-* [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for download main program updates)
+* [7za (Command-line)](http://downloads.sourceforge.net/sevenzip/7za920.zip) (used for extract stuff)
+* [wget (Command-Line](https://osspack32.googlecode.com/files/wget-1.14.exe) (used for download updates)
+
+#### Binary (Linux)
+Extract these at `prerequisite/linux` folder:
+
+* [libmediainfo.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
+* [libzen.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
+* [libgpac.so.3 (64bit)](http://gpac.wp.mines-telecom.fr/downloads/gpac-nightly-builds/#Linux%20x86%2064%20bits)
+* [libmozjs185.so.1.0](http://rpm.pbone.net/index.php3/stat/4/idpl/18522795/dir/opensuse_12.x/com/libmozjs185-1_0-32bit-1.8.5-9.2.2.x86_64.rpm.html)
+* 7za (command-line) *download via `apt-get` and copy from `/usr/lib/p7zip/7za`*
 
 #### Addons
-* First, create `addons` folder inside `prerequisite`.
-* Get all addons [here](https://sourceforge.net/projects/ifme/files/addons/) and [extract](http://www.7-zip.org/) to `prerequisite` > `addons`, structure will be like this:
-![alt text](http://ifme.sourceforge.net/images/preq.png)
-
-* Or you can create your own, example `addons\mp3\addon.ini`.
-```
-[addon]
-type = audio
-
-[profile]
-name = MPEG Layer 3 (MP3)
-dev = LAME
-version = 3.99.5
-homepage = http://lame.sf.net
-container = mp4
-
-[provider]
-name = Gamedude
-update = http://ifme.sourceforge.net/update/addons/mp3.txt
-download = http://master.dl.sourceforge.net/project/ifme/addons/mp3.ifz
-
-; Please refer to IFME documentation on project page (http://ifme.sf.net)
-; {0} for basic command, such as quality or bitrate
-; {1} output file, require | in between, it will converted to "
-; {2} for input file, also require |
-; {3} used for extra command (adv)
-[data]
-app = lame.exe
-cmd = {3} -b {0} |{2}| |{1}.mp3| 
-adv = --preset insane
-quality = 32,45,64,80,96,112,128,160,192,224,256,320
-default = 128
-```
+* First, create `addons` folder inside `prerequisite` either `windows` or `linux`.
+* Get all addons [here (windows)](https://sourceforge.net/projects/ifme/files/addons/) or [here (linux)](https://sourceforge.net/projects/ifme/files/addons/linux) and [extract](http://www.7-zip.org/).
 
 
 ## Development
-### Language migrating
-First IFME was written in VB.NET from version 1.0 until 3.0+ and version 4.0 written in C#, completely start from scratch.
-
 ### Supported IDE
-* Microsoft VisualStudio 2013 (.NET 4.0)
+* Microsoft VisualStudio 2012/2013
 * MonoDevelop/Xamarin Studio
 
 
-### Known bugs
-* Currently IFME compiled under "Debug". x265 encoder has issue with "Release", the symptom is still unknown.
-* File/Path issue, some data no read due Linux use `/` while Windows use `\`,
-
-
 ### Debugging
-* To make IFME fully working, get `MediaInfo.dll` and `unpack.exe` (7za.exe renamed) in root folder (where `ifme.exe` is located)
+* To make IFME fully working, get `MediaInfo` and `unpack` (`7za` renamed) in root folder (where `ifme` is located)
 * Don't forget about `addons` stuff, put everything in `addons` folder
 
 
 ### Release
-Make sure all prerequisite stuff in `prerequisite` folder is fulfil
+#### Windows
+Make sure all prerequisite stuff in `prerequisite\windows` folder is fulfil
 
 * If release a latest version, change File and Assembly version for `ifme` properties.
-* Run `build.cmd` to start compile (require MSBuild 12.0, this included via Visual Studio 2012/2013)
-* New folder `_build` created.
-* Create an installer by opening `build_installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed
+* Run `make.cmd` to start compile (require MSBuild 12.0, this included via Visual Studio 2012/2013)
+* New folder `_build` will created.
+* Create an installer by opening `installer.iss` script, this require [InnoSetup](http://www.jrsoftware.org/isinfo.php) to be installed
+
+#### Linux
+Make sure all prerequisite stuff in `prerequisite/linux` folder is fulfil
+
+* If release a latest version, change File and Assembly version for `ifme` properties.
+* Run `make.sh` to start compile (require mono-xbuild)
+* New folder `_build` will created.
