@@ -6,7 +6,9 @@ Added 	Shutdown feature when encoding job completed [Windows] (suggestion by Nei
 Added	Allow manually adjust value for Rate-control [Both]
 Fixed 	Video encoder didn't report progress [Windows]
 Fixed	Rate-control value saved in wrong data type, int < float [Both]
+Fixed	Command-line too long [Windows]
 Improve	Program update, update will choose best CDN (using wget) [Both]
+Improve	MediaInfo video frame now store in unsigned 64bit integer [Both]
 
 Version 4.5.0.0
 ---------------
