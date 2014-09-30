@@ -1,6 +1,8 @@
 # Internet Friendly Media Encoder
 ## History
-Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
+Back on April 2013, there are no nVidia ShadowPlay or even AMD Gaming Evolve. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
+
+IFME using FFmpeg back-end to decode and encode source file.
 
 ## Introduction
 ### Downloads
@@ -57,7 +59,7 @@ IFME will more happy if have multiple language support, allow non-English user c
 
 
 ### Addons
-IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](#addons-1), by read sample on `addons` folder or read our documentation
+IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](https://github.com/Anime4000/IFME/blob/master/ifme/addons/null/addon.ini), by read sample on `addons` folder or read our documentation
 
 
 ## Requirement
