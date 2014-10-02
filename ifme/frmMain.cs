@@ -1118,7 +1118,7 @@ namespace ifme.hitoha
 				if (!BGThread.CancellationPending)
 				{
 					// Only progressive and VFR video can be extract timecodes
-					if (!IsInterlaced && String.Equals(video[0].frameRateMode, "VFR"))
+					if (String.Equals(video[0].frameRateMode, "VFR"))
 					{
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
@@ -1182,8 +1182,7 @@ namespace ifme.hitoha
 								cmdath += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
 
 								// Now this video has attachment in it, change to true
-								if (!HasAttachment)
-									HasAttachment = true;
+								HasAttachment = true;
 							}
 
 							StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
@@ -1197,10 +1196,6 @@ namespace ifme.hitoha
 								string fmt = stext[s].format.ToLower();
 								string file = String.Format("subtitle_id_{0}_{1}.{2}", id, iso, fmt);
 
-								// Just in case
-								if (String.IsNullOrEmpty(iso))
-									iso = "und";
-
 								MkvExtractId.SubtitleData[s, 0] = iso;
 								MkvExtractId.SubtitleData[s, 1] = file;
 								MkvExtractId.SubtitleData[s, 2] = id.ToString();
@@ -1208,8 +1203,7 @@ namespace ifme.hitoha
 								cmdsub += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
 
 								// Now this video has subtitle in it, change to true
-								if (stext.Count != 0)
-									HasSubtitle = true;
+								HasSubtitle = stext.Count == 0 ? false : true;
 							}
 
 							StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
@@ -1229,15 +1223,20 @@ namespace ifme.hitoha
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
 						int[] AudioMapID = new int[100];
 						for (int i = 0; i < audio.Count; i++)
-						{
 							AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
-						}
 
 						// Decode Audio
 						switch (AudMode)
 						{
 							case 0:
+								if (AudFormat == 0)
+								{
+									for (int i = 0; i < audio.Count; i++)
+										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, audio[i].format.ToLower()))));
+									break;
+								}
 								goto default;
+
 							case 1:
 								if (audio.Count == 1)
 									goto default;
@@ -1245,25 +1244,24 @@ namespace ifme.hitoha
 								string arg = null;
 								string map = null;
 								for (int i = 0; i < audio.Count; i++)
-								{
 									map += String.Format("-map 0:{0} ", AudioMapID[i].ToString());
-								}
+								
 								map = map.Remove(map.Length - 1);
 								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\"", queue[x], map, audio.Count, AudFreq, Path.Combine(tmp, "audio1.wav"));
 
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, arg);
 
 								break;
+
 							case 2:
 								if (audio.Count == 1)
 									goto default;
 
 								for (int i = 0; i < audio.Count; i++)
-								{
 									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\"", queue[x], AudioMapID[i], AudFreq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
-								}
 
 								break;
+
 							default:
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
 								break;
@@ -1354,7 +1352,7 @@ namespace ifme.hitoha
 							args[4] = String.Format("-t {0}", VidTune);
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
-						args[6] = String.Format("-f {0}", video[0].frameCount);
+						args[6] = String.Format("-f \"{0}\"", video[0].frameCount);
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
@@ -1394,7 +1392,7 @@ namespace ifme.hitoha
 							args[2] += String.Format(" -vf \"yadif=1:{0}:0, mcdeint={1}:{0}:{2}, pp=lb\"", fi, mo, qp);
 
 							// Since split field to each frame, total frame become double
-							args[6] = String.Format("-f {0}", (UInt64)(video[0].frameCount * 2));
+							args[6] = String.Format("-f \"{0}\"", (video[0].frameCount * 2));
 						}
 
 						// Add space

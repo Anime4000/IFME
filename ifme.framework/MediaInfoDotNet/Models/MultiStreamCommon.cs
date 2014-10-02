@@ -350,20 +350,20 @@ namespace MediaInfoDotNet.Models
 		///<summary>2-letter (if available) or 3-letter ISO code.</summary>
 		public string language {
 			get {
+				var iso = miGetString("Language");
 				if(_language == null)
-					_language = miGetString("Language");
+					_language = (String.IsNullOrEmpty(iso) ? "und" : iso);
 				return _language;
 			}
 		}
 
 		string _languageThree = null;
-		///<summary>3-letter ISO 639-2 if exists, else empty.</summary>
-		public string languageThree
-		{
-			get
-			{
+		///<summary>3-letter ISO 639-2 if exists, else undefined.</summary>
+		public string languageThree {
+			get {
+				var iso = miGetString("Language/String3");
 				if (_languageThree == null)
-					_languageThree = miGetString("Language/String3");
+					_languageThree = (String.IsNullOrEmpty(iso) ? "und" : iso);
 				return _languageThree;
 			}
 		}

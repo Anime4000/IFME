@@ -91,7 +91,7 @@ namespace MediaInfoDotNet.Models
 		///<summary>2-letter (if available) or 3-letter ISO code.</summary>
 		public string language { get { return streamCommon.language; } }
 
-		///<summary>3-letter ISO 639-2 if exists, else empty.</summary>
+		///<summary>3-letter ISO 639-2 if exists, else undefined.</summary>
 		public string languageThree { get { return streamCommon.languageThree; } }
 		#endregion
 
