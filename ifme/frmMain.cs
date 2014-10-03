@@ -499,7 +499,17 @@ namespace ifme.hitoha
 
 		private void cboAudioFormat_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			int i = cboAudioFormat.SelectedIndex;
+			string[] temp = new string[2];
+			int i = 0;
+
+			for (int x = 0; x < Addons.Installed.Data.GetLength(0); x++)
+			{
+				if(String.Equals(Addons.Installed.Data[x, 2], cboAudioFormat.Text))
+				{
+					temp = Addons.Installed.Data[x, 0].Split('|');
+					i = int.Parse(temp[0]);
+				}
+			}
 
 			lblAudioFInfo.Text = Addons.Installed.Data[i, 3] + "\n"
 				+ Addons.Installed.Data[i, 4] + "\n"
@@ -1232,7 +1242,14 @@ namespace ifme.hitoha
 								if (AudFormat == 0)
 								{
 									for (int i = 0; i < audio.Count; i++)
-										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, audio[i].format.ToLower()))));
+									{
+										var fmt = audio[i].format.ToLower();
+
+										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "AAC", StringComparison.CurrentCultureIgnoreCase))
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
+										else
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -c:a libvo_aacenc -b:a {1}k -y \"audio{2}.m4a\"", queue[x], AudBitR, i + 1));
+									}
 									break;
 								}
 								goto default;

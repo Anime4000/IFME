@@ -75,7 +75,9 @@ namespace ifme.hitoha
 
 			public static int Get()
 			{
-				int i = 0;
+				int i = 1;
+
+				// Fetch from addons folder
 				foreach (var item in Directory.GetDirectories(Folder))
 				{
 					if (!System.IO.File.Exists(Path.Combine(item, IniFile)))
@@ -87,7 +89,7 @@ namespace ifme.hitoha
 					if (data["addon"]["type"] != "audio")
 						continue;
 
-					Data[i, 0] = item;
+					Data[i, 0] = i + "|" + item;
 					Data[i, 1] = data["addon"]["type"];
 					Data[i, 2] = data["profile"]["name"];
 					Data[i, 3] = data["profile"]["dev"];
@@ -105,6 +107,24 @@ namespace ifme.hitoha
 
 					i++;
 				}
+
+				// Passthrough
+				Data[0, 0] = "0|null";
+				Data[0, 1] = "audio";
+				Data[0, 2] = "Passthrough/Extract all audio (Mode configuration ignored)";
+				Data[0, 3] = "// If MP4 output format is selected,";
+				Data[0, 4] = "// unsupported codec will converted to AAC.";
+				Data[0, 5] = "// Just-in-case, choose best quality as you like.";
+				Data[0, 6] = "mp4";
+				Data[0, 7] = "Build-in";
+				Data[0, 8] = "http://example.com/example.txt";
+				Data[0, 9] = "http://example.com/example.ifz";
+				Data[0, 10] = "../ffmpeg/ffmpeg";
+				Data[0, 11] = "";
+				Data[0, 12] = "";
+				Data[0, 13] = "45,64,80,96,112,128,160,192,224,256,320,499";
+				Data[0, 14] = "128";
+
 				return GetBuildin(i);
 			}
 

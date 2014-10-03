@@ -291,11 +291,12 @@ namespace ifme.hitoha
 				var msgbox = MessageBox.Show(Language.IMessage.RemoveMsg, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 				if (msgbox == DialogResult.Yes)
 				{
+					string[] temp = Addons.Installed.Data[i, 0].Split('|');
 					for (int h = 0; h < lstAddons.SelectedItems.Count; h++)
 					{
 						lstAddons.Items.Remove(lstAddons.SelectedItems[h]);
 					}
-					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
+					System.IO.Directory.Delete(temp[1], true);
 
 					// remove selected row of array by bring next array to current and nulled last array
 					for (int j = i; j < Addons.Installed.Data.GetLength(0) - 1; j++)
