@@ -1239,23 +1239,10 @@ namespace ifme.hitoha
 						switch (AudMode)
 						{
 							case 0:
-								if (AudFormat == 0)
-								{
-									for (int i = 0; i < audio.Count; i++)
-									{
-										var fmt = audio[i].format.ToLower();
-
-										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "AAC", StringComparison.CurrentCultureIgnoreCase))
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
-										else
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -c:a libvo_aacenc -b:a {1}k -y \"audio{2}.m4a\"", queue[x], AudBitR, i + 1));
-									}
-									break;
-								}
 								goto default;
 
 							case 1:
-								if (audio.Count == 1)
+								if (audio.Count == 1 || AudFormat == 0)
 									goto default;
 
 								string arg = null;
@@ -1271,7 +1258,7 @@ namespace ifme.hitoha
 								break;
 
 							case 2:
-								if (audio.Count == 1)
+								if (audio.Count == 1 || AudFormat == 0)
 									goto default;
 
 								for (int i = 0; i < audio.Count; i++)
@@ -1280,6 +1267,20 @@ namespace ifme.hitoha
 								break;
 
 							default:
+								if (AudFormat == 0)
+								{
+									for (int i = 0; i < audio.Count; i++)
+									{
+										var fmt = audio[i].format.ToLower();
+
+										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "AAC", StringComparison.CurrentCultureIgnoreCase))
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
+										else
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -c:a libvo_aacenc -b:a {1}k -y \"audio{2}.m4a\"", queue[x], AudBitR, i + 1));
+									}
+									break;
+								}
+
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
 								break;
 						}
@@ -1300,39 +1301,42 @@ namespace ifme.hitoha
 				// Encode all decoded audio
 				if (!BGThread.CancellationPending)
 				{
-					// Set title
-					FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", x + 1, queue.Length));
-					InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
-
-					//                      Folder\app.exe
-					string app = Path.Combine(Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
-					string cmd = Addons.Installed.Data[AudFormat, 11];
-
-					// get all wav file
-					foreach (var item in Directory.GetFiles(tmp, "*.wav"))
+					if (AudFormat != 0)
 					{
-						/* example of ogg
-						 * {3} -b {0} "{2}" -o "{1}.ogg"
-						 * example of opus
-						 * --bitrate {0} {3} "{2}" "{1}.opus"
-						 * 0 = extra command-line
-						 * 1 = bit rate/level
-						 * 2 = output file
-						 * 3 = input file
-						 */
-						string[] args = new string[4];
-						args[0] = AudBitR;
-						args[1] = Path.Combine(tmp, Path.GetFileNameWithoutExtension(item));
-						args[2] = item;
-						args[3] = Addons.Installed.Data[AudFormat, 12];
+						// Set title
+						FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", x + 1, queue.Length));
+						InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
 
-						PEC = StartProcess(app, String.Format(cmd, args));
-					}
+						//                      Folder\app.exe
+						string app = Path.Combine(Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
+						string cmd = Addons.Installed.Data[AudFormat, 11];
 
-					if (PEC == 1)
-					{
-						e.Cancel = true;
-						break;
+						// get all wav file
+						foreach (var item in Directory.GetFiles(tmp, "*.wav"))
+						{
+							/* example of ogg
+							 * {3} -b {0} "{2}" -o "{1}.ogg"
+							 * example of opus
+							 * --bitrate {0} {3} "{2}" "{1}.opus"
+							 * 0 = extra command-line
+							 * 1 = bit rate/level
+							 * 2 = output file
+							 * 3 = input file
+							 */
+							string[] args = new string[4];
+							args[0] = AudBitR;
+							args[1] = Path.Combine(tmp, Path.GetFileNameWithoutExtension(item));
+							args[2] = item;
+							args[3] = Addons.Installed.Data[AudFormat, 12];
+
+							PEC = StartProcess(app, String.Format(cmd, args));
+						}
+
+						if (PEC == 1)
+						{
+							e.Cancel = true;
+							break;
+						}
 					}
 				}
 				else
