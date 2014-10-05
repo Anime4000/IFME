@@ -4,6 +4,7 @@ Version 4.7.0.0
 [fixed] Video encoder didn't report progress [Windows]
 [fixed] File exist issue where MP4 output selected [Both]
 [fixed] Delay instant shutdown after complete encoding, put 3 second delay [Windows]
+[fixed] Language detection, using "und" instead of empty string [Both]
 
 Version 4.6.0.0
 ---------------
