@@ -1,10 +1,18 @@
 # Internet Friendly Media Encoder
-## History
+## Introduction
+### History
 Back on April 2013, there are no nVidia ShadowPlay or even AMD Gaming Evolve. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
 
 IFME using FFmpeg back-end to decode and encode source file.
 
-## Introduction
+### Donation
+Support this project! Even with little penny make this project alive and up-to-date!
+
+You can donate via to my paypal `ilham92_sakura@yahoo.com`. If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame*
+
+*Ilham in Arabic means Inspiration.*
+
+
 ### Downloads
 Binary (Installer/Archive) can be [found here!](http://ifme.sourceforge.net/?page/download.html)
 
@@ -71,6 +79,8 @@ IFME 4.0 support addons/plugins style, every-time IFME starts, always check new 
 #### Linux
 * Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any Linux 64bit
 * Latest Mono Runtime (`apt-get install mono-complete`)
+* Latest MediaInfo (`apt-get install mediainfo`)
+* Latest libboost (`apt-get install libboost-all-dev`)
 
 
 ### Prerequisite
@@ -84,8 +94,6 @@ Put these at `prerequisite\windows` folder:
 #### Binary (Linux)
 Extract these at `prerequisite/linux` folder:
 
-* [libmediainfo.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
-* [libzen.so.0 (64bit)](http://mediaarea.net/en/MediaInfo/Download/Ubuntu)
 * [libgpac.so.3 (64bit)](http://gpac.wp.mines-telecom.fr/downloads/gpac-nightly-builds/#Linux%20x86%2064%20bits)
 * [libmozjs185.so.1.0](http://rpm.pbone.net/index.php3/stat/4/idpl/18522795/dir/opensuse_12.x/com/libmozjs185-1_0-32bit-1.8.5-9.2.2.x86_64.rpm.html)
 * 7za (command-line) *download via `apt-get` and copy from `/usr/lib/p7zip/7za`*
