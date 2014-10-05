@@ -733,6 +733,9 @@ namespace ifme.hitoha
 
 		private void chkAttachEnable_CheckedChanged(object sender, EventArgs e)
 		{
+			if (!chkSubEnable.Checked)
+				chkAttachEnable.Checked = false;
+
 			foreach (Control ctrl in tabAttachment.Controls)
 			{
 				if (!(ctrl is CheckBox))
@@ -1273,10 +1276,10 @@ namespace ifme.hitoha
 									{
 										var fmt = audio[i].format.ToLower();
 
-										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "AAC", StringComparison.CurrentCultureIgnoreCase))
+										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "aac", StringComparison.CurrentCultureIgnoreCase))
 											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
 										else
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -c:a libvo_aacenc -b:a {1}k -y \"audio{2}.m4a\"", queue[x], AudBitR, i + 1));
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"", queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
 									}
 									break;
 								}
@@ -1580,7 +1583,7 @@ namespace ifme.hitoha
 						command = String.Format("-add \"{0}#video:name={1}:fmt=HEVC\"", Path.Combine(tmp, "video.hevc"), Globals.AppInfo.WritingApp);
 						
 						// Audio
-						foreach (var item in System.IO.Directory.GetFiles(tmp, "*.mp4"))
+						foreach (var item in System.IO.Directory.GetFiles(tmp, "audio*"))
 						{
 							command += " ";
 							command += String.Format("-add \"{0}#audio:name=Track {1}\"", item, i.ToString());
@@ -1594,7 +1597,7 @@ namespace ifme.hitoha
 						if (File.Exists(Path.Combine(tmp, "timecodes.txt")))
 							PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\" \"{1}\" -o \"{2}.mp4\"", Path.Combine(tmp, "timecodes.txt"), Path.Combine(tmp, "mod.mp4"), FileOut));
 						else
-							File.Move(Path.Combine(tmp, "mod.mp4"), FileOut + ".mp4");
+							File.Copy(Path.Combine(tmp, "mod.mp4"), FileOut + ".mp4", true);
 					}
 
 					if (PEC == 1)
