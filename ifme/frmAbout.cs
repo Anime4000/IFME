@@ -151,7 +151,7 @@ namespace ifme.hitoha
 			{
 				cmd = "cmd.exe";
 				arg = "/c START \"\" /B update.cmd \"{0}\" \"{1}\" \"ifme.exe\"";
-				file = "x265ui.7z";
+				file = "x265ui-x64_win.7z";
 
 				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.cmd"), framework.ShellScript.ScriptWin);
 				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe"), Path.Combine(Globals.AppInfo.TempFolder, "7za.exe"), true);
@@ -161,7 +161,7 @@ namespace ifme.hitoha
 			{
 				cmd = "sh";
 				arg = "update.sh \"{0}\" \"{1}\" \"ifme.sh\"";
-				file = "x265ui_linux.tar.gz";
+				file = "x265ui-x64_linux.tar.gz";
 
 				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.sh"), framework.ShellScript.ScriptLinux);
 				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack"), Path.Combine(Globals.AppInfo.TempFolder, "7za"), true);
