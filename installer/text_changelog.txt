@@ -1,8 +1,9 @@
-Version 4.6.1.0
+Version 4.7.0.0
 ---------------
 [added] Audio passthrough feature (suggestion by @thefinaldegree)
 [fixed] Video encoder didn't report progress [Windows]
 [fixed] File exist issue where MP4 output selected [Both]
+[fixed] Delay instant shutdown after complete encoding, put 3 second delay [Windows]
 
 Version 4.6.0.0
 ---------------
