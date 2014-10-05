@@ -1792,7 +1792,7 @@ namespace ifme.hitoha
 			if (OS.IsWindows)
 				if (chkDoneOffMachine.Checked)
 					if (!e.Cancelled || e.Error != null)
-						Process.Start("shutdown", "/s /f /t 0");
+						Process.Start("shutdown", "/s /f /t 3 /c \"Queue encoding complete!\"");
 		}
 
 		#region When encoding running, disable control or enable when finish
