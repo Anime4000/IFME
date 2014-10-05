@@ -8,7 +8,7 @@ IFME using FFmpeg back-end to decode and encode source file.
 ### Donation
 Support this project! Even with little penny make this project alive and up-to-date!
 
-You can donate via to my paypal `ilham92_sakura@yahoo.com`. If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame*
+You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame*
 
 *Ilham in Arabic means Inspiration.*
 
