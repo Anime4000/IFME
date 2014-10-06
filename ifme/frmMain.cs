@@ -1281,12 +1281,22 @@ namespace ifme.hitoha
 								break;
 
 							case 3:
+								var modecopy = "-i \"{0}\" -acodec copy -y \"{1}\"";
+								var modeconv = "-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"";
+
 								for (int i = 0; i < audio.Count; i++)
 									if (Properties.Settings.Default.UseMkv)
-										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
+										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
 									else
-										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"", queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
-								break;
+										if (String.Equals(audio[i].format.ToLower(), "aac") || 
+											String.Equals(audio[i].format.ToLower(), "ac-3") || 
+											String.Equals(audio[i].format.ToLower(), "alac") || 
+											audio[i].format.ToLower().Contains("mpeg"))
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+										else
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modeconv, queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+
+									break;
 
 							default:
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
