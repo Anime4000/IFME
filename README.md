@@ -14,12 +14,14 @@ Support this project! Even with little penny make this project alive and up-to-d
 You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame*
 
 ### Requirement
+IFME only release under 64bit (*[AMD64](https://en.wikipedia.org/wiki/X86-64)*)
+
 #### Windows
-* 64bit Windows XP, Vista, 7, 8, 8.1, 10
+* Windows XP, Vista, 7, 8, 8.1, 10
 * .NET Framework 4.0
 
 #### Linux
-* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any 64bit Linux Desktop with *Multimedia Support*
+* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any Linux Desktop with *Multimedia Support*
 * Latest Mono Runtime (`apt-get install mono-complete`)
 * Latest MediaInfo (`apt-get install mediainfo`)
 * Latest libavformat (`apt-get install libavformat-dev`) *ffmsindex*
