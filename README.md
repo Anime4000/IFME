@@ -77,6 +77,7 @@ IFME will more happy if have multiple language support, allow non-English user c
 ### Addons
 IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](https://github.com/Anime4000/IFME/blob/master/ifme/addons/null/addon.ini), by read sample on `addons` folder or read our documentation
 
+## Development
 ### Prerequisite
 #### Binary (Windows)
 Put these at `prerequisite\windows` folder:
@@ -96,17 +97,13 @@ Extract these at `prerequisite/linux` folder:
 * First, create `addons` folder inside `prerequisite` either `windows` or `linux`.
 * Get all addons [here (windows)](https://sourceforge.net/projects/ifme/files/addons/) or [here (linux)](https://sourceforge.net/projects/ifme/files/addons/linux) and [extract](http://www.7-zip.org/).
 
-
-## Development
 ### Supported IDE
 * Microsoft VisualStudio 2012/2013
 * MonoDevelop/Xamarin Studio
 
-
 ### Debugging
 * To make IFME fully working, get `MediaInfo` and `unpack` (`7za` renamed) in root folder (where `ifme` is located)
 * Don't forget about `addons` stuff, put everything in `addons` folder
-
 
 ### Release
 #### Windows
