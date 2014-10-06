@@ -1244,10 +1244,16 @@ namespace ifme.hitoha
 						switch (AudMode)
 						{
 							case 0:
-								goto default;
+								if (AudFormat == 0)
+									goto case 3;
+								else
+									goto default;
 
 							case 1:
-								if (audio.Count == 1 || AudFormat == 0)
+								if (AudFormat == 0)
+									goto case 3;
+
+								if (audio.Count == 1)
 									goto default;
 
 								string arg = null;
@@ -1263,7 +1269,10 @@ namespace ifme.hitoha
 								break;
 
 							case 2:
-								if (audio.Count == 1 || AudFormat == 0)
+								if (AudFormat == 0)
+									goto case 3;
+
+								if (audio.Count == 1)
 									goto default;
 
 								for (int i = 0; i < audio.Count; i++)
@@ -1271,28 +1280,15 @@ namespace ifme.hitoha
 
 								break;
 
+							case 3:
+								for (int i = 0; i < audio.Count; i++)
+									if (Properties.Settings.Default.UseMkv)
+										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
+									else
+										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"", queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+								break;
+
 							default:
-								if (AudFormat == 0)
-								{
-									for (int i = 0; i < audio.Count; i++)
-									{
-										var fmt = audio[i].format.ToLower();
-
-										if (String.Equals(fmt, "vorbis"))
-											fmt = "ogg";
-										else if (String.Equals(fmt, "ac-3"))
-											fmt = "m4a";
-										else if (String.Equals(fmt, "mpeg audio"))
-											fmt = "mpeg";
-
-										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "aac"))
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
-										else
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"", queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
-									}
-									break;
-								}
-
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
 								break;
 						}
