@@ -5,21 +5,26 @@ Back on April 2013, there are no nVidia ShadowPlay or even AMD Gaming Evolve. Or
 
 IFME using FFmpeg back-end to decode and encode source file.
 
+### License
+IFME using [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/). for both `Source Code` and `Artwork`, for more info, [click here](http://ifme.sourceforge.net/index.html?page/rights.html).
+
 ### Donation
 Support this project! Even with little penny make this project alive and up-to-date!
 
 You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame*
 
-*Ilham in Arabic means Inspiration.*
+### Requirement
+#### Windows
+* 64bit Windows XP, Vista, 7, 8, 8.1, 10
+* .NET Framework 4.0
 
-
-### Downloads
-Binary (Installer/Archive) can be [found here!](http://ifme.sourceforge.net/?page/download.html)
-
-### License
-IFME using [GNU GPL v2](http://choosealicense.com/licenses/gpl-2.0/). for both `Source Code` and `Artwork`.
-
-* For more info, [click here](http://ifme.sourceforge.net/index.html?page/rights.html).
+#### Linux
+* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any 64bit Linux Desktop with *Multimedia Support*
+* Latest Mono Runtime (`apt-get install mono-complete`)
+* Latest MediaInfo (`apt-get install mediainfo`)
+* Latest libavformat (`apt-get install libavformat-dev`) *ffmsindex*
+* Latest libswscale (`apt-get install libswscale-dev`) *ffmsindex*
+* Latest libboost (`apt-get install libboost-all-dev`) *mkvtoolnix*
 
 ### Uses
 Internet Friendly Media Encoder (known as IFME) one x265 GUI encoder that support audio manipulation, subtitle and attachment support.
@@ -53,6 +58,9 @@ IFME is a queue based converter, in order easy to use, IFME will keep original p
 * MKV Attachment
 * MKV Chapters
 
+### Downloads
+Binary (Installer/Archive) can be [found here!](http://ifme.sourceforge.net/?page/download.html)
+
 ## Contribution
 ### Fork
 If your fork behind, follow [this guide](https://help.github.com/articles/syncing-a-fork) to update your repo.
@@ -68,20 +76,6 @@ IFME will more happy if have multiple language support, allow non-English user c
 
 ### Addons
 IFME 4.0 support addons/plugins style, every-time IFME starts, always check new version, if available, download and update immediately. You can [add your own](https://github.com/Anime4000/IFME/blob/master/ifme/addons/null/addon.ini), by read sample on `addons` folder or read our documentation
-
-
-## Requirement
-### Basics
-#### Windows
-* Windows XP to Windows 8.1 (64bit)
-* .NET Framework 4.0
-
-#### Linux
-* Ubuntu 14, Linux Mint 17, Kali Linux 1.0.8, any Linux 64bit
-* Latest Mono Runtime (`apt-get install mono-complete`)
-* Latest MediaInfo (`apt-get install mediainfo`)
-* Latest libboost (`apt-get install libboost-all-dev`)
-
 
 ### Prerequisite
 #### Binary (Windows)

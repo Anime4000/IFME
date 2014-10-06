@@ -5,7 +5,7 @@ appname="Internet Friendly Media Encoder"
 appfile="ifme.exe"
 
 # Required shared file
-rsf="mono-complete mediainfo libboost-all-dev"
+rsf="mono-complete mediainfo libavformat-dev libswscale-dev libboost-all-dev"
 
 # Command
 clear
