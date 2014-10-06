@@ -186,9 +186,11 @@ namespace ifme.hitoha
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
 			GetFiles.Title = Language.IMessage.OpenFile;
-			GetFiles.Filter = "Known Video files|*.mkv;*.mp4;*.m4v;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
+			GetFiles.Filter = "Known Video files|*.mkv;*.mp4;*.m4v;*.flv;*.webm;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
 				+ "MKV Container|*.mkv|"
 				+ "MP4 Container|*.mp4;*.m4v|"
+				+ "Flash Video Container|*.flv|"
+				+ "The WebM Project (container)|*.webm|"
 				+ "Audio Video Interleaved|*.avi;*.divx|"
 				+ "Windows Media Video|*.wmv|"
 				+ "Moving Picture Experts Group|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
@@ -1276,7 +1278,14 @@ namespace ifme.hitoha
 									{
 										var fmt = audio[i].format.ToLower();
 
-										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "aac", StringComparison.CurrentCultureIgnoreCase))
+										if (String.Equals(fmt, "vorbis"))
+											fmt = "ogg";
+										else if (String.Equals(fmt, "ac-3"))
+											fmt = "m4a";
+										else if (String.Equals(fmt, "mpeg audio"))
+											fmt = "mpeg";
+
+										if (Properties.Settings.Default.UseMkv || String.Equals(fmt, "aac"))
 											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -acodec copy -y \"{1}\"", queue[x], Path.Combine(tmp, String.Format("audio{0}.{1}", i + 1, fmt))));
 										else
 											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"", queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
@@ -1376,7 +1385,7 @@ namespace ifme.hitoha
 							args[4] = String.Format("-t {0}", VidTune);
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
-						args[6] = String.Format("-f \"{0}\"", video[0].frameCount);
+						args[6] = video[0].frameCount == 0 ? "" : String.Format("-f \"{0}\"", video[0].frameCount);
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
