@@ -1818,10 +1818,8 @@ namespace ifme.hitoha
 			btnResume.Enabled = x;
 
 			// Hybrid button
-			if (x)
-				btnStart.Text = Language.IControl.btnStop;
-			else
-				btnStart.Text = Language.IControl.btnStart;
+			btnResume.Text = Language.IControl.btnPause;
+			btnStart.Text = x ? Language.IControl.btnStop : Language.IControl.btnStart;
 
 			// Button, if quete not empty, dont disable
 			if (lstQueue.Items.Count == 0)
@@ -1831,29 +1829,20 @@ namespace ifme.hitoha
 			chkAttachEnable.Enabled = chkSubEnable.Checked;
 
 			foreach (Control ctl in tabQueue.Controls)
-			{
 				ctl.Enabled = !x;
-			}
 
 			foreach (Control ctl in tabVideo.Controls)
-			{
 				ctl.Enabled = !x;
-			}
 
 			foreach (Control ctl in tabAudio.Controls)
-			{
 				ctl.Enabled = !x;
-			}
-
+			
 			foreach (Control ctl in tabSubtitle.Controls)
-			{
 				ctl.Enabled = !x;
-			}
-
+		
 			foreach (Control ctl in tabAttachment.Controls)
-			{
 				ctl.Enabled = !x;
-			}
+			
 		}
 		#endregion
 

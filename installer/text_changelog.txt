@@ -1,3 +1,8 @@
+Version 4.7.1.0
+---------------
+[fixed] Format detection in "Audio passthrough" and support more format
+[fixed] Pause/Resume button on stop
+
 Version 4.7.0.0
 ---------------
 Version 4.6 have auto update issue, please download manually.
