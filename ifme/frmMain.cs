@@ -1259,8 +1259,8 @@ namespace ifme.hitoha
 								string arg = null;
 								string map = null;
 								for (int i = 0; i < audio.Count; i++)
-									map += String.Format("-map 0:{0} ", AudioMapID[i].ToString());
-								
+									map += String.Format("-map 0:{0} ", AudioMapID[i]);
+
 								map = map.Remove(map.Length - 1);
 								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\"", queue[x], map, audio.Count, AudFreq, Path.Combine(tmp, "audio1.wav"));
 
@@ -1281,22 +1281,22 @@ namespace ifme.hitoha
 								break;
 
 							case 3:
-								var modecopy = "-i \"{0}\" -acodec copy -y \"{1}\"";
-								var modeconv = "-i \"{0}\" -vn -strict experimental -c:a aac -b:v {1}k -y \"{2}\"";
+								var modecopy = "-i \"{0}\" -vn -map 0:{1} -acodec copy -y \"{2}\"";
+								var modeconv = "-i \"{0}\" -vn -map 0:{1} -strict experimental -c:a aac -b:v {2}k -y \"{3}\"";
 
 								for (int i = 0; i < audio.Count; i++)
 									if (Properties.Settings.Default.UseMkv)
-										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
+										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
 									else
 										if (String.Equals(audio[i].format.ToLower(), "aac") || 
 											String.Equals(audio[i].format.ToLower(), "ac-3") || 
 											String.Equals(audio[i].format.ToLower(), "alac") || 
 											audio[i].format.ToLower().Contains("mpeg"))
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
 										else
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modeconv, queue[x], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modeconv, queue[x], AudioMapID[i], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
 
-									break;
+								break;
 
 							default:
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
