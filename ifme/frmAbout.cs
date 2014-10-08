@@ -120,6 +120,9 @@ namespace ifme.hitoha
 				if (Addons.Installed.Data[i, 3].Contains("FFmpeg"))
 					continue;
 
+				if (Addons.Installed.Data[i, 3].Contains("\\"))
+					continue;
+
 				Names[cnt++] = Addons.Installed.Data[i, 3];
 			}
 
