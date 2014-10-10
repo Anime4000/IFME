@@ -120,7 +120,7 @@ namespace ifme.hitoha
 				return;
 
 			// Get addons version and update
-			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
+			for (int i = 1; i < Addons.Installed.Data.GetLength(0); i++)
 			{
 				// Stop when reach end of addons
 				if (Addons.Installed.Data[i, 0] == null)

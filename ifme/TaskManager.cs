@@ -196,7 +196,7 @@ namespace ifme.hitoha
 		{
 			System.Threading.Thread.Sleep(100);
 
-			string hevclo = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVC);
+			string hevclo = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCLO);
 			string hevchi = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
 
 			if (args.Contains(hevclo))

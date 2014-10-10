@@ -53,7 +53,7 @@ namespace ifme.hitoha
 		{
 			public static string FFmpeg = Path.Combine(Folder, "ffmpeg", "ffmpeg");
 			public static string FFms = Path.Combine(Folder, "ffmsindex", "ffmsindex");
-			public static string HEVC = Path.Combine(Folder, "x265", "x265lo");
+			public static string HEVCLO = Path.Combine(Folder, "x265", "x265lo");
 			public static string HEVCHI = Path.Combine(Folder, "x265", "x265hi");
 			public static string MKV = Path.Combine(Folder, "mkvmerge", "mkvmerge");
 			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract");
@@ -76,6 +76,23 @@ namespace ifme.hitoha
 			public static int Get()
 			{
 				int i = 1;
+
+				// Passthrough
+				Data[0, 0] = "0|null";
+				Data[0, 1] = "audio";
+				Data[0, 2] = "Passthrough/Extract all audio (Mode configuration ignored)";
+				Data[0, 3] = "// If MP4 output format is selected,";
+				Data[0, 4] = "// unsupported codec will converted to AAC.";
+				Data[0, 5] = "// Just-in-case, choose best quality as you like.";
+				Data[0, 6] = "mp4";
+				Data[0, 7] = "Build-in";
+				Data[0, 8] = "http://example.com/example.txt";
+				Data[0, 9] = "http://example.com/example.ifz";
+				Data[0, 10] = "../ffmpeg/ffmpeg";
+				Data[0, 11] = "";
+				Data[0, 12] = "";
+				Data[0, 13] = "45,64,80,96,112,128,160,192,224,256,320,499";
+				Data[0, 14] = "128";
 
 				// Fetch from addons folder
 				foreach (var item in Directory.GetDirectories(Folder))
@@ -107,23 +124,6 @@ namespace ifme.hitoha
 
 					i++;
 				}
-
-				// Passthrough
-				Data[0, 0] = "0|null";
-				Data[0, 1] = "audio";
-				Data[0, 2] = "Passthrough/Extract all audio (Mode configuration ignored)";
-				Data[0, 3] = "// If MP4 output format is selected,";
-				Data[0, 4] = "// unsupported codec will converted to AAC.";
-				Data[0, 5] = "// Just-in-case, choose best quality as you like.";
-				Data[0, 6] = "mp4";
-				Data[0, 7] = "Build-in";
-				Data[0, 8] = "http://example.com/example.txt";
-				Data[0, 9] = "http://example.com/example.ifz";
-				Data[0, 10] = "../ffmpeg/ffmpeg";
-				Data[0, 11] = "";
-				Data[0, 12] = "";
-				Data[0, 13] = "45,64,80,96,112,128,160,192,224,256,320,499";
-				Data[0, 14] = "128";
 
 				return GetBuildin(i);
 			}

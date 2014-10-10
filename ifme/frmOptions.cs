@@ -113,8 +113,8 @@ namespace ifme.hitoha
 				{
 					ListViewItem lst = new ListViewItem(i.ToString());
 					lst.SubItems.Add(Addons.Installed.Data[i, 2]);
-					lst.SubItems.Add(Addons.Installed.Data[i, 4]);
-					lst.SubItems.Add(Addons.Installed.Data[i, 3]);
+					lst.SubItems.Add(Addons.Installed.Data[i, 4].Contains("//") ? "No Data" : Addons.Installed.Data[i, 4]);
+					lst.SubItems.Add(Addons.Installed.Data[i, 3].Contains("//") ? "No Data" : Addons.Installed.Data[i, 3]);
 					lst.SubItems.Add(Addons.Installed.Data[i, 7]);
 					lstAddons.Items.Add(lst);
 				}

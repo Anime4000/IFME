@@ -1150,11 +1150,7 @@ namespace ifme.hitoha
 							File.Delete(Path.Combine(tmp, "timecodes.txt"));
 
 						// Check index Id
-						int id;
-						if (video[0].Id == 0)
-							id = 0;
-						else
-							id = video[0].Id - 1;
+						int id = video[0].Id == 0 ? 0 : video[0].Id - 1;
 
 						// Move while rename
 						File.Move(Path.Combine(tmp, String.Format("timecodes_track0{0}.tc.txt", id)), Path.Combine(tmp, "timecodes.txt"));
@@ -1288,9 +1284,9 @@ namespace ifme.hitoha
 									if (Properties.Settings.Default.UseMkv)
 										PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.mka", i + 1))));
 									else
-										if (String.Equals(audio[i].format.ToLower(), "aac") || 
+										if (String.Equals(audio[i].format.ToLower(), "alac") || 
 											String.Equals(audio[i].format.ToLower(), "ac-3") || 
-											String.Equals(audio[i].format.ToLower(), "alac") || 
+											String.Equals(audio[i].format.ToLower(), "aac") || 
 											audio[i].format.ToLower().Contains("mpeg"))
 											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
 										else
@@ -1398,7 +1394,7 @@ namespace ifme.hitoha
 						if (video[0].bitDepth > 8)
 							args[9] = Addons.BuildIn.HEVCHI;
 						else
-							args[9] = Addons.BuildIn.HEVC;
+							args[9] = Addons.BuildIn.HEVCLO;
 						
 						// Due x265 limitation of interlaced video, do deinterlaced by keep both field
 						if (IsInterlaced)
