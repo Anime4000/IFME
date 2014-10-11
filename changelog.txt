@@ -1,3 +1,7 @@
+Version 4.7.2.0
+---------------
+[fixed] Audio encoder not encoding after decoding...
+
 Version 4.7.1.0
 ---------------
 [fixed] Format detection in "Audio passthrough" and support more format
