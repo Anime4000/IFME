@@ -41,8 +41,8 @@ namespace ifme.hitoha
 
 				GFI[2] = v.format;
 				GFI[3] = v.width.ToString() + "x" + v.height.ToString() + st;
-				GFI[4] = fm + v.frameRate.ToString() + " (" + v.frameCount.ToString() + " frames)";
-				GFI[5] = v.bitDepth.ToString() + " bits";
+				GFI[4] = (v.frameRate == 0 ? "-" : fm + v.frameRate.ToString() + " (" + v.frameCount.ToString() + " frames)");
+				GFI[5] = (v.bitDepth == 0 ? "-" : v.bitDepth.ToString() + " bits");
 				GFI[6] = file;
 
 				return GFI;

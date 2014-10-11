@@ -101,7 +101,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Empire of Angels.
+        ///   Looks up a localized string similar to The Hope of Innocent.
         /// </summary>
         internal static string EpicWord {
             get {
