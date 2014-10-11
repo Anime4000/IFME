@@ -1315,18 +1315,22 @@ namespace ifme.hitoha
 				// Encode all decoded audio
 				if (!BGThread.CancellationPending)
 				{
+					// Make sure not pass-through mode
 					if (AudFormat != 0)
 					{
 						// Set title
 						FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", x + 1, queue.Length));
 						InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
 
-						//                      Folder\app.exe
-						string app = Path.Combine(Addons.Installed.Data[AudFormat, 0], Addons.Installed.Data[AudFormat, 10]);
+						// Split ID and Folder path
+						string[] getpath = Addons.Installed.Data[AudFormat, 0].Split('|');
+
+						// Merge
+						string app = Path.Combine(getpath[1], Addons.Installed.Data[AudFormat, 10]);
 						string cmd = Addons.Installed.Data[AudFormat, 11];
 
 						// get all wav file
-						foreach (var item in Directory.GetFiles(tmp, "*.wav"))
+						foreach (var filein in Directory.GetFiles(tmp, "*.wav"))
 						{
 							/* example of ogg
 							 * {3} -b {0} "{2}" -o "{1}.ogg"
@@ -1337,11 +1341,14 @@ namespace ifme.hitoha
 							 * 2 = output file
 							 * 3 = input file
 							 */
+							string xargs = Addons.Installed.Data[AudFormat, 10];
+							string fileout = Path.Combine(tmp, Path.GetFileNameWithoutExtension(filein));
 							string[] args = new string[4];
+
 							args[0] = AudBitR;
-							args[1] = Path.Combine(tmp, Path.GetFileNameWithoutExtension(item));
-							args[2] = item;
-							args[3] = Addons.Installed.Data[AudFormat, 12];
+							args[1] = fileout;
+							args[2] = filein;
+							args[3] = xargs;
 
 							PEC = StartProcess(app, String.Format(cmd, args));
 						}
