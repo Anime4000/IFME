@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "4.7.1.0"
+#define MyAppVersion "4.7.2.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "http://ifme.sf.net/"
 #define MyAppExeName "ifme.exe"
