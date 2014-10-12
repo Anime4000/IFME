@@ -1232,7 +1232,7 @@ namespace ifme.hitoha
 					if (audio.Count >= 1)
 					{
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
-						int[] AudioMapID = new int[100];
+						int[] AudioMapID = new int[1024];
 						for (int i = 0; i < audio.Count; i++)
 							AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
 
@@ -1341,7 +1341,7 @@ namespace ifme.hitoha
 							 * 2 = output file
 							 * 3 = input file
 							 */
-							string xargs = Addons.Installed.Data[AudFormat, 10];
+							string xargs = Addons.Installed.Data[AudFormat, 12];
 							string fileout = Path.Combine(tmp, Path.GetFileNameWithoutExtension(filein));
 							string[] args = new string[4];
 

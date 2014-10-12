@@ -1,6 +1,6 @@
 @echo off
 @title Build IFME and Release!
-set CompileMode=Release
+set CompileMode=Debug
 set BUILDDIR=_build
 set MSBuildVer=12.0
 cls
