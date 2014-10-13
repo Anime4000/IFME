@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="crc32.cs" />
     <Compile Include="IniFileParser\Exceptions\ParsingException.cs" />
     <Compile Include="IniFileParser\FileIniParser.cs" />
     <Compile Include="IniFileParser\Helpers\Assert.cs" />
