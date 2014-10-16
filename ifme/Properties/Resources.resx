@@ -143,7 +143,7 @@
     <value>..\Resources\BannerBRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EpicWord" xml:space="preserve">
-    <value>The Hero In Your Heart</value>
+    <value>Creation of Earth</value>
     <comment>Change this when release to public</comment>
   </data>
   <data name="SplashScreenC" type="System.Resources.ResXFileRef, System.Windows.Forms">

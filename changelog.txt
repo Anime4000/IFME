@@ -1,3 +1,8 @@
+Version 4.7.3.0
+---------------
+[fixed] ISP (Telekom Malaysia) corrupted my package during upload
+[improve] Program optimisation
+
 Version 4.7.2.0
 ---------------
 [fixed] Audio encoder not encoding after decoding...
