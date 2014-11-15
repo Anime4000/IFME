@@ -101,7 +101,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creation of Earth.
+        ///   Looks up a localized string similar to ベストフレンド　～いちばん小さなお友達～.
         /// </summary>
         internal static string EpicWord {
             get {
@@ -132,9 +132,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon ifme_green {
+        internal static System.Drawing.Icon ifme_flat {
             get {
-                object obj = ResourceManager.GetObject("ifme_green", resourceCulture);
+                object obj = ResourceManager.GetObject("ifme_flat", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

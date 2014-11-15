@@ -30,7 +30,7 @@ namespace ifme.hitoha
 
 		public frmAbout()
 		{
-			this.Icon = Properties.Resources.ifme_green;
+			this.Icon = Properties.Resources.ifme_flat;
 			InitializeComponent();
 
 			// Fix Mono drawings

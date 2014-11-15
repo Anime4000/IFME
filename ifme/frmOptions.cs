@@ -18,7 +18,7 @@ namespace ifme.hitoha
 		public frmOptions()
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.ifme_green;
+			this.Icon = Properties.Resources.ifme_flat;
 
 			// Fix linux drawing
 			if (OS.IsLinux)

@@ -24,7 +24,7 @@ namespace ifme.hitoha
 			InitializeComponent();
 
 			this.DoubleBuffered = true;
-			this.Icon = Properties.Resources.ifme_green;
+			this.Icon = Properties.Resources.ifme_flat;
 			this.Text = "Starting " + Globals.AppInfo.NameTitle;
 
 			client.DownloadProgressChanged += client_DownloadProgressChanged;

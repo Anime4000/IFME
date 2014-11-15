@@ -1,3 +1,14 @@
+Version 4.7.4.0
+---------------
+From here, IFME changed to new flat design icon.
+
+[added] German translation by Criz
+[added] Greek translation by mikroner
+[added] Arabic translation by Ani Moy (The Leader)
+[added] Spanish translation by Francisco Pozo 'DJ FrANKy EHP
+[fixed] Missing temporary folder check, reported by: fb.com/RainOfHappiness
+
+
 Version 4.7.3.0
 ---------------
 [fixed] ISP (Telekom Malaysia) corrupted my package during upload

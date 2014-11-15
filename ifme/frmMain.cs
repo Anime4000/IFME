@@ -24,7 +24,7 @@ namespace ifme.hitoha
 
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
-			this.Icon = Properties.Resources.ifme_green;
+			this.Icon = Properties.Resources.ifme_flat;
 			pictBannerRight.Parent = pictBannerMain;
 
 			// Fix Mono WinForms Drawing
@@ -91,7 +91,9 @@ namespace ifme.hitoha
 			// Temp Folder
 			if (String.IsNullOrEmpty(Properties.Settings.Default.TemporaryFolder))
 			{
-				System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);
+				if (!Directory.Exists(Globals.AppInfo.TempFolder))
+					System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);
+
 				Properties.Settings.Default.TemporaryFolder = Globals.AppInfo.TempFolder;
 				Properties.Settings.Default.Save();
 
@@ -150,6 +152,10 @@ namespace ifme.hitoha
 
 			// Load Settings
 			UserSettingsLoad();
+
+			// Add something
+			PrintLog(Log.Info, "---\n\nIFME is useful to you, it helps save your disk space? Show us your support by donation or improve to make it better! Copy this link to support us: http://goo.gl/HQtWcH \n\n");
+			PrintLog(Log.Info, "---");
 
 			// Display console
 			tabEncoding.SelectedTab = tabStatus;
@@ -998,10 +1004,21 @@ namespace ifme.hitoha
 				}
 
 				// Below when all if filter are passed, proceed to data collecting and start encoding thread
-
 				// Temp folder check
-				if (!System.IO.Directory.Exists(Globals.AppInfo.TempFolder))
-					System.IO.Directory.CreateDirectory(Globals.AppInfo.TempFolder);					
+				if (!System.IO.Directory.Exists(Properties.Settings.Default.TemporaryFolder))
+				{
+					System.IO.Directory.CreateDirectory(Properties.Settings.Default.TemporaryFolder);
+					PrintLog(Log.Info, "New temporary folder created!");
+				}
+				else
+				{
+					int i = 0;
+					foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
+						i++;
+
+					if (i >= 1)
+						PrintLog(Log.Warn, "Temporary folder is not empty! Files inside it will get deleted!");
+				}
 
 				// Ready Data
 				string[] queue = new string[lstQueue.Items.Count];

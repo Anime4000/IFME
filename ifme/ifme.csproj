@@ -55,7 +55,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\ifme_green.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\ifme_flat.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -207,9 +207,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ifme_green.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BannerBLeft.png" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ifme_flat.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
