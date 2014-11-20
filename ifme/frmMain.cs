@@ -188,6 +188,21 @@ namespace ifme.hitoha
 			lst[6].Width = (lstQueue.Width - 4) - (lst[0].Width + lst[1].Width + lst[2].Width + lst[3].Width + lst[4].Width + lst[5].Width);
 		}
 
+		private void lstQueue_DoubleClick(object sender, EventArgs e)
+		{
+			// Allow user to change video resolution!
+			string res = lstQueue.SelectedItems[0].SubItems[3].Text;
+			using (var from = new frmProperties(res))
+			{
+				var result = from.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					string val = from.NewScreenRes;
+					lstQueue.SelectedItems[0].SubItems[3].Text = val;
+				}
+			}
+		}
+
 		private void btnQueueAdd_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
@@ -2127,6 +2142,5 @@ namespace ifme.hitoha
 			rtfLog.SelectedText = "] " + message + "\n";
 		}
 		#endregion
-
 	}
 }

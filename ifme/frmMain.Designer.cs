@@ -327,6 +327,7 @@
 			this.lstQueue.View = System.Windows.Forms.View.Details;
 			this.lstQueue.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragDrop);
 			this.lstQueue.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragEnter);
+			this.lstQueue.DoubleClick += new System.EventHandler(this.lstQueue_DoubleClick);
 			// 
 			// colQueueFName
 			// 
