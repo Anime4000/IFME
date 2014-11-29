@@ -40,8 +40,12 @@
             "800x600",
             "1024x768",
             "--- 16:9 ---",
+            "640x360",
+            "853x480",
+            "1024x576",
             "1280x720",
-            "1920x1080"});
+            "1920x1080",
+            "3840x2160"});
 			this.cboScreenRes.Location = new System.Drawing.Point(82, 31);
 			this.cboScreenRes.Name = "cboScreenRes";
 			this.cboScreenRes.Size = new System.Drawing.Size(121, 21);

@@ -466,9 +466,17 @@
 			this.cboVideoRateCtrl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoRateCtrl.FormattingEnabled = true;
 			this.cboVideoRateCtrl.Items.AddRange(new object[] {
-            "Ratefactor-based - crf",
-            "Quantizer-based - cqp",
-            "Bitrate-based - abr"});
+            "Single pass, Ratefactor-based - crf",
+            "Single pass, Quantizer-based - cqp",
+            "Single pass, Bitrate-based - abr",
+            "Multipass, 2 pass",
+            "Multipass, 3 pass",
+            "Multipass, 4 pass",
+            "Multipass, 5 pass",
+            "Multipass, 6 pass",
+            "Multipass, 7 pass",
+            "Multipass, 8 pass",
+            "Multipass, 9 pass"});
 			this.cboVideoRateCtrl.Location = new System.Drawing.Point(48, 34);
 			this.cboVideoRateCtrl.Name = "cboVideoRateCtrl";
 			this.cboVideoRateCtrl.Size = new System.Drawing.Size(500, 21);

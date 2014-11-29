@@ -1037,12 +1037,16 @@ namespace ifme.hitoha
 
 				// Ready Data
 				string[] queue = new string[lstQueue.Items.Count];
+				string[] screen = new string[lstQueue.Items.Count];
 				string[,] subtitle = new string[lstSubtitle.Items.Count, 3];
 				string[,] attachment = new string[lstAttachment.Items.Count, 3];
 
 				for (int i = 0; i < queue.Length; i++)
 				{
-					queue[i] = lstQueue.Items[i].SubItems[6].Text;
+					string q = lstQueue.Items[i].SubItems[6].Text;
+					queue[i] = q;
+					string s = lstQueue.Items[i].SubItems[3].Text;
+					screen[i] = s.Remove(s.Length - 1);
 				}
 
 				for (int s = 0; s < subtitle.GetLength(0); s++)
@@ -1059,6 +1063,11 @@ namespace ifme.hitoha
 					attachment[x, 2] = lstAttachment.Items[x].SubItems[3].Text; //Path
 				}
 
+				// Since adding multipass, new var is needed!
+				string onepass = cboVideoRateCtrl.Text.Substring(cboVideoRateCtrl.Text.Length - 3);
+				string twopass = cboVideoRateCtrl.Text.Substring(11, 1);
+				string encType = cboVideoRateCtrl.SelectedIndex <= 2 ? onepass : twopass;
+
 				// All data become one object, and send to Threading
 				List<object> something = new List<object>
 				{
@@ -1071,7 +1080,7 @@ namespace ifme.hitoha
 
 					cboVideoPreset.Text,
 					cboVideoTune.Text,
-					cboVideoRateCtrl.Text.Substring(cboVideoRateCtrl.Text.Length - 3),
+					encType,
 					txtVideoRate.Text,
 					txtVideoAdvCmd.Text,
 
@@ -1085,7 +1094,10 @@ namespace ifme.hitoha
 					chkAttachEnable.Checked,
 					txtAttachDesc.Text,
 				
-					Properties.Settings.Default.TemporaryFolder
+					Properties.Settings.Default.TemporaryFolder,
+
+					// Future addition
+					screen
 				};
 
 				tabEncoding.SelectedIndex = 5;
@@ -1125,6 +1137,9 @@ namespace ifme.hitoha
 			string AttachDesc = (string)argsList[17];
 			// Temp
 			string tmp = (string)argsList[18];
+			// Future addition
+			string[] screen = (string[])argsList[19];
+
 			// Mkv Extract Trigger, this make sure not to extract a mkv which dont have subtitle and attachment
 			bool HasSubtitle = false;
 			bool HasAttachment = false;
@@ -1417,13 +1432,18 @@ namespace ifme.hitoha
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
 						args[1] = String.Format("-pix_fmt {0}", "yuv420p");
-						args[2] = String.Format("-f {0}", "yuv4mpegpipe");
+						args[2] = String.Format("-f {0} -s {1}", "yuv4mpegpipe", screen[x]);
 
 						// x265 part
 						args[3] = String.Format("-p {0}", VidPreset);
 
 						if (!VidTune.Equals("off"))
 							args[4] = String.Format("-t {0}", VidTune);
+
+						// If multipass, modify command
+						int pass;
+						if (int.TryParse(VidType, out pass))
+							VidType = "bitrate";
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
 						args[6] = video[0].frameCount == 0 ? "" : String.Format("-f \"{0}\"", video[0].frameCount);
@@ -1487,14 +1507,35 @@ namespace ifme.hitoha
 
 						cmd = String.Format("{0}{1}{2} - 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
 
-						PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
+						// Multi Pass
+						if (pass >= 2)
+						{
+							for (int i = 1; i <= pass; i++)
+							{
+								// Tell user current pass
+								InvokeLog(Log.Info, String.Format("Processing images, pass {0} of {1}", i, pass));
+
+								// Proceed to encode
+								if (i == 1)
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 1"); // create stats
+								else if (i == pass)
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 2"); // override, used for last pass
+								else
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 3"); // not override stats, use for 'n'th pass
+
+								// Break encoding when user press stop
+								if (PEC == 1) { e.Cancel = true; break; }
+							}
+						}
+						else
+						{
+							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
+
+							PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
+						}
 					}
 
-					if (PEC == 1)
-					{
-						e.Cancel = true;
-						break;
-					}
+					if (PEC == 1) { e.Cancel = true; break; }
 				}
 				else
 				{
