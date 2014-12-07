@@ -1,3 +1,12 @@
+Version 4.8.0.0
+---------------
+From here, IFME change new icon again.
+
+[added] Italian translation by MatrixG
+[added] Multiple pass encoding support up to 8 passes
+[fixed] Improper MKV extraction and repacking
+[fixed] About Dialog, file size shirnk by ~4%
+
 Version 4.7.4.0
 ---------------
 From here, IFME changed to new flat design icon.
