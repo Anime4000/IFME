@@ -49,7 +49,6 @@
 			this.pictSS.BackColor = System.Drawing.Color.Transparent;
 			this.pictSS.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.pictSS.ErrorImage = null;
-			this.pictSS.Image = global::ifme.Properties.Resources.SplashScreenC;
 			this.pictSS.InitialImage = null;
 			this.pictSS.Location = new System.Drawing.Point(0, 0);
 			this.pictSS.Name = "pictSS";

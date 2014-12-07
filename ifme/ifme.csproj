@@ -103,7 +103,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="GetMetaData.cs" />
-    <Compile Include="MkvExtractId.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -219,22 +218,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BannerBLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BannerBRight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreenC.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutIFME.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ifme_flat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen01-Ifumii.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen01-Hotaru.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerCLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerCRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

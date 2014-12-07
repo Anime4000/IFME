@@ -30,30 +30,34 @@ namespace ifme.hitoha
 
 		public frmAbout()
 		{
-			this.Icon = Properties.Resources.ifme_flat;
 			InitializeComponent();
+			this.Icon = Properties.Resources.ifme_flat;
+
+			if (Globals.AppInfo.CharTheme % 2 != 0)
+				this.BackgroundImage = Properties.Resources.SplashScreen01_Ifumii; // Odd
+			else
+				this.BackgroundImage = Properties.Resources.SplashScreen01_Hotaru; // Even
 
 			// Fix Mono drawings
 			if (OS.IsLinux)
 			{
-				pictIfme.Width = 250;
-				pictIfme.Height = 800;
-			}
-			else
-			{
-				this.BackgroundImage = Properties.Resources.AboutBackground;
-				this.BackgroundImageLayout = ImageLayout.None;
+				this.Width -= 100;
+				this.Height -= 32;
 
-				btnUpdate.Left = 350;
+				this.MaximumSize = new System.Drawing.Size(this.Width, this.Height);
+				this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
 
 				foreach (Control ctl in this.Controls)
 				{
-					if (ctl.GetType() == typeof(Label) || ctl.GetType() == typeof(LinkLabel))
-					{
-						ctl.Left = 256;
-						ctl.Width = 372;
-					}
+					ctl.Top -= 23;
 				}
+
+				btnUpdate.Left = 200;
+			}
+			else
+			{
+				this.MaximumSize = new System.Drawing.Size(this.Width, this.Height);
+				this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
 			}
 		}
 
@@ -86,7 +90,6 @@ namespace ifme.hitoha
 			{
 				lblUpdateInfo.Visible = false;
 				btnUpdate.Visible = true;
-				lnkChangeLog.Visible = true;
 			}
 
 			// Get first
@@ -179,11 +182,6 @@ namespace ifme.hitoha
 
 			P.Start();
 			Application.ExitThread();
-		}
-
-		private void lnkChangeLog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			System.Diagnostics.Process.Start("https://raw.githubusercontent.com/Anime4000/IFME/master/installer/text_changelog.txt");
 		}
 
 		private void tmrScroll_Tick(object sender, EventArgs e)

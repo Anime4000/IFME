@@ -22,6 +22,12 @@ namespace ifme.hitoha
 		{
 			InitializeComponent();
 
+			// Dynamic
+			if (Globals.AppInfo.CharTheme % 2 != 0)
+				pictBannerRight.Image = Properties.Resources.BannerBRight; // Odd, Ifumii
+			else
+				pictBannerRight.Image = Properties.Resources.BannerCRight; // Even, Hotaru
+
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
 			this.Icon = Properties.Resources.ifme_flat;
@@ -1140,10 +1146,6 @@ namespace ifme.hitoha
 			// Future addition
 			string[] screen = (string[])argsList[19];
 
-			// Mkv Extract Trigger, this make sure not to extract a mkv which dont have subtitle and attachment
-			bool HasSubtitle = false;
-			bool HasAttachment = false;
-
 			// Process exit code or return
 			int PEC = 0;
 
@@ -1215,56 +1217,13 @@ namespace ifme.hitoha
 						{
 							// Set title
 							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", x + 1, queue.Length));
-							InvokeLog(Log.Info, "Currently detect and extracting MKV stream(s). Please Wait...");
+							InvokeLog(Log.Info, "If this part got error, don't worry about it :)");
 
-							// Chapters!
-							StartProcess(Addons.BuildIn.MKE, String.Format("chapters \"{0}\" > \"{1}\"", queue[x], Path.Combine(tmp, "chapters.xml")));
-							
-							// Print mkv stream
-							StartProcess(Addons.BuildIn.MKV, String.Format("-i \"{0}\" > \"{1}\"", queue[x], Path.Combine(tmp, "meta.if")));
+							// Extract metadata
+							StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "temp.mkv")));
 
-							// Reset list
-							MkvExtractId.ClearList();
-
-							// Attachment
-							string cmdath = null;
-							MkvExtractId.AttachmentDataGet(Path.Combine(tmp, "meta.if"));
-							for (int q = 0; q < MkvExtractId.AttachmentData.GetLength(0); q++)
-							{
-								if (MkvExtractId.AttachmentData[q, 0] == null)
-									break;
-
-								int id = int.Parse(MkvExtractId.AttachmentData[q, 2]);
-								string file = MkvExtractId.AttachmentData[q, 0];
-
-								cmdath += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
-
-								// Now this video has attachment in it, change to true
-								HasAttachment = true;
-							}
-
-							StartProcess(Addons.BuildIn.MKE, String.Format("attachments \"{0}\" {1}", queue[x], cmdath));
-
-							// Subtitle
-							string cmdsub = null;
-							for (int s = 0; s < stext.Count; s++)
-							{
-								int id = stext[s].Id - 1;
-								string iso = stext[s].languageThree;
-								string fmt = stext[s].format.ToLower();
-								string file = String.Format("subtitle_id_{0}_{1}.{2}", id, iso, fmt);
-
-								MkvExtractId.SubtitleData[s, 0] = iso;
-								MkvExtractId.SubtitleData[s, 1] = file;
-								MkvExtractId.SubtitleData[s, 2] = id.ToString();
-
-								cmdsub += String.Format("{0}:\"{1}\" ", id, Path.Combine(tmp, file));
-
-								// Now this video has subtitle in it, change to true
-								HasSubtitle = stext.Count == 0 ? false : true;
-							}
-
-							StartProcess(Addons.BuildIn.MKE, String.Format("tracks \"{0}\" {1}", queue[x], cmdsub));
+							// Rename. Go to "MKV extarcted content" below (use CTRL+F)
+							File.Move(Path.Combine(tmp, "temp.mkv"), Path.Combine(tmp, "archive.mks"));
 						}
 					}
 				}
@@ -1578,23 +1537,6 @@ namespace ifme.hitoha
 								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{3}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
 							}
 						}
-						else if (HasAttachment)
-						{
-							// Change back to false, prevent error that video dont have attachment
-							HasAttachment = false;
-							for (int i = 0; i < MkvExtractId.AttachmentData.GetLength(0); i++)
-							{
-								if (MkvExtractId.AttachmentData[i, 0] == null)
-									break;
-
-								string[] place = new string[4];
-								place[0] = MkvExtractId.AttachmentData[i, 0]; //file name only
-								place[1] = Path.Combine(tmp, MkvExtractId.AttachmentData[i, 0]); //full path
-								place[2] = MkvExtractId.AttachmentData[i, 1]; //MIME
-								place[3] = "Build-in Transfer";
-								attach += String.Format("--attachment-mime-type \"{2}\" --attachment-description \"{3}\" --attachment-name \"{0}\" --attach-file \"{1}\" ", place);
-							}
-						}
 
 						// Video
 						string[] vp = new string[4];
@@ -1631,35 +1573,19 @@ namespace ifme.hitoha
 							command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", sp);
 							trackorder = trackorder + "," + id.ToString() + ":0";
 						}
-						else if (HasSubtitle)
-						{
-							// Turn to disable for next queue
-							HasSubtitle = false;
-							for (int i = 0; i < MkvExtractId.SubtitleData.GetLength(0); i++)
-							{
-								if (MkvExtractId.SubtitleData[i, 0] == null)
-									break;
-								string[] sp = new string[3];
-								sp[0] = MkvExtractId.SubtitleData[i, 0]; //lang
-								sp[1] = MkvExtractId.SubtitleData[i, 1].ToUpper().Replace('_', ' '); //file name only (description?)
-								sp[2] = Path.Combine(tmp, MkvExtractId.SubtitleData[i, 1]);	//full path
-								command += String.Format("--language \"0:{0}\" --track-name \"0:{1}\" --forced-track 0:no -s 0 -D -A -T --no-global-tags --no-chapters \"(\" \"{2}\" \")\" ", sp);
-								trackorder = trackorder + "," + id.ToString() + ":0";
-								id++;
-							}
-						}
 						
-						// Chapters! proceed when file is exist and not empty
-						string chapters = null;
-						if (File.Exists(Path.Combine(tmp, "chapters.xml")))
+						// MKV extarcted content
+						if (File.Exists(Path.Combine(tmp, "content.mkv")))
 						{
-							FileInfo ChapLen = new FileInfo(Path.Combine(tmp, "chapters.xml"));
-							if (ChapLen.Length > 20)
-								chapters = String.Format("--chapters \"{0}\" ", Path.Combine(tmp, "chapters.xml"));
+							FileInfo ChapLen = new FileInfo(Path.Combine(tmp, "content.mkv"));
+							if (ChapLen.Length > 1024)
+								if (!IsSubtitleEnable)
+									command += String.Format("\"(\" \"{0}\" \")\" ", Path.Combine(tmp, "archive.mks"));
 						}
+
 						
 						// Build command for mkvmerge
-						command = command + attach + chapters + trackorder;
+						command = command + attach + trackorder;
 						
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
@@ -1876,7 +1802,6 @@ namespace ifme.hitoha
 
 			// Reset
 			EncodingStarted(false);
-			MkvExtractId.ClearList();
 			this.Text = Globals.AppInfo.NameTitle;
 
 			// Shutdown on when encoding job completed

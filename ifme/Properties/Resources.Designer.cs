@@ -63,36 +63,6 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AboutBackground {
-            get {
-                object obj = ResourceManager.GetObject("AboutBackground", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap AboutIFME {
-            get {
-                object obj = ResourceManager.GetObject("AboutIFME", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BannerBLeft {
-            get {
-                object obj = ResourceManager.GetObject("BannerBLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap BannerBRight {
             get {
                 object obj = ResourceManager.GetObject("BannerBRight", resourceCulture);
@@ -101,7 +71,27 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eternal Saga.
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerCLeft {
+            get {
+                object obj = ResourceManager.GetObject("BannerCLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerCRight {
+            get {
+                object obj = ResourceManager.GetObject("BannerCRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When Gods War.
         /// </summary>
         internal static string EpicWord {
             get {
@@ -172,9 +162,19 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreenC {
+        internal static System.Drawing.Bitmap SplashScreen01_Hotaru {
             get {
-                object obj = ResourceManager.GetObject("SplashScreenC", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreen01_Hotaru", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreen01_Ifumii {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen01_Ifumii", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

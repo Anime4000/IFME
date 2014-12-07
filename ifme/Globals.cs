@@ -149,6 +149,9 @@ namespace ifme.hitoha
 			{
 				get { return Path.Combine(Path.GetTempPath(), "ifme"); }
 			}
+
+			static Random rnd = new Random();
+			public static int CharTheme = rnd.Next(1, 100);
 		}
 
 		public static class Files

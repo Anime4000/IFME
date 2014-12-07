@@ -1106,7 +1106,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerMain.BackColor = System.Drawing.Color.Black;
 			this.pictBannerMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerMain.Image = global::ifme.Properties.Resources.BannerBLeft;
+			this.pictBannerMain.Image = global::ifme.Properties.Resources.BannerCLeft;
 			this.pictBannerMain.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerMain.Name = "pictBannerMain";
 			this.pictBannerMain.Size = new System.Drawing.Size(640, 64);
@@ -1118,7 +1118,6 @@
 			this.pictBannerRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerRight.BackColor = System.Drawing.Color.Transparent;
 			this.pictBannerRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerRight.Image = global::ifme.Properties.Resources.BannerBRight;
 			this.pictBannerRight.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerRight.Name = "pictBannerRight";
 			this.pictBannerRight.Size = new System.Drawing.Size(640, 64);
