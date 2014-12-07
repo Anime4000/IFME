@@ -91,7 +91,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When Gods War.
+        ///   Looks up a localized string similar to The End Is the Beginning.
         /// </summary>
         internal static string EpicWord {
             get {

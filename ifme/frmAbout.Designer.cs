@@ -149,7 +149,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblNames.BackColor = System.Drawing.Color.Transparent;
 			this.lblNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblNames.Location = new System.Drawing.Point(12, 530);
+			this.lblNames.Location = new System.Drawing.Point(12, 538);
 			this.lblNames.Name = "lblNames";
 			this.lblNames.Size = new System.Drawing.Size(576, 50);
 			this.lblNames.TabIndex = 36;

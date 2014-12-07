@@ -160,7 +160,7 @@ namespace ifme.hitoha
 			UserSettingsLoad();
 
 			// Add something
-			PrintLog(Log.Info, "---\n\nIFME is useful to you, it helps save your disk space? Show us your support by donation or improve to make it better! Copy this link to support us: http://goo.gl/HQtWcH \n\n");
+			PrintLog(Log.Info, "---\n\nIFME is useful to you, it helps save your disk space? Show us your support by donation or improve to make it better! Copy this link to support us: http://goo.gl/HQtWcH \n");
 			PrintLog(Log.Info, "---");
 
 			// Display console
@@ -1219,11 +1219,8 @@ namespace ifme.hitoha
 							FormTitle(String.Format("Queue {0} of {1}: Extracting MKV Stream", x + 1, queue.Length));
 							InvokeLog(Log.Info, "If this part got error, don't worry about it :)");
 
-							// Extract metadata
-							StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "temp.mkv")));
-
-							// Rename. Go to "MKV extarcted content" below (use CTRL+F)
-							File.Move(Path.Combine(tmp, "temp.mkv"), Path.Combine(tmp, "archive.mks"));
+							// Extract metadata. Go to "MKV extarcted content" below (use CTRL+F)
+							StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "archive.mkv")));
 						}
 					}
 				}
@@ -1575,12 +1572,12 @@ namespace ifme.hitoha
 						}
 						
 						// MKV extarcted content
-						if (File.Exists(Path.Combine(tmp, "content.mkv")))
+						if (File.Exists(Path.Combine(tmp, "archive.mkv")))
 						{
-							FileInfo ChapLen = new FileInfo(Path.Combine(tmp, "content.mkv"));
+							FileInfo ChapLen = new FileInfo(Path.Combine(tmp, "archive.mkv"));
 							if (ChapLen.Length > 1024)
 								if (!IsSubtitleEnable)
-									command += String.Format("\"(\" \"{0}\" \")\" ", Path.Combine(tmp, "archive.mks"));
+									command += String.Format("\"(\" \"{0}\" \")\" ", Path.Combine(tmp, "archive.mkv"));
 						}
 
 						
@@ -1672,7 +1669,7 @@ namespace ifme.hitoha
 				SI.Arguments = args;
 			}
 
-			SI.WorkingDirectory = Globals.AppInfo.CurrentFolder;
+			SI.WorkingDirectory = Properties.Settings.Default.TemporaryFolder;
 			SI.CreateNoWindow = true;
 			SI.UseShellExecute = false;
 			SI.RedirectStandardOutput = OS.IsWindows;

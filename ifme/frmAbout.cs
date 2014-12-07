@@ -105,6 +105,9 @@ namespace ifme.hitoha
 				if (String.Equals(Language.Installed.Data[i, 2], "Anime4000"))
 					continue;
 
+				if (Language.Installed.Data[i, 2].Contains("//"))
+					continue;
+
 				Names[cnt++] = Language.Installed.Data[i, 2];
 			}
 
@@ -123,7 +126,7 @@ namespace ifme.hitoha
 				if (Addons.Installed.Data[i, 3].Contains("FFmpeg"))
 					continue;
 
-				if (Addons.Installed.Data[i, 3].Contains("\\"))
+				if (Addons.Installed.Data[i, 3].Contains("//"))
 					continue;
 
 				Names[cnt++] = Addons.Installed.Data[i, 3];
