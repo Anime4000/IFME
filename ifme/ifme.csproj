@@ -139,9 +139,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="addons\null\addon.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="app.config" />
     <None Include="iso.gg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -234,6 +231,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ifme_flat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\btn_donate_SM.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

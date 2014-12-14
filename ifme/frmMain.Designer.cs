@@ -117,6 +117,8 @@
 			this.proTip = new System.Windows.Forms.ToolTip(this.components);
 			this.pictBannerMain = new System.Windows.Forms.PictureBox();
 			this.pictBannerRight = new System.Windows.Forms.PictureBox();
+			this.pictDonate = new System.Windows.Forms.PictureBox();
+			this.btnAdvanceHelp = new System.Windows.Forms.Button();
 			this.tabEncoding.SuspendLayout();
 			this.tabQueue.SuspendLayout();
 			this.tabVideo.SuspendLayout();
@@ -132,6 +134,7 @@
 			this.tabStatus.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerMain)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerRight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictDonate)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnOptions
@@ -364,6 +367,7 @@
 			// 
 			// tabVideo
 			// 
+			this.tabVideo.Controls.Add(this.btnAdvanceHelp);
 			this.tabVideo.Controls.Add(this.txtVideoAdvCmd);
 			this.tabVideo.Controls.Add(this.lblVideoAdvCmd);
 			this.tabVideo.Controls.Add(this.grpVideoRateCtrl);
@@ -381,7 +385,7 @@
 			this.txtVideoAdvCmd.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.txtVideoAdvCmd.Location = new System.Drawing.Point(6, 316);
 			this.txtVideoAdvCmd.Name = "txtVideoAdvCmd";
-			this.txtVideoAdvCmd.Size = new System.Drawing.Size(596, 21);
+			this.txtVideoAdvCmd.Size = new System.Drawing.Size(563, 21);
 			this.txtVideoAdvCmd.TabIndex = 6;
 			this.txtVideoAdvCmd.TextChanged += new System.EventHandler(this.txtVideoAdvCmd_TextChanged);
 			// 
@@ -1124,11 +1128,35 @@
 			this.pictBannerRight.TabIndex = 40;
 			this.pictBannerRight.TabStop = false;
 			// 
+			// pictDonate
+			// 
+			this.pictDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.pictDonate.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pictDonate.Image = global::ifme.Properties.Resources.btn_donate_SM;
+			this.pictDonate.Location = new System.Drawing.Point(224, 446);
+			this.pictDonate.Name = "pictDonate";
+			this.pictDonate.Size = new System.Drawing.Size(74, 21);
+			this.pictDonate.TabIndex = 41;
+			this.pictDonate.TabStop = false;
+			this.pictDonate.Click += new System.EventHandler(this.pictDonate_Click);
+			// 
+			// btnAdvanceHelp
+			// 
+			this.btnAdvanceHelp.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnAdvanceHelp.Location = new System.Drawing.Point(575, 315);
+			this.btnAdvanceHelp.Name = "btnAdvanceHelp";
+			this.btnAdvanceHelp.Size = new System.Drawing.Size(27, 23);
+			this.btnAdvanceHelp.TabIndex = 7;
+			this.btnAdvanceHelp.Text = "?";
+			this.btnAdvanceHelp.UseVisualStyleBackColor = true;
+			this.btnAdvanceHelp.Click += new System.EventHandler(this.btnAdvanceHelp_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(640, 480);
+			this.Controls.Add(this.pictDonate);
 			this.Controls.Add(this.pictBannerRight);
 			this.Controls.Add(this.pictBannerMain);
 			this.Controls.Add(this.btnOptions);
@@ -1168,6 +1196,7 @@
 			this.tabStatus.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerMain)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictBannerRight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictDonate)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1262,5 +1291,7 @@
 		private System.Windows.Forms.PictureBox pictBannerMain;
 		private System.Windows.Forms.PictureBox pictBannerRight;
 		private System.Windows.Forms.CheckBox chkDoneOffMachine;
+		private System.Windows.Forms.PictureBox pictDonate;
+		private System.Windows.Forms.Button btnAdvanceHelp;
 	}
 }

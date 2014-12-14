@@ -159,10 +159,6 @@ namespace ifme.hitoha
 			// Load Settings
 			UserSettingsLoad();
 
-			// Add something
-			PrintLog(Log.Info, "---\n\nIFME is useful to you, it helps save your disk space? Show us your support by donation or improve to make it better! Copy this link to support us: http://goo.gl/HQtWcH \n");
-			PrintLog(Log.Info, "---");
-
 			// Display console
 			tabEncoding.SelectedTab = tabStatus;
 		}
@@ -1236,8 +1232,13 @@ namespace ifme.hitoha
 					{
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
 						int[] AudioMapID = new int[1024];
-						for (int i = 0; i < audio.Count; i++)
-							AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
+
+						if(video[0].Id == 0 || audio[0].Id == 0 || audio[0].Id == 1)
+							for (int i = 0; i < audio.Count; i++)
+								AudioMapID[i] = audio[i].Id;
+						else
+							for (int i = 0; i < audio.Count; i++)
+								AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
 
 						// Decode Audio
 						switch (AudMode)
@@ -2105,5 +2106,15 @@ namespace ifme.hitoha
 			rtfLog.SelectedText = "] " + message + "\n";
 		}
 		#endregion
+
+		private void pictDonate_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://goo.gl/HQtWcH");
+		}
+
+		private void btnAdvanceHelp_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://x265.readthedocs.org/en/default/");
+		}
 	}
 }

@@ -91,6 +91,16 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_donate_SM {
+            get {
+                object obj = ResourceManager.GetObject("btn_donate_SM", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The End Is the Beginning.
         /// </summary>
         internal static string EpicWord {
