@@ -51,7 +51,7 @@ namespace ifme.framework
 			"rm -r -f \"$2\"\n" +
 			"mkdir $2\n" +
 			"wget --no-check-certificate -O \"./saishin.jp\" $1\n" +
-			"7za x -so \"./saishin.jp\" | tar xf - -C \"$2\"\n" +
+			"./7za x -so \"./saishin.jp\" | tar xf - -C \"$2\"\n" +
 			"echo \" \"\n" +
 			"echo \" \"\n" +
 			"echo \"Update complete!\"\n" +

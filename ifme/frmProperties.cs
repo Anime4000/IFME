@@ -19,7 +19,9 @@ namespace ifme
 		{
 			InitializeComponent();
 			this.Icon = Properties.Resources.ifme_flat;
+
 			OldScreenRes = ScreenRes.Contains('p') || ScreenRes.Contains('i') ? ScreenRes.Remove(ScreenRes.Length - 1) : ScreenRes;
+			NewScreenRes = OldScreenRes;
 			ScanType = ScreenRes.Contains('i') ? 'i' : 'p';
 		}
 

@@ -83,7 +83,7 @@ namespace ifme.hitoha
 		{
 			LoadLang();
 			lblTitle.Text = String.Format("{0} {1}",Title, Version);
-			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyleft (ɔ) 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year.ToString());
+			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyright © 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year);
 			this.Text = String.Format(this.Text, "About", Globals.AppInfo.Name);
 
 			if (!Globals.AppInfo.VersionEqual)
@@ -94,22 +94,6 @@ namespace ifme.hitoha
 
 			// Get first
 			Names[cnt++] = "People @ MulticoreWare";
-			Names[cnt++] = "Pis Kawaii Neko";
-
-			// Get Names for Langauge author
-			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
-			{
-				if (Language.Installed.Data[i, 0] == null)
-					break;
-
-				if (String.Equals(Language.Installed.Data[i, 2], "Anime4000"))
-					continue;
-
-				if (Language.Installed.Data[i, 2].Contains("//"))
-					continue;
-
-				Names[cnt++] = Language.Installed.Data[i, 2];
-			}
 
 			// Get Names for Addons author
 			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
@@ -130,6 +114,21 @@ namespace ifme.hitoha
 					continue;
 
 				Names[cnt++] = Addons.Installed.Data[i, 3];
+			}
+
+			// Get Names for Langauge author
+			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
+			{
+				if (Language.Installed.Data[i, 0] == null)
+					break;
+
+				if (String.Equals(Language.Installed.Data[i, 2], "Anime4000"))
+					continue;
+
+				if (Language.Installed.Data[i, 2].Contains("//"))
+					continue;
+
+				Names[cnt++] = Language.Installed.Data[i, 2];
 			}
 
 			Names[cnt++] = "FFmpeg Team";

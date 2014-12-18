@@ -209,11 +209,11 @@ namespace ifme.hitoha
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
 			GetFiles.Title = Language.IMessage.OpenFile;
-			GetFiles.Filter = "Known Video files|*.mkv;*.mp4;*.m4v;*.flv;*.webm;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
-				+ "MKV Container|*.mkv|"
-				+ "MP4 Container|*.mp4;*.m4v|"
-				+ "Flash Video Container|*.flv|"
-				+ "The WebM Project (container)|*.webm|"
+			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.flv;*.webm;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
+				+ "Matroska Multimedia Container|*.mkv|"
+				+ "MPEG-4 Part 14 (MP4)|*.mp4;*.m4v|"
+				+ "Adobe Flash Video|*.flv|"
+				+ "The WebM Project|*.webm|"
 				+ "Audio Video Interleaved|*.avi;*.divx|"
 				+ "Windows Media Video|*.wmv|"
 				+ "Moving Picture Experts Group|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
@@ -1224,16 +1224,16 @@ namespace ifme.hitoha
 				// Decode audio and process multiple streams
 				if (!BGThread.CancellationPending)
 				{
-					// Set title
-					FormTitle(String.Format("Queue {0} of {1}: Decoding all audio...", x + 1, queue.Length));
-					InvokeLog(Log.Info, "Now decoding audio~ Please Wait...");
-
 					if (audio.Count >= 1)
 					{
+						// Set title
+						FormTitle(String.Format("Queue {0} of {1}: Decoding all audio...", x + 1, queue.Length));
+						InvokeLog(Log.Info, "Now decoding audio~ Please Wait...");
+
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
 						int[] AudioMapID = new int[1024];
 
-						if(video[0].Id == 0 || audio[0].Id == 0 || audio[0].Id == 1)
+						if(video[0].Id == 0 || audio[0].Id == 1 || audio[0].Id == 0)
 							for (int i = 0; i < audio.Count; i++)
 								AudioMapID[i] = audio[i].Id;
 						else
@@ -1320,7 +1320,7 @@ namespace ifme.hitoha
 				if (!BGThread.CancellationPending)
 				{
 					// Make sure not pass-through mode
-					if (AudFormat != 0)
+					if (audio.Count >= 1 && AudFormat != 0)
 					{
 						// Set title
 						FormTitle(String.Format("Queue {0} of {1}: Encoding all audio...", x + 1, queue.Length));
@@ -2114,7 +2114,7 @@ namespace ifme.hitoha
 
 		private void btnAdvanceHelp_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://x265.readthedocs.org/en/default/");
+			System.Diagnostics.Process.Start("http://x265.readthedocs.org/en/default/cli.html");
 		}
 	}
 }

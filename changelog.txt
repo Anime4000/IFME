@@ -1,3 +1,9 @@
+Version 4.8.1.0
+---------------
+[fixed] Video cannot encode due to AVI indexing problem
+[fixed] Update system under Linux (missing "./")
+[fixed] Cannot encode video that has no audio
+
 Version 4.8.0.0
 ---------------
 From here, IFME change new icon again.
