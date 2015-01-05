@@ -1,8 +1,11 @@
 Version 4.8.1.0
 ---------------
 [fixed] Video cannot encode due to AVI indexing problem
-[fixed] Update system under Linux (missing "./")
+[fixed] Broken update under Linux (missing "./")
 [fixed] Cannot encode video that has no audio
+[fixed] IFME MKV output now will not write Tag and Statistics
+[added] Missing auto save log each conversion
+[added] Russian Language by zetcamp
 
 Version 4.8.0.0
 ---------------
@@ -10,6 +13,7 @@ From here, IFME change new icon again.
 
 [added] Italian translation by MatrixG
 [added] Multiple pass encoding support up to 8 passes
+[added] Function to change video resolution
 [fixed] Improper MKV extraction and repacking
 [fixed] About Dialog, file size shirnk by ~4%
 

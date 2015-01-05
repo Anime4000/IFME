@@ -133,6 +133,7 @@ namespace ifme.hitoha
 			rdoUseMkv.Checked = Properties.Settings.Default.UseMkv;
 			rdoUseMp4.Checked = !Properties.Settings.Default.UseMkv;
 			chkUpdate.Checked = Properties.Settings.Default.UpdateAlways;
+			chkLogSave.Checked = Properties.Settings.Default.LogAutoSave;
 
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -322,6 +323,7 @@ namespace ifme.hitoha
 			Properties.Settings.Default.TemporaryFolder = txtTempDir.Text;
 			Properties.Settings.Default.UseMkv = rdoUseMkv.Checked;
 			Properties.Settings.Default.UpdateAlways = chkUpdate.Checked;
+			Properties.Settings.Default.LogAutoSave = chkLogSave.Checked;
 
 			// Save CPU affinity
 			string aff = "";

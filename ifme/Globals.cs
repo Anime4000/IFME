@@ -228,5 +228,6 @@ namespace ifme.hitoha
 		public static int OK = 1;
 		public static int Warn = 2;
 		public static int Error = 3;
+		public static string AutoSaveName = "";
 	}
 }

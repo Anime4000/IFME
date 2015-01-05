@@ -70,19 +70,28 @@ namespace ifme.hitoha
 				Console.Write("[info] Your settings has been saved, {0} exit safely\n", Globals.AppInfo.NameShort);
 		}
 
-		private void frmMain_Load(object sender, EventArgs e)
+		public void StartUpLog()
 		{
-			// Startup
 			rtfLog.SelectionColor = Color.Yellow;
 			rtfLog.SelectedText = String.Format("{0} - by {1} ({2})\nVersion: {3} compiled on {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.Author, Globals.AppInfo.WebSite, Globals.AppInfo.Version, Globals.AppInfo.BuildDate, Globals.AppInfo.CPU);
 			rtfLog.SelectionColor = Color.Red;
 			rtfLog.SelectedText = "Warning: This program still in beta, unexpected behaviour may occur.\n";
 			rtfLog.SelectionColor = Color.Aqua;
-			
-			if(OS.IsWindows)
+
+			if (OS.IsWindows)
 				rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
 			else
 				rtfLog.SelectedText = "All encoding will redirect to terminal, make sure start application via termianl\n\n";
+		}
+
+		private void frmMain_Load(object sender, EventArgs e)
+		{
+			// Startup
+			StartUpLog();
+
+			// Message StartUp
+			if (Properties.Settings.Default.LogAutoSave)
+				PrintLog(Log.Info, "Log will save each session!");
 
 			// Migrate previous settings
 			if (Properties.Settings.Default.UpdateSettings)
@@ -1162,14 +1171,8 @@ namespace ifme.hitoha
 				System.DateTime CurrentQ = System.DateTime.Now;
 
 				// Change string to int/bool for easy code
-				bool IsInterlaced = false;
-				bool IsTopFF = true;
-
-				if (video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase))
-					IsInterlaced = true;
-
-				if (video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase))
-					IsTopFF = false;
+				bool IsInterlaced = video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) ? true : false;
+				bool IsTopFF = video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) ? false : true;
 
 				// Print current file to encode
 				InvokeLog(Log.Info, String.Format("Processing {0}", Path.GetFileName(queue[x])));
@@ -1216,7 +1219,7 @@ namespace ifme.hitoha
 							InvokeLog(Log.Info, "If this part got error, don't worry about it :)");
 
 							// Extract metadata. Go to "MKV extarcted content" below (use CTRL+F)
-							StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "archive.mkv")));
+							StartProcess(Addons.BuildIn.FFmpeg, String.Format("--disable-track-statistics-tags -i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "archive.mkv")));
 						}
 					}
 				}
@@ -1513,6 +1516,10 @@ namespace ifme.hitoha
 						FileOut = Path.Combine(DestDir, Path.GetFileNameWithoutExtension(queue[x]));
 					else
 						FileOut = Path.Combine(Path.GetDirectoryName(queue[x]), "[encoded] " + Path.GetFileNameWithoutExtension(queue[x]));
+					
+					// Generate one, save log after conversion finished
+					if (Properties.Settings.Default.LogAutoSave)
+						Log.AutoSaveName = FileOut + ".log";
 
 					// Mux by MKV or MP4
 					if (Properties.Settings.Default.UseMkv)
@@ -1583,7 +1590,7 @@ namespace ifme.hitoha
 
 						
 						// Build command for mkvmerge
-						command = command + attach + trackorder;
+						command = "--disable-track-statistics-tags " + command + attach + trackorder;
 						
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
@@ -1635,6 +1642,25 @@ namespace ifme.hitoha
 
 				// Display total wasted time
 				InvokeLogDuration(Log.Info, "This session takes", CurrentQ);
+
+				// Save log if required
+				if (Properties.Settings.Default.LogAutoSave)
+				{
+					InvokeLog(Log.Info, "Log Saved: " + Log.AutoSaveName);
+
+					if (this.InvokeRequired)
+					{
+						BeginInvoke(new MethodInvoker(() => rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText)));
+						BeginInvoke(new MethodInvoker(() => rtfLog.Clear()));
+						BeginInvoke(new MethodInvoker(() => StartUpLog()));
+					}
+					else
+					{
+						rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText);
+						rtfLog.Clear();
+						StartUpLog();
+					}
+				}
 
 				// One file finished
 				if (this.InvokeRequired)
