@@ -82,7 +82,7 @@ namespace ifme.hitoha
 		private void frmAbout_Load(object sender, EventArgs e)
 		{
 			LoadLang();
-			lblTitle.Text = String.Format("{0} {1}",Title, Version);
+			lblTitle.Text = String.Format("{0} v{1} ({2})", Title, Version, Properties.Resources.EpicWord);
 			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyright © 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year);
 			this.Text = String.Format(this.Text, "About", Globals.AppInfo.Name);
 

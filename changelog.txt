@@ -7,6 +7,7 @@ Version 4.8.1.0
 [fixed] Update system that cause delete addons when download a 1kb file of 404 error
 [added] Missing auto save log each conversion
 [added] Russian Language by zetcamp
+[improve] Simplified and optimized get current UI language query.
 
 Version 4.8.0.0
 ---------------

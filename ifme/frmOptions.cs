@@ -87,16 +87,7 @@ namespace ifme.hitoha
 			}
 
 			// Get user default language
-			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
-			{
-				if (Language.Installed.Data[i, 0] != null)
-				{
-					if (Properties.Settings.Default.DefaultLang == Language.Installed.Data[i, 0])
-					{
-						cboLang.Text = Language.Installed.Data[i, 1];
-					}
-				}
-			}
+			cboLang.Text = Language.Installed.Data[Language.GetCurrent(), 1];
 		}
 
 		private void GetAddonsList()

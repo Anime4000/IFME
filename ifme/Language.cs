@@ -86,6 +86,15 @@ namespace ifme.hitoha
 			}
 		}
 
+		public static int GetCurrent()
+		{
+			for (int i = 0; i < Installed.Data.GetLength(0); i++)
+				if (Installed.Data[i, 0] != null)
+					if (Properties.Settings.Default.DefaultLang == Installed.Data[i, 0])
+						return i;
+			return 0;
+		}
+
 		public static class IControl
 		{
 			public static string btnStart = "";

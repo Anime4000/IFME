@@ -159,6 +159,9 @@ namespace ifme.hitoha
 				PrintLog(Log.Error, ex.Message);
 			}
 
+			// Tell user current langauge
+			PrintLog(Log.Info, "Current langauge: " + Language.Installed.Data[Language.GetCurrent(), 1] + " by " + Language.Installed.Data[Language.GetCurrent(), 2]);
+
 			// After addons has been load, now display it on UI
 			AddAudio();
 
