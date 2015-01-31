@@ -7,7 +7,7 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Internet Friendly Media Encoder")]
-[assembly: AssemblyDescription("x265 Front-end Multimedia Encoder")]
+[assembly: AssemblyDescription("x265/HEVC Front-end Multimedia Encoder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]

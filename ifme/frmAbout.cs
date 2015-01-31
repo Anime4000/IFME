@@ -94,6 +94,7 @@ namespace ifme.hitoha
 
 			// Get first
 			Names[cnt++] = "People @ MulticoreWare";
+			Names[cnt++] = "Nemu";
 
 			// Get Names for Addons author
 			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
@@ -101,19 +102,10 @@ namespace ifme.hitoha
 				if (Addons.Installed.Data[i, 3] == null)
 					break;
 
-				if (String.Equals(Addons.Installed.Data[i, 3], "MulticoreWare"))
-					continue;
-
-				if (Addons.Installed.Data[i, 3].Contains("Xiph"))
-					continue;
-
-				if (Addons.Installed.Data[i, 3].Contains("FFmpeg"))
-					continue;
-
 				if (Addons.Installed.Data[i, 3].Contains("//"))
 					continue;
 
-				Names[cnt++] = Addons.Installed.Data[i, 3];
+				Names[cnt++] = String.Format("{0} by:\n{1}", Addons.Installed.Data[i, 2], Addons.Installed.Data[i, 3]);
 			}
 
 			// Get Names for Langauge author
@@ -128,11 +120,9 @@ namespace ifme.hitoha
 				if (Language.Installed.Data[i, 2].Contains("//"))
 					continue;
 
-				Names[cnt++] = Language.Installed.Data[i, 2];
+				Names[cnt++] = String.Format("{0} translation by:\n{1}", Language.Installed.Data[i, 1], Language.Installed.Data[i, 2]);
 			}
 
-			Names[cnt++] = "FFmpeg Team";
-			Names[cnt++] = "Xiph.Org Foundation";
 			tmrScroll.Start();
 		}
 

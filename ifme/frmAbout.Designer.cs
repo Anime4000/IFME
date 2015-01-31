@@ -140,7 +140,7 @@
 			// 
 			// tmrScroll
 			// 
-			this.tmrScroll.Interval = 1000;
+			this.tmrScroll.Interval = 1500;
 			this.tmrScroll.Tick += new System.EventHandler(this.tmrScroll_Tick);
 			// 
 			// lblNames

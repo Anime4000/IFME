@@ -4,6 +4,7 @@ Version 4.8.1.0
 [fixed] Broken update under Linux (missing "./")
 [fixed] Cannot encode video that has no audio
 [fixed] IFME MKV output now will not write Tag and Statistics
+[fixed] Update system that cause delete addons when download a 1kb file of 404 error
 [added] Missing auto save log each conversion
 [added] Russian Language by zetcamp
 

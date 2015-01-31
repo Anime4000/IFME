@@ -153,17 +153,22 @@ namespace ifme.hitoha
 					client.DownloadFileAsync(new Uri(Addons.Installed.Data[i, 9]), Path.Combine(Addons.Folder, "addons.ifz"));
 					finish = false;
 
-					while (finish == false)
+					while (finish == false){/* block and do noting... */}
+
+					// Proceed extract update if file exist and not zero length file
+					if (File.Exists(Path.Combine(Addons.Folder, "addons.ifz")))
 					{
-						// block and do noting...
+						FileInfo ChapLen = new FileInfo(Path.Combine(Addons.Folder, "addons.ifz"));
+						if (ChapLen.Length > 1024)
+						{
+							InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
+							System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
+							Addons.Extract(Path.Combine(Addons.Folder, "addons.ifz"), Addons.Folder);
+
+							// Tell startup there are got addon update
+							Addons.Installed.IsUpdated = true;
+						}
 					}
-
-					InvokeStatus("Updating", Addons.Installed.Data[i, 2]);
-					System.IO.Directory.Delete(Addons.Installed.Data[i, 0], true);
-					Addons.Extract(Path.Combine(Addons.Folder, "addons.ifz"), Addons.Folder);
-
-					// Tell startup there are got addon update
-					Addons.Installed.IsUpdated = true;
 				}
 				catch (WebException ex)
 				{
