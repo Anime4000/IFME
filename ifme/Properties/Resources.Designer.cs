@@ -101,11 +101,51 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap disk {
+            get {
+                object obj = ResourceManager.GetObject("disk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sky of Connection.
         /// </summary>
         internal static string EpicWord {
             get {
                 return ResourceManager.GetString("EpicWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap film_edit {
+            get {
+                object obj = ResourceManager.GetObject("film_edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap film_go {
+            get {
+                object obj = ResourceManager.GetObject("film_go", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder_explore {
+            get {
+                object obj = ResourceManager.GetObject("folder_explore", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -186,6 +226,34 @@ namespace ifme.Properties {
             get {
                 object obj = ResourceManager.GetObject("SplashScreen01_Ifumii", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [profile]
+        ///name = Default
+        ///author = Anime4000
+        ///version = 1
+        ///homepage = https://github.com/x265
+        ///
+        ///[video]
+        ///preset = 8
+        ///tuning = 0
+        ///ratectrl = 0
+        ///ratefact = 28
+        ///command = --dither
+        ///
+        ///[audio]
+        ///encoder = Passthrough/Extract all audio (Mode configuration ignored)
+        ///bit = 5
+        ///freq = 2
+        ///channel = 0
+        ///mode = 0
+        ///command =.
+        /// </summary>
+        internal static string TemplateUserPreset {
+            get {
+                return ResourceManager.GetString("TemplateUserPreset", resourceCulture);
             }
         }
     }

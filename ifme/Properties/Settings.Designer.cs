@@ -322,5 +322,17 @@ namespace ifme.Properties {
                 this["LogAutoSave"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public int PreviewDuration {
+            get {
+                return ((int)(this["PreviewDuration"]));
+            }
+            set {
+                this["PreviewDuration"] = value;
+            }
+        }
     }
 }

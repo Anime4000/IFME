@@ -34,6 +34,8 @@
 			this.btnStart = new System.Windows.Forms.Button();
 			this.tabEncoding = new System.Windows.Forms.TabControl();
 			this.tabQueue = new System.Windows.Forms.TabPage();
+			this.btnPreview = new System.Windows.Forms.Button();
+			this.btnEdit = new System.Windows.Forms.Button();
 			this.chkDoneOffMachine = new System.Windows.Forms.CheckBox();
 			this.btnQueueBrowseDest = new System.Windows.Forms.Button();
 			this.txtDestDir = new System.Windows.Forms.TextBox();
@@ -51,7 +53,15 @@
 			this.colQueueFPS = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueueBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colQueuePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.tabUserPreset = new System.Windows.Forms.TabPage();
+			this.btnUserPreDelete = new System.Windows.Forms.Button();
+			this.btnUserPreAdd = new System.Windows.Forms.Button();
+			this.btnUserPreSave = new System.Windows.Forms.Button();
+			this.lblUserPreData = new System.Windows.Forms.Label();
+			this.lblUserPreLabel = new System.Windows.Forms.Label();
+			this.cboUserPreList = new System.Windows.Forms.ComboBox();
 			this.tabVideo = new System.Windows.Forms.TabPage();
+			this.btnAdvanceHelp = new System.Windows.Forms.Button();
 			this.txtVideoAdvCmd = new System.Windows.Forms.TextBox();
 			this.lblVideoAdvCmd = new System.Windows.Forms.Label();
 			this.grpVideoRateCtrl = new System.Windows.Forms.GroupBox();
@@ -118,9 +128,9 @@
 			this.pictBannerMain = new System.Windows.Forms.PictureBox();
 			this.pictBannerRight = new System.Windows.Forms.PictureBox();
 			this.pictDonate = new System.Windows.Forms.PictureBox();
-			this.btnAdvanceHelp = new System.Windows.Forms.Button();
 			this.tabEncoding.SuspendLayout();
 			this.tabQueue.SuspendLayout();
+			this.tabUserPreset.SuspendLayout();
 			this.tabVideo.SuspendLayout();
 			this.grpVideoRateCtrl.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkVideoRate)).BeginInit();
@@ -177,6 +187,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabEncoding.Controls.Add(this.tabQueue);
+			this.tabEncoding.Controls.Add(this.tabUserPreset);
 			this.tabEncoding.Controls.Add(this.tabVideo);
 			this.tabEncoding.Controls.Add(this.tabAudio);
 			this.tabEncoding.Controls.Add(this.tabSubtitle);
@@ -190,6 +201,8 @@
 			// 
 			// tabQueue
 			// 
+			this.tabQueue.Controls.Add(this.btnPreview);
+			this.tabQueue.Controls.Add(this.btnEdit);
 			this.tabQueue.Controls.Add(this.chkDoneOffMachine);
 			this.tabQueue.Controls.Add(this.btnQueueBrowseDest);
 			this.tabQueue.Controls.Add(this.txtDestDir);
@@ -208,6 +221,30 @@
 			this.tabQueue.Text = "{0}";
 			this.tabQueue.UseVisualStyleBackColor = true;
 			// 
+			// btnPreview
+			// 
+			this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPreview.Enabled = false;
+			this.btnPreview.Image = global::ifme.Properties.Resources.film_go;
+			this.btnPreview.Location = new System.Drawing.Point(458, 6);
+			this.btnPreview.Name = "btnPreview";
+			this.btnPreview.Size = new System.Drawing.Size(24, 24);
+			this.btnPreview.TabIndex = 11;
+			this.btnPreview.UseVisualStyleBackColor = true;
+			this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
+			// 
+			// btnEdit
+			// 
+			this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnEdit.Enabled = false;
+			this.btnEdit.Image = global::ifme.Properties.Resources.film_edit;
+			this.btnEdit.Location = new System.Drawing.Point(488, 6);
+			this.btnEdit.Name = "btnEdit";
+			this.btnEdit.Size = new System.Drawing.Size(24, 24);
+			this.btnEdit.TabIndex = 10;
+			this.btnEdit.UseVisualStyleBackColor = true;
+			this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+			// 
 			// chkDoneOffMachine
 			// 
 			this.chkDoneOffMachine.AutoSize = true;
@@ -221,11 +258,11 @@
 			// btnQueueBrowseDest
 			// 
 			this.btnQueueBrowseDest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueBrowseDest.Image = global::ifme.Properties.Resources.folder_explore;
 			this.btnQueueBrowseDest.Location = new System.Drawing.Point(575, 315);
 			this.btnQueueBrowseDest.Name = "btnQueueBrowseDest";
 			this.btnQueueBrowseDest.Size = new System.Drawing.Size(27, 23);
 			this.btnQueueBrowseDest.TabIndex = 8;
-			this.btnQueueBrowseDest.Text = "...";
 			this.btnQueueBrowseDest.UseVisualStyleBackColor = true;
 			this.btnQueueBrowseDest.Click += new System.EventHandler(this.btnQueueBrowseDest_Click);
 			// 
@@ -245,7 +282,7 @@
 			// 
 			this.chkQueueSaveTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.chkQueueSaveTo.AutoSize = true;
-			this.chkQueueSaveTo.Location = new System.Drawing.Point(6, 321);
+			this.chkQueueSaveTo.Location = new System.Drawing.Point(6, 320);
 			this.chkQueueSaveTo.Name = "chkQueueSaveTo";
 			this.chkQueueSaveTo.Size = new System.Drawing.Size(15, 14);
 			this.chkQueueSaveTo.TabIndex = 7;
@@ -324,10 +361,11 @@
 			this.lstQueue.FullRowSelect = true;
 			this.lstQueue.Location = new System.Drawing.Point(6, 36);
 			this.lstQueue.Name = "lstQueue";
-			this.lstQueue.Size = new System.Drawing.Size(596, 274);
+			this.lstQueue.Size = new System.Drawing.Size(596, 273);
 			this.lstQueue.TabIndex = 6;
 			this.lstQueue.UseCompatibleStateImageBehavior = false;
 			this.lstQueue.View = System.Windows.Forms.View.Details;
+			this.lstQueue.Click += new System.EventHandler(this.lstQueue_Click);
 			this.lstQueue.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragDrop);
 			this.lstQueue.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragEnter);
 			this.lstQueue.DoubleClick += new System.EventHandler(this.lstQueue_DoubleClick);
@@ -365,6 +403,83 @@
 			this.colQueuePath.Text = "";
 			this.colQueuePath.Width = 52;
 			// 
+			// tabUserPreset
+			// 
+			this.tabUserPreset.Controls.Add(this.btnUserPreDelete);
+			this.tabUserPreset.Controls.Add(this.btnUserPreAdd);
+			this.tabUserPreset.Controls.Add(this.btnUserPreSave);
+			this.tabUserPreset.Controls.Add(this.lblUserPreData);
+			this.tabUserPreset.Controls.Add(this.lblUserPreLabel);
+			this.tabUserPreset.Controls.Add(this.cboUserPreList);
+			this.tabUserPreset.Location = new System.Drawing.Point(4, 22);
+			this.tabUserPreset.Name = "tabUserPreset";
+			this.tabUserPreset.Size = new System.Drawing.Size(608, 343);
+			this.tabUserPreset.TabIndex = 7;
+			this.tabUserPreset.Text = "{0}";
+			this.tabUserPreset.UseVisualStyleBackColor = true;
+			// 
+			// btnUserPreDelete
+			// 
+			this.btnUserPreDelete.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnUserPreDelete.Image = global::ifme.Properties.Resources.list_remove;
+			this.btnUserPreDelete.Location = new System.Drawing.Point(468, 108);
+			this.btnUserPreDelete.Name = "btnUserPreDelete";
+			this.btnUserPreDelete.Size = new System.Drawing.Size(24, 24);
+			this.btnUserPreDelete.TabIndex = 5;
+			this.btnUserPreDelete.UseVisualStyleBackColor = true;
+			this.btnUserPreDelete.Click += new System.EventHandler(this.btnUserPreDelete_Click);
+			// 
+			// btnUserPreAdd
+			// 
+			this.btnUserPreAdd.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnUserPreAdd.Image = global::ifme.Properties.Resources.list_add;
+			this.btnUserPreAdd.Location = new System.Drawing.Point(438, 108);
+			this.btnUserPreAdd.Name = "btnUserPreAdd";
+			this.btnUserPreAdd.Size = new System.Drawing.Size(24, 24);
+			this.btnUserPreAdd.TabIndex = 4;
+			this.btnUserPreAdd.UseVisualStyleBackColor = true;
+			this.btnUserPreAdd.Click += new System.EventHandler(this.btnUserPreAdd_Click);
+			// 
+			// btnUserPreSave
+			// 
+			this.btnUserPreSave.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnUserPreSave.Image = global::ifme.Properties.Resources.disk;
+			this.btnUserPreSave.Location = new System.Drawing.Point(408, 108);
+			this.btnUserPreSave.Name = "btnUserPreSave";
+			this.btnUserPreSave.Size = new System.Drawing.Size(24, 24);
+			this.btnUserPreSave.TabIndex = 3;
+			this.btnUserPreSave.UseVisualStyleBackColor = true;
+			this.btnUserPreSave.Click += new System.EventHandler(this.btnUserPreSave_Click);
+			// 
+			// lblUserPreData
+			// 
+			this.lblUserPreData.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblUserPreData.Location = new System.Drawing.Point(190, 162);
+			this.lblUserPreData.Name = "lblUserPreData";
+			this.lblUserPreData.Size = new System.Drawing.Size(302, 42);
+			this.lblUserPreData.TabIndex = 2;
+			this.lblUserPreData.Text = "{0}\r\n{1}\r\n{2}";
+			// 
+			// lblUserPreLabel
+			// 
+			this.lblUserPreLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblUserPreLabel.Location = new System.Drawing.Point(114, 162);
+			this.lblUserPreLabel.Name = "lblUserPreLabel";
+			this.lblUserPreLabel.Size = new System.Drawing.Size(70, 42);
+			this.lblUserPreLabel.TabIndex = 1;
+			this.lblUserPreLabel.Text = "{0}:\r\n{1}:\r\n{2}:";
+			this.lblUserPreLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
+			// cboUserPreList
+			// 
+			this.cboUserPreList.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.cboUserPreList.FormattingEnabled = true;
+			this.cboUserPreList.Location = new System.Drawing.Point(117, 138);
+			this.cboUserPreList.Name = "cboUserPreList";
+			this.cboUserPreList.Size = new System.Drawing.Size(375, 21);
+			this.cboUserPreList.TabIndex = 0;
+			this.cboUserPreList.SelectedIndexChanged += new System.EventHandler(this.cboUserPreList_SelectedIndexChanged);
+			// 
 			// tabVideo
 			// 
 			this.tabVideo.Controls.Add(this.btnAdvanceHelp);
@@ -379,6 +494,17 @@
 			this.tabVideo.TabIndex = 1;
 			this.tabVideo.Text = "{0}";
 			this.tabVideo.UseVisualStyleBackColor = true;
+			// 
+			// btnAdvanceHelp
+			// 
+			this.btnAdvanceHelp.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnAdvanceHelp.Location = new System.Drawing.Point(575, 315);
+			this.btnAdvanceHelp.Name = "btnAdvanceHelp";
+			this.btnAdvanceHelp.Size = new System.Drawing.Size(27, 23);
+			this.btnAdvanceHelp.TabIndex = 7;
+			this.btnAdvanceHelp.Text = "?";
+			this.btnAdvanceHelp.UseVisualStyleBackColor = true;
+			this.btnAdvanceHelp.Click += new System.EventHandler(this.btnAdvanceHelp_Click);
 			// 
 			// txtVideoAdvCmd
 			// 
@@ -510,6 +636,7 @@
             "off",
             "psnr",
             "ssim",
+            "grain",
             "zerolatency",
             "fastdecode"});
 			this.cboVideoTune.Location = new System.Drawing.Point(303, 48);
@@ -1140,17 +1267,6 @@
 			this.pictDonate.TabStop = false;
 			this.pictDonate.Click += new System.EventHandler(this.pictDonate_Click);
 			// 
-			// btnAdvanceHelp
-			// 
-			this.btnAdvanceHelp.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnAdvanceHelp.Location = new System.Drawing.Point(575, 315);
-			this.btnAdvanceHelp.Name = "btnAdvanceHelp";
-			this.btnAdvanceHelp.Size = new System.Drawing.Size(27, 23);
-			this.btnAdvanceHelp.TabIndex = 7;
-			this.btnAdvanceHelp.Text = "?";
-			this.btnAdvanceHelp.UseVisualStyleBackColor = true;
-			this.btnAdvanceHelp.Click += new System.EventHandler(this.btnAdvanceHelp_Click);
-			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1176,6 +1292,7 @@
 			this.tabEncoding.ResumeLayout(false);
 			this.tabQueue.ResumeLayout(false);
 			this.tabQueue.PerformLayout();
+			this.tabUserPreset.ResumeLayout(false);
 			this.tabVideo.ResumeLayout(false);
 			this.tabVideo.PerformLayout();
 			this.grpVideoRateCtrl.ResumeLayout(false);
@@ -1293,5 +1410,14 @@
 		private System.Windows.Forms.CheckBox chkDoneOffMachine;
 		private System.Windows.Forms.PictureBox pictDonate;
 		private System.Windows.Forms.Button btnAdvanceHelp;
+		private System.Windows.Forms.Button btnEdit;
+		private System.Windows.Forms.Button btnPreview;
+		private System.Windows.Forms.TabPage tabUserPreset;
+		private System.Windows.Forms.Label lblUserPreData;
+		private System.Windows.Forms.Label lblUserPreLabel;
+		private System.Windows.Forms.ComboBox cboUserPreList;
+		private System.Windows.Forms.Button btnUserPreSave;
+		private System.Windows.Forms.Button btnUserPreAdd;
+		private System.Windows.Forms.Button btnUserPreDelete;
 	}
 }

@@ -46,6 +46,7 @@ echo COPY IFME MAIN FILE
 copy installer\text_addon_license.txt %BUILDDIR%\LICENSE_ADDONS.TXT
 copy installer\text_gpl2.txt %BUILDDIR%\LICENSE.TXT
 copy ifme\lang\*.* %BUILDDIR%\lang
+copy ifme\preset\*.* %BUILDDIR%\preset
 copy ifme\bin\x64\%CompileMode%\ifme.exe %BUILDDIR%\
 copy ifme\bin\x64\%CompileMode%\ifme.framework.dll %BUILDDIR%\
 copy ifme\bin\x64\%CompileMode%\iso.gg %BUILDDIR%\

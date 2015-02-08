@@ -32,6 +32,8 @@
 			this.btnOK = new System.Windows.Forms.Button();
 			this.tabOptions = new System.Windows.Forms.TabControl();
 			this.tabGeneral = new System.Windows.Forms.TabPage();
+			this.grpLog = new System.Windows.Forms.GroupBox();
+			this.chkLogSave = new System.Windows.Forms.CheckBox();
 			this.grpUpdate = new System.Windows.Forms.GroupBox();
 			this.chkUpdate = new System.Windows.Forms.CheckBox();
 			this.grpFormat = new System.Windows.Forms.GroupBox();
@@ -62,17 +64,19 @@
 			this.colAddDev = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colAddMaintainBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnResetSettings = new System.Windows.Forms.Button();
-			this.grpLog = new System.Windows.Forms.GroupBox();
-			this.chkLogSave = new System.Windows.Forms.CheckBox();
+			this.grpPreview = new System.Windows.Forms.GroupBox();
+			this.numDuration = new System.Windows.Forms.NumericUpDown();
 			this.tabOptions.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
+			this.grpLog.SuspendLayout();
 			this.grpUpdate.SuspendLayout();
 			this.grpFormat.SuspendLayout();
 			this.grpTemp.SuspendLayout();
 			this.grpLang.SuspendLayout();
 			this.tabPerformance.SuspendLayout();
 			this.tabAddons.SuspendLayout();
-			this.grpLog.SuspendLayout();
+			this.grpPreview.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnCancel
@@ -113,6 +117,7 @@
 			// 
 			// tabGeneral
 			// 
+			this.tabGeneral.Controls.Add(this.grpPreview);
 			this.tabGeneral.Controls.Add(this.grpLog);
 			this.tabGeneral.Controls.Add(this.grpUpdate);
 			this.tabGeneral.Controls.Add(this.grpFormat);
@@ -125,6 +130,26 @@
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "{0}";
 			this.tabGeneral.UseVisualStyleBackColor = true;
+			// 
+			// grpLog
+			// 
+			this.grpLog.Controls.Add(this.chkLogSave);
+			this.grpLog.Location = new System.Drawing.Point(6, 294);
+			this.grpLog.Name = "grpLog";
+			this.grpLog.Size = new System.Drawing.Size(287, 63);
+			this.grpLog.TabIndex = 4;
+			this.grpLog.TabStop = false;
+			this.grpLog.Text = "{0}";
+			// 
+			// chkLogSave
+			// 
+			this.chkLogSave.AutoSize = true;
+			this.chkLogSave.Location = new System.Drawing.Point(6, 27);
+			this.chkLogSave.Name = "chkLogSave";
+			this.chkLogSave.Size = new System.Drawing.Size(42, 17);
+			this.chkLogSave.TabIndex = 0;
+			this.chkLogSave.Text = "{0}";
+			this.chkLogSave.UseVisualStyleBackColor = true;
 			// 
 			// grpUpdate
 			// 
@@ -155,7 +180,7 @@
 			this.grpFormat.Controls.Add(this.rdoUseMp4);
 			this.grpFormat.Location = new System.Drawing.Point(6, 216);
 			this.grpFormat.Name = "grpFormat";
-			this.grpFormat.Size = new System.Drawing.Size(287, 72);
+			this.grpFormat.Size = new System.Drawing.Size(161, 72);
 			this.grpFormat.TabIndex = 2;
 			this.grpFormat.TabStop = false;
 			this.grpFormat.Text = "{0}";
@@ -437,25 +462,28 @@
 			this.btnResetSettings.UseVisualStyleBackColor = true;
 			this.btnResetSettings.Click += new System.EventHandler(this.btnResetSettings_Click);
 			// 
-			// grpLog
+			// grpPreview
 			// 
-			this.grpLog.Controls.Add(this.chkLogSave);
-			this.grpLog.Location = new System.Drawing.Point(6, 294);
-			this.grpLog.Name = "grpLog";
-			this.grpLog.Size = new System.Drawing.Size(287, 63);
-			this.grpLog.TabIndex = 4;
-			this.grpLog.TabStop = false;
-			this.grpLog.Text = "{0}";
+			this.grpPreview.Controls.Add(this.numDuration);
+			this.grpPreview.Location = new System.Drawing.Point(173, 216);
+			this.grpPreview.Name = "grpPreview";
+			this.grpPreview.Size = new System.Drawing.Size(120, 72);
+			this.grpPreview.TabIndex = 5;
+			this.grpPreview.TabStop = false;
+			this.grpPreview.Text = "{0}";
 			// 
-			// chkLogSave
+			// numDuration
 			// 
-			this.chkLogSave.AutoSize = true;
-			this.chkLogSave.Location = new System.Drawing.Point(6, 27);
-			this.chkLogSave.Name = "chkLogSave";
-			this.chkLogSave.Size = new System.Drawing.Size(42, 17);
-			this.chkLogSave.TabIndex = 0;
-			this.chkLogSave.Text = "{0}";
-			this.chkLogSave.UseVisualStyleBackColor = true;
+			this.numDuration.Location = new System.Drawing.Point(6, 29);
+			this.numDuration.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+			this.numDuration.Name = "numDuration";
+			this.numDuration.Size = new System.Drawing.Size(108, 21);
+			this.numDuration.TabIndex = 0;
+			this.numDuration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// frmOptions
 			// 
@@ -476,6 +504,8 @@
 			this.Load += new System.EventHandler(this.frmOptions_Load);
 			this.tabOptions.ResumeLayout(false);
 			this.tabGeneral.ResumeLayout(false);
+			this.grpLog.ResumeLayout(false);
+			this.grpLog.PerformLayout();
 			this.grpUpdate.ResumeLayout(false);
 			this.grpFormat.ResumeLayout(false);
 			this.grpFormat.PerformLayout();
@@ -485,8 +515,8 @@
 			this.tabPerformance.ResumeLayout(false);
 			this.tabPerformance.PerformLayout();
 			this.tabAddons.ResumeLayout(false);
-			this.grpLog.ResumeLayout(false);
-			this.grpLog.PerformLayout();
+			this.grpPreview.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.numDuration)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -530,5 +560,7 @@
 		private System.Windows.Forms.Button btnResetSettings;
 		private System.Windows.Forms.GroupBox grpLog;
 		private System.Windows.Forms.CheckBox chkLogSave;
+		private System.Windows.Forms.GroupBox grpPreview;
+		private System.Windows.Forms.NumericUpDown numDuration;
 	}
 }

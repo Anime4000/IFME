@@ -158,4 +158,39 @@
   <data name="btn_donate_SM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btn_donate_SM.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="film_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\film_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="film_go" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\film_go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_explore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder_explore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TemplateUserPreset" xml:space="preserve">
+    <value>[profile]
+name = Default
+author = Anime4000
+version = 1
+homepage = https://github.com/x265
+
+[video]
+preset = 8
+tuning = 0
+ratectrl = 0
+ratefact = 28
+command = --dither
+
+[audio]
+encoder = Passthrough/Extract all audio (Mode configuration ignored)
+bit = 5
+freq = 2
+channel = 0
+mode = 0
+command =</value>
+    <comment>Predefined for saving user preset</comment>
+  </data>
 </root>

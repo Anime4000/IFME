@@ -72,12 +72,14 @@ namespace ifme.hitoha
 
 		public void StartUpLog()
 		{
+			// Header
 			rtfLog.SelectionColor = Color.Yellow;
 			rtfLog.SelectedText = String.Format("{0} - by {1} ({2})\nVersion: {3} compiled on {4} ({5})\n\n", Globals.AppInfo.Name, Globals.AppInfo.Author, Globals.AppInfo.WebSite, Globals.AppInfo.Version, Globals.AppInfo.BuildDate, Globals.AppInfo.CPU);
 			rtfLog.SelectionColor = Color.Red;
 			rtfLog.SelectedText = "Warning: This program still in beta, unexpected behaviour may occur.\n";
 			rtfLog.SelectionColor = Color.Aqua;
 
+			// Linux cannot send terminal text to program, tell them!
 			if (OS.IsWindows)
 				rtfLog.SelectedText = "Save this log? Click here and press CTRL+S (console will be clear after save)\n\n";
 			else
@@ -160,13 +162,16 @@ namespace ifme.hitoha
 			}
 
 			// Tell user current langauge
-			PrintLog(Log.Info, "Current langauge: " + Language.Installed.Data[Language.GetCurrent(), 1] + " by " + Language.Installed.Data[Language.GetCurrent(), 2]);
+			PrintLog(Log.Info, String.Format("Current MUI: {0} by {1} ({2})", Language.Installed.Data[Language.GetCurrent(), 1], Language.Installed.Data[Language.GetCurrent(), 2], Language.Installed.Data[Language.GetCurrent(), 4]));
+
+			//CreateLang(); // Developer tool, Scan and Create new empty language
+			LoadLang(); // Load language, GUI must use {0} as place-holder
 
 			// After addons has been load, now display it on UI
 			AddAudio();
 
-			//CreateLang(); // Developer tool, Scan and Create new empty language
-			LoadLang(); // Load language, GUI must use {0} as place-holder
+			// Then add user preset (must after load language)
+			AddUserPreset(true);
 
 			// Load Settings
 			UserSettingsLoad();
@@ -204,6 +209,15 @@ namespace ifme.hitoha
 
 		private void lstQueue_DoubleClick(object sender, EventArgs e)
 		{
+			// resue code
+			btnEdit.PerformClick();
+		}
+
+		private void btnEdit_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 0)
+				return;
+
 			// Allow user to change video resolution!
 			string res = lstQueue.SelectedItems[0].SubItems[3].Text;
 			using (var from = new frmProperties(res))
@@ -214,6 +228,33 @@ namespace ifme.hitoha
 					string val = from.NewScreenRes;
 					lstQueue.SelectedItems[0].SubItems[3].Text = val;
 				}
+			}
+		}
+
+		private void btnPreview_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 0)
+				return;
+
+			// This data will submited, palying with code block
+			Globals.Preview.Enable = true;
+			Globals.Preview.Selected = lstQueue.SelectedItems[0].Index;
+			Globals.Preview.File = lstQueue.SelectedItems[0].SubItems[0].Text;
+			Globals.Preview.Duration = Properties.Settings.Default.PreviewDuration;
+			btnStart.PerformClick(); // <- LOL
+		}
+
+		private void lstQueue_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count > 0)
+			{
+				btnEdit.Enabled = true;
+				btnPreview.Enabled = true;
+			}
+			else
+			{
+				btnEdit.Enabled = false;
+				btnPreview.Enabled = false;
 			}
 		}
 
@@ -289,6 +330,8 @@ namespace ifme.hitoha
 		{
 			lstQueue.Items.Clear();
 			btnStart.Enabled = false;
+			btnEdit.Enabled = false;
+			btnPreview.Enabled = false;
 		}
 
 		private void btnQueueUp_Click(object sender, EventArgs e)
@@ -420,6 +463,100 @@ namespace ifme.hitoha
 		private void txtDestDir_TextChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.OutputDirPath = txtDestDir.Text;
+		}
+
+		private void cboUserPreList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			UserPreset.SelectedId = cboUserPreList.SelectedIndex;
+			int i = UserPreset.SelectedId;
+
+			lblUserPreData.Text = String.Format("{0}\n{1}\n{2}", UserPreset.Installed.Data[i, 2], UserPreset.Installed.Data[i, 3], UserPreset.Installed.Data[i, 4]);
+
+			cboVideoPreset.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 5]);
+			cboVideoTune.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 6]);
+			cboVideoRateCtrl.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 7]);
+			txtVideoRate.Text = UserPreset.Installed.Data[i, 8];
+			txtVideoAdvCmd.Text = UserPreset.Installed.Data[i, 9];
+
+			cboAudioFormat.Text = UserPreset.Installed.Data[i, 10];
+			cboAudioBitRate.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 11]);
+			cboAudioFreq.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 12]);
+			cboAudioChan.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 13]);
+			cboAudioMode.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 14]);
+			txtAudioCmd.Text = UserPreset.Installed.Data[i, 15];
+		}
+
+		private void btnUserPreSave_Click(object sender, EventArgs e)
+		{
+			int i = UserPreset.SelectedId;
+
+			if (i == 0)
+				return;
+
+			var parser = new FileIniDataParser();
+			IniData data = parser.ReadFile(UserPreset.Installed.Data[i, 0]);
+
+			data["profile"]["name"] = cboUserPreList.Text;
+
+			data["video"]["preset"] = cboVideoPreset.SelectedIndex.ToString();
+			data["video"]["tuning"] = cboVideoTune.SelectedIndex.ToString();
+			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
+			data["video"]["ratefact"] = txtVideoRate.Text;
+			data["video"]["command"] = txtVideoAdvCmd.Text;
+
+			data["audio"]["encoder"] = cboAudioFormat.Text;
+			data["audio"]["bit"] = cboAudioBitRate.SelectedIndex.ToString();
+			data["audio"]["freq"] = cboAudioFreq.SelectedIndex.ToString();
+			data["audio"]["channel"] = cboAudioChan.SelectedIndex.ToString();
+			data["audio"]["mode"] = cboAudioMode.SelectedIndex.ToString();
+			data["audio"]["command"] = txtAudioCmd.Text;
+
+			parser.WriteFile(UserPreset.Installed.Data[i, 0], data, Encoding.UTF8);
+
+			AddUserPreset(false);
+			cboUserPreList.SelectedIndex = UserPreset.SelectedId;
+		}
+
+		private void btnUserPreAdd_Click(object sender, EventArgs e)
+		{
+			string FileName = String.Format("{0:yyyyMMdd_HHmmss}.nemu", DateTime.Now);
+			string FilePath = Path.Combine(UserPreset.Folder, FileName);
+			File.WriteAllText(FilePath, Properties.Resources.TemplateUserPreset);
+
+			var parser = new FileIniDataParser();
+			IniData data = parser.ReadFile(FilePath);
+
+			data["profile"]["name"] = cboUserPreList.Text;
+			data["profile"]["author"] = Environment.UserName;
+			data["profile"]["version"] = String.Format("{0:yyyy.MM.dd_HH-mm-ss}", DateTime.Now);
+			data["profile"]["homepage"] = "";
+
+			data["video"]["preset"] = cboVideoPreset.SelectedIndex.ToString();
+			data["video"]["tuning"] = cboVideoTune.SelectedIndex.ToString();
+			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
+			data["video"]["ratefact"] = txtVideoRate.Text;
+			data["video"]["command"] = txtVideoAdvCmd.Text;
+
+			data["audio"]["encoder"] = cboAudioFormat.Text;
+			data["audio"]["bit"] = cboAudioBitRate.SelectedIndex.ToString();
+			data["audio"]["freq"] = cboAudioFreq.SelectedIndex.ToString();
+			data["audio"]["channel"] = cboAudioChan.SelectedIndex.ToString();
+			data["audio"]["mode"] = cboAudioMode.SelectedIndex.ToString();
+			data["audio"]["command"] = txtAudioCmd.Text;
+
+			parser.WriteFile(FilePath, data, Encoding.UTF8);
+
+			AddUserPreset(false);
+			cboUserPreList.SelectedIndex = UserPreset.SelectedId;
+		}
+
+		private void btnUserPreDelete_Click(object sender, EventArgs e)
+		{
+			int i = UserPreset.SelectedId;
+			File.Delete(UserPreset.Installed.Data[i, 0]);
+
+			AddUserPreset(false);
+			cboUserPreList.SelectedIndex = 0;
 		}
 
 		private void cboVideoRateCtrl_SelectedIndexChanged(object sender, EventArgs e)
@@ -562,6 +699,7 @@ namespace ifme.hitoha
 		private void cboAudioFormat_DropDownClosed(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
+			cboAudioMode.Enabled = cboAudioFormat.SelectedIndex == 0 ? false : true;
 		}
 
 		private void cboAudioBitRate_DropDownClosed(object sender, EventArgs e)
@@ -1177,6 +1315,13 @@ namespace ifme.hitoha
 				bool IsInterlaced = video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) ? true : false;
 				bool IsTopFF = video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) ? false : true;
 
+				// Preview Block - Set current position.
+				if (Globals.Preview.Enable)
+				{
+					x = Globals.Preview.Selected;
+					goto PreviewBegin; 
+				}
+
 				// Print current file to encode
 				InvokeLog(Log.Info, String.Format("Processing {0}", Path.GetFileName(queue[x])));
 
@@ -1298,9 +1443,9 @@ namespace ifme.hitoha
 											String.Equals(audio[i].format.ToLower(), "ac-3") || 
 											String.Equals(audio[i].format.ToLower(), "aac") || 
 											audio[i].format.ToLower().Contains("mpeg"))
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modecopy, queue[x], AudioMapID[i], Path.Combine(tmp, String.Format("audio{0}.mp4", i + 1))));
 										else
-											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modeconv, queue[x], AudioMapID[i], AudBitR, Path.Combine(tmp, String.Format("audio{0}.m4a", i + 1))));
+											PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format(modeconv, queue[x], AudioMapID[i], AudBitR, Path.Combine(tmp, String.Format("audio{0}.mp4", i + 1))));
 
 								break;
 
@@ -1380,13 +1525,18 @@ namespace ifme.hitoha
 				foreach (var item in Directory.GetFiles(tmp, "*.wav"))
 					File.Delete(item);
 
+				// Tell user
+				FormTitle(String.Format("Queue {0} of {1}: Encoding video...", x + 1, queue.Length));
+				InvokeLog(Log.Info, "Now decoding video, can take very long time. Just be patient...");
+
+				// Preview Block - Jump here
+			PreviewBegin:
+				if (Globals.Preview.Enable)
+					InvokeLog(Log.Info, String.Format("Creating preview for: {0}", Path.GetFileName(queue[x])));
+
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
-					// Tell user
-					FormTitle(String.Format("Queue {0} of {1}: Encoding video...", x + 1, queue.Length));
-					InvokeLog(Log.Info, "Now decoding video, can take very long time. Just be patient...");
-
 					if (video.Count >= 1)
 					{
 						string cmd = "";
@@ -1413,6 +1563,11 @@ namespace ifme.hitoha
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
+						// Preview Block - Modify total frame to be process
+						if (Globals.Preview.Enable)
+							args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * video[0].frameRate));
+
+						// Due limitation of x265, cannot change 10 bit to 8 bit or vice versa
 						if (video[0].bitDepth > 8)
 							args[9] = Addons.BuildIn.HEVCHI;
 						else
@@ -1493,7 +1648,6 @@ namespace ifme.hitoha
 						else
 						{
 							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
-
 							PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
 						}
 					}
@@ -1516,9 +1670,9 @@ namespace ifme.hitoha
 					// Ready path for destination folder
 					string FileOut = null;
 					if (IsDestDir)
-						FileOut = Path.Combine(DestDir, Path.GetFileNameWithoutExtension(queue[x]));
+						FileOut = Globals.Preview.Enable ? Path.Combine(DestDir, "[preview] " + Path.GetFileNameWithoutExtension(queue[x])) : Path.Combine(DestDir, Path.GetFileNameWithoutExtension(queue[x]));
 					else
-						FileOut = Path.Combine(Path.GetDirectoryName(queue[x]), "[encoded] " + Path.GetFileNameWithoutExtension(queue[x]));
+						FileOut = Globals.Preview.Enable ? Path.Combine(Path.GetDirectoryName(queue[x]), "[preview] " + Path.GetFileNameWithoutExtension(queue[x])) : Path.Combine(Path.GetDirectoryName(queue[x]), "[encoded] " + Path.GetFileNameWithoutExtension(queue[x]));
 					
 					// Generate one, save log after conversion finished
 					if (Properties.Settings.Default.LogAutoSave)
@@ -1597,6 +1751,10 @@ namespace ifme.hitoha
 						
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
+
+						// Preview Block - Set file
+						if (Globals.Preview.Enable)
+							Globals.Preview.File = FileOut + ".mkv";
 					}
 					else
 					{
@@ -1609,11 +1767,7 @@ namespace ifme.hitoha
 						
 						// Audio
 						foreach (var item in System.IO.Directory.GetFiles(tmp, "audio*"))
-						{
-							command += " ";
-							command += String.Format("-add \"{0}#audio:name=Track {1}\"", item, i.ToString());
-							i++;
-						}
+							command += String.Format(" -add \"{0}#audio:name=Track {1}\"", item, i++);
 
 						// Send to mp4box
 						PEC = StartProcess(Addons.BuildIn.MP4, String.Format("{0} \"{1}\"", command, Path.Combine(tmp, "mod.mp4")));
@@ -1623,6 +1777,10 @@ namespace ifme.hitoha
 							PEC = StartProcess(Addons.BuildIn.MP4FPS, String.Format("-t \"{0}\" \"{1}\" -o \"{2}.mp4\"", Path.Combine(tmp, "timecodes.txt"), Path.Combine(tmp, "mod.mp4"), FileOut));
 						else
 							File.Copy(Path.Combine(tmp, "mod.mp4"), FileOut + ".mp4", true);
+
+						// Preview Block - Set file
+						if (Globals.Preview.Enable)
+							Globals.Preview.File = FileOut + ".mp4";
 					}
 
 					if (PEC == 1)
@@ -1649,8 +1807,6 @@ namespace ifme.hitoha
 				// Save log if required
 				if (Properties.Settings.Default.LogAutoSave)
 				{
-					InvokeLog(Log.Info, "Log Saved: " + Log.AutoSaveName);
-
 					if (this.InvokeRequired)
 					{
 						BeginInvoke(new MethodInvoker(() => rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText)));
@@ -1663,7 +1819,12 @@ namespace ifme.hitoha
 						rtfLog.Clear();
 						StartUpLog();
 					}
+					InvokeLog(Log.Info, "Log Saved: " + Log.AutoSaveName);
 				}
+
+				// Preview Block - Finish and Break loop,
+				if (Globals.Preview.Enable)
+					break;
 
 				// One file finished
 				if (this.InvokeRequired)
@@ -1823,13 +1984,19 @@ namespace ifme.hitoha
 			else
 				PrintLog(Log.OK, String.Format("{0}: Encoding completed!", DateTime.Now));
 
-			// Delete everything in temp folder
-			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
-				File.Delete(item);
-
 			// Reset
 			EncodingStarted(false);
 			this.Text = Globals.AppInfo.NameTitle;
+
+			// Preview Block - Play the files
+			if (Globals.Preview.Enable)
+			{
+				Globals.Preview.Enable = false;
+				PrintLog(Log.Warn, "Make sure you have player that able to play HEVC codec.");
+				PrintLog(Log.Warn, "Preview file will not delete automatically.");
+				PrintLog(Log.Info, "Opening " + Globals.Preview.File);
+				Process.Start(Globals.Preview.File);
+			}
 
 			// Shutdown on when encoding job completed
 			if (OS.IsWindows)
@@ -1919,6 +2086,25 @@ namespace ifme.hitoha
 					cboAudioFormat.SelectedIndex = 0;
 			else
 				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+		}
+		#endregion
+
+		#region Add user preset list into combo box
+		private void AddUserPreset(bool IsStartUp)
+		{
+			cboUserPreList.Items.Clear();
+			UserPreset.Installed.Get();
+
+			for (int i = 0; i < UserPreset.Installed.Data.Length; i++)
+			{
+				if (UserPreset.Installed.Data[i, 0] == null)
+					break;
+
+				cboUserPreList.Items.Add(UserPreset.Installed.Data[i, 1]);
+			}
+
+			if (IsStartUp)
+				cboUserPreList.SelectedIndex = 0;
 		}
 		#endregion
 

@@ -1,0 +1,20 @@
+﻿[profile]
+name = Anime optimised for Internet
+author = Nemu
+version = 0.1
+homepage = https://nedb.co/
+
+[video]
+preset = 8
+tuning = 2
+ratectrl = 0
+ratefact = 27
+command = --dither
+
+[audio]
+encoder = Opus Interactive Audio Codec
+bit = 3
+freq = 2
+channel = 0
+mode = 0
+command = --vbr --comp 10 --framesize 60

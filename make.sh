@@ -50,6 +50,7 @@ echo "<configuration>" >> ./$bd/ifme.framework.dll.config
 echo "     <dllmap dll=\"MediaInfo.dll\" target=\"libmediainfo.so.0\"/>" >> ./$bd/ifme.framework.dll.config
 echo "</configuration>" >> ./$bd/ifme.framework.dll.config
 cp -avr ./ifme/bin/x64/$cm/lang/ ./$bd/
+cp -avr ./ifme/bin/x64/$cm/preset/ ./$bd/
 cp ./installer/text_addon_license.txt ./$bd/LICENSE_ADDONS
 cp ./installer/text_gpl2.txt ./$bd/LICENSE
 

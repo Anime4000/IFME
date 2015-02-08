@@ -154,6 +154,14 @@ namespace ifme.hitoha
 			public static int CharTheme = rnd.Next(1, 100);
 		}
 
+		public static class Preview
+		{
+			public static bool Enable = false;
+			public static int Duration = 120;
+			public static int Selected = 1;
+			public static string File = null;
+		}
+
 		public static class Files
 		{
 			/// <summary>
