@@ -212,6 +212,16 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap nagisan {
+            get {
+                object obj = ResourceManager.GetObject("nagisan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SplashScreen01_Hotaru {
             get {
                 object obj = ResourceManager.GetObject("SplashScreen01_Hotaru", resourceCulture);

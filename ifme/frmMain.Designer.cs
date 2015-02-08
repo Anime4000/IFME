@@ -60,6 +60,7 @@
 			this.lblUserPreData = new System.Windows.Forms.Label();
 			this.lblUserPreLabel = new System.Windows.Forms.Label();
 			this.cboUserPreList = new System.Windows.Forms.ComboBox();
+			this.panel1 = new System.Windows.Forms.Panel();
 			this.tabVideo = new System.Windows.Forms.TabPage();
 			this.btnAdvanceHelp = new System.Windows.Forms.Button();
 			this.txtVideoAdvCmd = new System.Windows.Forms.TextBox();
@@ -411,6 +412,7 @@
 			this.tabUserPreset.Controls.Add(this.lblUserPreData);
 			this.tabUserPreset.Controls.Add(this.lblUserPreLabel);
 			this.tabUserPreset.Controls.Add(this.cboUserPreList);
+			this.tabUserPreset.Controls.Add(this.panel1);
 			this.tabUserPreset.Location = new System.Drawing.Point(4, 22);
 			this.tabUserPreset.Name = "tabUserPreset";
 			this.tabUserPreset.Size = new System.Drawing.Size(608, 343);
@@ -479,6 +481,16 @@
 			this.cboUserPreList.Size = new System.Drawing.Size(375, 21);
 			this.cboUserPreList.TabIndex = 0;
 			this.cboUserPreList.SelectedIndexChanged += new System.EventHandler(this.cboUserPreList_SelectedIndexChanged);
+			// 
+			// panel1
+			// 
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel1.BackgroundImage = global::ifme.Properties.Resources.nagisan;
+			this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.panel1.Location = new System.Drawing.Point(409, 0);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(199, 343);
+			this.panel1.TabIndex = 6;
 			// 
 			// tabVideo
 			// 
@@ -1419,5 +1431,6 @@
 		private System.Windows.Forms.Button btnUserPreSave;
 		private System.Windows.Forms.Button btnUserPreAdd;
 		private System.Windows.Forms.Button btnUserPreDelete;
+		private System.Windows.Forms.Panel panel1;
 	}
 }

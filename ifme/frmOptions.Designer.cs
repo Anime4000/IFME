@@ -32,6 +32,8 @@
 			this.btnOK = new System.Windows.Forms.Button();
 			this.tabOptions = new System.Windows.Forms.TabControl();
 			this.tabGeneral = new System.Windows.Forms.TabPage();
+			this.grpPreview = new System.Windows.Forms.GroupBox();
+			this.numDuration = new System.Windows.Forms.NumericUpDown();
 			this.grpLog = new System.Windows.Forms.GroupBox();
 			this.chkLogSave = new System.Windows.Forms.CheckBox();
 			this.grpUpdate = new System.Windows.Forms.GroupBox();
@@ -64,10 +66,10 @@
 			this.colAddDev = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colAddMaintainBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnResetSettings = new System.Windows.Forms.Button();
-			this.grpPreview = new System.Windows.Forms.GroupBox();
-			this.numDuration = new System.Windows.Forms.NumericUpDown();
 			this.tabOptions.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
+			this.grpPreview.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
 			this.grpLog.SuspendLayout();
 			this.grpUpdate.SuspendLayout();
 			this.grpFormat.SuspendLayout();
@@ -75,8 +77,6 @@
 			this.grpLang.SuspendLayout();
 			this.tabPerformance.SuspendLayout();
 			this.tabAddons.SuspendLayout();
-			this.grpPreview.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numDuration)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnCancel
@@ -131,8 +131,32 @@
 			this.tabGeneral.Text = "{0}";
 			this.tabGeneral.UseVisualStyleBackColor = true;
 			// 
+			// grpPreview
+			// 
+			this.grpPreview.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.grpPreview.Controls.Add(this.numDuration);
+			this.grpPreview.Location = new System.Drawing.Point(173, 216);
+			this.grpPreview.Name = "grpPreview";
+			this.grpPreview.Size = new System.Drawing.Size(120, 72);
+			this.grpPreview.TabIndex = 5;
+			this.grpPreview.TabStop = false;
+			this.grpPreview.Text = "{0}";
+			// 
+			// numDuration
+			// 
+			this.numDuration.Location = new System.Drawing.Point(6, 29);
+			this.numDuration.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+			this.numDuration.Name = "numDuration";
+			this.numDuration.Size = new System.Drawing.Size(108, 21);
+			this.numDuration.TabIndex = 0;
+			// 
 			// grpLog
 			// 
+			this.grpLog.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.grpLog.Controls.Add(this.chkLogSave);
 			this.grpLog.Location = new System.Drawing.Point(6, 294);
 			this.grpLog.Name = "grpLog";
@@ -462,29 +486,6 @@
 			this.btnResetSettings.UseVisualStyleBackColor = true;
 			this.btnResetSettings.Click += new System.EventHandler(this.btnResetSettings_Click);
 			// 
-			// grpPreview
-			// 
-			this.grpPreview.Controls.Add(this.numDuration);
-			this.grpPreview.Location = new System.Drawing.Point(173, 216);
-			this.grpPreview.Name = "grpPreview";
-			this.grpPreview.Size = new System.Drawing.Size(120, 72);
-			this.grpPreview.TabIndex = 5;
-			this.grpPreview.TabStop = false;
-			this.grpPreview.Text = "{0}";
-			// 
-			// numDuration
-			// 
-			this.numDuration.Location = new System.Drawing.Point(6, 29);
-			this.numDuration.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-			this.numDuration.Name = "numDuration";
-			this.numDuration.Size = new System.Drawing.Size(108, 21);
-			this.numDuration.TabIndex = 0;
-			this.numDuration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
 			// frmOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -504,6 +505,8 @@
 			this.Load += new System.EventHandler(this.frmOptions_Load);
 			this.tabOptions.ResumeLayout(false);
 			this.tabGeneral.ResumeLayout(false);
+			this.grpPreview.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.numDuration)).EndInit();
 			this.grpLog.ResumeLayout(false);
 			this.grpLog.PerformLayout();
 			this.grpUpdate.ResumeLayout(false);
@@ -515,8 +518,6 @@
 			this.tabPerformance.ResumeLayout(false);
 			this.tabPerformance.PerformLayout();
 			this.tabAddons.ResumeLayout(false);
-			this.grpPreview.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numDuration)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

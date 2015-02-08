@@ -33,13 +33,18 @@ namespace ifme.hitoha
 			this.Icon = Properties.Resources.ifme_flat;
 			pictBannerRight.Parent = pictBannerMain;
 
-			// Fix Mono WinForms Drawing
+			// Fix WinForms in Linux (Mono) drawing and positioning
 			if (OS.IsLinux)
 			{
 				rtfLog.Font = new Font("Monospace", 8, FontStyle.Regular);
 				pictBannerMain.Height -= 5;
 				pictBannerMain.Width += 9;
 				pictBannerRight.Left += 116;
+
+				panel1.Width += 16;
+				panel1.Height += 11;
+				panel1.Left += 35;
+				panel1.Top += 51;
 
 				// In UNIX, shutdown require root
 				chkDoneOffMachine.Visible = false;
