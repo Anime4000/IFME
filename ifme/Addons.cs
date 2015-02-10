@@ -95,7 +95,7 @@ namespace ifme.hitoha
 				Data[0, 13] = "45,64,80,96,112,128,160,192,224,256,320,499";
 				Data[0, 14] = "128";
 
-				// Fetch from addons folder
+				// Get Audio addons first, pref. issue making Index here same with ComboBox Index
 				foreach (var item in Directory.GetDirectories(Folder))
 				{
 					if (!System.IO.File.Exists(Path.Combine(item, IniFile)))
@@ -111,7 +111,7 @@ namespace ifme.hitoha
 					if (data["addon"]["type"] != "audio")
 						continue;
 
-					Data[i, 0] = i + "|" + item;
+					Data[i, 0] = item;
 					Data[i, 1] = data["addon"]["type"];
 					Data[i, 2] = data["profile"]["name"];
 					Data[i, 3] = data["profile"]["dev"];
@@ -130,6 +130,7 @@ namespace ifme.hitoha
 					i++;
 				}
 
+				// Then get other addons
 				return GetBuildin(i);
 			}
 

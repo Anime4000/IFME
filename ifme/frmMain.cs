@@ -680,17 +680,7 @@ namespace ifme.hitoha
 
 		private void cboAudioFormat_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string[] temp = new string[2];
-			int i = 0;
-
-			for (int x = 0; x < Addons.Installed.Data.GetLength(0); x++)
-			{
-				if(String.Equals(Addons.Installed.Data[x, 2], cboAudioFormat.Text))
-				{
-					temp = Addons.Installed.Data[x, 0].Split('|');
-					i = int.Parse(temp[0]);
-				}
-			}
+			int i = cboAudioFormat.SelectedIndex;
 
 			lblAudioFInfo.Text = Addons.Installed.Data[i, 3] + "\n"
 				+ Addons.Installed.Data[i, 4] + "\n"
