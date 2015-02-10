@@ -76,6 +76,7 @@ namespace ifme.hitoha
 			public static int Get()
 			{
 				int i = 1;
+				Array.Clear(Data, 0, Data.Length);
 
 				// Passthrough
 				Data[0, 0] = "0|null";
@@ -102,6 +103,10 @@ namespace ifme.hitoha
 
 					var parser = new FileIniDataParser();
 					IniData data = parser.ReadFile(Path.Combine(item, IniFile));
+
+					if (!Properties.Settings.Default.UseMkv)
+						if (String.Equals(data["profile"]["container"], "mkv", StringComparison.CurrentCultureIgnoreCase))
+							continue;
 
 					if (data["addon"]["type"] != "audio")
 						continue;

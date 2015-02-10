@@ -2075,6 +2075,7 @@ namespace ifme.hitoha
 		private void AddAudio()
 		{
 			cboAudioFormat.Items.Clear();
+			Addons.Installed.Get();
 
 			for (int i = 0; i < Addons.Installed.Data.Length; i++)
 			{
@@ -2082,20 +2083,10 @@ namespace ifme.hitoha
 					break;
 
 				if (Addons.Installed.Data[i, 1] == "audio")
-					if (Properties.Settings.Default.UseMkv)
 						cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
-					else
-						if (Addons.Installed.Data[i, 6] == "mp4")
-							cboAudioFormat.Items.Add(Addons.Installed.Data[i, 2]);
 			}
 
-			if (cboAudioFormat.SelectedIndex == -1)
-				if (cboAudioFormat.Items.Count >= Properties.Settings.Default.AudioFormat)
-					cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
-				else
-					cboAudioFormat.SelectedIndex = 0;
-			else
-				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+			cboAudioFormat.SelectedIndex = 0;
 		}
 		#endregion
 
