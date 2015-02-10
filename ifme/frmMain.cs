@@ -477,18 +477,18 @@ namespace ifme.hitoha
 
 			lblUserPreData.Text = String.Format("{0}\n{1}\n{2}", UserPreset.Installed.Data[i, 2], UserPreset.Installed.Data[i, 3], UserPreset.Installed.Data[i, 4]);
 
-			cboVideoPreset.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 5]);
-			cboVideoTune.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 6]);
-			cboVideoRateCtrl.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 7]);
-			txtVideoRate.Text = UserPreset.Installed.Data[i, 8];
-			txtVideoAdvCmd.Text = UserPreset.Installed.Data[i, 9];
+			cboVideoPreset.Text = UserPreset.Installed.Data[i, 6];
+			cboVideoTune.Text = UserPreset.Installed.Data[i, 7];
+			cboVideoRateCtrl.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 8]);
+			txtVideoRate.Text = UserPreset.Installed.Data[i, 9];
+			txtVideoAdvCmd.Text = UserPreset.Installed.Data[i, 10];
 
-			cboAudioFormat.Text = UserPreset.Installed.Data[i, 10];
-			cboAudioBitRate.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 11]);
-			cboAudioFreq.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 12]);
-			cboAudioChan.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 13]);
-			cboAudioMode.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 14]);
-			txtAudioCmd.Text = UserPreset.Installed.Data[i, 15];
+			cboAudioFormat.Text = UserPreset.Installed.Data[i, 11];
+			cboAudioBitRate.Text = UserPreset.Installed.Data[i, 12];
+			cboAudioFreq.Text = UserPreset.Installed.Data[i, 13];
+			cboAudioChan.Text = UserPreset.Installed.Data[i, 14];
+			cboAudioMode.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 15]);
+			txtAudioCmd.Text = UserPreset.Installed.Data[i, 16];
 		}
 
 		private void btnUserPreSave_Click(object sender, EventArgs e)
@@ -502,17 +502,18 @@ namespace ifme.hitoha
 			IniData data = parser.ReadFile(UserPreset.Installed.Data[i, 0]);
 
 			data["profile"]["name"] = cboUserPreList.Text;
+			data["profile"]["format"] = Properties.Settings.Default.UseMkv ? "mkv" : "mp4";
 
-			data["video"]["preset"] = cboVideoPreset.SelectedIndex.ToString();
-			data["video"]["tuning"] = cboVideoTune.SelectedIndex.ToString();
+			data["video"]["preset"] = cboVideoPreset.Text;
+			data["video"]["tuning"] = cboVideoTune.Text;
 			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
 			data["video"]["ratefact"] = txtVideoRate.Text;
 			data["video"]["command"] = txtVideoAdvCmd.Text;
 
 			data["audio"]["encoder"] = cboAudioFormat.Text;
-			data["audio"]["bit"] = cboAudioBitRate.SelectedIndex.ToString();
-			data["audio"]["freq"] = cboAudioFreq.SelectedIndex.ToString();
-			data["audio"]["channel"] = cboAudioChan.SelectedIndex.ToString();
+			data["audio"]["bit"] = cboAudioBitRate.Text;
+			data["audio"]["freq"] = cboAudioFreq.Text;
+			data["audio"]["channel"] = cboAudioChan.Text;
 			data["audio"]["mode"] = cboAudioMode.SelectedIndex.ToString();
 			data["audio"]["command"] = txtAudioCmd.Text;
 
@@ -535,17 +536,18 @@ namespace ifme.hitoha
 			data["profile"]["author"] = Environment.UserName;
 			data["profile"]["version"] = String.Format("{0:yyyy.MM.dd_HH-mm-ss}", DateTime.Now);
 			data["profile"]["homepage"] = "";
+			data["profile"]["format"] = Properties.Settings.Default.UseMkv ? "mkv" : "mp4";
 
-			data["video"]["preset"] = cboVideoPreset.SelectedIndex.ToString();
-			data["video"]["tuning"] = cboVideoTune.SelectedIndex.ToString();
+			data["video"]["preset"] = cboVideoPreset.Text;
+			data["video"]["tuning"] = cboVideoTune.Text;
 			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
 			data["video"]["ratefact"] = txtVideoRate.Text;
 			data["video"]["command"] = txtVideoAdvCmd.Text;
 
 			data["audio"]["encoder"] = cboAudioFormat.Text;
-			data["audio"]["bit"] = cboAudioBitRate.SelectedIndex.ToString();
-			data["audio"]["freq"] = cboAudioFreq.SelectedIndex.ToString();
-			data["audio"]["channel"] = cboAudioChan.SelectedIndex.ToString();
+			data["audio"]["bit"] = cboAudioBitRate.Text;
+			data["audio"]["freq"] = cboAudioFreq.Text;
+			data["audio"]["channel"] = cboAudioChan.Text;
 			data["audio"]["mode"] = cboAudioMode.SelectedIndex.ToString();
 			data["audio"]["command"] = txtAudioCmd.Text;
 
@@ -1066,6 +1068,9 @@ namespace ifme.hitoha
 
 			// Reload audio encoder
 			AddAudio();
+
+			// Reload user preset
+			AddUserPreset(false);
 
 			// If user choose MP4, uncheck Subtitle
 			if (!Properties.Settings.Default.UseMkv)
@@ -2148,7 +2153,11 @@ namespace ifme.hitoha
 			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
 
 			// Audio
-			cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+			if (cboAudioFormat.Items.Count >= Properties.Settings.Default.AudioFormat)
+				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+			else
+				cboAudioFormat.SelectedIndex = 0;
+
 			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
 			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
 			cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;

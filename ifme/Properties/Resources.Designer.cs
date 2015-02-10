@@ -63,6 +63,16 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap application_xp_terminal {
+            get {
+                object obj = ResourceManager.GetObject("application_xp_terminal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BannerBRight {
             get {
                 object obj = ResourceManager.GetObject("BannerBRight", resourceCulture);
@@ -241,24 +251,25 @@ namespace ifme.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to [profile]
-        ///name = Default
-        ///author = Anime4000
-        ///version = 1
-        ///homepage = https://github.com/x265
+        ///name = 
+        ///author = 
+        ///version = 
+        ///homepage = https://nedb.co/
+        ///format =
         ///
         ///[video]
-        ///preset = 8
-        ///tuning = 0
-        ///ratectrl = 0
-        ///ratefact = 28
-        ///command = --dither
+        ///preset = 
+        ///tuning = 
+        ///ratectrl = 
+        ///ratefact = 
+        ///command = 
         ///
         ///[audio]
-        ///encoder = Passthrough/Extract all audio (Mode configuration ignored)
-        ///bit = 5
-        ///freq = 2
-        ///channel = 0
-        ///mode = 0
+        ///encoder = 
+        ///bit = 
+        ///freq = 
+        ///channel = 
+        ///mode = 
         ///command =.
         /// </summary>
         internal static string TemplateUserPreset {
