@@ -330,6 +330,7 @@
 			// 
 			// btnCPUBoost
 			// 
+			this.btnCPUBoost.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.btnCPUBoost.Location = new System.Drawing.Point(221, 260);
 			this.btnCPUBoost.Name = "btnCPUBoost";
 			this.btnCPUBoost.Size = new System.Drawing.Size(150, 23);

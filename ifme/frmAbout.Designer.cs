@@ -38,6 +38,9 @@
 			this.btnUpdate = new System.Windows.Forms.Button();
 			this.tmrScroll = new System.Windows.Forms.Timer(this.components);
 			this.lblNames = new System.Windows.Forms.Label();
+			this.pictLogo = new System.Windows.Forms.PictureBox();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.pictLogo)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblTitle
@@ -156,6 +159,17 @@
 			this.lblNames.Text = "Thank You for using :)";
 			this.lblNames.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// pictLogo
+			// 
+			this.pictLogo.Cursor = System.Windows.Forms.Cursors.Cross;
+			this.pictLogo.Image = global::ifme.Properties.Resources.SplashScreenC;
+			this.pictLogo.Location = new System.Drawing.Point(0, 0);
+			this.pictLogo.Name = "pictLogo";
+			this.pictLogo.Size = new System.Drawing.Size(600, 300);
+			this.pictLogo.TabIndex = 48;
+			this.pictLogo.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictLogo, "Sky of Connection\r\nHotaru-chan and Ifumii-san, click to get 4K wallpaper.");
+			// 
 			// frmAbout
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -171,6 +185,7 @@
 			this.Controls.Add(this.lblInfo);
 			this.Controls.Add(this.btnUpdate);
 			this.Controls.Add(this.lblUpdateInfo);
+			this.Controls.Add(this.pictLogo);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -180,6 +195,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "{0} {1}";
 			this.Load += new System.EventHandler(this.frmAbout_Load);
+			((System.ComponentModel.ISupportInitialize)(this.pictLogo)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -195,6 +211,8 @@
 		internal System.Windows.Forms.Button btnUpdate;
 		private System.Windows.Forms.Timer tmrScroll;
 		private System.Windows.Forms.Label lblNames;
+		private System.Windows.Forms.PictureBox pictLogo;
+		private System.Windows.Forms.ToolTip toolTip1;
 
 
 	}

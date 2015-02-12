@@ -232,19 +232,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen01_Hotaru {
+        internal static System.Drawing.Bitmap SplashScreenC {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen01_Hotaru", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen01_Ifumii {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen01_Ifumii", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreenC", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

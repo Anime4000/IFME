@@ -33,11 +33,6 @@ namespace ifme.hitoha
 			InitializeComponent();
 			this.Icon = Properties.Resources.ifme_flat;
 
-			if (Globals.AppInfo.CharTheme % 2 != 0)
-				this.BackgroundImage = Properties.Resources.SplashScreen01_Ifumii; // Odd
-			else
-				this.BackgroundImage = Properties.Resources.SplashScreen01_Hotaru; // Even
-
 			// Fix Mono drawings
 			if (OS.IsLinux)
 			{
@@ -51,7 +46,7 @@ namespace ifme.hitoha
 				{
 					ctl.Top -= 23;
 				}
-
+				pictLogo.Top += 23;
 				btnUpdate.Left = 200;
 			}
 			else
@@ -82,7 +77,7 @@ namespace ifme.hitoha
 		private void frmAbout_Load(object sender, EventArgs e)
 		{
 			LoadLang();
-			lblTitle.Text = String.Format("{0} v{1} ({2})", Title, Version, Properties.Resources.EpicWord);
+			lblTitle.Text = String.Format("{0} v{1}", Title, Version);
 			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyright © 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year);
 			this.Text = String.Format(this.Text, "About", Globals.AppInfo.Name);
 

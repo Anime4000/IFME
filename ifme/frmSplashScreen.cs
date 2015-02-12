@@ -23,12 +23,6 @@ namespace ifme.hitoha
 		{
 			InitializeComponent();
 
-			// Dynamic
-			if (Globals.AppInfo.CharTheme % 2 != 0)
-				pictSS.Image = Properties.Resources.SplashScreen01_Ifumii; // Odd
-			else
-				pictSS.Image = Properties.Resources.SplashScreen01_Hotaru; // Even
-
 			// Some settings
 			this.DoubleBuffered = true;
 			this.Icon = Properties.Resources.ifme_flat;

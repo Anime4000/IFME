@@ -231,12 +231,6 @@
     <None Include="Resources\BannerBRight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen01-Ifumii.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreen01-Hotaru.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BannerCRight.png" />
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +259,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\application_xp_terminal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreenC.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

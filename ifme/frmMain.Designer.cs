@@ -231,6 +231,7 @@
 			this.btnPreview.Name = "btnPreview";
 			this.btnPreview.Size = new System.Drawing.Size(24, 24);
 			this.btnPreview.TabIndex = 11;
+			this.proTip.SetToolTip(this.btnPreview, "Preview");
 			this.btnPreview.UseVisualStyleBackColor = true;
 			this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
 			// 
@@ -243,6 +244,7 @@
 			this.btnEdit.Name = "btnEdit";
 			this.btnEdit.Size = new System.Drawing.Size(24, 24);
 			this.btnEdit.TabIndex = 10;
+			this.proTip.SetToolTip(this.btnEdit, "Edit");
 			this.btnEdit.UseVisualStyleBackColor = true;
 			this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
 			// 
