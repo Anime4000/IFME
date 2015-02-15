@@ -100,6 +100,7 @@
     <Compile Include="frmSplashScreen.Designer.cs">
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stuff.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="GetMetaData.cs" />

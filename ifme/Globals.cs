@@ -14,7 +14,7 @@ namespace ifme.hitoha
 			/// <summary>
 			/// Read creation date via PE header and return Date datatype
 			/// </summary><returns>Date datatype (without time)</returns>
-			private static DateTime RetrieveLinkerTimestamp()
+			static DateTime RetrieveLinkerTimestamp()
 			{
 				string filePath = System.Reflection.Assembly.GetCallingAssembly().Location;
 				const int c_PeHeaderOffset = 60;

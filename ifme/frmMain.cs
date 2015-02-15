@@ -1252,7 +1252,7 @@ namespace ifme.hitoha
 					screen
 				};
 
-				tabEncoding.SelectedIndex = 5;
+				tabEncoding.SelectedIndex = 6;
 				EncodingStarted(true);
 				PrintLog(Log.Info, String.Format("{0}: Encoding started...", DateTime.Now));
 				BGThread.RunWorkerAsync(something);
@@ -1367,7 +1367,7 @@ namespace ifme.hitoha
 							InvokeLog(Log.Info, "If this part got error, don't worry about it :)");
 
 							// Extract metadata. Go to "MKV extarcted content" below (use CTRL+F)
-							StartProcess(Addons.BuildIn.FFmpeg, String.Format("--disable-track-statistics-tags -i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "archive.mkv")));
+							StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -an -map 0 -y \"{1}\"", queue[x], Path.Combine(tmp, "archive.mkv")));
 						}
 					}
 				}
@@ -1478,10 +1478,10 @@ namespace ifme.hitoha
 						InvokeLog(Log.Info, "Now encoding audio~ Please Wait...");
 
 						// Split ID and Folder path
-						string[] getpath = Addons.Installed.Data[AudFormat, 0].Split('|');
+						string getpath = Addons.Installed.Data[AudFormat, 0];
 
 						// Merge
-						string app = Path.Combine(getpath[1], Addons.Installed.Data[AudFormat, 10]);
+						string app = Path.Combine(getpath, Addons.Installed.Data[AudFormat, 10]);
 						string cmd = Addons.Installed.Data[AudFormat, 11];
 
 						// get all wav file
@@ -1755,6 +1755,9 @@ namespace ifme.hitoha
 						// Preview Block - Set file
 						if (Globals.Preview.Enable)
 							Globals.Preview.File = FileOut + ".mkv";
+
+
+						Stuff.WriteMkvTagWApp(FileOut + ".mkv");
 					}
 					else
 					{
@@ -1978,11 +1981,17 @@ namespace ifme.hitoha
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
-				PrintLog(Log.Error, String.Format("{0}: Encoding did not run perfectly, check status log!", DateTime.Now));
+			{
+				PrintLog(Log.Error, String.Format("{0}: Encoding did not run perfectly, check status log!", DateTime.Now)); 
+			}
 			else if (e.Cancelled)
-				PrintLog(Log.Warn, String.Format("{0}: Encoding canceled...", DateTime.Now));
+			{
+				PrintLog(Log.Warn, String.Format("{0}: Encoding canceled...", DateTime.Now)); 
+			}
 			else
+			{
 				PrintLog(Log.OK, String.Format("{0}: Encoding completed!", DateTime.Now));
+			}
 
 			// Reset
 			EncodingStarted(false);
@@ -2023,21 +2032,16 @@ namespace ifme.hitoha
 			// Also not forget about Attchment Enable, must disable if subtitle not checked
 			chkAttachEnable.Enabled = chkSubEnable.Checked;
 
-			foreach (Control ctl in tabQueue.Controls)
-				ctl.Enabled = !x;
+			// Disable control during encoding, code simplified!
+			TabControl.TabPageCollection pages = tabEncoding.TabPages;
+			foreach (TabPage page in pages)
+			{
+				if (String.Equals(page.Name, "tabStatus"))
+					continue;
 
-			foreach (Control ctl in tabVideo.Controls)
-				ctl.Enabled = !x;
-
-			foreach (Control ctl in tabAudio.Controls)
-				ctl.Enabled = !x;
-			
-			foreach (Control ctl in tabSubtitle.Controls)
-				ctl.Enabled = !x;
-		
-			foreach (Control ctl in tabAttachment.Controls)
-				ctl.Enabled = !x;
-			
+				foreach (Control ctl in page.Controls)
+					ctl.Enabled = !x;
+			}
 		}
 		#endregion
 
