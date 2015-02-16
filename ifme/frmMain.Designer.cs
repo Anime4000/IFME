@@ -512,11 +512,11 @@
 			// btnAdvanceHelp
 			// 
 			this.btnAdvanceHelp.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnAdvanceHelp.Image = global::ifme.Properties.Resources.application_xp_terminal;
 			this.btnAdvanceHelp.Location = new System.Drawing.Point(575, 315);
 			this.btnAdvanceHelp.Name = "btnAdvanceHelp";
 			this.btnAdvanceHelp.Size = new System.Drawing.Size(27, 23);
 			this.btnAdvanceHelp.TabIndex = 7;
-			this.btnAdvanceHelp.Text = "?";
 			this.btnAdvanceHelp.UseVisualStyleBackColor = true;
 			this.btnAdvanceHelp.Click += new System.EventHandler(this.btnAdvanceHelp_Click);
 			// 

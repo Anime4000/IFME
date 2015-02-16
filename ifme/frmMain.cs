@@ -681,6 +681,8 @@ namespace ifme.hitoha
 		private void cboAudioFormat_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int i = cboAudioFormat.SelectedIndex;
+			cboAudioMode.Enabled = i == 0 ? false : true;
+			txtAudioCmd.Enabled = i == 0 ? false : true;
 
 			lblAudioFInfo.Text = Addons.Installed.Data[i, 3] + "\n"
 				+ Addons.Installed.Data[i, 4] + "\n"
@@ -696,7 +698,6 @@ namespace ifme.hitoha
 		private void cboAudioFormat_DropDownClosed(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
-			cboAudioMode.Enabled = cboAudioFormat.SelectedIndex == 0 ? false : true;
 		}
 
 		private void cboAudioBitRate_DropDownClosed(object sender, EventArgs e)
