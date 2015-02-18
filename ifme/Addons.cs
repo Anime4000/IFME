@@ -145,13 +145,13 @@ namespace ifme.hitoha
 				foreach (var item in System.IO.Directory.GetDirectories(Folder))
 				{
 					// GetFileName works with folder, just dont get "/"
-					string name = System.IO.Path.GetFileName(item);
+					string name = System.IO.Path.GetFileName(item) + ".ini";
 
-					if (!File.Exists(Path.Combine(item, name + ".aai")))
+					if (!File.Exists(Path.Combine(item, name)))
 						continue;
 
 					var parser = new FileIniDataParser();
-					IniData data = parser.ReadFile(Path.Combine(item, name + ".aai"));
+					IniData data = parser.ReadFile(Path.Combine(item, name));
 
 					if (data["addon"]["type"] == "audio")
 						continue;

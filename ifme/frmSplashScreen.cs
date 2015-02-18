@@ -66,7 +66,7 @@ namespace ifme.hitoha
 			try
 			{
 				InvokeStatus("Checking version", Globals.AppInfo.NameTitle);
-				Globals.AppInfo.VersionNew = client.DownloadString("http://ifme.sourceforge.net/update/version.txt");
+				Globals.AppInfo.VersionNew = client.DownloadString("https://x265.github.io/update/version.txt");
 				string[] GetVersion = Globals.AppInfo.VersionNew.Split('.');
 				int[] GetVersionInt = new int[4];
 

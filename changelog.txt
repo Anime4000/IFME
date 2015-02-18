@@ -1,5 +1,10 @@
 Version 4.9.0.0
 ---------------
+[added] Preview feature, allow user sneak peek before commit full encoding
+[added] User preset, allow user to save and load config
+[added] Missing auto save log each conversion
+[added] Russian Language by zetcamp
+[added] Turkish Language by SailorOnDaTea
 [fixed] Video cannot encode due to AVI indexing problem
 [fixed] Broken update under Linux (missing "./")
 [fixed] Cannot encode video that has no audio
@@ -7,10 +12,6 @@ Version 4.9.0.0
 [fixed] Update system that cause delete addons when download a 1kb file of 404 error
 [fixed] Wrong button position at Option > Perf. under Linux
 [fixed] MKV archive extract command
-[added] Preview feature, allow user sneak peek before commit full encoding
-[added] User preset, allow user to save and load config
-[added] Missing auto save log each conversion
-[added] Russian Language by zetcamp
 [change] Splash Screen
 [improve] Simplified and optimized get current UI language query.
 [improve] Disable/Enable TAB page code has been improved (iteration removed)
