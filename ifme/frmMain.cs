@@ -2002,10 +2002,17 @@ namespace ifme.hitoha
 			if (Globals.Preview.Enable)
 			{
 				Globals.Preview.Enable = false;
-				PrintLog(Log.Warn, "Make sure you have player that able to play HEVC codec.");
-				PrintLog(Log.Warn, "Preview file will not delete automatically.");
-				PrintLog(Log.Info, "Opening " + Globals.Preview.File);
-				Process.Start(Globals.Preview.File);
+				if (File.Exists(Globals.Preview.File))
+				{
+					PrintLog(Log.Warn, "Make sure you have player that able to play HEVC codec.");
+					PrintLog(Log.Warn, "Preview file will not delete automatically.");
+					PrintLog(Log.Info, "Opening " + Globals.Preview.File);
+					Process.Start(Globals.Preview.File);
+				}
+				else
+				{
+					PrintLog(Log.Warn, "Preview cancel by user.");
+				}
 			}
 
 			// Shutdown on when encoding job completed
