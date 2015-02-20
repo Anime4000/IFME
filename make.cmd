@@ -30,6 +30,7 @@ rmdir /s /q %BUILDDIR%
 mkdir %BUILDDIR%
 mkdir %BUILDDIR%\addons
 mkdir %BUILDDIR%\lang
+mkdir %BUILDDIR%\preset
 echo.
 
 echo CLEAN PREVIOUS BUILD

@@ -32,6 +32,7 @@ rm -r -f ./$bd
 mkdir ./$bd
 mkdir ./$bd/addons
 mkdir ./$bd/lang
+mkdir ./$bd/preset
 
 echo "Remove previous compiled"
 rm -r -f ./ifme/bin/x64/$cm
