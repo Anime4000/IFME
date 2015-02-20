@@ -458,11 +458,13 @@
 			// lblUserPreData
 			// 
 			this.lblUserPreData.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblUserPreData.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lblUserPreData.Location = new System.Drawing.Point(190, 162);
 			this.lblUserPreData.Name = "lblUserPreData";
 			this.lblUserPreData.Size = new System.Drawing.Size(302, 42);
 			this.lblUserPreData.TabIndex = 2;
 			this.lblUserPreData.Text = "{0}\r\n{1}\r\n{2}";
+			this.lblUserPreData.Click += new System.EventHandler(this.lblUserPreData_Click);
 			// 
 			// lblUserPreLabel
 			// 

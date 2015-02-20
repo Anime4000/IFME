@@ -491,6 +491,12 @@ namespace ifme.hitoha
 			txtAudioCmd.Text = UserPreset.Installed.Data[i, 16];
 		}
 
+		private void lblUserPreData_Click(object sender, EventArgs e)
+		{
+			int i = UserPreset.SelectedId;
+			Process.Start(UserPreset.Installed.Data[i, 4]);
+		}
+
 		private void btnUserPreSave_Click(object sender, EventArgs e)
 		{
 			int i = UserPreset.SelectedId;

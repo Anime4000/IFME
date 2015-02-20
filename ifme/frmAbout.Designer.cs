@@ -156,7 +156,7 @@
 			this.lblNames.Name = "lblNames";
 			this.lblNames.Size = new System.Drawing.Size(576, 50);
 			this.lblNames.TabIndex = 36;
-			this.lblNames.Text = "Thank You for using :)";
+			this.lblNames.Text = "Member of\r\nふえる混ぜ込みわかめ";
 			this.lblNames.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// pictLogo
@@ -169,6 +169,7 @@
 			this.pictLogo.TabIndex = 48;
 			this.pictLogo.TabStop = false;
 			this.toolTip1.SetToolTip(this.pictLogo, "Sky of Connection\r\nHotaru-chan and Ifumii-san, click to get 4K wallpaper.");
+			this.pictLogo.Click += new System.EventHandler(this.pictLogo_Click);
 			// 
 			// frmAbout
 			// 

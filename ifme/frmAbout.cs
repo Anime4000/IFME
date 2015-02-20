@@ -89,7 +89,7 @@ namespace ifme.hitoha
 
 			// Get first
 			Names[cnt++] = "People @ MulticoreWare";
-			Names[cnt++] = "Nemu";
+			Names[cnt++] = "Nemu-san";
 
 			// Get Names for Addons author
 			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
@@ -189,9 +189,9 @@ namespace ifme.hitoha
 			System.Diagnostics.Process.Start("http://ray-en.deviantart.com/");
 		}
 
-		private void panel2_Click(object sender, EventArgs e)
+		private void pictLogo_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://ifme.sourceforge.net/");
+			Process.Start("http://fav.me/d8irra0");
 		}
 	}
 }
