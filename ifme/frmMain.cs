@@ -1793,16 +1793,14 @@ namespace ifme.hitoha
 							Globals.Preview.File = FileOut + ".mp4";
 					}
 
+					// Delete all temp file for next queue
+					foreach (var item in Directory.GetFiles(tmp))
+						File.Delete(item);
+
 					if (PEC == 1)
 					{
 						e.Cancel = true;
 						break;
-					}
-
-					// Delete all temp file
-					foreach (var item in Directory.GetFiles(tmp))
-					{
-						File.Delete(item);
 					}
 				}
 				else
@@ -1999,6 +1997,10 @@ namespace ifme.hitoha
 			{
 				PrintLog(Log.OK, String.Format("{0}: Encoding completed!", DateTime.Now));
 			}
+
+			// Delete all temp file when complete
+			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
+				File.Delete(item);
 
 			// Reset
 			EncodingStarted(false);
