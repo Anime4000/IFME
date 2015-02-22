@@ -1,5 +1,5 @@
 ﻿[profile]
-name = Optimised for sharing HD Movie (MP4)
+name = Optimised for sharing HD Movie
 author = Nemu
 version = 2015.2.10-000000
 homepage = https://nedb.co/
@@ -13,12 +13,12 @@ ratefact = 25
 command = --dither
 
 [audio]
-encoder = Freeware Advanced Audio Coder
+encoder = Passthrough/Extract all audio (Mode configuration ignored)
 bit = 128
 freq = Automatic
 channel = Automatic
 mode = 0
-command = -w -s
+command = 
 
 ; Documentation
 ; =============

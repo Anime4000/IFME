@@ -1,5 +1,5 @@
 ﻿[profile]
-name = Optimised for sharing Anime (MKV)
+name = Optimised for sharing Anime
 author = Nemu
 version = 2015.2.10-000000
 homepage = https://nedb.co/
@@ -13,12 +13,12 @@ ratefact = 28
 command = --dither
 
 [audio]
-encoder = Opus Interactive Audio Codec
-bit = 80
+encoder = Passthrough/Extract all audio (Mode configuration ignored)
+bit = 128
 freq = Automatic
 channel = Automatic
 mode = 0
-command = --vbr --comp 10 --framesize 60
+command = 
 
 ; Documentation
 ; =============
