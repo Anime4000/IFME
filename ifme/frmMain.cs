@@ -1402,7 +1402,7 @@ namespace ifme.hitoha
 						if (String.Equals(AudFreq, "Automatic"))
 							Freq = "";
 						else
-							Freq = String.Format("-ar {3}", AudFreq);
+							Freq = "-ar " + AudFreq;
 
 						// Decode Audio
 						switch (AudMode)
