@@ -612,8 +612,8 @@
 			this.cboVideoRateCtrl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoRateCtrl.FormattingEnabled = true;
 			this.cboVideoRateCtrl.Items.AddRange(new object[] {
-            "Single pass, Ratefactor-based - crf",
-            "Single pass, Quantizer-based - qp",
+            "Single pass, Ratefactor-based",
+            "Single pass, Quantizer-based",
             "Single pass, Bitrate-based",
             "Multipass, 2 pass",
             "Multipass, 3 pass",
