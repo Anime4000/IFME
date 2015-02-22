@@ -131,6 +131,10 @@ namespace ifme.hitoha
 				try
 				{
 					InvokeStatus("Loading", Addons.Installed.Data[i, 2]);
+
+					if (String.IsNullOrEmpty(Addons.Installed.Data[i, 8]))
+						continue;
+
 					string GetVersion = client.DownloadString(Addons.Installed.Data[i, 8]);
 					if (GetVersion == Addons.Installed.Data[i, 4] || GetVersion == null)
 						continue;

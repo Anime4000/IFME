@@ -47,15 +47,15 @@ namespace ifme
 				Data[0, 3] = "0.1";
 				Data[0, 4] = "https://github.com/x265";
 				Data[0, 5] = "mp4";
-				Data[0, 6] = "veryslow";
+				Data[0, 6] = "medium";
 				Data[0, 7] = "off";
 				Data[0, 8] = "0";
 				Data[0, 9] = "28";
 				Data[0, 10] = "--dither";
 				Data[0, 11] = "Passthrough/Extract all audio (Mode configuration ignored)";
 				Data[0, 12] = "128";
-				Data[0, 13] = "44100";
-				Data[0, 14] = "Stereo";
+				Data[0, 13] = "Automatic";
+				Data[0, 14] = "Automatic";
 				Data[0, 15] = "0";
 				Data[0, 16] = "";
 

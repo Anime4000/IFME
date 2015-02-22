@@ -168,7 +168,7 @@
 			this.pictLogo.Size = new System.Drawing.Size(600, 300);
 			this.pictLogo.TabIndex = 48;
 			this.pictLogo.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictLogo, "Sky of Connection\r\nHotaru-chan and Ifumii-san, click to get 4K wallpaper.");
+			this.toolTip1.SetToolTip(this.pictLogo, "Hotaru-chan and Ifumii-san, click to get 4K wallpaper.");
 			this.pictLogo.Click += new System.EventHandler(this.pictLogo_Click);
 			// 
 			// frmAbout

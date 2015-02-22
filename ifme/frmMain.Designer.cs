@@ -613,8 +613,8 @@
 			this.cboVideoRateCtrl.FormattingEnabled = true;
 			this.cboVideoRateCtrl.Items.AddRange(new object[] {
             "Single pass, Ratefactor-based - crf",
-            "Single pass, Quantizer-based - cqp",
-            "Single pass, Bitrate-based - abr",
+            "Single pass, Quantizer-based - qp",
+            "Single pass, Bitrate-based",
             "Multipass, 2 pass",
             "Multipass, 3 pass",
             "Multipass, 4 pass",
@@ -810,15 +810,17 @@
 			this.cboAudioFreq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioFreq.FormattingEnabled = true;
 			this.cboAudioFreq.Items.AddRange(new object[] {
-            "96000",
-            "48000",
-            "44100",
-            "32000",
-            "24000",
-            "22050",
-            "16000",
+            "Automatic",
+            "8000",
             "12000",
-            "8000"});
+            "16000",
+            "22050",
+            "24000",
+            "32000",
+            "44100",
+            "48000",
+            "96000",
+            "192000"});
 			this.cboAudioFreq.Location = new System.Drawing.Point(238, 43);
 			this.cboAudioFreq.Name = "cboAudioFreq";
 			this.cboAudioFreq.Size = new System.Drawing.Size(121, 21);

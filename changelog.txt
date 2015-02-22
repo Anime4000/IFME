@@ -1,3 +1,13 @@
+Version 4.9.1.0
+---------------
+[fixed] Variable Frame Rate did not sync properly
+[fixed] Temp file not remove when cancel encoding job
+[fixed] Skip addons version check if no server url provided
+[fixed] Program crash cause audio addons removed, invalid index issue
+[fixed] Multipass mode did not encode
+[fixed] Bitrate mode did not encode
+[fixed] QP mode did not encode
+
 Version 4.9.0.0
 ---------------
 [added] Preview feature, allow user sneak peek before commit full encoding

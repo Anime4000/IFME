@@ -13,7 +13,6 @@ using IniParser;
 using IniParser.Model;
 using MediaInfoDotNet;
 
-
 namespace ifme.hitoha
 {
 	public partial class frmMain : Form
@@ -1223,7 +1222,7 @@ namespace ifme.hitoha
 				}
 
 				// Since adding multipass, new var is needed!
-				string onepass = cboVideoRateCtrl.Text.Substring(cboVideoRateCtrl.Text.Length - 3);
+				string onepass = cboVideoRateCtrl.SelectedIndex == 0 ? "crf" : cboVideoRateCtrl.SelectedIndex == 1 ? "qp" : "bitrate";
 				string twopass = cboVideoRateCtrl.Text.Substring(11, 1);
 				string encType = cboVideoRateCtrl.SelectedIndex <= 2 ? onepass : twopass;
 
@@ -1398,6 +1397,13 @@ namespace ifme.hitoha
 							for (int i = 0; i < audio.Count; i++)
 								AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
 
+						// Accepting automatic audio freq.
+						string Freq;
+						if (String.Equals(AudFreq, "Automatic"))
+							Freq = "";
+						else
+							Freq = String.Format("-ar {3}", AudFreq);
+
 						// Decode Audio
 						switch (AudMode)
 						{
@@ -1420,8 +1426,8 @@ namespace ifme.hitoha
 									map += String.Format("-map 0:{0} ", AudioMapID[i]);
 
 								map = map.Remove(map.Length - 1);
-								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 -ar {3} -y \"{4}\"", queue[x], map, audio.Count, AudFreq, Path.Combine(tmp, "audio1.wav"));
-
+								
+								arg = String.Format("-i \"{0}\" {1} -filter_complex amix=inputs={2}:duration=first:dropout_transition=0 {3} -y \"{4}\"", queue[x], map, audio.Count, Freq, Path.Combine(tmp, "audio1.wav"));
 								PEC = StartProcess(Addons.BuildIn.FFmpeg, arg);
 
 								break;
@@ -1434,7 +1440,7 @@ namespace ifme.hitoha
 									goto default;
 
 								for (int i = 0; i < audio.Count; i++)
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} -ar {2} -y \"{3}\"", queue[x], AudioMapID[i], AudFreq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} {2} -y \"{3}\"", queue[x], AudioMapID[i], Freq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
 
 								break;
 
@@ -1457,7 +1463,7 @@ namespace ifme.hitoha
 								break;
 
 							default:
-								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn -ar {1} -y \"{2}\"", queue[x], AudFreq, Path.Combine(tmp, "audio1.wav")));
+								PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -vn {1} -y \"{2}\"", queue[x], Freq, Path.Combine(tmp, "audio1.wav")));
 								break;
 						}
 					}
@@ -1534,25 +1540,27 @@ namespace ifme.hitoha
 
 				// Tell user
 				FormTitle(String.Format("Queue {0} of {1}: Encoding video...", x + 1, queue.Length));
-				InvokeLog(Log.Info, "Now decoding video, can take very long time. Just be patient...");
 
 				// Preview Block - Jump here
 			PreviewBegin:
 				if (Globals.Preview.Enable)
 					InvokeLog(Log.Info, String.Format("Creating preview for: {0}", Path.GetFileName(queue[x])));
+				else
+					InvokeLog(Log.Info, String.Format("Encoding {0}", Path.GetFileName(queue[x])));
 
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
 					if (video.Count >= 1)
 					{
-						string cmd = "";
 						string[] args = new string[11];
+						string cmd = null;
+						string yuv = "yuv420p"; // future use, allowing converting YUV
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
-						args[1] = String.Format("-pix_fmt {0}", "yuv420p");
-						args[2] = String.Format("-f {0} -s {1}", "yuv4mpegpipe", screen[x]);
+						args[1] = String.Format("-pix_fmt {0}", yuv);
+						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync passthrough", screen[x]);
 
 						// x265 part
 						args[3] = String.Format("-p {0}", VidPreset);
@@ -2154,10 +2162,14 @@ namespace ifme.hitoha
 			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
 
 			// Audio
-			if (cboAudioFormat.Items.Count >= Properties.Settings.Default.AudioFormat)
+			try
+			{
 				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
-			else
+			}
+			catch
+			{
 				cboAudioFormat.SelectedIndex = 0;
+			}
 
 			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
 			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;

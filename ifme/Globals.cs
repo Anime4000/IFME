@@ -102,7 +102,7 @@ namespace ifme.hitoha
 			/// </summary>
 			public static string WebSite
 			{
-				get { return "http://ifme.sf.net/"; }
+				get { return "http://x265.github.io"; }
 			}
 
 		#if DEBUG

@@ -9,14 +9,14 @@ format = mp4
 preset = veryslow
 tuning = grain
 ratectrl = 0
-ratefact = 28
+ratefact = 25
 command = --dither
 
 [audio]
 encoder = Freeware Advanced Audio Coder
 bit = 128
-freq = 44100
-channel = Stereo
+freq = Automatic
+channel = Automatic
 mode = 0
 command = -w -s
 
@@ -45,7 +45,7 @@ command = -w -s
 ; ========
 ; encoder:	[valid value: addons name, example: Ogg Vorbis] (string) /!\ WARNING! please be careful with this, if this for MP4, please use compatible encoder such as "Freeware Advanced Audio Coder"
 ; bit:		[valid value: refer encoder accepted bit rate or compression level] (integer)
-; freq:		[valid value: 96000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 8000] (integer)
+; freq:		[valid value: Automatic, 8000, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 96000, 192000] (integer)
 ; channel:	[valid value: Automatic, Mono, Stereo] (string)
 ; mode:		[valid value: 0 - 2. meaning: 0=Take the only very first audio stream, 1=Compile all audio into single stream, 2=Multiple audio stream] (integer)
 ; command:	[refer to addons command-line for extra] (string)

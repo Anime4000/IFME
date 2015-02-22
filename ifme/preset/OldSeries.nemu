@@ -1,0 +1,21 @@
+﻿[profile]
+name = Batch Recode Old TV Series (MKV/MP4)
+author = SailorOnDaTea
+version = 0.2
+homepage = http://www.facebook.com/SailorOnDaTea
+format = mp4
+
+[video]
+preset = medium
+tuning = grain
+ratectrl = 0
+ratefact = 22
+command = --dither --keyint 150 --rc-lookahead 100
+
+[audio]
+encoder = Passthrough/Extract all audio (Mode configuration ignored)
+bit = 128
+freq = Automatic
+channel = Automatic
+mode = 0
+command = 

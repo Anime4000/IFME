@@ -45,7 +45,7 @@
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="AudioFreq" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="AudioChan" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
