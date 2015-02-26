@@ -319,10 +319,8 @@ namespace ifme.hitoha
 
 		private void btnQueueRemove_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < lstQueue.SelectedItems.Count; i++)
-			{
-				lstQueue.Items.Remove(lstQueue.SelectedItems[i]);
-			}
+			foreach (ListViewItem item in lstQueue.SelectedItems)
+				item.Remove();
 
 			if (lstQueue.Items.Count != 0)
 				btnStart.Enabled = true;
@@ -1619,7 +1617,11 @@ namespace ifme.hitoha
 							args[2] += String.Format(" -vf \"yadif=1:{0}:0, mcdeint={1}:{0}:{2}, pp=lb\"", fi, mo, qp);
 
 							// Since split field to each frame, total frame become double
-							args[6] = String.Format("-f \"{0}\"", (video[0].frameCount * 2));
+							// Preview Block - Modify total frame to be process
+							if (!Globals.Preview.Enable)
+								args[6] = String.Format("-f \"{0}\"", (video[0].frameCount * 2));
+							else
+								args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * (video[0].frameRate * 2)));
 						}
 
 						// Add space
