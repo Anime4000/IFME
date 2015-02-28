@@ -1386,14 +1386,7 @@ namespace ifme.hitoha
 						InvokeLog(Log.Info, "Now decoding audio~ Please Wait...");
 
 						// Capture MediaInfo Audio ID and assigned to FFmpeg Map ID
-						int[] AudioMapID = new int[1024];
-
-						if(video[0].Id == 0 || audio[0].Id == 1 || audio[0].Id == 0)
-							for (int i = 0; i < audio.Count; i++)
-								AudioMapID[i] = audio[i].Id;
-						else
-							for (int i = 0; i < audio.Count; i++)
-								AudioMapID[i] = audio[i].Id - 1; //FFmpeg uses zero based index
+						string[] AudioMapID = Stuff.MediaMap(queue[x], "Audio");
 
 						// Accepting automatic audio freq.
 						string Freq;
@@ -1421,7 +1414,7 @@ namespace ifme.hitoha
 								string arg = null;
 								string map = null;
 								for (int i = 0; i < audio.Count; i++)
-									map += String.Format("-map 0:{0} ", AudioMapID[i]);
+									map += String.Format("-map {0} ", AudioMapID[i]);
 
 								map = map.Remove(map.Length - 1);
 								
@@ -1438,13 +1431,13 @@ namespace ifme.hitoha
 									goto default;
 
 								for (int i = 0; i < audio.Count; i++)
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map 0:{1} {2} -y \"{3}\"", queue[x], AudioMapID[i], Freq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
+									PEC = StartProcess(Addons.BuildIn.FFmpeg, String.Format("-i \"{0}\" -map {1} {2} -y \"{3}\"", queue[x], AudioMapID[i], Freq, Path.Combine(tmp, String.Format("audio{0}.wav", i + 1))));
 
 								break;
 
 							case 3:
-								var modecopy = "-i \"{0}\" -vn -map 0:{1} -acodec copy -y \"{2}\"";
-								var modeconv = "-i \"{0}\" -vn -map 0:{1} -strict experimental -c:a aac -b:v {2}k -y \"{3}\"";
+								var modecopy = "-i \"{0}\" -vn -map {1} -acodec copy -y \"{2}\"";
+								var modeconv = "-i \"{0}\" -vn -map {1} -strict experimental -c:a aac -b:v {2}k -y \"{3}\"";
 
 								for (int i = 0; i < audio.Count; i++)
 									if (Properties.Settings.Default.UseMkv)

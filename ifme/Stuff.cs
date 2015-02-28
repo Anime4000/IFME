@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using System.IO;
 
-namespace ifme
+namespace ifme.hitoha
 {
 	class Stuff
 	{
@@ -30,6 +32,65 @@ namespace ifme
 						stream.WriteByte(0x00);
 				}
 			}
+		}
+
+		public static string[] MediaMap(string file, string type)
+		{
+			Process P = new Process();
+			var SI = P.StartInfo;
+
+			string dir = Properties.Settings.Default.TemporaryFolder;
+			string ffm = Addons.BuildIn.FFmpeg;
+			string map = Path.Combine(dir, "map.gg");
+
+			if (OS.IsWindows)
+			{
+				SI.FileName = "cmd";
+				SI.Arguments = String.Format("/c start \"\" /D \"{0}\" /WAIT /B \"{1}\" -i \"{2}\" 2> \"{3}\"", dir, ffm, file, map);
+			}
+			else
+			{
+				SI.FileName = "bash";
+				SI.Arguments = String.Format("-c \"\\\"{0}\\\" -i \\\"{1}\\\" 2> \\\"{3}\\\"\"", ffm, file, map);
+			}
+
+			SI.WorkingDirectory = dir;
+			SI.CreateNoWindow = true;
+			SI.UseShellExecute = false;
+
+			P.Start();
+			P.WaitForExit();
+			P.Close();
+
+			System.Threading.Thread.Sleep(1000);
+
+			string test = null;
+			string[] output = File.ReadAllLines(map);
+
+			File.Delete(map);
+
+			foreach (var item in output)
+			{
+				if (item.Contains("Stream") && item.Contains(type))
+				{
+					if (item[11] == '#')
+					{
+						int i = 12;
+						while (true)
+						{
+							if (new[] { '(', '[' }.Contains(item[i]))
+								break;
+							if (item[i + 1] == ' ')
+								break;
+
+							test += item[i];
+							i++;
+						}
+						test += "|";
+					}
+				}
+			}
+			return test.Remove(test.Length - 1).Split('|');
 		}
 	}
 }
