@@ -4,7 +4,7 @@
 #define MyAppName "Internet Friendly Media Encoder"
 #define MyAppVersion "4.9.2.0"
 #define MyAppPublisher "Anime4000"
-#define MyAppURL "http://ifme.sf.net/"
+#define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
 
 [Setup]
