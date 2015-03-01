@@ -182,6 +182,12 @@ namespace ifme.hitoha
 
 			// Display console
 			tabEncoding.SelectedTab = tabStatus;
+
+			// Display News
+			if (String.IsNullOrEmpty(Globals.AppInfo.News))
+				PrintLog(Log.Error, "Unable to fetch latest news... so sad :(");
+			else
+				PrintLog(Log.Info, "Displaying latest news, read below.\n---\n" + Globals.AppInfo.News + "\n---");
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -1010,7 +1016,14 @@ namespace ifme.hitoha
 
 				if (SaveMe.ShowDialog() == DialogResult.OK)
 				{
-					rtfLog.SaveFile(SaveMe.FileName, RichTextBoxStreamType.PlainText);
+					rtfLog.SelectionStart = 0;
+					rtfLog.SelectionLength = rtfLog.TextLength;
+					rtfLog.SelectionBackColor = Color.Black;
+
+					if (SaveMe.FileName.Contains(".rtf"))
+						rtfLog.SaveFile(SaveMe.FileName, RichTextBoxStreamType.RichText);
+					else
+						rtfLog.SaveFile(SaveMe.FileName, RichTextBoxStreamType.PlainText);
 
 					rtfLog.Clear();
 					PrintLog(Log.Info, "Console log has been saved and cleared!");
@@ -1258,7 +1271,7 @@ namespace ifme.hitoha
 
 				tabEncoding.SelectedIndex = 6;
 				EncodingStarted(true);
-				PrintLog(Log.Info, String.Format("{0}: Encoding started...", DateTime.Now));
+				PrintLog(Log.Info, "Encoding started...");
 				BGThread.RunWorkerAsync(something);
 			}
 		}

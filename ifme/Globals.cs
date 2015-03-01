@@ -150,6 +150,8 @@ namespace ifme.hitoha
 				get { return Path.Combine(Path.GetTempPath(), "ifme"); }
 			}
 
+			public static string News = null;
+
 			static Random rnd = new Random();
 			public static int CharTheme = rnd.Next(1, 100);
 		}

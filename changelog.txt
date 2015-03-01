@@ -1,8 +1,10 @@
 Version 4.9.2.0
 ---------------
+[added] News function, not critial.
 [fixed] Interlaced video cannot execute preview mode
 [fixed] Did not remove all multiple selected item in queue (issue: http://goo.gl/bgtmGs)
 [fixed] Improper reading media mapping
+[fixed] Log now can safe in RTF formatted, retaining colour and so-on...
 [change] info,ok,warn,error change to Timestamps with colour, providing acurate debugging.
 
 Version 4.9.1.0

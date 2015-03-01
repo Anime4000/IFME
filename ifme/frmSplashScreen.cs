@@ -112,6 +112,18 @@ namespace ifme.hitoha
 				return;
 			}
 
+			// Fetch news
+			try
+			{
+				InvokeStatus("Loading", "Fetch latest news");
+				Globals.AppInfo.News = client.DownloadString("https://x265.github.io/page/x-news.txt");
+			}
+			catch
+			{
+				Globals.AppInfo.News = null;
+				InvokeStatus("Error", "Are you offline?");
+			}
+
 			// IFME have new version, dont proceed check addons verions
 			if (!Globals.AppInfo.VersionEqual)
 				return;
