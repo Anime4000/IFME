@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using System.IO;
 
 namespace ifme.hitoha
 {
@@ -36,24 +35,19 @@ namespace ifme.hitoha
 
 		public static string[] MediaMap(string file, string type)
 		{
+			string dir = Properties.Settings.Default.TemporaryFolder;
+			string ffmpeg = Addons.BuildIn.FFmpeg;
+			string pathmap = Path.Combine(dir, "map.gg");
+			string pathscript = Path.Combine(dir, (OS.IsWindows ? "map.cmd" : "map.sh"));
+			string filescript = String.Format((OS.IsWindows ? Properties.Resources.ScriptMapWindows : Properties.Resources.ScriptMapLinux), ffmpeg, file, pathmap);
+
+			File.WriteAllText(pathscript, filescript);
+
 			Process P = new Process();
 			var SI = P.StartInfo;
 
-			string dir = Properties.Settings.Default.TemporaryFolder;
-			string ffm = Addons.BuildIn.FFmpeg;
-			string map = Path.Combine(dir, "map.gg");
-
-			if (OS.IsWindows)
-			{
-				SI.FileName = "cmd";
-				SI.Arguments = String.Format("/c start \"\" /D \"{0}\" /WAIT /B \"{1}\" -i \"{2}\" 2> \"{3}\"", dir, ffm, file, map);
-			}
-			else
-			{
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"\\\"{0}\\\" -i \\\"{1}\\\" 2> \\\"{3}\\\"\"", ffm, file, map);
-			}
-
+			SI.FileName = OS.IsWindows ? "cmd" : "bash";
+			SI.Arguments = String.Format((OS.IsWindows ? "/c {0}" : "-c \"sh '{0}'\""), pathscript);
 			SI.WorkingDirectory = dir;
 			SI.CreateNoWindow = true;
 			SI.UseShellExecute = false;
@@ -65,9 +59,10 @@ namespace ifme.hitoha
 			System.Threading.Thread.Sleep(1000);
 
 			string test = null;
-			string[] output = File.ReadAllLines(map);
+			string[] output = File.ReadAllLines(pathmap);
 
-			File.Delete(map);
+			File.Delete(pathmap);
+			File.Delete(pathscript);
 
 			foreach (var item in output)
 			{

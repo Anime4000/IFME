@@ -306,7 +306,7 @@ namespace ifme.hitoha
 
 					lstQueue.Items.Add(QueueList);
 
-					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button)\n             Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button). Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 				}
 				Properties.Settings.Default.LastOpenQueueLocation = System.IO.Path.GetDirectoryName(GetFiles.FileName);
 			}
@@ -429,7 +429,7 @@ namespace ifme.hitoha
 
 				lstQueue.Items.Add(QueueList);
 
-				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop\n             Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+				PrintLog(Log.Info, String.Format("File \"{0}\" added via Drag n Drop. Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
 			}
 
 			if (lstQueue.Items.Count != 0)
@@ -1857,7 +1857,7 @@ namespace ifme.hitoha
 				if (OS.IsWindows)
 				{
 					SI.FileName = "cmd";
-					SI.Arguments = String.Format("/c start \"\" /D \"{2}\" /WAIT /B \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
+					SI.Arguments = String.Format("/c START \"\" /WAIT /B /D \"{2}\" \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
 				}
 				else
 				{
@@ -1990,15 +1990,15 @@ namespace ifme.hitoha
 		{
 			if (e.Error != null)
 			{
-				PrintLog(Log.Error, String.Format("{0}: Encoding did not run perfectly, check status log!", DateTime.Now)); 
+				PrintLog(Log.Error, "Encoding did not run perfectly, check status log!"); 
 			}
 			else if (e.Cancelled)
 			{
-				PrintLog(Log.Warn, String.Format("{0}: Encoding canceled...", DateTime.Now)); 
+				PrintLog(Log.Warn, "Encoding canceled..."); 
 			}
 			else
 			{
-				PrintLog(Log.OK, String.Format("{0}: Encoding completed!", DateTime.Now));
+				PrintLog(Log.OK, "Encoding completed!");
 			}
 
 			// Delete all temp file when complete
@@ -2322,19 +2322,23 @@ namespace ifme.hitoha
 			{
 				case 0:
 					rtfLog.SelectionColor = Color.Cyan;
-					rtfLog.SelectedText = "info";
+					//rtfLog.SelectedText = "info";
+					rtfLog.SelectedText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
 					break;
 				case 1:
 					rtfLog.SelectionColor = Color.LightGreen;
-					rtfLog.SelectedText = " ok ";
+					//rtfLog.SelectedText = " ok ";
+					rtfLog.SelectedText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
 					break;
 				case 2:
 					rtfLog.SelectionColor = Color.Gold;
-					rtfLog.SelectedText = "warn";
+					//rtfLog.SelectedText = "warn";
+					rtfLog.SelectedText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
 					break;
 				default:
 					rtfLog.SelectionColor = Color.Red;
-					rtfLog.SelectedText = "erro";
+					//rtfLog.SelectedText = "erro";
+					rtfLog.SelectedText = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
 					tabEncoding.SelectedTab = tabStatus;
 					break;
 			}
@@ -2346,7 +2350,7 @@ namespace ifme.hitoha
 
 		private void pictDonate_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://goo.gl/HQtWcH");
+			System.Diagnostics.Process.Start("http://goo.gl/Y71xsQ");
 		}
 
 		private void btnAdvanceHelp_Click(object sender, EventArgs e)
