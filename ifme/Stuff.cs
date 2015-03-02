@@ -35,34 +35,8 @@ namespace ifme.hitoha
 
 		public static string[] MediaMap(string file, string type)
 		{
-			string dir = Properties.Settings.Default.TemporaryFolder;
-			string ffmpeg = Addons.BuildIn.FFmpeg;
-			string pathmap = Path.Combine(dir, "map.gg");
-			string pathscript = Path.Combine(dir, (OS.IsWindows ? "map.cmd" : "map.sh"));
-			string filescript = String.Format((OS.IsWindows ? Properties.Resources.ScriptMapWindows : Properties.Resources.ScriptMapLinux), ffmpeg, file, pathmap);
-
-			File.WriteAllText(pathscript, filescript);
-
-			Process P = new Process();
-			var SI = P.StartInfo;
-
-			SI.FileName = OS.IsWindows ? "cmd" : "bash";
-			SI.Arguments = String.Format((OS.IsWindows ? "/c {0}" : "-c \"sh '{0}'\""), pathscript);
-			SI.WorkingDirectory = dir;
-			SI.CreateNoWindow = true;
-			SI.UseShellExecute = false;
-
-			P.Start();
-			P.WaitForExit();
-			P.Close();
-
-			System.Threading.Thread.Sleep(1000);
-
 			string test = null;
-			string[] output = File.ReadAllLines(pathmap);
-
-			File.Delete(pathmap);
-			File.Delete(pathscript);
+			string[] output = PrintFFmpeg(file).Split('\n');
 
 			foreach (var item in output)
 			{
@@ -86,6 +60,44 @@ namespace ifme.hitoha
 				}
 			}
 			return test.Remove(test.Length - 1).Split('|');
+		}
+
+		private static string PrintFFmpeg(string file)
+		{
+			string dir = Properties.Settings.Default.TemporaryFolder;
+			string ffmpeg = Addons.BuildIn.FFmpeg;
+			string pathmap = Path.Combine(dir, "map.gg");
+			string pathscript = Path.Combine(dir, (OS.IsWindows ? "map.cmd" : "map.sh"));
+			string filescript = String.Format((OS.IsWindows ? Properties.Resources.ScriptMapWindows : Properties.Resources.ScriptMapLinux), ffmpeg, file, pathmap);
+			string line = null;
+
+			File.WriteAllText(pathscript, filescript);
+
+			Process P = new Process();
+			var SI = P.StartInfo;
+
+			SI.FileName = OS.IsWindows ? "cmd" : "bash";
+			SI.Arguments = String.Format((OS.IsWindows ? "/c {0}" : "-c \"sh '{0}'\""), pathscript);
+			SI.WorkingDirectory = dir;
+			SI.CreateNoWindow = true;
+			SI.UseShellExecute = false;
+
+			P.Start();
+			P.WaitForExit();
+			P.Close();
+
+			// ----- Read file even used by another process
+			FileStream logFileStream = new FileStream(pathmap, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+			StreamReader logFileReader = new StreamReader(logFileStream);
+
+			while (!logFileReader.EndOfStream)
+				line += logFileReader.ReadLine() + "\n";
+			
+			logFileReader.Close();
+			logFileStream.Close();
+			// -----
+
+			return line.Remove(line.Length - 1);
 		}
 	}
 }

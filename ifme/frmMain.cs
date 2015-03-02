@@ -1560,11 +1560,12 @@ namespace ifme.hitoha
 						string[] args = new string[11];
 						string cmd = null;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
+						int vsync = String.Equals(video[0].frameRateMode, "VFR") ? 0 : -1;
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
 						args[1] = String.Format("-pix_fmt {0}", yuv);
-						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync passthrough", screen[x]);
+						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync {1}", screen[x], vsync);
 
 						// x265 part
 						args[3] = String.Format("-p {0}", VidPreset);

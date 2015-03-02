@@ -1,3 +1,7 @@
+Version 4.9.3.0
+---------------
+[fixed] 2 frame encoding (sync decoder issue)
+
 Version 4.9.2.0
 ---------------
 [added] News function, not critial.
