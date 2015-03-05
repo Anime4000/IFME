@@ -137,7 +137,7 @@
     <value>..\Resources\BannerBRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EpicWord" xml:space="preserve">
-    <value>Next Future Next Hope</value>
+    <value>Beta Next</value>
     <comment>Change this when release to public</comment>
   </data>
   <data name="ifme_flat" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -196,15 +196,5 @@ command =</value>
   </data>
   <data name="SplashScreenC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SplashScreenC.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ScriptMapLinux" xml:space="preserve">
-    <value>#!/bin/bash
-"{0}" -i "{1}" 2&gt; "{2}"</value>
-    <comment>Print FFmpeg info (Linux)</comment>
-  </data>
-  <data name="ScriptMapWindows" xml:space="preserve">
-    <value>@echo off
-"{0}" -i "{1}" 2&gt; "{2}"</value>
-    <comment>Print FFmpeg info (Windows)</comment>
   </data>
 </root>

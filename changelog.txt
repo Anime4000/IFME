@@ -1,6 +1,7 @@
 Version 4.9.3.0
 ---------------
 [fixed] 2 frame encoding (sync decoder issue)
+[fixed] Getting stream mapping
 
 Version 4.9.2.0
 ---------------

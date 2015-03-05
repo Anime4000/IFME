@@ -36,7 +36,7 @@ namespace ifme.hitoha
 		public static string[] MediaMap(string file, string type)
 		{
 			string test = null;
-			string[] output = PrintFFmpeg(file).Split('\n');
+			string[] output = PrintFFmpeg(file);
 
 			foreach (var item in output)
 			{
@@ -62,22 +62,17 @@ namespace ifme.hitoha
 			return test.Remove(test.Length - 1).Split('|');
 		}
 
-		private static string PrintFFmpeg(string file)
+		private static string[] PrintFFmpeg(string file)
 		{
 			string dir = Properties.Settings.Default.TemporaryFolder;
 			string ffmpeg = Addons.BuildIn.FFmpeg;
-			string pathmap = Path.Combine(dir, "map.gg");
-			string pathscript = Path.Combine(dir, (OS.IsWindows ? "map.cmd" : "map.sh"));
-			string filescript = String.Format((OS.IsWindows ? Properties.Resources.ScriptMapWindows : Properties.Resources.ScriptMapLinux), ffmpeg, file, pathmap);
-			string line = null;
-
-			File.WriteAllText(pathscript, filescript);
+			string pathmap = Path.Combine(dir, "todoke.if");
 
 			Process P = new Process();
 			var SI = P.StartInfo;
 
 			SI.FileName = OS.IsWindows ? "cmd" : "bash";
-			SI.Arguments = String.Format((OS.IsWindows ? "/c {0}" : "-c \"sh '{0}'\""), pathscript);
+			SI.Arguments = String.Format((OS.IsWindows ? "/c START \"TODOKE\" /WAIT /B \"{0}\" -i \"{1}\" 2> \"{2}\"" : "-c '\"{0}\" -i \"{1}\" 2> \"{2}\"'"), ffmpeg, file, pathmap);
 			SI.WorkingDirectory = dir;
 			SI.CreateNoWindow = true;
 			SI.UseShellExecute = false;
@@ -86,18 +81,9 @@ namespace ifme.hitoha
 			P.WaitForExit();
 			P.Close();
 
-			// ----- Read file even used by another process
-			FileStream logFileStream = new FileStream(pathmap, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-			StreamReader logFileReader = new StreamReader(logFileStream);
+			System.Threading.Thread.Sleep(3000); // SLOW PC's
 
-			while (!logFileReader.EndOfStream)
-				line += logFileReader.ReadLine() + "\n";
-			
-			logFileReader.Close();
-			logFileStream.Close();
-			// -----
-
-			return line.Remove(line.Length - 1);
+			return File.ReadAllLines(pathmap);
 		}
 	}
 }

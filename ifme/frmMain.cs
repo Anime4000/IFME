@@ -1560,7 +1560,7 @@ namespace ifme.hitoha
 						string[] args = new string[11];
 						string cmd = null;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
-						int vsync = String.Equals(video[0].frameRateMode, "VFR") ? 0 : -1;
+						int vsync = String.Equals(video[0].frameRateMode, "VFR") ? 0 : -1; // passthrough : auto
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
@@ -1876,7 +1876,7 @@ namespace ifme.hitoha
 				else
 				{
 					SI.FileName = "bash";
-					SI.Arguments = String.Format("-c \"\\\"{0}\\\" {1}\"", exe, args.Replace("\"", "\\\""));
+					SI.Arguments = String.Format("-c '\"{0}\" {1}'", exe, args);
 				}
 			}
 			else
@@ -2003,17 +2003,11 @@ namespace ifme.hitoha
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
-			{
-				PrintLog(Log.Error, "Encoding did not run perfectly, check status log!"); 
-			}
+				PrintLog(Log.Error, "Encoding did not run perfectly, Deal with it!"); 
 			else if (e.Cancelled)
-			{
-				PrintLog(Log.Warn, "Encoding canceled..."); 
-			}
+				PrintLog(Log.Warn, "Encoding canceled! Nope!"); 
 			else
-			{
-				PrintLog(Log.OK, "Encoding completed!");
-			}
+				PrintLog(Log.OK, "Encoding completed! Oh yeah!");
 
 			// Delete all temp file when complete
 			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
@@ -2036,7 +2030,7 @@ namespace ifme.hitoha
 				}
 				else
 				{
-					PrintLog(Log.Warn, "Preview cancel by user.");
+					PrintLog(Log.Warn, "Preview cancel by user or file not found.");
 				}
 			}
 
@@ -2174,16 +2168,19 @@ namespace ifme.hitoha
 			try
 			{
 				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
+				cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
+				cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
+				cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;
+				cboAudioMode.SelectedIndex = Properties.Settings.Default.AudioMode;
 			}
 			catch
 			{
 				cboAudioFormat.SelectedIndex = 0;
+				cboAudioBitRate.SelectedIndex = 5;
+				cboAudioFreq.SelectedIndex = 0;
+				cboAudioChan.SelectedIndex = 0;
+				cboAudioMode.SelectedIndex = 0;
 			}
-
-			cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
-			cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
-			cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;
-			cboAudioMode.SelectedIndex = Properties.Settings.Default.AudioMode;
 		}
 
 		private void UserSettingsSave()

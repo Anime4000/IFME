@@ -121,7 +121,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next Future Next Hope.
+        ///   Looks up a localized string similar to Beta Next.
         /// </summary>
         internal static string EpicWord {
             get {
@@ -226,26 +226,6 @@ namespace ifme.Properties {
             get {
                 object obj = ResourceManager.GetObject("nagisan", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #!/bin/bash
-        ///&quot;{0}&quot; -i &quot;{1}&quot; 2&gt; &quot;{2}&quot;.
-        /// </summary>
-        internal static string ScriptMapLinux {
-            get {
-                return ResourceManager.GetString("ScriptMapLinux", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to @echo off
-        ///&quot;{0}&quot; -i &quot;{1}&quot; 2&gt; &quot;{2}&quot;.
-        /// </summary>
-        internal static string ScriptMapWindows {
-            get {
-                return ResourceManager.GetString("ScriptMapWindows", resourceCulture);
             }
         }
         
