@@ -272,14 +272,17 @@ namespace ifme.hitoha
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
 			GetFiles.Title = Language.IMessage.OpenFile;
-			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.flv;*.webm;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
-				+ "Matroska Multimedia Container|*.mkv|"
-				+ "MPEG-4 Part 14 (MP4)|*.mp4;*.m4v|"
-				+ "Adobe Flash Video|*.flv|"
-				+ "The WebM Project|*.webm|"
-				+ "Audio Video Interleaved|*.avi;*.divx|"
+			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
+				+ "HTML5 video files|*.ogv;*.webm;*.mp4|"
+				+ "WebM|*.webm|"
+				+ "Theora|*.ogv|"
+				+ "Matroska|*.mkv|"
+				+ "MPEG-4|*.mp4;*.m4v|"
+				+ "Flash Video|*.flv|"
 				+ "Windows Media Video|*.wmv|"
-				+ "Moving Picture Experts Group|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
+				+ "Audio Video Interleaved|*.avi;*.divx|"
+				+ "MPEG-2 Transport Stream|*.mts;*.m2ts|"
+				+ "MPEG-1/DVD|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
 				+ "Empire Media|*.emp;*.emm|"
 				+ "All Files|*.*";
 			GetFiles.FilterIndex = 1;
