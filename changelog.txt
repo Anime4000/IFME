@@ -2,6 +2,7 @@ Version 4.9.3.0
 ---------------
 [fixed] 2 frame encoding (sync decoder issue)
 [fixed] Getting stream mapping
+[fixed] Updater not to delete, just overwrite.
 
 Version 4.9.2.0
 ---------------

@@ -59,5 +59,50 @@ namespace ifme.framework.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #!/bin/sh
+        ///# Usage:
+        ///#   update.sh &quot;parm 1&quot; &quot;parm 2&quot; &quot;parm 3&quot;
+        ///# example:
+        ///#   update.sh &quot;http://update.example.com/myapp/1.22/file.zip&quot; &quot;/home/me/Desktop/myapp&quot; &quot;myapp.sh&quot;
+        ///chmod +x ./7za
+        ///echo &quot; &quot;
+        ///echo &quot;This terminal will perform IFME update to the latest version.&quot;
+        ///echo &quot;Please be patient this may take a while depending your&quot;
+        ///echo &quot;internet configuration, you can do other thing while updating.&quot;
+        ///echo &quot; &quot;
+        ///sleep 5
+        ///wget --no-check-certificate -O &quot;./saishin.jp&quot; $1
+        ///./7za x -so &quot;./saishin.jp&quot; | tar --overwrite -xf - - [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScriptUpdateLinux {
+            get {
+                return ResourceManager.GetString("ScriptUpdateLinux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @echo off
+        ///@title IFME Updater
+        ///REM Usage:
+        ///REM   update.cmd &quot;parm 1&quot; &quot;parm 2&quot; &quot;parm 3&quot;
+        ///REM example:
+        ///REM   update.cmd &quot;http://update.example.com/myapp/1.22/file.zip&quot; &quot;C:\Program Files\myapp&quot; &quot;myapp.exe&quot;
+        ///echo.
+        ///echo This console will perfom IFME update to the latest version.
+        ///echo Please be patient this may take a while depending your
+        ///echo internet configuration, you can do other thing while updating.
+        ///echo.
+        ///TIMEOUT /T 5 /NOBREAK
+        ///copy %2\unins000.exe .\unins000.exe
+        ///copy %2\unins000.dat .\unins000.dat
+        ///wget --no-che [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScriptUpdateWindows {
+            get {
+                return ResourceManager.GetString("ScriptUpdateWindows", resourceCulture);
+            }
+        }
     }
 }
