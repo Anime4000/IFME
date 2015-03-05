@@ -2013,6 +2013,13 @@ namespace ifme.hitoha
 			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
 				File.Delete(item);
 
+			// UI stuff
+			int a = cboAudioFormat.SelectedIndex;
+			int b = cboAudioFormat.Items.Count - 1;
+			cboAudioFormat.SelectedIndex = 0;
+			cboAudioFormat.SelectedIndex = b;
+			cboAudioFormat.SelectedIndex = a;
+
 			// Reset
 			EncodingStarted(false);
 			this.Text = Globals.AppInfo.NameTitle;
