@@ -394,7 +394,7 @@
 			// 
 			// colQueueFPS
 			// 
-			this.colQueueFPS.Text = "FPS";
+			this.colQueueFPS.Text = "fps";
 			this.colQueueFPS.Width = 80;
 			// 
 			// colQueueBitDepth
