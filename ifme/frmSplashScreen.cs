@@ -122,6 +122,7 @@ namespace ifme.hitoha
 			{
 				Globals.AppInfo.News = null;
 				InvokeStatus("Error", "Are you offline?");
+				System.Threading.Thread.Sleep(wait);
 			}
 
 			// IFME have new version, dont proceed check addons verions
