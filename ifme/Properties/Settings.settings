@@ -26,11 +26,11 @@
     <Setting Name="Nice" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="VideoPreset" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+    <Setting Name="VideoPreset" Type="System.String" Scope="User">
+      <Value Profile="(Default)">medium</Value>
     </Setting>
-    <Setting Name="VideoTune" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="VideoTune" Type="System.String" Scope="User">
+      <Value Profile="(Default)">off</Value>
     </Setting>
     <Setting Name="VideoRateType" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -38,17 +38,17 @@
     <Setting Name="VideoRateValue" Type="System.String" Scope="User">
       <Value Profile="(Default)">28</Value>
     </Setting>
-    <Setting Name="AudioFormat" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="AudioFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Passthrough/Extract all audio (Mode configuration ignored)</Value>
     </Setting>
     <Setting Name="AudioBitRate" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4</Value>
+      <Value Profile="(Default)">128</Value>
     </Setting>
-    <Setting Name="AudioFreq" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="AudioFreq" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Automatic</Value>
     </Setting>
-    <Setting Name="AudioChan" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="AudioChan" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Automatic</Value>
     </Setting>
     <Setting Name="AudioMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -79,6 +79,12 @@
     </Setting>
     <Setting Name="PreviewDuration" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">120</Value>
+    </Setting>
+    <Setting Name="AudioCmd" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserPreset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

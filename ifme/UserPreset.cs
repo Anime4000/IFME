@@ -40,24 +40,44 @@ namespace ifme
 				int i = 0;
 				Array.Clear(Data, 0, Data.Length);
 
+				// Last Settings
+				Data[i, 0] = "null";
+				Data[i, 1] = "Last saved configuration";
+				Data[i, 2] = Environment.UserName;
+				Data[i, 3] = Globals.AppInfo.BuildVersion;
+				Data[i, 4] = "https://www.facebook.com/internetfriendlymediaencoder";
+				Data[i, 5] = Properties.Settings.Default.UseMkv ? "mkv" : "mp4";
+				Data[i, 6] = Properties.Settings.Default.VideoPreset;
+				Data[i, 7] = Properties.Settings.Default.VideoTune;
+				Data[i, 8] = String.Format("{0}", Properties.Settings.Default.VideoRateType);
+				Data[i, 9] = String.Format("{0}", Properties.Settings.Default.VideoRateValue);
+				Data[i, 10] = Properties.Settings.Default.VideoCmd;
+				Data[i, 11] = Properties.Settings.Default.AudioFormat;
+				Data[i, 12] = String.Format("{0}", Properties.Settings.Default.AudioBitRate);
+				Data[i, 13] = Properties.Settings.Default.AudioFreq;
+				Data[i, 14] = Properties.Settings.Default.AudioChan;
+				Data[i, 15] = String.Format("{0}", Properties.Settings.Default.AudioMode);
+				Data[i, 16] = Properties.Settings.Default.AudioCmd;
+				i++;
+
 				// Default
-				Data[0, 0] = "null";
-				Data[0, 1] = "Default";
-				Data[0, 2] = "Anime4000";
-				Data[0, 3] = "0.1";
-				Data[0, 4] = "https://github.com/x265";
-				Data[0, 5] = "mp4";
-				Data[0, 6] = "medium";
-				Data[0, 7] = "off";
-				Data[0, 8] = "0";
-				Data[0, 9] = "28";
-				Data[0, 10] = "--dither";
-				Data[0, 11] = "Passthrough/Extract all audio (Mode configuration ignored)";
-				Data[0, 12] = "128";
-				Data[0, 13] = "Automatic";
-				Data[0, 14] = "Automatic";
-				Data[0, 15] = "0";
-				Data[0, 16] = "";
+				Data[i, 0] = "null";
+				Data[i, 1] = "Default";
+				Data[i, 2] = "Anime4000";
+				Data[i, 3] = "0.1";
+				Data[i, 4] = "https://github.com/x265";
+				Data[i, 5] = "mp4";
+				Data[i, 6] = "medium";
+				Data[i, 7] = "off";
+				Data[i, 8] = "0";
+				Data[i, 9] = "28";
+				Data[i, 10] = "--dither";
+				Data[i, 11] = "Passthrough/Extract all audio (Mode configuration ignored)";
+				Data[i, 12] = "128";
+				Data[i, 13] = "Automatic";
+				Data[i, 14] = "Automatic";
+				Data[i, 15] = "0";
+				Data[i, 16] = "";
 
 				foreach (var item in Directory.GetFiles(Folder, "*.nemu"))
 				{

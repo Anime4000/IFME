@@ -121,10 +121,10 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int VideoPreset {
+        [global::System.Configuration.DefaultSettingValueAttribute("medium")]
+        public string VideoPreset {
             get {
-                return ((int)(this["VideoPreset"]));
+                return ((string)(this["VideoPreset"]));
             }
             set {
                 this["VideoPreset"] = value;
@@ -133,10 +133,10 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int VideoTune {
+        [global::System.Configuration.DefaultSettingValueAttribute("off")]
+        public string VideoTune {
             get {
-                return ((int)(this["VideoTune"]));
+                return ((string)(this["VideoTune"]));
             }
             set {
                 this["VideoTune"] = value;
@@ -169,10 +169,10 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int AudioFormat {
+        [global::System.Configuration.DefaultSettingValueAttribute("Passthrough/Extract all audio (Mode configuration ignored)")]
+        public string AudioFormat {
             get {
-                return ((int)(this["AudioFormat"]));
+                return ((string)(this["AudioFormat"]));
             }
             set {
                 this["AudioFormat"] = value;
@@ -181,7 +181,7 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("128")]
         public int AudioBitRate {
             get {
                 return ((int)(this["AudioBitRate"]));
@@ -193,10 +193,10 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int AudioFreq {
+        [global::System.Configuration.DefaultSettingValueAttribute("Automatic")]
+        public string AudioFreq {
             get {
-                return ((int)(this["AudioFreq"]));
+                return ((string)(this["AudioFreq"]));
             }
             set {
                 this["AudioFreq"] = value;
@@ -205,10 +205,10 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int AudioChan {
+        [global::System.Configuration.DefaultSettingValueAttribute("Automatic")]
+        public string AudioChan {
             get {
-                return ((int)(this["AudioChan"]));
+                return ((string)(this["AudioChan"]));
             }
             set {
                 this["AudioChan"] = value;
@@ -332,6 +332,30 @@ namespace ifme.Properties {
             }
             set {
                 this["PreviewDuration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AudioCmd {
+            get {
+                return ((string)(this["AudioCmd"]));
+            }
+            set {
+                this["AudioCmd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int UserPreset {
+            get {
+                return ((int)(this["UserPreset"]));
+            }
+            set {
+                this["UserPreset"] = value;
             }
         }
     }

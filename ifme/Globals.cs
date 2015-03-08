@@ -78,6 +78,14 @@ namespace ifme.hitoha
 			}
 
 			/// <summary>
+			/// Return current automated Build Version (including dot)
+			/// </summary>
+			public static string BuildVersion
+			{
+				get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
+			}
+
+			/// <summary>
 			/// Return current version in string (including dot)
 			/// </summary>
 			public static string Version

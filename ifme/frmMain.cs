@@ -66,9 +66,12 @@ namespace ifme.hitoha
 
 			var msgbox = MessageBox.Show(Language.IMessage.Quit, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 			if (msgbox == DialogResult.No)
+			{
 				e.Cancel = true;
-			else
-				UserSettingsSave();
+				return;
+			}
+			
+			UserSettingsSave();
 			
 			if (OS.IsLinux)
 				Console.Write("[info] Your settings has been saved, {0} exit safely\n", Globals.AppInfo.NameShort);
@@ -479,6 +482,7 @@ namespace ifme.hitoha
 		private void cboUserPreList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			UserPreset.SelectedId = cboUserPreList.SelectedIndex;
+			Properties.Settings.Default.UserPreset = UserPreset.SelectedId;
 			int i = UserPreset.SelectedId;
 
 			lblUserPreData.Text = String.Format("{0}\n{1}\n{2}", UserPreset.Installed.Data[i, 2], UserPreset.Installed.Data[i, 3], UserPreset.Installed.Data[i, 4]);
@@ -672,12 +676,12 @@ namespace ifme.hitoha
 
 		private void cboVideoPreset_DropDownClosed(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.VideoPreset = cboVideoPreset.SelectedIndex;
+			Properties.Settings.Default.VideoPreset = cboVideoPreset.Text;
 		}
 
 		private void cboVideoTune_DropDownClosed(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.VideoTune = cboVideoTune.SelectedIndex;
+			Properties.Settings.Default.VideoTune = cboVideoTune.Text;
 		}
 
 		private void cboVideoRateCtrl_DropDownClosed(object sender, EventArgs e)
@@ -709,7 +713,7 @@ namespace ifme.hitoha
 
 		private void cboAudioFormat_DropDownClosed(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.AudioFormat = cboAudioFormat.SelectedIndex;
+			Properties.Settings.Default.AudioFormat = cboAudioFormat.Text;
 		}
 
 		private void cboAudioBitRate_DropDownClosed(object sender, EventArgs e)
@@ -719,12 +723,12 @@ namespace ifme.hitoha
 
 		private void cboAudioFreq_DropDownClosed(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.AudioFreq = cboAudioFreq.SelectedIndex;
+			Properties.Settings.Default.AudioFreq = cboAudioFreq.Text;
 		}
 
 		private void cboAudioChan_DropDownClosed(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.AudioChan = cboAudioFreq.SelectedIndex;
+			Properties.Settings.Default.AudioChan = cboAudioFreq.Text;
 		}
 
 		private void cboAudioMode_DropDownClosed(object sender, EventArgs e)
@@ -2136,7 +2140,16 @@ namespace ifme.hitoha
 			}
 
 			if (IsStartUp)
-				cboUserPreList.SelectedIndex = 0;
+			{
+				try
+				{
+					cboUserPreList.SelectedIndex = Properties.Settings.Default.UserPreset;
+				}
+				catch
+				{
+					cboUserPreList.SelectedIndex = 0;
+				}
+			}
 		}
 		#endregion
 
@@ -2166,31 +2179,6 @@ namespace ifme.hitoha
 
 			txtDestDir.Text = Properties.Settings.Default.OutputDirPath;
 			chkQueueSaveTo.Checked = Properties.Settings.Default.OutputDirEnable;
-
-			// Video
-			cboVideoPreset.SelectedIndex = Properties.Settings.Default.VideoPreset;
-			cboVideoTune.SelectedIndex = Properties.Settings.Default.VideoTune;
-			cboVideoRateCtrl.SelectedIndex = Properties.Settings.Default.VideoRateType;
-			txtVideoRate.Text = Properties.Settings.Default.VideoRateValue.ToString();
-			txtVideoAdvCmd.Text = Properties.Settings.Default.VideoCmd;
-
-			// Audio
-			try
-			{
-				cboAudioFormat.SelectedIndex = Properties.Settings.Default.AudioFormat;
-				cboAudioBitRate.SelectedIndex = Properties.Settings.Default.AudioBitRate;
-				cboAudioFreq.SelectedIndex = Properties.Settings.Default.AudioFreq;
-				cboAudioChan.SelectedIndex = Properties.Settings.Default.AudioChan;
-				cboAudioMode.SelectedIndex = Properties.Settings.Default.AudioMode;
-			}
-			catch
-			{
-				cboAudioFormat.SelectedIndex = 0;
-				cboAudioBitRate.SelectedIndex = 5;
-				cboAudioFreq.SelectedIndex = 0;
-				cboAudioChan.SelectedIndex = 0;
-				cboAudioMode.SelectedIndex = 0;
-			}
 		}
 
 		private void UserSettingsSave()
