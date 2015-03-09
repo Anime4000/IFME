@@ -1567,7 +1567,7 @@ namespace ifme.hitoha
 						string[] args = new string[11];
 						string cmd = null;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
-						int vsync = String.Equals(video[0].frameRateMode, "VFR") ? 0 : -1; // passthrough : auto
+						string vsync = String.Equals(video[0].frameRateMode, "VFR") ? "passthrough" : video[0].frameRateOri == 0 ? "cfr" : String.Format("cfr -r {0}", video[0].frameRate);
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);

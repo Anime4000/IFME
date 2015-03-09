@@ -311,6 +311,18 @@ namespace MediaInfoDotNet.Models
 				return _frameRateMax;
 			}
 		}
+
+		float _frameRateOri = float.MinValue;
+		/// <summary>Original frame rate of the stream in frame per second.</summary>
+		public float frameRateOri
+		{
+			get
+			{
+				if (_frameRateOri == float.MinValue)
+					_frameRateOri = miGetFloat("FrameRate_Original");
+				return _frameRateOri;
+			}
+		}
 		#endregion
 
 		#region VideoAudioTextImageCommon

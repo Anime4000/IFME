@@ -1,3 +1,8 @@
+Version 4.9.4.0
+---------------
+[fixed] settings cannot be saved, last configuration moved to user preset
+[fixed] video out of sync issue where video having "original frame rate" bug.
+
 Version 4.9.3.0
 ---------------
 [fixed] Half way encoding (decoder issue)
