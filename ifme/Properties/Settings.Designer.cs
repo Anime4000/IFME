@@ -358,5 +358,17 @@ namespace ifme.Properties {
                 this["UserPreset"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Shutdown {
+            get {
+                return ((bool)(this["Shutdown"]));
+            }
+            set {
+                this["Shutdown"] = value;
+            }
+        }
     }
 }

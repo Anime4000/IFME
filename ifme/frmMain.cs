@@ -220,6 +220,11 @@ namespace ifme.hitoha
 			lst[6].Width = (lstQueue.Width - 4) - (lst[0].Width + lst[1].Width + lst[2].Width + lst[3].Width + lst[4].Width + lst[5].Width);
 		}
 
+		private void chkDoneOffMachine_CheckedChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.Shutdown = chkDoneOffMachine.Checked;
+		}
+
 		private void lstQueue_DoubleClick(object sender, EventArgs e)
 		{
 			// resue code
@@ -1283,6 +1288,7 @@ namespace ifme.hitoha
 			}
 		}
 
+		#region Encoding thread
 		private void BGThread_DoWork(object sender, DoWorkEventArgs e)
 		{
 			List<object> argsList = e.Argument as List<object>;
@@ -1567,7 +1573,13 @@ namespace ifme.hitoha
 						string[] args = new string[11];
 						string cmd = null;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
-						string vsync = String.Equals(video[0].frameRateMode, "VFR") ? "passthrough" : video[0].frameRateOri == 0 ? "cfr" : String.Format("cfr -r {0}", video[0].frameRate);
+
+						bool IsVFR = String.Equals(video[0].frameRateMode, "VFR") ? true : false;
+						ulong FrameCount = video[0].frameCount;
+						float FpsOri = video[0].frameRateOri;
+						float FPS = video[0].frameRate;
+
+						string vsync = IsVFR ? "passthrough" : FpsOri == 0 ? "cfr" : String.Format("cfr -r {0}", FPS);
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
@@ -1586,13 +1598,13 @@ namespace ifme.hitoha
 							VidType = "bitrate";
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
-						args[6] = video[0].frameCount == 0 ? "" : String.Format("-f \"{0}\"", video[0].frameCount);
+						args[6] = FrameCount == 0 ? "" : String.Format("-f \"{0}\"", FrameCount);
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
 						// Preview Block - Modify total frame to be process
 						if (Globals.Preview.Enable)
-							args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * video[0].frameRate));
+							args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * FPS));
 
 						// Due limitation of x265, cannot change 10 bit to 8 bit or vice versa
 						if (video[0].bitDepth > 8)
@@ -1633,9 +1645,9 @@ namespace ifme.hitoha
 							// Since split field to each frame, total frame become double
 							// Preview Block - Modify total frame to be process
 							if (!Globals.Preview.Enable)
-								args[6] = String.Format("-f \"{0}\"", (video[0].frameCount * 2));
+								args[6] = String.Format("-f \"{0}\"", (FrameCount * 2));
 							else
-								args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * (video[0].frameRate * 2)));
+								args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * (FPS * 2)));
 						}
 
 						// Add space
@@ -1866,6 +1878,7 @@ namespace ifme.hitoha
 			}
 			e.Result = PEC;
 		}
+		#endregion
 
 		#region Run console program and display all console line
 		private int StartProcess(string exe, string args)
@@ -2007,6 +2020,7 @@ namespace ifme.hitoha
 		}
 		#endregion
 
+		#region BGThread_RunWorkerCompleted (When thread is finished)
 		private void BGThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
@@ -2054,6 +2068,7 @@ namespace ifme.hitoha
 					if (!e.Cancelled || e.Error != null)
 						Process.Start("shutdown", "/s /f /t 3 /c \"Queue encoding complete!\"");
 		}
+		#endregion
 
 		#region When encoding running, disable control or enable when finish
 		private void EncodingStarted(bool x)
@@ -2083,6 +2098,9 @@ namespace ifme.hitoha
 				foreach (Control ctl in page.Controls)
 					ctl.Enabled = !x;
 			}
+
+			// Never disable
+			chkDoneOffMachine.Enabled = true;
 		}
 		#endregion
 
@@ -2179,6 +2197,7 @@ namespace ifme.hitoha
 
 			txtDestDir.Text = Properties.Settings.Default.OutputDirPath;
 			chkQueueSaveTo.Checked = Properties.Settings.Default.OutputDirEnable;
+			chkDoneOffMachine.Checked = Properties.Settings.Default.Shutdown;
 		}
 
 		private void UserSettingsSave()

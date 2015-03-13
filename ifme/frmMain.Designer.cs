@@ -257,6 +257,7 @@
 			this.chkDoneOffMachine.TabIndex = 9;
 			this.chkDoneOffMachine.Text = "{0}";
 			this.chkDoneOffMachine.UseVisualStyleBackColor = true;
+			this.chkDoneOffMachine.CheckedChanged += new System.EventHandler(this.chkDoneOffMachine_CheckedChanged);
 			// 
 			// btnQueueBrowseDest
 			// 
