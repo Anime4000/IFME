@@ -1,4 +1,4 @@
-Version 4.9.4.0
+Version 4.9.4.0 (Unending Love)
 ---------------
 [fixed] settings cannot be saved, last configuration moved to user preset
 [fixed] video out of sync issue where video having "original frame rate" bug.
