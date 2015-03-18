@@ -1799,8 +1799,15 @@ namespace ifme.hitoha
 						if (Globals.Preview.Enable)
 							Globals.Preview.File = FileOut + ".mkv";
 
-
-						Stuff.WriteMkvTagWApp(FileOut + ".mkv");
+						// Try modify MKV metadata
+						try
+						{
+							Stuff.WriteMkvTagWApp(FileOut + ".mkv");
+						}
+						catch
+						{
+							InvokeLog(Log.Error, "Cannot modify MKV metadata, noting critical =P");
+						}
 					}
 					else
 					{
@@ -1851,19 +1858,26 @@ namespace ifme.hitoha
 				// Save log if required
 				if (Properties.Settings.Default.LogAutoSave)
 				{
-					if (this.InvokeRequired)
+					try
 					{
-						BeginInvoke(new MethodInvoker(() => rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText)));
-						BeginInvoke(new MethodInvoker(() => rtfLog.Clear()));
-						BeginInvoke(new MethodInvoker(() => StartUpLog()));
+						if (this.InvokeRequired)
+						{
+							BeginInvoke(new MethodInvoker(() => rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText)));
+							BeginInvoke(new MethodInvoker(() => rtfLog.Clear()));
+							BeginInvoke(new MethodInvoker(() => StartUpLog()));
+						}
+						else
+						{
+							rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText);
+							rtfLog.Clear();
+							StartUpLog();
+						}
+						InvokeLog(Log.Info, "Log Saved: " + Log.AutoSaveName);
 					}
-					else
+					catch
 					{
-						rtfLog.SaveFile(Log.AutoSaveName, RichTextBoxStreamType.PlainText);
-						rtfLog.Clear();
-						StartUpLog();
+						InvokeLog(Log.Error, "Log cannot save, unable to write to disk, sorry!");
 					}
-					InvokeLog(Log.Info, "Log Saved: " + Log.AutoSaveName);
 				}
 
 				// Preview Block - Finish and Break loop,
