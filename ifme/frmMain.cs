@@ -1794,6 +1794,8 @@ namespace ifme.hitoha
 						
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
+						if (PEC == 1)
+							PEC = 0; // mark mkvtoolnix warning as 'ok' condition
 
 						// Preview Block - Set file
 						if (Globals.Preview.Enable)
@@ -1941,6 +1943,9 @@ namespace ifme.hitoha
 			P.WaitForExit();
 			int X = P.ExitCode;
 			P.Close();
+
+			if (X == 1)
+				InvokeLog(Log.Warn, String.Format("Sorry, it seem having a problem, IFME sending command: {0} {1}", exe, args));
 
 			return X;
 		}
