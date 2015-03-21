@@ -63,9 +63,9 @@ namespace ifme
 				// Default
 				Data[i, 0] = "null";
 				Data[i, 1] = "Default";
-				Data[i, 2] = "Anime4000";
-				Data[i, 3] = "0.1";
-				Data[i, 4] = "https://github.com/x265";
+				Data[i, 2] = Environment.UserName;
+				Data[i, 3] = Globals.AppInfo.BuildVersion;
+				Data[i, 4] = "https://www.facebook.com/internetfriendlymediaencoder";
 				Data[i, 5] = "mp4";
 				Data[i, 6] = "medium";
 				Data[i, 7] = "off";

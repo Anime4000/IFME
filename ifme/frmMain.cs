@@ -555,7 +555,7 @@ namespace ifme.hitoha
 
 			data["profile"]["name"] = cboUserPreList.Text;
 			data["profile"]["author"] = Environment.UserName;
-			data["profile"]["version"] = String.Format("{0:yyyy.MM.dd_HH-mm-ss}", DateTime.Now);
+			data["profile"]["version"] = String.Format("{0:yyyy.MM.dd_HHmmss}", DateTime.Now);
 			data["profile"]["homepage"] = "";
 			data["profile"]["format"] = Properties.Settings.Default.UseMkv ? "mkv" : "mp4";
 

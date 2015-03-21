@@ -1,0 +1,21 @@
+﻿[profile]
+name = Android 4.0 (MX Player)
+author = Nemu
+version = 2015.03.19_000000
+homepage = http://nedb.co/
+format = mp4
+
+[video]
+preset = slow
+tuning = zerolatency
+ratectrl = 0
+ratefact = 26
+command = --dither
+
+[audio]
+encoder = Freeware Advanced Audio Coder
+bit = 80
+freq = 44100
+channel = Automatic
+mode = 0
+command = -w -s

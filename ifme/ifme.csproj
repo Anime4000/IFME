@@ -196,6 +196,9 @@
     <None Include="lang\zho.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="preset\android40.nemu">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="preset\anime.nemu">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
