@@ -516,7 +516,7 @@ namespace ifme.hitoha
 		{
 			int i = UserPreset.SelectedId;
 
-			if (i == 0)
+			if (i == 0 || i == 1)
 				return;
 
 			var parser = new FileIniDataParser();
