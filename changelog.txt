@@ -5,6 +5,7 @@ Version 4.9.4.0 (Unending Love)
 [fixed] Shutdown checkbox settings not saved properly.
 [fixed] Shutdown checkbox not suppose to disable all of time
 [fixed] mkvtoolnix warning as error cause encoding stop, now mark as OK.
+[change] "Consolas" font not shipped by default Windows install, change to "Lucida Console"
 
 Version 4.9.3.0
 ---------------

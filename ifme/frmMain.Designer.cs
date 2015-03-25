@@ -1217,7 +1217,7 @@
 			// 
 			this.rtfLog.BackColor = System.Drawing.Color.Black;
 			this.rtfLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.rtfLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.rtfLog.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.rtfLog.ForeColor = System.Drawing.Color.LightGray;
 			this.rtfLog.HideSelection = false;
 			this.rtfLog.Location = new System.Drawing.Point(3, 3);
