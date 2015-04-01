@@ -1252,7 +1252,7 @@ namespace ifme.hitoha
 				// All data become one object, and send to Threading
 				List<object> something = new List<object>
 				{
-					queue,	
+					queue,
 					subtitle,
 					attachment,
 
@@ -1321,6 +1321,10 @@ namespace ifme.hitoha
 			string tmp = (string)argsList[18];
 			// Future addition
 			string[] screen = (string[])argsList[19];
+
+			// Multipass encoding
+			int pass = new[] { "2", "3", "4", "5", "6", "7", "8", "9" }.Contains(VidType) ? int.Parse(VidType) : 0;
+			VidType = pass >= 2 ? "bitrate" : VidType;
 
 			// Process exit code or return
 			int PEC = 0;
@@ -1592,11 +1596,6 @@ namespace ifme.hitoha
 						if (!VidTune.Equals("off"))
 							args[4] = String.Format("-t {0}", VidTune);
 
-						// If multipass, modify command
-						int pass;
-						if (int.TryParse(VidType, out pass))
-							VidType = "bitrate";
-
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
 						args[6] = FrameCount == 0 ? "" : String.Format("-f \"{0}\"", FrameCount);
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
@@ -1795,7 +1794,11 @@ namespace ifme.hitoha
 						// Send to mkvmerge
 						PEC = StartProcess(Addons.BuildIn.MKV, command);
 						if (PEC == 1)
+						{
 							PEC = 0; // mark mkvtoolnix warning as 'ok' condition
+							InvokeLog(Log.Warn, "mkvtoolnix return a warning, mostly sync issue for older codec.");
+						}
+							
 
 						// Preview Block - Set file
 						if (Globals.Preview.Enable)
