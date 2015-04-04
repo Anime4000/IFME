@@ -235,12 +235,6 @@
     <None Include="Resources\list_remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ifme.framework\ifme.framework.csproj">
-      <Project>{2dfd009a-9603-4247-9bd4-db71e35a9b20}</Project>
-      <Name>ifme.framework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BannerBRight.png" />
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +269,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SplashScreenC.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ifme.framework\ifme.framework.csproj">
+      <Project>{2dfd009a-9603-4247-9bd4-db71e35a9b20}</Project>
+      <Name>ifme.framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
