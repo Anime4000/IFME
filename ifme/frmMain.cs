@@ -236,6 +236,9 @@ namespace ifme.hitoha
 			if (lstQueue.SelectedItems.Count == 0)
 				return;
 
+			if (String.Equals(lstQueue.SelectedItems[0].SubItems[1].Text, ".avs", StringComparison.InvariantCultureIgnoreCase))
+				return;
+
 			// Allow user to change video resolution!
 			string res = lstQueue.SelectedItems[0].SubItems[3].Text;
 			using (var from = new frmProperties(res))
@@ -1332,6 +1335,11 @@ namespace ifme.hitoha
 			// Decoding-Encoding
 			for (int x = 0; x < queue.Length; x++)
 			{
+				// Determine is Avisynth or not
+				var AviSynth = queue[x];
+				if (String.Equals(System.IO.Path.GetExtension(AviSynth), ".avs", StringComparison.InvariantCultureIgnoreCase))
+					queue[x] = GetMetaData.AviSynthReader(queue[x]); // get original file inside script
+
 				// Get file information
 				MediaFile Avi = new MediaFile(queue[x]);
 				var audio = Avi.Audio;
@@ -1574,6 +1582,7 @@ namespace ifme.hitoha
 				{
 					if (video.Count >= 1)
 					{
+						string EXE = Addons.BuildIn.FFmpeg;
 						string[] args = new string[11];
 						string cmd = null;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
@@ -1588,7 +1597,7 @@ namespace ifme.hitoha
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
 						args[1] = String.Format("-pix_fmt {0}", yuv);
-						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync {1}", screen[x], vsync);
+						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync {1} -", screen[x], vsync);
 
 						// x265 part
 						args[3] = String.Format("-p {0}", VidPreset);
@@ -1649,6 +1658,18 @@ namespace ifme.hitoha
 								args[6] = String.Format("-f \"{0}\"", (int)((float)Globals.Preview.Duration * (FPS * 2)));
 						}
 
+						// AviSynth Stuff (get's override)
+						if (!String.IsNullOrEmpty(AviSynth))
+						{
+							EXE = Addons.BuildIn.AVI2PIPE;
+							args[0] = "video";
+							args[1] = String.Format("\"{0}\"", AviSynth);
+							args[2] = "";
+							args[6] = "";
+
+							InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
+						}
+
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
 						{
@@ -1665,7 +1686,7 @@ namespace ifme.hitoha
 						else
 							args[10] = "nul";
 
-						cmd = String.Format("{0}{1}{2} - 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
+						cmd = String.Format("{0}{1}{2} 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
 
 						// Multi Pass
 						if (pass >= 2)
@@ -1677,11 +1698,11 @@ namespace ifme.hitoha
 
 								// Proceed to encode
 								if (i == 1)
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 1"); // create stats
+									PEC = StartProcess(EXE, cmd + " --pass 1"); // create stats
 								else if (i == pass)
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 2"); // override, used for last pass
+									PEC = StartProcess(EXE, cmd + " --pass 2"); // override, used for last pass
 								else
-									PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd + " --pass 3"); // not override stats, use for 'n'th pass
+									PEC = StartProcess(EXE, cmd + " --pass 3"); // not override stats, use for 'n'th pass
 
 								// Break encoding when user press stop
 								if (PEC == 1) { e.Cancel = true; break; }
@@ -1690,7 +1711,7 @@ namespace ifme.hitoha
 						else
 						{
 							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
-							PEC = StartProcess(Addons.BuildIn.FFmpeg, cmd);
+							PEC = StartProcess(EXE, cmd);
 						}
 					}
 
@@ -1962,7 +1983,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (outputString.Contains(" frames, "))
+				if (outputString.Contains(" frames, ") || outputString.Contains(" frames: "))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, outputString);
 				else
 					rtfLog.AppendText(string.Concat(outputString, Environment.NewLine));
@@ -1993,7 +2014,7 @@ namespace ifme.hitoha
 			else
 			{
 				// Now we can update your textbox with the data passed from the asynchronous thread
-				if (errorString.Contains(" frames, "))
+				if (errorString.Contains(" frames, ") || errorString.Contains(" frames: "))
 					this.Text = String.Format("Queue {0} of {1}: {2}", ListQueue.Current, ListQueue.Count, errorString);
 				else
 					rtfLog.AppendText(string.Concat(errorString, Environment.NewLine));

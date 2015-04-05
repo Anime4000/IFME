@@ -59,6 +59,7 @@ namespace ifme.hitoha
 			public static string MKE = Path.Combine(Folder, "mkvmerge", "mkvextract");
 			public static string MP4 = Path.Combine(Folder, "mp4box", "MP4Box");
 			public static string MP4FPS = Path.Combine(Folder, "mp4fpsmod", "mp4fpsmod");
+			public static string AVI2PIPE = File.Exists(Path.Combine(Folder, "avisynth", OS.IsWindows ? "avs2pipe.exe" : "avs2pipe")) ? Path.Combine(Folder, "avisynth", "avs2pipe") : null;
 		}
 
 		public static class Installed

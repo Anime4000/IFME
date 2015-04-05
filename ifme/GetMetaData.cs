@@ -14,7 +14,15 @@ namespace ifme.hitoha
 		{
 			string[] GFI = new string[7];
 
-			MediaFile AviFile = new MediaFile(file);
+			if (file.Contains(".avs"))
+			{
+				if (String.IsNullOrEmpty(Addons.BuildIn.AVI2PIPE))
+				{
+					return GFI;
+				}
+			}
+
+			MediaFile AviFile = new MediaFile(AviSynthReader(file));
 			GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
 			GFI[1] = System.IO.Path.GetExtension(file);
 
@@ -52,6 +60,40 @@ namespace ifme.hitoha
 				GFI[2] = ex.Message;
 				return GFI;
 			}
+		}
+
+		public static string AviSynthReader(string file)
+		{
+			if (String.Equals(System.IO.Path.GetExtension(file), ".avs", StringComparison.InvariantCultureIgnoreCase))
+			{
+				foreach (var item in System.IO.File.ReadAllLines(file))
+				{
+					if (item.Contains("DirectShowSource"))
+					{
+						for (int i = 0; i < item.Length; i++)
+						{
+							if (item[i] == '(' && item[i + 1] == '"')
+							{
+								i += 2;
+								file = "";
+								while (i < item.Length)
+								{
+									if (item[i] == '"' && (item[i + 1] == ',' || item[i + 1] == ')'))
+									{
+										break;
+									}
+									else
+									{
+										file += item[i];
+									}
+									i++;
+								}
+							}
+						}
+					}
+				}
+			}
+			return file;
 		}
 
 		public static string[] SubtitleData(string file)
