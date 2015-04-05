@@ -173,8 +173,8 @@
 			// 
 			// frmAbout
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.White;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 662);
@@ -188,7 +188,7 @@
 			this.Controls.Add(this.lblUpdateInfo);
 			this.Controls.Add(this.pictLogo);
 			this.DoubleBuffered = true;
-			this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Font = new System.Drawing.Font("Segoe UI", 8F);
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

@@ -151,7 +151,7 @@
             0,
             0});
 			this.numDuration.Name = "numDuration";
-			this.numDuration.Size = new System.Drawing.Size(108, 21);
+			this.numDuration.Size = new System.Drawing.Size(108, 20);
 			this.numDuration.TabIndex = 0;
 			// 
 			// grpLog
@@ -258,7 +258,7 @@
 			this.txtTempDir.Location = new System.Drawing.Point(90, 40);
 			this.txtTempDir.Name = "txtTempDir";
 			this.txtTempDir.ReadOnly = true;
-			this.txtTempDir.Size = new System.Drawing.Size(362, 21);
+			this.txtTempDir.Size = new System.Drawing.Size(362, 20);
 			this.txtTempDir.TabIndex = 0;
 			// 
 			// grpLang
@@ -489,14 +489,14 @@
 			// 
 			// frmOptions
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(624, 442);
 			this.Controls.Add(this.btnResetSettings);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.tabOptions);
-			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(640, 480);

@@ -528,7 +528,7 @@
 			this.txtVideoAdvCmd.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.txtVideoAdvCmd.Location = new System.Drawing.Point(6, 316);
 			this.txtVideoAdvCmd.Name = "txtVideoAdvCmd";
-			this.txtVideoAdvCmd.Size = new System.Drawing.Size(563, 21);
+			this.txtVideoAdvCmd.Size = new System.Drawing.Size(563, 20);
 			this.txtVideoAdvCmd.TabIndex = 6;
 			this.txtVideoAdvCmd.TextChanged += new System.EventHandler(this.txtVideoAdvCmd_TextChanged);
 			// 
@@ -593,7 +593,7 @@
 			this.txtVideoRate.Location = new System.Drawing.Point(448, 61);
 			this.txtVideoRate.Name = "txtVideoRate";
 			this.txtVideoRate.ShortcutsEnabled = false;
-			this.txtVideoRate.Size = new System.Drawing.Size(100, 21);
+			this.txtVideoRate.Size = new System.Drawing.Size(100, 20);
 			this.txtVideoRate.TabIndex = 4;
 			this.txtVideoRate.Text = "26";
 			this.txtVideoRate.TextChanged += new System.EventHandler(this.txtVideoRate_TextChanged);
@@ -721,7 +721,7 @@
 			this.txtAudioCmd.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.txtAudioCmd.Location = new System.Drawing.Point(6, 316);
 			this.txtAudioCmd.Name = "txtAudioCmd";
-			this.txtAudioCmd.Size = new System.Drawing.Size(596, 21);
+			this.txtAudioCmd.Size = new System.Drawing.Size(596, 20);
 			this.txtAudioCmd.TabIndex = 6;
 			// 
 			// lblAudioCmdAdv
@@ -1108,7 +1108,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtAttachDesc.Location = new System.Drawing.Point(100, 316);
 			this.txtAttachDesc.Name = "txtAttachDesc";
-			this.txtAttachDesc.Size = new System.Drawing.Size(502, 21);
+			this.txtAttachDesc.Size = new System.Drawing.Size(502, 20);
 			this.txtAttachDesc.TabIndex = 6;
 			this.txtAttachDesc.Text = "No";
 			this.txtAttachDesc.Visible = false;
@@ -1288,8 +1288,8 @@
 			// 
 			// frmMain
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(640, 480);
 			this.Controls.Add(this.pictDonate);
 			this.Controls.Add(this.pictBannerRight);
@@ -1300,7 +1300,7 @@
 			this.Controls.Add(this.tabEncoding);
 			this.Controls.Add(this.btnResume);
 			this.DoubleBuffered = true;
-			this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
