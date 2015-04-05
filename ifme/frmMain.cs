@@ -1062,13 +1062,13 @@ namespace ifme.hitoha
 					{
 						app = Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.exe");
 						cmd = "cmd.exe";
-						arg = String.Format("/c TIMEOUT /T 3 /NOBREAK & start \"\" \"{0}\"", app);
+						arg = String.Format("/c TIMEOUT /T 3 /NOBREAK & START \"\" \"{0}\"", app);
 					}
 					else
 					{
 						app = Path.Combine(Globals.AppInfo.CurrentFolder, "ifme.sh");
 						cmd = "/bin/bash";
-						arg = String.Format("-c \"sleep 3 & \\\"{0}\\\"\"", app);
+						arg = String.Format("-c 'sleep 3 & \"{0}\"'", app);
 					}
 
 					System.Diagnostics.Process P = new System.Diagnostics.Process();
@@ -1902,26 +1902,21 @@ namespace ifme.hitoha
 		#region Run console program and display all console line
 		private int StartProcess(string exe, string args)
 		{
+			// This allow longer command to pass
+			Environment.SetEnvironmentVariable("IFMECMD", String.Format("\"{0}\" {1}", exe, args), EnvironmentVariableTarget.Process);
+
 			Process P = new Process();
 			var SI = P.StartInfo;
 
-			if (args.Contains('>'))
+			if (OS.IsWindows)
 			{
-				if (OS.IsWindows)
-				{
-					SI.FileName = "cmd";
-					SI.Arguments = String.Format("/c START \"\" /WAIT /B /D \"{2}\" \"{0}\" {1}", exe, args, Globals.AppInfo.CurrentFolder);
-				}
-				else
-				{
-					SI.FileName = "bash";
-					SI.Arguments = String.Format("-c '\"{0}\" {1}'", exe, args);
-				}
+				SI.FileName = "cmd";
+				SI.Arguments = "/c %IFMECMD%";
 			}
 			else
 			{
-				SI.FileName = exe;
-				SI.Arguments = args;
+				SI.FileName = "bash";
+				SI.Arguments = "-c '$IFMECMD'";
 			}
 
 			SI.WorkingDirectory = Properties.Settings.Default.TemporaryFolder;

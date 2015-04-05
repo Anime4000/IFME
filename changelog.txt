@@ -1,3 +1,8 @@
+Version 4.9.5.0
+---------------
+[fixed] Accepting longer file name and path
+[change] 720x400 to 720x404
+
 Version 4.9.4.0 (Unending Love)
 ---------------
 [fixed] settings cannot be saved, last configuration moved to user preset

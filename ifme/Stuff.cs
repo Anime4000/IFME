@@ -88,9 +88,17 @@ namespace ifme.hitoha
 			P.WaitForExit();
 			P.Close();
 
-			System.Threading.Thread.Sleep(3000); // SLOW PC's
-
-			return File.ReadAllLines(pathmap);
+			while (true)
+			{
+				try
+				{
+					return File.ReadAllLines(pathmap);
+				}
+				catch
+				{
+					// Keep trying to read file until process release
+				}
+			}
 		}
 	}
 }
