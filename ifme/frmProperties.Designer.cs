@@ -1,4 +1,4 @@
-﻿namespace ifme
+﻿namespace ifme.hitoha
 {
 	partial class frmProperties
 	{

@@ -76,6 +76,18 @@
     <Compile Include="frmAbout.Designer.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmAviSynthEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAviSynthEditor.Designer.cs">
+      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAviSynthHFR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAviSynthHFR.Designer.cs">
+      <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +134,12 @@
   <ItemGroup>
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAviSynthEditor.resx">
+      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAviSynthHFR.resx">
+      <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -275,6 +293,12 @@
       <Project>{2dfd009a-9603-4247-9bd4-db71e35a9b20}</Project>
       <Name>ifme.framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\monitor_lightning.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,6 +34,8 @@
 			this.btnStart = new System.Windows.Forms.Button();
 			this.tabEncoding = new System.Windows.Forms.TabControl();
 			this.tabQueue = new System.Windows.Forms.TabPage();
+			this.btnQueueGenerate = new System.Windows.Forms.Button();
+			this.btnQueueEditScript = new System.Windows.Forms.Button();
 			this.btnPreview = new System.Windows.Forms.Button();
 			this.btnEdit = new System.Windows.Forms.Button();
 			this.chkDoneOffMachine = new System.Windows.Forms.CheckBox();
@@ -202,6 +204,8 @@
 			// 
 			// tabQueue
 			// 
+			this.tabQueue.Controls.Add(this.btnQueueGenerate);
+			this.tabQueue.Controls.Add(this.btnQueueEditScript);
 			this.tabQueue.Controls.Add(this.btnPreview);
 			this.tabQueue.Controls.Add(this.btnEdit);
 			this.tabQueue.Controls.Add(this.chkDoneOffMachine);
@@ -221,6 +225,32 @@
 			this.tabQueue.TabIndex = 0;
 			this.tabQueue.Text = "{0}";
 			this.tabQueue.UseVisualStyleBackColor = true;
+			// 
+			// btnQueueGenerate
+			// 
+			this.btnQueueGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueGenerate.Enabled = false;
+			this.btnQueueGenerate.Image = global::ifme.Properties.Resources.monitor_lightning;
+			this.btnQueueGenerate.Location = new System.Drawing.Point(398, 6);
+			this.btnQueueGenerate.Name = "btnQueueGenerate";
+			this.btnQueueGenerate.Size = new System.Drawing.Size(24, 24);
+			this.btnQueueGenerate.TabIndex = 13;
+			this.proTip.SetToolTip(this.btnQueueGenerate, "Convert to HFR (High Frame Rate)");
+			this.btnQueueGenerate.UseVisualStyleBackColor = true;
+			this.btnQueueGenerate.Click += new System.EventHandler(this.btnQueueGenerate_Click);
+			// 
+			// btnQueueEditScript
+			// 
+			this.btnQueueEditScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueEditScript.Enabled = false;
+			this.btnQueueEditScript.Image = global::ifme.Properties.Resources.page_edit;
+			this.btnQueueEditScript.Location = new System.Drawing.Point(428, 6);
+			this.btnQueueEditScript.Name = "btnQueueEditScript";
+			this.btnQueueEditScript.Size = new System.Drawing.Size(24, 24);
+			this.btnQueueEditScript.TabIndex = 12;
+			this.proTip.SetToolTip(this.btnQueueEditScript, "Edit AviSynth Script");
+			this.btnQueueEditScript.UseVisualStyleBackColor = true;
+			this.btnQueueEditScript.Click += new System.EventHandler(this.btnQueueEditScript_Click);
 			// 
 			// btnPreview
 			// 
@@ -369,7 +399,7 @@
 			this.lstQueue.TabIndex = 6;
 			this.lstQueue.UseCompatibleStateImageBehavior = false;
 			this.lstQueue.View = System.Windows.Forms.View.Details;
-			this.lstQueue.Click += new System.EventHandler(this.lstQueue_Click);
+			this.lstQueue.SelectedIndexChanged += new System.EventHandler(this.lstQueue_SelectedIndexChanged);
 			this.lstQueue.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragDrop);
 			this.lstQueue.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragEnter);
 			this.lstQueue.DoubleClick += new System.EventHandler(this.lstQueue_DoubleClick);
@@ -1439,5 +1469,7 @@
 		private System.Windows.Forms.Button btnUserPreAdd;
 		private System.Windows.Forms.Button btnUserPreDelete;
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button btnQueueEditScript;
+		private System.Windows.Forms.Button btnQueueGenerate;
 	}
 }

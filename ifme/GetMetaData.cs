@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Windows.Forms;
 // Asset
-using ifme.hitoha;
 using MediaInfoDotNet;
 
 namespace ifme.hitoha
@@ -13,21 +14,17 @@ namespace ifme.hitoha
 		public static string[] MediaData(string file)
 		{
 			string[] GFI = new string[7];
+			MediaFile AviFile = new MediaFile(AviSynthReader(file));
 
 			if (file.Contains(".avs"))
-			{
-				if (String.IsNullOrEmpty(Addons.BuildIn.AVI2PIPE))
-				{
+				if (!Addons.Installed.AviSynth)
 					return GFI;
-				}
-			}
-
-			MediaFile AviFile = new MediaFile(AviSynthReader(file));
-			GFI[0] = System.IO.Path.GetFileNameWithoutExtension(file);
-			GFI[1] = System.IO.Path.GetExtension(file);
 
 			if (AviFile.Video.Count == 0)
 				return GFI;
+
+			GFI[0] = Path.GetFileNameWithoutExtension(file);
+			GFI[1] = Path.GetExtension(file).ToLower();
 
 			try
 			{
@@ -64,7 +61,7 @@ namespace ifme.hitoha
 
 		public static string AviSynthReader(string file)
 		{
-			if (String.Equals(System.IO.Path.GetExtension(file), ".avs", StringComparison.InvariantCultureIgnoreCase))
+			if (String.Equals(Path.GetExtension(file), ".avs", StringComparison.InvariantCultureIgnoreCase))
 			{
 				foreach (var item in System.IO.File.ReadAllLines(file))
 				{
@@ -100,10 +97,10 @@ namespace ifme.hitoha
 		{
 			string[] SB = new string[4];
 
-			SB[0] = System.IO.Path.GetFileNameWithoutExtension(file);
-			SB[1] = System.IO.Path.GetExtension(file);
+			SB[0] = Path.GetFileNameWithoutExtension(file);
+			SB[1] = Path.GetExtension(file);
 
-			foreach (var item in System.IO.File.ReadAllLines(Globals.Files.ISO))
+			foreach (var item in File.ReadAllLines(Globals.Files.ISO))
 			{
 				if (SB[0].Length > 3)
 				{
@@ -127,7 +124,7 @@ namespace ifme.hitoha
 		// there will consume process to check file is binary or plain text
 		public static bool SubtitleValid(string file)
 		{
-			var ext = System.IO.Path.GetExtension(file);
+			var ext = Path.GetExtension(file);
 
 			if (ext == ".ass")
 				return true;
@@ -145,8 +142,8 @@ namespace ifme.hitoha
 		{
 			string[] AD = new string[4];
 
-			AD[0] = System.IO.Path.GetFileNameWithoutExtension(file);
-			AD[1] = System.IO.Path.GetExtension(file);
+			AD[0] = Path.GetFileNameWithoutExtension(file);
+			AD[1] = Path.GetExtension(file);
 
 			if (AD[1] == ".ttf")
 			{
@@ -173,7 +170,7 @@ namespace ifme.hitoha
 		// useful for binary file
 		public static bool AttachmentValid(string file)
 		{
-			System.IO.FileInfo f = new System.IO.FileInfo(file);
+			FileInfo f = new FileInfo(file);
 			if (f.Length >= 1073741824)							// Detect 1GiB file enough, no font that large
 				return false;
 

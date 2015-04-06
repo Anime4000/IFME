@@ -171,6 +171,18 @@ namespace ifme.hitoha
 			// Tell user current langauge
 			PrintLog(Log.Info, String.Format("Current MUI: {0} by {1} ({2})", Language.Installed.Data[Language.GetCurrent(), 1], Language.Installed.Data[Language.GetCurrent(), 2], Language.Installed.Data[Language.GetCurrent(), 4]));
 
+			// Detect AviSynth
+			if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll")))
+			{
+				PrintLog(Log.Error, "AviSynth is not detected, AviSynth support has been disabled!");
+				Addons.Installed.AviSynth = false;
+			}
+			else
+			{
+				PrintLog(Log.OK, "AviSynth detected! Make sure you have proper AviSynth configuration, enjoy!");
+				Addons.Installed.AviSynth = true;
+			}
+			
 			//CreateLang(); // Developer tool, Scan and Create new empty language
 			LoadLang(); // Load language, GUI must use {0} as place-holder
 
@@ -265,17 +277,56 @@ namespace ifme.hitoha
 			btnStart.PerformClick(); // <- LOL
 		}
 
-		private void lstQueue_Click(object sender, EventArgs e)
+		private void btnQueueEditScript_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 0)
+				return;
+
+			string file = lstQueue.SelectedItems[0].SubItems[6].Text;
+			var from = new frmAviSynthEditor(file);
+			from.ShowDialog();
+		}
+
+		private void btnQueueGenerate_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 0)
+				return;
+
+			string file = lstQueue.SelectedItems[0].SubItems[6].Text;
+			using(var form = new frmAviSynthHFR(file))
+			{
+				var result = form.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					lstQueue.SelectedItems[0].SubItems[6].Text = form.script;
+					lstQueue.SelectedItems[0].SubItems[1].Text = ".avs";
+				}
+			}
+		}
+
+		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count > 0)
 			{
 				btnEdit.Enabled = true;
 				btnPreview.Enabled = true;
+				if (".avs" == lstQueue.SelectedItems[0].SubItems[1].Text)
+				{
+					btnQueueEditScript.Enabled = true;
+					btnQueueGenerate.Enabled = false;
+				}
+				else
+				{
+					btnQueueEditScript.Enabled = false;
+					btnQueueGenerate.Enabled = true;
+				}
 			}
 			else
 			{
 				btnEdit.Enabled = false;
 				btnPreview.Enabled = false;
+				btnQueueEditScript.Enabled = false;
+				btnQueueGenerate.Enabled = false;
 			}
 		}
 
@@ -283,7 +334,7 @@ namespace ifme.hitoha
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
 			GetFiles.Title = Language.IMessage.OpenFile;
-			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.emp;*.emm|"
+			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|"
 				+ "HTML5 video files|*.ogv;*.webm;*.mp4|"
 				+ "WebM|*.webm|"
 				+ "Theora|*.ogv|"
@@ -294,7 +345,7 @@ namespace ifme.hitoha
 				+ "Audio Video Interleaved|*.avi;*.divx|"
 				+ "MPEG-2 Transport Stream|*.mts;*.m2ts|"
 				+ "MPEG-1/DVD|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
-				+ "Empire Media|*.emp;*.emm|"
+				+ "AviSynth Script|*.avs|"
 				+ "All Files|*.*";
 			GetFiles.FilterIndex = 1;
 			GetFiles.Multiselect = true;

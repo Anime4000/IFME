@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ifme
+namespace ifme.hitoha
 {
 	public partial class frmProperties : Form
 	{
-		public char ScanType { get; set; }
-		public string OldScreenRes { get; set; }
+		char ScanType { get; set; }
+		string OldScreenRes { get; set; }
 		public string NewScreenRes { get; set; }
 
 		public frmProperties(string ScreenRes)
