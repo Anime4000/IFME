@@ -61,6 +61,44 @@ namespace ifme.framework.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cores={0}
+        ///SetMemoryMax(512)
+        ///SetMTMode(3,Cores)
+        ///PluginPath = &quot;{1}\&quot;
+        ///LoadPlugin(PluginPath+&quot;svpflow1.dll&quot;)
+        ///LoadPlugin(PluginPath+&quot;svpflow2.dll&quot;)
+        ///Import(PluginPath+&quot;InterFrame2.avsi&quot;)
+        ///DirectShowSource(&quot;{2}&quot;, fps={3}, audio=false, convertfps=true).AssumeFPS({4}).ConvertToYV12()
+        ///SetMTMode(2)
+        ///InterFrame(Cores=Cores, Preset=&quot;{5}&quot;, Tuning=&quot;{6}&quot;, FrameDouble={7}, GPU={8}, InputType=&quot;{9}&quot;).
+        /// </summary>
+        internal static string AviSynthHFR {
+            get {
+                return ResourceManager.GetString("AviSynthHFR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Bug {
+            get {
+                object obj = ResourceManager.GetObject("Bug", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Frame {
+            get {
+                object obj = ResourceManager.GetObject("Frame", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #!/bin/sh
         ///# Usage:
         ///#   update.sh &quot;parm 1&quot; &quot;parm 2&quot; &quot;parm 3&quot;
@@ -74,7 +112,7 @@ namespace ifme.framework.Properties {
         ///echo &quot; &quot;
         ///sleep 5
         ///wget --no-check-certificate -O &quot;./saishin.jp&quot; $1
-        ///./7za x -so &quot;./saishin.jp&quot; | tar --overwrite -xf - - [rest of string was truncated]&quot;;.
+        ///./7za x -so &quot;./saishin.jp&quot; | tar --over [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScriptUpdateLinux {
             get {
@@ -96,8 +134,7 @@ namespace ifme.framework.Properties {
         ///echo.
         ///TIMEOUT /T 5 /NOBREAK
         ///copy %2\unins000.exe .\unins000.exe
-        ///copy %2\unins000.dat .\unins000.dat
-        ///wget --no-che [rest of string was truncated]&quot;;.
+        ///copy %2\unins000.dat .\unins000.dat        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScriptUpdateWindows {
             get {

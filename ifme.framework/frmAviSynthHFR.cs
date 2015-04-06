@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using MediaInfoDotNet;
 
-namespace ifme.hitoha
+namespace ifme.framework
 {
 	public partial class frmAviSynthHFR : Form
 	{
@@ -19,11 +19,12 @@ namespace ifme.hitoha
 		string fileexts { get; set; }
 		float fps { get; set; }
 		public string script { get; set; }
+		string currentdir { set; get; }
 
 		public frmAviSynthHFR(string file)
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.ifme_flat;
+			this.Icon = Properties.Resources.Frame;
 
 			cboInputType.SelectedIndex = 0;
 			cboPreset.SelectedIndex = 0;
@@ -33,6 +34,7 @@ namespace ifme.hitoha
 			folder = Path.GetDirectoryName(file);
 			filename = Path.GetFileNameWithoutExtension(file);
 			fileexts = Path.GetExtension(file);
+			currentdir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 		}
 
 		private void frmAviSynthHFR_Load(object sender, EventArgs e)
@@ -47,7 +49,7 @@ namespace ifme.hitoha
 			string[] Data = new string[10];
 
 			Data[0] = String.Format("{0}", Environment.ProcessorCount);
-			Data[1] = Path.Combine(Globals.AppInfo.CurrentFolder, "tools", "avisynth_plugin");
+			Data[1] = Path.Combine(currentdir, "tools", "avisynth_plugin");
 			Data[2] = video;
 			Data[3] = String.Format("{0}", fps);
 			Data[4] = String.Format("{0},{1}", fpsRatio(fps));
@@ -140,6 +142,7 @@ namespace ifme.hitoha
 		private string[] fpsRatio(float given)
 		{
 			// Help me solve this algorithm :)
+			// Converting decimal into ratio, example: 23.976 = 24000/1001
 			int a = 0;
 			int b = 1;
 

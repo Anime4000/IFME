@@ -67,6 +67,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="crc32.cs" />
+    <Compile Include="frmAviSynthEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAviSynthEditor.Designer.cs">
+      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAviSynthHFR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAviSynthHFR.Designer.cs">
+      <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
+    </Compile>
     <Compile Include="IniFileParser\Exceptions\ParsingException.cs" />
     <Compile Include="IniFileParser\FileIniParser.cs" />
     <Compile Include="IniFileParser\Helpers\Assert.cs" />
@@ -103,6 +115,12 @@
     <Compile Include="ShellScript.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAviSynthEditor.resx">
+      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAviSynthHFR.resx">
+      <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -110,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\IconUpdate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bug.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

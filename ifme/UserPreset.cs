@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 // Asset
-using ifme.hitoha;
 using IniParser;
 using IniParser.Model;
 
-namespace ifme
+namespace ifme.hitoha
 {
 	class UserPreset
 	{

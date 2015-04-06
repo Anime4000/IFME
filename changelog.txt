@@ -1,6 +1,8 @@
-Version 4.9.5.0
+Version 4.10
 ---------------
 [fixed] Accepting longer file name and path
+[added] AviSynth Support (Windows only)
+[added] InterFrame/HFR conversion (require AviSynth, Windows only)
 [change] 720x400 to 720x404
 
 Version 4.9.4.0 (Unending Love)

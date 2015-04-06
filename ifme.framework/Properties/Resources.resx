@@ -117,6 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AviSynthHFR" xml:space="preserve">
+    <value>Cores={0}
+SetMemoryMax(512)
+SetMTMode(3,Cores)
+PluginPath = "{1}\"
+LoadPlugin(PluginPath+"svpflow1.dll")
+LoadPlugin(PluginPath+"svpflow2.dll")
+Import(PluginPath+"InterFrame2.avsi")
+DirectShowSource("{2}", fps={3}, audio=false, convertfps=true).AssumeFPS({4}).ConvertToYV12()
+SetMTMode(2)
+InterFrame(Cores=Cores, Preset="{5}", Tuning="{6}", FrameDouble={7}, GPU={8}, InputType="{9}")</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Bug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Bug.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Frame.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ScriptUpdateLinux" xml:space="preserve">
     <value>#!/bin/sh
 # Usage:

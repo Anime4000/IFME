@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 // Asset
+using ifme.framework;
 using IniParser;
 using IniParser.Model;
 using MediaInfoDotNet;
@@ -405,6 +406,8 @@ namespace ifme.hitoha
 			btnStart.Enabled = false;
 			btnEdit.Enabled = false;
 			btnPreview.Enabled = false;
+			btnQueueEditScript.Enabled = false;
+			btnQueueGenerate.Enabled = false;
 		}
 
 		private void btnQueueUp_Click(object sender, EventArgs e)

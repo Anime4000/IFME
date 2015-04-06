@@ -1,4 +1,4 @@
-﻿namespace ifme.hitoha
+﻿namespace ifme.framework
 {
 	partial class frmAviSynthEditor
 	{
@@ -39,14 +39,14 @@
 			this.rtfEditor.Location = new System.Drawing.Point(0, 0);
 			this.rtfEditor.Name = "rtfEditor";
 			this.rtfEditor.Size = new System.Drawing.Size(640, 480);
-			this.rtfEditor.TabIndex = 0;
+			this.rtfEditor.TabIndex = 1;
 			this.rtfEditor.Text = "";
 			this.rtfEditor.WordWrap = false;
 			// 
 			// frmAviSynthEditor
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(640, 480);
 			this.Controls.Add(this.rtfEditor);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);

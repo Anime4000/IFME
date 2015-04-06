@@ -71,24 +71,6 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cores={0}
-        ///SetMemoryMax(512)
-        ///SetMTMode(3,Cores)
-        ///PluginPath = &quot;{1}\&quot;
-        ///LoadPlugin(PluginPath+&quot;svpflow1.dll&quot;)
-        ///LoadPlugin(PluginPath+&quot;svpflow2.dll&quot;)
-        ///Import(PluginPath+&quot;InterFrame2.avsi&quot;)
-        ///DirectShowSource(&quot;{2}&quot;, fps={3}, audio=false, convertfps=true).AssumeFPS({4}).ConvertToYV12()
-        ///SetMTMode(2)
-        ///InterFrame(Cores=Cores, Preset=&quot;{5}&quot;, Tuning=&quot;{6}&quot;, FrameDouble={7}, GPU={8}, InputType=&quot;{9}&quot;).
-        /// </summary>
-        internal static string AviSynthHFR {
-            get {
-                return ResourceManager.GetString("AviSynthHFR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap BannerBRight {
