@@ -2126,6 +2126,16 @@ namespace ifme.hitoha
 			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
 				File.Delete(item);
 
+			// Button
+			if (lstQueue.SelectedItems.Count == 0)
+			{
+				btnStart.Enabled = false;
+				btnEdit.Enabled = false;
+				btnPreview.Enabled = false;
+				btnQueueEditScript.Enabled = false;
+				btnQueueGenerate.Enabled = false;
+			}
+
 			// UI stuff
 			int a = cboAudioFormat.SelectedIndex;
 			int b = cboAudioFormat.Items.Count - 1;

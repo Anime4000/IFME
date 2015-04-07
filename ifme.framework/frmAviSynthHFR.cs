@@ -131,12 +131,12 @@ namespace ifme.framework
 					lblTuningInfo.Text = "This increases the accuracy of individual moving things while decreasing the cohesiveness of the frame. Some people prefer it since it gives the motion an overall \"smooth\" feeling.";
 					break;
 				case 3:
-					lblTuningInfo.Text = "This decreases the accuracy of individual moving things while increasing the cohesiveness of the frame.";
+					lblTuningInfo.Text = "This decreases the accuracy of individual moving things while increasing the cohesiveness of the frame.\nNote: This will weaken the interpolation a lot, meaning the motion isn't as smooth.";
 					break;
 				default:
 					break;
 			}
-			lblTuningInfo.Text += "\n\nNote: This will weaken the interpolation a lot, meaning the motion isn't as smooth. Some people will prefer to use the Film tuning even for animated content, so don't automatically assume this is the right tuning for you; use with caution.";
+			lblTuningInfo.Text += "\n\nSome people will prefer to use the Film tuning even for animated content, so don't automatically assume this is the right tuning for you; use with caution.";
 		}
 
 		private string[] fpsRatio(float given)
