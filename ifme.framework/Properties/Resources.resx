@@ -125,9 +125,9 @@ PluginPath = "{1}\"
 LoadPlugin(PluginPath+"svpflow1.dll")
 LoadPlugin(PluginPath+"svpflow2.dll")
 Import(PluginPath+"InterFrame2.avsi")
-DirectShowSource("{2}", fps={3}, audio=false, convertfps=true).AssumeFPS({4}).ConvertToYV12()
+DirectShowSource("{2}").ConvertToYV12()
 SetMTMode(2)
-InterFrame(Cores=Cores, Preset="{5}", Tuning="{6}", FrameDouble={7}, GPU={8}, InputType="{9}")</value>
+InterFrame(Cores=Cores, Preset="{3}", Tuning="{4}", FrameDouble={5}, GPU={6}, InputType="{7}")</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Bug" type="System.Resources.ResXFileRef, System.Windows.Forms">

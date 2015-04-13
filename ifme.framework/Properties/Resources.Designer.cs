@@ -68,9 +68,9 @@ namespace ifme.framework.Properties {
         ///LoadPlugin(PluginPath+&quot;svpflow1.dll&quot;)
         ///LoadPlugin(PluginPath+&quot;svpflow2.dll&quot;)
         ///Import(PluginPath+&quot;InterFrame2.avsi&quot;)
-        ///DirectShowSource(&quot;{2}&quot;, fps={3}, audio=false, convertfps=true).AssumeFPS({4}).ConvertToYV12()
+        ///DirectShowSource(&quot;{2}&quot;).ConvertToYV12()
         ///SetMTMode(2)
-        ///InterFrame(Cores=Cores, Preset=&quot;{5}&quot;, Tuning=&quot;{6}&quot;, FrameDouble={7}, GPU={8}, InputType=&quot;{9}&quot;).
+        ///InterFrame(Cores=Cores, Preset=&quot;{3}&quot;, Tuning=&quot;{4}&quot;, FrameDouble={5}, GPU={6}, InputType=&quot;{7}&quot;).
         /// </summary>
         internal static string AviSynthHFR {
             get {

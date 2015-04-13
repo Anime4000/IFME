@@ -59,31 +59,35 @@ namespace ifme.hitoha
 			}
 		}
 
+		static string[] AvsFilter = { "DirectShowSource", "FFVideoSource" };
 		public static string AviSynthReader(string file)
 		{
 			if (String.Equals(Path.GetExtension(file), ".avs", StringComparison.InvariantCultureIgnoreCase))
 			{
 				foreach (var item in System.IO.File.ReadAllLines(file))
 				{
-					if (item.Contains("DirectShowSource"))
+					foreach (var af in AvsFilter)
 					{
-						for (int i = 0; i < item.Length; i++)
+						if (item.Contains(af))
 						{
-							if (item[i] == '(' && item[i + 1] == '"')
+							for (int i = 0; i < item.Length; i++)
 							{
-								i += 2;
-								file = "";
-								while (i < item.Length)
+								if (item[i] == '(' && item[i + 1] == '"')
 								{
-									if (item[i] == '"' && (item[i + 1] == ',' || item[i + 1] == ')'))
+									i += 2;
+									file = "";
+									while (i < item.Length)
 									{
-										break;
+										if (item[i] == '"' && (item[i + 1] == ',' || item[i + 1] == ')'))
+										{
+											break;
+										}
+										else
+										{
+											file += item[i];
+										}
+										i++;
 									}
-									else
-									{
-										file += item[i];
-									}
-									i++;
 								}
 							}
 						}

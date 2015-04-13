@@ -1390,9 +1390,13 @@ namespace ifme.hitoha
 			for (int x = 0; x < queue.Length; x++)
 			{
 				// Determine is Avisynth or not
+				var IsAvsFile = false;
 				var AviSynth = queue[x];
 				if (String.Equals(System.IO.Path.GetExtension(AviSynth), ".avs", StringComparison.InvariantCultureIgnoreCase))
+				{
+					IsAvsFile = true;
 					queue[x] = GetMetaData.AviSynthReader(queue[x]); // get original file inside script
+				}
 
 				// Get file information
 				MediaFile Avi = new MediaFile(queue[x]);
@@ -1425,7 +1429,13 @@ namespace ifme.hitoha
 				if (!BGThread.CancellationPending)
 				{
 					// Only progressive and VFR video can be extract timecodes
-					if (String.Equals(video[0].frameRateMode, "VFR"))
+					if (IsAvsFile)
+					{
+						// Tell user
+						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
+						InvokeLog(Log.Warn, "AvsSynth script are no need to indexing, make sure setting constant fps properly");
+					}
+					else if (String.Equals(video[0].frameRateMode, "VFR"))
 					{
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));

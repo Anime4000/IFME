@@ -51,13 +51,11 @@ namespace ifme.framework
 			Data[0] = String.Format("{0}", Environment.ProcessorCount);
 			Data[1] = Path.Combine(currentdir, "tools", "avisynth_plugin");
 			Data[2] = video;
-			Data[3] = String.Format("{0}", fps);
-			Data[4] = String.Format("{0},{1}", fpsRatio(fps));
-			Data[5] = cboPreset.Text;
-			Data[6] = cboTuning.Text;
-			Data[7] = chkDoubleFps.Checked ? "true" : "false";
-			Data[8] = chkUseGPU.Checked ? "true" : "false";
-			Data[9] = cboInputType.Text;
+			Data[3] = cboPreset.Text;
+			Data[4] = cboTuning.Text;
+			Data[5] = chkDoubleFps.Checked ? "true" : "false";
+			Data[6] = chkUseGPU.Checked ? "true" : "false";
+			Data[7] = cboInputType.Text;
 
 			string generated = String.Format(Properties.Resources.AviSynthHFR, Data);
 			File.WriteAllText(script, generated);
@@ -137,33 +135,6 @@ namespace ifme.framework
 					break;
 			}
 			lblTuningInfo.Text += "\n\nSome people will prefer to use the Film tuning even for animated content, so don't automatically assume this is the right tuning for you; use with caution.";
-		}
-
-		private string[] fpsRatio(float given)
-		{
-			// Help me solve this algorithm :)
-			// Converting decimal into ratio, example: 23.976 = 24000/1001
-			int a = 0;
-			int b = 1;
-
-			string input = given.ToString();
-			string[] ab = input.Split('.');
-
-			a = Int32.Parse(ab[0]);
-
-			if (ab.Length > 1)
-				if (b != 0)
-					b = Int32.Parse(ab[1]);
-
-			if (b != 0)
-			{
-				if (b > 10)
-				{
-					a = (a + 1) * 1000;
-					b = 1001;
-				}
-			}
-			return new[] { a.ToString(), b.ToString() };
 		}
 	}
 }
