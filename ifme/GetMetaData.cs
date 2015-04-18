@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 // Asset
 using MediaInfoDotNet;
+using System.Diagnostics;
 
 namespace ifme.hitoha
 {
@@ -72,6 +73,61 @@ namespace ifme.hitoha
 			{
 				GFI[2] = ex.Message;
 				return GFI;
+			}
+		}
+
+		public static int AvsGetFrame(string file)
+		{
+			string test = "";
+			string[] result = AvsPrintInfo(file);
+
+			foreach (var item in result)
+			{
+				if (item.Contains("frames"))
+				{
+					foreach (var thing in item)
+					{
+						int x;
+						if (int.TryParse(thing.ToString(), out x))
+						{
+							test += x.ToString();
+						}
+					}
+				}
+			}
+
+			return int.Parse(test);
+		}
+
+		static string[] AvsPrintInfo(string file)
+		{
+			string dir = Properties.Settings.Default.TemporaryFolder;
+			string avs = Addons.BuildIn.AVI2PIPE;
+			string pathmap = Path.Combine(dir, "fubuki.if");
+
+			Process P = new Process();
+			var SI = P.StartInfo;
+
+			SI.FileName = OS.IsWindows ? "cmd" : "bash";
+			SI.Arguments = String.Format((OS.IsWindows ? "/c START \"FUBUKI\" /WAIT /B \"{0}\" info \"{1}\" > \"{2}\"" : "-c '\"{0}\" info \"{1}\" > \"{2}\"'"), avs, file, pathmap);
+			SI.WorkingDirectory = dir;
+			SI.CreateNoWindow = true;
+			SI.UseShellExecute = false;
+
+			P.Start();
+			P.WaitForExit();
+			P.Close();
+
+			while (true)
+			{
+				try
+				{
+					return File.ReadAllLines(pathmap);
+				}
+				catch
+				{
+					// Keep trying to read file until process release
+				}
 			}
 		}
 

@@ -1391,10 +1391,11 @@ namespace ifme.hitoha
 			{
 				// Determine is Avisynth or not
 				var IsAvsFile = false;
-				var AviSynth = queue[x];
-				if (String.Equals(System.IO.Path.GetExtension(AviSynth), ".avs", StringComparison.InvariantCultureIgnoreCase))
+				var AviSynth = "";
+				if (String.Equals(System.IO.Path.GetExtension(queue[x]), ".avs", StringComparison.InvariantCultureIgnoreCase))
 				{
 					IsAvsFile = true;
+					AviSynth = queue[x];
 					queue[x] = GetMetaData.AviSynthReader(queue[x]); // get original file inside script
 				}
 
@@ -1645,10 +1646,11 @@ namespace ifme.hitoha
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
-					string EXE = Addons.BuildIn.AVI2PIPE;
 					string[] args = new string[11];
+					string EXE = null;
 					string cmd = null;
 
+					// Videos
 					if (video.Count > 0)
 					{
 						EXE = Addons.BuildIn.FFmpeg;
@@ -1728,18 +1730,23 @@ namespace ifme.hitoha
 						// AviSynth Stuff (get's override)
 						if (!String.IsNullOrEmpty(AviSynth))
 						{
+							// Tell user not to panic
+							InvokeLog(Log.Info, "Capturing AviSynth data, please wait...");
+
 							EXE = Addons.BuildIn.AVI2PIPE;
 							args[0] = "video";
 							args[1] = String.Format("\"{0}\"", AviSynth);
 							args[2] = "";
-							args[6] = "";
-
-							InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
+							args[6] = String.Format("-f {0}", GetMetaData.AvsGetFrame(AviSynth));
 						}
 					}
 
+					// Image Sequence
 					if (image.Count > 0)
 					{
+						// Tell user not to panic
+						InvokeLog(Log.Info, "Capturing AviSynth data, please wait...");
+
 						EXE = Addons.BuildIn.AVI2PIPE;
 
 						// AVS2PIPE part
@@ -1754,7 +1761,7 @@ namespace ifme.hitoha
 							args[4] = String.Format("-t {0}", VidTune);
 
 						args[5] = String.Format("--{0} {1}", VidType, VidValue);
-						args[6] = "";
+						args[6] = String.Format("-f {0}", GetMetaData.AvsGetFrame(AviSynth));
 						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
 						args[8] = VidXcmd;
 
@@ -1763,10 +1770,9 @@ namespace ifme.hitoha
 							args[9] = Addons.BuildIn.HEVCHI;
 						else
 							args[9] = Addons.BuildIn.HEVCLO;
-
-						InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
 					}
 
+					// Finalized
 					// Add space
 					for (int i = 0; i < args.GetLength(0); i++)
 					{
