@@ -66,6 +66,8 @@
 			this.colAddDev = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colAddMaintainBy = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnResetSettings = new System.Windows.Forms.Button();
+			this.grpTag = new System.Windows.Forms.GroupBox();
+			this.txtTag = new System.Windows.Forms.TextBox();
 			this.tabOptions.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpPreview.SuspendLayout();
@@ -77,6 +79,7 @@
 			this.grpLang.SuspendLayout();
 			this.tabPerformance.SuspendLayout();
 			this.tabAddons.SuspendLayout();
+			this.grpTag.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btnCancel
@@ -117,6 +120,7 @@
 			// 
 			// tabGeneral
 			// 
+			this.tabGeneral.Controls.Add(this.grpTag);
 			this.tabGeneral.Controls.Add(this.grpPreview);
 			this.tabGeneral.Controls.Add(this.grpLog);
 			this.tabGeneral.Controls.Add(this.grpUpdate);
@@ -181,7 +185,7 @@
 			this.grpUpdate.Controls.Add(this.chkUpdate);
 			this.grpUpdate.Location = new System.Drawing.Point(299, 216);
 			this.grpUpdate.Name = "grpUpdate";
-			this.grpUpdate.Size = new System.Drawing.Size(287, 143);
+			this.grpUpdate.Size = new System.Drawing.Size(287, 72);
 			this.grpUpdate.TabIndex = 3;
 			this.grpUpdate.TabStop = false;
 			this.grpUpdate.Text = "{0}";
@@ -190,9 +194,9 @@
 			// 
 			this.chkUpdate.Checked = true;
 			this.chkUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkUpdate.Location = new System.Drawing.Point(18, 31);
+			this.chkUpdate.Location = new System.Drawing.Point(6, 19);
 			this.chkUpdate.Name = "chkUpdate";
-			this.chkUpdate.Size = new System.Drawing.Size(250, 80);
+			this.chkUpdate.Size = new System.Drawing.Size(275, 47);
 			this.chkUpdate.TabIndex = 0;
 			this.chkUpdate.Text = "{0}";
 			this.chkUpdate.UseVisualStyleBackColor = true;
@@ -365,7 +369,7 @@
 			this.clbCPU.FormattingEnabled = true;
 			this.clbCPU.Location = new System.Drawing.Point(221, 128);
 			this.clbCPU.Name = "clbCPU";
-			this.clbCPU.Size = new System.Drawing.Size(150, 116);
+			this.clbCPU.Size = new System.Drawing.Size(150, 109);
 			this.clbCPU.TabIndex = 2;
 			// 
 			// lblCPUPriority
@@ -487,6 +491,23 @@
 			this.btnResetSettings.UseVisualStyleBackColor = true;
 			this.btnResetSettings.Click += new System.EventHandler(this.btnResetSettings_Click);
 			// 
+			// grpTag
+			// 
+			this.grpTag.Controls.Add(this.txtTag);
+			this.grpTag.Location = new System.Drawing.Point(299, 294);
+			this.grpTag.Name = "grpTag";
+			this.grpTag.Size = new System.Drawing.Size(287, 63);
+			this.grpTag.TabIndex = 6;
+			this.grpTag.TabStop = false;
+			this.grpTag.Text = "Tag";
+			// 
+			// txtTag
+			// 
+			this.txtTag.Location = new System.Drawing.Point(6, 25);
+			this.txtTag.Name = "txtTag";
+			this.txtTag.Size = new System.Drawing.Size(275, 20);
+			this.txtTag.TabIndex = 0;
+			// 
 			// frmOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -519,6 +540,8 @@
 			this.tabPerformance.ResumeLayout(false);
 			this.tabPerformance.PerformLayout();
 			this.tabAddons.ResumeLayout(false);
+			this.grpTag.ResumeLayout(false);
+			this.grpTag.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -564,5 +587,7 @@
 		private System.Windows.Forms.CheckBox chkLogSave;
 		private System.Windows.Forms.GroupBox grpPreview;
 		private System.Windows.Forms.NumericUpDown numDuration;
+		private System.Windows.Forms.GroupBox grpTag;
+		private System.Windows.Forms.TextBox txtTag;
 	}
 }

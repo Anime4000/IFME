@@ -1,8 +1,10 @@
-Version 4.10
----------------
+Version 4.10 (Twin Angel)
+------------
 [fixed] Accepting longer file name and path
 [added] AviSynth Support (Windows only)
-[added] InterFrame/HFR conversion (require AviSynth, Windows only)
+[added] InterFrame/HFR conversion support via AviSynth
+[added] Image sequence conversion support via AviSynth
+[added] Allow user to change "[encoded]" tag
 [change] 720x400 to 720x404
 
 Version 4.9.4.0 (Unending Love)

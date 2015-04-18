@@ -370,5 +370,17 @@ namespace ifme.Properties {
                 this["Shutdown"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[encoded]")]
+        public string Tag {
+            get {
+                return ((string)(this["Tag"]));
+            }
+            set {
+                this["Tag"] = value;
+            }
+        }
     }
 }

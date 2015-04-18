@@ -89,5 +89,8 @@
     <Setting Name="Shutdown" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Tag" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[encoded]</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

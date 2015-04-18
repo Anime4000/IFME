@@ -126,6 +126,7 @@ namespace ifme.hitoha
 			chkUpdate.Checked = Properties.Settings.Default.UpdateAlways;
 			chkLogSave.Checked = Properties.Settings.Default.LogAutoSave;
 			numDuration.Value = Properties.Settings.Default.PreviewDuration;
+			txtTag.Text = Properties.Settings.Default.Tag;
 
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -317,6 +318,7 @@ namespace ifme.hitoha
 			Properties.Settings.Default.UpdateAlways = chkUpdate.Checked;
 			Properties.Settings.Default.LogAutoSave = chkLogSave.Checked;
 			Properties.Settings.Default.PreviewDuration = (int)numDuration.Value;
+			Properties.Settings.Default.Tag = String.IsNullOrEmpty(txtTag.Text) ? "[encoded]" : txtTag.Text;
 
 			// Save CPU affinity
 			string aff = "";

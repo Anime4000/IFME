@@ -270,6 +270,9 @@ namespace ifme.hitoha
 			if (lstQueue.SelectedItems.Count == 0)
 				return;
 
+			if (String.Equals(lstQueue.SelectedItems[0].SubItems[1].Text, ".avs", StringComparison.InvariantCultureIgnoreCase))
+				return;
+
 			// This data will submited, palying with code block
 			Globals.Preview.Enable = true;
 			Globals.Preview.Selected = lstQueue.SelectedItems[0].Index;
@@ -309,17 +312,19 @@ namespace ifme.hitoha
 		{
 			if (lstQueue.SelectedItems.Count > 0)
 			{
-				btnEdit.Enabled = true;
-				btnPreview.Enabled = true;
 				if (".avs" == lstQueue.SelectedItems[0].SubItems[1].Text)
 				{
 					btnQueueEditScript.Enabled = true;
 					btnQueueGenerate.Enabled = false;
+					btnEdit.Enabled = false;
+					btnPreview.Enabled = false;
 				}
 				else
 				{
 					btnQueueEditScript.Enabled = false;
 					btnQueueGenerate.Enabled = true;
+					btnEdit.Enabled = true;
+					btnPreview.Enabled = true;
 				}
 			}
 			else
@@ -1838,10 +1843,11 @@ namespace ifme.hitoha
 
 					// Ready path for destination folder
 					string FileOut = null;
+					string FileTag = Properties.Settings.Default.Tag;
 					if (IsDestDir)
 						FileOut = Globals.Preview.Enable ? Path.Combine(DestDir, "[preview] " + Path.GetFileNameWithoutExtension(queue[x])) : Path.Combine(DestDir, Path.GetFileNameWithoutExtension(queue[x]));
 					else
-						FileOut = Globals.Preview.Enable ? Path.Combine(Path.GetDirectoryName(queue[x]), "[preview] " + Path.GetFileNameWithoutExtension(queue[x])) : Path.Combine(Path.GetDirectoryName(queue[x]), "[encoded] " + Path.GetFileNameWithoutExtension(queue[x]));
+						FileOut = Globals.Preview.Enable ? Path.Combine(Path.GetDirectoryName(queue[x]), "[preview] " + Path.GetFileNameWithoutExtension(queue[x])) : Path.Combine(Path.GetDirectoryName(queue[x]), FileTag + " " + Path.GetFileNameWithoutExtension(queue[x]));
 					
 					// Generate one, save log after conversion finished
 					if (Properties.Settings.Default.LogAutoSave)
