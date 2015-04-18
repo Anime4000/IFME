@@ -28,27 +28,27 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.rtfEditor = new System.Windows.Forms.RichTextBox();
+			this.txtEditor = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
-			// rtfEditor
+			// txtEditor
 			// 
-			this.rtfEditor.BackColor = System.Drawing.Color.White;
-			this.rtfEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.rtfEditor.Font = new System.Drawing.Font("Courier New", 10F);
-			this.rtfEditor.Location = new System.Drawing.Point(0, 0);
-			this.rtfEditor.Name = "rtfEditor";
-			this.rtfEditor.Size = new System.Drawing.Size(640, 480);
-			this.rtfEditor.TabIndex = 1;
-			this.rtfEditor.Text = "";
-			this.rtfEditor.WordWrap = false;
+			this.txtEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtEditor.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtEditor.Location = new System.Drawing.Point(0, 0);
+			this.txtEditor.Multiline = true;
+			this.txtEditor.Name = "txtEditor";
+			this.txtEditor.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.txtEditor.Size = new System.Drawing.Size(640, 480);
+			this.txtEditor.TabIndex = 2;
+			this.txtEditor.WordWrap = false;
 			// 
 			// frmAviSynthEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(640, 480);
-			this.Controls.Add(this.rtfEditor);
+			this.Controls.Add(this.txtEditor);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.MinimumSize = new System.Drawing.Size(656, 518);
 			this.Name = "frmAviSynthEditor";
@@ -56,11 +56,13 @@
 			this.Text = "AviSynth: Script Editor (EXPERIMENTAL)";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAviSynthEditor_FormClosing);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.RichTextBox rtfEditor;
+		private System.Windows.Forms.TextBox txtEditor;
+
 	}
 }

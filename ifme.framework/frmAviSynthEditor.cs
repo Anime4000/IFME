@@ -22,12 +22,12 @@ namespace ifme.framework
 
 			file = avsfile;
 			content = File.ReadAllText(file);
-			rtfEditor.Text = content;
+			txtEditor.Text = content;
 		}
 
 		private void frmAviSynthEditor_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (content != rtfEditor.Text)
+			if (content != txtEditor.Text)
 			{
 				var MsgBox = MessageBox.Show("Save?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
 				if (MsgBox == System.Windows.Forms.DialogResult.Yes)
@@ -35,7 +35,7 @@ namespace ifme.framework
 					var utf8WithoutBom = new System.Text.UTF8Encoding(false);
 					using (var data = new StreamWriter(file, false,utf8WithoutBom))
 					{
-						data.Write(content);
+						data.Write(txtEditor.Text);
 					}
 				}
 				else if (MsgBox == System.Windows.Forms.DialogResult.Cancel)
