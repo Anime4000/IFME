@@ -21,13 +21,29 @@ namespace ifme.hitoha
 					return GFI;
 
 			if (AviFile.Video.Count == 0)
-				return GFI;
+				if (AviFile.Image.Count == 0)
+					return GFI;
 
 			GFI[0] = Path.GetFileNameWithoutExtension(file);
 			GFI[1] = Path.GetExtension(file).ToLower();
 
 			try
 			{
+				// Images
+				if (AviFile.Image.Count > 0)
+				{
+					var i = AviFile.Image[0];
+
+					GFI[2] = i.format;
+					GFI[3] = String.Format("{0}x{1}", i.width, i.height);
+					GFI[4] = "-";
+					GFI[5] = i.bitDepth.ToString();
+					GFI[6] = file;
+
+					return GFI;
+				}
+
+				// Video
 				var v = AviFile.Video[0];
 				var st = v.scanType;
 				var fm = v.frameRateMode;
@@ -59,7 +75,7 @@ namespace ifme.hitoha
 			}
 		}
 
-		static string[] AvsFilter = { "DirectShowSource", "FFVideoSource" };
+		static string[] AvsFilter = { "DirectShowSource", "FFVideoSource", "ImageSource" };
 		public static string AviSynthReader(string file)
 		{
 			if (String.Equals(Path.GetExtension(file), ".avs", StringComparison.InvariantCultureIgnoreCase))
@@ -93,8 +109,50 @@ namespace ifme.hitoha
 						}
 					}
 				}
+				return file.Contains('%') ? ParsePlaceholder(file) : file;
 			}
 			return file;
+		}
+
+		static string ParsePlaceholder(string file)
+		{
+			var input = file; //"img_sequence_%06d.tiff";
+			int location = input.IndexOf('%');
+			var placeholder = "";
+			var placenumber = "";
+
+			for (int i = location; i < input.Length; i++)
+			{
+				if (input[i] == '%')
+					placeholder += input[i];
+
+				if (input[i] == 'd')
+					placeholder += input[i];
+
+				int temp;
+				if (int.TryParse(input[i].ToString(), out temp))
+				{
+					placeholder += input[i];
+					placenumber += input[i];
+				}
+			}
+
+			if (String.IsNullOrEmpty(placenumber))
+				placenumber = "01";
+
+			int num;
+			var lop = "";
+			if (int.TryParse(placenumber, out num))
+			{
+				for (int i = 0; i < num; i++)
+				{
+					lop += "0";
+				}
+			}
+
+			var gg = input.Replace(placeholder, lop);
+
+			return gg;
 		}
 
 		public static string[] SubtitleData(string file)

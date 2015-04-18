@@ -1402,6 +1402,7 @@ namespace ifme.hitoha
 				MediaFile Avi = new MediaFile(queue[x]);
 				var audio = Avi.Audio;
 				var video = Avi.Video;
+				var image = Avi.Image;
 				var stext = Avi.Text; // subtitle
 
 				// Set current queue, this will display during x265 encoding
@@ -1412,8 +1413,8 @@ namespace ifme.hitoha
 				System.DateTime CurrentQ = System.DateTime.Now;
 
 				// Change string to int/bool for easy code
-				bool IsInterlaced = video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) ? true : false;
-				bool IsTopFF = video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) ? false : true;
+				bool IsInterlaced = image.Count > 0 ? false : video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) ? true : false;
+				bool IsTopFF = image.Count > 0 ? false : video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) ? false : true;
 
 				// Preview Block - Set current position.
 				if (Globals.Preview.Enable)
@@ -1644,7 +1645,7 @@ namespace ifme.hitoha
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
-					if (video.Count >= 1)
+					if (video.Count > 0)
 					{
 						string EXE = Addons.BuildIn.FFmpeg;
 						string[] args = new string[11];
@@ -1733,6 +1734,81 @@ namespace ifme.hitoha
 
 							InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
 						}
+
+						// Add space
+						for (int i = 0; i < args.GetLength(0); i++)
+						{
+							if (i == 2 || i == 8 || i == 9 || i == 10)
+								continue;
+
+							if (args[i] != null)
+								args[i] = args[i] + " ";
+						}
+
+						// Specify null device for stdout and stdin
+						if (OS.IsLinux)
+							args[10] = "/dev/null";
+						else
+							args[10] = "nul";
+
+						cmd = String.Format("{0}{1}{2} 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
+
+						// Multi Pass
+						if (pass >= 2)
+						{
+							for (int i = 1; i <= pass; i++)
+							{
+								// Tell user current pass
+								InvokeLog(Log.Info, String.Format("Processing images, pass {0} of {1}", i, pass));
+
+								// Proceed to encode
+								if (i == 1)
+									PEC = StartProcess(EXE, cmd + " --pass 1"); // create stats
+								else if (i == pass)
+									PEC = StartProcess(EXE, cmd + " --pass 2"); // override, used for last pass
+								else
+									PEC = StartProcess(EXE, cmd + " --pass 3"); // not override stats, use for 'n'th pass
+
+								// Break encoding when user press stop
+								if (PEC == 1) { e.Cancel = true; break; }
+							}
+						}
+						else
+						{
+							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
+							PEC = StartProcess(EXE, cmd);
+						}
+					}
+
+					if (image.Count > 0)
+					{
+						InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
+
+						string EXE = Addons.BuildIn.AVI2PIPE;
+						string[] args = new string[11];
+						string cmd = null;
+
+						// AVS2PIPE part
+						args[0] = "video";
+						args[1] = String.Format("\"{0}\"", AviSynth);
+						args[2] = "";
+
+						// x265 part
+						args[3] = String.Format("-p {0}", VidPreset);
+
+						if (!VidTune.Equals("off"))
+							args[4] = String.Format("-t {0}", VidTune);
+
+						args[5] = String.Format("--{0} {1}", VidType, VidValue);
+						args[6] = "";
+						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
+						args[8] = VidXcmd;
+
+						// Due limitation of x265, cannot change 10 bit to 8 bit or vice versa
+						if (image[0].bitDepth > 8)
+							args[9] = Addons.BuildIn.HEVCHI;
+						else
+							args[9] = Addons.BuildIn.HEVCLO;
 
 						// Add space
 						for (int i = 0; i < args.GetLength(0); i++)
