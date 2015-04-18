@@ -1645,11 +1645,13 @@ namespace ifme.hitoha
 				// Realtime decoding-encoding
 				if (!BGThread.CancellationPending)
 				{
+					string EXE = Addons.BuildIn.AVI2PIPE;
+					string[] args = new string[11];
+					string cmd = null;
+
 					if (video.Count > 0)
 					{
-						string EXE = Addons.BuildIn.FFmpeg;
-						string[] args = new string[11];
-						string cmd = null;
+						EXE = Addons.BuildIn.FFmpeg;
 						string yuv = "yuv420p"; // future use, allowing converting YUV
 
 						bool IsVFR = String.Equals(video[0].frameRateMode, "VFR") ? true : false;
@@ -1734,59 +1736,11 @@ namespace ifme.hitoha
 
 							InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
 						}
-
-						// Add space
-						for (int i = 0; i < args.GetLength(0); i++)
-						{
-							if (i == 2 || i == 8 || i == 9 || i == 10)
-								continue;
-
-							if (args[i] != null)
-								args[i] = args[i] + " ";
-						}
-
-						// Specify null device for stdout and stdin
-						if (OS.IsLinux)
-							args[10] = "/dev/null";
-						else
-							args[10] = "nul";
-
-						cmd = String.Format("{0}{1}{2} 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
-
-						// Multi Pass
-						if (pass >= 2)
-						{
-							for (int i = 1; i <= pass; i++)
-							{
-								// Tell user current pass
-								InvokeLog(Log.Info, String.Format("Processing images, pass {0} of {1}", i, pass));
-
-								// Proceed to encode
-								if (i == 1)
-									PEC = StartProcess(EXE, cmd + " --pass 1"); // create stats
-								else if (i == pass)
-									PEC = StartProcess(EXE, cmd + " --pass 2"); // override, used for last pass
-								else
-									PEC = StartProcess(EXE, cmd + " --pass 3"); // not override stats, use for 'n'th pass
-
-								// Break encoding when user press stop
-								if (PEC == 1) { e.Cancel = true; break; }
-							}
-						}
-						else
-						{
-							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
-							PEC = StartProcess(EXE, cmd);
-						}
 					}
 
 					if (image.Count > 0)
 					{
-						InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
-
-						string EXE = Addons.BuildIn.AVI2PIPE;
-						string[] args = new string[11];
-						string cmd = null;
+						EXE = Addons.BuildIn.AVI2PIPE;
 
 						// AVS2PIPE part
 						args[0] = "video";
@@ -1810,49 +1764,55 @@ namespace ifme.hitoha
 						else
 							args[9] = Addons.BuildIn.HEVCLO;
 
-						// Add space
-						for (int i = 0; i < args.GetLength(0); i++)
+						InvokeLog(Log.Warn, String.Format("Could not detect how many frame in AviSynth Script ({0}).", Path.GetFileName(AviSynth)));
+					}
+
+					// Add space
+					for (int i = 0; i < args.GetLength(0); i++)
+					{
+						if (i == 2 || i == 8 || i == 9 || i == 10)
+							continue;
+
+						if (String.IsNullOrEmpty(args[i]))
+							continue;
+
+						if (args[i] != null)
+							args[i] = args[i] + " ";
+					}
+
+					// Specify null device for stdout and stdin
+					if (OS.IsLinux)
+						args[10] = "/dev/null";
+					else
+						args[10] = "nul";
+
+					// Apply Placeholder
+					cmd = String.Format("{0}{1}{2} 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
+
+					// Multi Pass
+					if (pass >= 2)
+					{
+						for (int i = 1; i <= pass; i++)
 						{
-							if (i == 2 || i == 8 || i == 9 || i == 10)
-								continue;
+							// Tell user current pass
+							InvokeLog(Log.Info, String.Format("Processing images, pass {0} of {1}", i, pass));
 
-							if (args[i] != null)
-								args[i] = args[i] + " ";
+							// Proceed to encode
+							if (i == 1)
+								PEC = StartProcess(EXE, cmd + " --pass 1"); // create stats
+							else if (i == pass)
+								PEC = StartProcess(EXE, cmd + " --pass 2"); // override, used for last pass
+							else
+								PEC = StartProcess(EXE, cmd + " --pass 3"); // not override stats, use for 'n'th pass
+
+							// Break encoding when user press stop
+							if (PEC == 1) { e.Cancel = true; break; }
 						}
-
-						// Specify null device for stdout and stdin
-						if (OS.IsLinux)
-							args[10] = "/dev/null";
-						else
-							args[10] = "nul";
-
-						cmd = String.Format("{0}{1}{2} 2> {10} | \"{9}\" {3}{4}{5}{6}{7}{8} --y4m -", args);
-
-						// Multi Pass
-						if (pass >= 2)
-						{
-							for (int i = 1; i <= pass; i++)
-							{
-								// Tell user current pass
-								InvokeLog(Log.Info, String.Format("Processing images, pass {0} of {1}", i, pass));
-
-								// Proceed to encode
-								if (i == 1)
-									PEC = StartProcess(EXE, cmd + " --pass 1"); // create stats
-								else if (i == pass)
-									PEC = StartProcess(EXE, cmd + " --pass 2"); // override, used for last pass
-								else
-									PEC = StartProcess(EXE, cmd + " --pass 3"); // not override stats, use for 'n'th pass
-
-								// Break encoding when user press stop
-								if (PEC == 1) { e.Cancel = true; break; }
-							}
-						}
-						else
-						{
-							InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
-							PEC = StartProcess(EXE, cmd);
-						}
+					}
+					else
+					{
+						InvokeLog(Log.Info, String.Format("Processing images. Preset: {0}. Tune: {1}. Rate control: {2} {3}", VidPreset, VidTune, VidType.ToUpper(), VidValue));
+						PEC = StartProcess(EXE, cmd);
 					}
 
 					if (PEC == 1) { e.Cancel = true; break; }
