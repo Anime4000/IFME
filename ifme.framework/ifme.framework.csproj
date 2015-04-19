@@ -79,6 +79,7 @@
     <Compile Include="frmAviSynthHFR.Designer.cs">
       <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetImages.cs" />
     <Compile Include="IniFileParser\Exceptions\ParsingException.cs" />
     <Compile Include="IniFileParser\FileIniParser.cs" />
     <Compile Include="IniFileParser\Helpers\Assert.cs" />
@@ -134,6 +135,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Bug.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerBRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerCLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerCRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nagisan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreenC.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

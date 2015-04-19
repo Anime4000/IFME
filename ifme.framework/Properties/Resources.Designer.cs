@@ -79,6 +79,36 @@ namespace ifme.framework.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerBRight {
+            get {
+                object obj = ResourceManager.GetObject("BannerBRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerCLeft {
+            get {
+                object obj = ResourceManager.GetObject("BannerCLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerCRight {
+            get {
+                object obj = ResourceManager.GetObject("BannerCRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon Bug {
@@ -95,6 +125,16 @@ namespace ifme.framework.Properties {
             get {
                 object obj = ResourceManager.GetObject("Frame", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nagisan {
+            get {
+                object obj = ResourceManager.GetObject("nagisan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -139,6 +179,16 @@ namespace ifme.framework.Properties {
         internal static string ScriptUpdateWindows {
             get {
                 return ResourceManager.GetString("ScriptUpdateWindows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreenC {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreenC", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

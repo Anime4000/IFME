@@ -23,10 +23,9 @@ namespace ifme.hitoha
 			InitializeComponent();
 
 			// Dynamic
-			if (Globals.AppInfo.CharTheme % 2 != 0)
-				pictBannerRight.Image = Properties.Resources.BannerBRight; // Odd, Ifumii
-			else
-				pictBannerRight.Image = Properties.Resources.BannerCRight; // Even, Hotaru
+			pictBannerMain.Image = GetImages.BannerMain;
+			pictBannerRight.Image = Globals.AppInfo.CharTheme % 2 != 0 ? GetImages.BannerA : GetImages.BannerB;
+			pnlNagisan.BackgroundImage = GetImages.Nagisan;
 
 			// Form Init.
 			this.Size = Properties.Settings.Default.FormSize;
@@ -41,10 +40,10 @@ namespace ifme.hitoha
 				pictBannerMain.Width += 9;
 				pictBannerRight.Left += 116;
 
-				panel1.Width += 16;
-				panel1.Height += 11;
-				panel1.Left += 35;
-				panel1.Top += 51;
+				pnlNagisan.Width += 16;
+				pnlNagisan.Height += 11;
+				pnlNagisan.Left += 35;
+				pnlNagisan.Top += 51;
 
 				// In UNIX, shutdown require root
 				chkDoneOffMachine.Visible = false;
@@ -1446,7 +1445,7 @@ namespace ifme.hitoha
 					{
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
-						InvokeLog(Log.Warn, "AviSynth script are no need to indexing, make sure setting constant fps properly");
+						InvokeLog(Log.Warn, "AviSynth script are no required to indexing.");
 					}
 					else if (String.Equals(video[0].frameRateMode, "VFR"))
 					{

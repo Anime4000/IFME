@@ -162,7 +162,6 @@
 			// pictLogo
 			// 
 			this.pictLogo.Cursor = System.Windows.Forms.Cursors.Cross;
-			this.pictLogo.Image = global::ifme.Properties.Resources.SplashScreenC;
 			this.pictLogo.Location = new System.Drawing.Point(0, 0);
 			this.pictLogo.Name = "pictLogo";
 			this.pictLogo.Size = new System.Drawing.Size(600, 300);

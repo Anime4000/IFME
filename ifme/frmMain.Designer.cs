@@ -62,7 +62,7 @@
 			this.lblUserPreData = new System.Windows.Forms.Label();
 			this.lblUserPreLabel = new System.Windows.Forms.Label();
 			this.cboUserPreList = new System.Windows.Forms.ComboBox();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.pnlNagisan = new System.Windows.Forms.Panel();
 			this.tabVideo = new System.Windows.Forms.TabPage();
 			this.btnAdvanceHelp = new System.Windows.Forms.Button();
 			this.txtVideoAdvCmd = new System.Windows.Forms.TextBox();
@@ -445,7 +445,7 @@
 			this.tabUserPreset.Controls.Add(this.lblUserPreData);
 			this.tabUserPreset.Controls.Add(this.lblUserPreLabel);
 			this.tabUserPreset.Controls.Add(this.cboUserPreList);
-			this.tabUserPreset.Controls.Add(this.panel1);
+			this.tabUserPreset.Controls.Add(this.pnlNagisan);
 			this.tabUserPreset.Location = new System.Drawing.Point(4, 22);
 			this.tabUserPreset.Name = "tabUserPreset";
 			this.tabUserPreset.Size = new System.Drawing.Size(608, 343);
@@ -517,15 +517,14 @@
 			this.cboUserPreList.TabIndex = 0;
 			this.cboUserPreList.SelectedIndexChanged += new System.EventHandler(this.cboUserPreList_SelectedIndexChanged);
 			// 
-			// panel1
+			// pnlNagisan
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BackgroundImage = global::ifme.Properties.Resources.nagisan;
-			this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.panel1.Location = new System.Drawing.Point(409, 0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(199, 343);
-			this.panel1.TabIndex = 6;
+			this.pnlNagisan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.pnlNagisan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.pnlNagisan.Location = new System.Drawing.Point(409, 0);
+			this.pnlNagisan.Name = "pnlNagisan";
+			this.pnlNagisan.Size = new System.Drawing.Size(199, 343);
+			this.pnlNagisan.TabIndex = 6;
 			// 
 			// tabVideo
 			// 
@@ -1286,7 +1285,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pictBannerMain.BackColor = System.Drawing.Color.Black;
 			this.pictBannerMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.pictBannerMain.Image = global::ifme.Properties.Resources.BannerCLeft;
 			this.pictBannerMain.Location = new System.Drawing.Point(0, 0);
 			this.pictBannerMain.Name = "pictBannerMain";
 			this.pictBannerMain.Size = new System.Drawing.Size(640, 64);
@@ -1468,7 +1466,7 @@
 		private System.Windows.Forms.Button btnUserPreSave;
 		private System.Windows.Forms.Button btnUserPreAdd;
 		private System.Windows.Forms.Button btnUserPreDelete;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnlNagisan;
 		private System.Windows.Forms.Button btnQueueEditScript;
 		private System.Windows.Forms.Button btnQueueGenerate;
 	}

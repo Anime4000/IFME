@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using ifme.framework;
 
 namespace ifme.hitoha
 {
@@ -22,6 +23,9 @@ namespace ifme.hitoha
 		public frmSplashScreen()
 		{
 			InitializeComponent();
+
+			// Offload
+			pictSS.Image = GetImages.SplashScreen;
 
 			// Some settings
 			this.DoubleBuffered = true;

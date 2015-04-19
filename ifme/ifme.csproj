@@ -235,15 +235,6 @@
     <None Include="Resources\list_remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BannerBRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BannerCRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BannerCLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ifme_flat.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -262,13 +253,7 @@
     <None Include="Resources\disk.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nagisan.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\application_xp_terminal.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreenC.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ifme.framework\ifme.framework.csproj">

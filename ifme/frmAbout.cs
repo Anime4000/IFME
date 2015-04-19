@@ -13,6 +13,7 @@ using System.Net;
 // Asset
 using IniParser;
 using IniParser.Model;
+using ifme.framework;
 
 namespace ifme.hitoha
 {
@@ -32,6 +33,7 @@ namespace ifme.hitoha
 		{
 			InitializeComponent();
 			this.Icon = Properties.Resources.ifme_flat;
+			pictLogo.Image = GetImages.SplashScreen;
 
 			// Fix Mono drawings
 			if (OS.IsLinux)
