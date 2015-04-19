@@ -310,29 +310,35 @@ namespace ifme.hitoha
 
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (!Addons.Installed.AviSynth)
+			{
+				btnQueueGenerate.Enabled = false;
+				btnQueueEditScript.Enabled = false;
+			}
+
 			if (lstQueue.SelectedItems.Count > 0)
 			{
 				if (".avs" == lstQueue.SelectedItems[0].SubItems[1].Text)
 				{
-					btnQueueEditScript.Enabled = true;
 					btnQueueGenerate.Enabled = false;
-					btnEdit.Enabled = false;
+					btnQueueEditScript.Enabled = true;
 					btnPreview.Enabled = false;
+					btnEdit.Enabled = false;
 				}
 				else
 				{
-					btnQueueEditScript.Enabled = false;
 					btnQueueGenerate.Enabled = true;
-					btnEdit.Enabled = true;
+					btnQueueEditScript.Enabled = false;
 					btnPreview.Enabled = true;
+					btnEdit.Enabled = true;
 				}
 			}
 			else
 			{
-				btnEdit.Enabled = false;
-				btnPreview.Enabled = false;
-				btnQueueEditScript.Enabled = false;
 				btnQueueGenerate.Enabled = false;
+				btnQueueEditScript.Enabled = false;
+				btnPreview.Enabled = false;
+				btnEdit.Enabled = false;
 			}
 		}
 
@@ -1440,7 +1446,7 @@ namespace ifme.hitoha
 					{
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
-						InvokeLog(Log.Warn, "AvsSynth script are no need to indexing, make sure setting constant fps properly");
+						InvokeLog(Log.Warn, "AviSynth script are no need to indexing, make sure setting constant fps properly");
 					}
 					else if (String.Equals(video[0].frameRateMode, "VFR"))
 					{
@@ -1659,7 +1665,7 @@ namespace ifme.hitoha
 					if (video.Count > 0)
 					{
 						EXE = Addons.BuildIn.FFmpeg;
-						string yuv = "yuv420p"; // future use, allowing converting YUV
+						string yuv = video[0].bitDepth > 8 ? "yuv420p10le" : "yuv420p"; // future use, allowing converting YUV
 
 						bool IsVFR = String.Equals(video[0].frameRateMode, "VFR") ? true : false;
 						ulong FrameCount = video[0].frameCount;
@@ -1670,7 +1676,7 @@ namespace ifme.hitoha
 
 						// FFmpeg part
 						args[0] = String.Format("-i \"{0}\"", queue[x]);
-						args[1] = String.Format("-pix_fmt {0}", yuv);
+						args[1] = String.Format("-pix_fmt {0} -strict -1", yuv);
 						args[2] = String.Format("-f yuv4mpegpipe -s {0} -vsync {1} -", screen[x], vsync);
 
 						// x265 part
@@ -2184,16 +2190,6 @@ namespace ifme.hitoha
 			foreach (var item in Directory.GetFiles(Properties.Settings.Default.TemporaryFolder))
 				File.Delete(item);
 
-			// Button
-			if (lstQueue.SelectedItems.Count == 0)
-			{
-				btnStart.Enabled = false;
-				btnEdit.Enabled = false;
-				btnPreview.Enabled = false;
-				btnQueueEditScript.Enabled = false;
-				btnQueueGenerate.Enabled = false;
-			}
-
 			// UI stuff
 			int a = cboAudioFormat.SelectedIndex;
 			int b = cboAudioFormat.Items.Count - 1;
@@ -2204,6 +2200,9 @@ namespace ifme.hitoha
 			// Reset
 			EncodingStarted(false);
 			this.Text = Globals.AppInfo.NameTitle;
+
+			if (lstQueue.Items.Count == 0)
+				btnStart.Enabled = false;
 
 			// Preview Block - Play the files
 			if (Globals.Preview.Enable)
@@ -2257,6 +2256,15 @@ namespace ifme.hitoha
 
 				foreach (Control ctl in page.Controls)
 					ctl.Enabled = !x;
+			}
+
+			// Disable button
+			if (!x)
+			{
+				btnEdit.Enabled = false;
+				btnPreview.Enabled = false;
+				btnQueueEditScript.Enabled = false;
+				btnQueueGenerate.Enabled = false;
 			}
 
 			// Never disable
