@@ -10,8 +10,8 @@ using System.Resources;
 [assembly: AssemblyDescription("All asset that allow IFME to run")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
-[assembly: AssemblyProduct("IFME")]
-[assembly: AssemblyCopyright("Copyright belongs to their respective owners")]
+[assembly: AssemblyProduct("Images by Ray-en, Nemu")]
+[assembly: AssemblyCopyright("GNU GPL v2")]
 [assembly: AssemblyTrademark("I Found My Ecchi, Hitoha")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,5 @@ using System.Resources;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("4.0.*")]
-[assembly: AssemblyFileVersion("4.9.5.0")]
+[assembly: AssemblyFileVersion("4.10.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
