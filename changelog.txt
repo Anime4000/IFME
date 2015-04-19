@@ -1,6 +1,7 @@
 Version 4.10 (Twin Angel)
 ------------
 [fixed] Accepting longer file name and path
+[fixed] 10 bit become 8 bit due to wrong pixel format
 [added] AviSynth Support (Windows only)
 [added] InterFrame/HFR conversion support via AviSynth
 [added] Image sequence conversion support via AviSynth
