@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	class Stuff
 	{

@@ -7,7 +7,7 @@ using System.IO;
 using IniParser;
 using IniParser.Model;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	class UserPreset
 	{

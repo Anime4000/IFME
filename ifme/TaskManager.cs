@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.IO;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	class TaskManager
 	{

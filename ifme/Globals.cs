@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Globalization;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	class Globals
 	{

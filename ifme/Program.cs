@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	static class Program
 	{

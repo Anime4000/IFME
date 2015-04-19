@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using ifme.hitoha;
 using IniParser;
 using IniParser.Model;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	public partial class frmOptions : Form
 	{

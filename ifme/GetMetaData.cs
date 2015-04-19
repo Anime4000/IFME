@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using MediaInfoDotNet;
 using System.Diagnostics;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	class GetMetaData
 	{

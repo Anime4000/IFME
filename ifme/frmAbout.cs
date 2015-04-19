@@ -15,7 +15,7 @@ using IniParser;
 using IniParser.Model;
 using ifme.framework;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	public partial class frmAbout : Form
 	{

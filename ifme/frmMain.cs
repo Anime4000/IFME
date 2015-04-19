@@ -14,7 +14,7 @@ using IniParser;
 using IniParser.Model;
 using MediaInfoDotNet;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	public partial class frmMain : Form
 	{

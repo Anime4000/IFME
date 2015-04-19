@@ -12,7 +12,7 @@ using System.IO;
 using System.Diagnostics;
 using ifme.framework;
 
-namespace ifme.hitoha
+namespace ifme
 {
 	public partial class frmSplashScreen : Form
 	{
