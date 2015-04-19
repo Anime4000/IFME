@@ -11,3 +11,4 @@ Addons:
 3. Extract all to addons folder
 
 Additional prerequisite:
+1. AviSynth plugins (inside "tools\avisynth_plugin" folder)

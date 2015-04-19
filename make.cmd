@@ -59,8 +59,9 @@ copy prerequisite\windows\7za.exe %BUILDDIR%\unpack.exe
 copy prerequisite\windows\wget.exe %BUILDDIR%\wget.exe
 echo.
 
-echo COPY ADDONS
+echo COPY ADDONS, AVISYNTH PLUGINS
 xcopy /i /s prerequisite\windows\addons\* %BUILDDIR%\addons
+xcopy /i /s prerequisite\windows\tools\* %BUILDDIR%\tools
 echo.
 
 echo CLEAN UP
