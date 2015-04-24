@@ -5,6 +5,8 @@ Version 4.10 (Twin Angel)
 [added] AviSynth Support (Windows only)
 [added] InterFrame/HFR conversion support via AviSynth
 [added] Image sequence conversion support via AviSynth
+[added] Image sequence conversion support via IFME Script
+[added] Image sequence generator
 [added] Allow user to change "[encoded]" tag
 [change] 720x400 to 720x404
 

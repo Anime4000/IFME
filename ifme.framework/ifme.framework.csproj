@@ -67,17 +67,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="crc32.cs" />
-    <Compile Include="frmAviSynthEditor.cs">
+    <Compile Include="frmScriptEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAviSynthEditor.Designer.cs">
-      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    <Compile Include="frmScriptEditor.Designer.cs">
+      <DependentUpon>frmScriptEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="frmAviSynthHFR.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmAviSynthHFR.Designer.cs">
       <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmImgSequence.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImgSequence.Designer.cs">
+      <DependentUpon>frmImgSequence.cs</DependentUpon>
     </Compile>
     <Compile Include="GetImages.cs" />
     <Compile Include="IniFileParser\Exceptions\ParsingException.cs" />
@@ -116,11 +122,14 @@
     <Compile Include="ShellScript.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAviSynthEditor.resx">
-      <DependentUpon>frmAviSynthEditor.cs</DependentUpon>
+    <EmbeddedResource Include="frmScriptEditor.resx">
+      <DependentUpon>frmScriptEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAviSynthHFR.resx">
       <DependentUpon>frmAviSynthHFR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImgSequence.resx">
+      <DependentUpon>frmImgSequence.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -150,6 +159,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SplashScreenC.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\list_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\list_clear.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

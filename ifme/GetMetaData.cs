@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 // Asset
 using MediaInfoDotNet;
-using System.Diagnostics;
+using IniParser.Model;
+using IniParser;
 
 namespace ifme
 {
@@ -15,11 +17,15 @@ namespace ifme
 		public static string[] MediaData(string file)
 		{
 			string[] GFI = new string[7];
-			MediaFile AviFile = new MediaFile(AviSynthReader(file));
 
 			if (file.Contains(".avs"))
 				if (!Addons.Installed.AviSynth)
 					return GFI;
+
+			bool IsAVS = file.Contains(".avs");
+			bool IsIFS = file.Contains(".ifs");
+			
+			MediaFile AviFile = new MediaFile(IsAVS ? AviSynthReader(file) : IsIFS ? IfsReader(file) : file);
 
 			if (AviFile.Video.Count == 0)
 				if (AviFile.Image.Count == 0)
@@ -74,6 +80,13 @@ namespace ifme
 				GFI[2] = ex.Message;
 				return GFI;
 			}
+		}
+
+		public static string IfsReader(string file)
+		{
+			var parser = new FileIniDataParser();
+			IniData data = parser.ReadFile(file);
+			return data["script"]["samp"];
 		}
 
 		public static int AvsGetFrame(string file)

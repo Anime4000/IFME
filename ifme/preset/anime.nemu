@@ -8,6 +8,7 @@ format = mkv
 [video]
 preset = veryslow
 tuning = psnr
+pixfmt = 420
 ratectrl = 0
 ratefact = 28
 command = --dither
@@ -37,6 +38,7 @@ command =
 ; ========
 ; preset:	[valid value: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo] (string)
 ; tuning:	[valid value: off, psnr, ssim, grain, zerolatency, fastdecode] (string)
+; pixfmt:	[valid value: 420, 422, 444] (integer)
 ; ratectrl: [valid value: 0 - 10 (0=cfr, 1=cqp, 2=abr, +3=multipass & so on)] (integer)
 ; ratefact: [valid value: 0 - 51 for crf & cqp, 0 - 99999 for abr & multipass] (integer)
 ; command:	[refer to x265 command-line for extra] (string)

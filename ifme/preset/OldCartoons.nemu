@@ -8,6 +8,7 @@ format = mp4
 [video]
 preset = medium
 tuning = off
+pixfmt = 420
 ratectrl = 0
 ratefact = 29
 command = --dither --keyint 300 --rc-lookahead 100
