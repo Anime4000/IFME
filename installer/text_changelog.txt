@@ -1,0 +1,190 @@
+Version 4.6.0.0
+---------------
+Introducing IFME for Linux (4.5 -> 4.6)
+
+Added 	Shutdown feature when encoding job completed [Windows] (suggestion by Neil N. Prasad)
+Added	Allow manually adjust value for Rate-control [Both]
+Fixed 	Video encoder didn't report progress [Windows]
+Fixed	Rate-control value saved in wrong data type, int < float [Both]
+Fixed	Command-line too long happen when subtitle too many [Windows]
+Improve	MediaInfo video frames store in unsigned 64bit [both]
+Improve	Program update, update will choose best CDN (using wget) [Both]
+
+Version 4.5.0.0
+---------------
+There huge improvment could't list, here some of it:
+New IFME mascot illustrated by ray-en, refer "About" window for more info.
+
+Fixed	Bug that reset setting wont reset properly.
+Fixed 	FPS detection, since Y4M did contain Metadata, x265 can read.
+Added 	Missing x265 "superfast" preset.
+Added 	Missing x265 tuning, now can disable/off due some player dont like it.
+Added 	VFR support without duplicate or remove frame (Excact copy)
+Added 	Deinterlaced support by detecting, deinterlace processing quality based on x265 preset.
+Added 	Brazilian Portuguese language by Elmapul.
+Added 	Japanese language by Yukipone.
+Improve	IFME updating, when got new version, checking addon version will skip (increase load time)
+
+Version 4.0.0.4
+---------------
+Fixed	Issue where attachment cause video encoding to fail
+Fixed	Issue when user disable update check, result addons not load.
+Fixed	Issue where user in full screen not able back to window mode with previous size.
+Added	Indonesia language (by Sandy Nicko Mac Corzeta)
+Added	Function where console now capable to save log and clear
+Update	Console font (now use Consolas)
+Improve File and media validation and some small change...
+
+Version 4.0.0.3
+---------------
+Fixed	Issue where MP4 video not saved, reported by webvid md and LaruYan
+Fixed	Resolved issue where stop button goes missing when you maximize window. (GitHub by HeHeHunter)
+Added	Drag n Drop for Subtitle and Attachment
+Improve	Chinese Language UI, mistake has been corrected (by LEaver)
+Improve	Optimized loading by delaying loading of languages and addons. (GitHub by HeHeHunter)
+Improve	Start button will only be enabled when media is added, disabled when there is no media. Reduce Error Prompt. (GitHub by HeHeHunter)
+
+Version 4.0.0.2
+---------------
+Fixed 	"Pause" button not hide after stop encoding
+Fixed 	Audio encoding mode where audio ID in wrong place
+Improve	Splash Screen, displaying download progress
+Improve	Chinese Simplified UI Language.
+
+Version 4.0.0.1
+---------------
+Fixed 	Updater issue!!!
+Fixed 	That Subtitle and Attachment blocking encoding process
+Fixed 	That button acting weird
+Fixed 	Update balloon message
+
+Version 4.0.0.0
+---------------
+Totally re-write new code and stuff
+
+Added 	Multi-language file using ISO standard, now can be editable
+Added 	Function addons/plugins, you can add your own stuff too!
+Added 	Function auto-update each installed encoder
+Added 	CPU Affinity! You can encode on specific CPU core!
+Added 	CPU Priority, encode which level as you want!
+Remove 	DVD-Rip support
+Remove 	Command prompt/DOS window
+Remove 	CPU Instruction Set
+
+Version 3.2.1.0
+---------------
+Update	x265 (1.0+139-a5998df9b12e)
+Added	Dithering option
+
+Version 3.2.0.0
+---------------
+Update	x265 (0.9+134-f3585fd81c3b)
+Update	mp4box (0.5.1)
+Added	Realtime video decoding-encoding!
+Fixed	DVD RIP encoding
+Remove	video decoding process!
+
+Version 3.1.0.6
+---------------
+Update	x265 (0.9+126-4f7658b3c78a)
+
+Version 3.1.0.5
+---------------
+Update	x265 (0.9+19-b5caca9954f3)
+Added	DVD RIP support
+Added	CPU Instruction Set support
+
+Version 3.1.0.4
+---------------
+Update	x265 (0.7+289-734f106295df)
+
+Version 3.1.0.3
+---------------
+Now opus will be default audio encoder for MKV
+
+Update	x265 (0.7+59-def14c0234f5)
+Update	Opus (tool 0.1.8/lib 1.1)
+Fixed	Norwegian grammar mistake's
+Fixed	Termination bug on 10bit encoding
+
+Version 3.1.0.2
+---------------
+Update	x265 (0.6+335-3568c1b19947)
+Added	Support OpenType Font and Web Open Font Format
+
+Version 3.1.0.1
+---------------
+Update	x265 (0.6+284-c88314c4a1a1)
+Fixed	Language glitch cause attachment become buggy making MKV not process properly!
+
+Version 3.1.0.0
+---------------
+Update	x265 (0.6+282-385560ac328d)
+Added	Multi language support for first time!
+Added	Chinese Simplified by LEaver.
+Added	Indonesian by Sandy Nicko Mac Corzeta
+Added	Japanese (machine translated)
+Added	Malaysia by Omamori Himari
+Added	Norwegian by Christoffer Boothby
+
+Version 3.0.0.3
+---------------
+Note: IFME always use 8 bit encoding even 10 bit input will encoded into 8 bit, due to "high bit depth" not yet fully optimized for performance. This can be adjust on "Advanced" tab by enable "use auto detect" or choose 10 bit, force 10 bit also cause 8 bit input will encoded into 10 bit, suggested to use auto detect!
+
+Update	x265 (0.6+262-b2e7d8da2838)
+Added	Reset settings to default, suggested by Danny Sabrak. 
+Added	New video tuning "zero-latency"
+Added	New video property on advanced tab
+Added	10 bit encoding support, default 8 bit.
+Fixed	MediaInfo give invalid fps, thanks Christoffer Boothby!
+
+Version 3.0.0.2
+---------------
+Update	x265 (0.6+241-99f28c405b5c)
+Change	Default CRF\QP value to 26 (50:50)
+Added	Feature multiple select and remove.
+Added	Feature where queue will highlight where media file done encoding.
+Added	Function where window control get disabled when encoding in progress.
+Fixed	Video configuration due to CRF only even choose different option.
+Fixed	Total encoding time, missing day(s).
+Fixed	Queue button (move down).
+Fixed	Program quit when encoding in progress, unload component from process before exit
+Remove	Taskbar balloon, due icon stuck when application close.
+
+Version 3.0.0.1
+---------------
+Starting here, only 64bit supported and .NET Framework 4.0 build.
+
+Update	x265 (0.6+240-f96c85f03b77)
+Update	Console splash screen
+Added	Experimental support for subtitle and font (attachment)
+Added	Override MediaInfo detection (fps override)
+Fixed	MKV command for video only encoding.
+
+Version 3.0.0.0
+---------------
+Changed Debug console to Windows Console mode.
+Remove	Support separate stream encoding
+Added	Support multiple audio stream, able to merge or multi stream
+
+Version 2.0.2.3
+---------------
+Fixed	Code bug
+
+Version 2.0.2.2
+---------------
+Added	Splash Screen for component startup and update check
+
+Version 2.0.2.1
+---------------
+Added	Auto update support
+
+Version 2.0.0.0 - 2.0.1.1
+-------------------------
+Added	Feature debug console
+Added	Feature queue encoding!
+Fixed	Code and improvement!
+
+Version 1.0.0.0
+---------------
+IFME was born
