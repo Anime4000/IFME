@@ -34,7 +34,6 @@
 			this.btnStart = new System.Windows.Forms.Button();
 			this.tabEncoding = new System.Windows.Forms.TabControl();
 			this.tabQueue = new System.Windows.Forms.TabPage();
-			this.btnQueueGenImgSeq = new System.Windows.Forms.Button();
 			this.btnQueueGenerate = new System.Windows.Forms.Button();
 			this.btnQueueEditScript = new System.Windows.Forms.Button();
 			this.btnPreview = new System.Windows.Forms.Button();
@@ -76,8 +75,6 @@
 			this.lblVideoRateFactor = new System.Windows.Forms.Label();
 			this.cboVideoRateCtrl = new System.Windows.Forms.ComboBox();
 			this.grpVideoBasic = new System.Windows.Forms.GroupBox();
-			this.cboVideoPixFmt = new System.Windows.Forms.ComboBox();
-			this.lblVideoPixFmt = new System.Windows.Forms.Label();
 			this.cboVideoTune = new System.Windows.Forms.ComboBox();
 			this.lblVideoTune = new System.Windows.Forms.Label();
 			this.cboVideoPreset = new System.Windows.Forms.ComboBox();
@@ -207,7 +204,6 @@
 			// 
 			// tabQueue
 			// 
-			this.tabQueue.Controls.Add(this.btnQueueGenImgSeq);
 			this.tabQueue.Controls.Add(this.btnQueueGenerate);
 			this.tabQueue.Controls.Add(this.btnQueueEditScript);
 			this.tabQueue.Controls.Add(this.btnPreview);
@@ -230,24 +226,12 @@
 			this.tabQueue.Text = "{0}";
 			this.tabQueue.UseVisualStyleBackColor = true;
 			// 
-			// btnQueueGenImgSeq
-			// 
-			this.btnQueueGenImgSeq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnQueueGenImgSeq.Image = global::ifme.Properties.Resources.image_add;
-			this.btnQueueGenImgSeq.Location = new System.Drawing.Point(488, 6);
-			this.btnQueueGenImgSeq.Name = "btnQueueGenImgSeq";
-			this.btnQueueGenImgSeq.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueGenImgSeq.TabIndex = 14;
-			this.proTip.SetToolTip(this.btnQueueGenImgSeq, "Convert image sequence into video");
-			this.btnQueueGenImgSeq.UseVisualStyleBackColor = true;
-			this.btnQueueGenImgSeq.Click += new System.EventHandler(this.btnQueueGenImgSeq_Click);
-			// 
 			// btnQueueGenerate
 			// 
 			this.btnQueueGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnQueueGenerate.Enabled = false;
 			this.btnQueueGenerate.Image = global::ifme.Properties.Resources.monitor_lightning;
-			this.btnQueueGenerate.Location = new System.Drawing.Point(458, 6);
+			this.btnQueueGenerate.Location = new System.Drawing.Point(398, 6);
 			this.btnQueueGenerate.Name = "btnQueueGenerate";
 			this.btnQueueGenerate.Size = new System.Drawing.Size(24, 24);
 			this.btnQueueGenerate.TabIndex = 13;
@@ -260,7 +244,7 @@
 			this.btnQueueEditScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnQueueEditScript.Enabled = false;
 			this.btnQueueEditScript.Image = global::ifme.Properties.Resources.page_edit;
-			this.btnQueueEditScript.Location = new System.Drawing.Point(368, 6);
+			this.btnQueueEditScript.Location = new System.Drawing.Point(428, 6);
 			this.btnQueueEditScript.Name = "btnQueueEditScript";
 			this.btnQueueEditScript.Size = new System.Drawing.Size(24, 24);
 			this.btnQueueEditScript.TabIndex = 12;
@@ -273,7 +257,7 @@
 			this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPreview.Enabled = false;
 			this.btnPreview.Image = global::ifme.Properties.Resources.film_go;
-			this.btnPreview.Location = new System.Drawing.Point(428, 6);
+			this.btnPreview.Location = new System.Drawing.Point(458, 6);
 			this.btnPreview.Name = "btnPreview";
 			this.btnPreview.Size = new System.Drawing.Size(24, 24);
 			this.btnPreview.TabIndex = 11;
@@ -286,7 +270,7 @@
 			this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnEdit.Enabled = false;
 			this.btnEdit.Image = global::ifme.Properties.Resources.film_edit;
-			this.btnEdit.Location = new System.Drawing.Point(398, 6);
+			this.btnEdit.Location = new System.Drawing.Point(488, 6);
 			this.btnEdit.Name = "btnEdit";
 			this.btnEdit.Size = new System.Drawing.Size(24, 24);
 			this.btnEdit.TabIndex = 10;
@@ -679,8 +663,6 @@
 			// grpVideoBasic
 			// 
 			this.grpVideoBasic.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.grpVideoBasic.Controls.Add(this.cboVideoPixFmt);
-			this.grpVideoBasic.Controls.Add(this.lblVideoPixFmt);
 			this.grpVideoBasic.Controls.Add(this.cboVideoTune);
 			this.grpVideoBasic.Controls.Add(this.lblVideoTune);
 			this.grpVideoBasic.Controls.Add(this.cboVideoPreset);
@@ -691,29 +673,6 @@
 			this.grpVideoBasic.TabIndex = 0;
 			this.grpVideoBasic.TabStop = false;
 			this.grpVideoBasic.Text = "{0}";
-			// 
-			// cboVideoPixFmt
-			// 
-			this.cboVideoPixFmt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboVideoPixFmt.FormattingEnabled = true;
-			this.cboVideoPixFmt.Items.AddRange(new object[] {
-            "420",
-            "422",
-            "444"});
-			this.cboVideoPixFmt.Location = new System.Drawing.Point(366, 48);
-			this.cboVideoPixFmt.Name = "cboVideoPixFmt";
-			this.cboVideoPixFmt.Size = new System.Drawing.Size(121, 21);
-			this.cboVideoPixFmt.TabIndex = 4;
-			this.cboVideoPixFmt.DropDownClosed += new System.EventHandler(this.cboVideoPixFmt_DropDownClosed);
-			// 
-			// lblVideoPixFmt
-			// 
-			this.lblVideoPixFmt.AutoSize = true;
-			this.lblVideoPixFmt.Location = new System.Drawing.Point(363, 32);
-			this.lblVideoPixFmt.Name = "lblVideoPixFmt";
-			this.lblVideoPixFmt.Size = new System.Drawing.Size(30, 13);
-			this.lblVideoPixFmt.TabIndex = 3;
-			this.lblVideoPixFmt.Text = "YUV:";
 			// 
 			// cboVideoTune
 			// 
@@ -726,7 +685,7 @@
             "grain",
             "zerolatency",
             "fastdecode"});
-			this.cboVideoTune.Location = new System.Drawing.Point(239, 48);
+			this.cboVideoTune.Location = new System.Drawing.Point(303, 48);
 			this.cboVideoTune.Name = "cboVideoTune";
 			this.cboVideoTune.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoTune.TabIndex = 2;
@@ -735,7 +694,7 @@
 			// lblVideoTune
 			// 
 			this.lblVideoTune.AutoSize = true;
-			this.lblVideoTune.Location = new System.Drawing.Point(236, 32);
+			this.lblVideoTune.Location = new System.Drawing.Point(300, 32);
 			this.lblVideoTune.Name = "lblVideoTune";
 			this.lblVideoTune.Size = new System.Drawing.Size(27, 13);
 			this.lblVideoTune.TabIndex = 0;
@@ -756,7 +715,7 @@
             "slower",
             "veryslow",
             "placebo"});
-			this.cboVideoPreset.Location = new System.Drawing.Point(112, 48);
+			this.cboVideoPreset.Location = new System.Drawing.Point(176, 48);
 			this.cboVideoPreset.Name = "cboVideoPreset";
 			this.cboVideoPreset.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoPreset.TabIndex = 1;
@@ -765,7 +724,7 @@
 			// lblVideoPreset
 			// 
 			this.lblVideoPreset.AutoSize = true;
-			this.lblVideoPreset.Location = new System.Drawing.Point(109, 32);
+			this.lblVideoPreset.Location = new System.Drawing.Point(173, 32);
 			this.lblVideoPreset.Name = "lblVideoPreset";
 			this.lblVideoPreset.Size = new System.Drawing.Size(27, 13);
 			this.lblVideoPreset.TabIndex = 0;
@@ -1510,8 +1469,5 @@
 		private System.Windows.Forms.Panel pnlNagisan;
 		private System.Windows.Forms.Button btnQueueEditScript;
 		private System.Windows.Forms.Button btnQueueGenerate;
-		private System.Windows.Forms.Button btnQueueGenImgSeq;
-		private System.Windows.Forms.ComboBox cboVideoPixFmt;
-		private System.Windows.Forms.Label lblVideoPixFmt;
 	}
 }

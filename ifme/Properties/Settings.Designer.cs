@@ -382,17 +382,5 @@ namespace ifme.Properties {
                 this["Tag"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("420")]
-        public string VideoPixFmt {
-            get {
-                return ((string)(this["VideoPixFmt"]));
-            }
-            set {
-                this["VideoPixFmt"] = value;
-            }
-        }
     }
 }

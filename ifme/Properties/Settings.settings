@@ -92,8 +92,5 @@
     <Setting Name="Tag" Type="System.String" Scope="User">
       <Value Profile="(Default)">[encoded]</Value>
     </Setting>
-    <Setting Name="VideoPixFmt" Type="System.String" Scope="User">
-      <Value Profile="(Default)">420</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

@@ -1,6 +1,6 @@
 ﻿namespace ifme.framework
 {
-	partial class frmScriptEditor
+	partial class frmAviSynthEditor
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -43,7 +43,7 @@
 			this.txtEditor.TabIndex = 2;
 			this.txtEditor.WordWrap = false;
 			// 
-			// frmScriptEditor
+			// frmAviSynthEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -51,9 +51,9 @@
 			this.Controls.Add(this.txtEditor);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.MinimumSize = new System.Drawing.Size(656, 518);
-			this.Name = "frmScriptEditor";
+			this.Name = "frmAviSynthEditor";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Script Editor";
+			this.Text = "AviSynth: Script Editor (EXPERIMENTAL)";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAviSynthEditor_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();

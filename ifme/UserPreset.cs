@@ -20,7 +20,7 @@ namespace ifme
 
 		public static class Installed
 		{
-			private static string[,] _Data = new string[500, 18];
+			private static string[,] _Data = new string[500, 17];
 			public static string[,] Data
 			{
 				get { return _Data; }
@@ -48,16 +48,15 @@ namespace ifme
 				Data[i, 5] = Properties.Settings.Default.UseMkv ? "mkv" : "mp4";
 				Data[i, 6] = Properties.Settings.Default.VideoPreset;
 				Data[i, 7] = Properties.Settings.Default.VideoTune;
-				Data[i, 8] = Properties.Settings.Default.VideoPixFmt;
-				Data[i, 9] = String.Format("{0}", Properties.Settings.Default.VideoRateType);
-				Data[i, 10] = String.Format("{0}", Properties.Settings.Default.VideoRateValue);
-				Data[i, 11] = Properties.Settings.Default.VideoCmd;
-				Data[i, 12] = Properties.Settings.Default.AudioFormat;
-				Data[i, 13] = String.Format("{0}", Properties.Settings.Default.AudioBitRate);
-				Data[i, 14] = Properties.Settings.Default.AudioFreq;
-				Data[i, 15] = Properties.Settings.Default.AudioChan;
-				Data[i, 16] = String.Format("{0}", Properties.Settings.Default.AudioMode);
-				Data[i, 17] = Properties.Settings.Default.AudioCmd;
+				Data[i, 8] = String.Format("{0}", Properties.Settings.Default.VideoRateType);
+				Data[i, 9] = String.Format("{0}", Properties.Settings.Default.VideoRateValue);
+				Data[i, 10] = Properties.Settings.Default.VideoCmd;
+				Data[i, 11] = Properties.Settings.Default.AudioFormat;
+				Data[i, 12] = String.Format("{0}", Properties.Settings.Default.AudioBitRate);
+				Data[i, 13] = Properties.Settings.Default.AudioFreq;
+				Data[i, 14] = Properties.Settings.Default.AudioChan;
+				Data[i, 15] = String.Format("{0}", Properties.Settings.Default.AudioMode);
+				Data[i, 16] = Properties.Settings.Default.AudioCmd;
 				i++;
 
 				// Default
@@ -69,16 +68,15 @@ namespace ifme
 				Data[i, 5] = "mp4";
 				Data[i, 6] = "medium";
 				Data[i, 7] = "off";
-				Data[i, 8] = "420";
-				Data[i, 9] = "0";
-				Data[i, 10] = "28";
-				Data[i, 11] = "--dither";
-				Data[i, 12] = "Passthrough/Extract all audio (Mode configuration ignored)";
-				Data[i, 13] = "128";
+				Data[i, 8] = "0";
+				Data[i, 9] = "28";
+				Data[i, 10] = "--dither";
+				Data[i, 11] = "Passthrough/Extract all audio (Mode configuration ignored)";
+				Data[i, 12] = "128";
+				Data[i, 13] = "Automatic";
 				Data[i, 14] = "Automatic";
-				Data[i, 15] = "Automatic";
-				Data[i, 16] = "0";
-				Data[i, 17] = "";
+				Data[i, 15] = "0";
+				Data[i, 16] = "";
 
 				foreach (var item in Directory.GetFiles(Folder, "*.nemu"))
 				{
@@ -99,16 +97,15 @@ namespace ifme
 					Data[i, 5] = data["profile"]["format"];
 					Data[i, 6] = data["video"]["preset"];
 					Data[i, 7] = data["video"]["tuning"];
-					Data[i, 8] = data["video"]["pixfmt"];
-					Data[i, 9] = data["video"]["ratectrl"];
-					Data[i, 10] = data["video"]["ratefact"];
-					Data[i, 11] = data["video"]["command"];
-					Data[i, 12] = data["audio"]["encoder"];
-					Data[i, 13] = data["audio"]["bit"];
-					Data[i, 14] = data["audio"]["freq"];
-					Data[i, 15] = data["audio"]["channel"];
-					Data[i, 16] = data["audio"]["mode"];
-					Data[i, 17] = data["audio"]["command"];
+					Data[i, 8] = data["video"]["ratectrl"];
+					Data[i, 9] = data["video"]["ratefact"];
+					Data[i, 10] = data["video"]["command"];
+					Data[i, 11] = data["audio"]["encoder"];
+					Data[i, 12] = data["audio"]["bit"];
+					Data[i, 13] = data["audio"]["freq"];
+					Data[i, 14] = data["audio"]["channel"];
+					Data[i, 15] = data["audio"]["mode"];
+					Data[i, 16] = data["audio"]["command"];
 				}
 
 				return i;
