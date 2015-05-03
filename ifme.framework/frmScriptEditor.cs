@@ -10,12 +10,12 @@ using System.IO;
 
 namespace ifme.framework
 {
-	public partial class frmAviSynthEditor : Form
+	public partial class frmScriptEditor : Form
 	{
 		public string file { get; set; }
 		public string content { get; set; }
 
-		public frmAviSynthEditor(string avsfile)
+		public frmScriptEditor(string avsfile)
 		{
 			InitializeComponent();
 			Icon = Properties.Resources.Bug;

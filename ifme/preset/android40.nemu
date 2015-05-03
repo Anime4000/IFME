@@ -8,6 +8,7 @@ format = mp4
 [video]
 preset = slow
 tuning = zerolatency
+pixfmt = 420
 ratectrl = 0
 ratefact = 26
 command = --dither

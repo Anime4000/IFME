@@ -286,7 +286,7 @@ namespace ifme
 				return;
 
 			string file = lstQueue.SelectedItems[0].SubItems[6].Text;
-			var from = new frmAviSynthEditor(file);
+			var from = new frmScriptEditor(file);
 			from.ShowDialog();
 		}
 
@@ -307,6 +307,36 @@ namespace ifme
 			}
 		}
 
+		private void btnQueueGenImgSeq_Click(object sender, EventArgs e)
+		{
+			using (var form = new frmImgSequence())
+			{
+				var result = form.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					string item = form.script;
+					string[] h = GetMetaData.MediaData(item);
+					if (h[0] == null)	// try and catach, if media not supported or missing DLL, leaving array with null
+						PrintLog(Log.Error, String.Format("File \"{0}\" not loaded:\n\t{1}", item, h[1]));
+
+					if (h[2] == null)	// make sure required data
+						return;
+
+					ListViewItem QueueList = new ListViewItem(h[0]);
+					QueueList.SubItems.Add(h[1]);
+					QueueList.SubItems.Add(h[2]);
+					QueueList.SubItems.Add(h[3]);
+					QueueList.SubItems.Add(h[4]);
+					QueueList.SubItems.Add(h[5]);
+					QueueList.SubItems.Add(h[6]);
+
+					lstQueue.Items.Add(QueueList);
+
+					PrintLog(Log.Info, String.Format("File \"{0}\" added via Open File (button). Format: {2} ({1}). RES: {3}. FPS: {4}. BPP: {5}", h));
+				}
+			}
+		}
+
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!Addons.Installed.AviSynth)
@@ -317,7 +347,8 @@ namespace ifme
 
 			if (lstQueue.SelectedItems.Count > 0)
 			{
-				if (".avs" == lstQueue.SelectedItems[0].SubItems[1].Text)
+				var ext = lstQueue.SelectedItems[0].SubItems[1].Text;
+				if (".avs" == ext || ".ifs" == ext)
 				{
 					btnQueueGenerate.Enabled = false;
 					btnQueueEditScript.Enabled = true;
@@ -345,7 +376,7 @@ namespace ifme
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
 			GetFiles.Title = Language.IMessage.OpenFile;
-			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|"
+			GetFiles.Filter = "Supported video files|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs;*.ifs|"
 				+ "HTML5 video files|*.ogv;*.webm;*.mp4|"
 				+ "WebM|*.webm|"
 				+ "Theora|*.ogv|"
@@ -357,6 +388,7 @@ namespace ifme
 				+ "MPEG-2 Transport Stream|*.mts;*.m2ts|"
 				+ "MPEG-1/DVD|*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob|"
 				+ "AviSynth Script|*.avs|"
+				+ "IFME Script|*.ifs|"
 				+ "All Files|*.*";
 			GetFiles.FilterIndex = 1;
 			GetFiles.Multiselect = true;
@@ -557,20 +589,30 @@ namespace ifme
 			Properties.Settings.Default.UserPreset = UserPreset.SelectedId;
 			int i = UserPreset.SelectedId;
 
-			lblUserPreData.Text = String.Format("{0}\n{1}\n{2}", UserPreset.Installed.Data[i, 2], UserPreset.Installed.Data[i, 3], UserPreset.Installed.Data[i, 4]);
+			try
+			{
+				lblUserPreData.Text = String.Format("{0}\n{1}\n{2}", UserPreset.Installed.Data[i, 2], UserPreset.Installed.Data[i, 3], UserPreset.Installed.Data[i, 4]);
 
-			cboVideoPreset.Text = UserPreset.Installed.Data[i, 6];
-			cboVideoTune.Text = UserPreset.Installed.Data[i, 7];
-			cboVideoRateCtrl.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 8]);
-			txtVideoRate.Text = UserPreset.Installed.Data[i, 9];
-			txtVideoAdvCmd.Text = UserPreset.Installed.Data[i, 10];
+				cboVideoPreset.Text = UserPreset.Installed.Data[i, 6];
+				cboVideoTune.Text = UserPreset.Installed.Data[i, 7];
+				cboVideoPixFmt.Text = UserPreset.Installed.Data[i, 8];
+				cboVideoRateCtrl.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 9]);
+				txtVideoRate.Text = UserPreset.Installed.Data[i, 10];
+				txtVideoAdvCmd.Text = UserPreset.Installed.Data[i, 11];
 
-			cboAudioFormat.Text = UserPreset.Installed.Data[i, 11];
-			cboAudioBitRate.Text = UserPreset.Installed.Data[i, 12];
-			cboAudioFreq.Text = UserPreset.Installed.Data[i, 13];
-			cboAudioChan.Text = UserPreset.Installed.Data[i, 14];
-			cboAudioMode.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 15]);
-			txtAudioCmd.Text = UserPreset.Installed.Data[i, 16];
+				cboAudioFormat.Text = UserPreset.Installed.Data[i, 12];
+				cboAudioBitRate.Text = UserPreset.Installed.Data[i, 13];
+				cboAudioFreq.Text = UserPreset.Installed.Data[i, 14];
+				cboAudioChan.Text = UserPreset.Installed.Data[i, 15];
+				cboAudioMode.SelectedIndex = Convert.ToInt32(UserPreset.Installed.Data[i, 16]);
+				txtAudioCmd.Text = UserPreset.Installed.Data[i, 17];
+			}
+			catch
+			{
+				btnUserPreSave.PerformClick();
+				cboUserPreList.SelectedIndex = 0;
+				cboUserPreList.SelectedIndex = i;
+			}
 		}
 
 		private void lblUserPreData_Click(object sender, EventArgs e)
@@ -594,6 +636,7 @@ namespace ifme
 
 			data["video"]["preset"] = cboVideoPreset.Text;
 			data["video"]["tuning"] = cboVideoTune.Text;
+			data["video"]["pixfmt"] = cboVideoPixFmt.Text;
 			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
 			data["video"]["ratefact"] = txtVideoRate.Text;
 			data["video"]["command"] = txtVideoAdvCmd.Text;
@@ -628,6 +671,7 @@ namespace ifme
 
 			data["video"]["preset"] = cboVideoPreset.Text;
 			data["video"]["tuning"] = cboVideoTune.Text;
+			data["video"]["pixfmt"] = cboVideoPixFmt.Text;
 			data["video"]["ratectrl"] = cboVideoRateCtrl.SelectedIndex.ToString();
 			data["video"]["ratefact"] = txtVideoRate.Text;
 			data["video"]["command"] = txtVideoAdvCmd.Text;
@@ -754,6 +798,11 @@ namespace ifme
 		private void cboVideoTune_DropDownClosed(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.VideoTune = cboVideoTune.Text;
+		}
+
+		private void cboVideoPixFmt_DropDownClosed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.VideoPixFmt = String.IsNullOrEmpty(cboVideoPixFmt.Text) ? "420" : cboVideoPixFmt.Text;
 		}
 
 		private void cboVideoRateCtrl_DropDownClosed(object sender, EventArgs e)
@@ -1345,7 +1394,8 @@ namespace ifme
 					Properties.Settings.Default.TemporaryFolder,
 
 					// Future addition
-					screen
+					screen,
+					cboVideoPixFmt.Text
 				};
 
 				tabEncoding.SelectedIndex = 6;
@@ -1388,6 +1438,7 @@ namespace ifme
 			string tmp = (string)argsList[18];
 			// Future addition
 			string[] screen = (string[])argsList[19];
+			string PixFmt = (string)argsList[20];
 
 			// Multipass encoding
 			int pass = new[] { "2", "3", "4", "5", "6", "7", "8", "9" }.Contains(VidType) ? int.Parse(VidType) : 0;
@@ -1409,6 +1460,16 @@ namespace ifme
 					queue[x] = GetMetaData.AviSynthReader(queue[x]); // get original file inside script
 				}
 
+				// Determine is IFME script or not
+				var IsIfsFile = false;
+				var IfScript = "";
+				if (String.Equals(System.IO.Path.GetExtension(queue[x]), ".ifs", StringComparison.InvariantCultureIgnoreCase))
+				{
+					IsIfsFile = true;
+					IfScript = queue[x];
+					queue[x] = GetMetaData.AviSynthReader(queue[x]); // get original file inside script
+				}
+
 				// Get file information
 				MediaFile Avi = new MediaFile(queue[x]);
 				var audio = Avi.Audio;
@@ -1424,8 +1485,8 @@ namespace ifme
 				System.DateTime CurrentQ = System.DateTime.Now;
 
 				// Change string to int/bool for easy code
-				bool IsInterlaced = image.Count > 0 ? false : video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) ? true : false;
-				bool IsTopFF = image.Count > 0 ? false : video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) ? false : true;
+				bool IsInterlaced = video.Count > 0 ? video[0].scanType.Equals("Interlaced", StringComparison.CurrentCultureIgnoreCase) : false;
+				bool IsTopFF = video.Count > 0 ? video[0].scanOrder.Equals("Bottom Field First", StringComparison.CurrentCultureIgnoreCase) : false;
 
 				// Preview Block - Set current position.
 				if (Globals.Preview.Enable)
@@ -1446,6 +1507,12 @@ namespace ifme
 						// Tell user
 						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
 						InvokeLog(Log.Warn, "AviSynth script are no required to indexing.");
+					}
+					else if (IsIfsFile)
+					{
+						// Tell user
+						FormTitle(String.Format("Queue {0} of {1}: Indexing source video", x + 1, queue.Length));
+						InvokeLog(Log.Warn, "IFME script are no required to indexing.");
 					}
 					else if (String.Equals(video[0].frameRateMode, "VFR"))
 					{
@@ -1660,11 +1727,15 @@ namespace ifme
 					string EXE = null;
 					string cmd = null;
 
-					// Videos
+					// Normal Videos
 					if (video.Count > 0)
 					{
 						EXE = Addons.BuildIn.FFmpeg;
-						string yuv = video[0].bitDepth > 8 ? "yuv420p10le" : "yuv420p"; // future use, allowing converting YUV
+
+						// Pixel Format
+						string PixFmt8 = String.Format("yuv{0}p", PixFmt);
+						string PixFmt10 = String.Format("yuv{0}p10le", PixFmt);
+						string yuv = video[0].bitDepth > 8 ? PixFmt10 : PixFmt8;
 
 						bool IsVFR = String.Equals(video[0].frameRateMode, "VFR") ? true : false;
 						ulong FrameCount = video[0].frameCount;
@@ -1750,9 +1821,41 @@ namespace ifme
 							args[6] = String.Format("-f {0}", GetMetaData.AvsGetFrame(AviSynth));
 						}
 					}
+					else if (IsIfsFile) // Image Sequence (IfScript)
+					{
+						EXE = Addons.BuildIn.FFmpeg;
 
-					// Image Sequence
-					if (image.Count > 0)
+						var parser = new FileIniDataParser();
+						IniData data = parser.ReadFile(IfScript);
+
+						string input = data["image"]["input"];
+						string start = data["image"]["start"];
+						string end = data["image"]["end"];
+						string fps = data["image"]["fps"];
+						string pix = data["image"]["pix"];
+
+						// FFmpeg part
+						args[0] = String.Format("-i \"{0}\" -r {1} -start_number {2}", input, fps, start);
+						args[1] = String.Format("-pix_fmt {0} -strict -1", pix);
+						args[2] = String.Format("-f yuv4mpegpipe -");
+
+						// x265 part
+						args[3] = String.Format("-p {0}", VidPreset);
+
+						if (!VidTune.Equals("off"))
+							args[4] = String.Format("-t {0}", VidTune);
+
+						args[5] = String.Format("--{0} {1}", VidType, VidValue);
+						args[6] = String.Format("-f {0}", end);
+						args[7] = String.Format("-o \"{0}\"", Path.Combine(tmp, "video.hevc"));
+						args[8] = VidXcmd;
+
+						if (pix.Contains("10"))
+							args[9] = Addons.BuildIn.HEVCHI;
+						else
+							args[9] = Addons.BuildIn.HEVCLO;
+					}
+					else if (IsAvsFile) // Image Sequence (AviSynth)
 					{
 						// Tell user not to panic
 						InvokeLog(Log.Info, "Capturing AviSynth data, please wait...");
