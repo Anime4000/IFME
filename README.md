@@ -8,6 +8,9 @@ IFME using FFmpeg back-end to decode and encode source file.
 ### Version 5
 This latest version very versetile and expanable, rework new GUI, better code. User can create own extension `*.dll` to simplified works such as **AviSynth**
 
+### Version 4
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
+
 ## License
 Currently License not impose yet, stay tune.
 
