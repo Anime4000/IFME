@@ -1,129 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Collections;
 using System.IO;
+
+using ifme.imouto;
+using System.Text.RegularExpressions;
+using System.Collections;
+using System.Globalization;
+
+[Flags()]
+public enum ThreadAccess : int
+{
+	TERMINATE = 1,
+	SUSPEND_RESUME = 2,
+	GET_CONTEXT = 8,
+	SET_CONTEXT = 16,
+	SET_INFORMATION = 32,
+	QUERY_INFORMATION = 64,
+	SET_THREAD_TOKEN = 128,
+	IMPERSONATE = 256,
+	DIRECT_IMPERSONATION = 512,
+}
 
 namespace ifme
 {
-	class TaskManager
+	public class TaskManager
 	{
-		public static class Mod
+		static string CurrentProc;
+
+		public static int Run(string command)
 		{
-			[Flags()]
-			public enum ThreadAccess : int
+			string exe;
+			string arg;
+
+			Environment.SetEnvironmentVariable("IFMECMD", command, EnvironmentVariableTarget.Process);
+
+			if (OS.IsWindows)
 			{
-				TERMINATE = 1,
-				SUSPEND_RESUME = 2,
-				GET_CONTEXT = 8,
-				SET_CONTEXT = 16,
-				SET_INFORMATION = 32,
-				QUERY_INFORMATION = 64,
-				SET_THREAD_TOKEN = 128,
-				IMPERSONATE = 256,
-				DIRECT_IMPERSONATION = 512,
+				exe = "cmd";
+				arg = "/c %IFMECMD%"; // allow max args to pass, Windows limit 8191
+			}
+			else
+			{
+				exe = "bash";
+				arg = "-c '" + command + "'"; // POSIX has 2091769, silly Windows
 			}
 
-			[DllImport("kernel32.dll")]
-			private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, System.UInt32 dwThreadId);
-			[DllImport("kernel32.dll")]
-			private static extern System.UInt32 SuspendThread(IntPtr hThread);
-			[DllImport("kernel32.dll")]
-			private static extern System.UInt32 ResumeThread(IntPtr hThread);
-			[DllImport("kernel32.dll")]
-			private static extern bool CloseHandle(IntPtr hHandle);
+			GetProcess(command); // split command args and capture any binary file, allow modify CPU affinity and priority
 
-			public static void SuspendProcess(System.Diagnostics.Process process)
+			var p = new Process();
+			p.StartInfo = new ProcessStartInfo(exe, arg)
 			{
-				foreach (ProcessThread t in process.Threads)
+				UseShellExecute = false,
+				WorkingDirectory = Properties.Settings.Default.DirTemp,
+			};
+
+			p.Start(); CPU.SetPriority(CurrentProc); // set cpu affinity and priority (windows only, linux require root)
+			p.WaitForExit();
+
+			return p.ExitCode;
+		}
+
+		public static void Pause()
+		{
+			if (OS.IsLinux)
+				Linux.SuspendProcess(CurrentProc);
+			else
+				Windows.SuspendProcess(CurrentProc);
+		}
+
+		public static void Resume()
+		{
+			if (OS.IsLinux)
+				Linux.ResumeProcess(CurrentProc);
+			else
+				Windows.ResumeProcess(CurrentProc);
+		}
+
+		public static void Kill()
+		{
+			Process[] Task = Process.GetProcessesByName(CurrentProc);
+			foreach (Process P in Task)
+			{
+				P.Kill();
+			}
+		}
+
+		static void GetProcess(string commandLine)
+		{
+			string[] args = SplitArguments(commandLine);
+			for (int i = args.Length - 1; i > 0; i--)
+			{
+				if (args[i].Contains('\\') || args[i].Contains('/'))
 				{
-					IntPtr th;
-					th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-					if ((th != IntPtr.Zero))
+					if (args[i].Contains("plugins"))
 					{
-						SuspendThread(th);
-						CloseHandle(th);
+						CurrentProc = Path.GetFileNameWithoutExtension(args[i]);
+						break;
 					}
 				}
 			}
-
-			public static void ResumeProcess(System.Diagnostics.Process process)
-			{
-				foreach (ProcessThread t in process.Threads)
-				{
-					IntPtr th;
-					th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-					if ((th != IntPtr.Zero))
-					{
-						ResumeThread(th);
-						CloseHandle(th);
-					}
-				}
-			}
 		}
 
-		public static class ModLinux
+		static string[] SplitArguments(string CmdLine)
 		{
-			public static void SuspendProcess(int pid)
-			{
-				Process P = new Process();
-				var SI = P.StartInfo;
+			var re = @"\G(""((""""|[^""])+)""|(\S+)) *";
+			var ms = Regex.Matches(CmdLine, re);
+			return ms.Cast<Match>()
+						 .Select(m => Regex.Replace(
+							 m.Groups[2].Success
+								 ? m.Groups[2].Value
+								 : m.Groups[4].Value, @"""""", @"""")).ToArray();
 
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"kill -STOP {0}\"", pid);
-				SI.UseShellExecute = false;
-				SI.CreateNoWindow = true;
-				SI.RedirectStandardError = true;
-				SI.RedirectStandardOutput = true;
-
-				P.Start();
-			}
-
-			public static void ResumeProcess(int pid)
-			{
-				Process P = new Process();
-				var SI = P.StartInfo;
-
-				SI.FileName = "bash";
-				SI.Arguments = String.Format("-c \"kill -CONT {0}\"", pid);
-				SI.UseShellExecute = false;
-				SI.CreateNoWindow = true;
-				SI.RedirectStandardError = true;
-				SI.RedirectStandardOutput = true;
-
-				P.Start();
-			}
+			// Ref: http://stackoverflow.com/a/19091999/3827425
 		}
 
-		public static class ImageName
-		{
-			private static int _Id = 0;
-			private static string _SIM = "";
-			private static int _LV = 3;
-
-			public static int Id
-			{
-				get { return _Id; }
-				set { _Id = value; }
-			}
-
-			public static string Current
-			{
-				get { return _SIM; }
-				set { _SIM = value; }
-			}
-
-			public static int Level
-			{
-				get { return _LV; }
-				set { _LV = value; }
-			}
-		}
-
-		public static class CPU
+		public class CPU
 		{
 			public static bool[] Affinity = new bool[Environment.ProcessorCount];
 
@@ -148,16 +143,7 @@ namespace ifme
 				return BitConverter.ToString(data, 0);
 			}
 
-			public static void Kill(string s)
-			{
-				Process[] Task = Process.GetProcessesByName(s);
-				foreach (Process P in Task)
-				{
-					P.Kill();
-				}
-			}
-
-			public static void Set(string app)
+			public static void SetPriority(string app)
 			{
 				var Nice = Properties.Settings.Default.Nice;
 
@@ -166,8 +152,7 @@ namespace ifme
 					Process[] Task = Process.GetProcessesByName(app);
 					foreach (Process P in Task)
 					{
-						P.ProcessorAffinity = (IntPtr)Int32.Parse(GetAffinity(), System.Globalization.NumberStyles.HexNumber);
-						ImageName.Id = P.Id;
+						P.ProcessorAffinity = (IntPtr)Int32.Parse(GetAffinity(), NumberStyles.HexNumber);
 
 						if (Nice == 0)
 							P.PriorityClass = ProcessPriorityClass.RealTime;
@@ -192,27 +177,68 @@ namespace ifme
 			}
 		}
 
-		public static void SetPerformance(string exe, string args)
+		public class Windows
 		{
-			System.Threading.Thread.Sleep(100);
+			[DllImport("kernel32.dll")]
+			private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, System.UInt32 dwThreadId);
+			[DllImport("kernel32.dll")]
+			private static extern System.UInt32 SuspendThread(IntPtr hThread);
+			[DllImport("kernel32.dll")]
+			private static extern System.UInt32 ResumeThread(IntPtr hThread);
+			[DllImport("kernel32.dll")]
+			private static extern bool CloseHandle(IntPtr hHandle);
 
-			string hevclo = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCLO);
-			string hevchi = Path.GetFileNameWithoutExtension(Addons.BuildIn.HEVCHI);
+			public static void SuspendProcess(string exe)
+			{
+				foreach (var item in Process.GetProcessesByName(exe))
+				{
+					foreach (ProcessThread t in item.Threads)
+					{
+						IntPtr th;
+						th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
+						if ((th != IntPtr.Zero))
+						{
+							SuspendThread(th);
+							CloseHandle(th);
+						}
+					}
+				}
+			}
 
-			if (args.Contains(hevclo))
+			public static void ResumeProcess(string exe)
 			{
-				ImageName.Current = hevclo;
-				CPU.Set(hevclo);
+				foreach (var item in Process.GetProcessesByName(exe))
+				{
+					foreach (ProcessThread t in item.Threads)
+					{
+						IntPtr th;
+						th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
+						if ((th != IntPtr.Zero))
+						{
+							ResumeThread(th);
+							CloseHandle(th);
+						}
+					}
+				}
 			}
-			else if (args.Contains(hevchi))
+		}
+
+		public class Linux
+		{
+			public static void SuspendProcess(string exe)
 			{
-				ImageName.Current = hevchi;
-				CPU.Set(hevchi);
+				foreach (var item in Process.GetProcessesByName(exe))
+				{
+					Run(String.Format("kill -STOP {0} > /dev/null 2>&1", item.Id));
+				}
 			}
-			else
+
+			public static void ResumeProcess(string exe)
 			{
-				ImageName.Current = Path.GetFileNameWithoutExtension(exe);
-				CPU.Set(Path.GetFileNameWithoutExtension(exe));
+				foreach (var item in Process.GetProcessesByName(exe))
+				{
+					Run(String.Format("kill -CONT {0} > /dev/null 2>&1", item.Id));
+				}
 			}
 		}
 	}

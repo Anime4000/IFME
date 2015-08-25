@@ -28,192 +28,241 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			this.lblTitle = new System.Windows.Forms.Label();
-			this.lblAuthorInfo = new System.Windows.Forms.Label();
-			this.lblInfo = new System.Windows.Forms.Label();
-			this.lblWhoChar = new System.Windows.Forms.Label();
-			this.lblWhoDraw = new System.Windows.Forms.Label();
-			this.lblUpdateInfo = new System.Windows.Forms.Label();
-			this.btnUpdate = new System.Windows.Forms.Button();
-			this.tmrScroll = new System.Windows.Forms.Timer(this.components);
-			this.lblNames = new System.Windows.Forms.Label();
-			this.pictLogo = new System.Windows.Forms.PictureBox();
-			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			((System.ComponentModel.ISupportInitialize)(this.pictLogo)).BeginInit();
+			this.lblTitleD = new System.Windows.Forms.Label();
+			this.pictBanner = new System.Windows.Forms.PictureBox();
+			this.lblAppName = new System.Windows.Forms.Label();
+			this.lblAppBuild = new System.Windows.Forms.Label();
+			this.bgThank = new System.ComponentModel.BackgroundWorker();
+			this.panelCredit = new System.Windows.Forms.Panel();
+			this.lblLast = new System.Windows.Forms.Label();
+			this.lblName4 = new System.Windows.Forms.Label();
+			this.lblName3 = new System.Windows.Forms.Label();
+			this.lblTitleC = new System.Windows.Forms.Label();
+			this.lblName2 = new System.Windows.Forms.Label();
+			this.lblTitleB = new System.Windows.Forms.Label();
+			this.lblName1 = new System.Windows.Forms.Label();
+			this.lblTitleA = new System.Windows.Forms.Label();
+			this.panelRoll = new System.Windows.Forms.Panel();
+			((System.ComponentModel.ISupportInitialize)(this.pictBanner)).BeginInit();
+			this.panelCredit.SuspendLayout();
+			this.panelRoll.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// lblTitle
+			// lblTitleD
 			// 
-			this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblTitleD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-			this.lblTitle.Location = new System.Drawing.Point(0, 300);
-			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(600, 40);
-			this.lblTitle.TabIndex = 40;
-			this.lblTitle.Text = "A";
-			this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblTitleD.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleD.Location = new System.Drawing.Point(0, 195);
+			this.lblTitleD.Name = "lblTitleD";
+			this.lblTitleD.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleD.TabIndex = 6;
+			this.lblTitleD.Text = "Special Thanks";
+			this.lblTitleD.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
-			// lblAuthorInfo
+			// pictBanner
 			// 
-			this.lblAuthorInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.pictBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAuthorInfo.BackColor = System.Drawing.Color.White;
-			this.lblAuthorInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblAuthorInfo.Location = new System.Drawing.Point(0, 340);
-			this.lblAuthorInfo.Name = "lblAuthorInfo";
-			this.lblAuthorInfo.Size = new System.Drawing.Size(600, 60);
-			this.lblAuthorInfo.TabIndex = 39;
-			this.lblAuthorInfo.Text = "A\r\nB";
-			this.lblAuthorInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.pictBanner.Location = new System.Drawing.Point(0, 0);
+			this.pictBanner.Name = "pictBanner";
+			this.pictBanner.Size = new System.Drawing.Size(600, 200);
+			this.pictBanner.TabIndex = 0;
+			this.pictBanner.TabStop = false;
 			// 
-			// lblInfo
+			// lblAppName
 			// 
-			this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblAppName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblInfo.BackColor = System.Drawing.Color.Transparent;
-			this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblInfo.Location = new System.Drawing.Point(12, 400);
-			this.lblInfo.Name = "lblInfo";
-			this.lblInfo.Size = new System.Drawing.Size(576, 50);
-			this.lblInfo.TabIndex = 41;
-			this.lblInfo.Text = "A";
-			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblAppName.Font = new System.Drawing.Font("Tahoma", 14F);
+			this.lblAppName.Location = new System.Drawing.Point(12, 203);
+			this.lblAppName.Name = "lblAppName";
+			this.lblAppName.Size = new System.Drawing.Size(576, 50);
+			this.lblAppName.TabIndex = 1;
+			this.lblAppName.Text = "IFME";
+			this.lblAppName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lblWhoChar
+			// lblAppBuild
 			// 
-			this.lblWhoChar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblAppBuild.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblWhoChar.BackColor = System.Drawing.Color.Transparent;
-			this.lblWhoChar.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.lblWhoChar.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoChar.ForeColor = System.Drawing.Color.Blue;
-			this.lblWhoChar.Location = new System.Drawing.Point(12, 490);
-			this.lblWhoChar.Name = "lblWhoChar";
-			this.lblWhoChar.Size = new System.Drawing.Size(576, 40);
-			this.lblWhoChar.TabIndex = 43;
-			this.lblWhoChar.Text = "Character by Aruuie Francoise\r\nhttp://www.pixiv.net/member.php?id=6206705";
-			this.lblWhoChar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblWhoChar.Click += new System.EventHandler(this.lblWhoChar_Click);
+			this.lblAppBuild.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.lblAppBuild.Location = new System.Drawing.Point(12, 253);
+			this.lblAppBuild.Name = "lblAppBuild";
+			this.lblAppBuild.Size = new System.Drawing.Size(576, 40);
+			this.lblAppBuild.TabIndex = 2;
+			this.lblAppBuild.Text = "Build 5.0.1234.12345 64bit";
+			this.lblAppBuild.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lblWhoDraw
+			// bgThank
 			// 
-			this.lblWhoDraw.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.bgThank.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgThank_DoWork);
+			this.bgThank.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgThank_RunWorkerCompleted);
+			// 
+			// panelCredit
+			// 
+			this.panelCredit.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblWhoDraw.BackColor = System.Drawing.Color.Transparent;
-			this.lblWhoDraw.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.lblWhoDraw.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.lblWhoDraw.ForeColor = System.Drawing.Color.Blue;
-			this.lblWhoDraw.Location = new System.Drawing.Point(12, 450);
-			this.lblWhoDraw.Name = "lblWhoDraw";
-			this.lblWhoDraw.Size = new System.Drawing.Size(576, 40);
-			this.lblWhoDraw.TabIndex = 45;
-			this.lblWhoDraw.Text = "Character Illustration by ray-en\r\nhttp://ray-en.deviantart.com/";
-			this.lblWhoDraw.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblWhoDraw.Click += new System.EventHandler(this.lblWhoDraw_Click);
+			this.panelCredit.Controls.Add(this.lblLast);
+			this.panelCredit.Controls.Add(this.lblName4);
+			this.panelCredit.Controls.Add(this.lblTitleD);
+			this.panelCredit.Controls.Add(this.lblName3);
+			this.panelCredit.Controls.Add(this.lblTitleC);
+			this.panelCredit.Controls.Add(this.lblName2);
+			this.panelCredit.Controls.Add(this.lblTitleB);
+			this.panelCredit.Controls.Add(this.lblName1);
+			this.panelCredit.Controls.Add(this.lblTitleA);
+			this.panelCredit.Location = new System.Drawing.Point(0, 0);
+			this.panelCredit.Name = "panelCredit";
+			this.panelCredit.Size = new System.Drawing.Size(576, 314);
+			this.panelCredit.TabIndex = 11;
 			// 
-			// lblUpdateInfo
+			// lblLast
 			// 
-			this.lblUpdateInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblLast.Font = new System.Drawing.Font("Tahoma", 12F);
+			this.lblLast.Location = new System.Drawing.Point(0, 250);
+			this.lblLast.Name = "lblLast";
+			this.lblLast.Size = new System.Drawing.Size(576, 50);
+			this.lblLast.TabIndex = 8;
+			this.lblLast.Text = "ふえるわかめ\r\n～ほのぼの系コミュニティ～";
+			this.lblLast.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblName4
+			// 
+			this.lblName4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblUpdateInfo.BackColor = System.Drawing.Color.Transparent;
-			this.lblUpdateInfo.Font = new System.Drawing.Font("Segoe UI", 8F);
-			this.lblUpdateInfo.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.lblUpdateInfo.Location = new System.Drawing.Point(12, 603);
-			this.lblUpdateInfo.Name = "lblUpdateInfo";
-			this.lblUpdateInfo.Size = new System.Drawing.Size(576, 28);
-			this.lblUpdateInfo.TabIndex = 46;
-			this.lblUpdateInfo.Text = "{0} {1}";
-			this.lblUpdateInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblName4.Location = new System.Drawing.Point(0, 225);
+			this.lblName4.Name = "lblName4";
+			this.lblName4.Size = new System.Drawing.Size(576, 25);
+			this.lblName4.TabIndex = 7;
+			this.lblName4.Text = " ";
+			this.lblName4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
-			// btnUpdate
+			// lblName3
 			// 
-			this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblName3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
-			this.btnUpdate.Location = new System.Drawing.Point(211, 603);
-			this.btnUpdate.Name = "btnUpdate";
-			this.btnUpdate.Size = new System.Drawing.Size(178, 28);
-			this.btnUpdate.TabIndex = 47;
-			this.btnUpdate.Text = "&Apply Update";
-			this.btnUpdate.UseVisualStyleBackColor = false;
-			this.btnUpdate.Visible = false;
-			this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+			this.lblName3.Location = new System.Drawing.Point(0, 165);
+			this.lblName3.Name = "lblName3";
+			this.lblName3.Size = new System.Drawing.Size(576, 30);
+			this.lblName3.TabIndex = 5;
+			this.lblName3.Text = "{0}";
+			this.lblName3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
-			// tmrScroll
+			// lblTitleC
 			// 
-			this.tmrScroll.Interval = 1500;
-			this.tmrScroll.Tick += new System.EventHandler(this.tmrScroll_Tick);
-			// 
-			// lblNames
-			// 
-			this.lblNames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblTitleC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblNames.BackColor = System.Drawing.Color.Transparent;
-			this.lblNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblNames.Location = new System.Drawing.Point(12, 538);
-			this.lblNames.Name = "lblNames";
-			this.lblNames.Size = new System.Drawing.Size(576, 50);
-			this.lblNames.TabIndex = 36;
-			this.lblNames.Text = "Member of\r\nふえる混ぜ込みわかめ";
-			this.lblNames.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblTitleC.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleC.Location = new System.Drawing.Point(0, 135);
+			this.lblTitleC.Name = "lblTitleC";
+			this.lblTitleC.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleC.TabIndex = 4;
+			this.lblTitleC.Text = "Developer";
+			this.lblTitleC.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
-			// pictLogo
+			// lblName2
 			// 
-			this.pictLogo.Cursor = System.Windows.Forms.Cursors.Cross;
-			this.pictLogo.Location = new System.Drawing.Point(0, 0);
-			this.pictLogo.Name = "pictLogo";
-			this.pictLogo.Size = new System.Drawing.Size(600, 300);
-			this.pictLogo.TabIndex = 48;
-			this.pictLogo.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictLogo, "Hotaru-chan and Ifumii-san, click to get 4K wallpaper.");
-			this.pictLogo.Click += new System.EventHandler(this.pictLogo_Click);
+			this.lblName2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblName2.Location = new System.Drawing.Point(0, 85);
+			this.lblName2.Name = "lblName2";
+			this.lblName2.Size = new System.Drawing.Size(576, 48);
+			this.lblName2.TabIndex = 3;
+			this.lblName2.Text = "53C aka Ray-en\r\nhttp://53c.deviantart.com/";
+			this.lblName2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lblTitleB
+			// 
+			this.lblTitleB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblTitleB.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleB.Location = new System.Drawing.Point(0, 55);
+			this.lblTitleB.Name = "lblTitleB";
+			this.lblTitleB.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleB.TabIndex = 2;
+			this.lblTitleB.Text = "Illustrator";
+			this.lblTitleB.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
+			// lblName1
+			// 
+			this.lblName1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblName1.Location = new System.Drawing.Point(0, 30);
+			this.lblName1.Name = "lblName1";
+			this.lblName1.Size = new System.Drawing.Size(576, 24);
+			this.lblName1.TabIndex = 1;
+			this.lblName1.Text = "Anime4000";
+			this.lblName1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lblTitleA
+			// 
+			this.lblTitleA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblTitleA.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleA.Location = new System.Drawing.Point(0, 0);
+			this.lblTitleA.Name = "lblTitleA";
+			this.lblTitleA.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleA.TabIndex = 0;
+			this.lblTitleA.Text = "{0} Project";
+			this.lblTitleA.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
+			// panelRoll
+			// 
+			this.panelRoll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panelRoll.Controls.Add(this.panelCredit);
+			this.panelRoll.Location = new System.Drawing.Point(12, 296);
+			this.panelRoll.Name = "panelRoll";
+			this.panelRoll.Size = new System.Drawing.Size(576, 354);
+			this.panelRoll.TabIndex = 12;
 			// 
 			// frmAbout
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.White;
-			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 662);
-			this.Controls.Add(this.lblWhoDraw);
-			this.Controls.Add(this.lblTitle);
-			this.Controls.Add(this.lblNames);
-			this.Controls.Add(this.lblWhoChar);
-			this.Controls.Add(this.lblAuthorInfo);
-			this.Controls.Add(this.lblInfo);
-			this.Controls.Add(this.btnUpdate);
-			this.Controls.Add(this.lblUpdateInfo);
-			this.Controls.Add(this.pictLogo);
+			this.Controls.Add(this.panelRoll);
+			this.Controls.Add(this.lblAppBuild);
+			this.Controls.Add(this.lblAppName);
+			this.Controls.Add(this.pictBanner);
 			this.DoubleBuffered = true;
-			this.Font = new System.Drawing.Font("Segoe UI", 8F);
-			this.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(616, 700);
 			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(616, 700);
 			this.Name = "frmAbout";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "{0} {1}";
+			this.Text = "About Ritsuko and Hotaru";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAbout_FormClosing);
 			this.Load += new System.EventHandler(this.frmAbout_Load);
-			((System.ComponentModel.ISupportInitialize)(this.pictLogo)).EndInit();
+			this.Shown += new System.EventHandler(this.frmAbout_Shown);
+			((System.ComponentModel.ISupportInitialize)(this.pictBanner)).EndInit();
+			this.panelCredit.ResumeLayout(false);
+			this.panelRoll.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Label lblTitle;
-		private System.Windows.Forms.Label lblAuthorInfo;
-		private System.Windows.Forms.Label lblInfo;
-		private System.Windows.Forms.Label lblWhoChar;
-		private System.Windows.Forms.Label lblWhoDraw;
-		private System.Windows.Forms.Label lblUpdateInfo;
-		internal System.Windows.Forms.Button btnUpdate;
-		private System.Windows.Forms.Timer tmrScroll;
-		private System.Windows.Forms.Label lblNames;
-		private System.Windows.Forms.PictureBox pictLogo;
-		private System.Windows.Forms.ToolTip toolTip1;
-
-
+		private System.Windows.Forms.PictureBox pictBanner;
+		private System.Windows.Forms.Label lblAppName;
+		private System.Windows.Forms.Label lblAppBuild;
+		private System.ComponentModel.BackgroundWorker bgThank;
+		private System.Windows.Forms.Panel panelCredit;
+		private System.Windows.Forms.Label lblTitleA;
+		private System.Windows.Forms.Label lblName1;
+		private System.Windows.Forms.Label lblTitleB;
+		private System.Windows.Forms.Label lblName2;
+		private System.Windows.Forms.Label lblTitleC;
+		private System.Windows.Forms.Label lblName3;
+		private System.Windows.Forms.Label lblName4;
+		private System.Windows.Forms.Label lblLast;
+		private System.Windows.Forms.Label lblTitleD;
+		private System.Windows.Forms.Panel panelRoll;
 	}
 }

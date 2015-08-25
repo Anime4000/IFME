@@ -6,194 +6,97 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 using System.IO;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Net;
-// Asset
-using IniParser;
-using IniParser.Model;
-using ifme.framework;
+using System.Media;
 
 namespace ifme
 {
 	public partial class frmAbout : Form
 	{
-		string tmp = System.IO.Path.GetTempPath();
-		string Title = Globals.AppInfo.Name;
-		string Version = Globals.AppInfo.Version;
-		string CPU = Globals.AppInfo.CPU;
-		string BuildDate = Globals.AppInfo.BuildDate;
-		string Info = null;
+		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis" });
+		HashSet<string> Art = new HashSet<string>(new string[] { "53C aka Ray-en", "http://53c.deviantart.com/" });
+		HashSet<string> Dev = new HashSet<string>();
+		HashSet<string> Sup = new HashSet<string>(File.ReadAllLines("metauser.if"));
 
-		int cnt = 0;
-		string[] Names = new string[100];
+		SoundPlayer epic = new SoundPlayer("epic.wav");
 
 		public frmAbout()
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.ifme_flat;
-			pictLogo.Image = GetImages.SplashScreen;
-
-			// Fix Mono drawings
-			if (OS.IsLinux)
-			{
-				this.Width -= 100;
-				this.Height -= 32;
-
-				this.MaximumSize = new System.Drawing.Size(this.Width, this.Height);
-				this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
-
-				foreach (Control ctl in this.Controls)
-				{
-					ctl.Top -= 23;
-				}
-				pictLogo.Top += 23;
-				btnUpdate.Left = 200;
-			}
-			else
-			{
-				this.MaximumSize = new System.Drawing.Size(this.Width, this.Height);
-				this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
-			}
-		}
-
-		private void LoadLang()
-		{
-			var parser = new FileIniDataParser();
-
-			IniData data = parser.ReadFile(Path.Combine(Language.Folder, Language.Default + ".ini"));
-
-			lblUpdateInfo.Text = String.Format(lblUpdateInfo.Text, Globals.AppInfo.Name, data[Language.Section.Abt]["Latest"]);
-
-			btnUpdate.Text = data[Language.Section.Abt]["btnUpdate"];
-			Info = data[Language.Section.Abt]["Description"];
-			//lnkEndUser.Text = data[Language.Section.Abt]["EndUserRight"];
-			//lnkLicense.Text = data[Language.Section.Abt]["LicenseInfo"];
-			//lnkPrivacy.Text = data[Language.Section.Abt]["PrivacyPolicy"];
-			//lblMascot.Text = String.Format(lblMascot.Text, data[Language.Section.Abt]["ByWho"]);
-
-			lblInfo.Text = Info;
+			this.Icon = imouto.Properties.Resources.application_lightning;
 		}
 
 		private void frmAbout_Load(object sender, EventArgs e)
 		{
-			LoadLang();
-			lblTitle.Text = String.Format("{0} v{1}", Title, Version);
-			lblAuthorInfo.Text = String.Format("Compiled on: {0} ({1} build)\nCopyright © 2013 - {2} Anime4000, GNU GPL v2", BuildDate, CPU, DateTime.Today.Year);
-			this.Text = String.Format(this.Text, "About", Globals.AppInfo.Name);
+			foreach (var item in Plugin.List)
+				Dev.Add(item.Profile.Dev);
 
-			if (!Globals.AppInfo.VersionEqual)
-			{
-				lblUpdateInfo.Visible = false;
-				btnUpdate.Visible = true;
-			}
+			lblAppName.Text = Global.App.Name;
+			lblAppBuild.Text = String.Format("{0} {1} ({2} x64 '{3}')", Global.App.Type, Global.App.VersionRelease, Global.App.Version, Global.App.CodeName);
 
-			// Get first
-			Names[cnt++] = "People @ MulticoreWare";
-			Names[cnt++] = "Nemu-san";
+			lblTitleA.Text = String.Format(lblTitleA.Text, Global.App.Name);
 
-			// Get Names for Addons author
-			for (int i = 0; i < Addons.Installed.Data.GetLength(0); i++)
-			{
-				if (Addons.Installed.Data[i, 3] == null)
-					break;
+			lblName1.Text = String.Join("\n", Pro);
+			lblName1.Height = 14 * Pro.Count;
 
-				if (Addons.Installed.Data[i, 3].Contains("//"))
-					continue;
+			lblName2.Text = String.Join("\n", Art);
+			lblName2.Height = 14 * Art.Count;
 
-				Names[cnt++] = String.Format("{0} by:\n{1}", Addons.Installed.Data[i, 2], Addons.Installed.Data[i, 3]);
-			}
+			lblName3.Text = String.Join("\n", Dev);
+			lblName3.Height = 14 * Dev.Count;
 
-			// Get Names for Langauge author
-			for (int i = 0; i < Language.Installed.Data.GetLength(0); i++)
-			{
-				if (Language.Installed.Data[i, 0] == null)
-					break;
+			lblName4.Text = String.Join("\n", Sup);
+			lblName4.Height = 14 * Sup.Count;
 
-				if (String.Equals(Language.Installed.Data[i, 2], "Anime4000"))
-					continue;
+			lblTitleA.Top = 0;
+			lblName1.Top = lblTitleA.Bottom;
+			lblTitleB.Top = lblName1.Bottom;
+			lblName2.Top = lblTitleB.Bottom;
+			lblTitleC.Top = lblName2.Bottom;
+			lblName3.Top = lblTitleC.Bottom;
+			lblTitleD.Top = lblName3.Bottom;
+			lblName4.Top = lblTitleD.Bottom;
+			lblLast.Top = lblName4.Bottom;
+			panelCredit.Height = lblLast.Bottom;
 
-				if (Language.Installed.Data[i, 2].Contains("//"))
-					continue;
-
-				Names[cnt++] = String.Format("{0} translation by:\n{1}", Language.Installed.Data[i, 1], Language.Installed.Data[i, 2]);
-			}
-
-			tmrScroll.Start();
+			panelCredit.Top = panelRoll.Height;
+			pictBanner.Image = imouto.Properties.Resources.AboutBanner;
 		}
 
-		private void btnUpdate_Click(object sender, EventArgs e)
+		private void frmAbout_Shown(object sender, EventArgs e)
 		{
-			var txt = btnUpdate.Text;
+			bgThank.RunWorkerAsync();
+		}
 
-			if (txt.Contains('&'))
-				txt = txt.Remove(txt.Length - 1).Substring(1) + " ?";
+		private void frmAbout_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			epic.Stop();
+		}
+
+		private void bgThank_DoWork(object sender, DoWorkEventArgs e)
+		{
+			if (this.InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => panelCredit.Top = panelRoll.Height));
 			else
-				txt = txt.Remove(txt.Length - 1) + " ?";
+				panelCredit.Top = panelRoll.Height;
 
-			var msg = MessageBox.Show(txt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			epic.Play();
 
-			if (msg == System.Windows.Forms.DialogResult.No)
-				return;
-
-			if (!Directory.Exists(Globals.AppInfo.TempFolder))
-				Directory.CreateDirectory(Globals.AppInfo.TempFolder);
-
-			string cmd = null, arg = null, file = null;
-
-			if (OS.IsWindows)
+			while (panelCredit.Bottom != 0)
 			{
-				cmd = "cmd.exe";
-				arg = "/c START \"\" /B update.cmd \"{0}\" \"{1}\" \"ifme.exe\"";
-				file = "x265ui-x64_win.7z";
+				if (this.InvokeRequired)
+					BeginInvoke(new MethodInvoker(() => panelCredit.Top -= 1));
+				else
+					panelCredit.Top -= 1;
 
-				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.cmd"), framework.ShellScript.ScriptWin);
-				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack.exe"), Path.Combine(Globals.AppInfo.TempFolder, "7za.exe"), true);
-				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "wget.exe"), Path.Combine(Globals.AppInfo.TempFolder, "wget.exe"), true);
+				Thread.Sleep(35);
 			}
-			else
-			{
-				cmd = "sh";
-				arg = "update.sh \"{0}\" \"{1}\" \"ifme.sh\"";
-				file = "x265ui-x64_linux.tar.gz";
-
-				File.WriteAllText(Path.Combine(Globals.AppInfo.TempFolder, "update.sh"), framework.ShellScript.ScriptLinux);
-				File.Copy(Path.Combine(Globals.AppInfo.CurrentFolder, "unpack"), Path.Combine(Globals.AppInfo.TempFolder, "7za"), true);
-			}
-
-			Process P = new Process();
-			var SI = P.StartInfo;
-			SI.FileName = cmd;
-			SI.Arguments = String.Format(arg, "http://sourceforge.net/projects/ifme/files/encoder-gui/" + Globals.AppInfo.VersionNew + "/" + file + "/download", Globals.AppInfo.CurrentFolder);
-			SI.WorkingDirectory = Globals.AppInfo.TempFolder;
-			SI.UseShellExecute = false;
-
-			P.Start();
-			Application.ExitThread();
 		}
 
-		private void tmrScroll_Tick(object sender, EventArgs e)
+		private void bgThank_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			if (Names[cnt] == null)
-				cnt = 0;
-			else
-				lblNames.Text = Names[cnt++];
-		}
-
-		private void lblWhoChar_Click(object sender, EventArgs e)
-		{
-			System.Diagnostics.Process.Start("http://www.pixiv.net/member.php?id=6206705");
-		}
-
-		private void lblWhoDraw_Click(object sender, EventArgs e)
-		{
-			System.Diagnostics.Process.Start("http://ray-en.deviantart.com/");
-		}
-
-		private void pictLogo_Click(object sender, EventArgs e)
-		{
-			Process.Start("http://fav.me/d8irra0");
+			bgThank.RunWorkerAsync();
 		}
 	}
 }

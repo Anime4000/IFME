@@ -1,0 +1,27 @@
+[info]
+format = mp4
+platform = Internet
+name = 1280x720 @ 29.97fps, AAC 128k @ Stereo (High compression)
+author = Nemu
+web = https://nemuserver.net/
+
+[picture]
+resolution = 1280x720
+framerate = 29.97
+bitdepth = 8
+chroma = 420
+
+[video]
+preset = veryslow
+tune = off
+type = 0
+value = 24
+cmd = --dither
+
+[audio]
+encoder = Freeware Advanced Audio Coder
+bitrate = 128
+frequency = auto
+channel = auto
+merge = false
+cmd = -w -s -c 24000

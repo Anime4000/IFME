@@ -7,12 +7,12 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Internet Friendly Media Encoder")]
-[assembly: AssemblyDescription("x265/HEVC Front-end Multimedia Encoder")]
+[assembly: AssemblyDescription("HEVC/H265 Multimedia Encoder")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anime4000")]
+[assembly: AssemblyCompany("Hitoha Project")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]
-[assembly: AssemblyCopyright("GNU GPL v2")]
-[assembly: AssemblyTrademark("I Found My Ecchi, Hitoha")]
+[assembly: AssemblyCopyright("Anime4000, GNU GPL v2")]
+[assembly: AssemblyTrademark("IFME")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("00000000-face-b00c-beef-000000000000")]
+[assembly: Guid("00000000-face-b00c-dead-000000000000")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.9.*")]
-[assembly: AssemblyFileVersion("4.9.7.0")]
+[assembly: AssemblyVersion("5.0.*")]
+[assembly: AssemblyFileVersion("5.0.6.2")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

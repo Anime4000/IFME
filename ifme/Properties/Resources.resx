@@ -118,77 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="go_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\go_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ifme5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ifme5.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="go_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\go_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="list_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\list_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="list_clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\list_clear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="list_remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\list_remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EpicWord" xml:space="preserve">
-    <value>Twin Angel</value>
-    <comment>Change this when release to public</comment>
-  </data>
-  <data name="ifme_flat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ifme_flat.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="btn_donate_SM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btn_donate_SM.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="film_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\film_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="film_go" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\film_go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="folder_explore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folder_explore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TemplateUserPreset" xml:space="preserve">
-    <value>[profile]
-name = 
-author = 
-version = 
-homepage = https://nedb.co/
-format =
-
-[video]
-preset = 
-tuning = 
-ratectrl = 
-ratefact = 
-command = 
-
-[audio]
-encoder = 
-bit = 
-freq = 
-channel = 
-mode = 
-command =</value>
-    <comment>Predefined for saving user preset</comment>
-  </data>
-  <data name="application_xp_terminal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\application_xp_terminal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="monitor_lightning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\monitor_lightning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="page_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\page_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="image_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\image_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SplashScreenB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SplashScreenB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

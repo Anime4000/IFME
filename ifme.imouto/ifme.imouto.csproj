@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3CA6D5AF-9BB3-4FAD-8E37-8FCF0EB8371F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ifme.imouto</RootNamespace>
+    <AssemblyName>ifme.imouto</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CRC32.cs" />
+    <Compile Include="OS.cs" />
+    <Compile Include="IniFileParser\Exceptions\ParsingException.cs" />
+    <Compile Include="IniFileParser\FileIniParser.cs" />
+    <Compile Include="IniFileParser\Helpers\Assert.cs" />
+    <Compile Include="IniFileParser\Model\Configuration\ConcatenateDuplicatedKeysIniParserConfiguration.cs" />
+    <Compile Include="IniFileParser\Model\Configuration\IniParserConfiguration.cs" />
+    <Compile Include="IniFileParser\Model\Formatting\DefaultIniDataFormatter.cs" />
+    <Compile Include="IniFileParser\Model\Formatting\IIniDataFormatter.cs" />
+    <Compile Include="IniFileParser\Model\IniData.cs" />
+    <Compile Include="IniFileParser\Model\IniDataCaseInsensitive.cs" />
+    <Compile Include="IniFileParser\Model\KeyData.cs" />
+    <Compile Include="IniFileParser\Model\KeyDataCollection.cs" />
+    <Compile Include="IniFileParser\Model\SectionData.cs" />
+    <Compile Include="IniFileParser\Model\SectionDataCollection.cs" />
+    <Compile Include="IniFileParser\Parser\ConcatenateDuplicatedKeysIniDataParser.cs" />
+    <Compile Include="IniFileParser\Parser\IniDataParser.cs" />
+    <Compile Include="IniFileParser\StreamIniDataParser.cs" />
+    <Compile Include="IniFileParser\StringIniParser.cs" />
+    <Compile Include="MediaInfoDotNet\MediaFile.cs" />
+    <Compile Include="MediaInfoDotNet\MediaInfoDLL.cs" />
+    <Compile Include="MediaInfoDotNet\Models\Media.cs" />
+    <Compile Include="MediaInfoDotNet\Models\MultiStreamCommon.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\AudioStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\GeneralStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\ImageStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\MenuStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\OtherStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\TextStream.cs" />
+    <Compile Include="MediaInfoDotNet\Models\StreamKind\VideoStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\film_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\film_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_explore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_play_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_stop_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_pause_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wrench.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arw_dn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arw_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_equalizer_blue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application_lightning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutBanner.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
