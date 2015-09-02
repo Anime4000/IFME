@@ -1,6 +1,6 @@
-﻿namespace ifme.hitoha
+﻿namespace ifme
 {
-	partial class Download
+	partial class frmDownload
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -86,9 +86,9 @@
 			this.Name = "Download";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Download";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Download_FormClosing);
-			this.Load += new System.EventHandler(this.Download_Load);
-			this.Shown += new System.EventHandler(this.Download_Shown);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDownload_FormClosing);
+			this.Load += new System.EventHandler(this.frmDownload_Load);
+			this.Shown += new System.EventHandler(this.frmDownload_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

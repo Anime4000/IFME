@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ifme.hitoha
+namespace ifme
 {
-	public partial class InputBox : Form
+	public partial class frmInputBox : Form
 	{
 		public string ReturnValue { get; set; }
 
-		public InputBox(string title, string description, string input)
+		public frmInputBox(string title, string description, string input)
 		{
 			InitializeComponent();
 

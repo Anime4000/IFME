@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme", "ifme\ifme.csproj", "{32F3809B-BE18-46A6-9C0D-7459FBF1236C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme.imouto", "ifme.imouto\ifme.imouto.csproj", "{3CA6D5AF-9BB3-4FAD-8E37-8FCF0EB8371F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme.hitoha", "ifme.hitoha\ifme.hitoha.csproj", "{A2F85AEE-BFD7-4404-9C21-7DDB21B3CD97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{3CA6D5AF-9BB3-4FAD-8E37-8FCF0EB8371F}.Debug|x64.Build.0 = Debug|x64
 		{3CA6D5AF-9BB3-4FAD-8E37-8FCF0EB8371F}.Release|x64.ActiveCfg = Release|x64
 		{3CA6D5AF-9BB3-4FAD-8E37-8FCF0EB8371F}.Release|x64.Build.0 = Release|x64
-		{A2F85AEE-BFD7-4404-9C21-7DDB21B3CD97}.Debug|x64.ActiveCfg = Debug|x64
-		{A2F85AEE-BFD7-4404-9C21-7DDB21B3CD97}.Debug|x64.Build.0 = Debug|x64
-		{A2F85AEE-BFD7-4404-9C21-7DDB21B3CD97}.Release|x64.ActiveCfg = Release|x64
-		{A2F85AEE-BFD7-4404-9C21-7DDB21B3CD97}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

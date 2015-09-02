@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
 
-using IniParser;
-using IniParser.Model;
-
 using ifme.imouto;
+
+using static System.Console;
 
 enum DownloadType
 {
@@ -23,7 +18,7 @@ enum DownloadType
 
 namespace ifme
 {
-	public partial class frmSplashScreen : Form
+    public partial class frmSplashScreen : Form
 	{
 		WebClient client = new WebClient();
 		bool finish = false;
@@ -35,7 +30,7 @@ namespace ifme
 		{
 			InitializeComponent();
 			this.Icon = Properties.Resources.ifme5;
-			this.BackgroundImage = Properties.Resources.SplashScreenB;
+            this.BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen6A : Properties.Resources.SplashScreen6B;
 
 			client.DownloadProgressChanged += client_DownloadProgressChanged;
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
@@ -43,15 +38,15 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
-			Console.Title = "Nemu Bootstrap";
-			Console.WriteLine(@"_____   __                      ___            ________            _____ ");
-			Console.WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
-			Console.WriteLine(@"__   |/ /_  _ \_  __ `__ \  / / /|/__  ___/    __  __  |  __ \  __ \  __/");
-			Console.WriteLine(@"_  /|  / /  __/  / / / / / /_/ /   _(__  )     _  /_/ // /_/ / /_/ / /_  ");
-			Console.WriteLine(@"/_/ |_/  \___//_/ /_/ /_/\__,_/    /____/      /_____/ \____/\____/\__/  ");
-			Console.WriteLine();
-			Console.WriteLine(@"                                                           nemuserver.net");
-			Console.WriteLine();
+			Title = "Nemu Bootstrap";
+			WriteLine(@"_____   __                      ___            ________            _____ ");
+			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
+			WriteLine(@"__   |/ /_  _ \_  __ `__ \  / / /|/__  ___/    __  __  |  __ \  __ \  __/");
+			WriteLine(@"_  /|  / /  __/  / / / / / /_/ /   _(__  )     _  /_/ // /_/ / /_/ / /_  ");
+			WriteLine(@"/_/ |_/  \___//_/ /_/ /_/\__,_/    /____/      /_____/ \____/\____/\__/  ");
+			WriteLine();
+			WriteLine(@"                                                           nemuserver.net");
+			WriteLine();
 
 			bgwThread.RunWorkerAsync();
 		}
@@ -59,7 +54,7 @@ namespace ifme
 		private void bgwThread_DoWork(object sender, DoWorkEventArgs e)
 		{
 			// CPU Affinity, Load previous, if none, set default all CPU
-			if (String.IsNullOrEmpty(Properties.Settings.Default.CPUAffinity))
+			if (string.IsNullOrEmpty(Properties.Settings.Default.CPUAffinity))
 			{
 				Properties.Settings.Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
 				Properties.Settings.Default.Save();
@@ -88,7 +83,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				Console.Write("Sorry, cannot load something :( it seem no Internet");
+				Write("Sorry, cannot load something :( it seem no Internet");
 			}
 
 			// Setting Load
@@ -111,31 +106,31 @@ namespace ifme
 
 			// App Version
 #if NONSTEAM
-			if (!String.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
+			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
 				Global.App.NewRelease = true;
 #endif
 
 			// For fun
-			Console.WriteLine("\n\nAll done! Initialising...");
+			WriteLine("\n\nAll done! Initialising...");
 			System.Threading.Thread.Sleep(3000);
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		#region Settings
 		void SettingLoad()
 		{
 			// Settings
-			if (String.IsNullOrEmpty(Properties.Settings.Default.DirOutput))
+			if (string.IsNullOrEmpty(Properties.Settings.Default.DirOutput))
 				Properties.Settings.Default.DirOutput = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME");
 
 			if (!Directory.Exists(Properties.Settings.Default.DirOutput))
 				Directory.CreateDirectory(Properties.Settings.Default.DirOutput);
 
-			if (String.IsNullOrEmpty(Properties.Settings.Default.DirTemp))
+			if (string.IsNullOrEmpty(Properties.Settings.Default.DirTemp))
 				Properties.Settings.Default.DirTemp = Global.Folder.Temp;
 
 			if (!Directory.Exists(Properties.Settings.Default.DirTemp))
@@ -151,79 +146,79 @@ namespace ifme
 			{
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ffmpeg")))
 				{
-					Console.WriteLine("Downloading component  1 of 13");
+					WriteLine("Downloading component  1 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ffmpeg.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "avisynth")))
 				{
-					Console.WriteLine("Downloading component  2 of 13");
+					WriteLine("Downloading component  2 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/avisynth.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ffmsindex")))
 				{
-					Console.WriteLine("Downloading component  3 of 13");
+					WriteLine("Downloading component  3 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ffmsindex.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mp4fpsmod")))
 				{
-					Console.WriteLine("Downloading component  4 of 13");
+					WriteLine("Downloading component  4 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mp4fpsmod.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mkvtool")))
 				{
-					Console.WriteLine("Downloading component  5 of 13");
+					WriteLine("Downloading component  5 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mkvtool.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mp4box")))
 				{
-					Console.WriteLine("Downloading component  6 of 13");
+					WriteLine("Downloading component  6 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mp4box.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))
 				{
-					Console.WriteLine("Downloading component  7 of 13");
+					WriteLine("Downloading component  7 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265gcc.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
 				{
-					Console.WriteLine("Downloading component  8 of 13");
+					WriteLine("Downloading component  8 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265icc.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				{
-					Console.WriteLine("Downloading component  9 of 13");
+					WriteLine("Downloading component  9 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265msvc.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "flac")))
 				{
-					Console.WriteLine("Downloading component 10 of 13");
+					WriteLine("Downloading component 10 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/flac.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ogg")))
 				{
-					Console.WriteLine("Downloading component 11 of 13");
+					WriteLine("Downloading component 11 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ogg.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "opus")))
 				{
-					Console.WriteLine("Downloading component 12 of 13");
+					WriteLine("Downloading component 12 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/opus.ifx");
 				}
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "faac")))
 				{
-					Console.WriteLine("Downloading component 13 of 13");
+					WriteLine("Downloading component 13 of 13");
 					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/faac.ifx");
 				}
 			}
@@ -237,12 +232,12 @@ namespace ifme
 		{
 			foreach (var item in Plugin.List)
 			{
-				Console.Write("\nChecking for update: {0}", item.Profile.Name);
+				Write($"\nChecking for update: {item.Profile.Name}");
 
-				if (String.IsNullOrEmpty(item.Provider.Update))
+				if (string.IsNullOrEmpty(item.Provider.Update))
 					continue;
 
-				if (String.Equals(item.Profile.Ver, client.DownloadString(item.Provider.Update)))
+				if (string.Equals(item.Profile.Ver, client.DownloadString(item.Provider.Update)))
 					continue;
 
 				Download(item.Provider.Download, Global.Folder.Plugins, "update.ifx");
@@ -254,17 +249,17 @@ namespace ifme
 		{
 			foreach (var item in Extension.Items)
 			{
-				Console.Write("\nChecking for update: {0}", item.Name);
+				Write($"\nChecking for update: {item.Name}");
 
-				if (String.IsNullOrEmpty(item.UrlVersion))
+				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
 
 				string version = client.DownloadString(item.UrlVersion);
 
-				if (String.Equals(item.Version, version))
+				if (string.Equals(item.Version, version))
 					continue;
 
-				string link = String.Format(item.UrlDownload, version);
+				string link = string.Format(item.UrlDownload, version);
 
 				Download(link, Global.Folder.Extension, "zombie.ife");
 			}
@@ -277,7 +272,7 @@ namespace ifme
 
 		void Download(string url, string folder, string file)
 		{
-			Console.Write("\n");
+			Write("\n");
 
 			try
 			{
@@ -293,7 +288,7 @@ namespace ifme
 			}
 			catch
 			{
-				Console.WriteLine("File not found or Offline");
+				WriteLine("File not found or Offline");
 			}
 		}
 
@@ -302,10 +297,10 @@ namespace ifme
 			string unzip = Path.Combine(Global.Folder.AppDir, "7za");
 			string fullpath = Path.Combine(dir, file);
 
-			Console.Write("\nExtracting... ");
-			TaskManager.Run(String.Format("\"{0}\" x \"{1}\" -y \"-o{2}\" > {3} 2>&1", unzip, fullpath, dir, OS.Null));
+			Write("\nExtracting... ");
+			TaskManager.Run($"\"{unzip}\" x \"{fullpath}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
 			
-			Console.Write("Done!\n");
+			Write("Done!\n");
 			File.Delete(fullpath);
 		}
 
@@ -322,7 +317,7 @@ namespace ifme
 			previous = current;
 			ptime = ctime;
 
-			Console.Write("\r{0:P} Completed... ({1} KB/s)\t", ((double)e.BytesReceived / (double)e.TotalBytesToReceive), speed > 0 ? speed : 0);
+			Write($"\r{(e.BytesReceived / e.TotalBytesToReceive):P} Completed... ({(speed > 0 ? speed : 0)} KB/s)\t");
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

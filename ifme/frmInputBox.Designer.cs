@@ -1,6 +1,6 @@
-﻿namespace ifme.hitoha
+﻿namespace ifme
 {
-	partial class InputBox
+	partial class frmInputBox
 	{
 		/// <summary>
 		/// Required designer variable.

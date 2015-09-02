@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDownload.Designer.cs">
+      <DependentUpon>frmDownload.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extension.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
@@ -73,6 +79,12 @@
     <Compile Include="GetInfo.cs" />
     <Compile Include="GetStream.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="frmInputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInputBox.Designer.cs">
+      <DependentUpon>frmInputBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
@@ -92,6 +104,9 @@
     <Compile Include="TaskManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmDownload.resx">
+      <DependentUpon>frmDownload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,16 +119,15 @@
     <EmbeddedResource Include="frmSplashScreen.resx">
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmInputBox.resx">
+      <DependentUpon>frmInputBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ifme.hitoha\ifme.hitoha.csproj">
-      <Project>{a2f85aee-bfd7-4404-9c21-7ddb21b3cd97}</Project>
-      <Name>ifme.hitoha</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ifme.imouto\ifme.imouto.csproj">
       <Project>{3ca6d5af-9bb3-4fad-8e37-8fcf0eb8371f}</Project>
       <Name>ifme.imouto</Name>
@@ -155,9 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ifme5.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreenB.png" />
+    <None Include="Resources\SplashScreen6A.png" />
+    <None Include="Resources\SplashScreen6B.png" />
+    <None Include="Resources\drive_network.ico" />
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -9,9 +9,9 @@ using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ifme.hitoha
+namespace ifme
 {
-	public partial class Download : Form
+	public partial class frmDownload : Form
 	{
 		WebClient client = new WebClient();
 
@@ -21,10 +21,10 @@ namespace ifme.hitoha
 		public string Url;
 		public string SavePath;
 
-		public Download(string url, string savepath)
+		public frmDownload(string url, string savepath)
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.drive_network;
+			Icon = Properties.Resources.drive_network;
 
 			Url = url;
 			SavePath = savepath;
@@ -33,20 +33,20 @@ namespace ifme.hitoha
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
 		}
 
-		private void Download_Load(object sender, EventArgs e)
+		private void frmDownload_Load(object sender, EventArgs e)
 		{
-			lblFile.Text = String.Format("{0}: {1}", "URL", Url);
-			lblSave.Text = String.Format("{0}: {1}", "Save", SavePath);
+			lblFile.Text = $"URL: {Url}";
+            lblSave.Text = $"Save: {SavePath}";
 		}
 
-		private void Download_Shown(object sender, EventArgs e)
+		private void frmDownload_Shown(object sender, EventArgs e)
 		{
 			stopwatch = new Stopwatch();
 			client.DownloadFileAsync(new Uri(Url), SavePath);
 			stopwatch.Start();
 		}
 
-		private void Download_FormClosing(object sender, FormClosingEventArgs e)
+		private void frmDownload_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			try
 			{
@@ -74,7 +74,7 @@ namespace ifme.hitoha
 			// correction
 			speed = speed > 0 ? speed : 0;
 
-			InvokeStatus(String.Format("{0} of {1} ({2:P}) @ {3} KB/s", FileSize(e.BytesReceived), FileSize(e.TotalBytesToReceive), ((double)e.BytesReceived / (double)e.TotalBytesToReceive), speed));
+			InvokeStatus($"{FileSize(e.BytesReceived)} of {FileSize(e.TotalBytesToReceive)} ({e.BytesReceived / e.TotalBytesToReceive:P}) @ {speed} KB/s");
 			InvokeProgress(e.ProgressPercentage);
 		}
 
@@ -86,7 +86,7 @@ namespace ifme.hitoha
 
 		void InvokeStatus(string s)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => lblStatus.Text = s));
 			else
 				lblStatus.Text = s;
@@ -94,7 +94,7 @@ namespace ifme.hitoha
 
 		void InvokeProgress(int i)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => pbDownload.Value = i));
 			else
 				pbDownload.Value = i;
@@ -112,7 +112,7 @@ namespace ifme.hitoha
 			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
 			double num = Math.Round(bytes / Math.Pow(1024, place), 1);
 
-			return String.Format("{0:0.00} {1}", (Math.Sign(byteCount) * num), IEC[place]);
+			return string.Format("{0:0.00} {1}", (Math.Sign(byteCount) * num), IEC[place]);
 		}
 	}
 }

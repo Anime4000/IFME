@@ -10,7 +10,6 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 
-using ifme.hitoha;
 using ifme.imouto;
 
 using MediaInfoDotNet;
@@ -173,7 +172,7 @@ namespace ifme
 
 			if (i == 0)
 			{
-				using (var form = new InputBox("Save new profile", "&Please enter a new profile name", ""))
+				using (var form = new frmInputBox("Save new profile", "&Please enter a new profile name", ""))
 				{
 					var result = form.ShowDialog();
 					if (result == DialogResult.OK)
@@ -1640,7 +1639,7 @@ namespace ifme
 						var msgbox2 = MessageBox.Show("File not exist, let us download before start?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 						if (msgbox2 == DialogResult.Yes)
 						{
-							using (var dl = new Download("http://cdn.gsmarena.com/vv/reviewsimg/oneplus-one/camera/gsmarena_v001.mp4", Path.Combine(Global.Folder.Benchmark, "gsmarena_v001.temp")))
+							using (var dl = new frmDownload("http://cdn.gsmarena.com/vv/reviewsimg/oneplus-one/camera/gsmarena_v001.mp4", Path.Combine(Global.Folder.Benchmark, "gsmarena_v001.temp")))
 							{
 								var result = dl.ShowDialog();
 								if (result == DialogResult.OK)
