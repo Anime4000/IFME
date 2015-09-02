@@ -292,8 +292,8 @@ namespace ifme
 			Properties.Settings.Default.Save();
 
 			// Compiler
-			Plugin.HEVCL = Path.Combine(Global.Folder.Plugins, "x265" + Properties.Settings.Default.Compiler, "x265lo");
-			Plugin.HEVCH = Path.Combine(Global.Folder.Plugins, "x265" + Properties.Settings.Default.Compiler, "x265hi");
+			Plugin.HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265lo");
+			Plugin.HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265hi");
 		}
 	}
 }

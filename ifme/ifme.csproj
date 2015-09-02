@@ -100,7 +100,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Queue.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="TaskManager.cs" />
   </ItemGroup>
   <ItemGroup>

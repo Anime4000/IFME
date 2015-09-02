@@ -19,8 +19,8 @@ namespace ifme
 		public static bool AviSynthInstalled = false;
 		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
 
-		public static string HEVCL = Path.Combine(Global.Folder.Plugins, "x265" + Properties.Settings.Default.Compiler, "x265lo");
-		public static string HEVCH = Path.Combine(Global.Folder.Plugins, "x265" + Properties.Settings.Default.Compiler, "x265hi");
+		public static string HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265lo");
+		public static string HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265hi");
 		public static string LIBAV = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
 		public static string PROBE = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffprobe");
 		public static string FPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
