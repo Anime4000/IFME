@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
@@ -19,7 +16,7 @@ namespace ifme
 			const int c_PeHeaderOffset = 60;
 			const int c_LinkerTimestampOffset = 8;
 			byte[] b = new byte[2048];
-			System.IO.Stream s = null;
+			Stream s = null;
 
 			try
 			{
@@ -46,12 +43,12 @@ namespace ifme
 		{
 			public static string Name
 			{
-				get { return System.Windows.Forms.Application.ProductName; }
+				get { return Application.ProductName; }
 			}
 
 			public static string NameFull
 			{
-				get { return String.Format("{0} v{1} ( '{2}' ) - {3}", Name, Version, CodeName, Type); }
+				get { return $"{Name} v{Version} ( '{CodeName}' ) - {Type}"; }
 			}
 
 			public static string CodeName
@@ -123,12 +120,12 @@ namespace ifme
 
 			public static string Benchmark
 			{
-				get { return Path.Combine(Global.Folder.AppDir, "benchmark"); }
+				get { return Path.Combine(AppDir, "benchmark"); }
 			}
 
 			public static string Extension
 			{
-				get { return Path.Combine(Global.Folder.AppDir, "extension"); }
+				get { return Path.Combine(AppDir, "extension"); }
 			}
 		}
 
@@ -136,7 +133,7 @@ namespace ifme
 		{
 			public static string Benchmark4K
 			{
-				get { return Path.Combine(Global.Folder.Benchmark, "gsmarena_v001.mp4"); }
+				get { return Path.Combine(Folder.Benchmark, "gsmarena_v001.mp4"); }
 			}
 		}
 	}

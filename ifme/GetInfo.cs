@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-
-using MediaInfoDotNet;
 
 namespace ifme
 {
@@ -15,17 +11,17 @@ namespace ifme
 		public static bool IsAviSynth(string file)
 		{
 			string exts = Path.GetExtension(file);
-			return String.Equals(exts, ".avs", IC) ? true : false;
+			return string.Equals(exts, ".avs", IC) ? true : false;
 		}
 
 		public static bool SubtitleValid(string file)
 		{
 			string exts = Path.GetExtension(file);
-			if (String.Equals(exts, ".ass", IC))
+			if (string.Equals(exts, ".ass", IC))
 				return true;
-			else if (String.Equals(exts, ".ssa", IC))
+			else if (string.Equals(exts, ".ssa", IC))
 				return true;
-			else if (String.Equals(exts, ".srt", IC))
+			else if (string.Equals(exts, ".srt", IC))
 				return true;
 			else
 				return false;
@@ -94,13 +90,13 @@ namespace ifme
 			TimeSpan span = DateTime.Now.Subtract(past);
 
 			if (span.Days != 0)
-				return String.Format("{0}d {1}h {2}m {3}s {4}ms", span.Days, span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+				return $"{span.Days}d {span.Hours}h {span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
 			else if (span.Hours != 0)
-				return String.Format("{0}h {1}m {2}s {3}ms", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+				return $"{span.Hours}h {span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
 			else if (span.Minutes != 0)
-				return String.Format("{0}m {1}s {2}ms", span.Minutes, span.Seconds, span.Milliseconds);
+				return $"{span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
 			else
-				return String.Format("{0}s {1}ms", span.Seconds, span.Milliseconds);
+				return $"{span.Seconds}s {span.Milliseconds}ms";
 		}
 	}
 }

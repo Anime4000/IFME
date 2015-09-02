@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using ifme.imouto;
-
-using IniParser;
-using IniParser.Model;
 
 namespace ifme
 {
@@ -23,7 +16,7 @@ namespace ifme
 		public frmOption()
 		{
 			InitializeComponent();
-			this.Icon = imouto.Properties.Resources.control_equalizer_blue;
+			Icon = imouto.Properties.Resources.control_equalizer_blue;
 
 			btnBrowse.Image = imouto.Properties.Resources.folder_explore;
 		}
@@ -52,7 +45,7 @@ namespace ifme
 
 			if (Plugin.AviSynthInstalled)
 			{
-				if (String.Equals(imouto.CRC32.GetFile(Plugin.AviSynthFile), "0x 73A3318"))
+				if (string.Equals(imouto.CRC32.GetFile(Plugin.AviSynthFile), "0x 73A3318"))
 				{
 					lblAviSynthStatus.Text += ", 2.6 MT (2015.02.20)";
 				}
@@ -74,7 +67,7 @@ namespace ifme
 					item.Provider.Name
 				});
 
-				x.Tag = (object)item.Profile.Web;
+				x.Tag = item.Profile.Web;
 
 				lstPlugin.Items.Add(x);
 			}
@@ -83,21 +76,21 @@ namespace ifme
 			foreach (var item in Extension.Items)
 			{
 				ListViewItem x = new ListViewItem(new[] {
-					String.Format("{0} ({1})", item.Name, item.FileName),
+					string.Format("{0} ({1})", item.Name, item.FileName),
 					item.Type,
 					item.Version,
 					item.Developer
 				});
 
-				x.Tag = (object)item.UrlWeb;
+				x.Tag = item.UrlWeb;
 
 				lstExtension.Items.Add(x);
 
 				// List all default extension
-				if (String.Equals(item.Type, "notepad", IC))
-					cboDefaultEditor.Items.Add(String.Format("{0} ({1})", item.Name, item.FileName));
-				else if (String.Equals(item.Type, "benchmark", IC))
-					cboDefaultBenchmark.Items.Add(String.Format("{0} ({1})", item.Name, item.FileName));
+				if (string.Equals(item.Type, "notepad", IC))
+					cboDefaultEditor.Items.Add($"{item.Name} ({item.FileName})");
+				else if (string.Equals(item.Type, "benchmark", IC))
+					cboDefaultBenchmark.Items.Add($"{item.Name} ({item.FileName})");
 			}
 
 			for (int i = 0; i < cboDefaultEditor.Items.Count; i++)
@@ -128,15 +121,15 @@ namespace ifme
 					item.Info.Author
 				});
 
-				x.Tag = (object)item.Info.Web;
+				x.Tag = item.Info.Web;
 
 				lstProfile.Items.Add(x);
 			}
 
 			// Compiler
-			if (String.Equals(Properties.Settings.Default.Compiler, "icc", IC))
+			if (string.Equals(Properties.Settings.Default.Compiler, "icc", IC))
 				rdoCompilerIntel.Checked = true;
-			else if (String.Equals(Properties.Settings.Default.Compiler, "msvc", IC))
+			else if (string.Equals(Properties.Settings.Default.Compiler, "msvc", IC))
 				rdoCompilerMicrosoft.Checked = true;
 			else
 				rdoCompilerGCC.Checked = true;
@@ -181,7 +174,7 @@ namespace ifme
 			GetFolder.ShowNewFolderButton = true;
 			GetFolder.RootFolder = Environment.SpecialFolder.MyComputer;
 
-			if (!String.IsNullOrEmpty(txtTempFolder.Text))
+			if (!string.IsNullOrEmpty(txtTempFolder.Text))
 			{
 				GetFolder.SelectedPath = txtTempFolder.Text;
 			}

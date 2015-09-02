@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
 {
-	public partial class frmDownload : Form
+    public partial class frmDownload : Form
 	{
 		WebClient client = new WebClient();
 
@@ -81,7 +76,7 @@ namespace ifme
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
 			DialogResult = DialogResult.OK;
-			this.Close();
+			Close();
 		}
 
 		void InvokeStatus(string s)
@@ -112,7 +107,7 @@ namespace ifme
 			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
 			double num = Math.Round(bytes / Math.Pow(1024, place), 1);
 
-			return string.Format("{0:0.00} {1}", (Math.Sign(byteCount) * num), IEC[place]);
-		}
+            return $"{(Math.Sign(byteCount) * num):0.00} {IEC[place]}";
+        }
 	}
 }

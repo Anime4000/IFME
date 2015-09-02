@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 
@@ -229,7 +227,7 @@ namespace ifme
 			{
 				foreach (var item in Process.GetProcessesByName(exe))
 				{
-					Run(String.Format("kill -STOP {0} > /dev/null 2>&1", item.Id));
+					Run($"kill -STOP {item.Id} > /dev/null 2>&1");
 				}
 			}
 
@@ -237,7 +235,7 @@ namespace ifme
 			{
 				foreach (var item in Process.GetProcessesByName(exe))
 				{
-					Run(String.Format("kill -CONT {0} > /dev/null 2>&1", item.Id));
+					Run($"kill -CONT {item.Id} > /dev/null 2>&1");
 				}
 			}
 		}

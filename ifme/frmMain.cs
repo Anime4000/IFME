@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -18,7 +15,7 @@ using IniParser.Model;
 
 namespace ifme
 {
-	public partial class frmMain : Form
+    public partial class frmMain : Form
 	{
 		StringComparison IC = StringComparison.OrdinalIgnoreCase; // Just ignore case what ever it is.
 
@@ -26,8 +23,8 @@ namespace ifme
 		{
 			InitializeComponent();
 
-			this.Icon = Properties.Resources.ifme5;
-			this.Text = Global.App.NameFull;
+			Icon = Properties.Resources.ifme5;
+			Text = Global.App.NameFull;
 
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = imouto.Properties.Resources.BannerA;
@@ -71,7 +68,7 @@ namespace ifme
 			// Extension menu (runtime)
 			foreach (var item in Extension.Items)
 			{
-				if (!String.Equals(item.Type, "AviSynth", IC))
+				if (!string.Equals(item.Type, "AviSynth", IC))
 					continue;
 
 				ToolStripMenuItem tsmi = new ToolStripMenuItem();
@@ -103,9 +100,7 @@ namespace ifme
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
 			if (Global.App.NewRelease)
-			{
-				this.Text += " (please update)";
-			}
+				Text += " (please update)";
 		}
 
 		#region Profile
@@ -117,7 +112,7 @@ namespace ifme
 			// Add new object
 			cboProfile.Items.Add("< new >");
 			foreach (var item in Profile.List)
-				cboProfile.Items.Add(String.Format("{0}: {1} {2}", item.Info.Platform, item.Info.Format.ToUpper(), item.Info.Name));
+				cboProfile.Items.Add($"{item.Info.Platform}: {item.Info.Format.ToUpper()} {item.Info.Name}");
 
 			cboProfile.SelectedIndex = 0;
 		}
@@ -185,7 +180,7 @@ namespace ifme
 					}
 				}
 
-				file = Path.Combine(Global.Folder.Profile, String.Format("{0:yyyyMMdd_HHmmss}.ifp", DateTime.Now));
+				file = Path.Combine(Global.Folder.Profile, $"{DateTime.Now:yyyyMMdd_HHmmss}.ifp");
 				platform = "User";
 				// return
 				author = Environment.UserName;
@@ -313,23 +308,23 @@ namespace ifme
 
 			MediaFile AVI = new MediaFile(file);
 
-			Info.Data.IsFileMkv = String.Equals(AVI.format, "Matroska", IC);
+			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
 			Info.Data.IsFileAvs = GetInfo.IsAviSynth(file);
 
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
-				Info.Picture.Resolution = String.Format("{0}x{1}", Video.width, Video.height);
-				Info.Picture.FrameRate = String.Format("{0}", Video.frameRateGet);
-				Info.Picture.BitDepth = String.Format("{0}", Video.bitDepth);
+				Info.Picture.Resolution = string.Format("{0}x{1}", Video.width, Video.height);
+				Info.Picture.FrameRate = string.Format("{0}", Video.frameRateGet);
+				Info.Picture.BitDepth = string.Format("{0}", Video.bitDepth);
 				Info.Picture.Chroma = "420";
 
 				Info.Prop.Duration = Video.duration;
 				Info.Prop.FrameCount = Video.frameCount;
 
-				FileType = String.Format("{0} ({1})", Path.GetExtension(file).ToUpper(), Video.format);
+				FileType = string.Format("{0} ({1})", Path.GetExtension(file).ToUpper(), Video.format);
 
-				if (String.Equals(Video.frameRateMode, "vfr", IC))
+				if (string.Equals(Video.frameRateMode, "vfr", IC))
 					Info.Prop.IsVFR = true;
 
 				if (Video.isInterlace)
@@ -382,7 +377,7 @@ namespace ifme
 			lstQueue.Items.Add(qItem);
 
 			// Print to log
-			InvokeLog(String.Format("File added {0}", Info.Data.File));
+			InvokeLog($"File added {Info.Data.File}");
 		}
 		#endregion
 
@@ -463,7 +458,7 @@ namespace ifme
 			foreach (ListViewItem item in lstQueue.SelectedItems)
 			{
 				item.Remove();
-				InvokeLog(String.Format("File removed {0}", item.SubItems[0].Text));
+				InvokeLog($"File removed {item.SubItems[0].Text}");
 			}
 		}
 		#endregion
@@ -656,8 +651,8 @@ namespace ifme
 					trkVideoRate.TickFrequency = 10;
 
 					lblVideoRateValue.Text = "Ratefactor:";
-					txtVideoValue.Text = String.Format("{0:0.0}", (trkVideoRate.Value = 260) / 10);
-					break;
+					txtVideoValue.Text = $"{(trkVideoRate.Value = 260) / 10:0.0}";
+                    break;
 
 				case 1:
 					lblVideoRateH.Visible = true;
@@ -725,7 +720,7 @@ namespace ifme
 		private void trkVideoRate_ValueChanged(object sender, EventArgs e)
 		{
 			if (cboVideoType.SelectedIndex == 0)
-				txtVideoValue.Text = String.Format("{0:0.0}", Convert.ToDouble(trkVideoRate.Value) * 0.1);
+				txtVideoValue.Text = $"{Convert.ToDouble(trkVideoRate.Value) * 0.1:0.0}";
 			else
 				txtVideoValue.Text = Convert.ToString(trkVideoRate.Value);
 		}
@@ -1192,7 +1187,7 @@ namespace ifme
 					File.Delete(files);
 
 				// Naming
-				string prefix = String.IsNullOrEmpty(Properties.Settings.Default.NamePrefix) ? "" : Properties.Settings.Default.NamePrefix + " ";
+				string prefix = string.IsNullOrEmpty(Properties.Settings.Default.NamePrefix) ? null : Properties.Settings.Default.NamePrefix + " ";
 				string fileout = Path.Combine(Properties.Settings.Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
 
 				// AviSynth aware
@@ -1205,13 +1200,13 @@ namespace ifme
 				{
 					int sc = 0;
 					foreach (var subs in GetStream.Media(filereal, StreamType.Subtitle))
-						TaskManager.Run(String.Format("\"{0}\" -i \"{1}\" -map {2} -y sub{3:0000}_{4}.{5}", Plugin.LIBAV, filereal, subs.ID, sc++, subs.Lang, subs.Format));
-					
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {subs.ID} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
+
 
 					foreach (var font in GetStream.MediaMkv(filereal, StreamType.Attachment))
-						TaskManager.Run(String.Format("\"{0}\" attachments \"{1}\" {2}:\"{3}\"", Plugin.MKVEX, filereal, font.ID, font.File));
+						TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{filereal}\" {font.ID}:\"{font.File}\"");
 
-					TaskManager.Run(String.Format("\"{0}\" chapters \"{1}\" > chapters.xml", Plugin.MKVEX, filereal));
+					TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{filereal}\" > chapters.xml");
 
 					if (bgwEncoding.CancellationPending)
 					{
@@ -1223,16 +1218,16 @@ namespace ifme
 
 				// Audio
 				InvokeQueueStatus(id, "Processing audio");
-				if (String.Equals(item.Audio.Encoder, "No Audio", IC))
+				if (string.Equals(item.Audio.Encoder, "No Audio", IC))
 				{
 					// Do noting
 				}
-				else if (String.Equals(item.Audio.Encoder, "Passthrough (Extract all audio)", IC))
+				else if (string.Equals(item.Audio.Encoder, "Passthrough (Extract all audio)", IC))
 				{
 					int counter = 0;
 					foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
 					{
-						TaskManager.Run(String.Format("\"{0}\" -i \"{1}\" -map {2} -acodec copy -y audio{3:0000}_{4}.{5}", Plugin.LIBAV, filereal, audio.ID, counter++, audio.Lang, audio.Format));
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
 
 						if (bgwEncoding.CancellationPending)
 						{
@@ -1245,15 +1240,15 @@ namespace ifme
 				else
 				{
 					string frequency;
-					if (String.Equals(item.Audio.Frequency, "auto", IC))
+					if (string.Equals(item.Audio.Frequency, "auto", IC))
 						frequency = "";
 					else
 						frequency = "-ar " + item.Audio.Frequency;
 
 					string channel;
-					if (String.Equals(item.Audio.Channel, "auto", IC))
+					if (string.Equals(item.Audio.Channel, "auto", IC))
 						channel = "";
-					else if (String.Equals(item.Audio.Channel, "mono", IC))
+					else if (string.Equals(item.Audio.Channel, "mono", IC))
 						channel = "-ac 1";
 					else
 						channel = "-ac 2";
@@ -1261,13 +1256,13 @@ namespace ifme
 					int counter = 0;
 					foreach (var codec in Plugin.List)
 					{
-						if (String.Equals(codec.Profile.Name, item.Audio.Encoder, IC))
+						if (string.Equals(codec.Profile.Name, item.Audio.Encoder, IC))
 						{
 							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
 							{
-								string outfile = String.Format("audio{0:0000}_{1}", counter++, audio.Lang);
-								TaskManager.Run(String.Format("\"{0}\" -i \"{1}\" -map {2} {3} {4} -y {5}.wav", Plugin.LIBAV, filereal, audio.ID, frequency, channel, outfile));
-								TaskManager.Run(String.Format("\"{0}\" {1} {2} {3} {4} {5}.wav {6} {5}.{7}", codec.App.Bin, codec.Arg.Bitrate, item.Audio.BitRate, item.Audio.Command, codec.Arg.Input, outfile, codec.Arg.Output, codec.App.Ext));
+								string outfile = $"audio{counter++:0000}_{audio.Lang}";
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} -y {outfile}.wav");
+								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
 								File.Delete(Path.Combine(Global.Folder.Temp, outfile + ".wav"));
 
 								if (bgwEncoding.CancellationPending)
@@ -1277,6 +1272,8 @@ namespace ifme
 									return;
 								}
 							}
+
+							break;
 						}
 					}
 				}
@@ -1285,19 +1282,20 @@ namespace ifme
 				InvokeQueueStatus(id, "Processing video");
 				foreach (var video in GetStream.Media(file, StreamType.Video))
 				{
-					string resolution = String.Equals(item.Picture.Resolution, "auto", IC) ? null : String.Format("-s {0}", item.Picture.Resolution);
-					string framerate = String.Equals(item.Picture.FrameRate, "auto", IC) ? null : String.Format("-r {0}", item.Picture.FrameRate);
+					// ffmpeg settings
+					string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? null : $"-s {item.Picture.Resolution}";
+					string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? null : $"-r {item.Picture.FrameRate}";
 					int bitdepth = Convert.ToInt32(item.Picture.BitDepth);
-					string chroma = String.Format("yuv{0}p{1}", item.Picture.Chroma, bitdepth == 10 ? "10le" : null);
-					string yadif = item.Picture.YadifEnable ? String.Format("-vf \"yadif={0}:{1}:{2}\"", item.Picture.YadifMode, item.Picture.YadifField, item.Picture.YadifFlag) : null;
+					string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth == 10 ? "10le" : null)}";
+					string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : null;
 					int framecount = item.Prop.FrameCount;
 					string vsync = "cfr";
 
-					if (String.IsNullOrEmpty(framerate))
+					if (string.IsNullOrEmpty(framerate))
 					{
 						if (item.Prop.IsVFR)
 						{
-							TaskManager.Run(String.Format("\"{0}\" -f -c \"{1}\" timecode", Plugin.FFMS2, file));
+							TaskManager.Run($"\"{Plugin.FFMS2}\" -f -c \"{file}\" timecode");
 							vsync = "vfr";
 						}
 					}
@@ -1318,25 +1316,15 @@ namespace ifme
 						framecount = GetStream.AviSynthFrameCount(file);
 					
 					// x265 settings
-					string preset = String.Format("-p {0}", item.Video.Preset);
-					string tune = String.Equals(item.Video.Tune, "off", IC) ? null : String.Format("--tune {0}", item.Video.Tune);
+					string preset = item.Video.Preset;
+					string tune = string.Equals(item.Video.Tune, "off", IC) ? null : $"--tune {item.Video.Tune}";
 					int type = item.Video.Type;
 					int pass;
-					string ratef;
 					string value = item.Video.Value;
 					string command = item.Video.Command;
 
-					if (type == 0)
-						ratef = String.Format("--crf {0}", value);
-					else if (type == 1)
-						ratef = String.Format("--qp {0}", value);
-					else
-						ratef = String.Format("--bitrate {0}", value);
-					
-
-					string HEVC = bitdepth == 8 ? Plugin.HEVCL : Plugin.HEVCH;
-					string decoder = item.Data.IsFileAvs ? String.Format("\"{0}\" video \"{1}\"", Plugin.AVS4P, file) : String.Format("\"{0}\" -i \"{1}\" -vsync {2} -f yuv4mpegpipe -pix_fmt {3} -strict -1 {4} {5} {6} -", Plugin.LIBAV, file, vsync, chroma, resolution, framerate, yadif);
-					string encoder = String.Format("\"{0}\" --y4m - {1} {2} {3} -o video0000_{4}.hevc", HEVC, preset, ratef, command, video.Lang);
+					string decoder = item.Data.IsFileAvs ? $"\"{Plugin.AVS4P}\" video \"{file}\"" : $"\"{Plugin.LIBAV}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} -";
+					string encoder = $"\"{(bitdepth == 8 ? Plugin.HEVCL : Plugin.HEVCH)}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
 
 					// Encoding start
 					if (type-- >= 3) // multi pass
@@ -1351,10 +1339,10 @@ namespace ifme
 								pass = 3;
 
 							if (i == 1) // get actual frame count
-								framecount = GetStream.FrameCount(Path.Combine(tempdir, String.Format("video0000_{0}.hevc", video.Lang)));
+								framecount = GetStream.FrameCount(Path.Combine(tempdir, $"video0000_{video.Lang}.hevc"));
 
-							Console.WriteLine("Pass {0} of {1}", i + 1, type + 1); // human read no index
-							TaskManager.Run(String.Format("{0} 2> {1} | {2} -f {3} --pass {4}", decoder, NULL, encoder, framecount, pass));
+							Console.WriteLine($"Pass {i + 1} of {type + 1}"); // human read no index
+							TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount} --pass {pass}");
 
 							if (bgwEncoding.CancellationPending)
 							{
@@ -1366,7 +1354,7 @@ namespace ifme
 					}
 					else
 					{
-						TaskManager.Run(String.Format("{0} 2> {1} | {2} -f {3}", decoder, NULL, encoder, framecount));
+						TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount}");
 
 						if (bgwEncoding.CancellationPending)
 						{
@@ -1385,7 +1373,7 @@ namespace ifme
 				{
 					fileout += ".mkv";
 
-					string tags = String.Format(imouto.Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
+					string tags = string.Format(imouto.Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
 					string cmdvideo = null;
 					string cmdaudio = null;
 					string cmdsubs = null;
@@ -1394,31 +1382,31 @@ namespace ifme
 
 					foreach (var tc in Directory.GetFiles(tempdir, "timecode_*"))
 					{
-						cmdvideo += String.Format("--timecodes 0:\"{0}\" ", tc); break;
+						cmdvideo += $"--timecodes 0:\"{tc}\" "; break;
 					}
 
 					foreach (var video in Directory.GetFiles(tempdir, "video*"))
 					{
-						cmdvideo += String.Format("--language 0:{0} \"{1}\" ", GetInfo.FileLang(video), video);
+						cmdvideo += $"--language 0:{GetInfo.FileLang(video)} \"{video}\" ";
 					}
 
 					foreach (var audio in Directory.GetFiles(tempdir, "audio*"))
 					{
-						cmdaudio += String.Format("--language 0:{0} \"{1}\" ", GetInfo.FileLang(audio), audio);
+						cmdaudio += $"--language 0:{GetInfo.FileLang(audio)} \"{audio}\" ";
 					}
 
 					if (item.SubtitleEnable)
 					{
 						foreach (var subs in item.Subtitle)
 						{
-							cmdsubs += String.Format("--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{0} \"{1}\" ", subs.Lang, subs.File);
+							cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{subs.Lang} \"{subs.File}\" ";
 						}
 					}
 					else
 					{
 						foreach (var subs in Directory.GetFiles(tempdir, "sub*"))
 						{
-							cmdsubs += String.Format("--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{0} \"{1}\" ", GetInfo.FileLang(subs), subs);
+							cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{GetInfo.FileLang(subs)} \"{subs}\" ";
 						}
 					}
 
@@ -1426,14 +1414,14 @@ namespace ifme
 					{
 						foreach (var attach in item.Attach)
 						{
-							cmdattach += String.Format("--attachment-mime-type {0} --attachment-description {1} --attach-file \"{2}\" ", attach.MIME, attach.Comment, attach.File);
+							cmdattach += $"--attachment-mime-type {attach.MIME} --attachment-description {attach.Comment} --attach-file \"{attach.File}\" ";
 						}
 					}
 					else
 					{
 						foreach (var attach in Directory.GetFiles(tempdir, "font*.*f"))
 						{
-							cmdattach += String.Format("--attachment-description No --attach-file \"{0}\" ", attach);
+							cmdattach += $"--attachment-description No --attach-file \"{attach}\" ";
 						}
 					}
 
@@ -1441,11 +1429,11 @@ namespace ifme
 					{
 						FileInfo ChapLen = new FileInfo(Path.Combine(tempdir, "chapters.xml"));
 						if (ChapLen.Length > 256)
-							cmdchapter = String.Format("--chapters \"{0}\"", Path.Combine(tempdir, "chapters.xml"));
+							cmdchapter = $"--chapters \"{Path.Combine(tempdir, "chapters.xml")}\"";
 					}
 
 					File.WriteAllText(Path.Combine(tempdir, "tags.xml"), tags);
-					TaskManager.Run(String.Format("\"{0}\" -o \"{1}\" -t 0:tags.xml --disable-track-statistics-tags {2} {3} {4} {5} {6}", Plugin.MKVME, fileout, cmdvideo, cmdaudio, cmdsubs, cmdattach, cmdchapter));
+					TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" -t 0:tags.xml --disable-track-statistics-tags {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
 				}
 				else
 				{
@@ -1462,22 +1450,22 @@ namespace ifme
 
 					foreach (var video in Directory.GetFiles(tempdir, "video*"))
 					{
-						cmdvideo += String.Format("-add \"{0}#video:name=IFME:lang={1}:fmt=HEVC\" ", video, GetInfo.FileLang(video));
+						cmdvideo += $"-add \"{video}#video:name=IFME:lang={GetInfo.FileLang(video)}:fmt=HEVC\" ";
 					}
 
 					foreach (var audio in Directory.GetFiles(tempdir, "audio*"))
 					{
-						cmdaudio += String.Format("-add \"{0}#audio:name=IFME:lang={1}\" ", audio, GetInfo.FileLang(audio));
+						cmdaudio += $"-add \"{audio}#audio:name=IFME:lang={GetInfo.FileLang(audio)}\" ";
 					}
 
-					if (String.IsNullOrEmpty(timecode))
+					if (string.IsNullOrEmpty(timecode))
 					{
-						TaskManager.Run(String.Format("\"{0}\" {1} {2} -itags tool=\"{3}\" -new \"{4}\"", Plugin.MP4BX, cmdvideo, cmdaudio, Global.App.NameFull, fileout));
+						TaskManager.Run($"\"{Plugin.MP4BX}\" {cmdvideo} {cmdaudio} -itags tool=\"{Global.App.NameFull}\" -new \"{fileout}\"");
 					}
 					else
 					{
-						TaskManager.Run(String.Format("\"{0}\" {1} {2} -itags tool=\"{3}\" -new _temp.mp4", Plugin.MP4BX, cmdvideo, cmdaudio, Global.App.NameFull));
-						TaskManager.Run(String.Format("\"{0}\" -t \"{1}\" _temp.mp4 -o \"{2}\"", Plugin.MP4FP, timecode, fileout));
+						TaskManager.Run($"\"{Plugin.MP4BX}\" {cmdvideo} {cmdaudio} -itags tool=\"{Global.App.NameFull}\" -new _desu.mp4");
+						TaskManager.Run($"\"{Plugin.MP4FP}\" -t \"{timecode}\" _desu.mp4 -o \"{fileout}\"");
 					}
 				}
 
@@ -1490,10 +1478,10 @@ namespace ifme
 
 				string timeDone = GetInfo.Duration(SessionCurrent);
 				InvokeQueueDone(id, timeDone);
-				InvokeLog(String.Format("Completed in {0} for {1}", timeDone, item.Data.File));
+				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
 			}
 
-			InvokeLog(String.Format("All Queue Completed in {0}", GetInfo.Duration(Session)));
+			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
 		}
 
 		private void bgwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -1524,7 +1512,7 @@ namespace ifme
 
 		void InvokeQueueStatus(int index, string s)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = s));
 			else
 				lstQueue.Items[index].SubItems[4].Text = s;
@@ -1532,7 +1520,7 @@ namespace ifme
 
 		void InvokeQueueAbort(int index)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = "Abort!"));
 			else
 				lstQueue.Items[index].SubItems[4].Text = "Abort!";
@@ -1540,13 +1528,13 @@ namespace ifme
 
 		void InvokeQueueDone(int index, string message)
 		{
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].Checked = false));
 			else
 				lstQueue.Items[index].Checked = false;
 
-			string a = String.Format("Finished in {0}", message);
-			if (this.InvokeRequired)
+			string a = $"Finished in {message}";
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = a));
 			else
 				lstQueue.Items[index].SubItems[4].Text = a;
@@ -1554,9 +1542,9 @@ namespace ifme
 
 		void InvokeLog(string message)
 		{
-			message = String.Format("[{0:yyyy/MMM/dd HH:mm:ss}]: {1}\r\n", DateTime.Now, message);
+			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}]: {message}\r\n";
 
-			if (this.InvokeRequired)
+			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => txtLog.AppendText(message)));
 			else
 				txtLog.AppendText(message);
@@ -1604,7 +1592,7 @@ namespace ifme
 			{
 				foreach (var item in Directory.GetFiles(Path.Combine(Properties.Settings.Default.DirTemp), "video*"))
 				{
-					TaskManager.Run(String.Format("\"{0}\" \"{1}\" > {2} 2>&1", Plugin.FPLAY, item, OS.Null));
+					TaskManager.Run($"\"{Plugin.FPLAY}\" \"{item}\" > {OS.Null} 2>&1");
 				}
 			}
 			else
@@ -1734,7 +1722,7 @@ namespace ifme
 						UTF8Encoding UTF8 = new UTF8Encoding(false);
 						string newfile = Path.Combine(Path.GetDirectoryName(item.Data.File), Path.GetFileNameWithoutExtension(item.Data.File)) + ".avs";
 
-						File.WriteAllText(newfile, String.Format("DirectShowSource(\"{0}\")", item.Data.File), UTF8);
+						File.WriteAllText(newfile, $"DirectShowSource(\"{item.Data.File}\")", UTF8);
 
 						lstQueue.SelectedItems[0].SubItems[0].Text = GetInfo.FileName(newfile);
 						lstQueue.SelectedItems[0].SubItems[1].Text = GetInfo.FileSize(newfile);

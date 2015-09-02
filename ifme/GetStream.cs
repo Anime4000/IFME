@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-
-using MediaInfoDotNet;
 
 namespace ifme
 {
@@ -59,7 +56,7 @@ namespace ifme
 				return Items;
 			}
 
-			TaskManager.Run(String.Format("\"{0}\" \"{1}\" 2> streams.id", Plugin.PROBE, file));
+			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> streams.id");
 			foreach (var item in File.ReadAllLines(Path.Combine(Global.Folder.Temp, "streams.id")))
 			{
 				if (item.Contains("Stream #"))
@@ -125,7 +122,7 @@ namespace ifme
 					break;
 			}
 
-			TaskManager.Run(String.Format("\"{0}\" -i \"{1}\" > list.id", Path.Combine(Global.Folder.Plugins, "mkvtool", "mkvmerge"), file));
+			TaskManager.Run($"\"{Path.Combine(Global.Folder.Plugins, "mkvtool", "mkvmerge")}\" -i \"{file}\" > list.id");
 			foreach (var x in File.ReadAllLines(Path.Combine(Global.Folder.Temp, "list.id")))
 			{
 				if (kind == StreamType.Attachment)
@@ -142,7 +139,7 @@ namespace ifme
 							if (f[i] == ':')
 								break;
 
-							if (Char.IsNumber(f[i]))
+							if (char.IsNumber(f[i]))
 								id += f[i];
 						}
 
@@ -201,7 +198,7 @@ namespace ifme
 		public static int FrameCount(string file)
 		{
 			Console.WriteLine("Reading encoded total frame, please wait...");
-			TaskManager.Run(String.Format("\"{0}\" \"{1}\" -hide_banner -show_streams -count_frames -select_streams v:0 > streams.ff 2>&1", Plugin.PROBE, file));
+			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" -hide_banner -show_streams -count_frames -select_streams v:0 > streams.ff 2>&1");
 
 			string frame = null;
 			bool equal = false;
@@ -274,7 +271,7 @@ namespace ifme
 			Console.WriteLine("Please wait while IFME analysing AviSynth file...");
 			Console.ResetColor();
 
-			TaskManager.Run(String.Format("\"{0}\" info \"{1}\" > avisynth.id", Plugin.AVS4P, file));
+			TaskManager.Run($"\"{Plugin.AVS4P}\" info \"{file}\" > avisynth.id");
 			string[] result = File.ReadAllLines(Path.Combine(Global.Folder.Temp, "avisynth.id"));
 
 			foreach (var item in result)
@@ -291,7 +288,7 @@ namespace ifme
 					}
 				}
 			}
-			return String.IsNullOrEmpty(test) ? 0 : Convert.ToInt32(test);
+			return string.IsNullOrEmpty(test) ? 0 : Convert.ToInt32(test);
 		}
 	}
 }

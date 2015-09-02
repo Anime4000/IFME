@@ -29,8 +29,8 @@ namespace ifme
 		public frmSplashScreen()
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.ifme5;
-            this.BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen6A : Properties.Resources.SplashScreen6B;
+			Icon = Properties.Resources.ifme5;
+			BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen6A : Properties.Resources.SplashScreen6B;
 
 			client.DownloadProgressChanged += client_DownloadProgressChanged;
 			client.DownloadFileCompleted += client_DownloadFileCompleted;
