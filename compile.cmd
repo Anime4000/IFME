@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 @title Build IFME and Release!
 
 cd "%~dp0"
