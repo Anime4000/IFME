@@ -26,9 +26,9 @@ AllowNoIcons=yes
 ArchitecturesInstallIn64BitMode=x64
 
 SourceDir=build
-LicenseFile=..\LICENSE.txt
-InfoBeforeFile=..\PATENTS.txt
-InfoAfterFile=..\CHANGELOG.txt
+LicenseFile=..\license.txt
+InfoBeforeFile=..\patents.txt
+InfoAfterFile=..\changelog.txt
 
 Compression=lzma2/ultra64
 SolidCompression=yes
