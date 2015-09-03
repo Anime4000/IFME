@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 @title Build IFME and Release!
 
 cd "%~dp0"
@@ -29,10 +29,12 @@ echo DELETEING %BUILDDIR%!
 rmdir /s /q %BUILDDIR%
 mkdir "%BUILDDIR%"
 timeout /t 1 >nul
+echo.
 
 echo COMPILING IFME (VISUAL STUDIO 2015)
 start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBuild.exe" /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=%CompileMode%
 timeout /t 3 >nul
+echo.
 
 echo CLEAN PREVIOUS BUILD
 del /f /q ifme\bin\%CompileMode%\ifme.pdb
@@ -43,9 +45,17 @@ del /f /q ifme\bin\%CompileMode%\ifme.vshost.exe.manifest
 del /f /q ifme\bin\%CompileMode%\ifme.imouto.pdb
 del /f /q ifme\bin\%CompileMode%\metauser.if
 timeout /t 3 >nul
+echo.
 
 echo COPY IFME MAIN FILE
 robocopy ifme\bin\%CompileMode% %BUILDDIR% /E
+echo.
+
+echo COPY DOCUMENTS
+copy changelog.txt %BUILDDIR%
+copy license.txt %BUILDDIR%
+copy patents.txt %BUILDDIR%
+echo.
 
 echo CLEAN UP
 del /f /s /q %BUILDDIR%\*.ifz
