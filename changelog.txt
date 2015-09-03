@@ -1,3 +1,23 @@
+Version 5.0.6.1 (Twin Angel)
+---------------
+Welcome to IFME Go aka version 5, feel queue encoding.
+
+[new] Re-write code, better & faster
+[new] Simple User Interface yet better
+[new] IFME 3.x Console style is back, low RAM usage
+[new] Extension support, allow extend IFME capabilities
+[new] x265 compiled binary of choice
+[new] Benchmark for testing CPU and x265 compiled
+[new] AviSynth installation status
+[fixed] No longer 1 subtitle per video
+[fixed] No longer 1 font collection for all video
+[added] Native AviSynth support
+[added] "auto" resolution and frame rate
+[change] Addons API
+[change] Profiles API
+[issue] Multi-language not yet implimented
+
+
 Version 4.10 (Twin Angel)
 ------------
 [fixed] Accepting longer file name and path
