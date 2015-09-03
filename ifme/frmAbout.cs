@@ -15,7 +15,7 @@ namespace ifme
 		HashSet<string> Dev = new HashSet<string>();
 		HashSet<string> Sup = new HashSet<string>(File.ReadAllLines("metauser.if"));
 
-		SoundPlayer epic = new SoundPlayer("epic.wav");
+		SoundPlayer epic = new SoundPlayer(Path.Combine("sounds", "epic.wav"));
 
 		public frmAbout()
 		{
