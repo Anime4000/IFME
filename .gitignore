@@ -223,4 +223,4 @@ prerequisite/windows/tools
 prerequisite/linux/*.so.*
 prerequisite/linux/7za
 prerequisite/linux/addons
-_build
+build
