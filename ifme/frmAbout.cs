@@ -20,7 +20,7 @@ namespace ifme
 		public frmAbout()
 		{
 			InitializeComponent();
-			this.Icon = imouto.Properties.Resources.application_lightning;
+			this.Icon = Properties.Resources.application_lightning;
 		}
 
 		private void frmAbout_Load(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace ifme
 			panelCredit.Height = lblLast.Bottom;
 
 			panelCredit.Top = panelRoll.Height;
-			pictBanner.Image = imouto.Properties.Resources.AboutBanner;
+			pictBanner.Image = Properties.Resources.AboutBanner;
 		}
 
 		private void frmAbout_Shown(object sender, EventArgs e)

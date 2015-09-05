@@ -61,6 +61,126 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AboutBanner {
+            get {
+                object obj = ResourceManager.GetObject("AboutBanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon application_lightning {
+            get {
+                object obj = ResourceManager.GetObject("application_lightning", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arw_dn {
+            get {
+                object obj = ResourceManager.GetObject("arw_dn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arw_up {
+            get {
+                object obj = ResourceManager.GetObject("arw_up", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerA {
+            get {
+                object obj = ResourceManager.GetObject("BannerA", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerB {
+            get {
+                object obj = ResourceManager.GetObject("BannerB", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BannerC {
+            get {
+                object obj = ResourceManager.GetObject("BannerC", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon control_equalizer_blue {
+            get {
+                object obj = ResourceManager.GetObject("control_equalizer_blue", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_pause_blue {
+            get {
+                object obj = ResourceManager.GetObject("control_pause_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_play_blue {
+            get {
+                object obj = ResourceManager.GetObject("control_play_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap control_stop_blue {
+            get {
+                object obj = ResourceManager.GetObject("control_stop_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap disk {
+            get {
+                object obj = ResourceManager.GetObject("disk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon drive_network {
@@ -71,12 +191,72 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap film_add {
+            get {
+                object obj = ResourceManager.GetObject("film_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap film_delete {
+            get {
+                object obj = ResourceManager.GetObject("film_delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folder_explore {
+            get {
+                object obj = ResourceManager.GetObject("folder_explore", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon ifme5 {
             get {
                 object obj = ResourceManager.GetObject("ifme5", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap information {
+            get {
+                object obj = ResourceManager.GetObject("information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap page_add {
+            get {
+                object obj = ResourceManager.GetObject("page_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap page_delete {
+            get {
+                object obj = ResourceManager.GetObject("page_delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -96,6 +276,38 @@ namespace ifme.Properties {
         internal static System.Drawing.Bitmap SplashScreen6B {
             get {
                 object obj = ResourceManager.GetObject("SplashScreen6B", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF8&quot;?&gt;
+        ///&lt;!DOCTYPE Tags SYSTEM &quot;matroskatags.dtd&quot;&gt;
+        ///&lt;Tags&gt;
+        ///	&lt;Tag&gt;
+        ///		&lt;Simple&gt;
+        ///			&lt;Name&gt;Encoder application&lt;/Name&gt;
+        ///			&lt;String&gt;{0}&lt;/String&gt;
+        ///		&lt;/Simple&gt;
+        ///		&lt;Simple&gt;
+        ///			&lt;Name&gt;Encoder library&lt;/Name&gt;
+        ///			&lt;String&gt;{1}&lt;/String&gt;
+        ///		&lt;/Simple&gt;
+        ///	&lt;/Tag&gt;
+        ///&lt;/Tags&gt;.
+        /// </summary>
+        internal static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wrench {
+            get {
+                object obj = ResourceManager.GetObject("wrench", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -214,8 +214,10 @@ $RECYCLE.BIN/
 *.msp
 
 # IFME build files.
+build
 installer/*.mp3
 installer/*.dll
+references/*.dll
 prerequisite/windows/*.dll
 prerequisite/windows/*.exe
 prerequisite/windows/addons
@@ -223,4 +225,3 @@ prerequisite/windows/tools
 prerequisite/linux/*.so.*
 prerequisite/linux/7za
 prerequisite/linux/addons
-build

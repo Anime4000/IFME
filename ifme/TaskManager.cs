@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.IO;
-
-using ifme.imouto;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Globalization;
+
+using ifmelib;
 
 [Flags()]
 public enum ThreadAccess : int

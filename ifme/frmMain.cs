@@ -7,11 +7,10 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 
-using ifme.imouto;
-
-using MediaInfoDotNet;
+using ifmelib;
 using IniParser;
 using IniParser.Model;
+using MediaInfoDotNet;
 
 namespace ifme
 {
@@ -27,30 +26,30 @@ namespace ifme
 			Text = Global.App.NameFull;
 
 			pbxRight.Parent = pbxLeft;
-			pbxLeft.Image = imouto.Properties.Resources.BannerA;
-			pbxRight.Image = Global.GetRandom % 2 != 0 ? imouto.Properties.Resources.BannerB : imouto.Properties.Resources.BannerC;
+			pbxLeft.Image = Properties.Resources.BannerA;
+			pbxRight.Image = Global.GetRandom % 2 != 0 ? Properties.Resources.BannerB : Properties.Resources.BannerC;
 
-			btnQueueAdd.Image = imouto.Properties.Resources.film_add;
-			btnQueueRemove.Image = imouto.Properties.Resources.film_delete;
+			btnQueueAdd.Image = Properties.Resources.film_add;
+			btnQueueRemove.Image = Properties.Resources.film_delete;
 
-			btnQueueMoveUp.Image = imouto.Properties.Resources.arw_up;
-			btnQueueMoveDown.Image = imouto.Properties.Resources.arw_dn;
+			btnQueueMoveUp.Image = Properties.Resources.arw_up;
+			btnQueueMoveDown.Image = Properties.Resources.arw_dn;
 
-			btnQueueStart.Image = imouto.Properties.Resources.control_play_blue;
-			btnQueueStop.Image = imouto.Properties.Resources.control_stop_blue;
-			btnQueuePause.Image = imouto.Properties.Resources.control_pause_blue;
+			btnQueueStart.Image = Properties.Resources.control_play_blue;
+			btnQueueStop.Image = Properties.Resources.control_stop_blue;
+			btnQueuePause.Image = Properties.Resources.control_pause_blue;
 
-			btnSubAdd.Image = imouto.Properties.Resources.page_add;
-			btnSubRemove.Image = imouto.Properties.Resources.page_delete;
+			btnSubAdd.Image = Properties.Resources.page_add;
+			btnSubRemove.Image = Properties.Resources.page_delete;
 
-			btnAttachAdd.Image = imouto.Properties.Resources.page_add;
-			btnAttachRemove.Image = imouto.Properties.Resources.page_delete;
+			btnAttachAdd.Image = Properties.Resources.page_add;
+			btnAttachRemove.Image = Properties.Resources.page_delete;
 
-			btnProfileSave.Image = imouto.Properties.Resources.disk;
-			btnBrowse.Image = imouto.Properties.Resources.folder_explore;
+			btnProfileSave.Image = Properties.Resources.disk;
+			btnBrowse.Image = Properties.Resources.folder_explore;
 
-			btnConfig.Image = imouto.Properties.Resources.wrench;
-			btnAbout.Image = imouto.Properties.Resources.information;
+			btnConfig.Image = Properties.Resources.wrench;
+			btnAbout.Image = Properties.Resources.information;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -1373,7 +1372,7 @@ namespace ifme
 				{
 					fileout += ".mkv";
 
-					string tags = string.Format(imouto.Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
+					string tags = string.Format(Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
 					string cmdvideo = null;
 					string cmdaudio = null;
 					string cmdsubs = null;

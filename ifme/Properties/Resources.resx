@@ -130,4 +130,77 @@
   <data name="SplashScreen6B" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SplashScreen6B.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AboutBanner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AboutBanner.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="application_lightning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application_lightning.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arw_dn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arw_dn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arw_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arw_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BannerA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BannerA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BannerB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BannerB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BannerC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BannerC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="control_equalizer_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\control_equalizer_blue.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="control_pause_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\control_pause_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="control_play_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\control_play_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="control_stop_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\control_stop_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="film_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\film_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="film_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\film_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_explore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder_explore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\information.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF8"?&gt;
+&lt;!DOCTYPE Tags SYSTEM "matroskatags.dtd"&gt;
+&lt;Tags&gt;
+	&lt;Tag&gt;
+		&lt;Simple&gt;
+			&lt;Name&gt;Encoder application&lt;/Name&gt;
+			&lt;String&gt;{0}&lt;/String&gt;
+		&lt;/Simple&gt;
+		&lt;Simple&gt;
+			&lt;Name&gt;Encoder library&lt;/Name&gt;
+			&lt;String&gt;{1}&lt;/String&gt;
+		&lt;/Simple&gt;
+	&lt;/Tag&gt;
+&lt;/Tags&gt;</value>
+  </data>
+  <data name="wrench" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wrench.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

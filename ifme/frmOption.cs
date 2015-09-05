@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using ifme.imouto;
+using ifmelib;
 
 namespace ifme
 {
@@ -16,9 +16,9 @@ namespace ifme
 		public frmOption()
 		{
 			InitializeComponent();
-			Icon = imouto.Properties.Resources.control_equalizer_blue;
+			Icon = Properties.Resources.control_equalizer_blue;
 
-			btnBrowse.Image = imouto.Properties.Resources.folder_explore;
+			btnBrowse.Image = Properties.Resources.folder_explore;
 		}
 
 		private void frmOption_Load(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace ifme
 
 			if (Plugin.AviSynthInstalled)
 			{
-				if (string.Equals(imouto.CRC32.GetFile(Plugin.AviSynthFile), "0x 73A3318"))
+				if (string.Equals(CRC32.GetFile(Plugin.AviSynthFile), "0x073A3318"))
 				{
 					lblAviSynthStatus.Text += ", 2.6 MT (2015.02.20)";
 				}

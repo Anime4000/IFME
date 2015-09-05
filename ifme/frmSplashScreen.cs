@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
 
-using ifme.imouto;
+using ifmelib;
 
 using static System.Console;
 

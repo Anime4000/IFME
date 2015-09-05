@@ -36,7 +36,7 @@ namespace ifme
 				var e = new Extension();
 				e.FileName = filename;
 				e.Name = file.FileDescription;
-				e.Developer = String.Format("{0} ({1})", file.CompanyName, file.LegalCopyright);
+				e.Developer = $"{file.CompanyName} ({file.LegalCopyright})";
 				e.Type = file.Comments;
 				e.Version = file.FileVersion;
 				e.UrlWeb = inet[0];
