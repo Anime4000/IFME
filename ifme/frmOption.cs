@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using ifmelib;
-
 namespace ifme
 {
 	public partial class frmOption : Form

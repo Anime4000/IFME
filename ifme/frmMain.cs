@@ -7,7 +7,6 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 
-using ifmelib;
 using IniParser;
 using IniParser.Model;
 using MediaInfoDotNet;

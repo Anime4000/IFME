@@ -7,8 +7,6 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using System.Globalization;
 
-using ifmelib;
-
 [Flags()]
 public enum ThreadAccess : int
 {

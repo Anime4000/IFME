@@ -52,9 +52,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ifmelib">
-      <HintPath>..\references\ifmelib.dll</HintPath>
-    </Reference>
     <Reference Include="INIFileParser">
       <HintPath>..\references\INIFileParser.dll</HintPath>
     </Reference>
@@ -72,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CRC32.cs" />
     <Compile Include="frmDownload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +110,7 @@
     <Compile Include="frmInputBox.Designer.cs">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="OS.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />

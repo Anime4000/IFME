@@ -6,8 +6,6 @@ using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
 
-using ifmelib;
-
 using static System.Console;
 
 enum DownloadType
