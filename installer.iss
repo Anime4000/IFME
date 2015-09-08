@@ -2,10 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "5.0.6.1"
+#define MyAppVersion "5.0.7.2"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
+#define Arch "x64"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -23,7 +24,7 @@ DefaultDirName={pf64}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesInstallIn64BitMode={#Arch}
 
 SourceDir=build
 LicenseFile=..\license.txt
@@ -33,17 +34,12 @@ InfoAfterFile=..\changelog.txt
 Compression=lzma2/ultra64
 SolidCompression=yes
 
-;BackColor=clBlue
-;BackColor2=clBlack
-WindowVisible=no
-;WindowShowCaption=no
-
 SetupIconFile=..\installer\image_unboxing.ico
 WizardImageFile=..\installer\image_banner.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=D:\
-OutputBaseFilename=x265ui-{#MyAppVersion}-x64_setup
+OutputBaseFilename=x265ui-{#MyAppVersion}-{#Arch}_setup
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -55,16 +51,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-
-[Files]
-Source: "..\installer\Bass.dll"; Flags: dontcopy
-Source: "..\installer\AudioFile.mp3"; Flags: dontcopy
-; For installer music
-
-[Files]
-Source: "..\installer\image_background.bmp"; Flags: dontcopy
-; For installer background
-
 
 [Icons]
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "x265 GUI Encoder with Internet Friendly Media Encoder!"; Tasks: desktopicon
@@ -137,85 +123,4 @@ begin
         result := false;
     end else
         result := true;
-end;
-
-
-
-[Code]
-// Ref: http://stackoverflow.com/questions/12359859/playing-sound-during-an-inno-setup-install
-const  
-  BASS_SAMPLE_LOOP = 4;
-  BASS_UNICODE = $80000000;
-  BASS_CONFIG_GVOL_STREAM = 5;
-const
-  #ifndef UNICODE
-    EncodingFlag = 0;
-  #else
-    EncodingFlag = BASS_UNICODE;
-  #endif
-type
-  HSTREAM = DWORD;
-
-function BASS_Init(device: LongInt; freq, flags: DWORD; 
-  win: HWND; clsid: Cardinal): BOOL;
-  external 'BASS_Init@files:bass.dll stdcall';
-function BASS_StreamCreateFile(mem: BOOL; f: string; offset1: DWORD; 
-  offset2: DWORD; length1: DWORD; length2: DWORD; flags: DWORD): HSTREAM;
-  external 'BASS_StreamCreateFile@files:bass.dll stdcall';
-function BASS_ChannelPlay(handle: DWORD; restart: BOOL): BOOL; 
-  external 'BASS_ChannelPlay@files:bass.dll stdcall';
-function BASS_SetConfig(option: DWORD; value: DWORD ): BOOL;
-  external 'BASS_SetConfig@files:bass.dll stdcall';
-function BASS_Free: BOOL;
-  external 'BASS_Free@files:bass.dll stdcall';
-
-// Background, ref: http://www.vincenzo.net/isxkb/index.php?title=Background_image_during_the_installation
-function GetSystemMetrics(nIndex:Integer):Integer;
-external 'GetSystemMetrics@user32.dll stdcall'; //end
-
-procedure InitializeWizard;
-
-var
-  StreamHandle: HSTREAM;
-
-  // Background code
-  width,height: Integer;
-  BackgroundBitmapImage: TBitmapImage;
-  s: string; // end
-begin
-  ExtractTemporaryFile('AudioFile.mp3');
-  if BASS_Init(-1, 44100, 0, 0, 0) then
-  begin
-    StreamHandle := BASS_StreamCreateFile(False, 
-      ExpandConstant('{tmp}\AudioFile.mp3'), 0, 0, 0, 0, 
-      EncodingFlag or BASS_SAMPLE_LOOP);
-    BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, 10000);
-    BASS_ChannelPlay(StreamHandle, False);
-  end;
-
-  // Background code
-  ExtractTemporaryFile('image_background.bmp');
-  s:=ExpandConstant('{tmp}')+'\image_background.bmp';
-  WizardForm.Position:=poScreenCenter;
-  MainForm.BORDERSTYLE:=bsNone;
-  width:=GetSystemMetrics(0);
-  height:=GetSystemMetrics(1);
-  MainForm.Width:=width;
-  MainForm.Height:=height;
-  width:=MainForm.ClientWidth;
-  height:=MainForm.ClientHeight;
-  MainForm.Left := 0;
-  MainForm.Top := 0;
-
-  BackgroundBitmapImage := TBitmapImage.Create(MainForm);
-  BackgroundBitmapImage.Bitmap.LoadFromFile(s);
-  BackgroundBitmapImage.Align := alClient;
-  BackgroundBitmapImage.Parent := MainForm;
-  BackgroundBitmapImage.Stretch :=True;
-  MainForm.Visible:=True; // end
-end;
-
-procedure DeinitializeSetup;
-begin
-  BASS_Free;
 end;

@@ -1709,34 +1709,33 @@ namespace ifme
 
 		private void tsmiQueueAviSynthGenerate_Click(object sender, EventArgs e)
 		{
-			if (lstQueue.SelectedItems.Count == 1)
+			var msgbox = MessageBox.Show("Do you want to change selected file into an AviSynth script\n(used for bypass FFmpeg decoder, unsupported file will be skip)");
+			if (msgbox == DialogResult.OK)
 			{
-				var item = (lstQueue.SelectedItems[0].Tag as Queue);
-				if (!item.Data.IsFileAvs)
+				if (lstQueue.SelectedItems.Count > 0)
 				{
-					var msgbox = MessageBox.Show("Do you want to change this file into an AviSynth script\n(used for bypass FFmpeg decoder)");
-					if (msgbox == DialogResult.OK)
+					foreach (ListViewItem items in lstQueue.SelectedItems)
 					{
-						UTF8Encoding UTF8 = new UTF8Encoding(false);
-						string newfile = Path.Combine(Path.GetDirectoryName(item.Data.File), Path.GetFileNameWithoutExtension(item.Data.File)) + ".avs";
+						var item = (items.Tag as Queue);
+						if (!item.Data.IsFileAvs)
+						{
+							UTF8Encoding UTF8 = new UTF8Encoding(false);
+							string newfile = Path.Combine(Path.GetDirectoryName(item.Data.File), Path.GetFileNameWithoutExtension(item.Data.File)) + ".avs";
 
-						File.WriteAllText(newfile, $"DirectShowSource(\"{item.Data.File}\")", UTF8);
+							File.WriteAllText(newfile, $"{Properties.Settings.Default.AvsDecoder}(\"{item.Data.File}\")", UTF8);
 
-						lstQueue.SelectedItems[0].SubItems[0].Text = GetInfo.FileName(newfile);
-						lstQueue.SelectedItems[0].SubItems[1].Text = GetInfo.FileSize(newfile);
-						lstQueue.SelectedItems[0].SubItems[2].Text = "AviSynth Script";
-						item.Data.IsFileAvs = true;
-						item.Data.File = newfile;
+							items.SubItems[0].Text = GetInfo.FileName(newfile);
+							items.SubItems[1].Text = GetInfo.FileSize(newfile);
+							items.SubItems[2].Text = "AviSynth Script";
+							item.Data.IsFileAvs = true;
+							item.Data.File = newfile;
+						}
 					}
 				}
 				else
 				{
-					MessageBox.Show("Please select non AviSynth Script");
+					MessageBox.Show("Please select one");
 				}
-			}
-			else
-			{
-				MessageBox.Show("Please select one");
 			}
 		}
 

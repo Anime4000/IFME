@@ -32,5 +32,8 @@
     <Setting Name="DefaultBenchmark" Type="System.String" Scope="User">
       <Value Profile="(Default)">holobenchmark.dll</Value>
     </Setting>
+    <Setting Name="AvsDecoder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DirectShowSource</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

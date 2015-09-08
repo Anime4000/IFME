@@ -47,12 +47,17 @@ namespace ifme
 				{
 					lblAviSynthStatus.Text += ", 2.6 MT (2015.02.20)";
 				}
+				else if (string.Equals(CRC32.GetFile(Plugin.AviSynthFile), "0x30E0D263"))
+				{
+					lblAviSynthStatus.Text += ", 2.6 ST (Original)";
+				}
 				else
 				{
 					lblAviSynthStatus.Text += " (Unknown)";
 				}
 			}
 
+			txtAvsDecoder.Text = Properties.Settings.Default.AvsDecoder;
 			chkCopyContentMKV.Checked = Properties.Settings.Default.AvsMkvCopy;
 
 			// Plugin
@@ -187,7 +192,6 @@ namespace ifme
 				{
 					txtTempFolder.Text = GetFolder.SelectedPath;
 					Properties.Settings.Default.DirTemp = GetFolder.SelectedPath;
-					Properties.Settings.Default.Save();
 				}
 			}
 		}
@@ -195,27 +199,23 @@ namespace ifme
 		private void txtNamePrefix_TextChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.NamePrefix = txtNamePrefix.Text;
-			Properties.Settings.Default.Save();
 		}
 
 		private void chkSoundDone_CheckedChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.SoundFinish = chkSoundDone.Checked;
-			Properties.Settings.Default.Save();
 		}
 
 		private void cboDefaultEditor_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string item = cboDefaultEditor.Text;
 			Properties.Settings.Default.DefaultNotepad = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
-			Properties.Settings.Default.Save();
 		}
 
 		private void cboDefaultBenchmark_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string item = cboDefaultBenchmark.Text;
 			Properties.Settings.Default.DefaultBenchmark = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
-			Properties.Settings.Default.Save();
 		}
 
 		private void cboDefaultHfr_SelectedIndexChanged(object sender, EventArgs e)
@@ -223,10 +223,14 @@ namespace ifme
 
 		}
 
+		private void txtAvsDecoder_TextChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AvsDecoder = txtAvsDecoder.Text;
+		}
+
 		private void chkCopyContentMKV_CheckedChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.AvsMkvCopy = chkCopyContentMKV.Checked;
-			Properties.Settings.Default.Save();
 		}
 
 		private void lblHFR_Click(object sender, EventArgs e)

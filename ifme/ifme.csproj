@@ -110,6 +110,7 @@
     <Compile Include="frmInputBox.Designer.cs">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Language.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Profile.cs" />

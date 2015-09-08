@@ -41,6 +41,8 @@
 			this.grpLanguage = new System.Windows.Forms.GroupBox();
 			this.cboLang = new System.Windows.Forms.ComboBox();
 			this.tabDefault = new System.Windows.Forms.TabPage();
+			this.grpBenchmark = new System.Windows.Forms.GroupBox();
+			this.cboDefaultBenchmark = new System.Windows.Forms.ComboBox();
 			this.grpEditor = new System.Windows.Forms.GroupBox();
 			this.cboDefaultEditor = new System.Windows.Forms.ComboBox();
 			this.tabPerformance = new System.Windows.Forms.TabPage();
@@ -85,8 +87,8 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
-			this.grpBenchmark = new System.Windows.Forms.GroupBox();
-			this.cboDefaultBenchmark = new System.Windows.Forms.ComboBox();
+			this.grpAvsDefaults = new System.Windows.Forms.GroupBox();
+			this.txtAvsDecoder = new System.Windows.Forms.TextBox();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
@@ -94,6 +96,7 @@
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
 			this.tabDefault.SuspendLayout();
+			this.grpBenchmark.SuspendLayout();
 			this.grpEditor.SuspendLayout();
 			this.tabPerformance.SuspendLayout();
 			this.grpCompiler.SuspendLayout();
@@ -107,7 +110,7 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
-			this.grpBenchmark.SuspendLayout();
+			this.grpAvsDefaults.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -253,6 +256,28 @@
 			this.tabDefault.TabIndex = 6;
 			this.tabDefault.Text = "Defaults";
 			this.tabDefault.UseVisualStyleBackColor = true;
+			// 
+			// grpBenchmark
+			// 
+			this.grpBenchmark.Controls.Add(this.cboDefaultBenchmark);
+			this.grpBenchmark.Location = new System.Drawing.Point(6, 112);
+			this.grpBenchmark.Name = "grpBenchmark";
+			this.grpBenchmark.Size = new System.Drawing.Size(580, 100);
+			this.grpBenchmark.TabIndex = 1;
+			this.grpBenchmark.TabStop = false;
+			this.grpBenchmark.Text = "&Benchmark";
+			// 
+			// cboDefaultBenchmark
+			// 
+			this.cboDefaultBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.cboDefaultBenchmark.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboDefaultBenchmark.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.cboDefaultBenchmark.FormattingEnabled = true;
+			this.cboDefaultBenchmark.Location = new System.Drawing.Point(75, 42);
+			this.cboDefaultBenchmark.Name = "cboDefaultBenchmark";
+			this.cboDefaultBenchmark.Size = new System.Drawing.Size(430, 24);
+			this.cboDefaultBenchmark.TabIndex = 0;
+			this.cboDefaultBenchmark.SelectedIndexChanged += new System.EventHandler(this.cboDefaultBenchmark_SelectedIndexChanged);
 			// 
 			// grpEditor
 			// 
@@ -403,6 +428,7 @@
 			// 
 			// tabAviSynth
 			// 
+			this.tabAviSynth.Controls.Add(this.grpAvsDefaults);
 			this.tabAviSynth.Controls.Add(this.grpMKV);
 			this.tabAviSynth.Controls.Add(this.grpStatus);
 			this.tabAviSynth.Location = new System.Drawing.Point(4, 22);
@@ -416,10 +442,10 @@
 			// grpMKV
 			// 
 			this.grpMKV.Controls.Add(this.chkCopyContentMKV);
-			this.grpMKV.Location = new System.Drawing.Point(6, 112);
+			this.grpMKV.Location = new System.Drawing.Point(6, 218);
 			this.grpMKV.Name = "grpMKV";
 			this.grpMKV.Size = new System.Drawing.Size(580, 100);
-			this.grpMKV.TabIndex = 1;
+			this.grpMKV.TabIndex = 2;
 			this.grpMKV.TabStop = false;
 			this.grpMKV.Text = "&MKV";
 			// 
@@ -682,27 +708,24 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* = require restart application";
 			// 
-			// grpBenchmark
+			// grpAvsDefaults
 			// 
-			this.grpBenchmark.Controls.Add(this.cboDefaultBenchmark);
-			this.grpBenchmark.Location = new System.Drawing.Point(6, 112);
-			this.grpBenchmark.Name = "grpBenchmark";
-			this.grpBenchmark.Size = new System.Drawing.Size(580, 100);
-			this.grpBenchmark.TabIndex = 1;
-			this.grpBenchmark.TabStop = false;
-			this.grpBenchmark.Text = "&Benchmark";
+			this.grpAvsDefaults.Controls.Add(this.txtAvsDecoder);
+			this.grpAvsDefaults.Location = new System.Drawing.Point(6, 112);
+			this.grpAvsDefaults.Name = "grpAvsDefaults";
+			this.grpAvsDefaults.Size = new System.Drawing.Size(580, 100);
+			this.grpAvsDefaults.TabIndex = 1;
+			this.grpAvsDefaults.TabStop = false;
+			this.grpAvsDefaults.Text = "&Default Decoder";
 			// 
-			// cboDefaultBenchmark
+			// txtAvsDecoder
 			// 
-			this.cboDefaultBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.cboDefaultBenchmark.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboDefaultBenchmark.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.cboDefaultBenchmark.FormattingEnabled = true;
-			this.cboDefaultBenchmark.Location = new System.Drawing.Point(75, 42);
-			this.cboDefaultBenchmark.Name = "cboDefaultBenchmark";
-			this.cboDefaultBenchmark.Size = new System.Drawing.Size(430, 24);
-			this.cboDefaultBenchmark.TabIndex = 0;
-			this.cboDefaultBenchmark.SelectedIndexChanged += new System.EventHandler(this.cboDefaultBenchmark_SelectedIndexChanged);
+			this.txtAvsDecoder.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtAvsDecoder.Location = new System.Drawing.Point(190, 40);
+			this.txtAvsDecoder.Name = "txtAvsDecoder";
+			this.txtAvsDecoder.Size = new System.Drawing.Size(200, 24);
+			this.txtAvsDecoder.TabIndex = 0;
+			this.txtAvsDecoder.TextChanged += new System.EventHandler(this.txtAvsDecoder_TextChanged);
 			// 
 			// frmOption
 			// 
@@ -732,6 +755,7 @@
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
 			this.tabDefault.ResumeLayout(false);
+			this.grpBenchmark.ResumeLayout(false);
 			this.grpEditor.ResumeLayout(false);
 			this.tabPerformance.ResumeLayout(false);
 			this.grpCompiler.ResumeLayout(false);
@@ -746,7 +770,8 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
-			this.grpBenchmark.ResumeLayout(false);
+			this.grpAvsDefaults.ResumeLayout(false);
+			this.grpAvsDefaults.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -812,5 +837,7 @@
 		private System.Windows.Forms.ComboBox cboDefaultEditor;
 		private System.Windows.Forms.GroupBox grpBenchmark;
 		private System.Windows.Forms.ComboBox cboDefaultBenchmark;
+		private System.Windows.Forms.GroupBox grpAvsDefaults;
+		private System.Windows.Forms.TextBox txtAvsDecoder;
 	}
 }
