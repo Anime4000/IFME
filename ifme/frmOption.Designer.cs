@@ -89,6 +89,7 @@
 			this.lblInfoRestart = new System.Windows.Forms.Label();
 			this.grpAvsDefaults = new System.Windows.Forms.GroupBox();
 			this.txtAvsDecoder = new System.Windows.Forms.TextBox();
+			this.chkReset = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
@@ -133,6 +134,7 @@
 			// 
 			// tabGeneral
 			// 
+			this.tabGeneral.Controls.Add(this.chkReset);
 			this.tabGeneral.Controls.Add(this.grpSound);
 			this.tabGeneral.Controls.Add(this.grpNaming);
 			this.tabGeneral.Controls.Add(this.grpTempFolder);
@@ -716,7 +718,7 @@
 			this.grpAvsDefaults.Size = new System.Drawing.Size(580, 100);
 			this.grpAvsDefaults.TabIndex = 1;
 			this.grpAvsDefaults.TabStop = false;
-			this.grpAvsDefaults.Text = "&Default Decoder";
+			this.grpAvsDefaults.Text = "&Default Source Filters";
 			// 
 			// txtAvsDecoder
 			// 
@@ -726,6 +728,16 @@
 			this.txtAvsDecoder.Size = new System.Drawing.Size(200, 24);
 			this.txtAvsDecoder.TabIndex = 0;
 			this.txtAvsDecoder.TextChanged += new System.EventHandler(this.txtAvsDecoder_TextChanged);
+			// 
+			// chkReset
+			// 
+			this.chkReset.AutoSize = true;
+			this.chkReset.Location = new System.Drawing.Point(6, 322);
+			this.chkReset.Name = "chkReset";
+			this.chkReset.Size = new System.Drawing.Size(273, 17);
+			this.chkReset.TabIndex = 4;
+			this.chkReset.Text = "&Reset all configuration && settings (factory default)*";
+			this.chkReset.UseVisualStyleBackColor = true;
 			// 
 			// frmOption
 			// 
@@ -748,6 +760,7 @@
 			this.Shown += new System.EventHandler(this.frmOption_Shown);
 			this.tabControl1.ResumeLayout(false);
 			this.tabGeneral.ResumeLayout(false);
+			this.tabGeneral.PerformLayout();
 			this.grpSound.ResumeLayout(false);
 			this.grpNaming.ResumeLayout(false);
 			this.grpNaming.PerformLayout();
@@ -839,5 +852,6 @@
 		private System.Windows.Forms.ComboBox cboDefaultBenchmark;
 		private System.Windows.Forms.GroupBox grpAvsDefaults;
 		private System.Windows.Forms.TextBox txtAvsDecoder;
+		private System.Windows.Forms.CheckBox chkReset;
 	}
 }

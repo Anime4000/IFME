@@ -279,6 +279,13 @@ namespace ifme
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
+			if (chkReset.Checked)
+			{
+				Properties.Settings.Default.Reset();
+				Properties.Settings.Default.Save();
+				return;
+			}
+
 			// Save CPU affinity
 			string aff = "";
 			for (int i = 0; i < Environment.ProcessorCount; i++)

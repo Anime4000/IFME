@@ -1788,7 +1788,7 @@ namespace ifme
 			Control ctrl = this;
 			do
 			{
-				ctrl = this.GetNextControl(ctrl, true);
+				ctrl = GetNextControl(ctrl, true);
 
 				if (ctrl != null)
 					if (ctrl is Label ||
@@ -1796,7 +1796,7 @@ namespace ifme
 						ctrl is TabPage ||
 						ctrl is CheckBox ||
 						ctrl is GroupBox)
-						if (!String.IsNullOrEmpty(ctrl.Text))
+						if (!string.IsNullOrEmpty(ctrl.Text))
 							data.Sections["frmMain"].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n"));
 
 			} while (ctrl != null);
