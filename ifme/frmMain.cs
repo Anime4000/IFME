@@ -1676,7 +1676,7 @@ namespace ifme
 
 					Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
 					Type type = asm.GetType(typename + ".frmMain");
-					Form form = (Form)Activator.CreateInstance(type, new object[] { item.Data.File, "und" });
+					Form form = (Form)Activator.CreateInstance(type, new object[] { item.Data.File, Properties.Settings.Default.Language });
 					form.ShowDialog();
 
 					lstQueue.SelectedItems[0].SubItems[1].Text = GetInfo.FileSize(item.Data.File); // refresh new size
@@ -1737,7 +1737,7 @@ namespace ifme
 
 				Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
 				Type type = asm.GetType(typename + ".frmMain");
-				Form form = (Form)Activator.CreateInstance(type, new object[] { queue.Data.File, "eng" });
+				Form form = (Form)Activator.CreateInstance(type, new object[] { queue.Data.File, Properties.Settings.Default.Language });
 				var result = form.ShowDialog();
 
 				if (result == DialogResult.OK)
