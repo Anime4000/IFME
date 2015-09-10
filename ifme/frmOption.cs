@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using IniParser;
+using IniParser.Model;
+
 namespace ifme
 {
 	public partial class frmOption : Form
@@ -137,36 +140,18 @@ namespace ifme
 			else
 				rdoCompilerGCC.Checked = true;
 
-			if (OS.IsLinux)
-			{
+			if (!Plugin.IsExistHEVCICC)
 				rdoCompilerIntel.Enabled = false;
+
+			if (!Plugin.IsExistHEVCMSVC)
 				rdoCompilerMicrosoft.Enabled = false;
-			}
+
 		}
 
 		private void frmOption_Shown(object sender, EventArgs e)
-		{/*
-			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path.Combine("lang", "eng.ini"));
-
-			data.Sections.AddSection("frmOption");
-			Control ctrl = this;
-			do
-			{
-				ctrl = this.GetNextControl(ctrl, true);
-
-				if (ctrl != null)
-					if (ctrl is Label ||
-						ctrl is Button ||
-						ctrl is TabPage ||
-						ctrl is CheckBox ||
-						ctrl is GroupBox)
-						if (!String.IsNullOrEmpty(ctrl.Text))
-							data.Sections["frmOption"].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n"));
-
-			} while (ctrl != null);
-
-			parser.WriteFile(Path.Combine("lang", "eng.ini"), data, Encoding.UTF8);*/
+		{
+			// Devs
+			LangCreate();
 		}
 
 		private void btnBrowse_Click(object sender, EventArgs e)
@@ -303,6 +288,72 @@ namespace ifme
 			// Compiler
 			Plugin.HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265lo");
 			Plugin.HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265hi");
+		}
+
+		void LangApply()
+		{
+			var parser = new FileIniDataParser();
+			IniData data = parser.ReadFile(Path.Combine("lang", $"{Properties.Settings.Default.Language}.ini"));
+
+			Control ctrl = this;
+			do
+			{
+				ctrl = GetNextControl(ctrl, true);
+
+				if (ctrl != null)
+					if (ctrl is Label ||
+						ctrl is Button ||
+						ctrl is TabPage ||
+						ctrl is CheckBox ||
+						ctrl is RadioButton ||
+						ctrl is GroupBox)
+						ctrl.Text = data[Name][ctrl.Name].Replace("\\n", "\n");
+
+			} while (ctrl != null);
+
+			foreach (ColumnHeader item in lstPlugin.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+
+			foreach (ColumnHeader item in lstExtension.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+
+			foreach (ColumnHeader item in lstProfile.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+		}
+
+		void LangCreate()
+		{
+			var parser = new FileIniDataParser();
+			IniData data = parser.ReadFile(Path.Combine("lang", "eng.ini"));
+
+			data.Sections.AddSection(Name);
+			Control ctrl = this;
+			do
+			{
+				ctrl = GetNextControl(ctrl, true);
+
+				if (ctrl != null)
+					if (ctrl is Label ||
+						ctrl is Button ||
+						ctrl is TabPage ||
+						ctrl is CheckBox ||
+						ctrl is RadioButton ||
+						ctrl is GroupBox)
+						if (!string.IsNullOrEmpty(ctrl.Text))
+							data.Sections[Name].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n").Replace("\r", ""));
+
+			} while (ctrl != null);
+
+			foreach (ColumnHeader item in lstPlugin.Columns)
+				data.Sections[Name].AddKey($"colPlugin{item.Text}", item.Text);
+
+			foreach (ColumnHeader item in lstExtension.Columns)
+				data.Sections[Name].AddKey($"colExtension{item.Text}", item.Text);
+
+			foreach (ColumnHeader item in lstProfile.Columns)
+				data.Sections[Name].AddKey($"colProfile{item.Text}", item.Text);
+
+			parser.WriteFile(Path.Combine("lang", "eng.ini"), data);
 		}
 	}
 }

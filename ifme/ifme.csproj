@@ -211,6 +211,7 @@
     <None Include="Resources\page_add.png" />
     <None Include="Resources\page_delete.png" />
     <None Include="Resources\wrench.png" />
+    <None Include="Resources\applications_internet.png" />
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

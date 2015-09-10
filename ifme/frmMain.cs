@@ -27,28 +27,6 @@ namespace ifme
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = Properties.Resources.BannerA;
 			pbxRight.Image = Global.GetRandom % 2 != 0 ? Properties.Resources.BannerB : Properties.Resources.BannerC;
-
-			btnQueueAdd.Image = Properties.Resources.film_add;
-			btnQueueRemove.Image = Properties.Resources.film_delete;
-
-			btnQueueMoveUp.Image = Properties.Resources.arw_up;
-			btnQueueMoveDown.Image = Properties.Resources.arw_dn;
-
-			btnQueueStart.Image = Properties.Resources.control_play_blue;
-			btnQueueStop.Image = Properties.Resources.control_stop_blue;
-			btnQueuePause.Image = Properties.Resources.control_pause_blue;
-
-			btnSubAdd.Image = Properties.Resources.page_add;
-			btnSubRemove.Image = Properties.Resources.page_delete;
-
-			btnAttachAdd.Image = Properties.Resources.page_add;
-			btnAttachRemove.Image = Properties.Resources.page_delete;
-
-			btnProfileSave.Image = Properties.Resources.disk;
-			btnBrowse.Image = Properties.Resources.folder_explore;
-
-			btnConfig.Image = Properties.Resources.wrench;
-			btnAbout.Image = Properties.Resources.information;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -93,6 +71,9 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
+
+			// Devs
+			LangCreate();
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -165,7 +146,7 @@ namespace ifme
 
 			if (i == 0)
 			{
-				using (var form = new frmInputBox("Save new profile", "&Please enter a new profile name", ""))
+				using (var form = new frmInputBox(Language.SaveNewProfilesTitle, Language.SaveNewProfilesInfo, ""))
 				{
 					var result = form.ShowDialog();
 					if (result == DialogResult.OK)
@@ -312,15 +293,15 @@ namespace ifme
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
-				Info.Picture.Resolution = string.Format("{0}x{1}", Video.width, Video.height);
-				Info.Picture.FrameRate = string.Format("{0}", Video.frameRateGet);
-				Info.Picture.BitDepth = string.Format("{0}", Video.bitDepth);
+				Info.Picture.Resolution = $"{Video.width}x{Video.height}";
+				Info.Picture.FrameRate = $"{Video.frameRateGet}";
+				Info.Picture.BitDepth = $"{Video.bitDepth}";
 				Info.Picture.Chroma = "420";
 
 				Info.Prop.Duration = Video.duration;
 				Info.Prop.FrameCount = Video.frameCount;
 
-				FileType = string.Format("{0} ({1})", Path.GetExtension(file).ToUpper(), Video.format);
+				FileType = $"{Path.GetExtension(file).ToUpper()} ({Video.format})";
 
 				if (string.Equals(Video.frameRateMode, "vfr", IC))
 					Info.Prop.IsVFR = true;
@@ -792,14 +773,14 @@ namespace ifme
 			{
 				if (rdoMP4.Checked)
 				{
-					MessageBox.Show("MP4コンテナは特殊な字幕をサポートしていません", "Error");
+					MessageBox.Show(Language.NotSupported, "");
 					chkSubEnable.Checked = false;
 					return;
 				}
 				
 				if (lstQueue.SelectedItems.Count == 0 || lstQueue.SelectedItems.Count >= 2)
 				{
-					MessageBox.Show("Please select one video", "Error");
+					MessageBox.Show(Language.OneVideo, "");
 					chkSubEnable.Checked = false;
 					return;
 				}
@@ -861,7 +842,7 @@ namespace ifme
 		{
 			if (lstQueue.SelectedItems.Count > 1)
 			{
-				MessageBox.Show("Please select one video before removing subtitles");
+				MessageBox.Show(Language.SelectOneVideoSubtitle);
 				return;
 			}
 
@@ -902,14 +883,14 @@ namespace ifme
 			{
 				if (rdoMP4.Checked)
 				{
-					MessageBox.Show("MP4コンテナはアタッチメントサポートしていません", "Error");
+					MessageBox.Show(Language.NotSupported, "Error");
 					chkAttachEnable.Checked = false;
 					return;
 				}
 
 				if (lstQueue.SelectedItems.Count == 0 || lstQueue.SelectedItems.Count >= 2)
 				{
-					MessageBox.Show("Please select one video", "Error");
+					MessageBox.Show(Language.OneVideo, "Error");
 					chkAttachEnable.Checked = false;
 					return;
 				}
@@ -969,7 +950,7 @@ namespace ifme
 		{
 			if (lstQueue.SelectedItems.Count > 1)
 			{
-				MessageBox.Show("Please select one video before removing attachment", "Error");
+				MessageBox.Show(Language.SelectOneVideoAttch, "Error");
 				return;
 			}
 
@@ -1595,7 +1576,7 @@ namespace ifme
 			}
 			else
 			{
-				MessageBox.Show("Please select only one video for preview", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show(Language.SelectOneVideoPreview, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
@@ -1609,12 +1590,12 @@ namespace ifme
 				}
 				else
 				{
-					MessageBox.Show("Please select non AviSynth media");
+					MessageBox.Show(Language.SelectNotAviSynth);
 				}
 			}
 			else
 			{
-				var msgbox = MessageBox.Show("No video file selected, use RAW 4K video as benchmark?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				var msgbox = MessageBox.Show(Language.BenchmarkNoFile, "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 				if (msgbox == DialogResult.Yes)
 				{
 					if (!Directory.Exists(Global.Folder.Benchmark))
@@ -1622,7 +1603,7 @@ namespace ifme
 
 					if (!File.Exists(Path.Combine(Global.Folder.Benchmark, "gsmarena_v001.mp4")))
 					{
-						var msgbox2 = MessageBox.Show("File not exist, let us download before start?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+						var msgbox2 = MessageBox.Show(Language.BenchmarkDownload, "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 						if (msgbox2 == DialogResult.Yes)
 						{
 							using (var dl = new frmDownload("http://cdn.gsmarena.com/vv/reviewsimg/oneplus-one/camera/gsmarena_v001.mp4", Path.Combine(Global.Folder.Benchmark, "gsmarena_v001.temp")))
@@ -1698,18 +1679,18 @@ namespace ifme
 				}
 				else
 				{
-					MessageBox.Show("This not an AviSynth script");
+					MessageBox.Show(Language.SelectAviSynth);
 				}
 			}
 			else
 			{
-				MessageBox.Show("Please select one");
+				MessageBox.Show(Language.OneItem);
 			}
 		}
 
 		private void tsmiQueueAviSynthGenerate_Click(object sender, EventArgs e)
 		{
-			var msgbox = MessageBox.Show("Do you want to change selected file into an AviSynth script\n(used for bypass FFmpeg decoder, unsupported file will be skip)");
+			var msgbox = MessageBox.Show(Language.VideoToAviSynth);
 			if (msgbox == DialogResult.OK)
 			{
 				if (lstQueue.SelectedItems.Count > 0)
@@ -1734,7 +1715,7 @@ namespace ifme
 				}
 				else
 				{
-					MessageBox.Show("Please select one");
+					MessageBox.Show(Language.OneItem);
 				}
 			}
 		}
@@ -1768,23 +1749,16 @@ namespace ifme
 			}
 			else
 			{
-				MessageBox.Show("Please select one");
+				MessageBox.Show(Language.OneItem);
 			}
 		}
 		#endregion
 
-		void LangCreate()
+		void LangApply()
 		{
 			var parser = new FileIniDataParser();
-			IniData data = new IniData();
+			IniData data = parser.ReadFile(Path.Combine("lang", $"{Properties.Settings.Default.Language}.ini"));
 
-			data.Sections.AddSection("INFO");
-			data.Sections["INFO"].AddKey("iso", "eng"); // file id
-			data.Sections["INFO"].AddKey("Name", "Anime4000");
-			data.Sections["INFO"].AddKey("Version", "0.1");
-			data.Sections["INFO"].AddKey("Contact", "fb.com/anime4000");
-
-			data.Sections.AddSection("frmMain");
 			Control ctrl = this;
 			do
 			{
@@ -1795,13 +1769,90 @@ namespace ifme
 						ctrl is Button ||
 						ctrl is TabPage ||
 						ctrl is CheckBox ||
+						ctrl is RadioButton ||
+						ctrl is GroupBox)
+						ctrl.Text = data[Name][ctrl.Name].Replace("\\n","\n");
+
+            } while (ctrl != null);
+
+			foreach (ColumnHeader item in lstQueue.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+
+			foreach (ColumnHeader item in lstSub.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+
+			foreach (ColumnHeader item in lstAttach.Columns)
+				item.Text = data[Name][$"{item.Tag}"];
+
+			Language.BenchmarkDownload = data["dialog"]["BenchmarkDownload"];
+			Language.BenchmarkNoFile = data["dialog"]["BenchmarkNoFile"];
+			Language.NotSupported = data["dialog"]["NotSupported"];
+			Language.OneItem = data["dialog"]["OneItem"];
+			Language.OneVideo = data["dialog"]["OneVideo"];
+			Language.SaveNewProfilesInfo = data["dialog"]["SaveNewProfilesInfo"];
+			Language.SaveNewProfilesTitle = data["dialog"]["SaveNewProfilesTitle"];
+			Language.SelectAviSynth = data["dialog"]["SelectAviSynth"];
+			Language.SelectNotAviSynth = data["dialog"]["SelectNotAviSynth"];
+			Language.SelectOneVideoAttch = data["dialog"]["SelectOneVideoAttch"];
+			Language.SelectOneVideoPreview = data["dialog"]["SelectOneVideoPreview"];
+			Language.SelectOneVideoSubtitle = data["dialog"]["SelectOneVideoSubtitle"];
+			Language.VideoToAviSynth = data["dialog"]["VideoToAviSynth"].Replace("\\n", "\n");
+		}
+
+		void LangCreate()
+		{
+			var parser = new FileIniDataParser();
+			IniData data = new IniData();
+
+			data.Sections.AddSection("info");
+			data.Sections["info"].AddKey("ISO", "eng"); // file id
+			data.Sections["info"].AddKey("Author", "Anime4000");
+			data.Sections["info"].AddKey("Version", $"{Global.App.Version}");
+			data.Sections["info"].AddKey("Contact", "http://fb.com/anime4000");
+
+			data.Sections.AddSection(Name);
+			Control ctrl = this;
+			do
+			{
+				ctrl = GetNextControl(ctrl, true);
+
+				if (ctrl != null)
+					if (ctrl is Label ||
+						ctrl is Button ||
+						ctrl is TabPage ||
+						ctrl is CheckBox ||
+						ctrl is RadioButton ||
 						ctrl is GroupBox)
 						if (!string.IsNullOrEmpty(ctrl.Text))
-							data.Sections["frmMain"].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n"));
+							data.Sections[Name].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n").Replace("\r", ""));
 
 			} while (ctrl != null);
 
-			parser.WriteFile(Path.Combine("lang", "eng.core.ini"), data, Encoding.UTF8);
+			foreach (ColumnHeader item in lstQueue.Columns)
+				data.Sections[Name].AddKey($"colQueue{item.Text}", item.Text);
+
+			foreach (ColumnHeader item in lstSub.Columns)
+				data.Sections[Name].AddKey($"colSub{item.Text}", item.Text);
+
+			foreach (ColumnHeader item in lstAttach.Columns)
+				data.Sections[Name].AddKey($"colAttach{item.Text}", item.Text);
+
+			data.Sections.AddSection("dialog");
+			data.Sections["dialog"].AddKey("BenchmarkDownload", Language.BenchmarkDownload);
+			data.Sections["dialog"].AddKey("BenchmarkNoFile", Language.BenchmarkNoFile);
+			data.Sections["dialog"].AddKey("NotSupported", Language.NotSupported);
+			data.Sections["dialog"].AddKey("OneItem", Language.OneItem);
+			data.Sections["dialog"].AddKey("OneVideo", Language.OneVideo);
+			data.Sections["dialog"].AddKey("SaveNewProfilesInfo", Language.SaveNewProfilesInfo);
+			data.Sections["dialog"].AddKey("SaveNewProfilesTitle", Language.SaveNewProfilesTitle);
+			data.Sections["dialog"].AddKey("SelectAviSynth", Language.SelectAviSynth);
+			data.Sections["dialog"].AddKey("SelectNotAviSynth", Language.SelectNotAviSynth);
+			data.Sections["dialog"].AddKey("SelectOneVideoAttch", Language.SelectOneVideoAttch);
+			data.Sections["dialog"].AddKey("SelectOneVideoPreview", Language.SelectOneVideoPreview);
+			data.Sections["dialog"].AddKey("SelectOneVideoSubtitle", Language.SelectOneVideoSubtitle);
+			data.Sections["dialog"].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
+
+			parser.WriteFile(Path.Combine("lang", "eng.ini"), data, Encoding.UTF8);		
 		}
 	}
 }

@@ -31,6 +31,9 @@ namespace ifme
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
 		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
 
+		public static bool IsExistHEVCICC = false;
+		public static bool IsExistHEVCMSVC = false;
+
 		public static List<Plugin> List = new List<Plugin>();
 
 		public static void Load()

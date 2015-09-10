@@ -187,6 +187,7 @@
 			// btnQueueAdd
 			// 
 			this.btnQueueAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueAdd.Image = global::ifme.Properties.Resources.film_add;
 			this.btnQueueAdd.Location = new System.Drawing.Point(482, 70);
 			this.btnQueueAdd.Name = "btnQueueAdd";
 			this.btnQueueAdd.Size = new System.Drawing.Size(24, 24);
@@ -197,6 +198,7 @@
 			// btnQueueRemove
 			// 
 			this.btnQueueRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueRemove.Image = global::ifme.Properties.Resources.film_delete;
 			this.btnQueueRemove.Location = new System.Drawing.Point(512, 70);
 			this.btnQueueRemove.Name = "btnQueueRemove";
 			this.btnQueueRemove.Size = new System.Drawing.Size(24, 24);
@@ -207,6 +209,7 @@
 			// btnQueueMoveUp
 			// 
 			this.btnQueueMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueMoveUp.Image = global::ifme.Properties.Resources.arw_up;
 			this.btnQueueMoveUp.Location = new System.Drawing.Point(550, 70);
 			this.btnQueueMoveUp.Name = "btnQueueMoveUp";
 			this.btnQueueMoveUp.Size = new System.Drawing.Size(24, 24);
@@ -217,6 +220,7 @@
 			// btnQueueMoveDown
 			// 
 			this.btnQueueMoveDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueMoveDown.Image = global::ifme.Properties.Resources.arw_dn;
 			this.btnQueueMoveDown.Location = new System.Drawing.Point(580, 70);
 			this.btnQueueMoveDown.Name = "btnQueueMoveDown";
 			this.btnQueueMoveDown.Size = new System.Drawing.Size(24, 24);
@@ -227,6 +231,7 @@
 			// btnQueueStart
 			// 
 			this.btnQueueStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueStart.Image = global::ifme.Properties.Resources.control_play_blue;
 			this.btnQueueStart.Location = new System.Drawing.Point(648, 70);
 			this.btnQueueStart.Name = "btnQueueStart";
 			this.btnQueueStart.Size = new System.Drawing.Size(24, 24);
@@ -237,6 +242,7 @@
 			// btnQueueStop
 			// 
 			this.btnQueueStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueueStop.Image = global::ifme.Properties.Resources.control_stop_blue;
 			this.btnQueueStop.Location = new System.Drawing.Point(618, 70);
 			this.btnQueueStop.Name = "btnQueueStop";
 			this.btnQueueStop.Size = new System.Drawing.Size(24, 24);
@@ -273,25 +279,30 @@
 			// 
 			// colQueueName
 			// 
+			this.colQueueName.Tag = "colQueueName";
 			this.colQueueName.Text = "Name";
 			this.colQueueName.Width = 296;
 			// 
 			// colQueueSize
 			// 
+			this.colQueueSize.Tag = "colQueueSize";
 			this.colQueueSize.Text = "Size";
 			// 
 			// colQueueType
 			// 
+			this.colQueueType.Tag = "colQueueType";
 			this.colQueueType.Text = "Type";
 			this.colQueueType.Width = 100;
 			// 
 			// colQueueTo
 			// 
+			this.colQueueTo.Tag = "colQueueTo";
 			this.colQueueTo.Text = "To";
 			this.colQueueTo.Width = 100;
 			// 
 			// colQueueStatus
 			// 
+			this.colQueueStatus.Tag = "colQueueStatus";
 			this.colQueueStatus.Text = "Status";
 			this.colQueueStatus.Width = 100;
 			// 
@@ -394,6 +405,7 @@
 			// btnQueuePause
 			// 
 			this.btnQueuePause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnQueuePause.Image = global::ifme.Properties.Resources.control_pause_blue;
 			this.btnQueuePause.Location = new System.Drawing.Point(648, 70);
 			this.btnQueuePause.Name = "btnQueuePause";
 			this.btnQueuePause.Size = new System.Drawing.Size(24, 24);
@@ -1165,17 +1177,20 @@
 			// 
 			// colSubFile
 			// 
+			this.colSubFile.Tag = "colSubFile";
 			this.colSubFile.Text = "Name";
 			this.colSubFile.Width = 350;
 			// 
 			// colSubLang
 			// 
+			this.colSubLang.Tag = "colSubLang";
 			this.colSubLang.Text = "Language";
 			this.colSubLang.Width = 286;
 			// 
 			// btnSubRemove
 			// 
 			this.btnSubRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSubRemove.Image = global::ifme.Properties.Resources.page_delete;
 			this.btnSubRemove.Location = new System.Drawing.Point(622, 6);
 			this.btnSubRemove.Name = "btnSubRemove";
 			this.btnSubRemove.Size = new System.Drawing.Size(24, 24);
@@ -1187,6 +1202,7 @@
 			// btnSubAdd
 			// 
 			this.btnSubAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSubAdd.Image = global::ifme.Properties.Resources.page_add;
 			this.btnSubAdd.Location = new System.Drawing.Point(592, 6);
 			this.btnSubAdd.Name = "btnSubAdd";
 			this.btnSubAdd.Size = new System.Drawing.Size(24, 24);
@@ -1282,22 +1298,26 @@
 			// 
 			// colAttachName
 			// 
+			this.colAttachName.Tag = "colAttachName";
 			this.colAttachName.Text = "Name";
 			this.colAttachName.Width = 350;
 			// 
 			// colAttachMime
 			// 
+			this.colAttachMime.Tag = "colAttachMime";
 			this.colAttachMime.Text = "MIME";
 			this.colAttachMime.Width = 130;
 			// 
 			// colAttachDescription
 			// 
+			this.colAttachDescription.Tag = "colAttachDescription";
 			this.colAttachDescription.Text = "Description";
 			this.colAttachDescription.Width = 156;
 			// 
 			// btnAttachRemove
 			// 
 			this.btnAttachRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAttachRemove.Image = global::ifme.Properties.Resources.page_delete;
 			this.btnAttachRemove.Location = new System.Drawing.Point(622, 6);
 			this.btnAttachRemove.Name = "btnAttachRemove";
 			this.btnAttachRemove.Size = new System.Drawing.Size(24, 24);
@@ -1309,6 +1329,7 @@
 			// btnAttachAdd
 			// 
 			this.btnAttachAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAttachAdd.Image = global::ifme.Properties.Resources.page_add;
 			this.btnAttachAdd.Location = new System.Drawing.Point(592, 6);
 			this.btnAttachAdd.Name = "btnAttachAdd";
 			this.btnAttachAdd.Size = new System.Drawing.Size(24, 24);
@@ -1381,6 +1402,7 @@
 			// btnProfileSave
 			// 
 			this.btnProfileSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnProfileSave.Image = global::ifme.Properties.Resources.disk;
 			this.btnProfileSave.Location = new System.Drawing.Point(648, 596);
 			this.btnProfileSave.Name = "btnProfileSave";
 			this.btnProfileSave.Size = new System.Drawing.Size(24, 24);
@@ -1391,6 +1413,7 @@
 			// btnBrowse
 			// 
 			this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowse.Image = global::ifme.Properties.Resources.folder_explore;
 			this.btnBrowse.Location = new System.Drawing.Point(580, 626);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(24, 24);
@@ -1448,6 +1471,7 @@
 			// btnConfig
 			// 
 			this.btnConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnConfig.Image = global::ifme.Properties.Resources.wrench;
 			this.btnConfig.Location = new System.Drawing.Point(618, 626);
 			this.btnConfig.Name = "btnConfig";
 			this.btnConfig.Size = new System.Drawing.Size(24, 24);
@@ -1458,6 +1482,7 @@
 			// btnAbout
 			// 
 			this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAbout.Image = global::ifme.Properties.Resources.information;
 			this.btnAbout.Location = new System.Drawing.Point(648, 626);
 			this.btnAbout.Name = "btnAbout";
 			this.btnAbout.Size = new System.Drawing.Size(24, 24);

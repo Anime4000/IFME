@@ -83,6 +83,16 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap applications_internet {
+            get {
+                object obj = ResourceManager.GetObject("applications_internet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arw_dn {
             get {
                 object obj = ResourceManager.GetObject("arw_dn", resourceCulture);

@@ -513,21 +513,25 @@
 			// 
 			// colPluginName
 			// 
+			this.colPluginName.Tag = "colPluginName";
 			this.colPluginName.Text = "Name";
 			this.colPluginName.Width = 232;
 			// 
 			// colPluginVersion
 			// 
+			this.colPluginVersion.Tag = "colPluginVersion";
 			this.colPluginVersion.Text = "Version";
 			this.colPluginVersion.Width = 100;
 			// 
 			// colPluginDev
 			// 
+			this.colPluginDev.Tag = "colPluginDev";
 			this.colPluginDev.Text = "Developer";
 			this.colPluginDev.Width = 150;
 			// 
 			// colPluginProvider
 			// 
+			this.colPluginProvider.Tag = "colPluginProvider";
 			this.colPluginProvider.Text = "Provider";
 			this.colPluginProvider.Width = 100;
 			// 
@@ -578,21 +582,25 @@
 			// 
 			// colExtensionName
 			// 
+			this.colExtensionName.Tag = "colExtensionName";
 			this.colExtensionName.Text = "Name";
 			this.colExtensionName.Width = 232;
 			// 
 			// colExtensionType
 			// 
+			this.colExtensionType.Tag = "colExtensionType";
 			this.colExtensionType.Text = "Type";
 			this.colExtensionType.Width = 80;
 			// 
 			// colExtensionVersion
 			// 
+			this.colExtensionVersion.Tag = "colExtensionVersion";
 			this.colExtensionVersion.Text = "Version";
 			this.colExtensionVersion.Width = 80;
 			// 
 			// colExtensionDev
 			// 
+			this.colExtensionDev.Tag = "colExtensionDev";
 			this.colExtensionDev.Text = "Developer";
 			this.colExtensionDev.Width = 190;
 			// 
@@ -644,20 +652,24 @@
 			// 
 			// colProfileName
 			// 
+			this.colProfileName.Tag = "colProfileName";
 			this.colProfileName.Text = "Name";
 			this.colProfileName.Width = 302;
 			// 
 			// colProfileFormat
 			// 
+			this.colProfileFormat.Tag = "colProfileFormat";
 			this.colProfileFormat.Text = "Format";
 			// 
 			// colProfilePlatform
 			// 
+			this.colProfilePlatform.Tag = "colProfilePlatform";
 			this.colProfilePlatform.Text = "Platform";
 			this.colProfilePlatform.Width = 100;
 			// 
 			// colPresetAuthor
 			// 
+			this.colPresetAuthor.Tag = "colPresetAuthor";
 			this.colPresetAuthor.Text = "Author";
 			this.colPresetAuthor.Width = 120;
 			// 
@@ -706,9 +718,9 @@
 			this.lblInfoRestart.AutoSize = true;
 			this.lblInfoRestart.Location = new System.Drawing.Point(12, 412);
 			this.lblInfoRestart.Name = "lblInfoRestart";
-			this.lblInfoRestart.Size = new System.Drawing.Size(151, 13);
+			this.lblInfoRestart.Size = new System.Drawing.Size(150, 13);
 			this.lblInfoRestart.TabIndex = 4;
-			this.lblInfoRestart.Text = "* = require restart application";
+			this.lblInfoRestart.Text = "* is require restart application";
 			// 
 			// grpAvsDefaults
 			// 

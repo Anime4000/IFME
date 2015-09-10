@@ -93,6 +93,17 @@ namespace ifme
 			PluginUpdate(); // apply update
 			Plugin.Load(); // reload
 
+			// Check x265 compiler binary
+			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
+				Properties.Settings.Default.Compiler = "gcc";
+			else
+				Plugin.IsExistHEVCICC = true;
+
+			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
+				Properties.Settings.Default.Compiler = "gcc";
+			else
+				Plugin.IsExistHEVCMSVC = true;
+
 			// Profile
 			Profile.Load();
 
@@ -107,7 +118,7 @@ namespace ifme
 			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
 				Global.App.NewRelease = true;
 #endif
-
+			
 			// For fun
 			WriteLine("\n\nAll done! Initialising...");
 			System.Threading.Thread.Sleep(3000);
@@ -293,13 +304,13 @@ namespace ifme
 		void Extract(string dir, string file)
 		{
 			string unzip = Path.Combine(Global.Folder.AppDir, "7za");
-			string fullpath = Path.Combine(dir, file);
+			string zipfile = Path.Combine(dir, file);
 
 			Write("\nExtracting... ");
-			TaskManager.Run($"\"{unzip}\" x \"{fullpath}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
+			TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
 			
 			Write("Done!\n");
-			File.Delete(fullpath);
+			File.Delete(zipfile);
 		}
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -315,7 +326,7 @@ namespace ifme
 			previous = current;
 			ptime = ctime;
 
-			Write($"\r{(e.BytesReceived / e.TotalBytesToReceive):P} Completed... ({(speed > 0 ? speed : 0)} KB/s)\t");
+			Write($"\r{((float)e.BytesReceived / e.TotalBytesToReceive):P} Completed... ({(speed > 0 ? speed : 0)} KB/s)\t");
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

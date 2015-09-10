@@ -35,5 +35,8 @@
     <Setting Name="AvsDecoder" Type="System.String" Scope="User">
       <Value Profile="(Default)">DirectShowSource</Value>
     </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">eng</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

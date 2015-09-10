@@ -30,8 +30,8 @@ namespace ifme
 
 		private void frmDownload_Load(object sender, EventArgs e)
 		{
-			lblFile.Text = $"URL: {Url}";
-            lblSave.Text = $"Save: {SavePath}";
+			lblFile.Text = $"{Url}";
+            lblSave.Text = $"{SavePath}";
 		}
 
 		private void frmDownload_Shown(object sender, EventArgs e)
