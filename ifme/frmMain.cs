@@ -1810,11 +1810,12 @@ namespace ifme
 			IniData data = new IniData();
 
 			data.Sections.AddSection("info");
-			data.Sections["info"].AddKey("ISO", "eng"); // file id
+			data.Sections["info"].AddKey("Code", "en"); // file id
 			data.Sections["info"].AddKey("Name", "English");
 			data.Sections["info"].AddKey("Author", "Anime4000");
 			data.Sections["info"].AddKey("Version", $"{Global.App.VersionRelease}");
 			data.Sections["info"].AddKey("Contact", "https://github.com/Anime4000");
+			data.Sections["info"].AddKey("Comment", "Please refer IETF Language Tag here: http://www.i18nguy.com/unicode/language-identifiers.html");
 
 			data.Sections.AddSection(Name);
 			Control ctrl = this;
@@ -1858,7 +1859,7 @@ namespace ifme
 			data.Sections[Name].AddKey("SelectOneVideoSubtitle", Language.SelectOneVideoSubtitle);
 			data.Sections[Name].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
 
-			parser.WriteFile(Path.Combine(Global.Folder.Language, "eng.ini"), data, Encoding.UTF8);		
+			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data, Encoding.UTF8);		
 		}
 #endregion
 	}

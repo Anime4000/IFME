@@ -7,7 +7,7 @@ namespace ifme
 {
 	public class Language
 	{
-		public string ISO;
+		public string Code;
 		public string Name;
 
 		public static List<Language> Lists = new List<Language>(); // No shorting, gonna use foreach that equal index of Combobox
@@ -17,7 +17,7 @@ namespace ifme
 			foreach (var item in Directory.GetFiles(Global.Folder.Language, "*.ini"))
 			{
 				var data = new FileIniDataParser().ReadFile(item);
-				Lists.Add(new Language() { ISO = data["info"]["ISO"], Name = data["info"]["Name"] });
+				Lists.Add(new Language() { Code = data["info"]["Code"], Name = data["info"]["Name"] });
 			}
 		}
 

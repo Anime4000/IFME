@@ -36,7 +36,7 @@
       <Value Profile="(Default)">DirectShowSource</Value>
     </Setting>
     <Setting Name="Language" Type="System.String" Scope="User">
-      <Value Profile="(Default)">eng</Value>
+      <Value Profile="(Default)">en</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

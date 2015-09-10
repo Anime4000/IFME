@@ -82,7 +82,7 @@ namespace ifme
 			foreach (var item in Extension.Items)
 			{
 				ListViewItem x = new ListViewItem(new[] {
-					string.Format("{0} ({1})", item.Name, item.FileName),
+					$"{item.Name} ({item.FileName})",
 					item.Type,
 					item.Version,
 					item.Developer
@@ -151,7 +151,7 @@ namespace ifme
 			{
 				cboLang.Items.Add(item.Name);
 
-				if (string.Equals(Properties.Settings.Default.Language, item.ISO))
+				if (string.Equals(Properties.Settings.Default.Language, item.Code))
 					cboLang.Text = item.Name;
 			}
 
@@ -282,7 +282,7 @@ namespace ifme
 
 			// Language
 			if (cboLang.SelectedIndex >= 0)
-				Properties.Settings.Default.Language = Language.Lists[cboLang.SelectedIndex].ISO;
+				Properties.Settings.Default.Language = Language.Lists[cboLang.SelectedIndex].Code;
 
 			// Save
 			Properties.Settings.Default.Save();
@@ -326,7 +326,7 @@ namespace ifme
 		void LangCreate()
 		{
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path.Combine(Global.Folder.Language, "eng.ini"));
+			IniData data = parser.ReadFile(Path.Combine(Global.Folder.Language, "en.ini"));
 
 			data.Sections.AddSection(Name);
 			Control ctrl = this;
@@ -358,7 +358,7 @@ namespace ifme
 			data.Sections[Name].AddKey("Installed", Language.Installed);
 			data.Sections[Name].AddKey("NotInstalled", Language.NotInstalled);
 
-			parser.WriteFile(Path.Combine(Global.Folder.Language, "eng.ini"), data);
+			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data);
 		}
 	}
 }
