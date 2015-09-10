@@ -51,11 +51,26 @@ namespace ifme
 
 		private void bgwThread_DoWork(object sender, DoWorkEventArgs e)
 		{
+			// Upgrade settings
+			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.Version = Global.App.VersionRelease;
+				Properties.Settings.Default.Save();
+
+				WriteLine("Settings has been upgraded!");
+			}
+
+			// Language
+			Language.Load();
+
 			// CPU Affinity, Load previous, if none, set default all CPU
 			if (string.IsNullOrEmpty(Properties.Settings.Default.CPUAffinity))
 			{
 				Properties.Settings.Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
 				Properties.Settings.Default.Save();
+
+				WriteLine("Applying CPU settings...");
 			}
 
 			string[] aff = Properties.Settings.Default.CPUAffinity.Split(',');
@@ -68,15 +83,18 @@ namespace ifme
 			if (File.Exists(Plugin.AviSynthFile))
 			{
 				Plugin.AviSynthInstalled = true;
+				WriteLine("AviSynth detected!");
 			}
 			else
 			{
 				Plugin.AviSynthInstalled = false;
+				WriteLine("AviSynth not detected!");
 			}
 
 			// Thanks to our donor
 			try
 			{
+				WriteLine("Loading our donor list :) you can see via \"About IFME\"");
 				File.WriteAllText("metauser.if", client.DownloadString("http://x265.github.io/supporter.txt"), Encoding.UTF8);
 			}
 			catch (Exception)
@@ -122,6 +140,9 @@ namespace ifme
 			// For fun
 			WriteLine("\n\nAll done! Initialising...");
 			System.Threading.Thread.Sleep(3000);
+
+			// Save all settings
+			Properties.Settings.Default.Save();
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

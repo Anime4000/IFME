@@ -31,6 +31,7 @@
 			this.components = new System.ComponentModel.Container();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabGeneral = new System.Windows.Forms.TabPage();
+			this.chkReset = new System.Windows.Forms.CheckBox();
 			this.grpSound = new System.Windows.Forms.GroupBox();
 			this.chkSoundDone = new System.Windows.Forms.CheckBox();
 			this.grpNaming = new System.Windows.Forms.GroupBox();
@@ -56,6 +57,8 @@
 			this.clbCPU = new System.Windows.Forms.CheckedListBox();
 			this.lblCPUPriority = new System.Windows.Forms.Label();
 			this.tabAviSynth = new System.Windows.Forms.TabPage();
+			this.grpAvsDefaults = new System.Windows.Forms.GroupBox();
+			this.txtAvsDecoder = new System.Windows.Forms.TextBox();
 			this.grpMKV = new System.Windows.Forms.GroupBox();
 			this.chkCopyContentMKV = new System.Windows.Forms.CheckBox();
 			this.grpStatus = new System.Windows.Forms.GroupBox();
@@ -87,9 +90,6 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
-			this.grpAvsDefaults = new System.Windows.Forms.GroupBox();
-			this.txtAvsDecoder = new System.Windows.Forms.TextBox();
-			this.chkReset = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
@@ -103,6 +103,7 @@
 			this.grpCompiler.SuspendLayout();
 			this.grpProcessor.SuspendLayout();
 			this.tabAviSynth.SuspendLayout();
+			this.grpAvsDefaults.SuspendLayout();
 			this.grpMKV.SuspendLayout();
 			this.grpStatus.SuspendLayout();
 			this.tabPlugin.SuspendLayout();
@@ -111,7 +112,6 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
-			this.grpAvsDefaults.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -146,6 +146,16 @@
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "General";
 			this.tabGeneral.UseVisualStyleBackColor = true;
+			// 
+			// chkReset
+			// 
+			this.chkReset.AutoSize = true;
+			this.chkReset.Location = new System.Drawing.Point(6, 322);
+			this.chkReset.Name = "chkReset";
+			this.chkReset.Size = new System.Drawing.Size(273, 17);
+			this.chkReset.TabIndex = 4;
+			this.chkReset.Text = "&Reset all configuration && settings (factory default)*";
+			this.chkReset.UseVisualStyleBackColor = true;
 			// 
 			// grpSound
 			// 
@@ -441,6 +451,25 @@
 			this.tabAviSynth.Text = "AviSynth";
 			this.tabAviSynth.UseVisualStyleBackColor = true;
 			// 
+			// grpAvsDefaults
+			// 
+			this.grpAvsDefaults.Controls.Add(this.txtAvsDecoder);
+			this.grpAvsDefaults.Location = new System.Drawing.Point(6, 112);
+			this.grpAvsDefaults.Name = "grpAvsDefaults";
+			this.grpAvsDefaults.Size = new System.Drawing.Size(580, 100);
+			this.grpAvsDefaults.TabIndex = 1;
+			this.grpAvsDefaults.TabStop = false;
+			this.grpAvsDefaults.Text = "&Default Source Filters";
+			// 
+			// txtAvsDecoder
+			// 
+			this.txtAvsDecoder.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtAvsDecoder.Location = new System.Drawing.Point(190, 40);
+			this.txtAvsDecoder.Name = "txtAvsDecoder";
+			this.txtAvsDecoder.Size = new System.Drawing.Size(200, 24);
+			this.txtAvsDecoder.TabIndex = 0;
+			this.txtAvsDecoder.TextChanged += new System.EventHandler(this.txtAvsDecoder_TextChanged);
+			// 
 			// grpMKV
 			// 
 			this.grpMKV.Controls.Add(this.chkCopyContentMKV);
@@ -722,35 +751,6 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* is require restart application";
 			// 
-			// grpAvsDefaults
-			// 
-			this.grpAvsDefaults.Controls.Add(this.txtAvsDecoder);
-			this.grpAvsDefaults.Location = new System.Drawing.Point(6, 112);
-			this.grpAvsDefaults.Name = "grpAvsDefaults";
-			this.grpAvsDefaults.Size = new System.Drawing.Size(580, 100);
-			this.grpAvsDefaults.TabIndex = 1;
-			this.grpAvsDefaults.TabStop = false;
-			this.grpAvsDefaults.Text = "&Default Source Filters";
-			// 
-			// txtAvsDecoder
-			// 
-			this.txtAvsDecoder.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtAvsDecoder.Location = new System.Drawing.Point(190, 40);
-			this.txtAvsDecoder.Name = "txtAvsDecoder";
-			this.txtAvsDecoder.Size = new System.Drawing.Size(200, 24);
-			this.txtAvsDecoder.TabIndex = 0;
-			this.txtAvsDecoder.TextChanged += new System.EventHandler(this.txtAvsDecoder_TextChanged);
-			// 
-			// chkReset
-			// 
-			this.chkReset.AutoSize = true;
-			this.chkReset.Location = new System.Drawing.Point(6, 322);
-			this.chkReset.Name = "chkReset";
-			this.chkReset.Size = new System.Drawing.Size(273, 17);
-			this.chkReset.TabIndex = 4;
-			this.chkReset.Text = "&Reset all configuration && settings (factory default)*";
-			this.chkReset.UseVisualStyleBackColor = true;
-			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -769,7 +769,6 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Preference";
 			this.Load += new System.EventHandler(this.frmOption_Load);
-			this.Shown += new System.EventHandler(this.frmOption_Shown);
 			this.tabControl1.ResumeLayout(false);
 			this.tabGeneral.ResumeLayout(false);
 			this.tabGeneral.PerformLayout();
@@ -787,6 +786,8 @@
 			this.grpCompiler.PerformLayout();
 			this.grpProcessor.ResumeLayout(false);
 			this.tabAviSynth.ResumeLayout(false);
+			this.grpAvsDefaults.ResumeLayout(false);
+			this.grpAvsDefaults.PerformLayout();
 			this.grpMKV.ResumeLayout(false);
 			this.grpStatus.ResumeLayout(false);
 			this.tabPlugin.ResumeLayout(false);
@@ -795,8 +796,6 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
-			this.grpAvsDefaults.ResumeLayout(false);
-			this.grpAvsDefaults.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

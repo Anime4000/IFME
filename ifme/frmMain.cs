@@ -72,8 +72,12 @@ namespace ifme
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
 
-			// Devs
+			// Language
+#if MAKELANG
 			LangCreate();
+#else
+			LangApply();
+#endif
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -82,7 +86,7 @@ namespace ifme
 				Text += " (please update)";
 		}
 
-		#region Profile
+#region Profile
 		void ProfileAdd()
 		{
 			// Clear before adding object
@@ -209,9 +213,9 @@ namespace ifme
 			Profile.Load(); //reload list
 			ProfileAdd();
 		}
-		#endregion
+#endregion
 
-		#region Browse, Config & About button
+#region Browse, Config & About button
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetDir = new FolderBrowserDialog();
@@ -237,9 +241,9 @@ namespace ifme
 			Form frm = new frmAbout();
 			frm.ShowDialog();
 		}
-		#endregion
+#endregion
 
-		#region Queue: Add files
+#region Queue: Add files
 		private void btnQueueAdd_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
@@ -358,16 +362,16 @@ namespace ifme
 			// Print to log
 			InvokeLog($"File added {Info.Data.File}");
 		}
-		#endregion
+#endregion
 
-		#region Queue: CheckBox, this event fired once when add new item and tick event
+#region Queue: CheckBox, this event fired once when add new item and tick event
 		private void lstQueue_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			(lstQueue.Items[e.Index].Tag as Queue).IsEnable = e.CurrentValue == CheckState.Unchecked ? true : false; // reverse event
 		}
-		#endregion
+#endregion
 
-		#region Queue: Move item up, down and remove
+#region Queue: Move item up, down and remove
 		private void btnQueueMoveUp_Click(object sender, EventArgs e)
 		{
 			try
@@ -440,9 +444,9 @@ namespace ifme
 				InvokeLog($"File removed {item.SubItems[0].Text}");
 			}
 		}
-		#endregion
+#endregion
 
-		#region Queue: Display item properties
+#region Queue: Display item properties
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
@@ -514,10 +518,10 @@ namespace ifme
 			chkAttachEnable.Checked = false;
 			lstAttach.Items.Clear();
 		}
-		#endregion
+#endregion
 
-		#region Queue: Property update
-		#region Queue: Property update - Picture Tab
+#region Queue: Property update
+#region Queue: Property update - Picture Tab
 		private void rdoMKV_CheckedChanged(object sender, EventArgs e)
 		{
 			PluginAudioReload();
@@ -603,9 +607,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.PictureYadifFlag);
 		}
-		#endregion
+#endregion
 
-		#region Queue: Property update - Video Tab
+#region Queue: Property update - Video Tab
 		private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			QueueUpdate(QueueProp.VideoPreset);
@@ -708,9 +712,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.VideoCommand);
 		}
-		#endregion
+#endregion
 
-		#region Queue: Property update - Audio Tab
+#region Queue: Property update - Audio Tab
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			foreach (var item in Plugin.List)
@@ -758,9 +762,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.AudioCommand);
 		}
-		#endregion
+#endregion
 
-		#region Queue: Property update - Subtitles Tab
+#region Queue: Property update - Subtitles Tab
 		private void tabSubtitles_Leave(object sender, EventArgs e)
 		{
 			if (lstSub.Items.Count == 0)
@@ -868,9 +872,9 @@ namespace ifme
 				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = cboSubLang.Text;
 			}
 		}
-		#endregion
+#endregion
 
-		#region Queue: Property update - Attachments Tab
+#region Queue: Property update - Attachments Tab
 		private void tabAttachments_Leave(object sender, EventArgs e)
 		{
 			if (lstAttach.Items.Count == 0)
@@ -976,7 +980,7 @@ namespace ifme
 				(lstQueue.SelectedItems[0].Tag as Queue).Attach[item.Index].Comment = txtAttachDescription.Text;
 			}
 		}
-		#endregion
+#endregion
 
 		void QueueUpdate(QueueProp Id)
 		{
@@ -1079,7 +1083,7 @@ namespace ifme
 				}
 			}
 		}
-		#endregion
+#endregion
 
 		private void btnQueueStart_Click(object sender, EventArgs e)
 		{
@@ -1564,7 +1568,7 @@ namespace ifme
 			btnConfig.Enabled = x;
 		}
 
-		#region Queue Menu
+#region Queue Menu
 		private void tsmiQueuePreview_Click(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
@@ -1752,12 +1756,12 @@ namespace ifme
 				MessageBox.Show(Language.OneItem);
 			}
 		}
-		#endregion
+#endregion
 
+#region Language - Load and Apply
 		void LangApply()
 		{
-			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path.Combine("lang", $"{Properties.Settings.Default.Language}.ini"));
+			var data = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini"));
 
 			Control ctrl = this;
 			do
@@ -1771,9 +1775,10 @@ namespace ifme
 						ctrl is CheckBox ||
 						ctrl is RadioButton ||
 						ctrl is GroupBox)
-						ctrl.Text = data[Name][ctrl.Name].Replace("\\n","\n");
+						if (!string.IsNullOrEmpty(ctrl.Text))
+							ctrl.Text = data[Name][ctrl.Name].Replace("\\n", "\n");
 
-            } while (ctrl != null);
+			} while (ctrl != null);
 
 			foreach (ColumnHeader item in lstQueue.Columns)
 				item.Text = data[Name][$"{item.Tag}"];
@@ -1784,19 +1789,19 @@ namespace ifme
 			foreach (ColumnHeader item in lstAttach.Columns)
 				item.Text = data[Name][$"{item.Tag}"];
 
-			Language.BenchmarkDownload = data["dialog"]["BenchmarkDownload"];
-			Language.BenchmarkNoFile = data["dialog"]["BenchmarkNoFile"];
-			Language.NotSupported = data["dialog"]["NotSupported"];
-			Language.OneItem = data["dialog"]["OneItem"];
-			Language.OneVideo = data["dialog"]["OneVideo"];
-			Language.SaveNewProfilesInfo = data["dialog"]["SaveNewProfilesInfo"];
-			Language.SaveNewProfilesTitle = data["dialog"]["SaveNewProfilesTitle"];
-			Language.SelectAviSynth = data["dialog"]["SelectAviSynth"];
-			Language.SelectNotAviSynth = data["dialog"]["SelectNotAviSynth"];
-			Language.SelectOneVideoAttch = data["dialog"]["SelectOneVideoAttch"];
-			Language.SelectOneVideoPreview = data["dialog"]["SelectOneVideoPreview"];
-			Language.SelectOneVideoSubtitle = data["dialog"]["SelectOneVideoSubtitle"];
-			Language.VideoToAviSynth = data["dialog"]["VideoToAviSynth"].Replace("\\n", "\n");
+			Language.BenchmarkDownload = data[Name]["BenchmarkDownload"];
+			Language.BenchmarkNoFile = data[Name]["BenchmarkNoFile"];
+			Language.NotSupported = data[Name]["NotSupported"];
+			Language.OneItem = data[Name]["OneItem"];
+			Language.OneVideo = data[Name]["OneVideo"];
+			Language.SaveNewProfilesInfo = data[Name]["SaveNewProfilesInfo"];
+			Language.SaveNewProfilesTitle = data[Name]["SaveNewProfilesTitle"];
+			Language.SelectAviSynth = data[Name]["SelectAviSynth"];
+			Language.SelectNotAviSynth = data[Name]["SelectNotAviSynth"];
+			Language.SelectOneVideoAttch = data[Name]["SelectOneVideoAttch"];
+			Language.SelectOneVideoPreview = data[Name]["SelectOneVideoPreview"];
+			Language.SelectOneVideoSubtitle = data[Name]["SelectOneVideoSubtitle"];
+			Language.VideoToAviSynth = data[Name]["VideoToAviSynth"].Replace("\\n", "\n");
 		}
 
 		void LangCreate()
@@ -1806,9 +1811,10 @@ namespace ifme
 
 			data.Sections.AddSection("info");
 			data.Sections["info"].AddKey("ISO", "eng"); // file id
+			data.Sections["info"].AddKey("Name", "English");
 			data.Sections["info"].AddKey("Author", "Anime4000");
-			data.Sections["info"].AddKey("Version", $"{Global.App.Version}");
-			data.Sections["info"].AddKey("Contact", "http://fb.com/anime4000");
+			data.Sections["info"].AddKey("Version", $"{Global.App.VersionRelease}");
+			data.Sections["info"].AddKey("Contact", "https://github.com/Anime4000");
 
 			data.Sections.AddSection(Name);
 			Control ctrl = this;
@@ -1837,22 +1843,23 @@ namespace ifme
 			foreach (ColumnHeader item in lstAttach.Columns)
 				data.Sections[Name].AddKey($"colAttach{item.Text}", item.Text);
 
-			data.Sections.AddSection("dialog");
-			data.Sections["dialog"].AddKey("BenchmarkDownload", Language.BenchmarkDownload);
-			data.Sections["dialog"].AddKey("BenchmarkNoFile", Language.BenchmarkNoFile);
-			data.Sections["dialog"].AddKey("NotSupported", Language.NotSupported);
-			data.Sections["dialog"].AddKey("OneItem", Language.OneItem);
-			data.Sections["dialog"].AddKey("OneVideo", Language.OneVideo);
-			data.Sections["dialog"].AddKey("SaveNewProfilesInfo", Language.SaveNewProfilesInfo);
-			data.Sections["dialog"].AddKey("SaveNewProfilesTitle", Language.SaveNewProfilesTitle);
-			data.Sections["dialog"].AddKey("SelectAviSynth", Language.SelectAviSynth);
-			data.Sections["dialog"].AddKey("SelectNotAviSynth", Language.SelectNotAviSynth);
-			data.Sections["dialog"].AddKey("SelectOneVideoAttch", Language.SelectOneVideoAttch);
-			data.Sections["dialog"].AddKey("SelectOneVideoPreview", Language.SelectOneVideoPreview);
-			data.Sections["dialog"].AddKey("SelectOneVideoSubtitle", Language.SelectOneVideoSubtitle);
-			data.Sections["dialog"].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
+			data.Sections.AddSection(Name);
+			data.Sections[Name].AddKey("BenchmarkDownload", Language.BenchmarkDownload);
+			data.Sections[Name].AddKey("BenchmarkNoFile", Language.BenchmarkNoFile);
+			data.Sections[Name].AddKey("NotSupported", Language.NotSupported);
+			data.Sections[Name].AddKey("OneItem", Language.OneItem);
+			data.Sections[Name].AddKey("OneVideo", Language.OneVideo);
+			data.Sections[Name].AddKey("SaveNewProfilesInfo", Language.SaveNewProfilesInfo);
+			data.Sections[Name].AddKey("SaveNewProfilesTitle", Language.SaveNewProfilesTitle);
+			data.Sections[Name].AddKey("SelectAviSynth", Language.SelectAviSynth);
+			data.Sections[Name].AddKey("SelectNotAviSynth", Language.SelectNotAviSynth);
+			data.Sections[Name].AddKey("SelectOneVideoAttch", Language.SelectOneVideoAttch);
+			data.Sections[Name].AddKey("SelectOneVideoPreview", Language.SelectOneVideoPreview);
+			data.Sections[Name].AddKey("SelectOneVideoSubtitle", Language.SelectOneVideoSubtitle);
+			data.Sections[Name].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
 
-			parser.WriteFile(Path.Combine("lang", "eng.ini"), data, Encoding.UTF8);		
+			parser.WriteFile(Path.Combine(Global.Folder.Language, "eng.ini"), data, Encoding.UTF8);		
 		}
+#endregion
 	}
 }

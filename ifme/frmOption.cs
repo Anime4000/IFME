@@ -41,7 +41,7 @@ namespace ifme
 			cboCPUPriority.SelectedIndex = Properties.Settings.Default.Nice;
 
 			// AviSynth
-			lblAviSynthStatus.Text = Plugin.AviSynthInstalled ? "Installed" : "Not found";
+			lblAviSynthStatus.Text = Plugin.AviSynthInstalled ? Language.Installed : Language.NotInstalled;
 			lblAviSynthStatus.ForeColor = Plugin.AviSynthInstalled ? Color.Green : Color.Red;
 
 			if (Plugin.AviSynthInstalled)
@@ -146,12 +146,21 @@ namespace ifme
 			if (!Plugin.IsExistHEVCMSVC)
 				rdoCompilerMicrosoft.Enabled = false;
 
-		}
+			// Language
+			foreach (var item in Language.Lists)
+			{
+				cboLang.Items.Add(item.Name);
 
-		private void frmOption_Shown(object sender, EventArgs e)
-		{
-			// Devs
+				if (string.Equals(Properties.Settings.Default.Language, item.ISO))
+					cboLang.Text = item.Name;
+			}
+
+			// Language
+#if MAKELANG
 			LangCreate();
+#else
+			LangApply();
+#endif
 		}
 
 		private void btnBrowse_Click(object sender, EventArgs e)
@@ -203,11 +212,6 @@ namespace ifme
 			Properties.Settings.Default.DefaultBenchmark = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
 		}
 
-		private void cboDefaultHfr_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
 		private void txtAvsDecoder_TextChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.AvsDecoder = txtAvsDecoder.Text;
@@ -241,25 +245,19 @@ namespace ifme
 		private void tsmiPluginWeb_Click(object sender, EventArgs e)
 		{
 			if (lstPlugin.SelectedItems.Count == 1)
-			{
 				Process.Start((string)lstPlugin.SelectedItems[0].Tag);
-			}
 		}
 
 		private void tsmiExtensionWeb_Click(object sender, EventArgs e)
 		{
 			if (lstExtension.SelectedItems.Count == 1)
-			{
 				Process.Start((string)lstExtension.SelectedItems[0].Tag);
-			}
 		}
 
 		private void tsmiProfileWeb_Click(object sender, EventArgs e)
 		{
 			if (lstProfile.SelectedItems.Count == 1)
-			{
 				Process.Start((string)lstProfile.SelectedItems[0].Tag);
-			}
 		}
 
 		private void btnOK_Click(object sender, EventArgs e)
@@ -282,6 +280,10 @@ namespace ifme
 			Properties.Settings.Default.CPUAffinity = aff;
 			Properties.Settings.Default.Nice = cboCPUPriority.SelectedIndex;
 
+			// Language
+			if (cboLang.SelectedIndex >= 0)
+				Properties.Settings.Default.Language = Language.Lists[cboLang.SelectedIndex].ISO;
+
 			// Save
 			Properties.Settings.Default.Save();
 
@@ -292,8 +294,7 @@ namespace ifme
 
 		void LangApply()
 		{
-			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path.Combine("lang", $"{Properties.Settings.Default.Language}.ini"));
+			IniData data = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini"));
 
 			Control ctrl = this;
 			do
@@ -307,7 +308,8 @@ namespace ifme
 						ctrl is CheckBox ||
 						ctrl is RadioButton ||
 						ctrl is GroupBox)
-						ctrl.Text = data[Name][ctrl.Name].Replace("\\n", "\n");
+						if (!string.IsNullOrEmpty(ctrl.Text))
+							ctrl.Text = data[Name][ctrl.Name].Replace("\\n", "\n");
 
 			} while (ctrl != null);
 
@@ -324,7 +326,7 @@ namespace ifme
 		void LangCreate()
 		{
 			var parser = new FileIniDataParser();
-			IniData data = parser.ReadFile(Path.Combine("lang", "eng.ini"));
+			IniData data = parser.ReadFile(Path.Combine(Global.Folder.Language, "eng.ini"));
 
 			data.Sections.AddSection(Name);
 			Control ctrl = this;
@@ -353,7 +355,10 @@ namespace ifme
 			foreach (ColumnHeader item in lstProfile.Columns)
 				data.Sections[Name].AddKey($"colProfile{item.Text}", item.Text);
 
-			parser.WriteFile(Path.Combine("lang", "eng.ini"), data);
+			data.Sections[Name].AddKey("Installed", Language.Installed);
+			data.Sections[Name].AddKey("NotInstalled", Language.NotInstalled);
+
+			parser.WriteFile(Path.Combine(Global.Folder.Language, "eng.ini"), data);
 		}
 	}
 }
