@@ -62,7 +62,16 @@ namespace ifme
 			}
 
 			// Language
-			Language.Load();
+			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini")))
+			{
+				Properties.Settings.Default.Language = "en";
+				WriteLine($"Language file {Properties.Settings.Default.Language}.ini not found, make sure file name and CODE are same");
+            }
+			else
+			{
+				Language.Display();
+				WriteLine("Loading language file");
+			}
 
 			// CPU Affinity, Load previous, if none, set default all CPU
 			if (string.IsNullOrEmpty(Properties.Settings.Default.CPUAffinity))

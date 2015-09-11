@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
+using System.Collections.Generic;
 using System.IO;
 
 using IniParser;
+using IniParser.Model;
 
 namespace ifme
 {
@@ -10,16 +12,20 @@ namespace ifme
 		public string Code;
 		public string Name;
 
-		public static List<Language> Lists = new List<Language>(); // No shorting, gonna use foreach that equal index of Combobox
+		// No shorting, gonna use foreach that equal index of Combobox
+		public static List<Language> Lists = new List<Language>();
 
-		public static void Load()
+		public static void Display()
 		{
 			foreach (var item in Directory.GetFiles(Global.Folder.Language, "*.ini"))
 			{
-				var data = new FileIniDataParser().ReadFile(item);
+				var data = new FileIniDataParser().ReadFile(item, Encoding.UTF8);
 				Lists.Add(new Language() { Code = data["info"]["Code"], Name = data["info"]["Name"] });
 			}
 		}
+
+		// Globally access control
+		public static IniData Get = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini"), Encoding.UTF8);
 
 		// Main, save profiles
 		public static string SaveNewProfilesTitle = "Save new profile";

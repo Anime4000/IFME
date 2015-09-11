@@ -1761,7 +1761,7 @@ namespace ifme
 #region Language - Load and Apply
 		void LangApply()
 		{
-			var data = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini"));
+			var data = Language.Get;
 
 			Control ctrl = this;
 			do

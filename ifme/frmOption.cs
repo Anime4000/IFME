@@ -294,7 +294,7 @@ namespace ifme
 
 		void LangApply()
 		{
-			IniData data = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini"));
+			var data = Language.Get;
 
 			Control ctrl = this;
 			do
