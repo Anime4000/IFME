@@ -39,6 +39,17 @@ namespace ifme
 		// Ubuntu 14.04.1 return 4
 
 		/// <summary>
+		/// Return true if OS is 64bit
+		/// </summary>
+		public static bool Is64bit
+		{
+			get
+			{
+				return Environment.Is64BitOperatingSystem;
+			}
+		}
+
+		/// <summary>
 		/// Return general OS name
 		/// </summary>
 		public static string Name

@@ -36,7 +36,7 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
-			Title = "IFME Command Control";
+			Title = "IFME Command Centre";
 			WriteLine(@"_____   __                      ___            ________            _____ ");
 			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
 			WriteLine(@"__   |/ /_  _ \_  __ `__ \  / / /|/__  ___/    __  __  |  __ \  __ \  __/");
