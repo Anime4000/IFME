@@ -36,7 +36,7 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
-			Title = "Nemu Bootstrap";
+			Title = "IFME Command Control";
 			WriteLine(@"_____   __                      ___            ________            _____ ");
 			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
 			WriteLine(@"__   |/ /_  _ \_  __ `__ \  / / /|/__  ___/    __  __  |  __ \  __ \  __/");
@@ -51,22 +51,47 @@ namespace ifme
 
 		private void bgwThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			// Upgrade settings
-			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
-			{
-				Properties.Settings.Default.Upgrade();
-				Properties.Settings.Default.Version = Global.App.VersionRelease;
-				Properties.Settings.Default.Save();
+			// App Version
+#if NONSTEAM
+			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
+				Global.App.NewRelease = true;
+#endif
 
-				WriteLine("Settings has been upgraded!");
-			}
+			// Setting Load
+			SettingLoad();
+
+			// Plugin 
+			PluginCheck(); // check repo
+			Plugin.Load(); // load to memory
+			PluginUpdate(); // apply update
+			Plugin.Load(); // reload
+
+			// Profile
+			Profile.Load();
+
+			// Extension
+			Extension.Load();
+			Extension.CheckDefault();
+			ExtensionUpdate();
+			Extension.Load(); // reload
+
+			// Check x265 compiler binary
+			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
+				Properties.Settings.Default.Compiler = "gcc";
+			else
+				Plugin.IsExistHEVCICC = true;
+
+			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
+				Properties.Settings.Default.Compiler = "gcc";
+			else
+				Plugin.IsExistHEVCMSVC = true;
 
 			// Language
 			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini")))
 			{
 				Properties.Settings.Default.Language = "en";
 				WriteLine($"Language file {Properties.Settings.Default.Language}.ini not found, make sure file name and CODE are same");
-            }
+			}
 			else
 			{
 				Language.Display();
@@ -111,47 +136,21 @@ namespace ifme
 				Write("Sorry, cannot load something :( it seem no Internet");
 			}
 
-			// Setting Load
-			SettingLoad();
+			// Upgrade settings
+			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.Version = Global.App.VersionRelease;
 
-			// Plugin 
-			PluginCheck(); // check repo
-			Plugin.Load(); // load to memory
-			PluginUpdate(); // apply update
-			Plugin.Load(); // reload
-
-			// Check x265 compiler binary
-			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
-				Properties.Settings.Default.Compiler = "gcc";
-			else
-				Plugin.IsExistHEVCICC = true;
-
-			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
-				Properties.Settings.Default.Compiler = "gcc";
-			else
-				Plugin.IsExistHEVCMSVC = true;
-
-			// Profile
-			Profile.Load();
-
-			// Extension
-			Extension.Load();
-			Extension.CheckDefault();
-			ExtensionUpdate();
-			Extension.Load(); // reload
-
-			// App Version
-#if NONSTEAM
-			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
-				Global.App.NewRelease = true;
-#endif
-			
-			// For fun
-			WriteLine("\n\nAll done! Initialising...");
-			System.Threading.Thread.Sleep(3000);
+				WriteLine("Settings has been upgraded!");
+			}
 
 			// Save all settings
 			Properties.Settings.Default.Save();
+
+			// For fun
+			WriteLine("\n\nEstablishing battlefield control, standby!");
+			System.Threading.Thread.Sleep(3000);
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -271,7 +270,7 @@ namespace ifme
 		{
 			foreach (var item in Plugin.List)
 			{
-				Write($"\nChecking for update: {item.Profile.Name}");
+				WriteLine($"Checking for update: {item.Profile.Name}");
 
 				if (string.IsNullOrEmpty(item.Provider.Update))
 					continue;
@@ -288,7 +287,7 @@ namespace ifme
 		{
 			foreach (var item in Extension.Items)
 			{
-				Write($"\nChecking for update: {item.Name}");
+				WriteLine($"Checking for update: {item.Name}");
 
 				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
