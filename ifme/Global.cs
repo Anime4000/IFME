@@ -48,7 +48,7 @@ namespace ifme
 
 			public static string NameFull
 			{
-				get { return $"{Name} v{Version} ( '{CodeName}' ) - {Type}"; }
+				get { return $"{Name} {(OS.Is64bit ? "64bit" : "32bit")} v{VersionRelease} ( '{CodeName}' )"; }
 			}
 
 			public static string CodeName
@@ -87,25 +87,25 @@ namespace ifme
 		{
 			public static string Finish
 			{
-				get { return Path.Combine(Folder.AppDir, "sounds", "finish.wav"); }
+				get { return Path.Combine(Folder.App, "sounds", "finish.wav"); }
 			}
 		}
 
 		public class Folder
 		{
-			public static string AppDir
+			public static string App
 			{
 				get { return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location); }
 			}
 
 			public static string Profile
 			{
-				get { return Path.Combine(AppDir, "profile"); }
+				get { return Path.Combine(App, "profile"); }
 			}
 
 			public static string Plugins
 			{
-				get { return Path.Combine(AppDir, "plugins"); }
+				get { return Path.Combine(App, "plugins"); }
 			}
 
 			public static string Temp
@@ -115,17 +115,17 @@ namespace ifme
 
 			public static string Language
 			{
-				get { return Path.Combine(AppDir, "lang"); }
+				get { return Path.Combine(App, "lang"); }
 			}
 
 			public static string Benchmark
 			{
-				get { return Path.Combine(AppDir, "benchmark"); }
+				get { return Path.Combine(App, "benchmark"); }
 			}
 
 			public static string Extension
 			{
-				get { return Path.Combine(AppDir, "extension"); }
+				get { return Path.Combine(App, "extension"); }
 			}
 		}
 

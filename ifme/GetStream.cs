@@ -33,7 +33,7 @@ namespace ifme
 
 	public class GetStream
 	{
-		private static IniData GetFmt = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.AppDir, "format.ini"), Encoding.UTF8);
+		private static IniData GetFmt = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.App, "format.ini"), Encoding.UTF8);
 
         public static List<StreamMedia> Media(string file, StreamType kind)
 		{
@@ -251,7 +251,7 @@ namespace ifme
 			{
 				foreach (var item in File.ReadAllLines(file))
 				{
-					foreach (var code in File.ReadAllLines(Path.Combine(Global.Folder.AppDir, "avisynthsource.code")))
+					foreach (var code in File.ReadAllLines(Path.Combine(Global.Folder.App, "avisynthsource.code")))
 					{
 						if (item.Contains(code))
 						{

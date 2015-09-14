@@ -121,11 +121,22 @@ namespace ifme
 				WriteLine("AviSynth not detected!");
 			}
 
+			// Format fix
+			try
+			{
+				WriteLine("Loading codec fingerprint");
+				client.DownloadFile("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini"));
+			}
+			catch (Exception)
+			{
+				WriteLine("Sorry, could not load codec fingerprint, no internet access, using old");
+			}
+
 			// Thanks to our donor
 			try
 			{
 				WriteLine("Loading our donor list :) you can see via \"About IFME\"");
-				File.WriteAllText("metauser.if", client.DownloadString("http://x265.github.io/supporter.txt"), Encoding.UTF8);
+				client.DownloadFile("http://x265.github.io/supporter.txt", Path.Combine(Global.Folder.App, "metauser.if"));
 			}
 			catch (Exception)
 			{
@@ -186,15 +197,15 @@ namespace ifme
 
 			if (OS.IsWindows)
 				if (OS.Is64bit)
-					repo = Path.Combine(Global.Folder.AppDir, "addons_windows64.repo");
+					repo = Path.Combine(Global.Folder.App, "addons_windows64.repo");
 				else
-					repo = Path.Combine(Global.Folder.AppDir, "addons_windows32.repo");
+					repo = Path.Combine(Global.Folder.App, "addons_windows32.repo");
 				
 			if (OS.IsLinux)
 				if (OS.Is64bit)
-					repo = Path.Combine(Global.Folder.AppDir, "addons_linux64.repo");
+					repo = Path.Combine(Global.Folder.App, "addons_linux64.repo");
 				else
-					repo = Path.Combine(Global.Folder.AppDir, "addons_linux32.repo");
+					repo = Path.Combine(Global.Folder.App, "addons_linux32.repo");
 
 			counted = File.ReadAllLines(repo).Length;
 
@@ -275,7 +286,7 @@ namespace ifme
 
 		void Extract(string dir, string file)
 		{
-			string unzip = Path.Combine(Global.Folder.AppDir, "7za");
+			string unzip = Path.Combine(Global.Folder.App, "7za");
 			string zipfile = Path.Combine(dir, file);
 
 			Write("Extracting... ");
