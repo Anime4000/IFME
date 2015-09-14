@@ -21,9 +21,6 @@ namespace ifme
 		WebClient client = new WebClient();
 		bool finish = false;
 
-		Stopwatch stopwatch;
-		long ctime = 0, ptime = 0, current = 0, previous = 0;
-
 		public frmSplashScreen()
 		{
 			InitializeComponent();
@@ -36,7 +33,7 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
-			Title = "IFME Command Centre";
+			Title = "Nemu Command Centre";
 			WriteLine(@"_____   __                      ___            ________            _____ ");
 			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
 			WriteLine(@"__   |/ /_  _ \_  __ `__ \  / / /|/__  ___/    __  __  |  __ \  __ \  __/");
@@ -53,7 +50,7 @@ namespace ifme
 		{
 			// App Version
 #if NONSTEAM
-			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version_ifme5.txt")))
+			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version.txt")))
 				Global.App.NewRelease = true;
 #endif
 
@@ -76,14 +73,13 @@ namespace ifme
 			Extension.Load(); // reload
 
 			// Check x265 compiler binary
-			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
-				Properties.Settings.Default.Compiler = "gcc";
-			else
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))				
+				Plugin.IsExistHEVCGCC = true;
+
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))				
 				Plugin.IsExistHEVCICC = true;
 
-			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
-				Properties.Settings.Default.Compiler = "gcc";
-			else
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				Plugin.IsExistHEVCMSVC = true;
 
 			// Language
@@ -95,7 +91,7 @@ namespace ifme
 			else
 			{
 				Language.Display();
-				WriteLine("Loading language file");
+				WriteLine($"Loading language file: {Properties.Settings.Default.Language}.ini");
 			}
 
 			// CPU Affinity, Load previous, if none, set default all CPU
@@ -133,7 +129,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				Write("Sorry, cannot load something :( it seem no Internet");
+				WriteLine("Sorry, cannot load something :( it seem no Internet");
 			}
 
 			// Upgrade settings
@@ -142,6 +138,11 @@ namespace ifme
 				Properties.Settings.Default.Upgrade();
 				Properties.Settings.Default.Version = Global.App.VersionRelease;
 
+				if (OS.IsLinux)
+					Properties.Settings.Default.Compiler = "gcc";
+				else
+					Properties.Settings.Default.Compiler = "msvc";
+
 				WriteLine("Settings has been upgraded!");
 			}
 
@@ -149,7 +150,7 @@ namespace ifme
 			Properties.Settings.Default.Save();
 
 			// For fun
-			WriteLine("\n\nEstablishing battlefield control, standby!");
+			WriteLine("\nEstablishing battlefield control, standby!");
 			System.Threading.Thread.Sleep(3000);
 		}
 
@@ -179,90 +180,36 @@ namespace ifme
 		#region Plugins
 		public void PluginCheck()
 		{
-			// Check folder
+			string repo = null;
+			int counter = 0;
+			int counted = 0;
+
 			if (OS.IsWindows)
+				if (OS.Is64bit)
+					repo = Path.Combine(Global.Folder.AppDir, "addons_windows64.repo");
+				else
+					repo = Path.Combine(Global.Folder.AppDir, "addons_windows32.repo");
+				
+			if (OS.IsLinux)
+				if (OS.Is64bit)
+					repo = Path.Combine(Global.Folder.AppDir, "addons_linux64.repo");
+				else
+					repo = Path.Combine(Global.Folder.AppDir, "addons_linux32.repo");
+
+			counted = File.ReadAllLines(repo).Length;
+
+			foreach (var item in File.ReadAllLines(repo))
 			{
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ffmpeg")))
-				{
-					WriteLine("Downloading component  1 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ffmpeg.ifx");
-				}
+				string content = item.Replace("\\n", "\n");
+				string[] nemu = content.Split('\n');
 
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "avisynth")))
-				{
-					WriteLine("Downloading component  2 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/avisynth.ifx");
-				}
+				counter++;
 
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ffmsindex")))
+				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, nemu[0])))
 				{
-					WriteLine("Downloading component  3 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ffmsindex.ifx");
+					Write($"Downloading component {counter,2:##} of {counted,2:##}: {nemu[0]}\n");
+					Download(nemu[1]);
 				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mp4fpsmod")))
-				{
-					WriteLine("Downloading component  4 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mp4fpsmod.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mkvtool")))
-				{
-					WriteLine("Downloading component  5 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mkvtool.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "mp4box")))
-				{
-					WriteLine("Downloading component  6 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/mp4box.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))
-				{
-					WriteLine("Downloading component  7 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265gcc.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
-				{
-					WriteLine("Downloading component  8 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265icc.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
-				{
-					WriteLine("Downloading component  9 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/x265msvc.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "flac")))
-				{
-					WriteLine("Downloading component 10 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/flac.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "ogg")))
-				{
-					WriteLine("Downloading component 11 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/ogg.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "opus")))
-				{
-					WriteLine("Downloading component 12 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/opus.ifx");
-				}
-
-				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, "faac")))
-				{
-					WriteLine("Downloading component 13 of 13");
-					Download("http://master.dl.sourceforge.net/project/ifme/plugins/ifme5/windows/faac.ifx");
-				}
-			}
-			else
-			{
-				// coming soon
 			}
 		}
 
@@ -270,7 +217,7 @@ namespace ifme
 		{
 			foreach (var item in Plugin.List)
 			{
-				WriteLine($"Checking for update: {item.Profile.Name}");
+				Write($"Checking for update: {item.Profile.Name}\n");
 
 				if (string.IsNullOrEmpty(item.Provider.Update))
 					continue;
@@ -287,7 +234,7 @@ namespace ifme
 		{
 			foreach (var item in Extension.Items)
 			{
-				WriteLine($"Checking for update: {item.Name}");
+				Write($"Checking for update: {item.Name}\n");
 
 				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
@@ -310,15 +257,11 @@ namespace ifme
 
 		void Download(string url, string folder, string file)
 		{
-			Write("\n");
-
 			try
 			{
 				finish = false;
 
-				stopwatch = new Stopwatch();
 				client.DownloadFileAsync(new Uri(url), Path.Combine(folder, file));
-				stopwatch.Start();
 
 				while (finish == false) { /* doing nothing, just block */ }
 
@@ -335,7 +278,7 @@ namespace ifme
 			string unzip = Path.Combine(Global.Folder.AppDir, "7za");
 			string zipfile = Path.Combine(dir, file);
 
-			Write("\nExtracting... ");
+			Write("Extracting... ");
 			TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
 			
 			Write("Done!\n");
@@ -344,18 +287,7 @@ namespace ifme
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			// Info: http://www.doyatte.com/how-to-get-the-download-speed-while-using-downloaddataasync/
-			// get the elapsed time in milliseconds
-			ctime = stopwatch.ElapsedMilliseconds;
-			// get the received bytes at the particular instant
-			current = e.BytesReceived;
-			// calculate the speed the bytes were downloaded and assign it to a Textlabel (speedLabel in this instance)
-			int speed = ((int)(((current - previous) / (double)1024) / ((ctime - ptime) / (double)1000)));
-
-			previous = current;
-			ptime = ctime;
-
-			Write($"\r{((float)e.BytesReceived / e.TotalBytesToReceive):P} Completed... ({(speed > 0 ? speed : 0)} KB/s)\t");
+			Write($"\r{((float)e.BytesReceived / e.TotalBytesToReceive):P} Completed...");
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

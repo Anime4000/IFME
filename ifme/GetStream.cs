@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+
+using IniParser;
+using IniParser.Model;
 
 namespace ifme
 {
@@ -29,24 +33,31 @@ namespace ifme
 
 	public class GetStream
 	{
-		public static List<StreamMedia> Media(string file, StreamType kind)
+		private static IniData GetFmt = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.AppDir, "format.ini"), Encoding.UTF8);
+
+        public static List<StreamMedia> Media(string file, StreamType kind)
 		{
 			List<StreamMedia> Items = new List<StreamMedia>();
 			string Kind = string.Empty;
+			int Move = 0;
 
 			switch (kind)
 			{
 				case StreamType.Video:
 					Kind = "Video";
+					Move = 7;
 					break;
 				case StreamType.Audio:
 					Kind = "Audio";
+					Move = 7;
 					break;
 				case StreamType.Subtitle:
 					Kind = "Subtitle";
+					Move = 10;
 					break;
 				case StreamType.Attachment:
 					Kind = "Attachment";
+					Move = 12;
 					break;
 			}
 
@@ -84,7 +95,7 @@ namespace ifme
 						else
 							lang = "und";
 
-						for (int i = item.IndexOf(Kind) + 7; i < item.Length; i++)
+						for (int i = item.IndexOf(Kind) + Move; i < item.Length; i++)
 						{
 							if (item[i] == ' ')
 								break;
@@ -92,6 +103,15 @@ namespace ifme
 								break;
 
 							format += item[i];
+						}
+
+						try
+						{
+							format = GetFmt["format"][format];
+						}
+						catch
+						{
+							// do nothing...
 						}
 
 						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format });

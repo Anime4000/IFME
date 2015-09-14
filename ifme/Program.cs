@@ -18,12 +18,12 @@ namespace ifme
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new frmSplashScreen());
 
-			Title = "IFME console - plugins activity and report";
+			Title = $"{Global.App.Name} Console";
 
 			Clear();
 			ForegroundColor = ConsoleColor.Yellow;
-			WriteLine("{0} - compiled on {1}", Global.App.Name, Global.App.BuildDate);
-			WriteLine("Version: {0} (x64 {1} build)\n", Global.App.Version, Global.App.Type);
+			WriteLine($"{Global.App.Name} - compiled on {Global.App.BuildDate}");
+			WriteLine($"Version: {Global.App.Version} ({(OS.Is64bit ? "x64" : "x86")} {Global.App.Type} build)\n");
 
 			ForegroundColor = ConsoleColor.Green;
 			WriteLine(" ________________________________________");

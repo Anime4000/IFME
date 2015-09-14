@@ -84,7 +84,7 @@
 			this.colProfileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colProfileFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colProfilePlatform = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.colPresetAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colProfileAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cmsProfile = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiProfileWeb = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnCancel = new System.Windows.Forms.Button();
@@ -666,7 +666,7 @@
             this.colProfileName,
             this.colProfileFormat,
             this.colProfilePlatform,
-            this.colPresetAuthor});
+            this.colProfileAuthor});
 			this.lstProfile.ContextMenuStrip = this.cmsProfile;
 			this.lstProfile.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lstProfile.FullRowSelect = true;
@@ -696,11 +696,11 @@
 			this.colProfilePlatform.Text = "Platform";
 			this.colProfilePlatform.Width = 100;
 			// 
-			// colPresetAuthor
+			// colProfileAuthor
 			// 
-			this.colPresetAuthor.Tag = "colPresetAuthor";
-			this.colPresetAuthor.Text = "Author";
-			this.colPresetAuthor.Width = 120;
+			this.colProfileAuthor.Tag = "colProfileAuthor";
+			this.colProfileAuthor.Text = "Author";
+			this.colProfileAuthor.Width = 120;
 			// 
 			// cmsProfile
 			// 
@@ -822,7 +822,7 @@
 		private System.Windows.Forms.ColumnHeader colProfilePlatform;
 		private System.Windows.Forms.ContextMenuStrip cmsPlugin;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPluginWeb;
-		private System.Windows.Forms.ColumnHeader colPresetAuthor;
+		private System.Windows.Forms.ColumnHeader colProfileAuthor;
 		private System.Windows.Forms.ContextMenuStrip cmsProfile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiProfileWeb;
 		private System.Windows.Forms.GroupBox grpLanguage;

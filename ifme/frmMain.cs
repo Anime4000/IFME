@@ -1836,13 +1836,13 @@ namespace ifme
 			} while (ctrl != null);
 
 			foreach (ColumnHeader item in lstQueue.Columns)
-				data.Sections[Name].AddKey($"colQueue{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			foreach (ColumnHeader item in lstSub.Columns)
-				data.Sections[Name].AddKey($"colSub{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			foreach (ColumnHeader item in lstAttach.Columns)
-				data.Sections[Name].AddKey($"colAttach{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			data.Sections.AddSection(Name);
 			data.Sections[Name].AddKey("BenchmarkDownload", Language.BenchmarkDownload);

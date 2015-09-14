@@ -109,7 +109,7 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("gcc")]
+        [global::System.Configuration.DefaultSettingValueAttribute("msvc")]
         public string Compiler {
             get {
                 return ((string)(this["Compiler"]));

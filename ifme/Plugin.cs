@@ -31,6 +31,7 @@ namespace ifme
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
 		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
 
+		public static bool IsExistHEVCGCC = false;
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;
 
@@ -55,6 +56,7 @@ namespace ifme
 				p.File = item;
 				p.Info.Type = data["info"]["type"];
 				p.Info.Support = data["info"]["support"];
+				p.Profile.Arch = int.Parse(data["profile"]["arch"]);
 				p.Profile.Name = data["profile"]["name"];
 				p.Profile.Dev = data["profile"]["dev"];
 				p.Profile.Ver = data["profile"]["ver"];
@@ -62,14 +64,18 @@ namespace ifme
 				p.Provider.Name = data["provider"]["name"];
 				p.Provider.Update = data["provider"]["update"];
 				p.Provider.Download = data["provider"]["download"];
-				p.App.Bin = Path.Combine(Path.GetDirectoryName(item), data["app"]["bin"]);
-				p.App.Ext = data["app"]["ext"];
-				p.App.Quality = data["app"]["quality"].Split(',');
-				p.App.Default = data["app"]["default"];
-				p.Arg.Input = data["arg"]["input"];
-				p.Arg.Output = data["arg"]["output"];
-				p.Arg.Bitrate = data["arg"]["bitrate"];
-				p.Arg.Advance = data["arg"]["advance"];
+
+				if (string.Equals(p.Info.Type, "audio"))
+				{
+					p.App.Bin = Path.Combine(Path.GetDirectoryName(item), data["app"]["bin"]);
+					p.App.Ext = data["app"]["ext"];
+					p.App.Quality = data["app"]["quality"].Split(',');
+					p.App.Default = data["app"]["default"];
+					p.Arg.Input = data["arg"]["input"];
+					p.Arg.Output = data["arg"]["output"];
+					p.Arg.Bitrate = data["arg"]["bitrate"];
+					p.Arg.Advance = data["arg"]["advance"];
+				}
 
 				List.Add(p);
 			}
@@ -127,6 +133,7 @@ namespace ifme
 
 		public class profile
 		{
+			public int Arch;
 			public string Name;
 			public string Dev;
 			public string Ver;

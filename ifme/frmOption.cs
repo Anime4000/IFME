@@ -66,8 +66,8 @@ namespace ifme
 			// Plugin
 			foreach (var item in Plugin.List)
 			{
-				ListViewItem x = new ListViewItem(new[] { 
-					item.Profile.Name,
+				ListViewItem x = new ListViewItem(new[] {
+					$"{item.Profile.Name}{(OS.Is64bit ? $" {(item.Profile.Arch == 32 ? "*32" : "")}" : "")}",
 					item.Profile.Ver,
 					item.Profile.Dev,
 					item.Provider.Name
@@ -133,12 +133,17 @@ namespace ifme
 			}
 
 			// Compiler
+			if (string.Equals(Properties.Settings.Default.Compiler, "gcc", IC))
+				rdoCompilerGCC.Checked = true;
+
 			if (string.Equals(Properties.Settings.Default.Compiler, "icc", IC))
 				rdoCompilerIntel.Checked = true;
-			else if (string.Equals(Properties.Settings.Default.Compiler, "msvc", IC))
-				rdoCompilerMicrosoft.Checked = true;
-			else
-				rdoCompilerGCC.Checked = true;
+
+			if (string.Equals(Properties.Settings.Default.Compiler, "msvc", IC))
+				rdoCompilerMicrosoft.Checked = true;				
+
+			if (!Plugin.IsExistHEVCGCC)
+				rdoCompilerGCC.Enabled = false;
 
 			if (!Plugin.IsExistHEVCICC)
 				rdoCompilerIntel.Enabled = false;
@@ -347,13 +352,13 @@ namespace ifme
 			} while (ctrl != null);
 
 			foreach (ColumnHeader item in lstPlugin.Columns)
-				data.Sections[Name].AddKey($"colPlugin{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			foreach (ColumnHeader item in lstExtension.Columns)
-				data.Sections[Name].AddKey($"colExtension{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			foreach (ColumnHeader item in lstProfile.Columns)
-				data.Sections[Name].AddKey($"colProfile{item.Text}", item.Text);
+				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
 			data.Sections[Name].AddKey("Installed", Language.Installed);
 			data.Sections[Name].AddKey("NotInstalled", Language.NotInstalled);
