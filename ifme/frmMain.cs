@@ -82,8 +82,7 @@ namespace ifme
 
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
-			if (Global.App.NewRelease)
-				Text += " (please update)";
+
 		}
 
 #region Profile

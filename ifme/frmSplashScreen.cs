@@ -154,20 +154,6 @@ namespace ifme
 				WriteLine("Sorry, cannot load something :( it seem no Internet");
 			}
 
-			// Upgrade settings
-			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
-			{
-				Properties.Settings.Default.Upgrade();
-				Properties.Settings.Default.Version = Global.App.VersionRelease;
-
-				if (OS.IsLinux)
-					Properties.Settings.Default.Compiler = "gcc";
-				else
-					Properties.Settings.Default.Compiler = "msvc";
-
-				WriteLine("Settings has been upgraded!");
-			}
-
 			// Save all settings
 			Properties.Settings.Default.Save();
 

@@ -12,12 +12,50 @@ namespace ifme
 		[STAThread]
 		static void Main(string[] args)
 		{
+			// Essential Stuff
+			Title = $"{Global.App.Name} Console";
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
+			// Make WinForms much pretty
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new frmSplashScreen());
 
+			// Upgrade settings
+			UpgradeSettings();
+
+			// Splash Screen, loading and update
+			SplashScreen();
+
+			// Main Form
+			MainForm();
+
+			// Save settings and exit
+			Properties.Settings.Default.Save();
+		}
+
+		static void UpgradeSettings()
+		{
+			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.Version = Global.App.VersionRelease;
+
+				if (OS.IsLinux)
+					Properties.Settings.Default.Compiler = "gcc";
+				else
+					Properties.Settings.Default.Compiler = "msvc";
+
+				WriteLine("Settings has been upgraded!");
+			}
+		}
+
+		static void SplashScreen()
+		{
+			Application.Run(new frmSplashScreen());
+		}
+
+		static void MainForm()
+		{
 			Title = $"{Global.App.Name} Console";
 
 			Clear();
@@ -53,8 +91,6 @@ namespace ifme
 			WriteLine();
 
 			Application.Run(new frmMain());
-
-			Properties.Settings.Default.Save();
 		}
 	}
 }
