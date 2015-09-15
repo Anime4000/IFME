@@ -27,7 +27,10 @@ namespace ifme
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = Properties.Resources.BannerA;
 			pbxRight.Image = Global.GetRandom % 2 != 0 ? Properties.Resources.BannerB : Properties.Resources.BannerC;
-		}
+
+			if (OS.IsLinux)
+				tsmiQueuePreview.Enabled = false;
+        }
 
 		private void frmMain_Load(object sender, EventArgs e)
 		{

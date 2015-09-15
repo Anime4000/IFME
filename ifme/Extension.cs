@@ -23,7 +23,7 @@ namespace ifme
 		{
 			Items.Clear();
 
-			foreach (var exts in Directory.GetFiles(Global.Folder.Extension, "*.dll", SearchOption.TopDirectoryOnly))
+			foreach (var exts in Directory.GetFiles(Global.Folder.Extension, "*.dll"))
 			{
 				string filename = Path.GetFileName(exts); // Get filename without path
 

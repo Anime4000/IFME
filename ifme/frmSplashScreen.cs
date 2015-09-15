@@ -48,10 +48,17 @@ namespace ifme
 
 		private void bgwThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-			// App Version
 #if NONSTEAM
-			if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version.txt")))
-				Global.App.NewRelease = true;
+			// App Version
+			try
+			{
+				if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version.txt")))
+					Global.App.NewRelease = true;
+			}
+			catch (Exception)
+			{
+				LogError("WebClient.DownloadString broken on Linux, skipping");
+			}
 #endif
 
 			// Setting Load
@@ -70,7 +77,7 @@ namespace ifme
 			Extension.Load();
 			Extension.CheckDefault();
 			ExtensionUpdate();
-			Extension.Load(); // reload
+			Extension.Load();  // reload
 
 			// Check x265 compiler binary
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))				
@@ -129,7 +136,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				WriteLine("Sorry, could not load codec fingerprint, no internet access, using old");
+				LogError("Could not load codec fingerprint, no internet access, using old");
 			}
 
 			// AviSynth filter, allow IFME to find real file
@@ -140,7 +147,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				WriteLine("Sorry, could not load AviSynth filter, no internet access, using old");
+				LogError("Could not load AviSynth filter, no internet access, using old");
 			}
 
 			// Thanks to our donor
@@ -151,7 +158,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				WriteLine("Sorry, cannot load something :( it seem no Internet");
+				LogError("Sorry, cannot load something :( it seem no Internet");
 			}
 
 			// Save all settings
@@ -242,17 +249,27 @@ namespace ifme
 		{
 			foreach (var item in Extension.Items)
 			{
-				Write($"Checking for update: {item.Name}\n");
+				string version = string.Empty;
+				string link = string.Empty;
+
+                Write($"Checking for update: {item.Name}\n");
 
 				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
 
-				string version = client.DownloadString(item.UrlVersion);
+				try
+				{
+					version = client.DownloadString(item.UrlVersion);
+				}
+				catch (Exception)
+				{
+					LogError("WebClient.DownloadString broken on Linux, skipping");
+				}
 
-				if (string.Equals(item.Version, version))
+				if (string.Equals(item.Version, version ?? "0"))
 					continue;
-
-				string link = string.Format(item.UrlDownload, version);
+				
+				link = string.Format(item.UrlDownload, version);
 
 				Download(link, Global.Folder.Extension, "zombie.ife");
 			}
@@ -275,9 +292,9 @@ namespace ifme
 
 				Extract(folder, file);
 			}
-			catch
+			catch (Exception)
 			{
-				WriteLine("File not found or Offline");
+				LogError("File not found or Offline");
 			}
 		}
 
@@ -301,6 +318,14 @@ namespace ifme
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
 			finish = true;
+		}
+
+		void LogError(string message)
+		{
+			ForegroundColor = ConsoleColor.Red;
+			Write("Error");
+			ResetColor();
+			Write($": {message}\n");
 		}
 	}
 }

@@ -36,19 +36,19 @@ start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBui
 timeout /t 3 >nul
 echo.
 
-echo CLEAN PREVIOUS BUILD
-del /f /q ifme\bin\%CompileMode%\ifme.pdb
-del /f /q ifme\bin\%CompileMode%\ifme.exe.config
-del /f /q ifme\bin\%CompileMode%\ifme.vshost.exe
-del /f /q ifme\bin\%CompileMode%\ifme.vshost.exe.config
-del /f /q ifme\bin\%CompileMode%\ifme.vshost.exe.manifest
-del /f /q ifme\bin\%CompileMode%\ifme.imouto.pdb
-del /f /q ifme\bin\%CompileMode%\metauser.if
-timeout /t 3 >nul
-echo.
-
 echo COPY IFME MAIN FILE
 robocopy ifme\bin\%CompileMode% %BUILDDIR% /E
+echo.
+
+echo CLEAN UP
+del /f /q %BUILDDIR%\ifme.pdb
+del /f /q %BUILDDIR%\ifme.exe.config
+del /f /q %BUILDDIR%\ifme.vshost.exe
+del /f /q %BUILDDIR%\ifme.vshost.exe.config
+del /f /q %BUILDDIR%\ifme.vshost.exe.manifest
+del /f /q %BUILDDIR%\ifme.imouto.pdb
+del /f /q %BUILDDIR%\metauser.if
+timeout /t 3 >nul
 echo.
 
 echo COPY DOCUMENTS

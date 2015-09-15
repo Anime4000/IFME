@@ -40,6 +40,9 @@ namespace ifme
 				Properties.Settings.Default.Upgrade();
 				Properties.Settings.Default.Version = Global.App.VersionRelease;
 
+				if (string.IsNullOrEmpty(Properties.Settings.Default.Language))
+					Properties.Settings.Default.Language = "en";
+
 				if (OS.IsLinux)
 					Properties.Settings.Default.Compiler = "gcc";
 				else

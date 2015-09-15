@@ -288,6 +288,8 @@ namespace ifme
 			// Language
 			if (cboLang.SelectedIndex >= 0)
 				Properties.Settings.Default.Language = Language.Lists[cboLang.SelectedIndex].Code;
+			else
+				Properties.Settings.Default.Language = "en";
 
 			// Save
 			Properties.Settings.Default.Save();
