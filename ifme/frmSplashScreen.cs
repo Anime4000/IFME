@@ -132,6 +132,17 @@ namespace ifme
 				WriteLine("Sorry, could not load codec fingerprint, no internet access, using old");
 			}
 
+			// AviSynth filter, allow IFME to find real file
+			try
+			{
+				WriteLine("Loading AviSynth filter");
+				client.DownloadFile("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/avisynthsource.code", Path.Combine(Global.Folder.App, "avisynthsource.code"));
+			}
+			catch (Exception)
+			{
+				WriteLine("Sorry, could not load AviSynth filter, no internet access, using old");
+			}
+
 			// Thanks to our donor
 			try
 			{

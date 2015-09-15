@@ -39,25 +39,20 @@ namespace ifme
 		{
 			List<StreamMedia> Items = new List<StreamMedia>();
 			string Kind = string.Empty;
-			int Move = 0;
 
 			switch (kind)
 			{
 				case StreamType.Video:
 					Kind = "Video";
-					Move = 7;
 					break;
 				case StreamType.Audio:
 					Kind = "Audio";
-					Move = 7;
 					break;
 				case StreamType.Subtitle:
 					Kind = "Subtitle";
-					Move = 10;
 					break;
 				case StreamType.Attachment:
 					Kind = "Attachment";
-					Move = 12;
 					break;
 			}
 
@@ -74,6 +69,7 @@ namespace ifme
 				{
 					string id = string.Empty;
 					string lang = string.Empty;
+					string codec = string.Empty;
 					string format = string.Empty;
 
 					if (item.Contains(Kind))
@@ -95,26 +91,26 @@ namespace ifme
 						else
 							lang = "und";
 
-						for (int i = item.IndexOf(Kind) + Move; i < item.Length; i++)
+						for (int i = item.IndexOf(Kind) + (Kind.Length + 2); i < item.Length; i++)
 						{
 							if (item[i] == ' ')
 								break;
 							if (item[i] == ',')
 								break;
 
-							format += item[i];
+							codec += item[i];
 						}
 
 						try
 						{
-							format = GetFmt["format"][format];
+							format = GetFmt["format"][codec];
 						}
-						catch
+						catch (Exception)
 						{
-							// do nothing...
+							// use for to find codec via Ini File
 						}
 
-						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format });
+						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format ?? codec });
 					}
 				}
 			}

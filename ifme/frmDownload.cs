@@ -69,7 +69,7 @@ namespace ifme
 			// correction
 			speed = speed > 0 ? speed : 0;
 
-			InvokeStatus($"{FileSize(e.BytesReceived)} of {FileSize(e.TotalBytesToReceive)} ({e.BytesReceived / e.TotalBytesToReceive:P}) @ {speed} KB/s");
+			InvokeStatus($"{FileSize(e.BytesReceived)} of {FileSize(e.TotalBytesToReceive)} ({(float)e.BytesReceived / e.TotalBytesToReceive:P}) @ {speed} KB/s");
 			InvokeProgress(e.ProgressPercentage);
 		}
 
