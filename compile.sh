@@ -39,6 +39,10 @@ cp -r "patents.txt" "$BUILDDIR/"
 cp "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0.0.0" "$BUILDDIR/"
 cp -a "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0" "$BUILDDIR/"
 
+echo "Remove stuff"
+rm -rf "$BUILDDIR/extension/AvsPmod"
+rm -rf "$BUILDDIR/extension/AvsPmodBridge.dll"
+
 echo "Copying compiled"
 cp "ifme/bin/$CompileMode/ifme.exe" "$BUILDDIR/"
 cp "ifme/bin/$CompileMode/INIFileParser.dll" "$BUILDDIR/"
