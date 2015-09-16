@@ -104,9 +104,8 @@
 			this.Controls.Add(this.lblSave);
 			this.Controls.Add(this.lblFile);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(650, 160);
-			this.MinimumSize = new System.Drawing.Size(650, 137);
 			this.Name = "frmDownload";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Download";

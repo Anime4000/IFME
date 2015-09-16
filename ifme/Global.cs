@@ -10,35 +10,6 @@ namespace ifme
 		static Random rnd = new Random();
 		public static int GetRandom = rnd.Next(0, 9);
 
-		static DateTime RetrieveLinkerTimestamp()
-		{
-			string filePath = Assembly.GetCallingAssembly().Location;
-			const int c_PeHeaderOffset = 60;
-			const int c_LinkerTimestampOffset = 8;
-			byte[] b = new byte[2048];
-			Stream s = null;
-
-			try
-			{
-				s = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-				s.Read(b, 0, 2048);
-			}
-			finally
-			{
-				if (s != null)
-				{
-					s.Close();
-				}
-			}
-
-			int i = BitConverter.ToInt32(b, c_PeHeaderOffset);
-			int secondsSince1970 = BitConverter.ToInt32(b, i + c_LinkerTimestampOffset);
-			DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0);
-			dt = dt.AddSeconds(secondsSince1970);
-			dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
-			return dt;
-		}
-
 		public class App
 		{
 			public static string Name
@@ -48,7 +19,7 @@ namespace ifme
 
 			public static string NameFull
 			{
-				get { return $"{Name} {(OS.Is64bit ? "64bit" : "32bit")} v{VersionRelease} ( '{CodeName}' )"; }
+				get { return $"{Name} v{VersionRelease} ({CodeName}) {(OS.Is64bit ? "64bit" : "32bit")}"; }
 			}
 
 			public static string CodeName
@@ -66,17 +37,12 @@ namespace ifme
 				get { return Application.ProductVersion; }
 			}
 
-			public static string BuildDate
-			{
-				get { return RetrieveLinkerTimestamp().Date.ToString("yyyy/MMM/dd"); }
-			}
-
 			public static string Type
 			{
 #if DEBUG
-				get { return "Experimental"; }
+				get { return "experimental"; }
 #elif RELEASE
-				get { return "Release"; }
+				get { return "stable"; }
 #endif
 			}
 

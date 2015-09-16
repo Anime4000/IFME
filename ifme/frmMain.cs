@@ -27,13 +27,28 @@ namespace ifme
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = Properties.Resources.BannerA;
 			pbxRight.Image = Global.GetRandom % 2 != 0 ? Properties.Resources.BannerB : Properties.Resources.BannerC;
-
-			if (OS.IsLinux)
-				tsmiQueuePreview.Enabled = false;
-        }
+		}
 
 		private void frmMain_Load(object sender, EventArgs e)
 		{
+			// Language UI
+#if MAKELANG
+			LangCreate();
+#else
+			LangApply();
+#endif
+
+			// Features
+			if (OS.IsLinux)
+			{
+				tsmiQueuePreview.Enabled = false;
+				tsmiBenchmark.Enabled = false;
+			}
+
+			tsmiQueueAviSynth.Enabled = Plugin.AviSynthInstalled;
+			tsmiQueueAviSynthEdit.Enabled = Plugin.AviSynthInstalled;
+			tsmiQueueAviSynthGenerate.Enabled = Plugin.AviSynthInstalled;
+
 			// Add language list
 			foreach (var item in File.ReadAllLines("iso.code"))
 				cboSubLang.Items.Add(item);
@@ -74,13 +89,6 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
-
-			// Language
-#if MAKELANG
-			LangCreate();
-#else
-			LangApply();
-#endif
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -296,6 +304,15 @@ namespace ifme
 			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
 			Info.Data.IsFileAvs = GetInfo.IsAviSynth(file);
 
+			if (!Plugin.AviSynthInstalled)
+			{
+				if (Info.Data.IsFileAvs)
+				{
+					InvokeLog($"AviSynth not installed, skipping this file: {file}");
+					return;
+				}
+			}
+
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
@@ -363,13 +380,6 @@ namespace ifme
 
 			// Print to log
 			InvokeLog($"File added {Info.Data.File}");
-		}
-#endregion
-
-#region Queue: CheckBox, this event fired once when add new item and tick event
-		private void lstQueue_ItemCheck(object sender, ItemCheckEventArgs e)
-		{
-			(lstQueue.Items[e.Index].Tag as Queue).IsEnable = e.CurrentValue == CheckState.Unchecked ? true : false; // reverse event
 		}
 #endregion
 
@@ -1096,7 +1106,10 @@ namespace ifme
 				List<object> gg = new List<object>();
 
 				foreach (ListViewItem item in lstQueue.Items)
-					gg.Add(item.Tag);
+				{
+					(item.Tag as Queue).IsEnable = item.Checked;
+                    gg.Add(item.Tag);
+				}
 
 				// View log
 				tabConfig.SelectedIndex = 5;
@@ -1162,7 +1175,7 @@ namespace ifme
 				}
 
 				// Time current queue
-				DateTime SessionCurrent = DateTime.Now;
+				var SessionCurrent = DateTime.Now;
 
 				// Log current queue
 				InvokeLog("Processing: " + item.Data.File);

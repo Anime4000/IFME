@@ -29,6 +29,11 @@ namespace ifme
 
 		public static int Run(string command)
 		{
+			return Run(command, Properties.Settings.Default.DirTemp);
+		}
+
+		public static int Run(string command, string workingdir)
+		{
 			string exe;
 			string arg;
 
@@ -51,7 +56,7 @@ namespace ifme
 			p.StartInfo = new ProcessStartInfo(exe, arg)
 			{
 				UseShellExecute = false,
-				WorkingDirectory = Properties.Settings.Default.DirTemp,
+				WorkingDirectory = workingdir,
 			};
 
 			p.Start(); CPU.SetPriority(CurrentProc); // set cpu affinity and priority (windows only, linux require root)

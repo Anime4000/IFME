@@ -303,9 +303,16 @@ namespace ifme
 			string unzip = Path.Combine(Global.Folder.App, "7za");
 			string zipfile = Path.Combine(dir, file);
 
-			Write("Extracting... ");
-			TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
-			
+			if (File.Exists($"{(OS.IsLinux ? unzip : $"{unzip}.exe")}"))
+			{
+				Write($"Extracting...");
+				TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1", Global.Folder.App);
+			}
+			else
+			{
+				Write($"File {unzip} not found...");
+			}
+
 			Write("Done!\n");
 			File.Delete(zipfile);
 		}

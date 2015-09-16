@@ -78,7 +78,7 @@
 			this.btnCancel.UseVisualStyleBackColor = true;
 			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
-			// InputBox
+			// frmInputBox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -88,11 +88,10 @@
 			this.Controls.Add(this.txtInput);
 			this.Controls.Add(this.lblDescription);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(500, 150);
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(500, 150);
-			this.Name = "InputBox";
+			this.Name = "frmInputBox";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "{0}";

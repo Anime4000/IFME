@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.lblTitleD = new System.Windows.Forms.Label();
-			this.pictBanner = new System.Windows.Forms.PictureBox();
 			this.lblAppName = new System.Windows.Forms.Label();
 			this.lblAppBuild = new System.Windows.Forms.Label();
 			this.bgThank = new System.ComponentModel.BackgroundWorker();
@@ -43,7 +42,6 @@
 			this.lblName1 = new System.Windows.Forms.Label();
 			this.lblTitleA = new System.Windows.Forms.Label();
 			this.panelRoll = new System.Windows.Forms.Panel();
-			((System.ComponentModel.ISupportInitialize)(this.pictBanner)).BeginInit();
 			this.panelCredit.SuspendLayout();
 			this.panelRoll.SuspendLayout();
 			this.SuspendLayout();
@@ -59,16 +57,6 @@
 			this.lblTitleD.TabIndex = 6;
 			this.lblTitleD.Text = "Special Thanks";
 			this.lblTitleD.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-			// 
-			// pictBanner
-			// 
-			this.pictBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.pictBanner.Location = new System.Drawing.Point(0, 0);
-			this.pictBanner.Name = "pictBanner";
-			this.pictBanner.Size = new System.Drawing.Size(600, 200);
-			this.pictBanner.TabIndex = 0;
-			this.pictBanner.TabStop = false;
 			// 
 			// lblAppName
 			// 
@@ -223,24 +211,23 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.White;
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.ClientSize = new System.Drawing.Size(600, 662);
 			this.Controls.Add(this.panelRoll);
 			this.Controls.Add(this.lblAppBuild);
 			this.Controls.Add(this.lblAppName);
-			this.Controls.Add(this.pictBanner);
+			this.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(616, 700);
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(616, 700);
 			this.Name = "frmAbout";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "About Ritsuko and Hotaru";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAbout_FormClosing);
 			this.Load += new System.EventHandler(this.frmAbout_Load);
 			this.Shown += new System.EventHandler(this.frmAbout_Shown);
-			((System.ComponentModel.ISupportInitialize)(this.pictBanner)).EndInit();
 			this.panelCredit.ResumeLayout(false);
 			this.panelRoll.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -248,8 +235,6 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.PictureBox pictBanner;
 		private System.Windows.Forms.Label lblAppName;
 		private System.Windows.Forms.Label lblAppBuild;
 		private System.ComponentModel.BackgroundWorker bgThank;

@@ -31,14 +31,13 @@ cp -r "ifme/bin/$CompileMode/addons_linux64.repo" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/addons_windows32.repo" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/addons_windows32.repo" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/avisynthsource.code" "$BUILDDIR/"
-cp -r "ifme/bin/$CompileMode/changelog.txt" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/format.ini" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/iso.code" "$BUILDDIR/"
 cp -r "changelog.txt" "$BUILDDIR/"
 cp -r "license.txt" "$BUILDDIR/"
 cp -r "patents.txt" "$BUILDDIR/"
-cp "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0" "$BUILDDIR/"
 cp "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0.0.0" "$BUILDDIR/"
+cp -a "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0" "$BUILDDIR/"
 
 echo "Copying compiled"
 cp "ifme/bin/$CompileMode/ifme.exe" "$BUILDDIR/"
@@ -49,6 +48,7 @@ cp "MediaInfoDotNet.dll.config" "$BUILDDIR/"
 echo "Building..."
 cd $BUILDDIR
 mkbundle --static -z -o ifme ifme.exe --deps INIFileParser.dll MediaInfoDotNet.dll
+gcc "../ifme-xterm.c" -o "ifme-xterm"
 
 echo "Remove bytecode"
 rm -f "ifme.exe"

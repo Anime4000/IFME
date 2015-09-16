@@ -20,7 +20,9 @@ namespace ifme
 		public frmAbout()
 		{
 			InitializeComponent();
-			this.Icon = Properties.Resources.application_lightning;
+
+			Icon = Properties.Resources.application_lightning;
+			BackgroundImage = Properties.Resources.AboutBanner;
 		}
 
 		private void frmAbout_Load(object sender, EventArgs e)
@@ -57,7 +59,6 @@ namespace ifme
 			panelCredit.Height = lblLast.Bottom;
 
 			panelCredit.Top = panelRoll.Height;
-			pictBanner.Image = Properties.Resources.AboutBanner;
 		}
 
 		private void frmAbout_Shown(object sender, EventArgs e)

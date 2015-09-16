@@ -272,7 +272,6 @@
 			this.lstQueue.TabIndex = 10;
 			this.lstQueue.UseCompatibleStateImageBehavior = false;
 			this.lstQueue.View = System.Windows.Forms.View.Details;
-			this.lstQueue.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lstQueue_ItemCheck);
 			this.lstQueue.SelectedIndexChanged += new System.EventHandler(this.lstQueue_SelectedIndexChanged);
 			this.lstQueue.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragDrop);
 			this.lstQueue.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstQueue_DragEnter);
@@ -1535,7 +1534,7 @@
 			this.Controls.Add(this.btnQueueStop);
 			this.Controls.Add(this.btnQueuePause);
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
-			this.MinimumSize = new System.Drawing.Size(700, 700);
+			this.MinimumSize = new System.Drawing.Size(692, 700);
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Internet Friendly Media Encoder";

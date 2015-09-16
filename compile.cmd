@@ -6,6 +6,7 @@ cd "%~dp0"
 set CompileMode=Debug
 set BUILDDIR=build
 set MSBuildVer=14.0
+
 cls
 
 echo.

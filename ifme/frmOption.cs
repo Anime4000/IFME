@@ -24,6 +24,13 @@ namespace ifme
 
 		private void frmOption_Load(object sender, EventArgs e)
 		{
+			// Language UI
+#if MAKELANG
+			LangCreate();
+#else
+			LangApply();
+#endif
+
 			// General
 			txtTempFolder.Text = Properties.Settings.Default.DirTemp;
 			txtNamePrefix.Text = Properties.Settings.Default.NamePrefix;
@@ -151,7 +158,7 @@ namespace ifme
 			if (!Plugin.IsExistHEVCMSVC)
 				rdoCompilerMicrosoft.Enabled = false;
 
-			// Language
+			// Language List
 			foreach (var item in Language.Lists)
 			{
 				cboLang.Items.Add(item.Name);
@@ -159,13 +166,6 @@ namespace ifme
 				if (string.Equals(Properties.Settings.Default.Language, item.Code))
 					cboLang.Text = item.Name;
 			}
-
-			// Language
-#if MAKELANG
-			LangCreate();
-#else
-			LangApply();
-#endif
 		}
 
 		private void btnBrowse_Click(object sender, EventArgs e)

@@ -107,10 +107,15 @@ namespace ifme
 						}
 						catch (Exception)
 						{
-							// use for to find codec via Ini File
+							Console.WriteLine("Requested query not found, using default");
 						}
-
-						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format ?? codec });
+						finally
+						{
+							if (string.IsNullOrEmpty(format))
+								format = codec;
+						}
+						
+						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format });
 					}
 				}
 			}

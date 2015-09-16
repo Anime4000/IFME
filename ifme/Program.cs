@@ -63,8 +63,8 @@ namespace ifme
 
 			Clear();
 			ForegroundColor = ConsoleColor.Yellow;
-			WriteLine($"{Global.App.Name} - compiled on {Global.App.BuildDate}");
-			WriteLine($"Version: {Global.App.Version} ({(OS.Is64bit ? "x64" : "x86")} {Global.App.Type} build)\n");
+			WriteLine(Global.App.NameFull);
+			WriteLine($"Compiled release: {Global.App.Version}-{(OS.Is64bit ? "x64" : "x86")}-{Global.App.Type}\n");
 
 			ForegroundColor = ConsoleColor.Green;
 			WriteLine(" ________________________________________");

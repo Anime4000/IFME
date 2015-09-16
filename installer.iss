@@ -2,11 +2,13 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "5.0.7.2"
+#define MyAppVersion "5.0.7.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
-#define Arch "x64"
+
+; 32bit or 64bit release
+#define Public BIT32
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -20,11 +22,18 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf64}\{#MyAppName}
+;DefaultDirName={pf64}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
+;ArchitecturesInstallIn64BitMode=x64
 
-ArchitecturesInstallIn64BitMode={#Arch}
+#ifdef BIT64 
+  #define CPU "x64"
+  DefaultDirName={pf64}\{#MyAppName}
+#else
+  DefaultDirName={pf}\{#MyAppName}
+  #define CPU "x86"
+#endif
 
 SourceDir=build
 LicenseFile=..\license.txt
@@ -39,7 +48,7 @@ WizardImageFile=..\installer\image_banner.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=D:\
-OutputBaseFilename=x265ui-{#MyAppVersion}-{#Arch}_setup
+OutputBaseFilename=x265ui-{#MyAppVersion}-{#CPU}_setup
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
