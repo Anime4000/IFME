@@ -43,7 +43,8 @@ namespace ifme
 		public static string BenchmarkDownload = "File not exist, let us download before start?";
 		public static string SelectAviSynth = "This not an AviSynth script";
 		public static string VideoToAviSynth = "Do you want to change selected file into an AviSynth script\n(used for bypass FFmpeg decoder, unsupported file will be skip)";
-
+		public static string QueueSave = "Do you want to save this queue? This intend for massive encoding via CLI.";
+		public static string QueueSaveError = "At least 2 or more queue";
 		// Option, AviSynth tab
 		public static string Installed = "Installed";
 		public static string NotInstalled = "Not Found";

@@ -61,9 +61,6 @@ namespace ifme
 			}
 #endif
 
-			// Setting Load
-			SettingLoad();
-
 			// Plugin 
 			PluginCheck(); // check repo
 			Plugin.Load(); // load to memory
@@ -99,21 +96,6 @@ namespace ifme
 			{
 				Language.Display();
 				WriteLine($"Loading language file: {Properties.Settings.Default.Language}.ini");
-			}
-
-			// CPU Affinity, Load previous, if none, set default all CPU
-			if (string.IsNullOrEmpty(Properties.Settings.Default.CPUAffinity))
-			{
-				Properties.Settings.Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
-				Properties.Settings.Default.Save();
-
-				WriteLine("Applying CPU settings...");
-			}
-
-			string[] aff = Properties.Settings.Default.CPUAffinity.Split(',');
-			for (int i = 0; i < Environment.ProcessorCount; i++)
-			{
-				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
 			}
 
 			// Detect AviSynth
@@ -173,24 +155,6 @@ namespace ifme
 		{
 			Close();
 		}
-
-		#region Settings
-		void SettingLoad()
-		{
-			// Settings
-			if (string.IsNullOrEmpty(Properties.Settings.Default.DirOutput))
-				Properties.Settings.Default.DirOutput = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME");
-
-			if (!Directory.Exists(Properties.Settings.Default.DirOutput))
-				Directory.CreateDirectory(Properties.Settings.Default.DirOutput);
-
-			if (string.IsNullOrEmpty(Properties.Settings.Default.DirTemp))
-				Properties.Settings.Default.DirTemp = Global.Folder.Temp;
-
-			if (!Directory.Exists(Properties.Settings.Default.DirTemp))
-				Directory.CreateDirectory(Properties.Settings.Default.DirTemp);
-		}
-		#endregion
 
 		#region Plugins
 		public void PluginCheck()
@@ -306,7 +270,7 @@ namespace ifme
 			if (File.Exists($"{(OS.IsLinux ? unzip : $"{unzip}.exe")}"))
 			{
 				Write($"Extracting...");
-				TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1", Global.Folder.App);
+				TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
 			}
 			else
 			{

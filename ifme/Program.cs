@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
 using static System.Console;
+using static ifme.Properties.Settings;
 
 namespace ifme
 {
@@ -16,27 +19,19 @@ namespace ifme
 			Title = $"{Global.App.Name} Console";
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
+			// Load settings
+			SettingsLoad();
+
+			// Upgrade settings
+			SettingsUpgrade();
+
 			// Command
-			if (args[0] == "-h" || args[0] == "--help")
-			{
-				Help();
+			if (Command(args) == 0)
 				return 0;
-			}
-
-			if (args[0] == "-r" || args[0] == "--reset")
-			{
-				Properties.Settings.Default.Reset();
-				Properties.Settings.Default.Save();
-
-				WriteLine("Settings has been reset!");
-			}
 
 			// Make WinForms much pretty
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
-			// Upgrade settings
-			UpgradeSettings();
 
 			// Splash Screen, loading and update
 			SplashScreen();
@@ -45,7 +40,7 @@ namespace ifme
 			MainForm();
 
 			// Save settings and exit
-			Properties.Settings.Default.Save();
+			Default.Save();
 			return 0;
 		}
 
@@ -60,33 +55,149 @@ namespace ifme
 		static void Help()
 		{
 			Head();
-			WriteLine("Usage: ifme [OPTION]");
+			WriteLine("Usage: ifme [OPTION] INPUT");
 			WriteLine();
 			WriteLine("Mandatory arguments to long options are mandatory for short options too.");
-			WriteLine("  -h, --help                   show help (implies -r)");
+			WriteLine();
+			WriteLine("Option:");
+			WriteLine("  -h, --help                   show this help");
 			WriteLine("  -r, --reset                  reset IFME configuration");
+			WriteLine("  -g, --gui                    open IFME GUI (linux only)");
+			WriteLine();
+			WriteLine("GUI:");
+			WriteLine("      --open                   open IFME queue file via GUI");
+			WriteLine();
+			WriteLine("CLI:");
+			WriteLine("  -i                           load IFME queue file via CLI");
+			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
+			WriteLine();
+			WriteLine("Option -h, -r, or -g are only accept at first argument, it implies each other.");
+			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
 			WriteLine();
 			WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
 			WriteLine("IFME home page: <https://x265.github.io/>");
-			WriteLine("IFME fb page  : <https://www.facebook.com/internetfriendlymediaencoder/>");
+			WriteLine("IFME fb page  : <https://fb.com/internetfriendlymediaencoder/>");
 		}
 
-		static void UpgradeSettings()
+		static int Command(string[] args)
 		{
-			if (!string.Equals(Properties.Settings.Default.Version, Global.App.VersionRelease))
-			{
-				Properties.Settings.Default.Upgrade();
-				Properties.Settings.Default.Version = Global.App.VersionRelease;
+			string Input = string.Empty;
+			bool IsBin = false;
+			bool IsForce = false;
 
-				if (string.IsNullOrEmpty(Properties.Settings.Default.Language))
-					Properties.Settings.Default.Language = "en";
+			if (args.Length > 0)
+			{
+				if (args[0] == "-g" || args[0] == "--gui")
+					if (OS.IsLinux)
+						return 1;
+
+				if (args[0] == "-h" || args[0] == "--help")
+				{
+					Help();
+					return 0;
+				}
+
+				if (args[0] == "-r" || args[0] == "--reset")
+				{
+					Default.Reset();
+					Default.Save();
+
+					WriteLine("Settings has been reset!");
+					return 0;
+				}
+
+				for (int i = 0; i < args.Length; i++)
+				{
+					for (int n = 0; n < args[i].Length; n++)
+					{
+						if (args[i][0] != '-')
+							break;
+
+						if (args[i][1] == '-')
+							break;
+
+						if (args[i][n] == 'b')
+							IsBin = true;
+
+						if (args[i][n] == 'f')
+							IsForce = true;
+
+						if (args[i][n] == 'i')
+							if (i < args.Length)
+								Input = args[++i];
+					}
+
+					if (args[i] == "--open")
+						if (i < args.Length)
+							ObjectIO.FileName = args[++i];
+				}
+
+				if (!string.IsNullOrEmpty(Input))
+					EncodingStart(Input, IsBin, IsForce);
+
+				if (!string.IsNullOrEmpty(ObjectIO.FileName))
+					return 1;
+
+				return 0;
+			}
+			else
+			{
+				if (OS.IsLinux)
+				{
+					MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.");
+					return 0;
+				}
+				else
+				{
+					return 1;
+				}
+			}
+		}
+
+		static void SettingsLoad()
+		{
+			// Output folder
+			if (string.IsNullOrEmpty(Default.DirOutput))
+				Default.DirOutput = Global.Folder.DefaultSave;
+
+			if (!Directory.Exists(Default.DirOutput))
+				Directory.CreateDirectory(Default.DirOutput);
+
+			// Temporary folder
+			if (string.IsNullOrEmpty(Default.DirTemp))
+				Default.DirTemp = Global.Folder.DefaultTemp;
+
+			if (!Directory.Exists(Default.DirTemp))
+				Directory.CreateDirectory(Default.DirTemp);
+
+			// CPU Affinity, Load previous, if none, set default all CPU
+			if (string.IsNullOrEmpty(Default.CPUAffinity))
+			{
+				Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
+				Default.Save();
+			}
+
+			string[] aff = Default.CPUAffinity.Split(',');
+			for (int i = 0; i < Environment.ProcessorCount; i++)
+			{
+				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
+			}
+		}
+
+		static void SettingsUpgrade()
+		{
+			if (!string.Equals(Default.Version, Global.App.VersionRelease))
+			{
+				Default.Upgrade();
+				Default.Version = Global.App.VersionRelease;
+
+				if (string.IsNullOrEmpty(Default.Language))
+					Default.Language = "en";
 
 				if (OS.IsLinux)
-					Properties.Settings.Default.Compiler = "gcc";
+					Default.Compiler = "gcc";
 				else
-					Properties.Settings.Default.Compiler = "msvc";
-
-				WriteLine("Settings has been upgraded!");
+					Default.Compiler = "msvc";
 			}
 		}
 
@@ -130,6 +241,81 @@ namespace ifme
 			WriteLine();
 
 			Application.Run(new frmMain());
+		}
+
+		static void EncodingStart(string queueFile, bool isBinary, bool force)
+		{
+			Head();
+
+			WriteLine($"Current location: {Global.Folder.App}");
+
+			WriteLine("Loading plugins... please wait...");
+			Plugin.Load();
+
+			WriteLine("Reading queue file...");
+			List<Queue> argList = isBinary ? ObjectIO.ReadFromBinaryFile<List<Queue>>(queueFile) : ObjectIO.ReadFromXmlFile<List<Queue>>(queueFile);
+
+			WriteLine($"There are {argList.Count} video's in the queue file");
+			if (force)
+			{
+				for (int i = 5; i > 0; i--)
+				{
+					Write($"IFME will start in {i}\r");
+					Thread.Sleep(1000);
+				}
+			}
+			else
+			{
+				WriteLine("List video's that will process\n");
+				for (int i = 0; i < argList.Count; i++)
+					WriteLine($"{i + 1,3:000}: {Path.GetFileName(argList[i].Data.File)}");
+
+				Write("\nPress any key to begin...");
+				ReadKey();
+			}
+
+			// Time entire queue
+			DateTime Session = DateTime.Now;
+
+			// Encoding process
+			int id = -1;
+			foreach (Queue item in argList)
+			{
+				id++;
+
+				// Only checked list get encoded
+				if (!item.IsEnable)
+				{
+					id++;
+					continue;
+				}
+
+				// Remove temp file
+				foreach (var files in Directory.GetFiles(Default.DirTemp))
+					File.Delete(files);
+				
+				// Naming
+				string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : Default.NamePrefix + " ";
+				string fileout = Path.Combine(Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
+
+				// AviSynth aware
+				string file = item.Data.File;
+				string filereal = GetStream.AviSynthGetFile(file);
+
+				// Extract mkv embedded subtitle, font and chapter
+				MediaEncoder.Extract(filereal, item);
+
+				// Audio
+				MediaEncoder.Audio(filereal, item);
+
+				// Video
+				MediaEncoder.Video(file, item);
+
+				// Mux
+				MediaEncoder.Mux(fileout, item);
+			}
+
+			WriteLine(GetInfo.Duration(Session));
 		}
 	}
 }

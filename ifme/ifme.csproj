@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NONSTEAM</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NONSTEAM, MAKELANG</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -93,6 +93,8 @@
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Language.cs" />
+    <Compile Include="MediaEncoder.cs" />
+    <Compile Include="ObjectIO.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Profile.cs" />

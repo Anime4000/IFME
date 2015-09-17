@@ -61,7 +61,7 @@ namespace ifme
 		{
 			public static string App
 			{
-				get { return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location); }
+				get { return string.IsNullOrEmpty(Directory.GetCurrentDirectory()) ? Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) : Directory.GetCurrentDirectory();  }
 			}
 
 			public static string Profile
@@ -74,9 +74,14 @@ namespace ifme
 				get { return Path.Combine(App, "plugins"); }
 			}
 
-			public static string Temp
+			public static string DefaultTemp
 			{
 				get { return Path.Combine(Path.GetTempPath(), "ifme"); }
+			}
+
+			public static string DefaultSave
+			{
+				get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME"); }
 			}
 
 			public static string Language

@@ -11,6 +11,8 @@ using IniParser;
 using IniParser.Model;
 using MediaInfoDotNet;
 
+using static ifme.Properties.Settings;
+
 namespace ifme
 {
     public partial class frmMain : Form
@@ -93,7 +95,8 @@ namespace ifme
 
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
-
+			if (!string.IsNullOrEmpty(ObjectIO.FileName))
+				LoadQueueFile(ObjectIO.FileName);
 		}
 
 #region Profile
@@ -1148,12 +1151,6 @@ namespace ifme
 
 		private void bgwEncoding_DoWork(object sender, DoWorkEventArgs e)
 		{
-			// NULL
-			var NULL = OS.Null;
-
-			// Temp Dir
-			string tempdir = Properties.Settings.Default.DirTemp;
-
 			// Time entire queue
 			DateTime Session = DateTime.Now;
 
@@ -1181,12 +1178,12 @@ namespace ifme
 				InvokeLog("Processing: " + item.Data.File);
 
 				// Remove temp file
-				foreach (var files in Directory.GetFiles(tempdir))
+				foreach (var files in Directory.GetFiles(Default.DirTemp))
 					File.Delete(files);
 
 				// Naming
-				string prefix = string.IsNullOrEmpty(Properties.Settings.Default.NamePrefix) ? null : Properties.Settings.Default.NamePrefix + " ";
-				string fileout = Path.Combine(Properties.Settings.Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
+				string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : Default.NamePrefix + " ";
+				string fileout = Path.Combine(Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
 
 				// AviSynth aware
 				string file = item.Data.File;
@@ -1194,279 +1191,45 @@ namespace ifme
 
 				// Extract mkv embedded subtitle, font and chapter
 				InvokeQueueStatus(id, "Extracting");
-				if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Properties.Settings.Default.AvsMkvCopy))
+				MediaEncoder.Extract(filereal, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
 				{
-					int sc = 0;
-					foreach (var subs in GetStream.Media(filereal, StreamType.Subtitle))
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {subs.ID} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
-
-
-					foreach (var font in GetStream.MediaMkv(filereal, StreamType.Attachment))
-						TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{filereal}\" {font.ID}:\"{font.File}\"");
-
-					TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{filereal}\" > chapters.xml");
-
-					if (bgwEncoding.CancellationPending)
-					{
-						InvokeQueueAbort(id);
-						e.Cancel = true;
-						return;
-					}
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
 				}
 
 				// Audio
-				InvokeQueueStatus(id, "Processing audio");
-				if (string.Equals(item.Audio.Encoder, "No Audio", IC))
+				InvokeQueueStatus(id, "Processing Audio");
+				MediaEncoder.Audio(filereal, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
 				{
-					// Do noting
-				}
-				else if (string.Equals(item.Audio.Encoder, "Passthrough (Extract all audio)", IC))
-				{
-					int counter = 0;
-					foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-					{
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
-
-						if (bgwEncoding.CancellationPending)
-						{
-							InvokeQueueAbort(id);
-							e.Cancel = true;
-							return;
-						}
-					}
-				}
-				else
-				{
-					string frequency;
-					if (string.Equals(item.Audio.Frequency, "auto", IC))
-						frequency = "";
-					else
-						frequency = "-ar " + item.Audio.Frequency;
-
-					string channel;
-					if (string.Equals(item.Audio.Channel, "auto", IC))
-						channel = "";
-					else if (string.Equals(item.Audio.Channel, "mono", IC))
-						channel = "-ac 1";
-					else
-						channel = "-ac 2";
-
-					int counter = 0;
-					foreach (var codec in Plugin.List)
-					{
-						if (string.Equals(codec.Profile.Name, item.Audio.Encoder, IC))
-						{
-							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-							{
-								string outfile = $"audio{counter++:0000}_{audio.Lang}";
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} -y {outfile}.wav");
-								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
-								File.Delete(Path.Combine(Global.Folder.Temp, outfile + ".wav"));
-
-								if (bgwEncoding.CancellationPending)
-								{
-									InvokeQueueAbort(id);
-									e.Cancel = true;
-									return;
-								}
-							}
-
-							break;
-						}
-					}
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
 				}
 
 				// Video
-				InvokeQueueStatus(id, "Processing video");
-				foreach (var video in GetStream.Media(file, StreamType.Video))
+				InvokeQueueStatus(id, "Processing Video");
+				MediaEncoder.Video(file, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
 				{
-					// ffmpeg settings
-					string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? null : $"-s {item.Picture.Resolution}";
-					string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? null : $"-r {item.Picture.FrameRate}";
-					int bitdepth = Convert.ToInt32(item.Picture.BitDepth);
-					string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth == 10 ? "10le" : null)}";
-					string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : null;
-					int framecount = item.Prop.FrameCount;
-					string vsync = "cfr";
-
-					if (string.IsNullOrEmpty(framerate))
-					{
-						if (item.Prop.IsVFR)
-						{
-							TaskManager.Run($"\"{Plugin.FFMS2}\" -f -c \"{file}\" timecode");
-							vsync = "vfr";
-						}
-					}
-					else // when fps is set, generate new framecount
-					{
-						framecount = (int)Math.Ceiling(((float)item.Prop.Duration / 1000.0) * Convert.ToDouble(item.Picture.FrameRate));
-					}
-
-					if (item.Picture.YadifEnable)
-					{
-						if (item.Picture.YadifMode == 1)
-						{
-							framecount *= 2; // make each fields as new frame
-						}
-					}
-
-					if (item.Data.IsFileAvs) // get new framecount for avisynth
-						framecount = GetStream.AviSynthFrameCount(file);
-					
-					// x265 settings
-					string preset = item.Video.Preset;
-					string tune = string.Equals(item.Video.Tune, "off", IC) ? null : $"--tune {item.Video.Tune}";
-					int type = item.Video.Type;
-					int pass;
-					string value = item.Video.Value;
-					string command = item.Video.Command;
-
-					string decoder = item.Data.IsFileAvs ? $"\"{Plugin.AVS4P}\" video \"{file}\"" : $"\"{Plugin.LIBAV}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} -";
-					string encoder = $"\"{(bitdepth == 8 ? Plugin.HEVCL : Plugin.HEVCH)}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
-
-					// Encoding start
-					if (type-- >= 3) // multi pass
-					{
-						for (int i = 0; i < type; i++)
-						{
-							if (i == 0)
-								pass = 1;
-							else if (i == type)
-								pass = 2;
-							else
-								pass = 3;
-
-							if (i == 1) // get actual frame count
-								framecount = GetStream.FrameCount(Path.Combine(tempdir, $"video0000_{video.Lang}.hevc"));
-
-							Console.WriteLine($"Pass {i + 1} of {type + 1}"); // human read no index
-							TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount} --pass {pass}");
-
-							if (bgwEncoding.CancellationPending)
-							{
-								InvokeQueueAbort(id);
-								e.Cancel = true;
-								return;
-							}
-						}
-					}
-					else
-					{
-						TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount}");
-
-						if (bgwEncoding.CancellationPending)
-						{
-							InvokeQueueAbort(id);
-							e.Cancel = true;
-							return;
-						}
-					}
-
-					break;
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
 				}
 
 				// Mux
 				InvokeQueueStatus(id, "Compiling");
-				if (item.Data.SaveAsMkv)
-				{
-					fileout += ".mkv";
+				MediaEncoder.Mux(fileout, item);
 
-					string tags = string.Format(Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
-					string cmdvideo = null;
-					string cmdaudio = null;
-					string cmdsubs = null;
-					string cmdattach = null;
-					string cmdchapter = null;
-
-					foreach (var tc in Directory.GetFiles(tempdir, "timecode_*"))
-					{
-						cmdvideo += $"--timecodes 0:\"{tc}\" "; break;
-					}
-
-					foreach (var video in Directory.GetFiles(tempdir, "video*"))
-					{
-						cmdvideo += $"--language 0:{GetInfo.FileLang(video)} \"{video}\" ";
-					}
-
-					foreach (var audio in Directory.GetFiles(tempdir, "audio*"))
-					{
-						cmdaudio += $"--language 0:{GetInfo.FileLang(audio)} \"{audio}\" ";
-					}
-
-					if (item.SubtitleEnable)
-					{
-						foreach (var subs in item.Subtitle)
-						{
-							cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{subs.Lang} \"{subs.File}\" ";
-						}
-					}
-					else
-					{
-						foreach (var subs in Directory.GetFiles(tempdir, "sub*"))
-						{
-							cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{GetInfo.FileLang(subs)} \"{subs}\" ";
-						}
-					}
-
-					if (item.AttachEnable)
-					{
-						foreach (var attach in item.Attach)
-						{
-							cmdattach += $"--attachment-mime-type {attach.MIME} --attachment-description {attach.Comment} --attach-file \"{attach.File}\" ";
-						}
-					}
-					else
-					{
-						foreach (var attach in Directory.GetFiles(tempdir, "font*.*f"))
-						{
-							cmdattach += $"--attachment-description No --attach-file \"{attach}\" ";
-						}
-					}
-
-					if (File.Exists(Path.Combine(tempdir, "chapters.xml")))
-					{
-						FileInfo ChapLen = new FileInfo(Path.Combine(tempdir, "chapters.xml"));
-						if (ChapLen.Length > 256)
-							cmdchapter = $"--chapters \"{Path.Combine(tempdir, "chapters.xml")}\"";
-					}
-
-					File.WriteAllText(Path.Combine(tempdir, "tags.xml"), tags);
-					TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" -t 0:tags.xml --disable-track-statistics-tags {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
-				}
-				else
-				{
-					fileout += ".mp4";
-
-					string timecode = null;
-					string cmdvideo = null;
-					string cmdaudio = null;
-
-					foreach (var tc in Directory.GetFiles(tempdir, "timecode_*"))
-					{
-						timecode = tc; break;
-					}
-
-					foreach (var video in Directory.GetFiles(tempdir, "video*"))
-					{
-						cmdvideo += $"-add \"{video}#video:name=IFME:lang={GetInfo.FileLang(video)}:fmt=HEVC\" ";
-					}
-
-					foreach (var audio in Directory.GetFiles(tempdir, "audio*"))
-					{
-						cmdaudio += $"-add \"{audio}#audio:name=IFME:lang={GetInfo.FileLang(audio)}\" ";
-					}
-
-					if (string.IsNullOrEmpty(timecode))
-					{
-						TaskManager.Run($"\"{Plugin.MP4BX}\" {cmdvideo} {cmdaudio} -itags tool=\"{Global.App.NameFull}\" -new \"{fileout}\"");
-					}
-					else
-					{
-						TaskManager.Run($"\"{Plugin.MP4BX}\" {cmdvideo} {cmdaudio} -itags tool=\"{Global.App.NameFull}\" -new _desu.mp4");
-						TaskManager.Run($"\"{Plugin.MP4FP}\" -t \"{timecode}\" _desu.mp4 -o \"{fileout}\"");
-					}
-				}
-
+				// User cancel
 				if (bgwEncoding.CancellationPending)
 				{
 					InvokeQueueAbort(id);
@@ -1655,6 +1418,120 @@ namespace ifme
 			form.ShowDialog();
 		}
 
+		private void tsmiQueueOpen_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.Items.Count > 0)
+			{
+				var MsgBox = MessageBox.Show("Do you want to save changes to Untitled?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+				if (MsgBox == DialogResult.Yes)
+				{
+					tsmiQueueSave.PerformClick();
+				}
+				else if (MsgBox == DialogResult.Cancel)
+				{
+					return;
+				}
+			}
+
+			// Empty list and "No" button fall this code
+
+			OpenFileDialog GetFile = new OpenFileDialog();
+			GetFile.Filter = "Supported format|*.xml;*.ifq|"
+				+ "eXtensible Markup Language|*.xml|"
+				+ "IFME Queue|*.ifq";
+            GetFile.FilterIndex = 1;
+			GetFile.Multiselect = false;
+
+			if (GetFile.ShowDialog() == DialogResult.OK)
+				LoadQueueFile(GetFile.FileName);
+		}
+
+		private void LoadQueueFile(string file)
+		{
+			lstQueue.Items.Clear(); // clear all listing
+
+			List<Queue> gg = ObjectIO.IsValidXml(file) ?
+				ObjectIO.ReadFromXmlFile<List<Queue>>(file) :
+				ObjectIO.ReadFromBinaryFile<List<Queue>>(file);
+
+			foreach (var item in gg)
+			{
+				if (GetInfo.IsAviSynth(item.Data.File))
+					if (!Plugin.AviSynthInstalled)
+						continue;
+
+				ListViewItem qItem = new ListViewItem(new[] {
+						GetInfo.FileName(item.Data.File),
+						GetInfo.FileSize(item.Data.File),
+						$"{Path.GetExtension(item.Data.File).ToUpper()} ({new MediaFile(item.Data.File).Video[0].format})",
+						$"{(item.Data.SaveAsMkv ? ".MKV" : ".MP4")} (HEVC)",
+						item.IsEnable ? "Ready" : "Done"
+					});
+
+				qItem.Tag = item;
+				qItem.Checked = item.IsEnable;
+				lstQueue.Items.Add(qItem);
+			}
+
+			ObjectIO.FileName = file;
+		}
+
+		private void tsmiQueueSave_Click(object sender, EventArgs e)
+		{
+			if (string.IsNullOrEmpty(ObjectIO.FileName))
+			{
+				tsmiQueueSaveAs.PerformClick();
+			}
+			else
+			{
+				List<Queue> gg = new List<Queue>();
+				foreach (ListViewItem item in lstQueue.Items)
+				{
+					(item.Tag as Queue).IsEnable = item.Checked;
+					gg.Add(item.Tag as Queue);
+				}
+
+				if (ObjectIO.IsValidXml(ObjectIO.FileName))
+					ObjectIO.WriteToXmlFile(ObjectIO.FileName, gg);
+				else
+					ObjectIO.WriteToBinaryFile(ObjectIO.FileName, gg);
+			}
+		}
+
+		private void tsmiQueueSaveAs_Click(object sender, EventArgs e)
+		{
+			var MsgBox = MessageBox.Show(Language.QueueSave, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+			if (MsgBox == DialogResult.Yes)
+			{
+				if (lstQueue.Items.Count > 1)
+				{
+					List<Queue> gg = new List<Queue>();
+					foreach (ListViewItem item in lstQueue.Items)
+					{
+						(item.Tag as Queue).IsEnable = item.Checked;
+						gg.Add(item.Tag as Queue);
+					}
+
+					SaveFileDialog SaveFile = new SaveFileDialog();
+					SaveFile.Filter = "eXtensible Markup Language|*.xml|"
+						+ "IFME Queue List|*.ifq";
+					SaveFile.FilterIndex = 1;
+
+					if (SaveFile.ShowDialog() == DialogResult.OK)
+					{
+						if (SaveFile.FilterIndex == 1)
+							ObjectIO.WriteToXmlFile(SaveFile.FileName, gg); 
+						else
+							ObjectIO.WriteToBinaryFile(SaveFile.FileName, gg);
+					}
+				}
+				else
+				{
+					MessageBox.Show(Language.QueueSaveError);
+				}
+			}
+		}
+
 		private void tsmiQueueSelectAll_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstQueue.Items)
@@ -1795,6 +1672,14 @@ namespace ifme
 
 			} while (ctrl != null);
 
+			foreach (ToolStripItem item in cmsQueueMenu.Items)
+				if (item is ToolStripMenuItem)
+					item.Text = data[Name][item.Name];
+
+			foreach (ToolStripItem item in tsmiQueueAviSynth.DropDownItems)
+				if (item is ToolStripMenuItem)
+					item.Text = data[Name][item.Name];
+
 			foreach (ColumnHeader item in lstQueue.Columns)
 				item.Text = data[Name][$"{item.Tag}"];
 
@@ -1817,6 +1702,8 @@ namespace ifme
 			Language.SelectOneVideoPreview = data[Name]["SelectOneVideoPreview"];
 			Language.SelectOneVideoSubtitle = data[Name]["SelectOneVideoSubtitle"];
 			Language.VideoToAviSynth = data[Name]["VideoToAviSynth"].Replace("\\n", "\n");
+			Language.QueueSave = data.Sections[Name]["QueueSave"];
+			Language.QueueSaveError = data.Sections[Name]["QueueSaveError"];
 		}
 
 		void LangCreate()
@@ -1850,6 +1737,14 @@ namespace ifme
 
 			} while (ctrl != null);
 
+			foreach (ToolStripItem item in cmsQueueMenu.Items)
+				if (item is ToolStripMenuItem)
+					data.Sections[Name].AddKey(item.Name, item.Text);
+
+			foreach (ToolStripItem item in tsmiQueueAviSynth.DropDownItems)
+				if (item is ToolStripMenuItem)
+					data.Sections[Name].AddKey(item.Name, item.Text);
+
 			foreach (ColumnHeader item in lstQueue.Columns)
 				data.Sections[Name].AddKey($"{item.Tag}", item.Text);
 
@@ -1873,9 +1768,11 @@ namespace ifme
 			data.Sections[Name].AddKey("SelectOneVideoPreview", Language.SelectOneVideoPreview);
 			data.Sections[Name].AddKey("SelectOneVideoSubtitle", Language.SelectOneVideoSubtitle);
 			data.Sections[Name].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
-
+			data.Sections[Name].AddKey("QueueSave", Language.QueueSave);
+			data.Sections[Name].AddKey("QueueSaveError", Language.QueueSaveError);
+			
 			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data, Encoding.UTF8);		
 		}
-#endregion
+		#endregion
 	}
 }

@@ -320,6 +320,10 @@ namespace ifme
 
 			} while (ctrl != null);
 
+			tsmiPluginWeb.Text = data[Name]["VisitWeb"];
+			tsmiExtensionWeb.Text = data[Name]["VisitWeb"];
+			tsmiProfileWeb.Text = data[Name]["VisitWeb"];
+
 			foreach (ColumnHeader item in lstPlugin.Columns)
 				item.Text = data[Name][$"{item.Tag}"];
 
@@ -352,6 +356,8 @@ namespace ifme
 							data.Sections[Name].AddKey(ctrl.Name, ctrl.Text.Replace("\n", "\\n").Replace("\r", ""));
 
 			} while (ctrl != null);
+
+			data.Sections[Name].AddKey($"VisitWeb", "Visit &Website");
 
 			foreach (ColumnHeader item in lstPlugin.Columns)
 				data.Sections[Name].AddKey($"{item.Tag}", item.Text);

@@ -42,6 +42,8 @@ namespace ifme
 
 		public bool AttachEnable;
 		public List<Attachment> Attach = new List<Attachment>();
+
+		public static string SaveFile;
 	}
 
 	public class Data

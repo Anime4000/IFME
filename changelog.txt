@@ -1,3 +1,15 @@
+Version 5.0.8 (Twin Angel)
+-------------
+[new] Allow user to save queue list
+[new] Command-line encoding via queue file
+
+Version 5.0.7 (Twin Angel)
+-------------
+[new] Linux support (native)
+[new] Windows 32bit support
+[fixed] Subtitle did not extract
+[fixed] Form did not aligned properly on Linux
+
 Version 5.0.6.1 (Twin Angel)
 ---------------
 Welcome to IFME Go aka version 5, feel queue encoding.
@@ -15,7 +27,7 @@ Welcome to IFME Go aka version 5, feel queue encoding.
 [added] "auto" resolution and frame rate
 [change] Addons API
 [change] Profiles API
-[issue] Multi-language not yet implimented
+[issue] Multi-language not yet implemented
 
 
 Version 4.10 (Twin Angel)

@@ -29,11 +29,6 @@ namespace ifme
 
 		public static int Run(string command)
 		{
-			return Run(command, Properties.Settings.Default.DirTemp);
-		}
-
-		public static int Run(string command, string workingdir)
-		{
 			string exe;
 			string arg;
 
@@ -47,7 +42,7 @@ namespace ifme
 			else
 			{
 				exe = "bash";
-				arg = "-c '" + command + "'"; // POSIX has 2091769, silly Windows
+				arg = $"-c '{command}'"; // POSIX has 2091769, silly Windows
 			}
 
 			GetProcess(command); // split command args and capture any binary file, allow modify CPU affinity and priority
@@ -56,7 +51,7 @@ namespace ifme
 			p.StartInfo = new ProcessStartInfo(exe, arg)
 			{
 				UseShellExecute = false,
-				WorkingDirectory = workingdir,
+				WorkingDirectory = Properties.Settings.Default.DirTemp,
 			};
 
 			p.Start(); CPU.SetPriority(CurrentProc); // set cpu affinity and priority (windows only, linux require root)

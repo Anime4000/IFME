@@ -7,6 +7,6 @@
 #include <stdio.h>
 
 int main() {
-	system("xterm -e './ifme --gui'");
+	system("gnome-terminal -e './ifme --gui'");
 	return 0;
 }

@@ -7,6 +7,8 @@ using System.Text;
 using IniParser;
 using IniParser.Model;
 
+using static ifme.Properties.Settings;
+
 namespace ifme
 {
 	public enum StreamType
@@ -63,7 +65,7 @@ namespace ifme
 			}
 
 			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> streams.id");
-			foreach (var item in File.ReadAllLines(Path.Combine(Global.Folder.Temp, "streams.id")))
+			foreach (var item in File.ReadAllLines(Path.Combine(Default.DirTemp, "streams.id")))
 			{
 				if (item.Contains("Stream #"))
 				{
@@ -144,7 +146,7 @@ namespace ifme
 			}
 
 			TaskManager.Run($"\"{Path.Combine(Global.Folder.Plugins, "mkvtool", "mkvmerge")}\" -i \"{file}\" > list.id");
-			foreach (var x in File.ReadAllLines(Path.Combine(Global.Folder.Temp, "list.id")))
+			foreach (var x in File.ReadAllLines(Path.Combine(Default.DirTemp, "list.id")))
 			{
 				if (kind == StreamType.Attachment)
 				{
@@ -293,7 +295,7 @@ namespace ifme
 			Console.ResetColor();
 
 			TaskManager.Run($"\"{Plugin.AVS4P}\" info \"{file}\" > avisynth.id");
-			string[] result = File.ReadAllLines(Path.Combine(Global.Folder.Temp, "avisynth.id"));
+			string[] result = File.ReadAllLines(Path.Combine(Default.DirTemp, "avisynth.id"));
 
 			foreach (var item in result)
 			{

@@ -47,6 +47,8 @@
 			this.tsmiQueuePreview = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBenchmark = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiQueueSave = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQueueSelectAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectNone = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,6 +145,8 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
+			this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiQueueOpen = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -312,13 +316,17 @@
             this.tsmiQueuePreview,
             this.tsmiBenchmark,
             this.toolStripSeparator1,
+            this.tsmiQueueOpen,
+            this.tsmiQueueSave,
+            this.tsmiQueueSaveAs,
+            this.toolStripSeparator4,
             this.tsmiQueueSelectAll,
             this.tsmiQueueSelectNone,
             this.tsmiQueueSelectInvert,
             this.toolStripSeparator2,
             this.tsmiQueueAviSynth});
 			this.cmsQueueMenu.Name = "cmsQueueMenu";
-			this.cmsQueueMenu.Size = new System.Drawing.Size(186, 148);
+			this.cmsQueueMenu.Size = new System.Drawing.Size(186, 242);
 			// 
 			// tsmiQueuePreview
 			// 
@@ -340,6 +348,20 @@
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
+			// 
+			// tsmiQueueSave
+			// 
+			this.tsmiQueueSave.Image = global::ifme.Properties.Resources.disk;
+			this.tsmiQueueSave.Name = "tsmiQueueSave";
+			this.tsmiQueueSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.tsmiQueueSave.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueSave.Text = "&Save queue";
+			this.tsmiQueueSave.Click += new System.EventHandler(this.tsmiQueueSave_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
 			// 
 			// tsmiQueueSelectAll
 			// 
@@ -378,7 +400,7 @@
             this.tsmiQueueAviSynthGenerate});
 			this.tsmiQueueAviSynth.Name = "tsmiQueueAviSynth";
 			this.tsmiQueueAviSynth.Size = new System.Drawing.Size(185, 22);
-			this.tsmiQueueAviSynth.Text = "Avi&Synth";
+			this.tsmiQueueAviSynth.Text = "A&viSynth";
 			// 
 			// tsmiQueueAviSynthEdit
 			// 
@@ -1505,6 +1527,21 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
+			// tsmiQueueSaveAs
+			// 
+			this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
+			this.tsmiQueueSaveAs.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueSaveAs.Text = "Save queue as...";
+			this.tsmiQueueSaveAs.Click += new System.EventHandler(this.tsmiQueueSaveAs_Click);
+			// 
+			// tsmiQueueOpen
+			// 
+			this.tsmiQueueOpen.Name = "tsmiQueueOpen";
+			this.tsmiQueueOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.tsmiQueueOpen.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueOpen.Text = "Open queue";
+			this.tsmiQueueOpen.Click += new System.EventHandler(this.tsmiQueueOpen_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1692,5 +1729,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQueueAviSynthGenerate;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBenchmark;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQueueSave;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQueueOpen;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQueueSaveAs;
 	}
 }
