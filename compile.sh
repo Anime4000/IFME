@@ -64,7 +64,7 @@ rm -f "MediaInfoDotNet.dll.config"
 cd $ORIDIR
 
 echo "Fix directory permission"
-find "$ORIDIR\$BUILDDIR" -type d -exec chmod 775 {} +
+find "$ORIDIR/$BUILDDIR" -type d -exec chmod 775 {} +
 
 echo "Packaging..."
 mv $BUILDDIR ifme5
