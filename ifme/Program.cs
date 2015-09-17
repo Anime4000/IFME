@@ -135,7 +135,10 @@ namespace ifme
 			}
 
 			if (IsHelp)
+			{
 				DisplayHelp();
+				return 0;
+			}
 
 			if (IsReset)
 			{
@@ -322,6 +325,10 @@ namespace ifme
 
 				// Audio
 				MediaEncoder.Audio(filereal, item);
+
+				// Tell User
+				WriteLine($"File: {Path.GetFileName(item.Data.File)}");
+				WriteLine($"Current queue {id + 1:000} of {argList.Count}");
 
 				// Video
 				MediaEncoder.Video(file, item);

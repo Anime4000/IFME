@@ -62,4 +62,11 @@ rm -f "MediaInfoDotNet.dll"
 rm -f "MediaInfoDotNet.dll.config"
 
 cd $ORIDIR
+
+echo "Packaging..."
+mv $BUILDDIR ifme5
+tar -cvJf ifme5.tar.xz ifme5
+mv ifme5 $BUILDDIR
+
 echo "Done!"
+sleep 3

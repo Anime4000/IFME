@@ -8,7 +8,7 @@
 #define MyAppExeName "ifme.exe"
 
 ; 32bit or 64bit release
-#define Public BIT32
+#define Public BIT64
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.

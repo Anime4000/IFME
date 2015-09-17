@@ -16,10 +16,11 @@ echo This script allowing publish IFME after compile. Using %CompileMode% build.
 echo Be sure ifme.exe in %CompileMode% is working perfectly including addons.
 echo.
 echo.
-echo.
-
 echo Don't forget to close any running Visual Studio before compile
 echo Press any key to start making (existing folder will be removed!)...
+echo.
+echo.
+echo Make sure you have 7zip installed on your computer.
 pause >nul
 
 echo.
@@ -80,6 +81,11 @@ echo.
 
 echo CLEAN UP
 del /f /s /q %BUILDDIR%\*.ifz
+
+echo PACKAGING
+ren %BUILDDIR% ifme5
+"%PROGRAMFILES%\7-Zip\7z.exe" a -r -t7z -mx=9 -ms=on ifme5.7z ifme5
+ren ifme5 %BUILDDIR%
 
 echo.
 echo.
