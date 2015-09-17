@@ -63,6 +63,9 @@ rm -f "MediaInfoDotNet.dll.config"
 
 cd $ORIDIR
 
+echo "Next... Making packaging (.tar.xz). Get ready first"
+read -rp "Press any ENTER to continue..." key
+
 echo "Fix directory permission"
 find "$ORIDIR/$BUILDDIR" -type d -exec chmod 775 {} +
 
