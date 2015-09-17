@@ -38,7 +38,27 @@ timeout /t 3 >nul
 echo.
 
 echo COPY IFME MAIN FILE
-robocopy ifme\bin\%CompileMode% %BUILDDIR% /E
+mkdir %BUILDDIR%\benchmark
+robocopy ifme\bin\%CompileMode%\extension %BUILDDIR%\extension /E
+robocopy ifme\bin\%CompileMode%\lang %BUILDDIR%\lang /E
+robocopy ifme\bin\%CompileMode%\plugins\avisynth %BUILDDIR%\plugins\avisynth /E
+robocopy ifme\bin\%CompileMode%\plugins\faac %BUILDDIR%\plugins\faac /E
+robocopy ifme\bin\%CompileMode%\plugins\mp4fpsmod %BUILDDIR%\plugins\mp4fpsmod /E
+robocopy ifme\bin\%CompileMode%\plugins\opus %BUILDDIR%\plugins\opus /E
+robocopy ifme\bin\%CompileMode%\profile %BUILDDIR%\profile /E
+robocopy ifme\bin\%CompileMode%\sounds %BUILDDIR%\sounds /E
+copy ifme\bin\%CompileMode%\7za %BUILDDIR%
+copy ifme\bin\%CompileMode%\addons_linux32.repo %BUILDDIR%
+copy ifme\bin\%CompileMode%\addons_linux64.repo %BUILDDIR%
+copy ifme\bin\%CompileMode%\addons_windows32.repo %BUILDDIR%
+copy ifme\bin\%CompileMode%\addons_windows64.repo %BUILDDIR%
+copy ifme\bin\%CompileMode%\avisynthsource.code %BUILDDIR%
+copy ifme\bin\%CompileMode%\format.ini %BUILDDIR%
+copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
+copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
+copy ifme\bin\%CompileMode%\iso.code %BUILDDIR%
+copy ifme\bin\%CompileMode%\MediaInfo.dll %BUILDDIR%
+copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
 echo.
 
 echo CLEAN UP

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "5.0.7.0"
+#define MyAppVersion "5.0.8.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
@@ -25,11 +25,11 @@ AppUpdatesURL={#MyAppURL}
 ;DefaultDirName={pf64}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-;ArchitecturesInstallIn64BitMode=x64
 
 #ifdef BIT64 
   #define CPU "x64"
   DefaultDirName={pf64}\{#MyAppName}
+  ArchitecturesInstallIn64BitMode=x64
 #else
   DefaultDirName={pf}\{#MyAppName}
   #define CPU "x86"
