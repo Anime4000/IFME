@@ -215,6 +215,15 @@
     <None Include="Resources\page_delete.png" />
     <None Include="Resources\wrench.png" />
     <None Include="Resources\applications_internet.png" />
+    <None Include="Resources\newstuff.png" />
+    <None Include="Resources\page_save.png" />
+    <None Include="Resources\page.png" />
+    <None Include="Resources\magnifier.png" />
+    <None Include="Resources\plugin.png" />
+    <None Include="Resources\server_lightning.png" />
+    <None Include="Resources\asterisk_orange.png" />
+    <None Include="Resources\script_add.png" />
+    <None Include="Resources\script_edit.png" />
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

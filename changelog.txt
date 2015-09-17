@@ -1,4 +1,4 @@
-Version 5.0.8 (Twin Angel)
+Version 5.0.8 (True My Heart)
 -------------
 [new] Allow user to save queue list
 [new] Command-line encoding via queue file

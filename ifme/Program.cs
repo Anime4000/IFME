@@ -52,10 +52,10 @@ namespace ifme
 			ResetColor();
 		}
 
-		static void Help()
+		static void DisplayHelp()
 		{
 			Head();
-			WriteLine("Usage: ifme [OPTION] INPUT");
+			WriteLine("Usage: ifme [OPTION...] [GUI|CLI]");
 			WriteLine();
 			WriteLine("Mandatory arguments to long options are mandatory for short options too.");
 			WriteLine();
@@ -65,13 +65,12 @@ namespace ifme
 			WriteLine("  -g, --gui                    open IFME GUI (linux only)");
 			WriteLine();
 			WriteLine("GUI:");
-			WriteLine("      --open                   open IFME queue file via GUI");
+			WriteLine("      --open file.xml          open IFME queue file via GUI");
 			WriteLine();
 			WriteLine("CLI:");
-			WriteLine("  -i                           load IFME queue file via CLI");
+			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
 			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
 			WriteLine();
-			WriteLine("Option -h, -r, or -g are only accept at first argument, it implies each other.");
 			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
 			WriteLine();
 			WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
@@ -82,30 +81,13 @@ namespace ifme
 		static int Command(string[] args)
 		{
 			string Input = string.Empty;
-			bool IsBin = false;
+			bool IsHelp = false;
 			bool IsForce = false;
+			bool IsXterm = false;
+			bool IsReset = false;
 
 			if (args.Length > 0)
 			{
-				if (args[0] == "-g" || args[0] == "--gui")
-					if (OS.IsLinux)
-						return 1;
-
-				if (args[0] == "-h" || args[0] == "--help")
-				{
-					Help();
-					return 0;
-				}
-
-				if (args[0] == "-r" || args[0] == "--reset")
-				{
-					Default.Reset();
-					Default.Save();
-
-					WriteLine("Settings has been reset!");
-					return 0;
-				}
-
 				for (int i = 0; i < args.Length; i++)
 				{
 					for (int n = 0; n < args[i].Length; n++)
@@ -116,8 +98,14 @@ namespace ifme
 						if (args[i][1] == '-')
 							break;
 
-						if (args[i][n] == 'b')
-							IsBin = true;
+						if (args[i][n] == 'h')
+							IsHelp = true;
+
+						if (args[i][n] == 'r')
+							IsReset = true;
+
+						if (args[i][n] == 'g')
+							IsXterm = true;
 
 						if (args[i][n] == 'f')
 							IsForce = true;
@@ -127,31 +115,56 @@ namespace ifme
 								Input = args[++i];
 					}
 
+					if (args[i] == "--help")
+						IsHelp = true;
+
+					if (args[i] == "--reset")
+						IsReset = true;
+
+					if (args[i] == "--gui")
+						IsXterm = true;
+
+					if (args[i] == "--input")
+						if (i < args.Length)
+							Input = args[++i];
+
 					if (args[i] == "--open")
 						if (i < args.Length)
 							ObjectIO.FileName = args[++i];
 				}
-
-				if (!string.IsNullOrEmpty(Input))
-					EncodingStart(Input, IsBin, IsForce);
-
-				if (!string.IsNullOrEmpty(ObjectIO.FileName))
-					return 1;
-
-				return 0;
 			}
-			else
+
+			if (IsHelp)
+				DisplayHelp();
+
+			if (IsReset)
 			{
-				if (OS.IsLinux)
+				Default.Reset();
+				Default.Save();
+
+				WriteLine("Settings has been reset!");
+			}
+
+			if (!string.IsNullOrEmpty(ObjectIO.FileName))
+				return 1; // Proceed with GUI
+
+			if (!string.IsNullOrEmpty(Input))
+			{
+				EncodingStart(Input, IsForce);
+				return 0; // Proceed with CLI (Quit after)
+			}
+			
+			if (OS.IsLinux)
+			{
+				if (!IsXterm)
 				{
-					MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.");
+					MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					DisplayHelp();
 					return 0;
 				}
-				else
-				{
-					return 1;
-				}
 			}
+
+			return 1; // Proceed with GUI
 		}
 
 		static void SettingsLoad()
@@ -243,7 +256,7 @@ namespace ifme
 			Application.Run(new frmMain());
 		}
 
-		static void EncodingStart(string queueFile, bool isBinary, bool force)
+		static int EncodingStart(string queueFile, bool force)
 		{
 			Head();
 
@@ -253,7 +266,9 @@ namespace ifme
 			Plugin.Load();
 
 			WriteLine("Reading queue file...");
-			List<Queue> argList = isBinary ? ObjectIO.ReadFromBinaryFile<List<Queue>>(queueFile) : ObjectIO.ReadFromXmlFile<List<Queue>>(queueFile);
+			List<Queue> argList = ObjectIO.IsValidXml(queueFile) ?
+				 ObjectIO.ReadFromXmlFile<List<Queue>>(queueFile) : 
+				 ObjectIO.ReadFromBinaryFile<List<Queue>>(queueFile);
 
 			WriteLine($"There are {argList.Count} video's in the queue file");
 			if (force)
@@ -316,6 +331,8 @@ namespace ifme
 			}
 
 			WriteLine(GetInfo.Duration(Session));
+
+			return 0;
 		}
 	}
 }

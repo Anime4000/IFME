@@ -24,7 +24,7 @@ namespace ifme
 
 			public static string CodeName
 			{
-				get { return "Twin Angel"; }
+				get { return "True My Heart"; }
 			}
 
 			public static string Version

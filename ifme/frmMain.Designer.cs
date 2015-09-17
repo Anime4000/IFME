@@ -47,7 +47,10 @@
 			this.tsmiQueuePreview = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBenchmark = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiQueueNew = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiQueueOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSave = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQueueSelectAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectNone = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,8 +148,6 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
-			this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiQueueOpen = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -316,6 +317,7 @@
             this.tsmiQueuePreview,
             this.tsmiBenchmark,
             this.toolStripSeparator1,
+            this.tsmiQueueNew,
             this.tsmiQueueOpen,
             this.tsmiQueueSave,
             this.tsmiQueueSaveAs,
@@ -326,71 +328,101 @@
             this.toolStripSeparator2,
             this.tsmiQueueAviSynth});
 			this.cmsQueueMenu.Name = "cmsQueueMenu";
-			this.cmsQueueMenu.Size = new System.Drawing.Size(186, 242);
+			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 242);
 			// 
 			// tsmiQueuePreview
 			// 
+			this.tsmiQueuePreview.Image = global::ifme.Properties.Resources.magnifier;
 			this.tsmiQueuePreview.Name = "tsmiQueuePreview";
 			this.tsmiQueuePreview.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiQueuePreview.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueuePreview.Size = new System.Drawing.Size(225, 22);
 			this.tsmiQueuePreview.Text = "&Preview";
 			this.tsmiQueuePreview.Click += new System.EventHandler(this.tsmiQueuePreview_Click);
 			// 
 			// tsmiBenchmark
 			// 
+			this.tsmiBenchmark.Image = global::ifme.Properties.Resources.server_lightning;
 			this.tsmiBenchmark.Name = "tsmiBenchmark";
 			this.tsmiBenchmark.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-			this.tsmiBenchmark.Size = new System.Drawing.Size(185, 22);
+			this.tsmiBenchmark.Size = new System.Drawing.Size(225, 22);
 			this.tsmiBenchmark.Text = "&Benchmark";
 			this.tsmiBenchmark.Click += new System.EventHandler(this.tsmiBenchmark_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(222, 6);
+			// 
+			// tsmiQueueNew
+			// 
+			this.tsmiQueueNew.Image = global::ifme.Properties.Resources.newstuff;
+			this.tsmiQueueNew.Name = "tsmiQueueNew";
+			this.tsmiQueueNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.tsmiQueueNew.Size = new System.Drawing.Size(225, 22);
+			this.tsmiQueueNew.Text = "&New queue";
+			this.tsmiQueueNew.Click += new System.EventHandler(this.tsmiQueueNew_Click);
+			// 
+			// tsmiQueueOpen
+			// 
+			this.tsmiQueueOpen.Image = global::ifme.Properties.Resources.page;
+			this.tsmiQueueOpen.Name = "tsmiQueueOpen";
+			this.tsmiQueueOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.tsmiQueueOpen.Size = new System.Drawing.Size(225, 22);
+			this.tsmiQueueOpen.Text = "&Open queue";
+			this.tsmiQueueOpen.Click += new System.EventHandler(this.tsmiQueueOpen_Click);
 			// 
 			// tsmiQueueSave
 			// 
-			this.tsmiQueueSave.Image = global::ifme.Properties.Resources.disk;
+			this.tsmiQueueSave.Image = global::ifme.Properties.Resources.page_save;
 			this.tsmiQueueSave.Name = "tsmiQueueSave";
 			this.tsmiQueueSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.tsmiQueueSave.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueSave.Size = new System.Drawing.Size(225, 22);
 			this.tsmiQueueSave.Text = "&Save queue";
 			this.tsmiQueueSave.Click += new System.EventHandler(this.tsmiQueueSave_Click);
+			// 
+			// tsmiQueueSaveAs
+			// 
+			this.tsmiQueueSaveAs.Image = global::ifme.Properties.Resources.asterisk_orange;
+			this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
+			this.tsmiQueueSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+			this.tsmiQueueSaveAs.Size = new System.Drawing.Size(225, 22);
+			this.tsmiQueueSaveAs.Text = "Save queue as...";
+			this.tsmiQueueSaveAs.Click += new System.EventHandler(this.tsmiQueueSaveAs_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsmiQueueSelectAll
 			// 
 			this.tsmiQueueSelectAll.Name = "tsmiQueueSelectAll";
 			this.tsmiQueueSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-			this.tsmiQueueSelectAll.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueSelectAll.Size = new System.Drawing.Size(225, 22);
 			this.tsmiQueueSelectAll.Text = "Select &all";
 			this.tsmiQueueSelectAll.Click += new System.EventHandler(this.tsmiQueueSelectAll_Click);
 			// 
 			// tsmiQueueSelectNone
 			// 
 			this.tsmiQueueSelectNone.Name = "tsmiQueueSelectNone";
-			this.tsmiQueueSelectNone.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.tsmiQueueSelectNone.Size = new System.Drawing.Size(185, 22);
-			this.tsmiQueueSelectNone.Text = "Select &none";
+			this.tsmiQueueSelectNone.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+			this.tsmiQueueSelectNone.Size = new System.Drawing.Size(225, 22);
+			this.tsmiQueueSelectNone.Text = "S&elect none";
 			this.tsmiQueueSelectNone.Click += new System.EventHandler(this.tsmiQueueSelectNone_Click);
 			// 
 			// tsmiQueueSelectInvert
 			// 
 			this.tsmiQueueSelectInvert.Name = "tsmiQueueSelectInvert";
 			this.tsmiQueueSelectInvert.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-			this.tsmiQueueSelectInvert.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueSelectInvert.Size = new System.Drawing.Size(225, 22);
 			this.tsmiQueueSelectInvert.Text = "&Invert selection";
 			this.tsmiQueueSelectInvert.Click += new System.EventHandler(this.tsmiQueueSelectInvert_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsmiQueueAviSynth
 			// 
@@ -398,12 +430,14 @@
             this.tsmiQueueAviSynthEdit,
             this.toolStripSeparator3,
             this.tsmiQueueAviSynthGenerate});
+			this.tsmiQueueAviSynth.Image = global::ifme.Properties.Resources.plugin;
 			this.tsmiQueueAviSynth.Name = "tsmiQueueAviSynth";
-			this.tsmiQueueAviSynth.Size = new System.Drawing.Size(185, 22);
+			this.tsmiQueueAviSynth.Size = new System.Drawing.Size(225, 22);
 			this.tsmiQueueAviSynth.Text = "A&viSynth";
 			// 
 			// tsmiQueueAviSynthEdit
 			// 
+			this.tsmiQueueAviSynthEdit.Image = global::ifme.Properties.Resources.script_edit;
 			this.tsmiQueueAviSynthEdit.Name = "tsmiQueueAviSynthEdit";
 			this.tsmiQueueAviSynthEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
 			this.tsmiQueueAviSynthEdit.Size = new System.Drawing.Size(265, 22);
@@ -417,6 +451,7 @@
 			// 
 			// tsmiQueueAviSynthGenerate
 			// 
+			this.tsmiQueueAviSynthGenerate.Image = global::ifme.Properties.Resources.script_add;
 			this.tsmiQueueAviSynthGenerate.Name = "tsmiQueueAviSynthGenerate";
 			this.tsmiQueueAviSynthGenerate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
 			this.tsmiQueueAviSynthGenerate.Size = new System.Drawing.Size(265, 22);
@@ -1527,21 +1562,6 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
-			// tsmiQueueSaveAs
-			// 
-			this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
-			this.tsmiQueueSaveAs.Size = new System.Drawing.Size(185, 22);
-			this.tsmiQueueSaveAs.Text = "Save queue as...";
-			this.tsmiQueueSaveAs.Click += new System.EventHandler(this.tsmiQueueSaveAs_Click);
-			// 
-			// tsmiQueueOpen
-			// 
-			this.tsmiQueueOpen.Name = "tsmiQueueOpen";
-			this.tsmiQueueOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.tsmiQueueOpen.Size = new System.Drawing.Size(185, 22);
-			this.tsmiQueueOpen.Text = "Open queue";
-			this.tsmiQueueOpen.Click += new System.EventHandler(this.tsmiQueueOpen_Click);
-			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1575,6 +1595,7 @@
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Internet Friendly Media Encoder";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.Shown += new System.EventHandler(this.frmMain_Shown);
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).EndInit();
@@ -1733,5 +1754,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQueueOpen;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQueueSaveAs;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQueueNew;
 	}
 }

@@ -24,7 +24,6 @@ namespace ifme
 			InitializeComponent();
 
 			Icon = Properties.Resources.ifme5;
-			Text = Global.App.NameFull;
 
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = Properties.Resources.BannerA;
@@ -56,7 +55,7 @@ namespace ifme
 				cboSubLang.Items.Add(item);
 
 			// Setting ready
-			txtDestination.Text = Properties.Settings.Default.DirOutput;
+			txtDestination.Text = Default.DirOutput;
 
 			// Add profile
 			ProfileAdd();
@@ -96,10 +95,32 @@ namespace ifme
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
 			if (!string.IsNullOrEmpty(ObjectIO.FileName))
-				LoadQueueFile(ObjectIO.FileName);
+				QueueListOpen(ObjectIO.FileName);
+
+			QueueListFile(ObjectIO.FileName);
 		}
 
-#region Profile
+		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (lstQueue.Items.Count > 1)
+			{
+				var MsgBox = MessageBox.Show(Language.Quit, "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+				if (MsgBox == DialogResult.Yes)
+				{
+					if (string.IsNullOrEmpty(ObjectIO.FileName))
+						QueueListSaveAs();
+					else
+						QueueListSave();
+				}
+				else if (MsgBox == DialogResult.Cancel)
+				{
+					e.Cancel = true;
+					return;
+				}
+			}
+		}
+
+		#region Profile
 		void ProfileAdd()
 		{
 			// Clear before adding object
@@ -1409,20 +1430,46 @@ namespace ifme
 
 		void Benchmark(string file)
 		{
-			string extsfile = Properties.Settings.Default.DefaultBenchmark;
+			string extsfile = Default.DefaultBenchmark;
 			string typename = Path.GetFileNameWithoutExtension(extsfile);
 
 			Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
 			Type type = asm.GetType(typename + ".frmMain");
-			Form form = (Form)Activator.CreateInstance(type, new object[] { file, Properties.Settings.Default.Compiler, "eng" });
+			Form form = (Form)Activator.CreateInstance(type, new object[] { file, Default.Compiler, "eng" });
 			form.ShowDialog();
+		}
+
+		private void tsmiQueueNew_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.Items.Count > 0)
+			{
+				var MsgBox = MessageBox.Show(Language.QueueOpenChange, "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+				if (MsgBox == DialogResult.Yes)
+					tsmiQueueSave.PerformClick();
+				else if (MsgBox == DialogResult.Cancel)
+					return;
+
+				lstQueue.Items.Clear();
+				QueueListFile(null);
+			}
+		}
+
+		private void QueueListFile(string file)
+		{
+			// Program Start, New, Open, Save As
+			if (string.IsNullOrEmpty(file))
+				Text = $"Untitled - {Global.App.NameFull}";
+			else
+				Text = $"{Path.GetFileName(file)} - {Global.App.NameFull}";
+
+			ObjectIO.FileName = file;
 		}
 
 		private void tsmiQueueOpen_Click(object sender, EventArgs e)
 		{
 			if (lstQueue.Items.Count > 0)
 			{
-				var MsgBox = MessageBox.Show("Do you want to save changes to Untitled?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+				var MsgBox = MessageBox.Show(Language.QueueOpenChange, "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 				if (MsgBox == DialogResult.Yes)
 				{
 					tsmiQueueSave.PerformClick();
@@ -1443,10 +1490,10 @@ namespace ifme
 			GetFile.Multiselect = false;
 
 			if (GetFile.ShowDialog() == DialogResult.OK)
-				LoadQueueFile(GetFile.FileName);
+				QueueListOpen(GetFile.FileName);
 		}
 
-		private void LoadQueueFile(string file)
+		private void QueueListOpen(string file)
 		{
 			lstQueue.Items.Clear(); // clear all listing
 
@@ -1473,7 +1520,7 @@ namespace ifme
 				lstQueue.Items.Add(qItem);
 			}
 
-			ObjectIO.FileName = file;
+			QueueListFile(file);
 		}
 
 		private void tsmiQueueSave_Click(object sender, EventArgs e)
@@ -1484,18 +1531,23 @@ namespace ifme
 			}
 			else
 			{
-				List<Queue> gg = new List<Queue>();
-				foreach (ListViewItem item in lstQueue.Items)
-				{
-					(item.Tag as Queue).IsEnable = item.Checked;
-					gg.Add(item.Tag as Queue);
-				}
+				QueueListSave();
+            }
+		}
 
-				if (ObjectIO.IsValidXml(ObjectIO.FileName))
-					ObjectIO.WriteToXmlFile(ObjectIO.FileName, gg);
-				else
-					ObjectIO.WriteToBinaryFile(ObjectIO.FileName, gg);
+		private void QueueListSave()
+		{
+			List<Queue> gg = new List<Queue>();
+			foreach (ListViewItem item in lstQueue.Items)
+			{
+				(item.Tag as Queue).IsEnable = item.Checked;
+				gg.Add(item.Tag as Queue);
 			}
+
+			if (ObjectIO.IsValidXml(ObjectIO.FileName))
+				ObjectIO.WriteToXmlFile(ObjectIO.FileName, gg);
+			else
+				ObjectIO.WriteToBinaryFile(ObjectIO.FileName, gg);
 		}
 
 		private void tsmiQueueSaveAs_Click(object sender, EventArgs e)
@@ -1505,30 +1557,37 @@ namespace ifme
 			{
 				if (lstQueue.Items.Count > 1)
 				{
-					List<Queue> gg = new List<Queue>();
-					foreach (ListViewItem item in lstQueue.Items)
-					{
-						(item.Tag as Queue).IsEnable = item.Checked;
-						gg.Add(item.Tag as Queue);
-					}
-
-					SaveFileDialog SaveFile = new SaveFileDialog();
-					SaveFile.Filter = "eXtensible Markup Language|*.xml|"
-						+ "IFME Queue List|*.ifq";
-					SaveFile.FilterIndex = 1;
-
-					if (SaveFile.ShowDialog() == DialogResult.OK)
-					{
-						if (SaveFile.FilterIndex == 1)
-							ObjectIO.WriteToXmlFile(SaveFile.FileName, gg); 
-						else
-							ObjectIO.WriteToBinaryFile(SaveFile.FileName, gg);
-					}
+					QueueListSaveAs();
 				}
 				else
 				{
 					MessageBox.Show(Language.QueueSaveError);
 				}
+			}
+		}
+
+		private void QueueListSaveAs()
+		{
+			List<Queue> gg = new List<Queue>();
+			foreach (ListViewItem item in lstQueue.Items)
+			{
+				(item.Tag as Queue).IsEnable = item.Checked;
+				gg.Add(item.Tag as Queue);
+			}
+
+			SaveFileDialog SaveFile = new SaveFileDialog();
+			SaveFile.Filter = "eXtensible Markup Language|*.xml|" 
+				+ "IFME Queue List|*.ifq";
+			SaveFile.FilterIndex = 1;
+
+			if (SaveFile.ShowDialog() == DialogResult.OK)
+			{
+				if (SaveFile.FilterIndex == 1)
+					ObjectIO.WriteToXmlFile(SaveFile.FileName, gg);
+				else
+					ObjectIO.WriteToBinaryFile(SaveFile.FileName, gg);
+
+				QueueListFile(SaveFile.FileName);
 			}
 		}
 
@@ -1704,6 +1763,8 @@ namespace ifme
 			Language.VideoToAviSynth = data[Name]["VideoToAviSynth"].Replace("\\n", "\n");
 			Language.QueueSave = data.Sections[Name]["QueueSave"];
 			Language.QueueSaveError = data.Sections[Name]["QueueSaveError"];
+			Language.QueueOpenChange = data.Sections[Name]["QueueOpenChange"];
+			Language.Quit = data.Sections[Name]["Quit"];
 		}
 
 		void LangCreate()
@@ -1770,7 +1831,9 @@ namespace ifme
 			data.Sections[Name].AddKey("VideoToAviSynth", Language.VideoToAviSynth.Replace("\n", "\\n"));
 			data.Sections[Name].AddKey("QueueSave", Language.QueueSave);
 			data.Sections[Name].AddKey("QueueSaveError", Language.QueueSaveError);
-			
+			data.Sections[Name].AddKey("QueueOpenChange", Language.QueueOpenChange);
+			data.Sections[Name].AddKey("Quit", Language.Quit);
+
 			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data, Encoding.UTF8);		
 		}
 		#endregion
