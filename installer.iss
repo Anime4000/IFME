@@ -48,7 +48,7 @@ WizardImageFile=..\installer\image_banner.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=D:\
-OutputBaseFilename=x265ui-{#MyAppVersion}-{#CPU}_setup
+OutputBaseFilename=ifme-{#MyAppVersion}-{#CPU}_setup
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
