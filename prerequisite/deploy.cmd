@@ -18,6 +18,7 @@ IF DEFINED ProgramFiles(x86) (
 pause
 
 :DONE
+echo Unpacking...
 for /r "%~dp0\windows\32bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
 for /r "%~dp0\windows\64bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
 

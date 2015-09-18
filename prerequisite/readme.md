@@ -29,5 +29,5 @@ You can get all [here](https://sourceforge.net/projects/ifme/files/plugins/) dep
 * Windows 64bit `windows\64bit\plugins\*`
 * Linux 64bit `linux/64bit/plugins/*`
 
-## Folder
-*folder need to be created manually*. Or you can execute `makefolder.cmd` or `makefolder.sh`
+## Deployment
+Simply execute `deploy.cmd` or `deploy.sh`, it will do all *plugins* works.
