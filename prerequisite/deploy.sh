@@ -1,7 +1,11 @@
 #!/bin/sh
+cd "$(dirname $(readlink -f $0))"
 echo "Creating folder"
-mkdir "linux/64bit/plugins/"
-mkdir "allos/extension/"
+mkdir "linux"
+mkdir "linux/64bit"
+mkdir "linux/64bit/plugins"
+mkdir "allos/"
+mkdir "allos/extension"
 echo "Downloading plugins"
 wget http://master.dl.sourceforge.net/project/ifme/plugins/linux/64bit/faac.ifx -O linux/64bit/plugins/faac.ifx
 wget http://master.dl.sourceforge.net/project/ifme/plugins/linux/64bit/ffmpeg.ifx -O linux/64bit/plugins/ffmpeg.ifx
