@@ -44,11 +44,30 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 You can download it via [SourceForge](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub](https://github.com/Anime4000/IFME/releases/latest)
 
 ## Developer
-### IDE
-Visual Studio 2015
-
 ### Requirement
-Code written in C# 6.0
+Since code was written in C# 6.0 this mean you need latest compiler and IDE.
+
+#### Windows
+Install Microsoft Visual Studio 2015, this contain roslyn compiler that can compile code written in C# 6.0
+
+#### Linux
+You need Mono 4.0 & latest, you can install complete mono package, please refer [here](http://www.mono-project.com/download/#download-lin) how to install, make sure you install everything!
 
 ### Assembly
 Please refer to `references/readme.md`
+
+### Compiling
+After you install either Mono 4.0 or Visual Studio, you can proceed this section.
+
+#### Windows
+* First, you need run `prerequisite\deploy.cmd`. *This require `wget` and `7zip` to be installed on your computer*
+* Then simply run `compile.cmd`.
+
+#### Linux
+* You need `p7zip-full` and `mediainfo`
+* Execute `cd prerequisite` and `sh deploy.sh`
+* Go back `cd ..` and run `sh compile.sh`
+
+`compile.sh` will download required .NET References
+
+Good Luck!

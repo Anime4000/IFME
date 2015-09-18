@@ -1,7 +1,10 @@
 #!/bin/sh
-ORIDIR="`pwd`"
+ORIDIR="$(dirname $(readlink -f $0))"
 CompileMode="Debug"
 BUILDDIR="build"
+
+cd "$ORIDIR"
+
 echo "Currently you need already compiled version,"
 echo "compiling on Linux for now not possible, so,"
 echo "this script will make it standalone program"
@@ -14,6 +17,21 @@ echo "make sure you run \"deploy.sh\" at \"prerequisite\" folder"
 echo " "
 
 read -rp "Press any ENTER to continue..." key
+
+echo "Download .NET references"
+if [ -f "references/MediaInfoDotNet.dll" ]
+then
+	echo "File found, no need to download"
+else
+	wget --no-check-certificate https://github.com/x265/MediaInfoDotNet/releases/download/v0.7.8/MediaInfoDotNet.dll -O "references/MediaInfoDotNet.dll"
+fi
+
+if [ -f "references/INIFileParser.dll" ]
+then
+	echo "File found, no need to download"
+else
+	wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/INIFileParser.dll -O "references/INIFileParser.dll"
+fi
 
 echo "Remove windows builds"
 rm -rf "$BUILDDIR"
@@ -66,7 +84,7 @@ rm -f "INIFileParser.dll"
 rm -f "MediaInfoDotNet.dll"
 rm -f "MediaInfoDotNet.dll.config"
 
-cd $ORIDIR
+cd "$ORIDIR"
 
 echo "Fix directory permission"
 find "$ORIDIR/$BUILDDIR" -type d -exec chmod 775 {} +
