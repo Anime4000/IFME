@@ -168,6 +168,15 @@ namespace ifme
 			}
 		}
 
+		private void cboLang_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cboLang.SelectedIndex >= 0)
+			{
+				lblLangWho.Text = Language.Lists[cboLang.SelectedIndex].Author;
+				lblLangWhoWeb.Text = Language.Lists[cboLang.SelectedIndex].Contact;
+			}
+		}
+
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetFolder = new FolderBrowserDialog();

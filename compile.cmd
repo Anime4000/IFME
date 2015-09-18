@@ -42,13 +42,8 @@ echo COPY IFME MAIN FILE
 mkdir %BUILDDIR%\benchmark
 robocopy ifme\bin\%CompileMode%\extension %BUILDDIR%\extension /E
 robocopy ifme\bin\%CompileMode%\lang %BUILDDIR%\lang /E
-robocopy ifme\bin\%CompileMode%\plugins\avisynth %BUILDDIR%\plugins\avisynth /E
-robocopy ifme\bin\%CompileMode%\plugins\faac %BUILDDIR%\plugins\faac /E
-robocopy ifme\bin\%CompileMode%\plugins\mp4fpsmod %BUILDDIR%\plugins\mp4fpsmod /E
-robocopy ifme\bin\%CompileMode%\plugins\opus %BUILDDIR%\plugins\opus /E
 robocopy ifme\bin\%CompileMode%\profile %BUILDDIR%\profile /E
 robocopy ifme\bin\%CompileMode%\sounds %BUILDDIR%\sounds /E
-copy ifme\bin\%CompileMode%\7za.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_linux32.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_linux64.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_windows32.repo %BUILDDIR%
@@ -83,11 +78,13 @@ echo CLEAN UP
 del /f /s /q %BUILDDIR%\*.ifz
 
 echo Next... Making packaging (.7z). Get ready first
-pause
+timeout /t 3 >nul
+
+
 
 echo PACKAGING
 ren %BUILDDIR% ifme5
-"%PROGRAMFILES%\7-Zip\7z.exe" a -r -t7z -mx=9 -ms=on ifme5.7z ifme5
+"%PROGRAMFILES%\7-Zip\7z.exe" a -r -t7z -mx=9 -ms=on ifme5-x64.7z ifme5
 ren ifme5 %BUILDDIR%
 
 echo.

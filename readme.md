@@ -26,7 +26,7 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 #### Windows
 * OS: Windows 7, 8, 8.1, 10 (32bit/64bit)
 * CPU: Intel Core 2 Duo/AMD AthlonII X2
-* RAM: 2GB
+* RAM: 2GB (4K encoding require 4GB more)
 * GPU: Any (OpenCL for FLAC encoder)
 * HDD: 256MB
 * Internet Connection
@@ -35,7 +35,7 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 #### Linux
 * OS: Ubuntu 14.04 or any latest distro (64bit)
 * CPU: Intel Core 2 Duo/AMD AthlonII X2
-* RAM: 2GB
+* RAM: 2GB (4K encoding require 4GB more)
 * GPU: *none*
 * HDD: 256MB
 * Internet Connection

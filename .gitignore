@@ -217,6 +217,8 @@ $RECYCLE.BIN/
 build
 installer/*.mp3
 installer/*.dll
+prerequisite/linux/
+prerequisite/windows/
 references/*.dll
 prerequisite/windows/*.dll
 prerequisite/windows/*.exe

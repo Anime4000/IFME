@@ -2,13 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "5.0.8.0"
+#define MyAppVersion "5.0.9.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
-
-; 32bit or 64bit release
-#define Public BIT64
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -22,18 +19,10 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-;DefaultDirName={pf64}\{#MyAppName}
+DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-
-#ifdef BIT64 
-  #define CPU "x64"
-  DefaultDirName={pf64}\{#MyAppName}
-  ArchitecturesInstallIn64BitMode=x64
-#else
-  DefaultDirName={pf}\{#MyAppName}
-  #define CPU "x86"
-#endif
+ArchitecturesInstallIn64BitMode=x64  
 
 SourceDir=build
 LicenseFile=..\license.txt
@@ -48,7 +37,9 @@ WizardImageFile=..\installer\image_banner.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=D:\
-OutputBaseFilename=ifme-{#MyAppVersion}-{#CPU}_setup
+OutputBaseFilename=ifme-{#MyAppVersion}-x86x64_setup
+
+Uninstallable=not IsTaskSelected('portablemode')
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -56,16 +47,46 @@ Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
+Name: portablemode; Description: "Portable Mode"; Flags: unchecked 
 
 [Files]
 Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+
+Source: "..\prerequisite\windows\32bit\7za.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode
+
+Source: "..\prerequisite\windows\64bit\7za.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode
+
+Source: "..\prerequisite\windows\32bit\plugins\avisynth\*"; DestDir: "{app}\plugins\avisynth"; Flags: ignoreversion
+Source: "..\prerequisite\windows\32bit\plugins\faac\*"; DestDir: "{app}\plugins\faac"; Flags: ignoreversion
+Source: "..\prerequisite\windows\32bit\plugins\mp4fpsmod\*"; DestDir: "{app}\plugins\mp4fpsmod"; Flags: ignoreversion
+Source: "..\prerequisite\windows\32bit\plugins\opus\*"; DestDir: "{app}\plugins\opus"; Flags: ignoreversion
+
+Source: "..\prerequisite\windows\32bit\plugins\ffmpeg\*"; DestDir: "{app}\plugins\ffmpeg"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\mp4box\*"; DestDir: "{app}\plugins\mp4box"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\ogg\*"; DestDir: "{app}\plugins\ogg"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\x265msvc\*"; DestDir: "{app}\plugins\x265msvc"; Flags: ignoreversion; Check: not Is64BitInstallMode
+
+Source: "..\prerequisite\windows\64bit\plugins\ffmpeg\*"; DestDir: "{app}\plugins\ffmpeg"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\mp4box\*"; DestDir: "{app}\plugins\mp4box"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\ogg\*"; DestDir: "{app}\plugins\ogg"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\x265gcc\*"; DestDir: "{app}\plugins\x265gcc"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\x265icc\*"; DestDir: "{app}\plugins\x265icc"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\x265msvc\*"; DestDir: "{app}\plugins\x265msvc"; Flags: ignoreversion; Check: Is64BitInstallMode
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "x265 GUI Encoder with Internet Friendly Media Encoder!"; Tasks: desktopicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "Open a powerful x265 GUI Encoder"; Tasks: desktopicon
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "x265 GUI Encoder with Internet Friendly Media Encoder!"
-Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
-Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"; Comment: "Visit Internet Friendly Media Encoder!"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Comment: "Remove Internet Friendly Media Encoder, but please :( try contact me, I'll try to fix!"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

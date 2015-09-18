@@ -160,6 +160,9 @@
     <None Include="iso.code">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="lang\cs.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="lang\en.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -230,6 +233,8 @@
     <None Include="Resources\asterisk_orange.png" />
     <None Include="Resources\script_add.png" />
     <None Include="Resources\script_edit.png" />
+    <None Include="Resources\user.png" />
+    <None Include="Resources\world.png" />
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

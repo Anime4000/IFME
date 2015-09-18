@@ -40,6 +40,8 @@
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.txtTempFolder = new System.Windows.Forms.TextBox();
 			this.grpLanguage = new System.Windows.Forms.GroupBox();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.lblLangWho = new System.Windows.Forms.Label();
 			this.cboLang = new System.Windows.Forms.ComboBox();
 			this.tabDefault = new System.Windows.Forms.TabPage();
 			this.grpBenchmark = new System.Windows.Forms.GroupBox();
@@ -90,12 +92,15 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
+			this.lblLangWhoWeb = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
 			this.grpNaming.SuspendLayout();
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabDefault.SuspendLayout();
 			this.grpBenchmark.SuspendLayout();
 			this.grpEditor.SuspendLayout();
@@ -112,6 +117,7 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -150,7 +156,7 @@
 			// chkReset
 			// 
 			this.chkReset.AutoSize = true;
-			this.chkReset.Location = new System.Drawing.Point(6, 322);
+			this.chkReset.Location = new System.Drawing.Point(6, 340);
 			this.chkReset.Name = "chkReset";
 			this.chkReset.Size = new System.Drawing.Size(273, 17);
 			this.chkReset.TabIndex = 4;
@@ -161,7 +167,7 @@
 			// 
 			this.grpSound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpSound.Controls.Add(this.chkSoundDone);
-			this.grpSound.Location = new System.Drawing.Point(299, 218);
+			this.grpSound.Location = new System.Drawing.Point(299, 254);
 			this.grpSound.Name = "grpSound";
 			this.grpSound.Size = new System.Drawing.Size(287, 80);
 			this.grpSound.TabIndex = 3;
@@ -183,7 +189,7 @@
 			// grpNaming
 			// 
 			this.grpNaming.Controls.Add(this.txtNamePrefix);
-			this.grpNaming.Location = new System.Drawing.Point(6, 218);
+			this.grpNaming.Location = new System.Drawing.Point(6, 254);
 			this.grpNaming.Name = "grpNaming";
 			this.grpNaming.Size = new System.Drawing.Size(287, 80);
 			this.grpNaming.TabIndex = 2;
@@ -205,7 +211,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpTempFolder.Controls.Add(this.btnBrowse);
 			this.grpTempFolder.Controls.Add(this.txtTempFolder);
-			this.grpTempFolder.Location = new System.Drawing.Point(6, 112);
+			this.grpTempFolder.Location = new System.Drawing.Point(6, 148);
 			this.grpTempFolder.Name = "grpTempFolder";
 			this.grpTempFolder.Size = new System.Drawing.Size(580, 100);
 			this.grpTempFolder.TabIndex = 1;
@@ -237,13 +243,34 @@
 			// 
 			this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpLanguage.Controls.Add(this.lblLangWhoWeb);
+			this.grpLanguage.Controls.Add(this.pictureBox2);
+			this.grpLanguage.Controls.Add(this.pictureBox1);
+			this.grpLanguage.Controls.Add(this.lblLangWho);
 			this.grpLanguage.Controls.Add(this.cboLang);
 			this.grpLanguage.Location = new System.Drawing.Point(6, 6);
 			this.grpLanguage.Name = "grpLanguage";
-			this.grpLanguage.Size = new System.Drawing.Size(580, 100);
+			this.grpLanguage.Size = new System.Drawing.Size(580, 136);
 			this.grpLanguage.TabIndex = 0;
 			this.grpLanguage.TabStop = false;
 			this.grpLanguage.Text = "&Language*";
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Image = global::ifme.Properties.Resources.user;
+			this.pictureBox1.Location = new System.Drawing.Point(75, 72);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+			this.pictureBox1.TabIndex = 2;
+			this.pictureBox1.TabStop = false;
+			// 
+			// lblLangWho
+			// 
+			this.lblLangWho.Location = new System.Drawing.Point(97, 72);
+			this.lblLangWho.Name = "lblLangWho";
+			this.lblLangWho.Size = new System.Drawing.Size(408, 16);
+			this.lblLangWho.TabIndex = 1;
+			this.lblLangWho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// cboLang
 			// 
@@ -256,6 +283,7 @@
 			this.cboLang.Name = "cboLang";
 			this.cboLang.Size = new System.Drawing.Size(430, 24);
 			this.cboLang.TabIndex = 0;
+			this.cboLang.SelectedIndexChanged += new System.EventHandler(this.cboLang_SelectedIndexChanged);
 			// 
 			// tabDefault
 			// 
@@ -751,6 +779,23 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* is require restart application";
 			// 
+			// pictureBox2
+			// 
+			this.pictureBox2.Image = global::ifme.Properties.Resources.world;
+			this.pictureBox2.Location = new System.Drawing.Point(75, 94);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(16, 16);
+			this.pictureBox2.TabIndex = 3;
+			this.pictureBox2.TabStop = false;
+			// 
+			// lblLangWhoWeb
+			// 
+			this.lblLangWhoWeb.Location = new System.Drawing.Point(97, 94);
+			this.lblLangWhoWeb.Name = "lblLangWhoWeb";
+			this.lblLangWhoWeb.Size = new System.Drawing.Size(408, 16);
+			this.lblLangWhoWeb.TabIndex = 4;
+			this.lblLangWhoWeb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -777,6 +822,7 @@
 			this.grpTempFolder.ResumeLayout(false);
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabDefault.ResumeLayout(false);
 			this.grpBenchmark.ResumeLayout(false);
 			this.grpEditor.ResumeLayout(false);
@@ -795,6 +841,7 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -863,5 +910,9 @@
 		private System.Windows.Forms.GroupBox grpAvsDefaults;
 		private System.Windows.Forms.TextBox txtAvsDecoder;
 		private System.Windows.Forms.CheckBox chkReset;
+		private System.Windows.Forms.Label lblLangWho;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox pictureBox2;
+		private System.Windows.Forms.Label lblLangWhoWeb;
 	}
 }

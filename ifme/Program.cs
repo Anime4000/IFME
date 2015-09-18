@@ -30,11 +30,8 @@ namespace ifme
 				return 0;
 
 			// Make WinForms much pretty
-			if (OS.IsWindows)
-			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
-			}
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
 
 			// Splash Screen, loading and update
 			SplashScreen();
