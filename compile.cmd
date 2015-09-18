@@ -50,14 +50,16 @@ copy ifme\bin\%CompileMode%\addons_windows32.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_windows64.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\avisynthsource.code %BUILDDIR%
 copy ifme\bin\%CompileMode%\format.ini %BUILDDIR%
+copy ifme\bin\%CompileMode%\iso.code %BUILDDIR%
+
+echo COPY COMPILED
 copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
-copy ifme\bin\%CompileMode%\iso.code %BUILDDIR%
 copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
 echo.
 
-REM Copying plugins is not required, installer get this
-REM Copying MediaInfo.dll from Debug or Release folder also not required
+echo COPY EXTENSION
+robocopy prerequisite\allos\extension %BUILDDIR% /E
 
 echo CLEAN UP
 del /f /q %BUILDDIR%\ifme.pdb

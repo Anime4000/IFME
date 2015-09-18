@@ -61,6 +61,9 @@ wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.
 wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.2/holobenchmark.dll -O "allos\extension\holobenchmark.dll"
 wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "allos\extension\holobenchmark.dll"
 
+echo Delete cache
+del /f /s /q *.ifx
+
 echo Done!
 pause
 exit 0

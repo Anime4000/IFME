@@ -69,8 +69,14 @@ cp "MediaInfoDotNet.dll.config" "$BUILDDIR/"
 echo "Copying plugins"
 cp -r "prerequisite/linux/64bit/plugins" "$BUILDDIR/"
 
+echo "Copying extension"
+cp -r "prerequisite/allos/extension" "$BUILDDIR/"
+
 echo "Building..."
 xbuild /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=Debug
+
+echo "Please Wait..."
+sleep 3
 
 cd $BUILDDIR
 mkbundle --deps --static -o ifme ifme.exe INIFileParser.dll MediaInfoDotNet.dll
