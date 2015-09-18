@@ -923,14 +923,14 @@ namespace ifme
 			{
 				if (rdoMP4.Checked)
 				{
-					MessageBox.Show(Language.NotSupported, "Error");
+					MessageBox.Show(Language.NotSupported, "");
 					chkAttachEnable.Checked = false;
 					return;
 				}
 
 				if (lstQueue.SelectedItems.Count == 0 || lstQueue.SelectedItems.Count >= 2)
 				{
-					MessageBox.Show(Language.OneVideo, "Error");
+					MessageBox.Show(Language.OneVideo, "");
 					chkAttachEnable.Checked = false;
 					return;
 				}
