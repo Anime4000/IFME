@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 
+using static ifme.Properties.Settings;
+
 namespace ifme
 {
 	class GetInfo

@@ -40,6 +40,8 @@
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.txtTempFolder = new System.Windows.Forms.TextBox();
 			this.grpLanguage = new System.Windows.Forms.GroupBox();
+			this.lblLangWhoWeb = new System.Windows.Forms.Label();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.lblLangWho = new System.Windows.Forms.Label();
 			this.cboLang = new System.Windows.Forms.ComboBox();
@@ -92,14 +94,13 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.lblLangWhoWeb = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
 			this.grpNaming.SuspendLayout();
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabDefault.SuspendLayout();
 			this.grpBenchmark.SuspendLayout();
@@ -117,7 +118,6 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -254,6 +254,25 @@
 			this.grpLanguage.TabIndex = 0;
 			this.grpLanguage.TabStop = false;
 			this.grpLanguage.Text = "&Language*";
+			// 
+			// lblLangWhoWeb
+			// 
+			this.lblLangWhoWeb.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.lblLangWhoWeb.Location = new System.Drawing.Point(97, 94);
+			this.lblLangWhoWeb.Name = "lblLangWhoWeb";
+			this.lblLangWhoWeb.Size = new System.Drawing.Size(408, 16);
+			this.lblLangWhoWeb.TabIndex = 4;
+			this.lblLangWhoWeb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblLangWhoWeb.Click += new System.EventHandler(this.lblLangWhoWeb_Click);
+			// 
+			// pictureBox2
+			// 
+			this.pictureBox2.Image = global::ifme.Properties.Resources.world;
+			this.pictureBox2.Location = new System.Drawing.Point(75, 94);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(16, 16);
+			this.pictureBox2.TabIndex = 3;
+			this.pictureBox2.TabStop = false;
 			// 
 			// pictureBox1
 			// 
@@ -779,23 +798,6 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* is require restart application";
 			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.Image = global::ifme.Properties.Resources.world;
-			this.pictureBox2.Location = new System.Drawing.Point(75, 94);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-			this.pictureBox2.TabIndex = 3;
-			this.pictureBox2.TabStop = false;
-			// 
-			// lblLangWhoWeb
-			// 
-			this.lblLangWhoWeb.Location = new System.Drawing.Point(97, 94);
-			this.lblLangWhoWeb.Name = "lblLangWhoWeb";
-			this.lblLangWhoWeb.Size = new System.Drawing.Size(408, 16);
-			this.lblLangWhoWeb.TabIndex = 4;
-			this.lblLangWhoWeb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -822,6 +824,7 @@
 			this.grpTempFolder.ResumeLayout(false);
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabDefault.ResumeLayout(false);
 			this.grpBenchmark.ResumeLayout(false);
@@ -841,7 +844,6 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

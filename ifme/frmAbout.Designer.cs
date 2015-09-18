@@ -42,6 +42,8 @@
 			this.lblName1 = new System.Windows.Forms.Label();
 			this.lblTitleA = new System.Windows.Forms.Label();
 			this.panelRoll = new System.Windows.Forms.Panel();
+			this.lblName5 = new System.Windows.Forms.Label();
+			this.lblTitleE = new System.Windows.Forms.Label();
 			this.panelCredit.SuspendLayout();
 			this.panelRoll.SuspendLayout();
 			this.SuspendLayout();
@@ -55,7 +57,7 @@
 			this.lblTitleD.Name = "lblTitleD";
 			this.lblTitleD.Size = new System.Drawing.Size(576, 30);
 			this.lblTitleD.TabIndex = 6;
-			this.lblTitleD.Text = "Special Thanks";
+			this.lblTitleD.Text = "Localisation";
 			this.lblTitleD.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
 			// lblAppName
@@ -92,6 +94,8 @@
 			this.panelCredit.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.panelCredit.Controls.Add(this.lblName5);
+			this.panelCredit.Controls.Add(this.lblTitleE);
 			this.panelCredit.Controls.Add(this.lblLast);
 			this.panelCredit.Controls.Add(this.lblName4);
 			this.panelCredit.Controls.Add(this.lblTitleD);
@@ -206,6 +210,29 @@
 			this.panelRoll.Size = new System.Drawing.Size(576, 354);
 			this.panelRoll.TabIndex = 12;
 			// 
+			// lblName5
+			// 
+			this.lblName5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblName5.Location = new System.Drawing.Point(0, 160);
+			this.lblName5.Name = "lblName5";
+			this.lblName5.Size = new System.Drawing.Size(576, 25);
+			this.lblName5.TabIndex = 10;
+			this.lblName5.Text = " ";
+			this.lblName5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lblTitleE
+			// 
+			this.lblTitleE.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblTitleE.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleE.Location = new System.Drawing.Point(0, 130);
+			this.lblTitleE.Name = "lblTitleE";
+			this.lblTitleE.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleE.TabIndex = 9;
+			this.lblTitleE.Text = "Special Thanks";
+			this.lblTitleE.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
 			// frmAbout
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -249,5 +276,7 @@
 		private System.Windows.Forms.Label lblLast;
 		private System.Windows.Forms.Label lblTitleD;
 		private System.Windows.Forms.Panel panelRoll;
+		private System.Windows.Forms.Label lblName5;
+		private System.Windows.Forms.Label lblTitleE;
 	}
 }

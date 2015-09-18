@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 using static ifme.Properties.Settings;
@@ -11,11 +10,15 @@ namespace ifme
 		private static StringComparison IC = StringComparison.OrdinalIgnoreCase; // Just ignore case what ever it is.
 		private static string NULL = OS.Null;
 
-		public static bool StopEncoding = false;
-
-		public static void Extract (string filereal, Queue item)
+		public static void CleanUp()
 		{
-			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Properties.Settings.Default.AvsMkvCopy))
+			foreach (var files in Directory.GetFiles(Default.DirTemp))
+				File.Delete(files);
+		}
+
+		public static void Extract(string filereal, Queue item)
+		{
+			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Default.AvsMkvCopy))
 			{
 				int sc = 0;
 				foreach (var subs in GetStream.Media(filereal, StreamType.Subtitle))
@@ -29,7 +32,7 @@ namespace ifme
 			}
 		}
 
-		public static void Audio (string filereal, Queue item)
+		public static void Audio(string filereal, Queue item)
 		{
 			string frequency;
 			if (string.Equals(item.Audio.Frequency, "auto", IC))
@@ -168,8 +171,12 @@ namespace ifme
 			}
 		}
 
-		public static void Mux(string fileout, Queue item)
+		public static void Mux(Queue item)
 		{
+			// Final output, a file name without extension
+			string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : $"{Default.NamePrefix} ";
+            string fileout = Path.Combine(Default.DirOutput, $"{prefix}{Path.GetFileNameWithoutExtension(item.Data.File)}");
+
 			if (item.Data.SaveAsMkv)
 			{
 				fileout += ".mkv";

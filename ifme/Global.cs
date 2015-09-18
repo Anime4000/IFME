@@ -24,7 +24,7 @@ namespace ifme
 
 			public static string CodeName
 			{
-				get { return "True My Heart"; }
+				get { return Properties.Resources.CodeName; }
 			}
 
 			public static string Version

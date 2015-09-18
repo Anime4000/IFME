@@ -9,6 +9,9 @@ echo "without Mono required to install"
 echo " "
 echo "Before proceed, you need:"
 echo "sudo apt-get install mono-complete p7zip-full mediainfo"
+echo " "
+echo "make sure you run \"deploy.sh\" at \"prerequisite\" folder"
+echo " "
 
 read -rp "Press any ENTER to continue..." key
 
@@ -23,7 +26,6 @@ cp -r "ifme/bin/$CompileMode/extension" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/lang" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/profile" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/sounds" "$BUILDDIR/"
-mkdir "$BUILDDIR/plugins"
 mkdir "$BUILDDIR/benchmark"
 cp "/usr/lib/p7zip/7za" "$BUILDDIR/"
 cp -r "ifme/bin/$CompileMode/addons_linux32.repo" "$BUILDDIR/"
@@ -49,6 +51,9 @@ cp "ifme/bin/$CompileMode/INIFileParser.dll" "$BUILDDIR/"
 cp "ifme/bin/$CompileMode/MediaInfoDotNet.dll" "$BUILDDIR/"
 cp "MediaInfoDotNet.dll.config" "$BUILDDIR/"
 
+echo "Copying plugins"
+cp -r "prerequisite/linux/64bit/plugins" "$BUILDDIR/"
+
 echo "Building..."
 cd $BUILDDIR
 mkbundle --deps --static -o ifme ifme.exe INIFileParser.dll MediaInfoDotNet.dll
@@ -63,15 +68,12 @@ rm -f "MediaInfoDotNet.dll.config"
 
 cd $ORIDIR
 
-echo "Next... Making packaging (.tar.xz). Get ready first"
-read -rp "Press any ENTER to continue..." key
-
 echo "Fix directory permission"
 find "$ORIDIR/$BUILDDIR" -type d -exec chmod 775 {} +
 
 echo "Packaging..."
 mv $BUILDDIR ifme5
-tar -cvJf ifme5.tar.xz ifme5
+tar -cvJf ifme5-x64_linux.tar.xz ifme5
 mv ifme5 $BUILDDIR
 
 echo "Done!"

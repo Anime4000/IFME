@@ -1,7 +1,8 @@
 ﻿Version 5.0.9 (Dearness)
 -------------
 
-[fixed] Code mistake
+[fixed] Fix code mistake
+[fixed] Mp4 did not mux audio when do passthrough
 [added] Language: Čeština
 [added] Language: Français
 [added] Language: Português

@@ -177,6 +177,11 @@ namespace ifme
 			}
 		}
 
+		private void lblLangWhoWeb_Click(object sender, EventArgs e)
+		{
+			Process.Start(lblLangWhoWeb.Text);
+		}
+
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetFolder = new FolderBrowserDialog();
@@ -234,11 +239,6 @@ namespace ifme
 		private void chkCopyContentMKV_CheckedChanged(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.AvsMkvCopy = chkCopyContentMKV.Checked;
-		}
-
-		private void lblHFR_Click(object sender, EventArgs e)
-		{
-			Process.Start("http://www.spirton.com/interframe/");
 		}
 
 		private void rdoCompilerGCC_CheckedChanged(object sender, EventArgs e)

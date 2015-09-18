@@ -309,12 +309,7 @@ namespace ifme
 				}
 
 				// Remove temp file
-				foreach (var files in Directory.GetFiles(Default.DirTemp))
-					File.Delete(files);
-				
-				// Naming
-				string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : Default.NamePrefix + " ";
-				string fileout = Path.Combine(Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
+				MediaEncoder.CleanUp();
 
 				// AviSynth aware
 				string file = item.Data.File;
@@ -334,7 +329,7 @@ namespace ifme
 				MediaEncoder.Video(file, item);
 
 				// Mux
-				MediaEncoder.Mux(fileout, item);
+				MediaEncoder.Mux(item);
 			}
 
 			WriteLine(GetInfo.Duration(Session));

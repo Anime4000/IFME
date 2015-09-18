@@ -13,6 +13,7 @@ namespace ifme
 		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis" });
 		HashSet<string> Art = new HashSet<string>(new string[] { "53C aka Ray-en", "http://53c.deviantart.com/" });
 		HashSet<string> Dev = new HashSet<string>();
+		HashSet<string> Lng = new HashSet<string>();
 		HashSet<string> Sup = new HashSet<string>(File.ReadAllLines("metauser.if"));
 
 		SoundPlayer epic = new SoundPlayer(Path.Combine("sounds", "epic.wav"));
@@ -30,6 +31,14 @@ namespace ifme
 			foreach (var item in Plugin.List)
 				Dev.Add(item.Profile.Dev);
 
+			foreach (var item in Language.Lists)
+			{
+				if (string.Equals(item.Author, "Anime4000"))
+					continue;
+
+				Lng.Add($"{item.Name} by {item.Author}");
+			}
+			
 			lblAppName.Text = Global.App.Name;
             lblAppBuild.Text = $"{Global.App.Type} {Global.App.VersionRelease} ({Global.App.Version} x64 '{Global.App.CodeName}')";
 
@@ -44,8 +53,11 @@ namespace ifme
 			lblName3.Text = string.Join("\n", Dev);
 			lblName3.Height = 14 * Dev.Count;
 
-			lblName4.Text = string.Join("\n", Sup);
-			lblName4.Height = 14 * Sup.Count;
+			lblName4.Text = string.Join("\n", Lng);
+			lblName4.Height = 14 * Lng.Count;
+
+			lblName5.Text = string.Join("\n", Sup);
+			lblName5.Height = 14 * Sup.Count;
 
 			lblTitleA.Top = 0;
 			lblName1.Top = lblTitleA.Bottom;
@@ -55,7 +67,9 @@ namespace ifme
 			lblName3.Top = lblTitleC.Bottom;
 			lblTitleD.Top = lblName3.Bottom;
 			lblName4.Top = lblTitleD.Bottom;
-			lblLast.Top = lblName4.Bottom;
+			lblTitleE.Top = lblName4.Bottom;
+			lblName5.Top = lblTitleE.Bottom;
+			lblLast.Top = lblName5.Bottom;
 			panelCredit.Height = lblLast.Bottom;
 
 			panelCredit.Top = panelRoll.Height;

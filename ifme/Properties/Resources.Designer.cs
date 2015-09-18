@@ -151,6 +151,15 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dearness.
+        /// </summary>
+        internal static string CodeName {
+            get {
+                return ResourceManager.GetString("CodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon control_equalizer_blue {

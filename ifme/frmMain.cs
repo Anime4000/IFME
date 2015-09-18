@@ -1199,12 +1199,7 @@ namespace ifme
 				InvokeLog("Processing: " + item.Data.File);
 
 				// Remove temp file
-				foreach (var files in Directory.GetFiles(Default.DirTemp))
-					File.Delete(files);
-
-				// Naming
-				string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : Default.NamePrefix + " ";
-				string fileout = Path.Combine(Default.DirOutput, prefix + Path.GetFileNameWithoutExtension(item.Data.File));
+				MediaEncoder.CleanUp();
 
 				// AviSynth aware
 				string file = item.Data.File;
@@ -1248,7 +1243,7 @@ namespace ifme
 
 				// Mux
 				InvokeQueueStatus(id, "Compiling");
-				MediaEncoder.Mux(fileout, item);
+				MediaEncoder.Mux(item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)
