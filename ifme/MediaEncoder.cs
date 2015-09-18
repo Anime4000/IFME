@@ -65,8 +65,8 @@ namespace ifme
 					{
 						if (!string.Equals(Path.GetExtension(audio), ".mp4", IC))
 						{
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict experimental -c:a libvo_aacenc -b:a {item.Audio.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
-                            File.Delete(audio);
+							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict -2 -c:a aac -b:a {item.Audio.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
+                            File.Delete(audio); // delete unwanted
 						}
 					}
 				}

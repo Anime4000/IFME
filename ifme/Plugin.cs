@@ -115,8 +115,8 @@ namespace ifme
 			b.Provider.Update = "";
 			b.Provider.Download = "";
 			b.App.Bin = "";
-			b.App.Quality = new[] { "64", "128", "265", "512" };
-			b.App.Default = "128";
+			b.App.Quality = new[] { "128", "192", "265", "384", "512", "768", "1024" };
+			b.App.Default = "384";
 			b.Arg.Input = "";
 			b.Arg.Output = "";
 			b.Arg.Bitrate = "";

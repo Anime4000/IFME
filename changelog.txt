@@ -5,6 +5,7 @@
 [added] Language: Čeština
 [added] Language: Français
 [added] Language: Português
+[added] Language: Deutsche
 
 Version 5.0.8 (True My Heart)
 -------------
