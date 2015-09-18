@@ -77,16 +77,6 @@ echo.
 echo CLEAN UP
 del /f /s /q %BUILDDIR%\*.ifz
 
-echo Next... Making packaging (.7z). Get ready first
-timeout /t 3 >nul
-
-
-
-echo PACKAGING
-ren %BUILDDIR% ifme5
-"%PROGRAMFILES%\7-Zip\7z.exe" a -r -t7z -mx=9 -ms=on ifme5-x64.7z ifme5
-ren ifme5 %BUILDDIR%
-
 echo.
 echo.
 echo.
