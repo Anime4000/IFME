@@ -10,8 +10,9 @@ echo "compiling on Linux for now not possible, so,"
 echo "this script will make it standalone program"
 echo "without Mono required to install"
 echo " "
-echo "Before proceed, you need:"
-echo "sudo apt-get install mono-complete p7zip-full mediainfo"
+echo "Before you start:"
+echo "      1. Mono 4.0+ <http://www.mono-project.com/download/#download-lin>"
+echo "      2. sudo apt-get install p7zip-full mediainfo"
 echo " "
 echo "make sure you run \"deploy.sh\" at \"prerequisite\" folder"
 echo " "
@@ -73,8 +74,11 @@ echo "Copying plugins"
 cp -r "prerequisite/linux/64bit/plugins" "$BUILDDIR/"
 
 echo "Building..."
+xbuild /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=Debug
+
 cd $BUILDDIR
 mkbundle --deps --static -o ifme ifme.exe INIFileParser.dll MediaInfoDotNet.dll
+
 gcc "../ifme-gnome.c" -o "ifme-gnome"
 gcc "../ifme-xterm.c" -o "ifme-xterm"
 
