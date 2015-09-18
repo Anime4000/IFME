@@ -52,7 +52,9 @@ IFME was written in C# 6.0 thus require latest compiler to compile. Do download 
 Run `prerequisite\deploy.cmd` to download all required files
 
 > `deploy.cmd` scripts require:
+
 > [Download](http://nebm.ist.utl.pt/~glopes/wget/) and extract wget.exe to `\Windows\System32`
+
 > [Download](http://www.7-zip.org/download.html) and install 7-zip
 
 After run `deploy.cmd`, please download these
