@@ -4,6 +4,7 @@
 [fixed] Code mistake
 [added] Language: Čeština
 [added] Language: Français
+[added] Language: Português
 
 Version 5.0.8 (True My Heart)
 -------------

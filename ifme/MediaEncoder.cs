@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using static ifme.Properties.Settings;
@@ -30,34 +31,48 @@ namespace ifme
 
 		public static void Audio (string filereal, Queue item)
 		{
+			string frequency;
+			if (string.Equals(item.Audio.Frequency, "auto", IC))
+				frequency = "";
+			else
+				frequency = "-ar " + item.Audio.Frequency;
+
+			string channel;
+			if (string.Equals(item.Audio.Channel, "auto", IC))
+				channel = "";
+			else if (string.Equals(item.Audio.Channel, "mono", IC))
+				channel = "-ac 1";
+			else
+				channel = "-ac 2";
+
 			if (string.Equals(item.Audio.Encoder, "No Audio", IC))
 			{
 				// Do noting
 			}
 			else if (string.Equals(item.Audio.Encoder, "Passthrough (Extract all audio)", IC))
 			{
+				// Extract all
 				int counter = 0;
 				foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
 				{
 					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
 				}
+
+				// check if got any unsupported codec
+				if (!item.Data.SaveAsMkv)
+				{
+					foreach (var audio in Directory.GetFiles(Default.DirTemp, "audio*"))
+					{
+						if (!string.Equals(Path.GetExtension(audio), ".mp4", IC))
+						{
+							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict experimental -c:a libvo_aacenc -b:a {item.Audio.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
+                            File.Delete(audio);
+						}
+					}
+				}
 			}
 			else
 			{
-				string frequency;
-				if (string.Equals(item.Audio.Frequency, "auto", IC))
-					frequency = "";
-				else
-					frequency = "-ar " + item.Audio.Frequency;
-
-				string channel;
-				if (string.Equals(item.Audio.Channel, "auto", IC))
-					channel = "";
-				else if (string.Equals(item.Audio.Channel, "mono", IC))
-					channel = "-ac 1";
-				else
-					channel = "-ac 2";
-
 				int counter = 0;
 				foreach (var codec in Plugin.List)
 				{

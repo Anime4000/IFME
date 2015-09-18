@@ -37,7 +37,7 @@ WizardImageFile=..\installer\image_banner.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=D:\
-OutputBaseFilename=ifme-{#MyAppVersion}-x86x64_setup
+OutputBaseFilename=ifme-{#MyAppVersion}-x86x64_windows
 
 Uninstallable=not IsTaskSelected('portablemode')
 
