@@ -51,16 +51,19 @@ IFME was written in C# 6.0 thus require latest compiler to compile. Do download 
 #### Prerequisite
 Run `prerequisite\deploy.cmd` to download all required files
 
-> `deploy.cmd` scripts require:
+`deploy.cmd` scripts require:
 
-> [Download](http://nebm.ist.utl.pt/~glopes/wget/) and extract wget.exe to `\Windows\System32`
-
-> [Download](http://www.7-zip.org/download.html) and install 7-zip
+* [Download](http://nebm.ist.utl.pt/~glopes/wget/) and extract wget.exe to `\Windows\System32`
+* [Download](http://www.7-zip.org/download.html) and install 7-zip
 
 After run `deploy.cmd`, please download these
 
-* [7-Zip Extra](http://www.7-zip.org/download.html) extract `7za.exe` to `prerequisite\windows\32bit` & `x64\7za.exe` to `prerequisite\windows\64bit`
-* [MediaInfo CLI](https://mediaarea.net/en/MediaInfo/Download/Windows) download & extract `Mediainfo.dll` 32bit @ `prerequisite\windows\32bit` & 64bit @ `prerequisite\windows\64bit`
+* [7-Zip Extra](http://www.7-zip.org/download.html) 
+  * Extract `7za.exe` to `prerequisite\windows\32bit` 
+  * Extract `x64\7za.exe` to `prerequisite\windows\64bit`
+* [MediaInfo CLI](https://mediaarea.net/en/MediaInfo/Download/Windows) download & extract 
+  * 32bit `Mediainfo.dll` @ `prerequisite\windows\32bit`
+  * 64bit `Mediainfo.dll` @ `prerequisite\windows\64bit`
 
 #### References
 Run `references\download.cmd` to download
@@ -116,3 +119,4 @@ Before start, you need copy these file to `ifme/bin/Debug` to get working.
 *You may skip copying `plugins` folder, IFME will download before run*
 
 As usual, open `ifme.sln` :+1:
+
