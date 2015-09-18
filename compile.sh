@@ -51,7 +51,7 @@ cp "MediaInfoDotNet.dll.config" "$BUILDDIR/"
 
 echo "Building..."
 cd $BUILDDIR
-mkbundle --static -z -o ifme ifme.exe --deps INIFileParser.dll MediaInfoDotNet.dll
+mkbundle --deps --static -o ifme ifme.exe INIFileParser.dll MediaInfoDotNet.dll
 gcc "../ifme-gnome.c" -o "ifme-gnome"
 gcc "../ifme-xterm.c" -o "ifme-xterm"
 

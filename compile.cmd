@@ -48,7 +48,7 @@ robocopy ifme\bin\%CompileMode%\plugins\mp4fpsmod %BUILDDIR%\plugins\mp4fpsmod /
 robocopy ifme\bin\%CompileMode%\plugins\opus %BUILDDIR%\plugins\opus /E
 robocopy ifme\bin\%CompileMode%\profile %BUILDDIR%\profile /E
 robocopy ifme\bin\%CompileMode%\sounds %BUILDDIR%\sounds /E
-copy ifme\bin\%CompileMode%\7za %BUILDDIR%
+copy ifme\bin\%CompileMode%\7za.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_linux32.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_linux64.repo %BUILDDIR%
 copy ifme\bin\%CompileMode%\addons_windows32.repo %BUILDDIR%
