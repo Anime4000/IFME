@@ -1,6 +1,7 @@
 #!/bin/sh
 echo "Creating folder"
-mkdir linux/64bit/plugins/
+mkdir "linux/64bit/plugins/"
+mkdir "allos/extension/"
 echo "Downloading plugins"
 wget http://master.dl.sourceforge.net/project/ifme/plugins/linux/64bit/faac.ifx -O linux/64bit/plugins/faac.ifx
 wget http://master.dl.sourceforge.net/project/ifme/plugins/linux/64bit/ffmpeg.ifx -O linux/64bit/plugins/ffmpeg.ifx
@@ -19,5 +20,9 @@ echo "Unpacking"
 7za x "linux/64bit/plugins/mp4box.ifx" -y -o"linux/64bit/plugins/"
 7za x "linux/64bit/plugins/mp4fpsmod.ifx" -y -o"linux/64bit/plugins/"
 7za x "linux/64bit/plugins/x265gcc.ifx" -y -o"linux/64bit/plugins/"
+echo "Downloading extension"
+wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.2/hfrgen.dll -O "allos/extension/hfrgen.dll"
+wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.2/holobenchmark.dll -O "allos/extension/holobenchmark.dll"
+wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "allos/extension/holobenchmark.dll"
 echo "Done!"
 sleep 3

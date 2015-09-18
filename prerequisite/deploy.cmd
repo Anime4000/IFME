@@ -3,54 +3,12 @@
 cd %~dp0
 
 SET UNPACK=%PROGRAMFILES%\7-Zip\7z.exe
-SET WGET64=%SYSTEMROOT%\SysWOW64\wget.exe 
 SET WGET32=%SYSTEMROOT%\System32\wget.exe
 
 echo Creating folders
 mkdir windows\32bit\plugins\
 mkdir windows\64bit\plugins\
-
-IF DEFINED ProgramFiles(x86) (
-	goto BIT64
-) ELSE (
-	goto BIT32
-)
-pause
-
-:DONE
-echo Unpacking...
-for /r "%~dp0\windows\32bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
-for /r "%~dp0\windows\64bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
-
-echo Done!
-pause
-exit 0
-
-:BIT64
-echo Detected 64bit
-
-echo Checking %WGET64%
-IF EXIST %WGET64% (
-	echo %WGET64% found!
-) ELSE (
-	echo %WGET64% not found :(
-	pause
-	exit 1
-)
-
-echo Checking %UNPACK%
-IF EXIST %UNPACK% (
-	echo %UNPACK% found!
-) ELSE (
-	echo %UNPACK% not found :(
-	pause
-	exit 1
-)
-
-goto DOWNLOAD
-
-:BIT32
-echo Detected 32bit
+mkdir allos\extension\
 
 echo Checking %WGET32%
 IF EXIST %WGET32% (
@@ -70,9 +28,6 @@ IF EXIST %UNPACK% (
 	exit 1
 )
 
-goto DOWNLOAD
-
-:DOWNLOAD
 echo Downloading 32bit plugins!
 wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/avisynth.ifx -O windows\32bit\plugins\avisynth.ifx
 wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/faac.ifx -O windows\32bit\plugins\faac.ifx
@@ -97,4 +52,15 @@ wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265gcc
 wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265icc.ifx -O windows\64bit\plugins\x265icc.ifx
 wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265msvc.ifx -O windows\64bit\plugins\x265msvc.ifx
 
-goto DONE
+echo Unpacking...
+for /r "%~dp0\windows\32bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
+for /r "%~dp0\windows\64bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
+
+echo extensions
+wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.2/hfrgen.dll -O "allos\extension\hfrgen.dll"
+wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.2/holobenchmark.dll -O "allos\extension\holobenchmark.dll"
+wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "allos\extension\holobenchmark.dll"
+
+echo Done!
+pause
+exit 0

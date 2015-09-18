@@ -40,7 +40,7 @@ echo.
 
 echo COPY IFME MAIN FILE
 mkdir %BUILDDIR%\benchmark
-robocopy ifme\bin\%CompileMode%\extension %BUILDDIR%\extension /E
+mkdir %BUILDDIR%\extension
 robocopy ifme\bin\%CompileMode%\lang %BUILDDIR%\lang /E
 robocopy ifme\bin\%CompileMode%\profile %BUILDDIR%\profile /E
 robocopy ifme\bin\%CompileMode%\sounds %BUILDDIR%\sounds /E
@@ -53,9 +53,11 @@ copy ifme\bin\%CompileMode%\format.ini %BUILDDIR%
 copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
 copy ifme\bin\%CompileMode%\iso.code %BUILDDIR%
-copy ifme\bin\%CompileMode%\MediaInfo.dll %BUILDDIR%
 copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
 echo.
+
+REM Copying plugins is not required, installer get this
+REM Copying MediaInfo.dll from Debug or Release folder also not required
 
 echo CLEAN UP
 del /f /q %BUILDDIR%\ifme.pdb

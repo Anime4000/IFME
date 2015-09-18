@@ -1,3 +1,4 @@
+# References (.NET Assembly)
 Place references (dll) here
 
 ## Required
@@ -8,3 +9,6 @@ DLL is included
 `IniFileParser` release only source code, you need to compile before use
 
 `IniFileParser` is target .NET Framework 2.0, please change to .NET Framework 4 to match with IFME
+
+## Easy?
+Simply run `download.cmd` (Windows) or `download.sh` (Linux) if you don't want headache

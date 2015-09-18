@@ -19,7 +19,7 @@ Artwork drawn by **Ray-en** aka [53C](http://53c.deviantart.com/) under license 
 ## Donation
 Support this project! Even with little penny make this project alive and up-to-date!
 
-You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honoured and listed on *Hall of Fame* and **About Program**
+You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame* and **About Program**
 
 ## You
 ### Requirement
@@ -43,31 +43,74 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 ### Downloads
 You can download it via [SourceForge](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub](https://github.com/Anime4000/IFME/releases/latest)
 
-## Developer
-### Requirement
-Since code was written in C# 6.0 this mean you need latest compiler and IDE.
+## Development
+### Windows
+#### Compiler
+IFME was written in C# 6.0 thus require latest compiler to compile. Do download Visual Studio 2015
 
-#### Windows
-Install Microsoft Visual Studio 2015, this contain roslyn compiler that can compile code written in C# 6.0
+#### Prerequisite
+Run `prerequisite\deploy.cmd` to download all required files
 
-#### Linux
-You need Mono 4.0 & latest, you can install complete mono package, please refer [here](http://www.mono-project.com/download/#download-lin) how to install, make sure you install everything!
+> `deploy.cmd` scripts require:
+> [Download](http://nebm.ist.utl.pt/~glopes/wget/) and extract wget.exe to `\Windows\System32`
+> [Download](http://www.7-zip.org/download.html) and install 7-zip
 
-### Assembly
-Please refer to `references/readme.md`
+After run `deploy.cmd`, please download these
 
-### Compiling
-After you install either Mono 4.0 or Visual Studio, you can proceed this section.
+* [7-Zip Extra](http://www.7-zip.org/download.html) extract `7za.exe` to `prerequisite\windows\32bit` & `x64\7za.exe` to `prerequisite\windows\64bit`
+* [MediaInfo CLI](https://mediaarea.net/en/MediaInfo/Download/Windows) download & extract `Mediainfo.dll` 32bit @ `prerequisite\windows\32bit` & 64bit @ `prerequisite\windows\64bit`
 
-#### Windows
-* First, you need run `prerequisite\deploy.cmd`. *This require `wget` and `7zip` to be installed on your computer*
-* Then simply run `compile.cmd`.
+#### References
+Run `references\download.cmd` to download
 
-#### Linux
-* You need `p7zip-full` and `mediainfo`
-* Execute `cd prerequisite` and `sh deploy.sh`
-* Go back `cd ..` and run `sh compile.sh`
+* `INIFileParser.dll`
+* `MediaInfoDotNet.dll`
 
-`compile.sh` will download required .NET References
+#### Debugging
+Before start, you need copy these file to `ifme\bin\Debug` to get working.
 
-Good Luck!
+##### 64bit
+* Copy `prerequisite\windows\64bit\Mediainfo.dll`
+* Copy `prerequisite\windows\64bit\7za.exe`
+* Copy `prerequisite\windows\64bit\plugins\`
+And some 32bit stuff
+* Copy `prerequisite\windows\32bit\plugins\avisynth\`
+* Copy `prerequisite\windows\32bit\plugins\faac\`
+* Copy `prerequisite\windows\32bit\plugins\mp4fpsmod\`
+* Copy `prerequisite\windows\32bit\plugins\opus\`
+
+##### 32bit
+* Copy `prerequisite\windows\32bit\Mediainfo.dll`
+* Copy `prerequisite\windows\32bit\7za.exe`
+* Copy `prerequisite\windows\32bit\plugins\`
+
+*You may skip copying `plugins` folder, IFME will download before run*
+
+As usual, open `ifme.sln` :+1:
+
+#### Packaging
+[Download](http://www.jrsoftware.org/isdl.php) & install Inno Setup and open `installer.iss`
+
+### Linux
+#### Compiler
+Install Mono 4.0+ [click here to install](http://www.mono-project.com/download/#download-lin). You might download all mono stuff including `-devel`.
+
+#### Prerequisite
+Get these package `p7zip-full` and `mediainfo` by entering command `sudo apt-get install p7zip-full mediainfo`. After that run `prerequisite/deploy.sh` to download all required files
+
+#### References
+Run `references/download.sh` to download
+
+* `INIFileParser.dll`
+* `MediaInfoDotNet.dll`
+
+#### Debugging
+Before start, you need copy these file to `ifme/bin/Debug` to get working.
+
+* Copy `prerequisite/linux/64bit/Mediainfo.dll`
+* Copy `prerequisite/linux/64bit/7za.exe`
+* Copy `prerequisite/linux/64bit/plugins/`
+
+*You may skip copying `plugins` folder, IFME will download before run*
+
+As usual, open `ifme.sln` :+1:
