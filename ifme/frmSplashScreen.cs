@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using System.Net;
-using System.Diagnostics;
 
 using static System.Console;
+using static ifme.Properties.Settings;
 
 enum DownloadType
 {
@@ -16,7 +15,7 @@ enum DownloadType
 
 namespace ifme
 {
-    public partial class frmSplashScreen : Form
+	public partial class frmSplashScreen : Form
 	{
 		WebClient client = new WebClient();
 		bool finish = false;
@@ -61,6 +60,26 @@ namespace ifme
 			}
 #endif
 
+			// Check x265, just incase user remove folder
+			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}")))
+            {
+				if (OS.IsWindows)
+				{
+					if (OS.Is64bit)
+					{
+						Default.Compiler = "gcc";
+					}
+					else
+					{
+						Default.Compiler = "msvc";
+					}
+				}
+				else
+				{
+					Default.Compiler = "gcc";
+				}
+			}
+
 			// Plugin 
 			PluginCheck(); // check repo
 			Plugin.Load(); // load to memory
@@ -85,15 +104,15 @@ namespace ifme
 				Plugin.IsExistHEVCMSVC = true;
 
 			// Language
-			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Properties.Settings.Default.Language}.ini")))
+			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
 			{
-				Properties.Settings.Default.Language = "en";
-				WriteLine($"Language file {Properties.Settings.Default.Language}.ini not found, make sure file name and CODE are same");
+				Default.Language = "en";
+				WriteLine($"Language file {Default.Language}.ini not found, make sure file name and CODE are same");
 			}
 			else
 			{
 				Language.Display();
-				WriteLine($"Loading language file: {Properties.Settings.Default.Language}.ini");
+				WriteLine($"Loading language file: {Default.Language}.ini");
 			}
 
 			// Detect AviSynth
@@ -142,7 +161,7 @@ namespace ifme
 			}
 
 			// Save all settings
-			Properties.Settings.Default.Save();
+			Default.Save();
 
 			// For fun
 			WriteLine("\nEstablishing battlefield control, standby!");

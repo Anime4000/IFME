@@ -216,10 +216,25 @@ namespace ifme
 				if (string.IsNullOrEmpty(Default.Language))
 					Default.Language = "en";
 
-				if (OS.IsLinux)
-					Default.Compiler = "gcc";
-				else
-					Default.Compiler = "msvc";
+				// Compiler
+				if (string.IsNullOrEmpty(Default.Compiler))
+				{
+					if (OS.IsWindows)
+					{
+						if (OS.Is64bit)
+						{
+							Default.Compiler = "gcc";
+						}
+						else
+						{
+							Default.Compiler = "msvc";
+						}
+					}
+					else
+					{
+						Default.Compiler = "gcc";
+					}
+				}
 			}
 		}
 

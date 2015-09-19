@@ -24,7 +24,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Compiler" Type="System.String" Scope="User">
-      <Value Profile="(Default)">msvc</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DefaultNotepad" Type="System.String" Scope="User">
       <Value Profile="(Default)">nemupad.dll</Value>
