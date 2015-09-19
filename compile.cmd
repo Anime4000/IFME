@@ -28,7 +28,7 @@ echo.
 
 :AGAIN
 set /p answer=Do you wish to download all required item before compile? (Y/n): 
-if /i "%answer%" EQU "n" goto DODL
+if /i "%answer%" EQU "y" goto DODL
 if /i "%answer%" EQU "Y" goto DODL
 if /i "%answer%" EQU "n" goto SKIPDL
 if /i "%answer%" EQU "N" goto SKIPDL
