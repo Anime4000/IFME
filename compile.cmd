@@ -3,6 +3,7 @@
 
 cd "%~dp0"
 
+set ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
 set CompileMode=Debug
 set BUILDDIR=build
 set MSBuildVer=14.0
@@ -27,40 +28,46 @@ echo.
 echo.
 echo.
 
+@title DELETEING %BUILDDIR%!
 echo DELETEING %BUILDDIR%!
 rmdir /s /q %BUILDDIR%
 mkdir "%BUILDDIR%"
 timeout /t 1 >nul
 echo.
 
+@title COMPILING IFME (VISUAL STUDIO 2015)
 echo COMPILING IFME (VISUAL STUDIO 2015)
 start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBuild.exe" /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=%CompileMode%
 timeout /t 3 >nul
 echo.
 
+@title COPY IFME MAIN FILE
 echo COPY IFME MAIN FILE
 mkdir %BUILDDIR%\benchmark
 mkdir %BUILDDIR%\extension
-robocopy ifme\bin\%CompileMode%\lang %BUILDDIR%\lang /E
-robocopy ifme\bin\%CompileMode%\profile %BUILDDIR%\profile /E
-robocopy ifme\bin\%CompileMode%\sounds %BUILDDIR%\sounds /E
-copy ifme\bin\%CompileMode%\addons_linux32.repo %BUILDDIR%
-copy ifme\bin\%CompileMode%\addons_linux64.repo %BUILDDIR%
-copy ifme\bin\%CompileMode%\addons_windows32.repo %BUILDDIR%
-copy ifme\bin\%CompileMode%\addons_windows64.repo %BUILDDIR%
-copy ifme\bin\%CompileMode%\avisynthsource.code %BUILDDIR%
-copy ifme\bin\%CompileMode%\format.ini %BUILDDIR%
-copy ifme\bin\%CompileMode%\iso.code %BUILDDIR%
+robocopy ifme\lang %BUILDDIR%\lang /E
+robocopy ifme\profile %BUILDDIR%\profile /E
+robocopy ifme\sounds %BUILDDIR%\sounds /E
+copy ifme\addons_linux32.repo %BUILDDIR%
+copy ifme\addons_linux64.repo %BUILDDIR%
+copy ifme\addons_windows32.repo %BUILDDIR%
+copy ifme\addons_windows64.repo %BUILDDIR%
+copy ifme\avisynthsource.code %BUILDDIR%
+copy ifme\format.ini %BUILDDIR%
+copy ifme\iso.code %BUILDDIR%
 
+@title COPY COMPILED
 echo COPY COMPILED
 copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
 copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
 echo.
 
+@title COPY EXTENSION
 echo COPY EXTENSION
 robocopy prerequisite\allos\extension %BUILDDIR% /E
 
+@title CLEAN UP
 echo CLEAN UP
 del /f /q %BUILDDIR%\ifme.pdb
 del /f /q %BUILDDIR%\ifme.exe.config
@@ -72,18 +79,23 @@ del /f /q %BUILDDIR%\metauser.if
 timeout /t 3 >nul
 echo.
 
+@title COPY DOCUMENTS
 echo COPY DOCUMENTS
 copy changelog.txt %BUILDDIR%
 copy license.txt %BUILDDIR%
 copy patents.txt %BUILDDIR%
 echo.
 
+@title CLEAN UP
 echo CLEAN UP
-del /f /s /q %BUILDDIR%\*.ifz
+del /f /s /q %BUILDDIR%\*.ifx
 
 echo.
 echo.
 echo.
-echo If got error, please check what you missed.
-echo All ok? Now can be release via Installer or Archive :)
+
+@title Creating Installer
+echo Creating Installer
+%ISCC% installer.iss
+echo Done!!!
 timeout /t 10

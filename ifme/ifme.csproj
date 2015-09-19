@@ -247,6 +247,9 @@
     <None Include="Resources\script_edit.png" />
     <None Include="Resources\user.png" />
     <None Include="Resources\world.png" />
+    <Content Include="sounds\epic.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

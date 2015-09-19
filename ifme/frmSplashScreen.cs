@@ -64,8 +64,7 @@ namespace ifme
 			// Plugin 
 			PluginCheck(); // check repo
 			Plugin.Load(); // load to memory
-			PluginUpdate(); // apply update
-			Plugin.Load(); // reload
+			if (!Program.ApplyUpdate) { PluginUpdate(); Plugin.Load(); }
 
 			// Profile
 			Profile.Load();
@@ -73,8 +72,7 @@ namespace ifme
 			// Extension
 			Extension.Load();
 			Extension.CheckDefault();
-			ExtensionUpdate();
-			Extension.Load();  // reload
+			if (!Program.ApplyUpdate) { ExtensionUpdate(); Extension.Load(); }
 
 			// Check x265 compiler binary
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))				

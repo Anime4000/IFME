@@ -78,7 +78,9 @@ Before start, you need copy these file to `ifme\bin\Debug` to get working.
 * Copy `prerequisite\windows\64bit\Mediainfo.dll`
 * Copy `prerequisite\windows\64bit\7za.exe`
 * Copy `prerequisite\windows\64bit\plugins\`
+
 And some 32bit stuff
+
 * Copy `prerequisite\windows\32bit\plugins\avisynth\`
 * Copy `prerequisite\windows\32bit\plugins\faac\`
 * Copy `prerequisite\windows\32bit\plugins\mp4fpsmod\`

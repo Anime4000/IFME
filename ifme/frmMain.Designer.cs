@@ -503,7 +503,7 @@
 			// 
 			// chkPictureYadif
 			// 
-			this.chkPictureYadif.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.chkPictureYadif.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.chkPictureYadif.AutoSize = true;
 			this.chkPictureYadif.Location = new System.Drawing.Point(336, 5);
 			this.chkPictureYadif.Name = "chkPictureYadif";
@@ -515,7 +515,8 @@
 			// 
 			// grpPictureYadif
 			// 
-			this.grpPictureYadif.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.grpPictureYadif.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpPictureYadif.Controls.Add(this.cboPictureYadifFlag);
 			this.grpPictureYadif.Controls.Add(this.lblPictureYadifFlag);
@@ -606,8 +607,8 @@
 			// 
 			// grpPictureQuality
 			// 
-			this.grpPictureQuality.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpPictureQuality.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.grpPictureQuality.Controls.Add(this.cboPictureYuv);
 			this.grpPictureQuality.Controls.Add(this.lblPictureYuv);
 			this.grpPictureQuality.Controls.Add(this.cboPictureBit);
@@ -670,8 +671,8 @@
 			// 
 			// grpPictureBasic
 			// 
-			this.grpPictureBasic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpPictureBasic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.grpPictureBasic.Controls.Add(this.lblPictureFps);
 			this.grpPictureBasic.Controls.Add(this.cboPictureFps);
 			this.grpPictureBasic.Controls.Add(this.cboPictureRes);
@@ -756,9 +757,8 @@
 			// 
 			// grpPictureFormat
 			// 
-			this.grpPictureFormat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpPictureFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.grpPictureFormat.Controls.Add(this.rdoMP4);
 			this.grpPictureFormat.Controls.Add(this.rdoMKV);
 			this.grpPictureFormat.Location = new System.Drawing.Point(6, 6);

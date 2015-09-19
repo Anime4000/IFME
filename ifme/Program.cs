@@ -12,6 +12,8 @@ namespace ifme
 {
 	class Program
 	{
+		public static bool ApplyUpdate = false;
+
 		[STAThread]
 		static int Main(string[] args)
 		{
@@ -66,6 +68,7 @@ namespace ifme
 			WriteLine();
 			WriteLine("GUI:");
 			WriteLine("      --open file.xml          open IFME queue file via GUI");
+			WriteLine("  -s                           skip all update checking (faster loading)");
 			WriteLine();
 			WriteLine("CLI:");
 			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
@@ -106,6 +109,9 @@ namespace ifme
 
 						if (args[i][n] == 'g')
 							IsXterm = true;
+
+						if (args[i][n] == 's')
+							ApplyUpdate = true;
 
 						if (args[i][n] == 'f')
 							IsForce = true;

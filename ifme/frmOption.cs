@@ -312,6 +312,8 @@ namespace ifme
 		{
 			var data = Language.Get;
 
+			Text = data[Name]["title"];
+
 			Control ctrl = this;
 			do
 			{
@@ -347,6 +349,8 @@ namespace ifme
 		{
 			var parser = new FileIniDataParser();
 			IniData data = parser.ReadFile(Path.Combine(Global.Folder.Language, "en.ini"));
+
+			data.Sections[Name].AddKey("title", Text);
 
 			data.Sections.AddSection(Name);
 			Control ctrl = this;

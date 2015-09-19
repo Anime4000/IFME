@@ -261,7 +261,7 @@
 			this.lblLangWhoWeb.Location = new System.Drawing.Point(97, 94);
 			this.lblLangWhoWeb.Name = "lblLangWhoWeb";
 			this.lblLangWhoWeb.Size = new System.Drawing.Size(408, 16);
-			this.lblLangWhoWeb.TabIndex = 4;
+			this.lblLangWhoWeb.TabIndex = 2;
 			this.lblLangWhoWeb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.lblLangWhoWeb.Click += new System.EventHandler(this.lblLangWhoWeb_Click);
 			// 
