@@ -30,6 +30,7 @@ namespace ifme
 			pbxRight.Image = Global.GetRandom % 2 != 0 ? Properties.Resources.BannerB : Properties.Resources.BannerC;
 		}
 
+		#region Form
 		private void frmMain_Load(object sender, EventArgs e)
 		{
 			// Language UI
@@ -119,6 +120,7 @@ namespace ifme
 				}
 			}
 		}
+		#endregion
 
 		#region Profile
 		void ProfileAdd()
@@ -247,9 +249,9 @@ namespace ifme
 			Profile.Load(); //reload list
 			ProfileAdd();
 		}
-#endregion
+		#endregion
 
-#region Browse, Config & About button
+		#region Browse, Config & About button
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetDir = new FolderBrowserDialog();
@@ -275,9 +277,9 @@ namespace ifme
 			Form frm = new frmAbout();
 			frm.ShowDialog();
 		}
-#endregion
+		#endregion
 
-#region Queue: Add files
+		#region Queue: Add files
 		private void btnQueueAdd_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog GetFiles = new OpenFileDialog();
@@ -405,9 +407,9 @@ namespace ifme
 			// Print to log
 			InvokeLog($"File added {Info.Data.File}");
 		}
-#endregion
+		#endregion
 
-#region Queue: Move item up, down and remove
+		#region Queue: Move item up, down and remove
 		private void btnQueueMoveUp_Click(object sender, EventArgs e)
 		{
 			try
@@ -480,9 +482,9 @@ namespace ifme
 				InvokeLog($"File removed {item.SubItems[0].Text}");
 			}
 		}
-#endregion
+		#endregion
 
-#region Queue: Display item properties
+		#region Queue: Display item properties
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
@@ -554,10 +556,10 @@ namespace ifme
 			chkAttachEnable.Checked = false;
 			lstAttach.Items.Clear();
 		}
-#endregion
+		#endregion
 
-#region Queue: Property update
-#region Queue: Property update - Picture Tab
+		#region Queue: Property update
+		#region Queue: Property update - Picture Tab
 		private void rdoMKV_CheckedChanged(object sender, EventArgs e)
 		{
 			PluginAudioReload();
@@ -643,9 +645,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.PictureYadifFlag);
 		}
-#endregion
+		#endregion
 
-#region Queue: Property update - Video Tab
+		#region Queue: Property update - Video Tab
 		private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			QueueUpdate(QueueProp.VideoPreset);
@@ -748,9 +750,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.VideoCommand);
 		}
-#endregion
+		#endregion
 
-#region Queue: Property update - Audio Tab
+		#region Queue: Property update - Audio Tab
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			foreach (var item in Plugin.List)
@@ -798,9 +800,9 @@ namespace ifme
 		{
 			QueueUpdate(QueueProp.AudioCommand);
 		}
-#endregion
+		#endregion
 
-#region Queue: Property update - Subtitles Tab
+		#region Queue: Property update - Subtitles Tab
 		private void tabSubtitles_Leave(object sender, EventArgs e)
 		{
 			if (lstSub.Items.Count == 0)
@@ -908,9 +910,9 @@ namespace ifme
 				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = cboSubLang.Text;
 			}
 		}
-#endregion
+		#endregion
 
-#region Queue: Property update - Attachments Tab
+		#region Queue: Property update - Attachments Tab
 		private void tabAttachments_Leave(object sender, EventArgs e)
 		{
 			if (lstAttach.Items.Count == 0)
@@ -1016,7 +1018,7 @@ namespace ifme
 				(lstQueue.SelectedItems[0].Tag as Queue).Attach[item.Index].Comment = txtAttachDescription.Text;
 			}
 		}
-#endregion
+		#endregion
 
 		void QueueUpdate(QueueProp Id)
 		{
@@ -1119,250 +1121,9 @@ namespace ifme
 				}
 			}
 		}
-#endregion
+		#endregion
 
-		private void btnQueueStart_Click(object sender, EventArgs e)
-		{
-			// Send a new copy to another thread
-			if (!bgwEncoding.IsBusy)
-			{
-				// Make a copy, thread safe
-				List<object> gg = new List<object>();
-
-				foreach (ListViewItem item in lstQueue.Items)
-				{
-					(item.Tag as Queue).IsEnable = item.Checked;
-                    gg.Add(item.Tag);
-				}
-
-				// View log
-				tabConfig.SelectedIndex = 5;
-
-				// Start
-				bgwEncoding.RunWorkerAsync(gg);
-				btnQueueStart.Visible = false;
-				btnQueuePause.Visible = true;
-
-				ControlEnable(false);
-			}
-			else
-			{
-				TaskManager.Resume();
-				btnQueueStart.Visible = false;
-				btnQueuePause.Visible = true;
-			}
-		}
-
-		private void btnQueueStop_Click(object sender, EventArgs e)
-		{
-			TaskManager.Kill();
-			bgwEncoding.CancelAsync();
-
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine("Encoding has been cancelled...");
-			Console.ResetColor();
-		}
-
-		private void btnQueuePause_Click(object sender, EventArgs e)
-		{
-			TaskManager.Pause();
-			btnQueueStart.Visible = true;
-			btnQueuePause.Visible = false;
-		}
-
-		private void bgwEncoding_DoWork(object sender, DoWorkEventArgs e)
-		{
-			// Time entire queue
-			DateTime Session = DateTime.Now;
-
-			// Log current session
-			InvokeLog("Encoding has been started!");
-
-			// Encoding process
-			int id = -1;
-			List<object> argList = e.Argument as List<object>;
-			foreach (Queue item in argList)
-			{
-				id++;
-
-				// Only checked list get encoded
-				if (!item.IsEnable)
-				{
-					id++;
-					continue;
-				}
-
-				// Time current queue
-				var SessionCurrent = DateTime.Now;
-
-				// Log current queue
-				InvokeLog("Processing: " + item.Data.File);
-
-				// Remove temp file
-				MediaEncoder.CleanUp();
-
-				// AviSynth aware
-				string file = item.Data.File;
-				string filereal = GetStream.AviSynthGetFile(file);
-
-				// Extract mkv embedded subtitle, font and chapter
-				InvokeQueueStatus(id, "Extracting");
-				MediaEncoder.Extract(filereal, item);
-
-				// User cancel
-				if (bgwEncoding.CancellationPending)
-				{
-					InvokeQueueAbort(id);
-					e.Cancel = true;
-					return;
-				}
-
-				// Audio
-				InvokeQueueStatus(id, "Processing Audio");
-				MediaEncoder.Audio(filereal, item);
-
-				// User cancel
-				if (bgwEncoding.CancellationPending)
-				{
-					InvokeQueueAbort(id);
-					e.Cancel = true;
-					return;
-				}
-
-				// Video
-				InvokeQueueStatus(id, "Processing Video");
-				MediaEncoder.Video(file, item);
-
-				// User cancel
-				if (bgwEncoding.CancellationPending)
-				{
-					InvokeQueueAbort(id);
-					e.Cancel = true;
-					return;
-				}
-
-				// Mux
-				InvokeQueueStatus(id, "Compiling");
-				MediaEncoder.Mux(item);
-
-				// User cancel
-				if (bgwEncoding.CancellationPending)
-				{
-					InvokeQueueAbort(id);
-					e.Cancel = true;
-					return;
-				}
-
-				string timeDone = GetInfo.Duration(SessionCurrent);
-				InvokeQueueDone(id, timeDone);
-				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
-			}
-
-			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
-		}
-
-		private void bgwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			Console.Title = "IFME console";
-			btnQueueStart.Visible = true;
-			btnQueuePause.Visible = false;
-
-			if (e.Error != null)
-			{
-				InvokeLog("Error was found, sorry could finsih it.");
-			}
-			else if (e.Cancelled)
-			{
-				InvokeLog("Queue has been canceled by user.");
-			}
-			else
-			{
-				if (Properties.Settings.Default.SoundFinish)
-				{
-					SoundPlayer notification = new SoundPlayer(Global.Sounds.Finish);
-					notification.Play();
-				}
-			}
-
-			ControlEnable(true);
-		}
-
-		void InvokeQueueStatus(int index, string s)
-		{
-			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = s));
-			else
-				lstQueue.Items[index].SubItems[4].Text = s;
-		}
-
-		void InvokeQueueAbort(int index)
-		{
-			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = "Abort!"));
-			else
-				lstQueue.Items[index].SubItems[4].Text = "Abort!";
-		}
-
-		void InvokeQueueDone(int index, string message)
-		{
-			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].Checked = false));
-			else
-				lstQueue.Items[index].Checked = false;
-
-			string a = $"Finished in {message}";
-			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = a));
-			else
-				lstQueue.Items[index].SubItems[4].Text = a;
-		}
-
-		void InvokeLog(string message)
-		{
-			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}]: {message}\r\n";
-
-			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => txtLog.AppendText(message)));
-			else
-				txtLog.AppendText(message);
-		}
-
-		void ControlEnable(bool x)
-		{
-			foreach (ListViewItem item in lstQueue.SelectedItems)
-				item.Selected = false;
-
-			btnQueueAdd.Enabled = x;
-			btnQueueRemove.Enabled = x;
-			btnQueueMoveUp.Enabled = x;
-			btnQueueMoveDown.Enabled = x;
-
-			grpPictureFormat.Enabled = x;
-			grpPictureBasic.Enabled = x;
-			grpPictureQuality.Enabled = x;
-			chkPictureYadif.Enabled = x;
-			grpPictureYadif.Enabled = x;
-
-			grpVideoBasic.Enabled = x;
-			grpVideoRateCtrl.Enabled = x;
-			txtVideoCmd.Enabled = x;
-
-			grpAudioBasic.Enabled = x;
-			txtAudioCmd.Enabled = x;
-
-			chkSubEnable.Enabled = x;
-			chkAttachEnable.Enabled = x;
-
-			cboProfile.Enabled = x;
-			btnProfileSave.Enabled = x;
-
-			txtDestination.Enabled = x;
-			btnBrowse.Enabled = x;
-
-			btnConfig.Enabled = x;
-		}
-
-#region Queue Menu
+		#region Queue Menu
 		private void tsmiQueuePreview_Click(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
@@ -1704,7 +1465,253 @@ namespace ifme
 		}
 #endregion
 
-#region Language - Load and Apply
+		#region Encoding
+		private void btnQueueStart_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.Items.Count == 0)
+				return;
+
+			// Send a new copy to another thread
+			if (!bgwEncoding.IsBusy)
+			{
+				// Make a copy, thread safe
+				List<object> gg = new List<object>();
+
+				foreach (ListViewItem item in lstQueue.Items)
+				{
+					(item.Tag as Queue).IsEnable = item.Checked;
+                    gg.Add(item.Tag);
+				}
+
+				// View log
+				tabConfig.SelectedIndex = 5;
+
+				// Start
+				bgwEncoding.RunWorkerAsync(gg);
+				btnQueueStart.Visible = false;
+				btnQueuePause.Visible = true;
+
+				ControlEnable(false);
+			}
+			else
+			{
+				TaskManager.Resume();
+				btnQueueStart.Visible = false;
+				btnQueuePause.Visible = true;
+			}
+		}
+
+		private void btnQueueStop_Click(object sender, EventArgs e)
+		{
+			TaskManager.Kill();
+			bgwEncoding.CancelAsync();
+
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("Encoding has been cancelled...");
+			Console.ResetColor();
+		}
+
+		private void btnQueuePause_Click(object sender, EventArgs e)
+		{
+			TaskManager.Pause();
+			btnQueueStart.Visible = true;
+			btnQueuePause.Visible = false;
+		}
+
+		private void bgwEncoding_DoWork(object sender, DoWorkEventArgs e)
+		{
+			// Time entire queue
+			DateTime Session = DateTime.Now;
+
+			// Log current session
+			InvokeLog("Encoding has been started!");
+
+			// Encoding process
+			int id = -1;
+			List<object> argList = e.Argument as List<object>;
+			foreach (Queue item in argList)
+			{
+				id++;
+
+				// Only checked list get encoded
+				if (!item.IsEnable)
+				{
+					id++;
+					continue;
+				}
+
+				// Time current queue
+				var SessionCurrent = DateTime.Now;
+
+				// Log current queue
+				InvokeLog("Processing: " + item.Data.File);
+
+				// Remove temp file
+				MediaEncoder.CleanUp();
+
+				// AviSynth aware
+				string file = item.Data.File;
+				string filereal = GetStream.AviSynthGetFile(file);
+
+				// Extract mkv embedded subtitle, font and chapter
+				InvokeQueueStatus(id, "Extracting");
+				MediaEncoder.Extract(filereal, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
+				{
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
+				}
+
+				// Audio
+				InvokeQueueStatus(id, "Processing Audio");
+				MediaEncoder.Audio(filereal, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
+				{
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
+				}
+
+				// Video
+				InvokeQueueStatus(id, "Processing Video");
+				MediaEncoder.Video(file, item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
+				{
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
+				}
+
+				// Mux
+				InvokeQueueStatus(id, "Compiling");
+				MediaEncoder.Mux(item);
+
+				// User cancel
+				if (bgwEncoding.CancellationPending)
+				{
+					InvokeQueueAbort(id);
+					e.Cancel = true;
+					return;
+				}
+
+				string timeDone = GetInfo.Duration(SessionCurrent);
+				InvokeQueueDone(id, timeDone);
+				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
+			}
+
+			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
+		}
+
+		private void bgwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			Console.Title = "IFME console";
+			btnQueueStart.Visible = true;
+			btnQueuePause.Visible = false;
+
+			if (e.Error != null)
+			{
+				InvokeLog("Error was found, sorry could finsih it.");
+			}
+			else if (e.Cancelled)
+			{
+				InvokeLog("Queue has been canceled by user.");
+			}
+			else
+			{
+				if (Properties.Settings.Default.SoundFinish)
+				{
+					SoundPlayer notification = new SoundPlayer(Global.Sounds.Finish);
+					notification.Play();
+				}
+			}
+
+			ControlEnable(true);
+		}
+
+		void InvokeQueueStatus(int index, string s)
+		{
+			if (InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = s));
+			else
+				lstQueue.Items[index].SubItems[4].Text = s;
+		}
+
+		void InvokeQueueAbort(int index)
+		{
+			if (InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = "Abort!"));
+			else
+				lstQueue.Items[index].SubItems[4].Text = "Abort!";
+		}
+
+		void InvokeQueueDone(int index, string message)
+		{
+			if (InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].Checked = false));
+			else
+				lstQueue.Items[index].Checked = false;
+
+			string a = $"Finished in {message}";
+			if (InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => lstQueue.Items[index].SubItems[4].Text = a));
+			else
+				lstQueue.Items[index].SubItems[4].Text = a;
+		}
+
+		void InvokeLog(string message)
+		{
+			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}]: {message}\r\n";
+
+			if (InvokeRequired)
+				BeginInvoke(new MethodInvoker(() => txtLog.AppendText(message)));
+			else
+				txtLog.AppendText(message);
+		}
+
+		void ControlEnable(bool x)
+		{
+			foreach (ListViewItem item in lstQueue.SelectedItems)
+				item.Selected = false;
+
+			btnQueueAdd.Enabled = x;
+			btnQueueRemove.Enabled = x;
+			btnQueueMoveUp.Enabled = x;
+			btnQueueMoveDown.Enabled = x;
+
+			grpPictureFormat.Enabled = x;
+			grpPictureBasic.Enabled = x;
+			grpPictureQuality.Enabled = x;
+			chkPictureYadif.Enabled = x;
+			grpPictureYadif.Enabled = x;
+
+			grpVideoBasic.Enabled = x;
+			grpVideoRateCtrl.Enabled = x;
+			txtVideoCmd.Enabled = x;
+
+			grpAudioBasic.Enabled = x;
+			txtAudioCmd.Enabled = x;
+
+			chkSubEnable.Enabled = x;
+			chkAttachEnable.Enabled = x;
+
+			cboProfile.Enabled = x;
+			btnProfileSave.Enabled = x;
+
+			txtDestination.Enabled = x;
+			btnBrowse.Enabled = x;
+
+			btnConfig.Enabled = x;
+		}
+		#endregion
+
+		#region Language - Load and Apply
 		void LangApply()
 		{
 			var data = Language.Get;
