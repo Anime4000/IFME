@@ -35,28 +35,28 @@ wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/
 wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x64.dll -O windows\64bit\MediaInfo.dll
 
 echo Downloading 32bit plugins!
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/avisynth.ifx -O windows\32bit\plugins\avisynth.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/faac.ifx -O windows\32bit\plugins\faac.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/ffmpeg.ifx -O windows\32bit\plugins\ffmpeg.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/ffmsindex.ifx -O windows\32bit\plugins\ffmsindex.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/flac.ifx -O windows\32bit\plugins\flac.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/mkvtool.ifx -O windows\32bit\plugins\mkvtool.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/mp4box.ifx -O windows\32bit\plugins\mp4box.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/mp4fpsmod.ifx -O windows\32bit\plugins\mp4fpsmod.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/ogg.ifx -O windows\32bit\plugins\ogg.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/opus.ifx -O windows\32bit\plugins\opus.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/x265msvc.ifx -O windows\32bit\plugins\x265msvc.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/avisynth.ifx -O windows\32bit\plugins\avisynth.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/faac.ifx -O windows\32bit\plugins\faac.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/ffmpeg.ifx -O windows\32bit\plugins\ffmpeg.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/ffmsindex.ifx -O windows\32bit\plugins\ffmsindex.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/flac.ifx -O windows\32bit\plugins\flac.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/mkvtool.ifx -O windows\32bit\plugins\mkvtool.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/mp4box.ifx -O windows\32bit\plugins\mp4box.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/mp4fpsmod.ifx -O windows\32bit\plugins\mp4fpsmod.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/ogg.ifx -O windows\32bit\plugins\ogg.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/opus.ifx -O windows\32bit\plugins\opus.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/x265msvc.ifx -O windows\32bit\plugins\x265msvc.ifx
 
 echo Downloading 64bit plugins!
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/ffmpeg.ifx -O windows\64bit\plugins\ffmpeg.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/ffmsindex.ifx -O windows\64bit\plugins\ffmsindex.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/flac.ifx -O windows\64bit\plugins\flac.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/mkvtool.ifx -O windows\64bit\plugins\mkvtool.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/mp4box.ifx -O windows\64bit\plugins\mp4box.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/ogg.ifx -O windows\64bit\plugins\ogg.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265gcc.ifx -O windows\64bit\plugins\x265gcc.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265icc.ifx -O windows\64bit\plugins\x265icc.ifx
-wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/64bit/x265msvc.ifx -O windows\64bit\plugins\x265msvc.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/ffmpeg.ifx -O windows\64bit\plugins\ffmpeg.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/ffmsindex.ifx -O windows\64bit\plugins\ffmsindex.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/flac.ifx -O windows\64bit\plugins\flac.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/mkvtool.ifx -O windows\64bit\plugins\mkvtool.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/mp4box.ifx -O windows\64bit\plugins\mp4box.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/ogg.ifx -O windows\64bit\plugins\ogg.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265gcc.ifx -O windows\64bit\plugins\x265gcc.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265icc.ifx -O windows\64bit\plugins\x265icc.ifx
+wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265msvc.ifx -O windows\64bit\plugins\x265msvc.ifx
 
 echo Unpacking...
 for /r "%~dp0\windows\32bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"

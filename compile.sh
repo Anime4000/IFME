@@ -20,7 +20,7 @@ echo " "
 echo " "
 
 while true; do
-    read -p "Do you wish to download all required item before compile? (Y/n)" yn
+    read -p "Do you wish to download all required item before compile? (Y/n): " yn
     case $yn in
         [Yy]* ) sh prerequisite/deploy.sh; sh references/download.sh; break;;
 		[Nn]* ) break;;
