@@ -6,39 +6,39 @@ BUILDDIR="build"
 cd "$ORIDIR"
 
 echo "Currently you need already compiled version,"
-echo "compiling on Linux for now not possible, so,"
+echo "compiling on Linux for now quite possible, so,"
 echo "this script will make it standalone program"
 echo "without Mono required to install"
+echo " "
+echo " "
 echo " "
 echo "Before you start:"
 echo "      1. Mono 4.0+ <http://www.mono-project.com/download/#download-lin>"
 echo "      2. sudo apt-get install p7zip-full mediainfo"
 echo " "
-echo "make sure you run \"deploy.sh\" at \"prerequisite\" folder"
+echo " "
 echo " "
 
-read -rp "Press any ENTER to continue..." key
+while true; do
+    read -p "Do you wish to download all required item before compile? (Y/n)" yn
+    case $yn in
+        [Yy]* ) sh prerequisite/deploy.sh; sh references/download.sh; break;;
+		[Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
-echo "Download .NET references"
-if [ -f "references/MediaInfoDotNet.dll" ]
-then
-	echo "File found, no need to download"
-else
-	wget --no-check-certificate https://github.com/x265/MediaInfoDotNet/releases/download/v0.7.8/MediaInfoDotNet.dll -O "references/MediaInfoDotNet.dll"
-fi
-
-if [ -f "references/INIFileParser.dll" ]
-then
-	echo "File found, no need to download"
-else
-	wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/INIFileParser.dll -O "references/INIFileParser.dll"
-fi
+echo "Return to original path"
+cd "$ORIDIR"
 
 echo "Remove windows builds"
 rm -rf "$BUILDDIR"
 
 echo "Make new folder"
 mkdir "$BUILDDIR"
+
+echo "Building..."
+xbuild /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=$CompileMode
 
 echo "Copying stuff"
 mkdir "$BUILDDIR/benchmark"
@@ -71,9 +71,6 @@ cp -r "prerequisite/linux/64bit/plugins" "$BUILDDIR/"
 
 echo "Copying extension"
 cp -r "prerequisite/allos/extension" "$BUILDDIR/"
-
-echo "Building..."
-xbuild /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=Debug
 
 echo "Please Wait..."
 sleep 3

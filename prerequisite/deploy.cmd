@@ -11,7 +11,7 @@ mkdir windows\64bit\plugins\
 mkdir allos\extension\
 
 echo Checking %WGET32%
-IF EXIST %WGET32% (
+IF EXIST "%WGET32%" (
 	echo %WGET32% found!
 ) ELSE (
 	echo %WGET32% not found :(
@@ -20,13 +20,19 @@ IF EXIST %WGET32% (
 )
 
 echo Checking %UNPACK%
-IF EXIST %UNPACK% (
+IF EXIST "%UNPACK%" (
 	echo %UNPACK% found!
 ) ELSE (
 	echo %UNPACK% not found :(
 	pause
 	exit 1
 )
+
+echo Binaries
+wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/7za-x86.exe -O windows\32bit\7za.exe
+wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/7za-x64.exe -O windows\64bit\7za.exe
+wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x86.dll -O windows\32bit\MediaInfo.dll
+wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x64.dll -O windows\64bit\MediaInfo.dll
 
 echo Downloading 32bit plugins!
 wget http://master.dl.sourceforge.net/project/ifme/plugins/windows/32bit/avisynth.ifx -O windows\32bit\plugins\avisynth.ifx

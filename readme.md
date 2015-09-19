@@ -22,6 +22,9 @@ Support this project! Even with little penny make this project alive and up-to-d
 You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U). If you made a donation, don't forget to tell us at [Facebook](https://www.facebook.com/internetfriendlymediaencoder) or  [Twitter](https://twitter.com/Anime4000), You will honored and listed on *Hall of Fame* and **About Program**
 
 ## You
+### Downloads
+You can download it via [SourceForge](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub](https://github.com/Anime4000/IFME/releases/latest)
+
 ### Requirement
 #### Windows
 * OS: Windows 7, 8, 8.1, 10 (32bit/64bit)
@@ -39,9 +42,6 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 * GPU: *none*
 * HDD: 256MB
 * Internet Connection
-
-### Downloads
-You can download it via [SourceForge](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub](https://github.com/Anime4000/IFME/releases/latest)
 
 ## Development
 ### Windows
