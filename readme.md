@@ -32,8 +32,8 @@ You can download it via [SourceForge](https://sourceforge.net/projects/ifme/file
 * RAM: 2GB (4K encoding require 4GB more)
 * GPU: Any (OpenCL for FLAC encoder)
 * HDD: 256MB
-* Internet Connection
 * .NET Framework 4.0
+* Internet Connection (for update)
 
 #### Linux
 * OS: Ubuntu 14.04 or any latest distro (64bit)
@@ -41,7 +41,8 @@ You can download it via [SourceForge](https://sourceforge.net/projects/ifme/file
 * RAM: 2GB (4K encoding require 4GB more)
 * GPU: *none*
 * HDD: 256MB
-* Internet Connection
+* Mono 4.0 `mono-complete`
+* Internet Connection (for update)
 
 ## Development
 ### Windows
