@@ -27,7 +27,7 @@ echo "Unpacking"
 echo "Downloading extension"
 wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.2/hfrgen.dll -O "allos/extension/hfrgen.dll"
 wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.2/holobenchmark.dll -O "allos/extension/holobenchmark.dll"
-wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "allos/extension/holobenchmark.dll"
+wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "allos/extension/nemupad.dll"
 echo "Delete cache"
 find . -name "*.ifx" -type f -delete
 echo "Done!"

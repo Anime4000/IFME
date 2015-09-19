@@ -1,4 +1,9 @@
-﻿Version 5.0.9 (Dearness)
+﻿Version 5.1.0
+-------------
+
+[fixed] Wrong extension file which is benchmark extension was a notepad
+
+Version 5.0.9 (Dearness)
 -------------
 
 [fixed] Fix code mistake
