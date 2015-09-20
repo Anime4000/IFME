@@ -68,7 +68,7 @@ echo "Copying compiled"
 cp "ifme/bin/$CompileMode/ifme.exe" "$BUILDDIR/"
 cp "ifme/bin/$CompileMode/INIFileParser.dll" "$BUILDDIR/"
 cp "ifme/bin/$CompileMode/MediaInfoDotNet.dll" "$BUILDDIR/"
-cp "MediaInfoDotNet.dll.config" "$BUILDDIR/"
+cp "sources/MediaInfoDotNet.dll.config" "$BUILDDIR/"
 
 echo "Copying plugins"
 cp -r "prerequisite/linux/64bit/plugins" "$BUILDDIR/"
@@ -80,10 +80,13 @@ echo "Please Wait..."
 sleep 3
 
 cd $BUILDDIR
-mkbundle --deps --static -o ifme ifme.exe INIFileParser.dll MediaInfoDotNet.dll
+mkbundle --deps --static -o ifme-bin ifme.exe INIFileParser.dll MediaInfoDotNet.dll
 
-gcc "../ifme-gnome.c" -o "ifme-gnome"
-gcc "../ifme-xterm.c" -o "ifme-xterm"
+gcc "../sources/ifme-gnome.c" -o "ifme-gnome"
+gcc "../sources/ifme-xterm.c" -o "ifme-xterm"
+
+cp -a "../source/ifme.sh" "$BUILDDIR/ifme"
+chmod +x "$BUILDDIR/ifme"
 
 echo "Remove bytecode"
 rm -f "ifme.exe"
