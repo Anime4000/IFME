@@ -21,6 +21,9 @@ namespace ifme
 			Title = $"{Global.App.Name} Console";
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
+			// Display this program header text
+			Head();
+
 			// Load settings
 			SettingsLoad();
 
@@ -56,7 +59,6 @@ namespace ifme
 
 		static void DisplayHelp()
 		{
-			Head();
 			WriteLine("Usage: ifme [OPTION...] [GUI|CLI]");
 			WriteLine();
 			WriteLine("Mandatory arguments to long options are mandatory for short options too.");
@@ -282,9 +284,7 @@ namespace ifme
 
 		static int EncodingStart(string queueFile, bool force)
 		{
-			Head();
-
-			WriteLine($"Current location: {Global.Folder.App}");
+			WriteLine($"Current installed location: {Global.Folder.App}");
 
 			WriteLine("Loading plugins... please wait...");
 			Plugin.Load();
@@ -344,7 +344,7 @@ namespace ifme
 
 				// Tell User
 				WriteLine($"File: {Path.GetFileName(item.Data.File)}");
-				WriteLine($"Current queue {id + 1:000} of {argList.Count}");
+				WriteLine($"Current queue {id + 1} of {argList.Count}");
 
 				// Video
 				MediaEncoder.Video(file, item);

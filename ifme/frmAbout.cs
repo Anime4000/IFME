@@ -10,7 +10,7 @@ namespace ifme
 {
     public partial class frmAbout : Form
 	{
-		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis" });
+		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis", "Bvzcoder" });
 		HashSet<string> Art = new HashSet<string>(new string[] { "53C aka Ray-en", "http://53c.deviantart.com/" });
 		HashSet<string> Dev = new HashSet<string>();
 		HashSet<string> Lng = new HashSet<string>();

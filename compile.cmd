@@ -72,6 +72,7 @@ copy ifme\addons_windows64.repo %BUILDDIR%
 copy ifme\avisynthsource.code %BUILDDIR%
 copy ifme\format.ini %BUILDDIR%
 copy ifme\iso.code %BUILDDIR%
+copy sources\metauser.if %BUILDDIR%
 
 @title COPY COMPILED
 echo COPY COMPILED
@@ -92,7 +93,6 @@ del /f /q %BUILDDIR%\ifme.vshost.exe
 del /f /q %BUILDDIR%\ifme.vshost.exe.config
 del /f /q %BUILDDIR%\ifme.vshost.exe.manifest
 del /f /q %BUILDDIR%\ifme.imouto.pdb
-del /f /q %BUILDDIR%\metauser.if
 timeout /t 3 >nul
 echo.
 

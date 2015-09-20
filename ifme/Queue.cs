@@ -37,6 +37,9 @@ namespace ifme
 		public Video Video = new Video();
 		public Audio Audio = new Audio();
 
+		public bool DropAudioTracks;
+		public List<DropAudio> DropAudioId = new List<DropAudio>();
+
 		public bool SubtitleEnable;
 		public List<Subtitle> Subtitle = new List<Subtitle>();
 
@@ -93,6 +96,13 @@ namespace ifme
 		public string Channel;
 		public bool Merge;
 		public string Command;
+	}
+
+	public class DropAudio
+	{
+		public string Id;
+		public string Text;
+		public bool Checked;
 	}
 
 	public class Subtitle

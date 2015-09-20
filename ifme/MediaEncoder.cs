@@ -58,6 +58,10 @@ namespace ifme
 				int counter = 0;
 				foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
 				{
+					// Drop current tracks if set
+					if (DropCurrentAudio(audio.ID, item))
+						continue;
+
 					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
 				}
 
@@ -81,18 +85,53 @@ namespace ifme
 				{
 					if (string.Equals(codec.Profile.Name, item.Audio.Encoder, IC))
 					{
-						foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+						if (item.Audio.Merge)
 						{
-							string outfile = $"audio{counter++:0000}_{audio.Lang}";
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} -y {outfile}.wav");
-							TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
-							File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
+							int count = 0;
+							string map = string.Empty;
+							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+							{
+								// Drop current tracks if set
+								if (DropCurrentAudio(audio.ID, item))
+									continue;
+
+								count++;
+								map += $"-map {audio.ID} ";
+							}
+
+							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} -y audio0000_und.wav");
+							TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+							File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
+						}
+						else
+						{
+							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+							{
+								// Drop current tracks if set
+								if (DropCurrentAudio(audio.ID, item))
+									continue;
+
+								string outfile = $"audio{counter++:0000}_{audio.Lang}";
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} -y {outfile}.wav");
+								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
+								File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
+							}
 						}
 
 						break;
 					}
 				}
 			}
+		}
+
+		private static bool DropCurrentAudio(string currentId, Queue currentAudio)
+		{
+			if (currentAudio.DropAudioTracks)
+				foreach (var item in currentAudio.DropAudioId)
+					if (string.Equals(currentId, item.Id, IC))
+						if (item.Checked)
+							return true;
+			return false;
 		}
 
 		public static void Video(string file, Queue item)

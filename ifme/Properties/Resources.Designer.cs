@@ -151,7 +151,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dearness.
+        ///   Looks up a localized string similar to FLUORITE DIARY.
         /// </summary>
         internal static string CodeName {
             get {

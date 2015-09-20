@@ -1,0 +1,27 @@
+﻿[info]
+format = mkv
+platform = User
+name = BVzCoder Tuned Anime (High Quality, Slow)
+author = Bvz
+web = 
+
+[picture]
+resolution = 1280x720
+framerate = 23.976
+bitdepth = 8
+chroma = 420
+
+[video]
+preset = slower
+tune = psnr
+type = 0
+value = 25
+cmd = --bframes 3 --ref 3 --rc-lookahead 60 --merange 60 --aq-mode 1 --aq-strength 0.6 --psy-rd 0.52 --psy-rdoq 0.00 --rd 6 --vbv-maxrate 1500 --vbv-bufsize 1500
+
+[audio]
+encoder = NeroAAC - BVZ
+bitrate = 64000
+frequency = 44100
+channel = stereo
+compile = false
+cmd = -ignorelength -hev2

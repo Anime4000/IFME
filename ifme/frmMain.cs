@@ -112,6 +112,8 @@ namespace ifme
 						QueueListSaveAs();
 					else
 						QueueListSave();
+
+					btnQueueStop.PerformClick();
 				}
 				else if (MsgBox == DialogResult.Cancel)
 				{
@@ -392,6 +394,11 @@ namespace ifme
 			Info.Audio.Channel = "stereo";
 			Info.Audio.Command = "";
 
+			// Drop audio tracks support
+			foreach (var item in GetStream.Media(file, StreamType.Audio))
+				Info.DropAudioId.Add(new DropAudio { Id = item.ID, Text = $"{item.ID}, {item.Lang}, {item.OtherInfo}", Checked = false });
+			
+
 			// Add to queue list
 			ListViewItem qItem = new ListViewItem(new[] {
 				GetInfo.FileName(file),
@@ -524,6 +531,9 @@ namespace ifme
 			chkAudioMerge.Checked = Info.Audio.Merge;
 			txtAudioCmd.Text = Info.Audio.Command;
 
+			// Audio Tracks
+			chkAudioDrop.Checked = Info.DropAudioTracks;
+
 			// Subtitles
 			lstSub.Items.Clear();
 			chkSubEnable.Checked = Info.SubtitleEnable;
@@ -548,6 +558,10 @@ namespace ifme
 
 		void QueueUnselect()
 		{
+			// Audio Drop
+			chkAudioDrop.Checked = false;
+			clbAudioTracks.Items.Clear();
+
 			// Subtitles
 			chkSubEnable.Checked = false;
 			lstSub.Items.Clear();
@@ -753,6 +767,60 @@ namespace ifme
 		#endregion
 
 		#region Queue: Property update - Audio Tab
+		private void chkAudioDrop_CheckedChanged(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 1)
+			{
+				var qitem = lstQueue.SelectedItems[0].Tag as Queue;
+				string file = qitem.Data.File;
+
+				if (chkAudioDrop.Checked)
+				{
+					clbAudioTracks.Items.Clear();
+
+					foreach (var item in qitem.DropAudioId)
+						clbAudioTracks.Items.Add(item.Text, item.Checked);
+
+					qitem.DropAudioTracks = true;
+				}
+				else
+				{
+					clbAudioTracks.Items.Clear();
+                    qitem.DropAudioTracks = false;
+				}
+			}
+			else
+			{
+				if (chkAudioDrop.Checked)
+					MessageBox.Show(Language.OneItem);
+
+				chkAudioDrop.Checked = false;
+			}
+
+			clbAudioTracks.Visible = chkAudioDrop.Checked;
+        }
+
+		private void clbAudioTracks_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			// Ref: http://stackoverflow.com/a/17511730
+			// Due this event fire 2 times and no ItemChecked event,
+			// Apply this trick or hacks
+
+			// Copy
+			CheckedListBox clb = (CheckedListBox)sender;
+
+			// Switch off event handler
+			clb.ItemCheck -= clbAudioTracks_ItemCheck;
+			clb.SetItemCheckState(e.Index, e.NewValue);
+
+			// Switch on event handler
+			clb.ItemCheck += clbAudioTracks_ItemCheck;
+
+			// Do stuff
+			if (lstQueue.SelectedItems.Count == 1)
+				(lstQueue.SelectedItems[0].Tag as Queue).DropAudioId[e.Index].Checked = e.NewValue == CheckState.Checked ? true : false;
+		}
+
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			foreach (var item in Plugin.List)

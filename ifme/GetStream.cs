@@ -24,6 +24,7 @@ namespace ifme
 		public string ID;
 		public string Lang;
 		public string Format;
+		public string OtherInfo;
 	}
 
 	public class StreamMatroska
@@ -73,6 +74,7 @@ namespace ifme
 					string lang = string.Empty;
 					string codec = string.Empty;
 					string format = string.Empty;
+					string otherinfo = string.Empty;
 
 					if (item.Contains(Kind))
 					{
@@ -93,7 +95,8 @@ namespace ifme
 						else
 							lang = "und";
 
-						for (int i = item.IndexOf(Kind) + (Kind.Length + 2); i < item.Length; i++)
+						int x = item.IndexOf(Kind) + (Kind.Length + 2);
+						for (int i = x; i < item.Length; i++)
 						{
 							if (item[i] == ' ')
 								break;
@@ -102,6 +105,8 @@ namespace ifme
 
 							codec += item[i];
 						}
+
+						otherinfo = item.Substring(x);
 
 						try
 						{
@@ -117,7 +122,7 @@ namespace ifme
 								format = codec;
 						}
 						
-						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format });
+						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format, OtherInfo = otherinfo });
 					}
 				}
 			}
