@@ -47,22 +47,9 @@ namespace ifme
 
 		private void bgwThread_DoWork(object sender, DoWorkEventArgs e)
 		{
-#if NONSTEAM
-			// App Version
-			try
-			{
-				if (!string.Equals(Global.App.VersionRelease, client.DownloadString("https://x265.github.io/update/version.txt")))
-					Global.App.NewRelease = true;
-			}
-			catch (Exception)
-			{
-				LogError("WebClient.DownloadString broken on Linux, skipping");
-			}
-#endif
-
 			// Check x265, just incase user remove folder
 			if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}")))
-            {
+			{
 				if (OS.IsWindows)
 				{
 					if (OS.Is64bit)
@@ -79,6 +66,12 @@ namespace ifme
 					Default.Compiler = "gcc";
 				}
 			}
+
+#if NONSTEAM
+			// App Version
+			if (!string.Equals(Global.App.VersionRelease, DownloadString("https://x265.github.io/update/version.txt")))
+				Global.App.NewRelease = true;
+#endif
 
 			// Plugin 
 			PluginCheck(); // check repo
@@ -128,37 +121,16 @@ namespace ifme
 			}
 
 			// Format fix
-			try
-			{
-				WriteLine("Loading codec fingerprint");
-				client.DownloadFile("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini"));
-			}
-			catch (Exception)
-			{
-				LogError("Could not load codec fingerprint, no internet access, using old");
-			}
+			WriteLine("Loading codec fingerprint");
+			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini.part"));
 
 			// AviSynth filter, allow IFME to find real file
-			try
-			{
-				WriteLine("Loading AviSynth filter");
-				client.DownloadFile("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/avisynthsource.code", Path.Combine(Global.Folder.App, "avisynthsource.code"));
-			}
-			catch (Exception)
-			{
-				LogError("Could not load AviSynth filter, no internet access, using old");
-			}
+			WriteLine("Loading AviSynth filter");
+			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/avisynthsource.code", Path.Combine(Global.Folder.App, "avisynthsource.code"));
 
 			// Thanks to our donor
-			try
-			{
-				WriteLine("Loading our donor list :) you can see via \"About IFME\"");
-				client.DownloadFile("http://x265.github.io/supporter.txt", Path.Combine(Global.Folder.App, "metauser.if"));
-			}
-			catch (Exception)
-			{
-				LogError("Sorry, cannot load something :( it seem no Internet");
-			}
+			WriteLine("Loading our donor list :) you can see via \"About IFME\"");
+			Download("http://x265.github.io/supporter.txt", Path.Combine(Global.Folder.App, "metauser.if"));
 
 			// Save all settings
 			Default.Save();
@@ -204,7 +176,7 @@ namespace ifme
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, nemu[0])))
 				{
 					Write($"Downloading component {counter,2:##} of {counted,2:##}: {nemu[0]}\n");
-					Download(nemu[1]);
+					DownloadExtract(nemu[1], Global.Folder.Plugins);
 				}
 			}
 		}
@@ -221,7 +193,7 @@ namespace ifme
 				if (string.Equals(item.Profile.Ver, client.DownloadString(item.Provider.Update)))
 					continue;
 
-				Download(item.Provider.Download, Global.Folder.Plugins, "update.ifx");
+				DownloadExtract(item.Provider.Download, Global.Folder.Plugins);
 			}
 		}
 		#endregion
@@ -238,40 +210,69 @@ namespace ifme
 				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
 
-				try
-				{
-					version = client.DownloadString(item.UrlVersion);
-				}
-				catch (Exception)
-				{
-					LogError("WebClient.DownloadString broken on Linux, skipping");
-				}
+				version = DownloadString(item.UrlVersion);
 
 				if (string.Equals(item.Version, version ?? "0"))
 					continue;
 				
 				link = string.Format(item.UrlDownload, version);
 
-				Download(link, Global.Folder.Extension, "zombie.ife");
+				DownloadExtract(link, Global.Folder.Extension);
 			}
 		}
 
-		void Download(string url)
+		void Download(string url, string fileout)
 		{
-			Download(url, Global.Folder.Plugins, "imouto.ifx");
+			string filetemp = $"{fileout}.tmp";
+
+			try
+			{
+				client.DownloadFile(url, filetemp);
+			}
+			catch
+			{
+				LogError($"Problem when trying to download: {fileout}");
+			}
+			finally
+			{
+				if (File.Exists(fileout))
+				{
+					File.Delete(fileout);
+					File.Move(filetemp, fileout);
+				}
+				else
+				{
+					File.Move(filetemp, fileout);
+				}
+			}
 		}
 
-		void Download(string url, string folder, string file)
+		string DownloadString(string url)
 		{
 			try
 			{
+				return client.DownloadString(url);
+			}
+			catch
+			{
+				LogError("WebClient.DownloadString is broken on current Mono version, skipping");
+				return null;
+			}
+		}
+
+		void DownloadExtract(string url, string targetFolder)
+		{
+			string tempFile = Path.Combine(Global.Folder.DefaultTemp, "package.ifa");
+
+            try
+			{
 				finish = false;
 
-				client.DownloadFileAsync(new Uri(url), Path.Combine(folder, file));
+				client.DownloadFileAsync(new Uri(url), tempFile);
 
-				while (finish == false) { /* doing nothing, just block */ }
+				while (!finish) { /* doing nothing, just block stuff */ }
 
-				Extract(folder, file);
+				Extract(tempFile, targetFolder);
 			}
 			catch (Exception)
 			{
@@ -279,23 +280,19 @@ namespace ifme
 			}
 		}
 
-		void Extract(string dir, string file)
+		void Extract(string archiveFile, string targetFolder)
 		{
-			string unzip = Path.Combine(Global.Folder.App, "7za");
-			string zipfile = Path.Combine(dir, file);
+			string zipApp = Path.Combine(Global.Folder.App, "7za");
 
-			if (File.Exists($"{(OS.IsLinux ? unzip : $"{unzip}.exe")}"))
-			{
-				Write($"Extracting...");
-				TaskManager.Run($"\"{unzip}\" x \"{zipfile}\" -y \"-o{dir}\" > {OS.Null} 2>&1");
-			}
+			Write($"Extracting...");
+
+			if (File.Exists($"{(OS.IsLinux ? zipApp : $"{zipApp}.exe")}"))
+				TaskManager.Run($"\"{zipApp}\" x \"{archiveFile}\" -y \"-o{targetFolder}\" > {OS.Null} 2>&1");
 			else
-			{
-				Write($"File {unzip} not found...");
-			}
+				Write($"File {zipApp} not found...");
 
 			Write("Done!\n");
-			File.Delete(zipfile);
+			File.Delete(archiveFile);
 		}
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -311,7 +308,7 @@ namespace ifme
 		void LogError(string message)
 		{
 			ForegroundColor = ConsoleColor.Red;
-			Write("Error");
+			Write("ERROR: ");
 			ResetColor();
 			Write($": {message}\n");
 		}

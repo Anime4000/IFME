@@ -59,7 +59,9 @@ namespace ifme
 
 		public class Folder
 		{
-			public static string App
+			static string _DefaultSave = Path.Combine(Path.GetTempPath(), "ifme");
+
+            public static string App
 			{
 				get { return string.IsNullOrEmpty(Directory.GetCurrentDirectory()) ? Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) : Directory.GetCurrentDirectory();  }
 			}
@@ -76,7 +78,7 @@ namespace ifme
 
 			public static string DefaultTemp
 			{
-				get { return Path.Combine(Path.GetTempPath(), "ifme"); }
+				get { if (!Directory.Exists(_DefaultSave)) { Directory.CreateDirectory(_DefaultSave); } return _DefaultSave; }
 			}
 
 			public static string DefaultSave
