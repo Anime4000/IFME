@@ -86,7 +86,7 @@ mkbundle --deps --static -o ifme-bin ifme.exe INIFileParser.dll MediaInfoDotNet.
 gcc "../sources/ifme-gnome.c" -o "ifme-gnome"
 gcc "../sources/ifme-xterm.c" -o "ifme-xterm"
 
-cp -a "../source/ifme.sh" "$BUILDDIR/ifme"
+cp "../source/ifme.sh" "ifme"
 chmod +x "$BUILDDIR/ifme"
 
 echo "Remove bytecode"
