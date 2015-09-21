@@ -32,6 +32,7 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
+			Clear();
 			Title = "Nemu Command Centre";
 			WriteLine(@"_____   __                      ___            ________            _____ ");
 			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
@@ -99,11 +100,8 @@ namespace ifme
 				Default.Language = "en";
 				WriteLine($"Language file {Default.Language}.ini not found, make sure file name and CODE are same");
 			}
-			else
-			{
-				Language.Display();
-				WriteLine($"Loading language file: {Default.Language}.ini");
-			}
+			Language.Display();
+			WriteLine($"Loading language file: {Default.Language}.ini");
 
 			// Detect AviSynth
 			if (File.Exists(Plugin.AviSynthFile))
@@ -254,6 +252,7 @@ namespace ifme
 
 		string DownloadString(string url)
 		{
+			// Due to mono broken WebClient.DownloadString, using this method
 			try
 			{
 				client.DownloadFile(url, Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
@@ -320,7 +319,7 @@ namespace ifme
 			ForegroundColor = ConsoleColor.Red;
 			Write("ERROR: ");
 			ResetColor();
-			Write($": {message}\n");
+			Write($"{message}\n");
 		}
 	}
 }

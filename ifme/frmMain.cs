@@ -51,6 +51,15 @@ namespace ifme
 			tsmiQueueAviSynthEdit.Enabled = Plugin.AviSynthInstalled;
 			tsmiQueueAviSynthGenerate.Enabled = Plugin.AviSynthInstalled;
 
+			// Audio
+			foreach (var item in Plugin.List)
+			{
+				if (item.Info.Type.ToLower() == "audio")
+				{
+					cboAudioEncoder.Items.Add(item.Profile.Name);
+				}
+			}
+
 			// Add language list
 			foreach (var item in File.ReadAllLines("iso.code"))
 				cboSubLang.Items.Add(item);
@@ -114,6 +123,8 @@ namespace ifme
 						QueueListSave();
 
 					btnQueueStop.PerformClick();
+
+					MediaEncoder.CleanUp();
 				}
 				else if (MsgBox == DialogResult.Cancel)
 				{
@@ -163,12 +174,13 @@ namespace ifme
 				txtVideoValue.Text = p.Video.Value;
 				txtVideoCmd.Text = p.Video.Command;
 
-				cboAudioEncoder.Text = p.Audio.Encoder;
-				cboAudioBit.Text = p.Audio.BitRate;
-				cboAudioFreq.Text = p.Audio.Frequency;
-				cboAudioChannel.Text = p.Audio.Channel;
-				chkAudioMerge.Checked = p.Audio.Merge;
-				txtAudioCmd.Text = p.Audio.Command;
+				bool exist = Plugin.IsExist(p.Audio.Encoder);
+                cboAudioEncoder.Text = exist ? p.Audio.Encoder : Plugin.Default.Audio.Name;
+				cboAudioBit.Text = exist ? p.Audio.BitRate : Plugin.Default.Audio.BitRate;
+				cboAudioFreq.Text = exist ? p.Audio.Frequency : Plugin.Default.Audio.Frequency;
+				cboAudioChannel.Text = exist ? p.Audio.Channel : Plugin.Default.Audio.Channel;
+				chkAudioMerge.Checked = exist ? p.Audio.Merge : Plugin.Default.Audio.Merge;
+				txtAudioCmd.Text = exist ? p.Audio.Command : Plugin.Default.Audio.Command;
 			}
 		}
 
@@ -344,6 +356,7 @@ namespace ifme
 				}
 			}
 
+			// Picture section
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
@@ -354,6 +367,9 @@ namespace ifme
 
 				Info.Prop.Duration = Video.duration;
 				Info.Prop.FrameCount = Video.frameCount;
+
+				Info.Picture.IsCopy = false;
+				Info.Picture.IsHevc = string.Equals(Video.format, "HEVC", IC);
 
 				FileType = $"{Path.GetExtension(file).ToUpper()} ({Video.format})";
 
@@ -385,17 +401,20 @@ namespace ifme
 				}
 			}
 
+			// Video section
 			Info.Video.Preset = i == 0 ? "medium" : p.Video.Preset;
 			Info.Video.Tune = i == 0 ? "off" : p.Video.Tune;
 			Info.Video.Type = i == 0 ? 0 : p.Video.Type;
 			Info.Video.Value = i == 0 ? "26" : p.Video.Value;
 			Info.Video.Command = i == 0 ? "--dither" : p.Video.Command;
 
-			Info.Audio.Encoder = i == 0 ? "Passthrough (Extract all audio)" : p.Audio.Encoder;
-			Info.Audio.BitRate = i == 0 ? "256" : p.Audio.BitRate;
-			Info.Audio.Frequency = i == 0 ? "auto" : p.Audio.Frequency;
-			Info.Audio.Channel = i == 0 ? "stereo" : p.Audio.Channel;
-			Info.Audio.Command = i == 0 ? "" : p.Audio.Command;
+			// Audio section
+			bool exist = Plugin.IsExist(p.Audio.Encoder);
+            Info.Audio.Encoder = i == 0 || !exist ? Plugin.Default.Audio.Name : p.Audio.Encoder;
+			Info.Audio.BitRate = i == 0 || !exist ? Plugin.Default.Audio.BitRate : p.Audio.BitRate;
+			Info.Audio.Frequency = i == 0 || !exist ? Plugin.Default.Audio.Frequency : p.Audio.Frequency;
+			Info.Audio.Channel = i == 0 || !exist ? Plugin.Default.Audio.Channel : p.Audio.Channel;
+			Info.Audio.Command = i == 0 || !exist ? Plugin.Default.Audio.Command : p.Audio.Command;
 
 			// Drop audio tracks support
 			foreach (var item in GetStream.Media(file, StreamType.Audio))
@@ -522,6 +541,9 @@ namespace ifme
 			cboPictureYadifField.SelectedIndex = Info.Picture.YadifField;
 			cboPictureYadifFlag.SelectedIndex = Info.Picture.YadifFlag;
 
+			chkPictureVideoCopy.Enabled = Info.Picture.IsHevc;
+			chkPictureVideoCopy.Checked = Info.Picture.IsCopy;
+
 			// Video
 			cboVideoPreset.Text = Info.Video.Preset;
 			cboVideoTune.Text = Info.Video.Tune;
@@ -582,34 +604,32 @@ namespace ifme
 		#region Queue: Property update - Picture Tab
 		private void rdoMKV_CheckedChanged(object sender, EventArgs e)
 		{
-			PluginAudioReload();
+			PluginAudioCheck();
 			QueueUpdate(QueueProp.FormatMkv);
 		}
 
 		private void rdoMP4_CheckedChanged(object sender, EventArgs e)
 		{
-			PluginAudioReload();
+			PluginAudioCheck();
 			QueueUpdate(QueueProp.FormatMp4);
 		}
 
-		void PluginAudioReload()
+		void PluginAudioCheck()
 		{
-			cboAudioEncoder.Items.Clear();
-
-			foreach (var item in Plugin.List)
+			if (rdoMP4.Checked)
 			{
-				if (item.Info.Type.ToLower() == "audio")
+				foreach (var item in Plugin.List)
 				{
-					if (rdoMP4.Checked)
+					if (string.Equals(item.Info.Type, "audio", IC))
 					{
-						if (item.Info.Support.ToLower() == "mp4")
+						if (string.Equals(item.Profile.Name, cboAudioEncoder.Text, IC))
 						{
-							cboAudioEncoder.Items.Add(item.Profile.Name);
+							if (!string.Equals(item.Info.Support, "mp4", IC))
+							{
+								InvokeLog($"Encoder \"{cboAudioEncoder.Text}\" was not supported by MP4, choose MKV or different encoder");
+								cboAudioEncoder.SelectedIndex = 1;
+                            }
 						}
-					}
-					else
-					{
-						cboAudioEncoder.Items.Add(item.Profile.Name);
 					}
 				}
 			}
@@ -664,6 +684,11 @@ namespace ifme
 		private void cboPictureYadifFlag_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			QueueUpdate(QueueProp.PictureYadifFlag);
+		}
+
+		private void chkPictureVideoCopy_CheckedChanged(object sender, EventArgs e)
+		{
+			QueueUpdate(QueueProp.PictureCopyVideo);
 		}
 		#endregion
 
@@ -829,6 +854,8 @@ namespace ifme
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			PluginAudioCheck();
+
 			foreach (var item in Plugin.List)
 			{
 				if (item.Info.Type.ToLower() == "audio")
@@ -1103,13 +1130,11 @@ namespace ifme
 				switch (Id)
 				{
 					case QueueProp.FormatMkv:
-						cboAudioEncoder.Text = "Passthrough (Extract all audio)";
 						item.SubItems[3].Text = ".MKV (HEVC)";
 						X.Data.SaveAsMkv = true;
 						break;
 
 					case QueueProp.FormatMp4:
-						cboAudioEncoder.Text = "Passthrough (Extract all audio)";
 						item.SubItems[3].Text = ".MP4 (HEVC)";
 						X.Data.SaveAsMkv = false;
 						break;
@@ -1144,6 +1169,11 @@ namespace ifme
 
 					case QueueProp.PictureYadifFlag:
 						X.Picture.YadifFlag = cboPictureYadifFlag.SelectedIndex;
+						break;
+
+					case QueueProp.PictureCopyVideo:
+						if (X.Picture.IsHevc)
+							X.Picture.IsCopy = chkPictureVideoCopy.Checked;
 						break;
 
 					case QueueProp.VideoPreset:
@@ -1741,12 +1771,18 @@ namespace ifme
 
 		void InvokeLog(string message)
 		{
-			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}]: {message}\r\n";
+			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}] {message}";
 
 			if (InvokeRequired)
-				BeginInvoke(new MethodInvoker(() => txtLog.AppendText(message)));
+			{
+				BeginInvoke(new MethodInvoker(() => Console.WriteLine(message)));
+				BeginInvoke(new MethodInvoker(() => txtLog.AppendText(message + "\r\n")));
+			}
 			else
-				txtLog.AppendText(message);
+			{
+				Console.WriteLine(message);
+                txtLog.AppendText(message + "\r\n");
+			}
 		}
 
 		void ControlEnable(bool x)

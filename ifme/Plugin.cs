@@ -16,6 +16,57 @@ namespace ifme
 		public app App = new app();
 		public arg Arg = new arg();
 
+		public class info
+		{
+			public string Type;
+			public string Support;
+		}
+
+		public class profile
+		{
+			public int Arch;
+			public string Name;
+			public string Dev;
+			public string Ver;
+			public string Web;
+		}
+
+		public class provider
+		{
+			public string Name;
+			public string Update;
+			public string Download;
+		}
+
+		public class app
+		{
+			public string Bin;
+			public string Ext;
+			public string[] Quality;
+			public string Default;
+		}
+
+		public class arg
+		{
+			public string Input;
+			public string Output;
+			public string Bitrate;
+			public string Advance;
+		}
+
+		public class Default
+		{
+			public class Audio
+			{
+				public static string Name = "Passthrough (Extract all audio)";
+				public static string BitRate = "256";
+				public static string Frequency = "auto";
+				public static string Channel = "auto";
+				public static bool Merge = false;
+				public static string Command = null;
+			}
+		}
+
 		public static bool AviSynthInstalled = false;
 		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
 
@@ -81,6 +132,15 @@ namespace ifme
 			}
 		}
 
+		public static bool IsExist(string name)
+		{
+			foreach (var item in List)
+				if (string.Equals(item.Profile.Name, name, StringComparison.OrdinalIgnoreCase))
+					return true;
+
+			return false;
+		}
+
 		public static void BuildIn()
 		{
 			// Audio section
@@ -92,75 +152,37 @@ namespace ifme
 			a.Profile.Ver = Global.App.Version;
 			a.Profile.Web = "https://x265.github.io/";
 			a.Provider.Name = "IFME";
-			a.Provider.Update = "";
-			a.Provider.Download = "";
-			a.App.Bin = "";
+			a.Provider.Update = null;
+			a.Provider.Download = null;
+			a.App.Bin = null;
 			a.App.Quality = new[] { "0" };
 			a.App.Default = "0";
-			a.Arg.Input = "";
-			a.Arg.Output = "";
-			a.Arg.Bitrate = "";
-			a.Arg.Advance = "";
+			a.Arg.Input = null;
+			a.Arg.Output = null;
+			a.Arg.Bitrate = null;
+			a.Arg.Advance = null;
 
 			List.Add(a);
 
 			var b = new Plugin();
 			b.Info.Type = "audio";
 			b.Info.Support = "mp4";
-			b.Profile.Name = "Passthrough (Extract all audio)";
+			b.Profile.Name = Default.Audio.Name;
 			b.Profile.Dev = "Anime4000";
 			b.Profile.Ver = Global.App.Version;
 			b.Profile.Web = "https://x265.github.io/";
 			b.Provider.Name = "IFME";
-			b.Provider.Update = "";
-			b.Provider.Download = "";
-			b.App.Bin = "";
-			b.App.Quality = new[] { "128", "192", "265", "384", "512", "768", "1024" };
-			b.App.Default = "384";
-			b.Arg.Input = "";
-			b.Arg.Output = "";
-			b.Arg.Bitrate = "";
-			b.Arg.Advance = "";
+			b.Provider.Update = null;
+			b.Provider.Download = null;
+			b.App.Bin = null;
+			b.App.Quality = new[] { "128", "192", "256", "384", "512", "768", "1024" };
+			b.App.Default = Default.Audio.BitRate;
+			b.Arg.Input = null;
+			b.Arg.Output = null;
+			b.Arg.Bitrate = null;
+			b.Arg.Advance = null;
 
 			List.Add(b);
-		}
-
-		public class info
-		{
-			public string Type;
-			public string Support;
-		}
-
-		public class profile
-		{
-			public int Arch;
-			public string Name;
-			public string Dev;
-			public string Ver;
-			public string Web;
-		}
-
-		public class provider
-		{
-			public string Name;
-			public string Update;
-			public string Download;
-		}
-
-		public class app
-		{
-			public string Bin;
-			public string Ext;
-			public string[] Quality;
-			public string Default;
-		}
-
-		public class arg
-		{
-			public string Input;
-			public string Output;
-			public string Bitrate;
-			public string Advance;
 		}
 	}
 }

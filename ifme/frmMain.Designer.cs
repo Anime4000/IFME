@@ -151,6 +151,7 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
+			this.chkPictureVideoCopy = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -492,6 +493,7 @@
 			// 
 			// tabPicture
 			// 
+			this.tabPicture.Controls.Add(this.chkPictureVideoCopy);
 			this.tabPicture.Controls.Add(this.chkPictureYadif);
 			this.tabPicture.Controls.Add(this.grpPictureYadif);
 			this.tabPicture.Controls.Add(this.grpPictureQuality);
@@ -531,7 +533,7 @@
 			this.grpPictureYadif.Enabled = false;
 			this.grpPictureYadif.Location = new System.Drawing.Point(329, 6);
 			this.grpPictureYadif.Name = "grpPictureYadif";
-			this.grpPictureYadif.Size = new System.Drawing.Size(317, 212);
+			this.grpPictureYadif.Size = new System.Drawing.Size(317, 189);
 			this.grpPictureYadif.TabIndex = 4;
 			this.grpPictureYadif.TabStop = false;
 			// 
@@ -543,7 +545,7 @@
 			this.cboPictureYadifFlag.Items.AddRange(new object[] {
             "Deinterlace all frames",
             "Deinterlace marked frames"});
-			this.cboPictureYadifFlag.Location = new System.Drawing.Point(55, 144);
+			this.cboPictureYadifFlag.Location = new System.Drawing.Point(55, 133);
 			this.cboPictureYadifFlag.Name = "cboPictureYadifFlag";
 			this.cboPictureYadifFlag.Size = new System.Drawing.Size(210, 21);
 			this.cboPictureYadifFlag.TabIndex = 5;
@@ -553,7 +555,7 @@
 			// 
 			this.lblPictureYadifFlag.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblPictureYadifFlag.AutoSize = true;
-			this.lblPictureYadifFlag.Location = new System.Drawing.Point(52, 128);
+			this.lblPictureYadifFlag.Location = new System.Drawing.Point(52, 117);
 			this.lblPictureYadifFlag.Name = "lblPictureYadifFlag";
 			this.lblPictureYadifFlag.Size = new System.Drawing.Size(31, 13);
 			this.lblPictureYadifFlag.TabIndex = 4;
@@ -567,7 +569,7 @@
 			this.cboPictureYadifField.Items.AddRange(new object[] {
             "Top Field First",
             "Bottom Field First"});
-			this.cboPictureYadifField.Location = new System.Drawing.Point(55, 104);
+			this.cboPictureYadifField.Location = new System.Drawing.Point(55, 93);
 			this.cboPictureYadifField.Name = "cboPictureYadifField";
 			this.cboPictureYadifField.Size = new System.Drawing.Size(210, 21);
 			this.cboPictureYadifField.TabIndex = 3;
@@ -577,7 +579,7 @@
 			// 
 			this.lblPictureYadifField.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblPictureYadifField.AutoSize = true;
-			this.lblPictureYadifField.Location = new System.Drawing.Point(52, 88);
+			this.lblPictureYadifField.Location = new System.Drawing.Point(52, 77);
 			this.lblPictureYadifField.Name = "lblPictureYadifField";
 			this.lblPictureYadifField.Size = new System.Drawing.Size(33, 13);
 			this.lblPictureYadifField.TabIndex = 2;
@@ -593,7 +595,7 @@
             "Deinterlace each field",
             "Skips spatial interlacing frame check",
             "Skips spatial interlacing field check"});
-			this.cboPictureYadifMode.Location = new System.Drawing.Point(55, 64);
+			this.cboPictureYadifMode.Location = new System.Drawing.Point(55, 53);
 			this.cboPictureYadifMode.Name = "cboPictureYadifMode";
 			this.cboPictureYadifMode.Size = new System.Drawing.Size(210, 21);
 			this.cboPictureYadifMode.TabIndex = 1;
@@ -603,7 +605,7 @@
 			// 
 			this.lblPictureYadifMode.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblPictureYadifMode.AutoSize = true;
-			this.lblPictureYadifMode.Location = new System.Drawing.Point(52, 48);
+			this.lblPictureYadifMode.Location = new System.Drawing.Point(52, 37);
 			this.lblPictureYadifMode.Name = "lblPictureYadifMode";
 			this.lblPictureYadifMode.Size = new System.Drawing.Size(37, 13);
 			this.lblPictureYadifMode.TabIndex = 0;
@@ -1600,6 +1602,20 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
+			// chkPictureVideoCopy
+			// 
+			this.chkPictureVideoCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.chkPictureVideoCopy.AutoSize = true;
+			this.chkPictureVideoCopy.Enabled = false;
+			this.chkPictureVideoCopy.Location = new System.Drawing.Point(329, 201);
+			this.chkPictureVideoCopy.Name = "chkPictureVideoCopy";
+			this.chkPictureVideoCopy.Size = new System.Drawing.Size(195, 17);
+			this.chkPictureVideoCopy.TabIndex = 5;
+			this.chkPictureVideoCopy.Text = "&Video passthrough (do not encode)";
+			this.chkPictureVideoCopy.UseVisualStyleBackColor = true;
+			this.chkPictureVideoCopy.CheckedChanged += new System.EventHandler(this.chkPictureVideoCopy_CheckedChanged);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1797,5 +1813,6 @@
 		private System.Windows.Forms.GroupBox grpAudioDrop;
 		private System.Windows.Forms.CheckBox chkAudioDrop;
 		private System.Windows.Forms.CheckedListBox clbAudioTracks;
+		private System.Windows.Forms.CheckBox chkPictureVideoCopy;
 	}
 }

@@ -138,6 +138,16 @@ namespace ifme
 		{
 			foreach (var video in GetStream.Media(file, StreamType.Video))
 			{
+				// Copy
+				if (item.Picture.IsHevc)
+				{
+					if (item.Picture.IsCopy)
+					{
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -dn -sn -map {video.ID} -vcodec copy -y video0000_{video.Lang}.mp4");
+						return;
+					}
+				}
+
 				// ffmpeg settings
 				string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? null : $"-s {item.Picture.Resolution}";
 				string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? null : $"-r {item.Picture.FrameRate}";
@@ -280,7 +290,7 @@ namespace ifme
 				}
 
 				File.WriteAllText(Path.Combine(Default.DirTemp, "tags.xml"), tags);
-				TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" -t 0:tags.xml --disable-track-statistics-tags {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
+                TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" -t 0:tags.xml --disable-track-statistics-tags {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
 			}
 			else
 			{

@@ -12,6 +12,7 @@ enum QueueProp
 	PictureYadifMode,
 	PictureYadifField,
 	PictureYadifFlag,
+	PictureCopyVideo,
 	VideoPreset,
 	VideoTune,
 	VideoType,
@@ -77,6 +78,9 @@ namespace ifme
 		public int YadifMode;
 		public int YadifField;
 		public int YadifFlag;
+
+		public bool IsCopy;
+		public bool IsHevc;
 	}
 
 	public class Video

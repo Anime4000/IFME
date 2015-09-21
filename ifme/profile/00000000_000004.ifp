@@ -20,7 +20,7 @@ cmd = --dither
 
 [audio]
 encoder = Freeware Advanced Audio Coder
-bitrate = 128
+bitrate = 112
 frequency = auto
 channel = auto
 merge = false
