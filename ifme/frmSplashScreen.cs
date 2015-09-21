@@ -117,11 +117,11 @@ namespace ifme
 
 			// Format fix
 			WriteLine("Loading codec fingerprint");
-			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini"));
+			Download("https://github.com/Anime4000/IFME/raw/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini"));
 
 			// AviSynth filter, allow IFME to find real file
 			WriteLine("Loading AviSynth filter");
-			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/avisynthsource.code", Path.Combine(Global.Folder.App, "avisynthsource.code"));
+			Download("https://github.com/Anime4000/IFME/raw/master/ifme/avisynthsource.code", Path.Combine(Global.Folder.App, "avisynthsource.code"));
 
 			// Thanks to our donor
 			WriteLine("Loading our donor list :) you can see via \"About IFME\"");
