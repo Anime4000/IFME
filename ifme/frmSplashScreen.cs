@@ -234,7 +234,7 @@ namespace ifme
 			{
 				client.DownloadFile(url, filetemp);
 			}
-			catch
+			catch (Exception)
 			{
 				LogError($"Problem when trying to download: {fileout}");
 			}
@@ -263,7 +263,7 @@ namespace ifme
 				else
 					return null;
 			}
-			catch
+			catch (Exception)
 			{
 				LogError("WebClient.DownloadString is broken on current Mono version, skipping");
 				return null;

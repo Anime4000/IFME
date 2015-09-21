@@ -87,7 +87,7 @@ gcc "../sources/ifme-gnome.c" -o "ifme-gnome"
 gcc "../sources/ifme-xterm.c" -o "ifme-xterm"
 
 cp "../sources/ifme.sh" "ifme"
-chmod +x "$BUILDDIR/ifme"
+chmod +x "ifme"
 
 echo "Remove bytecode"
 rm -f "ifme.exe"
