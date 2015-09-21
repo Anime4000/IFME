@@ -67,19 +67,16 @@ namespace ifme
 				}
 			}
 
-#if NONSTEAM
-			// App Version
-			if (!string.Equals(Global.App.VersionRelease, DownloadString("https://x265.github.io/update/version.txt")))
-				Global.App.NewRelease = true;
-#endif
+			// Profile
+			Profile.Load();
+
+			// Check IFME if got new update
+			VersionCheck();
 
 			// Plugin 
 			PluginCheck(); // check repo
 			Plugin.Load(); // load to memory
 			if (!Program.ApplyUpdate) { PluginUpdate(); Plugin.Load(); }
-
-			// Profile
-			Profile.Load();
 
 			// Extension
 			Extension.Load();
@@ -122,7 +119,7 @@ namespace ifme
 
 			// Format fix
 			WriteLine("Loading codec fingerprint");
-			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini.part"));
+			Download("https://raw.githubusercontent.com/Anime4000/IFME/master/ifme/format.ini", Path.Combine(Global.Folder.App, "format.ini"));
 
 			// AviSynth filter, allow IFME to find real file
 			WriteLine("Loading AviSynth filter");
@@ -143,6 +140,14 @@ namespace ifme
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			Close();
+		}
+
+		private void VersionCheck()
+		{
+#if NONSTEAM
+			if (!string.Equals(Global.App.VersionRelease, DownloadString("https://x265.github.io/update/version.txt")))
+				Global.App.NewRelease = true;
+#endif
 		}
 
 		#region Plugins
@@ -251,7 +256,8 @@ namespace ifme
 		{
 			try
 			{
-				return client.DownloadString(url);
+				client.DownloadFile(url, Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
+				return File.ReadAllText(Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
 			}
 			catch
 			{
