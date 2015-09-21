@@ -9,7 +9,6 @@ mkdir "allos/extension"
 echo "Downloading plugins"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/faac.ifx -O linux/64bit/plugins/faac.ifx
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/ffmpeg.ifx -O linux/64bit/plugins/ffmpeg.ifx
-wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/ffmpeg-ogg.ifx -O linux/64bit/plugins/fmpeg-ogg.ifx
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/ffmsindex.ifx -O linux/64bit/plugins/ffmsindex.ifx
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/mkvtool.ifx -O linux/64bit/plugins/mkvtool.ifx
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/mp4box.ifx -O linux/64bit/plugins/mp4box.ifx
