@@ -238,14 +238,17 @@ namespace ifme
 			}
 			finally
 			{
-				if (File.Exists(fileout))
+				if (File.Exists(filetemp))
 				{
-					File.Delete(fileout);
-					File.Move(filetemp, fileout);
-				}
-				else
-				{
-					File.Move(filetemp, fileout);
+					if (File.Exists(fileout))
+					{
+						File.Delete(fileout);
+						File.Move(filetemp, fileout);
+					}
+					else
+					{
+						File.Move(filetemp, fileout);
+					}
 				}
 			}
 		}
