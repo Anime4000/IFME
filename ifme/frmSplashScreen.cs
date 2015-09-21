@@ -257,7 +257,11 @@ namespace ifme
 			try
 			{
 				client.DownloadFile(url, Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
-				return File.ReadAllText(Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
+				
+				if (File.Exists(Path.Combine(Global.Folder.DefaultTemp, "_string.txt")))
+					return File.ReadAllText(Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
+				else
+					return null;
 			}
 			catch
 			{
