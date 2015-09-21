@@ -100,6 +100,9 @@
 			this.cboVideoPreset = new System.Windows.Forms.ComboBox();
 			this.lblVideoPreset = new System.Windows.Forms.Label();
 			this.tabAudio = new System.Windows.Forms.TabPage();
+			this.chkAudioDrop = new System.Windows.Forms.CheckBox();
+			this.grpAudioDrop = new System.Windows.Forms.GroupBox();
+			this.clbAudioTracks = new System.Windows.Forms.CheckedListBox();
 			this.txtAudioCmd = new System.Windows.Forms.TextBox();
 			this.lblAudioCmd = new System.Windows.Forms.Label();
 			this.grpAudioBasic = new System.Windows.Forms.GroupBox();
@@ -148,9 +151,6 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
-			this.grpAudioDrop = new System.Windows.Forms.GroupBox();
-			this.chkAudioDrop = new System.Windows.Forms.CheckBox();
-			this.clbAudioTracks = new System.Windows.Forms.CheckedListBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -165,11 +165,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.trkVideoRate)).BeginInit();
 			this.grpVideoBasic.SuspendLayout();
 			this.tabAudio.SuspendLayout();
+			this.grpAudioDrop.SuspendLayout();
 			this.grpAudioBasic.SuspendLayout();
 			this.tabSubtitles.SuspendLayout();
 			this.tabAttachments.SuspendLayout();
 			this.tabLogs.SuspendLayout();
-			this.grpAudioDrop.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pbxLeft
@@ -1015,6 +1015,43 @@
 			this.tabAudio.Text = "Audio";
 			this.tabAudio.UseVisualStyleBackColor = true;
 			// 
+			// chkAudioDrop
+			// 
+			this.chkAudioDrop.AutoSize = true;
+			this.chkAudioDrop.Location = new System.Drawing.Point(336, 5);
+			this.chkAudioDrop.Name = "chkAudioDrop";
+			this.chkAudioDrop.Size = new System.Drawing.Size(83, 17);
+			this.chkAudioDrop.TabIndex = 0;
+			this.chkAudioDrop.Text = "&Drop Tracks";
+			this.chkAudioDrop.UseVisualStyleBackColor = true;
+			this.chkAudioDrop.CheckedChanged += new System.EventHandler(this.chkAudioDrop_CheckedChanged);
+			// 
+			// grpAudioDrop
+			// 
+			this.grpAudioDrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpAudioDrop.Controls.Add(this.clbAudioTracks);
+			this.grpAudioDrop.Location = new System.Drawing.Point(329, 6);
+			this.grpAudioDrop.Name = "grpAudioDrop";
+			this.grpAudioDrop.Size = new System.Drawing.Size(317, 173);
+			this.grpAudioDrop.TabIndex = 3;
+			this.grpAudioDrop.TabStop = false;
+			// 
+			// clbAudioTracks
+			// 
+			this.clbAudioTracks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.clbAudioTracks.CheckOnClick = true;
+			this.clbAudioTracks.FormattingEnabled = true;
+			this.clbAudioTracks.Location = new System.Drawing.Point(6, 21);
+			this.clbAudioTracks.Name = "clbAudioTracks";
+			this.clbAudioTracks.Size = new System.Drawing.Size(305, 139);
+			this.clbAudioTracks.TabIndex = 0;
+			this.clbAudioTracks.Visible = false;
+			this.clbAudioTracks.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbAudioTracks_ItemCheck);
+			// 
 			// txtAudioCmd
 			// 
 			this.txtAudioCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -1563,43 +1600,6 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
-			// grpAudioDrop
-			// 
-			this.grpAudioDrop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpAudioDrop.Controls.Add(this.clbAudioTracks);
-			this.grpAudioDrop.Location = new System.Drawing.Point(329, 6);
-			this.grpAudioDrop.Name = "grpAudioDrop";
-			this.grpAudioDrop.Size = new System.Drawing.Size(317, 173);
-			this.grpAudioDrop.TabIndex = 3;
-			this.grpAudioDrop.TabStop = false;
-			// 
-			// chkAudioDrop
-			// 
-			this.chkAudioDrop.AutoSize = true;
-			this.chkAudioDrop.Location = new System.Drawing.Point(336, 5);
-			this.chkAudioDrop.Name = "chkAudioDrop";
-			this.chkAudioDrop.Size = new System.Drawing.Size(83, 17);
-			this.chkAudioDrop.TabIndex = 0;
-			this.chkAudioDrop.Text = "&Drop Tracks";
-			this.chkAudioDrop.UseVisualStyleBackColor = true;
-			this.chkAudioDrop.CheckedChanged += new System.EventHandler(this.chkAudioDrop_CheckedChanged);
-			// 
-			// clbAudioTracks
-			// 
-			this.clbAudioTracks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.clbAudioTracks.CheckOnClick = true;
-			this.clbAudioTracks.FormattingEnabled = true;
-			this.clbAudioTracks.Location = new System.Drawing.Point(6, 21);
-			this.clbAudioTracks.Name = "clbAudioTracks";
-			this.clbAudioTracks.Size = new System.Drawing.Size(305, 139);
-			this.clbAudioTracks.TabIndex = 0;
-			this.clbAudioTracks.Visible = false;
-			this.clbAudioTracks.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbAudioTracks_ItemCheck);
-			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1659,6 +1659,7 @@
 			this.grpVideoBasic.PerformLayout();
 			this.tabAudio.ResumeLayout(false);
 			this.tabAudio.PerformLayout();
+			this.grpAudioDrop.ResumeLayout(false);
 			this.grpAudioBasic.ResumeLayout(false);
 			this.grpAudioBasic.PerformLayout();
 			this.tabSubtitles.ResumeLayout(false);
@@ -1667,7 +1668,6 @@
 			this.tabAttachments.PerformLayout();
 			this.tabLogs.ResumeLayout(false);
 			this.tabLogs.PerformLayout();
-			this.grpAudioDrop.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

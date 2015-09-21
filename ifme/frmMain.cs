@@ -324,8 +324,11 @@ namespace ifme
 			string FileType;
 			var Info = new Queue();
 
+			var i = cboProfile.SelectedIndex;   // Profiles
+			var p = Profile.List[i - 1];        // When profiles at <new> mean auto detect
+
 			Info.Data.File = file;
-			Info.Data.SaveAsMkv = true;
+			Info.Data.SaveAsMkv = i == 0 ? true : string.Equals(p.Info.Format, "mkv", IC);
 
 			MediaFile AVI = new MediaFile(file);
 
@@ -344,10 +347,10 @@ namespace ifme
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
-				Info.Picture.Resolution = $"{Video.width}x{Video.height}";
-				Info.Picture.FrameRate = $"{Video.frameRateGet}";
-				Info.Picture.BitDepth = $"{Video.bitDepth}";
-				Info.Picture.Chroma = "420";
+				Info.Picture.Resolution = i == 0 ? $"{Video.width}x{Video.height}" : p.Picture.Resolution;
+				Info.Picture.FrameRate = i == 0 ? $"{Video.frameRateGet}" : p.Picture.FrameRate;
+				Info.Picture.BitDepth = i == 0 ? $"{Video.bitDepth}" : p.Picture.BitDepth;
+				Info.Picture.Chroma = i == 0 ? "420" : p.Picture.Chroma;
 
 				Info.Prop.Duration = Video.duration;
 				Info.Prop.FrameCount = Video.frameCount;
@@ -382,29 +385,28 @@ namespace ifme
 				}
 			}
 
-			Info.Video.Preset = "medium";
-			Info.Video.Tune = "off";
-			Info.Video.Type = 0;
-			Info.Video.Value = "26";
-			Info.Video.Command = "--dither";
+			Info.Video.Preset = i == 0 ? "medium" : p.Video.Preset;
+			Info.Video.Tune = i == 0 ? "off" : p.Video.Tune;
+			Info.Video.Type = i == 0 ? 0 : p.Video.Type;
+			Info.Video.Value = i == 0 ? "26" : p.Video.Value;
+			Info.Video.Command = i == 0 ? "--dither" : p.Video.Command;
 
-			Info.Audio.Encoder = "Passthrough (Extract all audio)";
-			Info.Audio.BitRate = "128";
-			Info.Audio.Frequency = "auto";
-			Info.Audio.Channel = "stereo";
-			Info.Audio.Command = "";
+			Info.Audio.Encoder = i == 0 ? "Passthrough (Extract all audio)" : p.Audio.Encoder;
+			Info.Audio.BitRate = i == 0 ? "256" : p.Audio.BitRate;
+			Info.Audio.Frequency = i == 0 ? "auto" : p.Audio.Frequency;
+			Info.Audio.Channel = i == 0 ? "stereo" : p.Audio.Channel;
+			Info.Audio.Command = i == 0 ? "" : p.Audio.Command;
 
 			// Drop audio tracks support
 			foreach (var item in GetStream.Media(file, StreamType.Audio))
 				Info.DropAudioId.Add(new DropAudio { Id = item.ID, Text = $"{item.ID}, {item.Lang}, {item.OtherInfo}", Checked = false });
 			
-
 			// Add to queue list
 			ListViewItem qItem = new ListViewItem(new[] {
 				GetInfo.FileName(file),
 				GetInfo.FileSize(file),
 				FileType,
-				".MKV (HEVC)",
+				$".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)",
 				"Ready"
 			});
 			qItem.Tag = Info;
@@ -494,10 +496,14 @@ namespace ifme
 		#region Queue: Display item properties
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (lstQueue.SelectedItems.Count == 1)
+			if (lstQueue.SelectedItems.Count > 0)
+			{
 				QueueDisplay(lstQueue.SelectedItems[0].Index);
+			}
 			else
+			{
 				QueueUnselect();
+			}
 		}
 
 		void QueueDisplay(int index)

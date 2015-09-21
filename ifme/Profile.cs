@@ -50,7 +50,7 @@ namespace ifme
 				p.Audio.Merge = Convert.ToBoolean(data["audio"]["compile"]);
 				p.Audio.Command = data["audio"]["cmd"];
 
-				Profile.List.Add(p);
+				List.Add(p);
 			}
 		}
 
