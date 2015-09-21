@@ -67,6 +67,16 @@ namespace ifme
 				}
 			}
 
+			// Check x265 compiler binary
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))
+				Plugin.IsExistHEVCGCC = true;
+
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))
+				Plugin.IsExistHEVCICC = true;
+
+			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
+				Plugin.IsExistHEVCMSVC = true;
+
 			// Profile
 			Profile.Load();
 
@@ -82,16 +92,6 @@ namespace ifme
 			Extension.Load();
 			Extension.CheckDefault();
 			if (!Program.ApplyUpdate) { ExtensionUpdate(); Extension.Load(); }
-
-			// Check x265 compiler binary
-			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265gcc")))				
-				Plugin.IsExistHEVCGCC = true;
-
-			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265icc")))				
-				Plugin.IsExistHEVCICC = true;
-
-			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
-				Plugin.IsExistHEVCMSVC = true;
 
 			// Language
 			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
@@ -195,7 +195,7 @@ namespace ifme
 				if (string.IsNullOrEmpty(item.Provider.Update))
 					continue;
 
-				if (string.Equals(item.Profile.Ver, client.DownloadString(item.Provider.Update)))
+				if (string.Equals(item.Profile.Ver, DownloadString(item.Provider.Update)))
 					continue;
 
 				DownloadExtract(item.Provider.Download, Global.Folder.Plugins);
