@@ -179,7 +179,8 @@ namespace ifme
 
 		private void lblLangWhoWeb_Click(object sender, EventArgs e)
 		{
-			Process.Start(lblLangWhoWeb.Text);
+			if (!string.IsNullOrEmpty(lblLangWhoWeb.Text))
+				Process.Start(lblLangWhoWeb.Text);
 		}
 
 		private void btnBrowse_Click(object sender, EventArgs e)
@@ -259,19 +260,22 @@ namespace ifme
 		private void tsmiPluginWeb_Click(object sender, EventArgs e)
 		{
 			if (lstPlugin.SelectedItems.Count == 1)
-				Process.Start((string)lstPlugin.SelectedItems[0].Tag);
+				if(!string.IsNullOrEmpty((string)lstPlugin.SelectedItems[0].Tag))
+					Process.Start((string)lstPlugin.SelectedItems[0].Tag);
 		}
 
 		private void tsmiExtensionWeb_Click(object sender, EventArgs e)
 		{
 			if (lstExtension.SelectedItems.Count == 1)
-				Process.Start((string)lstExtension.SelectedItems[0].Tag);
+				if (!string.IsNullOrEmpty((string)lstExtension.SelectedItems[0].Tag))
+					Process.Start((string)lstExtension.SelectedItems[0].Tag);
 		}
 
 		private void tsmiProfileWeb_Click(object sender, EventArgs e)
 		{
 			if (lstProfile.SelectedItems.Count == 1)
-				Process.Start((string)lstProfile.SelectedItems[0].Tag);
+				if (!string.IsNullOrEmpty((string)lstProfile.SelectedItems[0].Tag))
+					Process.Start((string)lstProfile.SelectedItems[0].Tag);
 		}
 
 		private void btnOK_Click(object sender, EventArgs e)

@@ -2,11 +2,13 @@
 -------------
 
 [new] Audio tracks now can drop if not wanted to add final encoded file
+[new] Video now can skip encoding (applicable when source is HEVC)
 [fixed] Wrong extension file which is benchmark extension was a notepad
 [fixed] MediaInfo didn't detect (Linux)
 [fixed] Missing audio mixing
 [fixed] Selecting profiles except "< new >" then add video result will follow profiles configuration
 [fixed] Temp folder not removed when closing IFME
+[fixed] Prevent empty string from launch a process/visit web
 
 Version 5.0.9 (Dearness)
 -------------
