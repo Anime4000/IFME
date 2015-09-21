@@ -324,8 +324,8 @@ namespace ifme
 			string FileType;
 			var Info = new Queue();
 
-			var i = cboProfile.SelectedIndex;   // Profiles
-			var p = Profile.List[i - 1];        // When profiles at <new> mean auto detect
+			var i = cboProfile.SelectedIndex;			// Profiles
+			var p = Profile.List[i == 0 ? 0 : i + 1];	// When profiles at <new> mean auto detect
 
 			Info.Data.File = file;
 			Info.Data.SaveAsMkv = i == 0 ? true : string.Equals(p.Info.Format, "mkv", IC);
