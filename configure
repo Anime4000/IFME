@@ -1,6 +1,9 @@
 #!/bin/sh
 cd "$(dirname $(readlink -f $0))"
 
+echo "This will download all required files to make IFME working fine..."
+sleep 3
+
 echo "Creating folder"
 mkdir "prerequisite/linux"
 mkdir "prerequisite/linux/64bit"
