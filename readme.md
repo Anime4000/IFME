@@ -36,12 +36,12 @@ You can download it via [SourceForge](https://sourceforge.net/projects/ifme/file
 * Internet Connection (for update)
 
 #### Linux
-* OS: Ubuntu 14.04 or any latest distro (64bit)
+* OS: Ubuntu 14.04, Linux Mint or any latest distro (64bit)
 * CPU: Intel Core 2 Duo/AMD AthlonII X2
 * RAM: 2GB (4K encoding require 4GB more)
 * GPU: *none*
 * HDD: 256MB
-* Mono 4.0 `mono-complete`
+* Mono `mono-complete`
 * Internet Connection (for update)
 
 ## Development
@@ -49,77 +49,30 @@ You can download it via [SourceForge](https://sourceforge.net/projects/ifme/file
 #### Compiler
 IFME was written in C# 6.0 thus require latest compiler to compile. Do download Visual Studio 2015
 
-#### Prerequisite
-Run `prerequisite\deploy.cmd` to download all required files
+#### Getting Ready
+Before proceed, please get these required item to work
 
-`deploy.cmd` scripts require:
+* [Download](https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409) Microsoft Visual Studio 2015
+* [Download](http://www.jrsoftware.org/isdl.php) Inno Setup (Unicode)
+* [Download](http://nebm.ist.utl.pt/~glopes/wget/) wget.exe to `\Windows\System32`
+* [Download](http://www.7-zip.org/download.html) Install 7-zip
 
-* [Download](http://nebm.ist.utl.pt/~glopes/wget/) and extract wget.exe to `\Windows\System32`
-* [Download](http://www.7-zip.org/download.html) and install 7-zip
+Execute `configure.cmd` script to check and download all required items.
 
-After run `deploy.cmd`, please download these
-
-* [7-Zip Extra](http://www.7-zip.org/download.html) 
-  * Extract `7za.exe` to `prerequisite\windows\32bit` 
-  * Extract `x64\7za.exe` to `prerequisite\windows\64bit`
-* [MediaInfo CLI](https://mediaarea.net/en/MediaInfo/Download/Windows) download & extract 
-  * 32bit `Mediainfo.dll` @ `prerequisite\windows\32bit`
-  * 64bit `Mediainfo.dll` @ `prerequisite\windows\64bit`
-
-#### References
-Run `references\download.cmd` to download
-
-* `INIFileParser.dll`
-* `MediaInfoDotNet.dll`
-
-#### Debugging
-Before start, you need copy these file to `ifme\bin\Debug` to get working.
-
-##### 64bit
-* Copy `prerequisite\windows\64bit\Mediainfo.dll`
-* Copy `prerequisite\windows\64bit\7za.exe`
-* Copy `prerequisite\windows\64bit\plugins\`
-
-And some 32bit stuff
-
-* Copy `prerequisite\windows\32bit\plugins\avisynth\`
-* Copy `prerequisite\windows\32bit\plugins\faac\`
-* Copy `prerequisite\windows\32bit\plugins\mp4fpsmod\`
-* Copy `prerequisite\windows\32bit\plugins\opus\`
-
-##### 32bit
-* Copy `prerequisite\windows\32bit\Mediainfo.dll`
-* Copy `prerequisite\windows\32bit\7za.exe`
-* Copy `prerequisite\windows\32bit\plugins\`
-
-*You may skip copying `plugins` folder, IFME will download before run*
-
-As usual, open `ifme.sln` :+1:
-
-#### Packaging
-[Download](http://www.jrsoftware.org/isdl.php) & install Inno Setup and open `installer.iss`
+Execute `Makefile.cmd` script to build and create installer
 
 ### Linux
 #### Compiler
 Install Mono 4.0+ [click here to install](http://www.mono-project.com/download/#download-lin). You might download all mono stuff including `-devel`.
 
-#### Prerequisite
-Get these package `p7zip-full` and `mediainfo` by entering command `sudo apt-get install p7zip-full mediainfo`. After that run `prerequisite/deploy.sh` to download all required files
+#### Getting Ready
+Before proceed, please prepared these item to work
 
-#### References
-Run `references/download.sh` to download
+* [Mono 4.0+](http://www.mono-project.com/download/#download-lin) *C# 6.0 compatible*
+* MediaInfo `sudo apt-get install mediainfo`
+* 7-zip `sudo apt-get install p7zip-full`
+* A working `wget`
 
-* `INIFileParser.dll`
-* `MediaInfoDotNet.dll`
+Execute `./configure` to check and download all required item to work.
 
-#### Debugging
-Before start, you need copy these file to `ifme/bin/Debug` to get working.
-
-* Copy `prerequisite/linux/64bit/Mediainfo.dll`
-* Copy `prerequisite/linux/64bit/7za.exe`
-* Copy `prerequisite/linux/64bit/plugins/`
-
-*You may skip copying `plugins` folder, IFME will download before run*
-
-As usual, open `ifme.sln` :+1:
-
+Execute `make` to build and packaging, `make clean` to clean.

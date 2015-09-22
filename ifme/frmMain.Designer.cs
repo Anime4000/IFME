@@ -63,6 +63,7 @@
 			this.btnQueuePause = new System.Windows.Forms.Button();
 			this.tabConfig = new System.Windows.Forms.TabControl();
 			this.tabPicture = new System.Windows.Forms.TabPage();
+			this.chkPictureVideoCopy = new System.Windows.Forms.CheckBox();
 			this.chkPictureYadif = new System.Windows.Forms.CheckBox();
 			this.grpPictureYadif = new System.Windows.Forms.GroupBox();
 			this.cboPictureYadifFlag = new System.Windows.Forms.ComboBox();
@@ -151,7 +152,6 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
-			this.chkPictureVideoCopy = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -317,7 +317,7 @@
 			// 
 			// cmsQueueMenu
 			// 
-			this.cmsQueueMenu.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cmsQueueMenu.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.cmsQueueMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiQueuePreview,
             this.tsmiBenchmark,
@@ -506,6 +506,20 @@
 			this.tabPicture.TabIndex = 0;
 			this.tabPicture.Text = "Picture";
 			this.tabPicture.UseVisualStyleBackColor = true;
+			// 
+			// chkPictureVideoCopy
+			// 
+			this.chkPictureVideoCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.chkPictureVideoCopy.AutoSize = true;
+			this.chkPictureVideoCopy.Enabled = false;
+			this.chkPictureVideoCopy.Location = new System.Drawing.Point(329, 201);
+			this.chkPictureVideoCopy.Name = "chkPictureVideoCopy";
+			this.chkPictureVideoCopy.Size = new System.Drawing.Size(195, 17);
+			this.chkPictureVideoCopy.TabIndex = 5;
+			this.chkPictureVideoCopy.Text = "&Video passthrough (do not encode)";
+			this.chkPictureVideoCopy.UseVisualStyleBackColor = true;
+			this.chkPictureVideoCopy.CheckedChanged += new System.EventHandler(this.chkPictureVideoCopy_CheckedChanged);
 			// 
 			// chkPictureYadif
 			// 
@@ -1601,20 +1615,6 @@
 			this.bgwEncoding.WorkerSupportsCancellation = true;
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
-			// 
-			// chkPictureVideoCopy
-			// 
-			this.chkPictureVideoCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.chkPictureVideoCopy.AutoSize = true;
-			this.chkPictureVideoCopy.Enabled = false;
-			this.chkPictureVideoCopy.Location = new System.Drawing.Point(329, 201);
-			this.chkPictureVideoCopy.Name = "chkPictureVideoCopy";
-			this.chkPictureVideoCopy.Size = new System.Drawing.Size(195, 17);
-			this.chkPictureVideoCopy.TabIndex = 5;
-			this.chkPictureVideoCopy.Text = "&Video passthrough (do not encode)";
-			this.chkPictureVideoCopy.UseVisualStyleBackColor = true;
-			this.chkPictureVideoCopy.CheckedChanged += new System.EventHandler(this.chkPictureVideoCopy_CheckedChanged);
 			// 
 			// frmMain
 			// 

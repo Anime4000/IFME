@@ -25,26 +25,8 @@ echo Make sure you have wget & 7zip installed on your computer.
 echo.
 echo.
 echo.
+pause
 
-:AGAIN
-set /p answer=Do you wish to download all required item before compile? (Y/n): 
-if /i "%answer%" EQU "y" goto DODL
-if /i "%answer%" EQU "Y" goto DODL
-if /i "%answer%" EQU "n" goto SKIPDL
-if /i "%answer%" EQU "N" goto SKIPDL
-echo Please type Y for Yes or N for No
-goto AGAIN
-
-
-:DODL
-cd prerequisite
-deploy.cmd
-cd ../references
-download.cmd
-cd ..
-goto SKIPDL
-
-:SKIPDL
 @title DELETEING %BUILDDIR%!
 echo DELETEING %BUILDDIR%!
 rmdir /s /q %BUILDDIR%

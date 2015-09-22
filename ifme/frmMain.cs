@@ -12,6 +12,7 @@ using IniParser.Model;
 using MediaInfoDotNet;
 
 using static ifme.Properties.Settings;
+using System.Drawing;
 
 namespace ifme
 {
@@ -45,6 +46,9 @@ namespace ifme
 			{
 				tsmiQueuePreview.Enabled = false;
 				tsmiBenchmark.Enabled = false;
+
+				Font = new Font("Ubuntu", 8);
+				cmsQueueMenu.Font = Font;
 			}
 
 			tsmiQueueAviSynth.Enabled = Plugin.AviSynthInstalled;
