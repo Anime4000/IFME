@@ -3,10 +3,12 @@
 
 cd "%~dp0"
 
-set ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
-set CompileMode=Debug
-set BUILDDIR=build
-set MSBuildVer=14.0
+SET UNZIP="%PROGRAMFILES%\7-Zip\7z.exe"
+SET WGET="%SYSTEMROOT%\System32\wget.exe"
+SET ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
+SET CompileMode=Debug
+SET BUILDDIR=build
+SET MSBuildVer=14.0
 
 cls
 
@@ -26,6 +28,24 @@ echo.
 echo.
 echo.
 pause
+
+echo Checking %WGET%
+IF EXIST %WGET% (
+	echo %WGET% found!
+) ELSE (
+	echo %WGET% not found :(
+	pause
+	exit 1
+)
+
+echo Checking %UNZIP%
+IF EXIST %UNZIP% (
+	echo %UNZIP% found!
+) ELSE (
+	echo %UNZIP% not found :(
+	pause
+	exit 1
+)
 
 @title DELETEING %BUILDDIR%!
 echo DELETEING %BUILDDIR%!
