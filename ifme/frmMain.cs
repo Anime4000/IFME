@@ -12,7 +12,6 @@ using IniParser.Model;
 using MediaInfoDotNet;
 
 using static ifme.Properties.Settings;
-using System.Drawing;
 
 namespace ifme
 {
@@ -46,9 +45,6 @@ namespace ifme
 			{
 				tsmiQueuePreview.Enabled = false;
 				tsmiBenchmark.Enabled = false;
-
-				Font = new Font("Ubuntu", 8);
-				cmsQueueMenu.Font = Font;
 			}
 
 			tsmiQueueAviSynth.Enabled = Plugin.AviSynthInstalled;
@@ -720,7 +716,7 @@ namespace ifme
 					trkVideoRate.Maximum = 510;
 					trkVideoRate.TickFrequency = 10;
 
-					lblVideoRateValue.Text = "Ratefactor:";
+					lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
 					txtVideoValue.Text = $"{(trkVideoRate.Value = 260) / 10:0.0}";
                     break;
 
@@ -733,7 +729,7 @@ namespace ifme
 					trkVideoRate.Maximum = 51;
 					trkVideoRate.TickFrequency = 1;
 
-					lblVideoRateValue.Text = "Ratefactor:";
+					lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
 					txtVideoValue.Text = Convert.ToString(trkVideoRate.Value = 26);
 					break;
 
@@ -742,7 +738,7 @@ namespace ifme
 					lblVideoRateL.Visible = false;
 					trkVideoRate.Visible = false;
 
-					lblVideoRateValue.Text = "Bit-rate (kbps):";
+					lblVideoRateValue.Text = $"{Language.Get[Name][lblVideoRateValue.Name].Replace(":", "")} (kbps):";
 					txtVideoValue.Text = "2048";
 					break;
 			}
@@ -1345,11 +1341,8 @@ namespace ifme
 			}
 
 			// Empty list and "No" button fall this code
-
 			OpenFileDialog GetFile = new OpenFileDialog();
-			GetFile.Filter = "Supported format|*.xml;*.ifq|"
-				+ "eXtensible Markup Language|*.xml|"
-				+ "IFME Queue|*.ifq";
+			GetFile.Filter = "eXtensible Markup Language|*.xml";
             GetFile.FilterIndex = 1;
 			GetFile.Multiselect = false;
 
@@ -1440,17 +1433,12 @@ namespace ifme
 			}
 
 			SaveFileDialog SaveFile = new SaveFileDialog();
-			SaveFile.Filter = "eXtensible Markup Language|*.xml|" 
-				+ "IFME Queue List|*.ifq";
+			SaveFile.Filter = "eXtensible Markup Language|*.xml";
 			SaveFile.FilterIndex = 1;
 
 			if (SaveFile.ShowDialog() == DialogResult.OK)
 			{
-				if (SaveFile.FilterIndex == 1)
-					ObjectIO.WriteToXmlFile(SaveFile.FileName, gg);
-				else
-					ObjectIO.WriteToBinaryFile(SaveFile.FileName, gg);
-
+				ObjectIO.WriteToXmlFile(SaveFile.FileName, gg);
 				QueueListFile(SaveFile.FileName);
 			}
 		}

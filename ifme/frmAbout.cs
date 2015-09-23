@@ -10,7 +10,7 @@ namespace ifme
 {
     public partial class frmAbout : Form
 	{
-		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis", "Bvzcoder" });
+		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis", "SailorOnDaTea", "Bvzcoder" });
 		HashSet<string> Art = new HashSet<string>(new string[] { "53C aka Ray-en", "http://53c.deviantart.com/" });
 		HashSet<string> Dev = new HashSet<string>();
 		HashSet<string> Lng = new HashSet<string>();
@@ -83,16 +83,18 @@ namespace ifme
 		private void frmAbout_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			epic.Stop();
+			epic.Dispose();
+			bgThank.Dispose();
 		}
 
 		private void bgThank_DoWork(object sender, DoWorkEventArgs e)
 		{
+			epic.Play();
+
 			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => panelCredit.Top = panelRoll.Height));
 			else
 				panelCredit.Top = panelRoll.Height;
-
-			epic.Play();
 
 			while (panelCredit.Bottom != 0)
 			{
@@ -103,6 +105,8 @@ namespace ifme
 
 				Thread.Sleep(35);
 			}
+
+			epic.Stop();
 		}
 
 		private void bgThank_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

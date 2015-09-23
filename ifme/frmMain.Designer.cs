@@ -1593,7 +1593,7 @@
 			// 
 			this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnAbout.Image = global::ifme.Properties.Resources.information;
-			this.btnAbout.Location = new System.Drawing.Point(648, 626);
+			this.btnAbout.Location = new System.Drawing.Point(644, 626);
 			this.btnAbout.Name = "btnAbout";
 			this.btnAbout.Size = new System.Drawing.Size(24, 24);
 			this.btnAbout.TabIndex = 20;

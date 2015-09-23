@@ -284,9 +284,7 @@ namespace ifme
 
 		static int EncodingStart(string queueFile, bool force)
 		{
-			WriteLine($"Current installed location: {Global.Folder.App}");
-
-			WriteLine("Loading plugins... please wait...");
+			WriteLine("Loading plugins... Please Wait...");
 			Plugin.Load();
 
 			WriteLine("Reading queue file...");
@@ -294,7 +292,7 @@ namespace ifme
 				 ObjectIO.ReadFromXmlFile<List<Queue>>(queueFile) : 
 				 ObjectIO.ReadFromBinaryFile<List<Queue>>(queueFile);
 
-			WriteLine($"There are {argList.Count} video's in the queue file");
+			WriteLine($"There are {argList.Count} video's in the queue file\n");
 			if (force)
 			{
 				for (int i = 5; i > 0; i--)
@@ -305,9 +303,13 @@ namespace ifme
 			}
 			else
 			{
-				WriteLine("List video's that will process\n");
+				WriteLine("No. Status File");
+				WriteLine("--- ------ ----");
+
 				for (int i = 0; i < argList.Count; i++)
-					WriteLine($"{i + 1,3:000}: {Path.GetFileName(argList[i].Data.File)}");
+				{
+					WriteLine($"{i + 1,3:000} {(argList[i].IsEnable ? "Queued" : " Skip ")} {Path.GetFileName(argList[i].Data.File)}");
+				}
 
 				Write("\nPress any key to begin...");
 				ReadKey();
@@ -351,7 +353,12 @@ namespace ifme
 
 				// Mux
 				MediaEncoder.Mux(item);
-			}
+
+				// Save
+				WriteLine("Saving current queue... Please Wait...");
+				item.IsEnable = false;
+				ObjectIO.WriteToXmlFile(queueFile, argList);
+            }
 
 			WriteLine(GetInfo.Duration(Session));
 
