@@ -69,6 +69,9 @@ namespace ifme
 
 	public class Picture
 	{
+		public bool IsCopy;
+		public bool IsHevc;
+
 		public string Resolution;
 		public string FrameRate;
 		public string BitDepth;
@@ -78,9 +81,6 @@ namespace ifme
 		public int YadifMode;
 		public int YadifField;
 		public int YadifFlag;
-
-		public bool IsCopy;
-		public bool IsHevc;
 	}
 
 	public class Video

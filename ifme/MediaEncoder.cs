@@ -18,6 +18,9 @@ namespace ifme
 
 		public static void Extract(string filereal, Queue item)
 		{
+			if (string.IsNullOrEmpty(filereal))
+				return;
+
 			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Default.AvsMkvCopy))
 			{
 				int sc = 0;
@@ -34,6 +37,9 @@ namespace ifme
 
 		public static void Audio(string filereal, Queue item)
 		{
+			if (string.IsNullOrEmpty(filereal))
+				return;
+
 			string frequency;
 			if (string.Equals(item.Audio.Frequency, "auto", IC))
 				frequency = "";

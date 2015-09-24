@@ -255,7 +255,7 @@ namespace ifme
 
 		public static string AviSynthGetFile(string file)
 		{
-			if (String.Equals(Path.GetExtension(file), ".avs", StringComparison.OrdinalIgnoreCase))
+			if (string.Equals(Path.GetExtension(file), ".avs", StringComparison.OrdinalIgnoreCase))
 			{
 				foreach (var item in File.ReadAllLines(file))
 				{

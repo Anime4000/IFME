@@ -59,11 +59,20 @@ namespace ifme
 
 		public class Folder
 		{
+			static string _AppPathA = Directory.GetCurrentDirectory();
+			static string _AppPathB = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+
 			static string _DefaultSave = Path.Combine(Path.GetTempPath(), "ifme");
 
-            public static string App
+			public static string App
 			{
-				get { return string.IsNullOrEmpty(Directory.GetCurrentDirectory()) ? Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) : Directory.GetCurrentDirectory();  }
+				get
+				{
+					if (!string.IsNullOrEmpty(_AppPathA))
+						return _AppPathA;
+					else
+						return _AppPathB;
+                }
 			}
 
 			public static string Profile
