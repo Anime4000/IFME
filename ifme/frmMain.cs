@@ -33,13 +33,6 @@ namespace ifme
 		#region Form
 		private void frmMain_Load(object sender, EventArgs e)
 		{
-			// Language UI
-#if MAKELANG
-			LangCreate();
-#else
-			LangApply();
-#endif
-
 			// Features
 			if (OS.IsLinux)
 			{
@@ -100,6 +93,13 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
+
+			// Language UI
+#if MAKELANG
+			LangCreate();
+#else
+			LangApply();
+#endif
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
