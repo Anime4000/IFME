@@ -267,7 +267,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				LogError("WebClient.DownloadString is broken on current Mono version, skipping");
+				LogError("WebClient.DownloadString() broken on current version of Mono, skipping...");
 				return null;
 			}
 		}
