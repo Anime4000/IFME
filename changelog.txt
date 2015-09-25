@@ -1,4 +1,4 @@
-﻿Version 5.1.0
+﻿Version 5.1.0 (FLUORITE DIARY)
 -------------
 
 [new] Audio tracks now can drop if not wanted to add final encoded file
@@ -9,6 +9,7 @@
 [fixed] Selecting profiles except "< new >" then add video result will follow profiles configuration
 [fixed] Temp folder not removed when closing IFME
 [fixed] Prevent empty string from launch a process/visit web
+[fixed] Git issue #35 #36 #37 #38 (told by forkicks)
 
 Version 5.0.9 (Dearness)
 -------------
