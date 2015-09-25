@@ -68,8 +68,8 @@ wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265icc.if
 wget http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265msvc.ifx -O "prerequisite\windows\64bit\plugins\x265msvc.ifx"
 
 echo Unpacking
-for /r "%~dp0\prerequisite\windows\32bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
-for /r "%~dp0\prerequisite\windows\64bit\plugins" %%i in (*.ifx) do "%UNPACK%" x "%%i" -y -o"%%~dpi"
+for /r "%~dp0\prerequisite\windows\32bit\plugins" %%i in (*.ifx) do "%UNZIP%" x "%%i" -y -o"%%~dpi"
+for /r "%~dp0\prerequisite\windows\64bit\plugins" %%i in (*.ifx) do "%UNZIP%" x "%%i" -y -o"%%~dpi"
 
 echo Delete cache
 del /f /s /q *.ifx

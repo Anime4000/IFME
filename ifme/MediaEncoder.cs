@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 using static ifme.Properties.Settings;
@@ -173,7 +174,7 @@ namespace ifme
 				}
 				else // when fps is set, generate new framecount
 				{
-					framecount = (int)Math.Ceiling(((float)item.Prop.Duration / 1000.0) * Convert.ToDouble(item.Picture.FrameRate));
+					framecount = (int)Math.Ceiling(((float)item.Prop.Duration / 1000.0) * Convert.ToDouble(item.Picture.FrameRate, CultureInfo.InvariantCulture));
 				}
 
 				if (item.Picture.YadifEnable)
