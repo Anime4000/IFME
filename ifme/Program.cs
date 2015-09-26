@@ -59,7 +59,7 @@ namespace ifme
 
 		static void DisplayHelp()
 		{
-			WriteLine("Usage: ifme [OPTION...] [GUI|CLI]");
+			WriteLine("Usage: ifme [OPTION...] INPUT");
 			WriteLine();
 			WriteLine("Mandatory arguments to long options are mandatory for short options too.");
 			WriteLine();
@@ -67,12 +67,8 @@ namespace ifme
 			WriteLine("  -h, --help                   show this help");
 			WriteLine("  -r, --reset                  reset IFME configuration");
 			WriteLine("  -g, --gui                    open IFME GUI (linux only)");
-			WriteLine();
-			WriteLine("GUI:");
-			WriteLine("      --open file.xml          open IFME queue file via GUI");
+			WriteLine("  -c, --cli                    open IFME CLI (impiles -g)");
 			WriteLine("  -s                           skip all update checking (faster loading)");
-			WriteLine();
-			WriteLine("CLI:");
 			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
 			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
 			WriteLine();
@@ -85,11 +81,11 @@ namespace ifme
 
 		static int Command(string[] args)
 		{
-			string Input = string.Empty;
 			bool IsHelp = false;
 			bool IsForce = false;
-			bool IsXterm = false;
 			bool IsReset = false;
+			bool IsCLI = false;
+			bool IsGUI = false;
 
 			if (args.Length > 0)
 			{
@@ -110,7 +106,10 @@ namespace ifme
 							IsReset = true;
 
 						if (args[i][n] == 'g')
-							IsXterm = true;
+							IsGUI = true;
+
+						if (args[i][n] == 'c')
+							IsCLI = true;
 
 						if (args[i][n] == 's')
 							ApplyUpdate = true;
@@ -120,7 +119,7 @@ namespace ifme
 
 						if (args[i][n] == 'i')
 							if (i < args.Length)
-								Input = args[++i];
+								ObjectIO.FileName = args[++i];
 					}
 
 					if (args[i] == "--help")
@@ -130,13 +129,12 @@ namespace ifme
 						IsReset = true;
 
 					if (args[i] == "--gui")
-						IsXterm = true;
+						IsGUI = true;
+
+					if (args[i] == "--cli")
+						IsCLI = true;
 
 					if (args[i] == "--input")
-						if (i < args.Length)
-							Input = args[++i];
-
-					if (args[i] == "--open")
 						if (i < args.Length)
 							ObjectIO.FileName = args[++i];
 				}
@@ -156,22 +154,21 @@ namespace ifme
 				WriteLine("Settings has been reset!");
 			}
 
-			if (!string.IsNullOrEmpty(ObjectIO.FileName))
-				return 1; // Proceed with GUI
-
-			if (!string.IsNullOrEmpty(Input))
+			if (IsCLI)
 			{
-				EncodingStart(Input, IsForce);
-				return 0; // Proceed with CLI (Quit after)
+				EncodingStart(ObjectIO.FileName, IsForce);
+				return 0;
 			}
-			
-			if (OS.IsLinux)
+			else
 			{
-				if (!IsXterm)
+				if (OS.IsLinux)
 				{
-					MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					DisplayHelp();
-					return 0;
+					if (!IsGUI)
+					{
+						MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						DisplayHelp();
+						return 0;
+					}
 				}
 			}
 

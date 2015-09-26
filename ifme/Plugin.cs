@@ -9,7 +9,7 @@ namespace ifme
 {
 	public class Plugin
 	{
-		public string File;
+		public string IniFile;
 		public info Info = new info();
 		public profile Profile = new profile();
 		public provider Provider = new provider();
@@ -67,9 +67,6 @@ namespace ifme
 			}
 		}
 
-		public static bool AviSynthInstalled = false;
-		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
-
 		public static string HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265lo");
 		public static string HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265hi");
 		public static string LIBAV = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
@@ -82,6 +79,9 @@ namespace ifme
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
 		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
 
+		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
+
+		public static bool IsExistAviSynth = File.Exists(AviSynthFile);
 		public static bool IsExistHEVCGCC = false;
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;
@@ -104,7 +104,7 @@ namespace ifme
 
 				var p = new Plugin();
 
-				p.File = item;
+				p.IniFile = item;
 				p.Info.Type = data["info"]["type"];
 				p.Info.Support = data["info"]["support"];
 				p.Profile.Arch = int.Parse(data["profile"]["arch"]);

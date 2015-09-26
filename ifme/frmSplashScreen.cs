@@ -104,16 +104,10 @@ namespace ifme
 			WriteLine($"Loading language file: {Default.Language}.ini");
 
 			// Detect AviSynth
-			if (File.Exists(Plugin.AviSynthFile))
-			{
-				Plugin.AviSynthInstalled = true;
+			if (Plugin.IsExistAviSynth)
 				WriteLine("AviSynth detected!");
-			}
 			else
-			{
-				Plugin.AviSynthInstalled = false;
 				WriteLine("AviSynth not detected!");
-			}
 
 			// Format fix
 			WriteLine("Loading codec fingerprint");

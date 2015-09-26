@@ -41,10 +41,10 @@ namespace ifme
 			cboCPUPriority.SelectedIndex = Properties.Settings.Default.Nice;
 
 			// AviSynth
-			lblAviSynthStatus.Text = Plugin.AviSynthInstalled ? Language.Installed : Language.NotInstalled;
-			lblAviSynthStatus.ForeColor = Plugin.AviSynthInstalled ? Color.Green : Color.Red;
+			lblAviSynthStatus.Text = Plugin.IsExistAviSynth ? Language.Installed : Language.NotInstalled;
+			lblAviSynthStatus.ForeColor = Plugin.IsExistAviSynth ? Color.Green : Color.Red;
 
-			if (Plugin.AviSynthInstalled)
+			if (Plugin.IsExistAviSynth)
 			{
 				if (string.Equals(CRC32.GetFile(Plugin.AviSynthFile), "0x073A3318"))
 				{

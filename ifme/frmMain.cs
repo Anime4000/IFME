@@ -40,9 +40,9 @@ namespace ifme
 				tsmiBenchmark.Enabled = false;
 			}
 
-			tsmiQueueAviSynth.Enabled = Plugin.AviSynthInstalled;
-			tsmiQueueAviSynthEdit.Enabled = Plugin.AviSynthInstalled;
-			tsmiQueueAviSynthGenerate.Enabled = Plugin.AviSynthInstalled;
+			tsmiQueueAviSynth.Enabled = Plugin.IsExistAviSynth;
+			tsmiQueueAviSynthEdit.Enabled = Plugin.IsExistAviSynth;
+			tsmiQueueAviSynthGenerate.Enabled = Plugin.IsExistAviSynth;
 
 			// Audio
 			foreach (var item in Plugin.List)
@@ -347,7 +347,7 @@ namespace ifme
 			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
 			Info.Data.IsFileAvs = GetInfo.IsAviSynth(file);
 
-			if (!Plugin.AviSynthInstalled)
+			if (!Plugin.IsExistAviSynth)
 			{
 				if (Info.Data.IsFileAvs)
 				{
@@ -1274,15 +1274,15 @@ namespace ifme
 								var result = dl.ShowDialog();
 								if (result == DialogResult.OK)
 								{
-									File.Move(dl.SavePath, Global.File.Benchmark4K);
-									Benchmark(Global.File.Benchmark4K);
+									File.Move(dl.SavePath, Global.Files.Benchmark4K);
+									Benchmark(Global.Files.Benchmark4K);
 								}
 							}
 						}
 					}
 					else
 					{
-						Benchmark(Global.File.Benchmark4K);
+						Benchmark(Global.Files.Benchmark4K);
 					}
 				}
 			}
@@ -1361,7 +1361,7 @@ namespace ifme
 			foreach (var item in gg)
 			{
 				if (GetInfo.IsAviSynth(item.Data.File))
-					if (!Plugin.AviSynthInstalled)
+					if (!Plugin.IsExistAviSynth)
 						continue;
 
 				ListViewItem qItem = new ListViewItem(new[] {

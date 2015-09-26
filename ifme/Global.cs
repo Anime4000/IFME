@@ -111,7 +111,7 @@ namespace ifme
 			}
 		}
 
-		public class File
+		public class Files
 		{
 			public static string Benchmark4K
 			{
