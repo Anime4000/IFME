@@ -12,7 +12,7 @@ This latest version very versatile and expandable, rework new GUI, better code. 
 You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
 
 ## License
-IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/). However you are not allow to sell either in **Source Code** or **Binaries** form.
+IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allow to sell either in **Source Code** or **Binaries** form.
 
 Artwork drawn by **Ray-en** aka [53C](http://53c.deviantart.com/) under license [Attribution-NonCommercial 4.0 International](http://creativecommons.org/licenses/by-nc/4.0/)
 
