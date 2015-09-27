@@ -351,8 +351,15 @@ namespace ifme
 			{
 				if (Info.Data.IsFileAvs)
 				{
-					InvokeLog($"AviSynth not installed, skipping this file: {file}");
-					return;
+					if (Plugin.IsForceAviSynth)
+					{
+						InvokeLog($"Forcing AviSynth added to queue: {file}");
+					}
+					else
+					{
+						InvokeLog($"AviSynth not installed, skipping this file: {file}");
+						return;
+					}
 				}
 			}
 

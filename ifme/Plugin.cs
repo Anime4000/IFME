@@ -80,8 +80,9 @@ namespace ifme
 		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
 
 		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
-
 		public static bool IsExistAviSynth = File.Exists(AviSynthFile);
+		public static bool IsForceAviSynth = false;
+
 		public static bool IsExistHEVCGCC = false;
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;

@@ -68,9 +68,10 @@ namespace ifme
 			WriteLine("  -r, --reset                  reset IFME configuration");
 			WriteLine("  -g, --gui                    open IFME GUI (linux only)");
 			WriteLine("  -c, --cli                    open IFME CLI (impiles -g)");
-			WriteLine("  -s                           skip all update checking (faster loading)");
 			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
+			WriteLine("  -s                           skip all update checking (faster loading)");
 			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
+			WriteLine("      --force-avs              force allow AviSynth script added to queue");
 			WriteLine();
 			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
 			WriteLine();
@@ -133,6 +134,9 @@ namespace ifme
 
 					if (args[i] == "--cli")
 						IsCLI = true;
+
+					if (args[i] == "--force-avs")
+						Plugin.IsForceAviSynth = true;
 
 					if (args[i] == "--input")
 						if (i < args.Length)
