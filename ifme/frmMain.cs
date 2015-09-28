@@ -333,6 +333,12 @@ namespace ifme
 
 		void QueueAdd(string file)
 		{
+			if (GetInfo.IsPathNetwork(file))
+			{
+				InvokeLog($"Rejected! Please mount as \"Network Drive\" File: {file}");
+				return;
+			}
+
 			string FileType;
 			var Info = new Queue();
 

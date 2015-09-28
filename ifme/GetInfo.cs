@@ -10,6 +10,14 @@ namespace ifme
 	{
 		static StringComparison IC = StringComparison.OrdinalIgnoreCase;
 
+		public static bool IsPathNetwork(string path)
+		{
+			if (path[0] == '\\')
+				if (path[1] == '\\')
+					return true;
+			return false;
+		}
+
 		public static bool IsAviSynth(string file)
 		{
 			string exts = Path.GetExtension(file);
