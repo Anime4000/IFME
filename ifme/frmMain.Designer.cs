@@ -909,6 +909,7 @@
 			this.txtVideoValue.TabIndex = 2;
 			this.txtVideoValue.TextChanged += new System.EventHandler(this.txtVideoValue_TextChanged);
 			this.txtVideoValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtVideoValue_KeyPress);
+			this.txtVideoValue.Leave += new System.EventHandler(this.txtVideoValue_Leave);
 			// 
 			// lblVideoRateValue
 			// 

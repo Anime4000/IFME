@@ -759,21 +759,21 @@ namespace ifme
 			QueueUpdate(QueueProp.VideoType);
 		}
 
-		private void txtVideoValue_TextChanged(object sender, EventArgs e)
+		private void txtVideoValue_Leave(object sender, EventArgs e)
 		{
 			var i = cboVideoType.SelectedIndex;
 			if (i == 0)
-				if (!String.IsNullOrEmpty(txtVideoValue.Text))
+				if (!string.IsNullOrEmpty(txtVideoValue.Text))
 					if (Convert.ToDouble(txtVideoValue.Text) >= 51.0)
 						txtVideoValue.Text = "51";
 					else if (Convert.ToDouble(txtVideoValue.Text) <= 0.0)
 						txtVideoValue.Text = "0";
 					else
-						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(txtVideoValue.Text) * (double)10.0);
+						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(txtVideoValue.Text) * 10.0);
 				else
 					trkVideoRate.Value = 0;
 			else if (i == 1)
-				if (!String.IsNullOrEmpty(txtVideoValue.Text))
+				if (!string.IsNullOrEmpty(txtVideoValue.Text))
 					if (Convert.ToInt32(txtVideoValue.Text) >= 51)
 						txtVideoValue.Text = "51";
 					else if (Convert.ToInt32(txtVideoValue.Text) <= 0)
@@ -782,7 +782,10 @@ namespace ifme
 						trkVideoRate.Value = Convert.ToInt32(txtVideoValue.Text);
 				else
 					trkVideoRate.Value = 0;
+		}
 
+		private void txtVideoValue_TextChanged(object sender, EventArgs e)
+		{
 			QueueUpdate(QueueProp.VideoValue);
 		}
 
