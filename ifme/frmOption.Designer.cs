@@ -469,6 +469,7 @@
 			// clbCPU
 			// 
 			this.clbCPU.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.clbCPU.CheckOnClick = true;
 			this.clbCPU.FormattingEnabled = true;
 			this.clbCPU.Location = new System.Drawing.Point(68, 151);
 			this.clbCPU.Name = "clbCPU";
