@@ -200,7 +200,7 @@ namespace ifme
 								break;
 							}
 						}
-						Items.Add(new StreamMatroska() { ID = id, File = "font_" + fn, Mime = me });
+						Items.Add(new StreamMatroska() { ID = id, File = fn, Mime = me });
 					}
 				}
 				else

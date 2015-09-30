@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 using static ifme.Properties.Settings;
 
@@ -283,7 +284,7 @@ namespace ifme
 				}
 				else
 				{
-					foreach (var attach in Directory.GetFiles(Default.DirTemp, "font*.*f"))
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.*").Where(f => f.EndsWith(".ttf", IC) || f.EndsWith(".otf", IC) || f.EndsWith(".woff", IC)))
 					{
 						cmdattach += $"--attachment-description No --attach-file \"{attach}\" ";
 					}
