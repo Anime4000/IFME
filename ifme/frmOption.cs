@@ -24,6 +24,13 @@ namespace ifme
 
 		private void frmOption_Load(object sender, EventArgs e)
 		{
+			// Language UI (cannot put bottom due dynamic label)
+#if MAKELANG
+			LangCreate();
+#else
+			LangApply();
+#endif
+
 			// General
 			txtTempFolder.Text = Properties.Settings.Default.DirTemp;
 			txtNamePrefix.Text = Properties.Settings.Default.NamePrefix;
@@ -159,13 +166,6 @@ namespace ifme
 				if (string.Equals(Properties.Settings.Default.Language, item.Code))
 					cboLang.Text = item.Name;
 			}
-
-			// Language UI
-#if MAKELANG
-			LangCreate();
-#else
-			LangApply();
-#endif
 		}
 
 		private void cboLang_SelectedIndexChanged(object sender, EventArgs e)

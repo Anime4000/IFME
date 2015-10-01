@@ -264,14 +264,14 @@ namespace ifme
 				{
 					foreach (var subs in item.Subtitle)
 					{
-						cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{subs.Lang} \"{subs.File}\" ";
+						cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{subs.Lang} \"{subs.File}\" ";
 					}
 				}
 				else
 				{
 					foreach (var subs in Directory.GetFiles(Default.DirTemp, "sub*"))
 					{
-						cmdsubs += $"--compression 0:zlib --sub-charset 0:UTF-8 --language 0:{GetInfo.FileLang(subs)} \"{subs}\" ";
+						cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{GetInfo.FileLang(subs)} \"{subs}\" ";
 					}
 				}
 
@@ -286,7 +286,7 @@ namespace ifme
 				{
 					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.*").Where(f => f.EndsWith(".ttf", IC) || f.EndsWith(".otf", IC) || f.EndsWith(".woff", IC)))
 					{
-						cmdattach += $"--attachment-description No --attach-file \"{attach}\" ";
+						cmdattach += $"--attachment-description GG --attach-file \"{attach}\" ";
 					}
 				}
 

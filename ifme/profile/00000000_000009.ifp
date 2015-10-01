@@ -6,8 +6,8 @@ author = Bvz
 web = 
 
 [picture]
-resolution = 1280x720
-framerate = 23.976
+resolution = auto
+framerate = auto
 bitdepth = 8
 chroma = 420
 
