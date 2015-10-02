@@ -152,6 +152,7 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
+			this.proTip = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -178,6 +179,7 @@
 			this.pbxLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pbxLeft.BackColor = System.Drawing.Color.Black;
+			this.pbxLeft.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pbxLeft.Location = new System.Drawing.Point(0, 0);
 			this.pbxLeft.Name = "pbxLeft";
 			this.pbxLeft.Size = new System.Drawing.Size(684, 64);
@@ -188,6 +190,7 @@
 			// 
 			this.pbxRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pbxRight.BackColor = System.Drawing.Color.Transparent;
+			this.pbxRight.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pbxRight.Location = new System.Drawing.Point(60, 0);
 			this.pbxRight.Name = "pbxRight";
 			this.pbxRight.Size = new System.Drawing.Size(624, 64);
@@ -1617,6 +1620,12 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
+			// proTip
+			// 
+			this.proTip.IsBalloon = true;
+			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.proTip.ToolTipTitle = "Info";
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1815,5 +1824,6 @@
 		private System.Windows.Forms.CheckBox chkAudioDrop;
 		private System.Windows.Forms.CheckedListBox clbAudioTracks;
 		private System.Windows.Forms.CheckBox chkPictureVideoCopy;
+		private System.Windows.Forms.ToolTip proTip;
 	}
 }

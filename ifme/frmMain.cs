@@ -108,6 +108,14 @@ namespace ifme
 				QueueListOpen(ObjectIO.FileName);
 
 			QueueListFile(ObjectIO.FileName);
+
+			// Tell user there are new version can be downloaded
+			if (Global.App.NewRelease)
+			{
+				proTip.Show(null, pbxRight, 0);
+				proTip.ToolTipTitle = Language.TipUpdateTitle;
+				proTip.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 30000);
+			}
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -1885,6 +1893,9 @@ namespace ifme
 			Language.QueueSaveError = data.Sections[Name]["QueueSaveError"];
 			Language.QueueOpenChange = data.Sections[Name]["QueueOpenChange"];
 			Language.Quit = data.Sections[Name]["Quit"];
+
+			Language.TipUpdateTitle = data.Sections[Name]["TipUpdateTitle"];
+			Language.TipUpdateMessage = data.Sections[Name]["TipUpdateMessage"];
 		}
 
 		void LangCreate()
@@ -1953,6 +1964,9 @@ namespace ifme
 			data.Sections[Name].AddKey("QueueSaveError", Language.QueueSaveError);
 			data.Sections[Name].AddKey("QueueOpenChange", Language.QueueOpenChange);
 			data.Sections[Name].AddKey("Quit", Language.Quit);
+
+			data.Sections[Name].AddKey("TipUpdateTitle", Language.TipUpdateTitle);
+			data.Sections[Name].AddKey("TipUpdateMessage", Language.TipUpdateMessage);
 
 			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data, Encoding.UTF8);		
 		}

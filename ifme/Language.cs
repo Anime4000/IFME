@@ -58,5 +58,9 @@ namespace ifme
 		// Option, AviSynth tab
 		public static string Installed = "Installed";
 		public static string NotInstalled = "Not Found";
+
+		// ToolTip
+		public static string TipUpdateTitle = "Attention!";
+		public static string TipUpdateMessage = "A New version is available to download! Click here to update!";
     }
 }
