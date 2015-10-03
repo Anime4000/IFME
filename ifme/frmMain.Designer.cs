@@ -185,6 +185,7 @@
 			this.pbxLeft.Size = new System.Drawing.Size(684, 64);
 			this.pbxLeft.TabIndex = 0;
 			this.pbxLeft.TabStop = false;
+			this.pbxLeft.Click += new System.EventHandler(this.pbxLeft_Click);
 			// 
 			// pbxRight
 			// 
@@ -196,6 +197,7 @@
 			this.pbxRight.Size = new System.Drawing.Size(624, 64);
 			this.pbxRight.TabIndex = 1;
 			this.pbxRight.TabStop = false;
+			this.pbxRight.Click += new System.EventHandler(this.pbxRight_Click);
 			// 
 			// btnQueueAdd
 			// 

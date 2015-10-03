@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Media;
 using System.Reflection;
+using System.Diagnostics;
 
 using IniParser;
 using IniParser.Model;
@@ -33,6 +34,13 @@ namespace ifme
 		#region Form
 		private void frmMain_Load(object sender, EventArgs e)
 		{
+			// Language UI
+#if MAKELANG
+			LangCreate();
+#else
+			LangApply();
+#endif
+
 			// Features
 			if (OS.IsLinux)
 			{
@@ -93,13 +101,6 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
-
-			// Language UI
-#if MAKELANG
-			LangCreate();
-#else
-			LangApply();
-#endif
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -112,9 +113,11 @@ namespace ifme
 			// Tell user there are new version can be downloaded
 			if (Global.App.NewRelease)
 			{
-				proTip.Show(null, pbxRight, 0);
+				InvokeLog("New version available, visit: https://x265.github.io/");
+
+				proTip.Show(null, pbxRight, 0); // should fix ballon position: http://stackoverflow.com/a/4646021
 				proTip.ToolTipTitle = Language.TipUpdateTitle;
-				proTip.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 30000);
+				proTip.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 60000);
 			}
 		}
 
@@ -122,7 +125,7 @@ namespace ifme
 		{
 			if (lstQueue.Items.Count > 1)
 			{
-				var MsgBox = MessageBox.Show(Language.Quit, "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+				var MsgBox = MessageBox.Show(Language.Quit, null, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
 				if (MsgBox == DialogResult.Yes)
 				{
 					if (string.IsNullOrEmpty(ObjectIO.FileName))
@@ -142,6 +145,16 @@ namespace ifme
 			}
 		}
 		#endregion
+
+		private void pbxRight_Click(object sender, EventArgs e)
+		{
+			Process.Start("https://x265.github.io/");
+		}
+
+		private void pbxLeft_Click(object sender, EventArgs e)
+		{
+			Process.Start("https://x265.github.io/");
+		}
 
 		#region Profile
 		void ProfileAdd()
@@ -1877,7 +1890,7 @@ namespace ifme
 				item.Text = data[Name][$"{item.Tag}"];
 
 			Language.BenchmarkDownload = data[Name]["BenchmarkDownload"];
-			Language.BenchmarkNoFile = data[Name]["BenchmarkNoFile"];
+			Language.BenchmarkNoFile = data[Name]["BenchmarkNoFile"].Replace("\\n", "\n");
 			Language.NotSupported = data[Name]["NotSupported"];
 			Language.OneItem = data[Name]["OneItem"];
 			Language.OneVideo = data[Name]["OneVideo"];

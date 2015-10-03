@@ -61,6 +61,6 @@ namespace ifme
 
 		// ToolTip
 		public static string TipUpdateTitle = "Attention!";
-		public static string TipUpdateMessage = "A New version is available to download! Click here to update!";
+		public static string TipUpdateMessage = "A new version is available to download! Click here to update!";
     }
 }
