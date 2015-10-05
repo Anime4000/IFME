@@ -85,7 +85,7 @@ echo.
 
 @title COPY EXTENSION
 echo COPY EXTENSION
-robocopy prerequisite\allos\extension %BUILDDIR% /E
+robocopy prerequisite\allos\extension %BUILDDIR%\extension /E
 
 @title CLEAN UP
 echo CLEAN UP

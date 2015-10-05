@@ -1,5 +1,5 @@
-﻿Version 5.1.0 (FLUORITE DIARY)
--------------
+﻿Version 5.1 (FLUORITE DIARY)
+-----------
 
 [new] Audio tracks now can drop if not wanted to add final encoded file
 [new] Video now can skip encoding (applicable when source is HEVC)
