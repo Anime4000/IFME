@@ -325,6 +325,13 @@ namespace ifme
 			{
 				id++;
 
+				// Only file exist get encoded
+				if (File.Exists(item.Data.File))
+				{
+					id++;
+					continue;
+				}
+
 				// Only checked list get encoded
 				if (!item.IsEnable)
 				{

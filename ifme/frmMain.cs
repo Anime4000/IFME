@@ -1666,6 +1666,13 @@ namespace ifme
 			{
 				id++;
 
+				// Only file exist get encoded
+				if (File.Exists(item.Data.File))
+				{
+					id++;
+					continue;
+				}
+
 				// Only checked list get encoded
 				if (!item.IsEnable)
 				{
@@ -1673,14 +1680,14 @@ namespace ifme
 					continue;
 				}
 
+				// Remove temp file
+				MediaEncoder.CleanUp();
+
 				// Time current queue
 				var SessionCurrent = DateTime.Now;
 
 				// Log current queue
 				InvokeLog("Processing: " + item.Data.File);
-
-				// Remove temp file
-				MediaEncoder.CleanUp();
 
 				// AviSynth aware
 				string file = item.Data.File;
@@ -1758,7 +1765,7 @@ namespace ifme
 			}
 			else
 			{
-				if (Properties.Settings.Default.SoundFinish)
+				if (Default.SoundFinish)
 				{
 					SoundPlayer notification = new SoundPlayer(Global.Sounds.Finish);
 					notification.Play();

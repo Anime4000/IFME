@@ -214,6 +214,7 @@ $RECYCLE.BIN/
 *.msp
 
 # IFME build files.
+*.exe
 build
 installer/*.mp3
 installer/*.dll
