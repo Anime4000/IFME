@@ -1395,6 +1395,16 @@ namespace ifme
 				ObjectIO.ReadFromXmlFile<List<Queue>>(file) :
 				ObjectIO.ReadFromBinaryFile<List<Queue>>(file);
 
+			// Remove file that not exist
+			for (int i = 0; i < gg.Count; i++)
+			{
+				if (!File.Exists(gg[i].Data.File))
+				{
+					InvokeLog($"File Not Found: {gg[i].Data.File}");
+					gg.RemoveAt(i);
+				}
+			}
+
 			foreach (var item in gg)
 			{
 				if (GetInfo.IsAviSynth(item.Data.File))
@@ -1665,13 +1675,6 @@ namespace ifme
 			foreach (Queue item in argList)
 			{
 				id++;
-
-				// Only file exist get encoded
-				if (File.Exists(item.Data.File))
-				{
-					id++;
-					continue;
-				}
 
 				// Only checked list get encoded
 				if (!item.IsEnable)

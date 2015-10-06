@@ -293,6 +293,16 @@ namespace ifme
 				 ObjectIO.ReadFromXmlFile<List<Queue>>(queueFile) : 
 				 ObjectIO.ReadFromBinaryFile<List<Queue>>(queueFile);
 
+			WriteLine("Removing file not exist");
+			for (int i = 0; i < argList.Count; i++)
+			{
+				if (!File.Exists(argList[i].Data.File))
+				{
+					WriteLine($"File Not Found: {argList[i].Data.File}");
+					argList.RemoveAt(i);
+				}
+			}
+
 			WriteLine($"There are {argList.Count} video's in the queue file\n");
 			if (force)
 			{
@@ -324,13 +334,6 @@ namespace ifme
 			foreach (Queue item in argList)
 			{
 				id++;
-
-				// Only file exist get encoded
-				if (File.Exists(item.Data.File))
-				{
-					id++;
-					continue;
-				}
 
 				// Only checked list get encoded
 				if (!item.IsEnable)
