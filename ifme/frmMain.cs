@@ -48,11 +48,15 @@ namespace ifme
 				tsmiQueuePreview.Enabled = false;
 				tsmiBenchmark.Enabled = false;
 
-				// Interface fix
-				grpPictureFormat.Height += 8;
+				// Interface fix - Picture Tab
+				grpPictureFormat.Height += 20;
+				grpPictureBasic.Height += 20;
+				grpPictureQuality.Height += 20;
 				grpPictureYadif.Top += 6;
-				grpPictureYadif.Height -= 6;
+				grpPictureYadif.Height += 20;
 				chkPictureYadif.Top += 8;
+				chkPictureVideoCopy.Top += 22;
+
 				grpAudioDrop.Top += 6;
 				grpAudioDrop.Height -= 6;
 			}
