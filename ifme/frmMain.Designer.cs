@@ -746,6 +746,7 @@
 			this.cboPictureFps.Size = new System.Drawing.Size(121, 21);
 			this.cboPictureFps.TabIndex = 3;
 			this.cboPictureFps.TextChanged += new System.EventHandler(this.cboPictureFps_TextChanged);
+			this.cboPictureFps.Leave += new System.EventHandler(this.cboPictureFps_Leave);
 			// 
 			// cboPictureRes
 			// 
@@ -769,6 +770,7 @@
 			this.cboPictureRes.Size = new System.Drawing.Size(121, 21);
 			this.cboPictureRes.TabIndex = 1;
 			this.cboPictureRes.TextChanged += new System.EventHandler(this.cboPictureRes_TextChanged);
+			this.cboPictureRes.Leave += new System.EventHandler(this.cboPictureRes_Leave);
 			// 
 			// lblPictureRes
 			// 

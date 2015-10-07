@@ -11,8 +11,10 @@
 [fixed] Temp folder not removed when closing IFME
 [fixed] Prevent empty string from launch a process/visit web
 [fixed] Git issue #35 #36 #37 #38 (told by forkicks)
-[fixed] Git issue $41 When type text into the ratefactor textbox, the characters are entered in the wrong order (told by forkicks)
+[fixed] Git issue #41 When type text into the ratefactor textbox, the characters are entered in the wrong order (told by forkicks)
 [fixed] Unable to open "Option" window due to error
+[fixed] Git issue #42, open queue list, which queue file not exist cause IFME to crash.
+[fixed] Prevent user enter invalid input
 
 Version 5.0.9 (Dearness)
 -------------

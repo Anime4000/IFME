@@ -7,6 +7,7 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 using IniParser;
 using IniParser.Model;
@@ -394,8 +395,8 @@ namespace ifme
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
-				Info.Picture.Resolution = i == 0 ? $"{Video.width}x{Video.height}" : p.Picture.Resolution;
-				Info.Picture.FrameRate = i == 0 ? $"{Video.frameRateGet}" : p.Picture.FrameRate;
+				Info.Picture.Resolution = i == 0 ? "auto" : p.Picture.Resolution;
+				Info.Picture.FrameRate = i == 0 ? "auto" : p.Picture.FrameRate;
 				Info.Picture.BitDepth = i == 0 ? $"{Video.bitDepth}" : p.Picture.BitDepth;
 				Info.Picture.Chroma = i == 0 ? "420" : p.Picture.Chroma;
 
@@ -674,9 +675,33 @@ namespace ifme
 			QueueUpdate(QueueProp.PictureResolution);
 		}
 
+		private void cboPictureRes_Leave(object sender, EventArgs e)
+		{
+			Regex regex = new Regex("([0-9+x])|([auto])");
+			MatchCollection matches = regex.Matches(cboPictureRes.Text);
+
+			if (matches.Count != cboPictureRes.Text.Length)
+			{
+				cboPictureRes.Text = "auto";
+				InvokeLog("Input resolution format was invalid, back to auto.");
+			}
+        }
+
 		private void cboPictureFps_TextChanged(object sender, EventArgs e)
 		{
 			QueueUpdate(QueueProp.PictureFrameRate);
+		}
+
+		private void cboPictureFps_Leave(object sender, EventArgs e)
+		{
+			Regex regex = new Regex("([0-9+.])|([auto])");
+			MatchCollection matches = regex.Matches(cboPictureFps.Text);
+
+			if (matches.Count != cboPictureFps.Text.Length)
+			{
+				cboPictureFps.Text = "auto";
+				InvokeLog("Input frame rate format was invalid, back to auto.");
+			}
 		}
 
 		private void cboPictureBit_SelectedIndexChanged(object sender, EventArgs e)
@@ -1391,6 +1416,8 @@ namespace ifme
 		{
 			lstQueue.Items.Clear(); // clear all listing
 
+			InvokeLog($"Opening queue file: {file}");
+
 			List<Queue> gg = ObjectIO.IsValidXml(file) ?
 				ObjectIO.ReadFromXmlFile<List<Queue>>(file) :
 				ObjectIO.ReadFromBinaryFile<List<Queue>>(file);
@@ -1400,7 +1427,7 @@ namespace ifme
 			{
 				if (!File.Exists(gg[i].Data.File))
 				{
-					InvokeLog($"File Not Found: {gg[i].Data.File}");
+					InvokeLog($"File not found: {gg[i].Data.File}");
 					gg.RemoveAt(i);
 				}
 			}
