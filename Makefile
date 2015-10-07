@@ -14,7 +14,7 @@ only: clean compile copy copylib copymono
 	$(CC) "sources/ifme-gnome.c" -o "$(DIR)/ifme-gnome"
 	$(CC) "sources/ifme-xterm.c" -o "$(DIR)/ifme-xterm"
 	cp "sources/ifme.sh" "$(DIR)/ifme"
-	$(MONOMK) --deps --static -o "$(DIR)/ifme-bin" "$(DIR)/ifme.exe" "$(DIR)/INIFileParser.dll" "$(DIR)/MediaInfoDotNet.dll"
+	$(MONOMK) -z --deps --static -o "$(DIR)/ifme-bin" "$(DIR)/ifme.exe" "$(DIR)/INIFileParser.dll" "$(DIR)/MediaInfoDotNet.dll"
 	rm -f "$(DIR)/ifme.exe"
 	rm -f "$(DIR)/INIFileParser.dll"
 	rm -f "$(DIR)/MediaInfoDotNet.dll"
