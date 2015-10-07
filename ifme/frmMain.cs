@@ -42,11 +42,19 @@ namespace ifme
 			LangApply();
 #endif
 
-			// Features
+			// Features & Fix
 			if (OS.IsLinux)
 			{
 				tsmiQueuePreview.Enabled = false;
 				tsmiBenchmark.Enabled = false;
+
+				// Interface fix
+				grpPictureFormat.Height += 8;
+				grpPictureYadif.Top += 6;
+				grpPictureYadif.Height -= 6;
+				chkPictureYadif.Top += 8;
+				grpAudioDrop.Top += 6;
+				grpAudioDrop.Height -= 6;
 			}
 
 			tsmiQueueAviSynth.Enabled = Plugin.IsExistAviSynth;
@@ -115,12 +123,11 @@ namespace ifme
 			if (Global.App.NewRelease)
 			{
 				InvokeLog("New version available, visit: https://x265.github.io/");
-
 				tipUpdate.Show(null, pbxRight, 0); // should fix ballon position: http://stackoverflow.com/a/4646021
 
 				tipUpdate.IsBalloon = true;
 				tipUpdate.ToolTipTitle = Language.TipUpdateTitle;
-				tipUpdate.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 60000);
+				tipUpdate.Show(Language.TipUpdateMessage, pbxRight, 488, pbxRight.Height / 2, 30000);
 			}
 		}
 

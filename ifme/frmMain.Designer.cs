@@ -1121,7 +1121,7 @@
 			// 
 			this.chkAudioMerge.Location = new System.Drawing.Point(9, 103);
 			this.chkAudioMerge.Name = "chkAudioMerge";
-			this.chkAudioMerge.Size = new System.Drawing.Size(312, 64);
+			this.chkAudioMerge.Size = new System.Drawing.Size(300, 48);
 			this.chkAudioMerge.TabIndex = 8;
 			this.chkAudioMerge.Text = "&Compile all stream into single stream (not applicable for Passthrough)";
 			this.chkAudioMerge.UseVisualStyleBackColor = true;
