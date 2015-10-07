@@ -116,9 +116,11 @@ namespace ifme
 			{
 				InvokeLog("New version available, visit: https://x265.github.io/");
 
-				proTip.Show(null, pbxRight, 0); // should fix ballon position: http://stackoverflow.com/a/4646021
-				proTip.ToolTipTitle = Language.TipUpdateTitle;
-				proTip.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 60000);
+				tipUpdate.Show(null, pbxRight, 0); // should fix ballon position: http://stackoverflow.com/a/4646021
+
+				tipUpdate.IsBalloon = true;
+				tipUpdate.ToolTipTitle = Language.TipUpdateTitle;
+				tipUpdate.Show(Language.TipUpdateMessage, pbxRight, 480, pbxRight.Height / 2, 60000);
 			}
 		}
 
@@ -1185,6 +1187,13 @@ namespace ifme
 
 		void QueueUpdate(QueueProp Id)
 		{
+			if (lstQueue.SelectedItems.Count == 0)
+			{
+				tipNotify.ToolTipIcon = ToolTipIcon.Warning;
+				tipNotify.ToolTipTitle = Language.TipUpdateTitle;
+				tipNotify.Show(Language.OneItem, tabConfig, 0, 0, 5000);
+			}
+
 			foreach (ListViewItem item in lstQueue.SelectedItems)
 			{
 				var X = item.Tag as Queue;

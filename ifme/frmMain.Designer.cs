@@ -152,7 +152,8 @@
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
-			this.proTip = new System.Windows.Forms.ToolTip(this.components);
+			this.tipUpdate = new System.Windows.Forms.ToolTip(this.components);
+			this.tipNotify = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -1601,7 +1602,7 @@
 			// 
 			this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnAbout.Image = global::ifme.Properties.Resources.information;
-			this.btnAbout.Location = new System.Drawing.Point(644, 626);
+			this.btnAbout.Location = new System.Drawing.Point(648, 626);
 			this.btnAbout.Name = "btnAbout";
 			this.btnAbout.Size = new System.Drawing.Size(24, 24);
 			this.btnAbout.TabIndex = 20;
@@ -1624,11 +1625,11 @@
 			this.bgwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwEncoding_DoWork);
 			this.bgwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwEncoding_RunWorkerCompleted);
 			// 
-			// proTip
+			// tipUpdate
 			// 
-			this.proTip.IsBalloon = true;
-			this.proTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-			this.proTip.ToolTipTitle = "Info";
+			this.tipUpdate.IsBalloon = true;
+			this.tipUpdate.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.tipUpdate.ToolTipTitle = "Info";
 			// 
 			// frmMain
 			// 
@@ -1828,6 +1829,7 @@
 		private System.Windows.Forms.CheckBox chkAudioDrop;
 		private System.Windows.Forms.CheckedListBox clbAudioTracks;
 		private System.Windows.Forms.CheckBox chkPictureVideoCopy;
-		private System.Windows.Forms.ToolTip proTip;
+		private System.Windows.Forms.ToolTip tipUpdate;
+		private System.Windows.Forms.ToolTip tipNotify;
 	}
 }

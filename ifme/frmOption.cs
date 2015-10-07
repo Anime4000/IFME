@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using IniParser;
 using IniParser.Model;
 
+using static ifme.Properties.Settings;
+
 namespace ifme
 {
 	public partial class frmOption : Form
@@ -32,9 +34,9 @@ namespace ifme
 #endif
 
 			// General
-			txtTempFolder.Text = Properties.Settings.Default.DirTemp;
-			txtNamePrefix.Text = Properties.Settings.Default.NamePrefix;
-			chkSoundDone.Checked = Properties.Settings.Default.SoundFinish;
+			txtTempFolder.Text = Default.DirTemp;
+			txtNamePrefix.Text = Default.NamePrefix;
+			chkSoundDone.Checked = Default.SoundFinish;
 
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -45,7 +47,7 @@ namespace ifme
 					clbCPU.Items.Add("CPU " + (i + 1).ToString(), TaskManager.CPU.Affinity[i]);
 			}
 
-			cboCPUPriority.SelectedIndex = Properties.Settings.Default.Nice;
+			cboCPUPriority.SelectedIndex = Default.Nice;
 
 			// AviSynth
 			lblAviSynthStatus.Text = Plugin.IsExistAviSynth ? Language.Installed : Language.NotInstalled;
@@ -67,8 +69,8 @@ namespace ifme
 				}
 			}
 
-			txtAvsDecoder.Text = Properties.Settings.Default.AvsDecoder;
-			chkCopyContentMKV.Checked = Properties.Settings.Default.AvsMkvCopy;
+			txtAvsDecoder.Text = Default.AvsDecoder;
+			chkCopyContentMKV.Checked = Default.AvsMkvCopy;
 
 			// Plugin
 			foreach (var item in Plugin.List)
@@ -108,7 +110,7 @@ namespace ifme
 
 			for (int i = 0; i < cboDefaultEditor.Items.Count; i++)
 			{
-				if (((string)cboDefaultEditor.Items[i]).Contains(Properties.Settings.Default.DefaultNotepad))
+				if (((string)cboDefaultEditor.Items[i]).Contains(Default.DefaultNotepad))
 				{
 					cboDefaultEditor.SelectedIndex = i;
 					break; // stop found default notepad
@@ -117,7 +119,7 @@ namespace ifme
 
 			for (int i = 0; i < cboDefaultBenchmark.Items.Count; i++)
 			{
-				if (((string)cboDefaultBenchmark.Items[i]).Contains(Properties.Settings.Default.DefaultBenchmark))
+				if (((string)cboDefaultBenchmark.Items[i]).Contains(Default.DefaultBenchmark))
 				{
 					cboDefaultBenchmark.SelectedIndex = i;
 					break; // stop found default notepad
@@ -140,13 +142,13 @@ namespace ifme
 			}
 
 			// Compiler
-			if (string.Equals(Properties.Settings.Default.Compiler, "gcc", IC))
+			if (string.Equals(Default.Compiler, "gcc", IC))
 				rdoCompilerGCC.Checked = true;
 
-			if (string.Equals(Properties.Settings.Default.Compiler, "icc", IC))
+			if (string.Equals(Default.Compiler, "icc", IC))
 				rdoCompilerIntel.Checked = true;
 
-			if (string.Equals(Properties.Settings.Default.Compiler, "msvc", IC))
+			if (string.Equals(Default.Compiler, "msvc", IC))
 				rdoCompilerMicrosoft.Checked = true;				
 
 			if (!Plugin.IsExistHEVCGCC)
@@ -163,7 +165,7 @@ namespace ifme
 			{
 				cboLang.Items.Add(item.Name);
 
-				if (string.Equals(Properties.Settings.Default.Language, item.Code))
+				if (string.Equals(Default.Language, item.Code))
 					cboLang.Text = item.Name;
 			}
 		}
@@ -205,56 +207,56 @@ namespace ifme
 				else
 				{
 					txtTempFolder.Text = GetFolder.SelectedPath;
-					Properties.Settings.Default.DirTemp = GetFolder.SelectedPath;
+					Default.DirTemp = GetFolder.SelectedPath;
 				}
 			}
 		}
 
 		private void txtNamePrefix_TextChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.NamePrefix = txtNamePrefix.Text;
+			Default.NamePrefix = txtNamePrefix.Text;
 		}
 
 		private void chkSoundDone_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.SoundFinish = chkSoundDone.Checked;
+			Default.SoundFinish = chkSoundDone.Checked;
 		}
 
 		private void cboDefaultEditor_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string item = cboDefaultEditor.Text;
-			Properties.Settings.Default.DefaultNotepad = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
+			Default.DefaultNotepad = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
 		}
 
 		private void cboDefaultBenchmark_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string item = cboDefaultBenchmark.Text;
-			Properties.Settings.Default.DefaultBenchmark = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
+			Default.DefaultBenchmark = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
 		}
 
 		private void txtAvsDecoder_TextChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.AvsDecoder = txtAvsDecoder.Text;
+			Default.AvsDecoder = txtAvsDecoder.Text;
 		}
 
 		private void chkCopyContentMKV_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.AvsMkvCopy = chkCopyContentMKV.Checked;
+			Default.AvsMkvCopy = chkCopyContentMKV.Checked;
 		}
 
 		private void rdoCompilerGCC_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.Compiler = "gcc";
+			Default.Compiler = "gcc";
 		}
 
 		private void rdoCompilerIntel_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.Compiler = "icc";
+			Default.Compiler = "icc";
 		}
 
 		private void rdoCompilerMicrosoft_CheckedChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.Compiler = "msvc";
+			Default.Compiler = "msvc";
 		}
 
 		private void tsmiPluginWeb_Click(object sender, EventArgs e)
@@ -282,8 +284,8 @@ namespace ifme
 		{
 			if (chkReset.Checked)
 			{
-				Properties.Settings.Default.Reset();
-				Properties.Settings.Default.Save();
+				Default.Reset();
+				Default.Save();
 				return;
 			}
 
@@ -295,21 +297,21 @@ namespace ifme
 				aff += clbCPU.GetItemChecked(i).ToString() + ",";
 			}
 			aff = aff.Remove(aff.Length - 1);
-			Properties.Settings.Default.CPUAffinity = aff;
-			Properties.Settings.Default.Nice = cboCPUPriority.SelectedIndex;
+			Default.CPUAffinity = aff;
+			Default.Nice = cboCPUPriority.SelectedIndex;
 
 			// Language
 			if (cboLang.SelectedIndex >= 0)
-				Properties.Settings.Default.Language = Language.Lists[cboLang.SelectedIndex].Code;
+				Default.Language = Language.Lists[cboLang.SelectedIndex].Code;
 			else
-				Properties.Settings.Default.Language = "en";
+				Default.Language = "en";
 
 			// Save
-			Properties.Settings.Default.Save();
+			Default.Save();
 
 			// Compiler
-			Plugin.HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265lo");
-			Plugin.HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265hi");
+			Plugin.HEVCL = Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}", "x265lo");
+			Plugin.HEVCH = Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}", "x265hi");
 		}
 
 		void LangApply()
