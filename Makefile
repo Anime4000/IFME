@@ -5,12 +5,12 @@ MONOMK=mkbundle
 MODE=Debug
 DIR=build
 
-all: complete
+all: only
 	mv $(DIR) ifme5
 	tar -cvJf ifme5-x64_linux.tar.xz ifme5
 	mv ifme5 $(DIR)
 
-complete: clean compile copy copylib copymono
+only: clean compile copy copylib copymono
 	$(CC) "sources/ifme-gnome.c" -o "$(DIR)/ifme-gnome"
 	$(CC) "sources/ifme-xterm.c" -o "$(DIR)/ifme-xterm"
 	cp "sources/ifme.sh" "$(DIR)/ifme"
