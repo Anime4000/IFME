@@ -118,7 +118,7 @@ namespace ifme
 			// Fun
 #if !STEAM
 			var TopThree = File.ReadAllLines(Path.Combine(Global.Folder.App, "metauser.if"));
-			Console.WriteLine("Top #3 Donor");
+			Console.WriteLine("Top #3 donor");
 			Console.WriteLine("------------");
 			for (int i = 1; i <= 3; i++)
 				Console.WriteLine($"{i}. {TopThree[i]}");
