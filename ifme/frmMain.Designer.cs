@@ -1498,9 +1498,9 @@
 			this.lblProfiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblProfiles.Location = new System.Drawing.Point(12, 596);
 			this.lblProfiles.Name = "lblProfiles";
-			this.lblProfiles.Size = new System.Drawing.Size(85, 24);
+			this.lblProfiles.Size = new System.Drawing.Size(110, 24);
 			this.lblProfiles.TabIndex = 12;
-			this.lblProfiles.Text = "&Profiles:";
+			this.lblProfiles.Text = "&Encoding Preset:";
 			this.lblProfiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// cboProfile
@@ -1512,9 +1512,9 @@
 			this.cboProfile.FormattingEnabled = true;
 			this.cboProfile.Items.AddRange(new object[] {
             "<new>"});
-			this.cboProfile.Location = new System.Drawing.Point(103, 596);
+			this.cboProfile.Location = new System.Drawing.Point(128, 596);
 			this.cboProfile.Name = "cboProfile";
-			this.cboProfile.Size = new System.Drawing.Size(539, 24);
+			this.cboProfile.Size = new System.Drawing.Size(514, 24);
 			this.cboProfile.TabIndex = 13;
 			this.cboProfile.SelectedIndexChanged += new System.EventHandler(this.cboProfile_SelectedIndexChanged);
 			// 
@@ -1614,9 +1614,9 @@
 			this.txtDestination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtDestination.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtDestination.Location = new System.Drawing.Point(103, 626);
+			this.txtDestination.Location = new System.Drawing.Point(128, 626);
 			this.txtDestination.Name = "txtDestination";
-			this.txtDestination.Size = new System.Drawing.Size(471, 24);
+			this.txtDestination.Size = new System.Drawing.Size(446, 24);
 			this.txtDestination.TabIndex = 16;
 			// 
 			// bgwEncoding
