@@ -114,6 +114,21 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
+
+			// Fun
+#if !STEAM
+			var TopThree = File.ReadAllLines(Path.Combine(Global.Folder.App, "metauser.if"));
+			Console.WriteLine("Top #3 Donor");
+			Console.WriteLine("------------");
+			for (int i = 1; i <= 3; i++)
+				Console.WriteLine($"{i}. {TopThree[i]}");
+
+			Console.WriteLine();
+			Console.WriteLine("Thank You for your support!");
+#else
+			btnDonate.Visible = false;
+			sptVert4.Visible = false;
+#endif
 		}
 
 		private void frmMain_Shown(object sender, EventArgs e)
@@ -301,6 +316,11 @@ namespace ifme
 		#endregion
 
 		#region Browse, Config & About button
+		private void btnDonate_Click(object sender, EventArgs e)
+		{
+			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+		}
+
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetDir = new FolderBrowserDialog();
@@ -374,7 +394,8 @@ namespace ifme
 				return;
 			}
 
-			string FileType;
+			string FileType = null;
+			string FileOut = null;
 			var Info = new Queue();
 
 			var i = cboProfile.SelectedIndex;			// Profiles
@@ -420,6 +441,7 @@ namespace ifme
 				Info.Picture.IsHevc = string.Equals(Video.format, "HEVC", IC);
 
 				FileType = $"{Path.GetExtension(file).ToUpper()} ({Video.format})";
+				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
 
 				if (string.Equals(Video.frameRateMode, "vfr", IC))
 					Info.Prop.IsVFR = true;
@@ -442,10 +464,21 @@ namespace ifme
 					Info.Picture.Chroma = "420";
 
 					FileType = "AviSynth Script";
+					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
 				}
 				else
 				{
-					FileType = "Unknown";
+					if (AVI.Audio.Count > 0)
+					{
+						var Audio = AVI.Audio[0];
+						FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
+						FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
+                    }
+					else
+					{
+						FileType = "Unknown";
+						FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
+                    }
 				}
 			}
 
@@ -473,7 +506,7 @@ namespace ifme
 				GetInfo.FileName(file),
 				GetInfo.FileSize(file),
 				FileType,
-				$".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)",
+				FileOut,
 				"Ready"
 			});
 			qItem.Tag = Info;
@@ -1212,12 +1245,12 @@ namespace ifme
 				switch (Id)
 				{
 					case QueueProp.FormatMkv:
-						item.SubItems[3].Text = ".MKV (HEVC)";
+						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MP4","MKV");
 						X.Data.SaveAsMkv = true;
 						break;
 
 					case QueueProp.FormatMp4:
-						item.SubItems[3].Text = ".MP4 (HEVC)";
+						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MKV", "MP4");
 						X.Data.SaveAsMkv = false;
 						break;
 

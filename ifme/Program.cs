@@ -53,7 +53,8 @@ namespace ifme
 		{
 			ForegroundColor = ConsoleColor.Yellow;
 			WriteLine(Global.App.NameFull);
-			WriteLine($"Compiled release: {Global.App.Version}-{(OS.Is64bit ? "x64" : "x86")}-{Global.App.Type}\n");
+			WriteLine("Release: " + Global.App.VersionCompiled);
+			WriteLine();
 			ResetColor();
 		}
 
@@ -75,8 +76,8 @@ namespace ifme
 			WriteLine();
 			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
 			WriteLine();
-			WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
 			WriteLine("IFME home page: <https://x265.github.io/>");
+			WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
 			WriteLine("IFME fb page  : <https://fb.com/internetfriendlymediaencoder/>");
 		}
 

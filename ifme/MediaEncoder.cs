@@ -238,8 +238,8 @@ namespace ifme
 			{
 				fileout += ".mkv";
 
-				string tags = string.Format(Properties.Resources.Tags, Global.App.NameFull, "Nemu System 5.1.1");
-				string cmdvideo = null;
+				string tags = string.Format(Properties.Resources.Tags, Global.App.NameFull, Global.App.VersionCompiled);
+                string cmdvideo = null;
 				string cmdaudio = null;
 				string cmdsubs = null;
 				string cmdattach = null;

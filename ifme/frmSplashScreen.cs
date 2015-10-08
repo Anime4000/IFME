@@ -32,7 +32,6 @@ namespace ifme
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
 		{
-			Clear();
 			Title = "Nemu Command Centre";
 			WriteLine(@"_____   __                      ___            ________            _____ ");
 			WriteLine(@"___  | / /___________ _______  __( )_______    ___  __ )_____________  /_");
@@ -136,7 +135,7 @@ namespace ifme
 
 		private void VersionCheck()
 		{
-#if NONSTEAM
+#if !STEAM
 			if (!string.Equals(Global.App.VersionRelease, DownloadString("https://x265.github.io/update/version.txt")))
 				Global.App.NewRelease = true;
 #endif

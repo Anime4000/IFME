@@ -40,7 +40,7 @@ namespace ifme
 			}
 			
 			lblAppName.Text = Global.App.Name;
-            lblAppBuild.Text = $"{Global.App.Type} {Global.App.VersionRelease} ({Global.App.Version} x64 '{Global.App.CodeName}')";
+            lblAppBuild.Text = $"{Global.App.ReleaseType} {Global.App.VersionRelease} ({Global.App.Version} x64 '{Global.App.CodeName}')";
 
             lblTitleA.Text = string.Format(lblTitleA.Text, Global.App.Name);
 

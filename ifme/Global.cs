@@ -37,12 +37,25 @@ namespace ifme
 				get { return Application.ProductVersion; }
 			}
 
-			public static string Type
+			public static string VersionCompiled
+			{
+				get { return $"ifme_{Version}_{(OS.Is64bit ? "x64" : "x86")}-{(OS.IsWindows ? "windows" : "linux")}-{ReleaseType}"; }
+			}
+
+			public static string ReleaseType
 			{
 #if DEBUG
+	#if !STEAM
 				get { return "experimental"; }
+	#else
+				get { return "steam-experimental"; }
+	#endif
 #elif RELEASE
+	#if !STEAM
 				get { return "stable"; }
+	#else
+				get { return "steam-stable"; }
+	#endif
 #endif
 			}
 

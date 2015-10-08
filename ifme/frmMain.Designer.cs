@@ -154,6 +154,8 @@
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
 			this.tipUpdate = new System.Windows.Forms.ToolTip(this.components);
 			this.tipNotify = new System.Windows.Forms.ToolTip(this.components);
+			this.sptVert4 = new System.Windows.Forms.Label();
+			this.btnDonate = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -207,7 +209,7 @@
 			this.btnQueueAdd.Location = new System.Drawing.Point(482, 70);
 			this.btnQueueAdd.Name = "btnQueueAdd";
 			this.btnQueueAdd.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueAdd.TabIndex = 1;
+			this.btnQueueAdd.TabIndex = 3;
 			this.btnQueueAdd.UseVisualStyleBackColor = true;
 			this.btnQueueAdd.Click += new System.EventHandler(this.btnQueueAdd_Click);
 			// 
@@ -218,7 +220,7 @@
 			this.btnQueueRemove.Location = new System.Drawing.Point(512, 70);
 			this.btnQueueRemove.Name = "btnQueueRemove";
 			this.btnQueueRemove.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueRemove.TabIndex = 2;
+			this.btnQueueRemove.TabIndex = 4;
 			this.btnQueueRemove.UseVisualStyleBackColor = true;
 			this.btnQueueRemove.Click += new System.EventHandler(this.btnQueueRemove_Click);
 			// 
@@ -229,7 +231,7 @@
 			this.btnQueueMoveUp.Location = new System.Drawing.Point(550, 70);
 			this.btnQueueMoveUp.Name = "btnQueueMoveUp";
 			this.btnQueueMoveUp.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueMoveUp.TabIndex = 4;
+			this.btnQueueMoveUp.TabIndex = 6;
 			this.btnQueueMoveUp.UseVisualStyleBackColor = true;
 			this.btnQueueMoveUp.Click += new System.EventHandler(this.btnQueueMoveUp_Click);
 			// 
@@ -240,7 +242,7 @@
 			this.btnQueueMoveDown.Location = new System.Drawing.Point(580, 70);
 			this.btnQueueMoveDown.Name = "btnQueueMoveDown";
 			this.btnQueueMoveDown.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueMoveDown.TabIndex = 5;
+			this.btnQueueMoveDown.TabIndex = 7;
 			this.btnQueueMoveDown.UseVisualStyleBackColor = true;
 			this.btnQueueMoveDown.Click += new System.EventHandler(this.btnQueueMoveDown_Click);
 			// 
@@ -251,7 +253,7 @@
 			this.btnQueueStart.Location = new System.Drawing.Point(648, 70);
 			this.btnQueueStart.Name = "btnQueueStart";
 			this.btnQueueStart.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueStart.TabIndex = 8;
+			this.btnQueueStart.TabIndex = 11;
 			this.btnQueueStart.UseVisualStyleBackColor = true;
 			this.btnQueueStart.Click += new System.EventHandler(this.btnQueueStart_Click);
 			// 
@@ -262,7 +264,7 @@
 			this.btnQueueStop.Location = new System.Drawing.Point(618, 70);
 			this.btnQueueStop.Name = "btnQueueStop";
 			this.btnQueueStop.Size = new System.Drawing.Size(24, 24);
-			this.btnQueueStop.TabIndex = 7;
+			this.btnQueueStop.TabIndex = 9;
 			this.btnQueueStop.UseVisualStyleBackColor = true;
 			this.btnQueueStop.Click += new System.EventHandler(this.btnQueueStop_Click);
 			// 
@@ -285,7 +287,7 @@
 			this.lstQueue.Location = new System.Drawing.Point(12, 100);
 			this.lstQueue.Name = "lstQueue";
 			this.lstQueue.Size = new System.Drawing.Size(660, 234);
-			this.lstQueue.TabIndex = 10;
+			this.lstQueue.TabIndex = 12;
 			this.lstQueue.UseCompatibleStateImageBehavior = false;
 			this.lstQueue.View = System.Windows.Forms.View.Details;
 			this.lstQueue.SelectedIndexChanged += new System.EventHandler(this.lstQueue_SelectedIndexChanged);
@@ -476,7 +478,7 @@
 			this.btnQueuePause.Location = new System.Drawing.Point(648, 70);
 			this.btnQueuePause.Name = "btnQueuePause";
 			this.btnQueuePause.Size = new System.Drawing.Size(24, 24);
-			this.btnQueuePause.TabIndex = 9;
+			this.btnQueuePause.TabIndex = 10;
 			this.btnQueuePause.UseVisualStyleBackColor = true;
 			this.btnQueuePause.Visible = false;
 			this.btnQueuePause.Click += new System.EventHandler(this.btnQueuePause_Click);
@@ -495,7 +497,7 @@
 			this.tabConfig.Name = "tabConfig";
 			this.tabConfig.SelectedIndex = 0;
 			this.tabConfig.Size = new System.Drawing.Size(660, 250);
-			this.tabConfig.TabIndex = 11;
+			this.tabConfig.TabIndex = 13;
 			// 
 			// tabPicture
 			// 
@@ -1499,7 +1501,7 @@
 			this.lblProfiles.Location = new System.Drawing.Point(12, 596);
 			this.lblProfiles.Name = "lblProfiles";
 			this.lblProfiles.Size = new System.Drawing.Size(110, 24);
-			this.lblProfiles.TabIndex = 12;
+			this.lblProfiles.TabIndex = 14;
 			this.lblProfiles.Text = "&Encoding Preset:";
 			this.lblProfiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -1515,7 +1517,7 @@
 			this.cboProfile.Location = new System.Drawing.Point(128, 596);
 			this.cboProfile.Name = "cboProfile";
 			this.cboProfile.Size = new System.Drawing.Size(514, 24);
-			this.cboProfile.TabIndex = 13;
+			this.cboProfile.TabIndex = 15;
 			this.cboProfile.SelectedIndexChanged += new System.EventHandler(this.cboProfile_SelectedIndexChanged);
 			// 
 			// btnProfileSave
@@ -1525,7 +1527,7 @@
 			this.btnProfileSave.Location = new System.Drawing.Point(648, 596);
 			this.btnProfileSave.Name = "btnProfileSave";
 			this.btnProfileSave.Size = new System.Drawing.Size(24, 24);
-			this.btnProfileSave.TabIndex = 14;
+			this.btnProfileSave.TabIndex = 16;
 			this.btnProfileSave.UseVisualStyleBackColor = true;
 			this.btnProfileSave.Click += new System.EventHandler(this.btnProfileSave_Click);
 			// 
@@ -1536,7 +1538,7 @@
 			this.btnBrowse.Location = new System.Drawing.Point(580, 626);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(24, 24);
-			this.btnBrowse.TabIndex = 17;
+			this.btnBrowse.TabIndex = 19;
 			this.btnBrowse.UseVisualStyleBackColor = true;
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
@@ -1546,7 +1548,7 @@
 			this.lblDestination.Location = new System.Drawing.Point(12, 626);
 			this.lblDestination.Name = "lblDestination";
 			this.lblDestination.Size = new System.Drawing.Size(85, 24);
-			this.lblDestination.TabIndex = 15;
+			this.lblDestination.TabIndex = 17;
 			this.lblDestination.Text = "&Destination:";
 			this.lblDestination.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -1557,7 +1559,7 @@
 			this.sptVert1.Location = new System.Drawing.Point(610, 70);
 			this.sptVert1.Name = "sptVert1";
 			this.sptVert1.Size = new System.Drawing.Size(2, 24);
-			this.sptVert1.TabIndex = 6;
+			this.sptVert1.TabIndex = 8;
 			// 
 			// sptVert2
 			// 
@@ -1566,7 +1568,7 @@
 			this.sptVert2.Location = new System.Drawing.Point(542, 70);
 			this.sptVert2.Name = "sptVert2";
 			this.sptVert2.Size = new System.Drawing.Size(2, 24);
-			this.sptVert2.TabIndex = 3;
+			this.sptVert2.TabIndex = 5;
 			// 
 			// chkShutdown
 			// 
@@ -1585,7 +1587,7 @@
 			this.sptVert3.Location = new System.Drawing.Point(610, 626);
 			this.sptVert3.Name = "sptVert3";
 			this.sptVert3.Size = new System.Drawing.Size(2, 24);
-			this.sptVert3.TabIndex = 18;
+			this.sptVert3.TabIndex = 20;
 			// 
 			// btnConfig
 			// 
@@ -1594,7 +1596,7 @@
 			this.btnConfig.Location = new System.Drawing.Point(618, 626);
 			this.btnConfig.Name = "btnConfig";
 			this.btnConfig.Size = new System.Drawing.Size(24, 24);
-			this.btnConfig.TabIndex = 19;
+			this.btnConfig.TabIndex = 21;
 			this.btnConfig.UseVisualStyleBackColor = true;
 			this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
 			// 
@@ -1605,7 +1607,7 @@
 			this.btnAbout.Location = new System.Drawing.Point(648, 626);
 			this.btnAbout.Name = "btnAbout";
 			this.btnAbout.Size = new System.Drawing.Size(24, 24);
-			this.btnAbout.TabIndex = 20;
+			this.btnAbout.TabIndex = 22;
 			this.btnAbout.UseVisualStyleBackColor = true;
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
 			// 
@@ -1617,7 +1619,7 @@
 			this.txtDestination.Location = new System.Drawing.Point(128, 626);
 			this.txtDestination.Name = "txtDestination";
 			this.txtDestination.Size = new System.Drawing.Size(446, 24);
-			this.txtDestination.TabIndex = 16;
+			this.txtDestination.TabIndex = 18;
 			// 
 			// bgwEncoding
 			// 
@@ -1631,11 +1633,34 @@
 			this.tipUpdate.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			this.tipUpdate.ToolTipTitle = "Info";
 			// 
+			// sptVert4
+			// 
+			this.sptVert4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.sptVert4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.sptVert4.Location = new System.Drawing.Point(474, 70);
+			this.sptVert4.Name = "sptVert4";
+			this.sptVert4.Size = new System.Drawing.Size(2, 24);
+			this.sptVert4.TabIndex = 2;
+			// 
+			// btnDonate
+			// 
+			this.btnDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnDonate.Image = global::ifme.Properties.Resources.donate;
+			this.btnDonate.Location = new System.Drawing.Point(444, 70);
+			this.btnDonate.Name = "btnDonate";
+			this.btnDonate.Size = new System.Drawing.Size(24, 24);
+			this.btnDonate.TabIndex = 1;
+			this.tipUpdate.SetToolTip(this.btnDonate, "Donate to make IFME better!");
+			this.btnDonate.UseVisualStyleBackColor = true;
+			this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(684, 662);
+			this.Controls.Add(this.btnDonate);
+			this.Controls.Add(this.sptVert4);
 			this.Controls.Add(this.txtDestination);
 			this.Controls.Add(this.btnAbout);
 			this.Controls.Add(this.btnConfig);
@@ -1831,5 +1856,7 @@
 		private System.Windows.Forms.CheckBox chkPictureVideoCopy;
 		private System.Windows.Forms.ToolTip tipUpdate;
 		private System.Windows.Forms.ToolTip tipNotify;
+		private System.Windows.Forms.Label sptVert4;
+		private System.Windows.Forms.Button btnDonate;
 	}
 }
