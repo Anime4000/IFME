@@ -39,7 +39,7 @@ echo Binaries
 %WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x64.dll -O "prerequisite\windows\64bit\MediaInfo.dll"
 
 echo Extensions
-%WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.2/hfrgen.dll -O "prerequisite\allos\extension\hfrgen.dll"
+%WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.dll -O "prerequisite\allos\extension\hfrgen.dll"
 %WGET% --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.dll -O "prerequisite\allos\extension\holobenchmark.dll"
 %WGET% --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "prerequisite\allos\extension\nemupad.dll"
 
