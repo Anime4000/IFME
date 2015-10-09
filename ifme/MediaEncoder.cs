@@ -157,11 +157,11 @@ namespace ifme
 				}
 
 				// ffmpeg settings
-				string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? null : $"-s {item.Picture.Resolution}";
-				string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? null : $"-r {item.Picture.FrameRate}";
-				int bitdepth = Convert.ToInt32(item.Picture.BitDepth);
-				string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth == 10 ? "10le" : null)}";
-				string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : null;
+				string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? "" : $"-s {item.Picture.Resolution}";
+				string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? "" : $"-r {item.Picture.FrameRate}";
+				int bitdepth = item.Picture.BitDepth;
+				string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth > 8 ? $"{bitdepth}le" : "")}";
+				string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : "";
 				int framecount = item.Prop.FrameCount;
 				string vsync = "cfr";
 
@@ -190,15 +190,26 @@ namespace ifme
 					framecount = GetStream.AviSynthFrameCount(file);
 
 				// x265 settings
+				string decbin = Plugin.LIBAV;
+                string encbin = Plugin.HEVC08;
 				string preset = item.Video.Preset;
-				string tune = string.Equals(item.Video.Tune, "off", IC) ? null : $"--tune {item.Video.Tune}";
+				string tune = string.Equals(item.Video.Tune, "off", IC) ? "" : $"--tune {item.Video.Tune}";
 				int type = item.Video.Type;
 				int pass;
 				string value = item.Video.Value;
 				string command = item.Video.Command;
 
-				string decoder = item.Data.IsFileAvs ? $"\"{Plugin.AVS4P}\" video \"{file}\"" : $"\"{Plugin.LIBAV}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} -";
-				string encoder = $"\"{(bitdepth == 8 ? Plugin.HEVCL : Plugin.HEVCH)}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
+				if (item.Data.IsFileAvs)
+					decbin = Plugin.AVS4P;
+
+				string decoder = item.Data.IsFileAvs ? $"\"{decbin}\" video \"{file}\"" : $"\"{decbin}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} -";
+
+				if (bitdepth == 10)
+					encbin = Plugin.HEVC10;
+				else if (bitdepth == 12)
+					encbin = Plugin.HEVC12;
+
+				string encoder = $"\"{encbin}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
 
 				// Encoding start
 				if (type-- >= 3) // multi pass

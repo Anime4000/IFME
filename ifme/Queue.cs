@@ -74,8 +74,8 @@ namespace ifme
 
 		public string Resolution;
 		public string FrameRate;
-		public string BitDepth;
-		public string Chroma;
+		public int BitDepth;
+		public int Chroma;
 
 		public bool YadifEnable;
 		public int YadifMode;

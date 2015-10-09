@@ -1,6 +1,7 @@
 ﻿Version 5.1 (FLUORITE DIARY)
 -----------
 
+[new] Adding 12bit encoding support!
 [new] Audio tracks now can drop if not wanted to add final encoded file
 [new] Video now can skip encoding (applicable when source is HEVC)
 [new] --force-avs arguments for force AviSynth script added to queue (just in case IFME did not detect)

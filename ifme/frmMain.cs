@@ -65,6 +65,10 @@ namespace ifme
 			tsmiQueueAviSynthEdit.Enabled = Plugin.IsExistAviSynth;
 			tsmiQueueAviSynthGenerate.Enabled = Plugin.IsExistAviSynth;
 
+			// Picture
+			if (OS.Is64bit)
+				cboPictureBit.Items.Add("12");
+
 			// Audio
 			foreach (var item in Plugin.List)
 			{
@@ -215,8 +219,8 @@ namespace ifme
 				rdoMP4.Checked = p.Info.Format.ToLower() == "mp4" ? true : false;
 				cboPictureRes.Text = p.Picture.Resolution;
 				cboPictureFps.Text = p.Picture.FrameRate;
-				cboPictureBit.Text = p.Picture.BitDepth;
-				cboPictureYuv.Text = p.Picture.Chroma;
+				cboPictureBit.Text = $"{p.Picture.BitDepth}";
+				cboPictureYuv.Text = $"{p.Picture.Chroma}";
 
 				cboVideoPreset.Text = p.Video.Preset;
 				cboVideoTune.Text = p.Video.Tune;
@@ -431,8 +435,8 @@ namespace ifme
 				var Video = AVI.Video[0];
 				Info.Picture.Resolution = i == 0 ? "auto" : p.Picture.Resolution;
 				Info.Picture.FrameRate = i == 0 ? "auto" : p.Picture.FrameRate;
-				Info.Picture.BitDepth = i == 0 ? $"{Video.bitDepth}" : p.Picture.BitDepth;
-				Info.Picture.Chroma = i == 0 ? "420" : p.Picture.Chroma;
+				Info.Picture.BitDepth = i == 0 ? Video.bitDepth : p.Picture.BitDepth;
+				Info.Picture.Chroma = i == 0 ? 420 : p.Picture.Chroma;
 
 				Info.Prop.Duration = Video.duration;
 				Info.Prop.FrameCount = Video.frameCount;
@@ -460,8 +464,8 @@ namespace ifme
 				{
 					Info.Picture.Resolution = "auto";
 					Info.Picture.FrameRate = "auto";
-					Info.Picture.BitDepth = "8";
-					Info.Picture.Chroma = "420";
+					Info.Picture.BitDepth = 8;
+					Info.Picture.Chroma = 420;
 
 					FileType = "AviSynth Script";
 					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
@@ -615,8 +619,8 @@ namespace ifme
 			rdoMP4.Checked = !rdoMKV.Checked;
 			cboPictureRes.Text = Info.Picture.Resolution;
 			cboPictureFps.Text = Info.Picture.FrameRate;
-			cboPictureBit.Text = Info.Picture.BitDepth;
-			cboPictureYuv.Text = Info.Picture.Chroma;
+			cboPictureBit.Text = $"{Info.Picture.BitDepth}";
+			cboPictureYuv.Text = $"{Info.Picture.Chroma}";
 			chkPictureYadif.Checked = Info.Picture.YadifEnable;
 			cboPictureYadifMode.SelectedIndex = Info.Picture.YadifMode;
 			cboPictureYadifField.SelectedIndex = Info.Picture.YadifField;
@@ -731,6 +735,12 @@ namespace ifme
 				cboPictureRes.Text = "auto";
 				InvokeLog("Input resolution format was invalid, back to auto.");
 			}
+
+			// Prevent 32bit PC encode more then Full HD
+			if (!OS.Is64bit)
+				if (!string.Equals("auto", cboPictureRes.Text, IC))
+					if (Convert.ToInt32(cboPictureRes.Text.Split('x')[0]) * Convert.ToInt32(cboPictureRes.Text.Split('x')[1]) > 2073600)
+						cboPictureRes.Text = "1920x1080";
         }
 
 		private void cboPictureFps_TextChanged(object sender, EventArgs e)
@@ -1263,11 +1273,11 @@ namespace ifme
 						break;
 
 					case QueueProp.PictureBitDepth:
-						X.Picture.BitDepth = cboPictureBit.Text;
+						X.Picture.BitDepth = Convert.ToInt32(cboPictureBit.Text);
 						break;
 
 					case QueueProp.PictureChroma:
-						X.Picture.Chroma = cboPictureYuv.Text;
+						X.Picture.Chroma = Convert.ToInt32(cboPictureYuv.Text);
 						break;
 
 					case QueueProp.PictureYadifEnable:

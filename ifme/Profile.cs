@@ -36,8 +36,8 @@ namespace ifme
 				p.Info.Web = data["info"]["web"];
 				p.Picture.Resolution = data["picture"]["resolution"];
 				p.Picture.FrameRate = data["picture"]["framerate"];
-				p.Picture.BitDepth = data["picture"]["bitdepth"];
-				p.Picture.Chroma = data["picture"]["chroma"];
+				p.Picture.BitDepth = Convert.ToInt32(data["picture"]["bitdepth"]);
+				p.Picture.Chroma = Convert.ToInt32(data["picture"]["chroma"]);
 				p.Video.Preset = data["video"]["preset"];
 				p.Video.Tune = data["video"]["tune"];
 				p.Video.Type = Convert.ToInt32(data["video"]["type"]);
