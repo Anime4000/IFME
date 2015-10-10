@@ -2,7 +2,7 @@
 CC=gcc
 MONOCC=xbuild
 MONOMK=mkbundle
-MODE=Debug
+MODE=Release
 DIR=build
 
 all: only
