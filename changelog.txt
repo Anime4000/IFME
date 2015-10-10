@@ -16,6 +16,7 @@
 [fixed] Unable to open "Option" window due to error
 [fixed] Git issue #42, open queue list, which queue file not exist cause IFME to crash.
 [fixed] Prevent user enter invalid input
+[fixed] Prevent user set output folder via network location (\\PCNAME)
 
 Version 5.0.9 (Dearness)
 -------------

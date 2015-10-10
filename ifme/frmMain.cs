@@ -335,6 +335,9 @@ namespace ifme
 
 			if (GetDir.ShowDialog() == DialogResult.OK)
 			{
+				if (GetDir.SelectedPath[0] == '\\' && GetDir.SelectedPath[1] == '\\')
+					InvokeLog("Over network not supported, please mount it as drive");
+
 				txtDestination.Text = GetDir.SelectedPath;
 			}
 		}
