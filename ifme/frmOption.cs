@@ -309,10 +309,9 @@ namespace ifme
 			// Save
 			Default.Save();
 
-			// Compiler
-			Plugin.HEVC08 = Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}", "x265lo");
-			Plugin.HEVC10 = Path.Combine(Global.Folder.Plugins, $"x265{Default.Compiler}", "x265hi");
-		}
+			// Test, make sure it can run
+			TaskManager.Run($"\"{Plugin.HEVC08}\" --help > {OS.Null} 2>&1");
+        }
 
 		void LangApply()
 		{

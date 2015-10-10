@@ -67,9 +67,12 @@ namespace ifme
 			}
 		}
 
-		public static string HEVC08 = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-08");
-		public static string HEVC10 = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-10");
-		public static string HEVC12 = Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-12");
+		// This 'get' always retrive latest variable data
+		public static string HEVC08 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-08"); } }
+		public static string HEVC10 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-10"); } }
+		public static string HEVC12 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-12"); } }
+
+		// Run once, can be modified
 		public static string LIBAV = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
 		public static string PROBE = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffprobe");
 		public static string FPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
