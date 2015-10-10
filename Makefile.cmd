@@ -57,7 +57,7 @@ echo.
 @title COMPILING IFME (VISUAL STUDIO 2015)
 echo COMPILING IFME (VISUAL STUDIO 2015)
 start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBuild.exe" /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=%CompileMode%
-timeout /t 3 >nul
+timeout /t 5 >nul
 echo.
 
 @title COPY IFME MAIN FILE

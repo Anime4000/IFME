@@ -50,7 +50,7 @@ namespace ifme
 	#else
 				get { return "steam-experimental"; }
 	#endif
-#elif RELEASE
+#else
 	#if !STEAM
 				get { return "stable"; }
 	#else
