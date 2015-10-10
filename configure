@@ -12,13 +12,13 @@ mkdir "prerequisite/allos/"
 mkdir "prerequisite/allos/extension"
 
 echo "Downloading References"
-wget --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/INIFileParser.dll -O "references/INIFileParser.dll"
-wget --no-check-certificate https://github.com/x265/MediaInfoDotNet/releases/download/v0.7.8/MediaInfoDotNet.dll -O "references/MediaInfoDotNet.dll"
+wget --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/INIFileParser.zip -O "references/INIFileParser.ifx"
+wget --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfoDotNet.zip -O "references/MediaInfoDotNet.ifx"
 
 echo "Downloading extension"
-wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.2/hfrgen.dll -O "prerequisite/allos/extension/hfrgen.dll"
-wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.dll -O "prerequisite/allos/extension/holobenchmark.dll"
-wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "prerequisite/allos/extension/nemupad.dll"
+wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite/allos/extension/hfrgen.ifx"
+wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.zip -O "prerequisite/allos/extension/holobenchmark.ifx"
+wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.dll.zip -O "prerequisite/allos/extension/nemupad.dll.ifx"
 
 echo "Downloading plugins"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/faac.ifx -O "prerequisite/linux/64bit/plugins/faac.ifx"
@@ -29,18 +29,8 @@ wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/mp4box.ifx -
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/mp4fpsmod.ifx -O "prerequisite/linux/64bit/plugins/mp4fpsmod.ifx"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/x265gcc.ifx -O "prerequisite/linux/64bit/plugins/x265gcc.ifx"
 
-echo "Unpacking plugins"
-7za x "prerequisite/linux/64bit/plugins/faac.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/ffmpeg.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/fmpeg-ogg.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/ffmsindex.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/mkvtool.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/mp4box.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/mp4fpsmod.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-7za x "prerequisite/linux/64bit/plugins/x265gcc.ifx" -y -o"prerequisite/linux/64bit/plugins/"
-
-echo "Delete cache"
-find . -name "*.ifx" -type f -delete
+echo "Unpacking"
+find . -name "*.ifx" | while read filename; do 7za x "$filename" -y -o"`dirname "$filename"`"; rm -f "$filename"; done;
 
 echo "Done!!!"
 sleep 3

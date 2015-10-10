@@ -29,25 +29,23 @@ mkdir prerequisite\windows\32bit\plugins\
 mkdir prerequisite\windows\64bit\plugins\
 mkdir prerequisite\allos\extension\
 
-%WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/INIFileParser.dll -O "references\INIFileParser.dll"
-%WGET% --no-check-certificate https://github.com/x265/MediaInfoDotNet/releases/download/v0.7.8/MediaInfoDotNet.dll -O "references\MediaInfoDotNet.dll"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/INIFileParser.zip -O "references\INIFileParser.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfoDotNet.zip -O "references\MediaInfoDotNet.ifx"
 
 echo Binaries
-%WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/7za-x86.exe -O "prerequisite\windows\32bit\7za.exe"
-%WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/7za-x64.exe -O "prerequisite\windows\64bit\7za.exe"
-%WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x86.dll -O "prerequisite\windows\32bit\MediaInfo.dll"
-%WGET% --no-check-certificate https://github.com/Anime4000/IFME/releases/download/v5.0-beta.8/MediaInfo-x64.dll -O "prerequisite\windows\64bit\MediaInfo.dll"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/7za-x86.zip -O "prerequisite\windows\32bit\7za-x86.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/7za-x64.zip -O "prerequisite\windows\64bit\7za-x64.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfo-x86.zip -O "prerequisite\windows\32bit\MediaInfo-x86.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfo-x64.zip -O "prerequisite\windows\64bit\MediaInfo-x64.ifx"
 
 echo Extensions
-%WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.dll -O "prerequisite\allos\extension\hfrgen.dll"
-%WGET% --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.dll -O "prerequisite\allos\extension\holobenchmark.dll"
-%WGET% --no-check-certificate https://github.com/x265/Nemupad/releases/download/0.0.3.1/nemupad.dll -O "prerequisite\allos\extension\nemupad.dll"
+%WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite\allos\extension\hfrgen.ifx"
+%WGET% --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.zip -O "prerequisite\allos\extension\holobenchmark.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.dll.zip -O "prerequisite\allos\extension\nemupad.dll.ifx"
 
 echo Extension - AvsPmod
-%WGET% --no-check-certificate https://github.com/x265/AvsPmodBridge/releases/download/v0.0.1/AvsPmodBridge.dll -O "prerequisite\allos\extension\AvsPmodBridge.dll"
-%WGET% --no-check-certificate https://github.com/AvsPmod/AvsPmod/releases/download/v2.5.1/AvsPmod_v2.5.1.zip -O "prerequisite\allos\extension\AvsPmod_v2.5.1.zip"
-%UNZIP% x "%~dp0\prerequisite\allos\extension\AvsPmod_v2.5.1.zip" -y -o"%~dp0\prerequisite\allos\extension\"
-del /f /q "prerequisite\allos\extension\AvsPmod_v2.5.1.zip"
+%WGET% --no-check-certificate https://github.com/x265/AvsPmodBridge/releases/download/v0.0.1/AvsPmodBridge.zip -O "prerequisite\allos\extension\AvsPmodBridge.ifx"
+%WGET% --no-check-certificate https://github.com/AvsPmod/AvsPmod/releases/download/v2.5.1/AvsPmod_v2.5.1.zip -O "prerequisite\allos\extension\AvsPmod_v2.5.1.ifx"
 
 echo Downloading 32bit plugins!
 %WGET% http://sourceforge.net/projects/ifme/files/plugins/windows/32bit/avisynth.ifx -O "prerequisite\windows\32bit\plugins\avisynth.ifx"
@@ -74,8 +72,8 @@ echo Downloading 64bit plugins!
 %WGET% http://sourceforge.net/projects/ifme/files/plugins/windows/64bit/x265msvc.ifx -O "prerequisite\windows\64bit\plugins\x265msvc.ifx"
 
 echo Unpacking
-for /r "%~dp0\prerequisite\windows\32bit\plugins" %%i in (*.ifx) do %UNZIP% x "%%i" -y -o"%%~dpi"
-for /r "%~dp0\prerequisite\windows\64bit\plugins" %%i in (*.ifx) do %UNZIP% x "%%i" -y -o"%%~dpi"
+for /r "%~dp0\references" %%i in (*.ifx) do %UNZIP% x "%%i" -y -o"%%~dpi"
+for /r "%~dp0\prerequisite" %%i in (*.ifx) do %UNZIP% x "%%i" -y -o"%%~dpi"
 
 echo Delete cache
 del /f /s /q *.ifx
