@@ -245,6 +245,10 @@ namespace ifme
 			string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : $"{Default.NamePrefix} ";
             string fileout = Path.Combine(Default.DirOutput, $"{prefix}{Path.GetFileNameWithoutExtension(item.Data.File)}");
 
+			// Destinantion folder check
+			if (!Directory.Exists(Default.DirOutput))
+				Directory.CreateDirectory(Default.DirOutput);
+
 			if (item.Data.SaveAsMkv)
 			{
 				fileout += ".mkv";

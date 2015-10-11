@@ -153,9 +153,9 @@
 			this.txtDestination = new System.Windows.Forms.TextBox();
 			this.bgwEncoding = new System.ComponentModel.BackgroundWorker();
 			this.tipUpdate = new System.Windows.Forms.ToolTip(this.components);
+			this.btnDonate = new System.Windows.Forms.Button();
 			this.tipNotify = new System.Windows.Forms.ToolTip(this.components);
 			this.sptVert4 = new System.Windows.Forms.Label();
-			this.btnDonate = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -1620,6 +1620,7 @@
 			this.txtDestination.Name = "txtDestination";
 			this.txtDestination.Size = new System.Drawing.Size(446, 24);
 			this.txtDestination.TabIndex = 18;
+			this.txtDestination.TextChanged += new System.EventHandler(this.txtDestination_TextChanged);
 			// 
 			// bgwEncoding
 			// 
@@ -1633,15 +1634,6 @@
 			this.tipUpdate.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			this.tipUpdate.ToolTipTitle = "Info";
 			// 
-			// sptVert4
-			// 
-			this.sptVert4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.sptVert4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.sptVert4.Location = new System.Drawing.Point(474, 70);
-			this.sptVert4.Name = "sptVert4";
-			this.sptVert4.Size = new System.Drawing.Size(2, 24);
-			this.sptVert4.TabIndex = 2;
-			// 
 			// btnDonate
 			// 
 			this.btnDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1653,6 +1645,15 @@
 			this.tipUpdate.SetToolTip(this.btnDonate, "Donate to make IFME better!");
 			this.btnDonate.UseVisualStyleBackColor = true;
 			this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
+			// 
+			// sptVert4
+			// 
+			this.sptVert4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.sptVert4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.sptVert4.Location = new System.Drawing.Point(474, 70);
+			this.sptVert4.Name = "sptVert4";
+			this.sptVert4.Size = new System.Drawing.Size(2, 24);
+			this.sptVert4.TabIndex = 2;
 			// 
 			// frmMain
 			// 

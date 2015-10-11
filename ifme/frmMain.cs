@@ -325,6 +325,11 @@ namespace ifme
 			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
 		}
 
+		private void txtDestination_TextChanged(object sender, EventArgs e)
+		{
+			Default.DirOutput = txtDestination.Text;
+		}
+
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog GetDir = new FolderBrowserDialog();
