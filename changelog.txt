@@ -1,4 +1,4 @@
-﻿Version 5.2 ()
+﻿Version 5.2 (Take me with your heart)
 
 [new] Allow user to save encoded file either same source folder or given path
 
