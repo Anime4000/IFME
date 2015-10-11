@@ -19,6 +19,7 @@
 [fixed] Prevent user add media via network location (\\PCNAME)
 [fixed] Prevent user set output folder via network location (\\PCNAME)
 [fixed] Git issue #45, destination folder path did not save
+[fixed] Git issue #46 and #47
 
 Version 5.0.9 (Dearness)
 -------------
