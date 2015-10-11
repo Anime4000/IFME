@@ -1,4 +1,4 @@
-﻿Version 5.1 (Overwrite innocence)
+﻿Version 5.1 (FLUORITE DIARY)
 -----------
 
 [new] Adding 12bit encoding support!

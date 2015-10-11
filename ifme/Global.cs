@@ -39,7 +39,7 @@ namespace ifme
 
 			public static string VersionCompiled
 			{
-				get { return $"ifme_{Version}_{(OS.Is64bit ? "x64" : "x86")}-{(OS.IsWindows ? "windows" : "linux")}-{ReleaseType}"; }
+				get { return $"ifme-{Version}-{(OS.Is64bit ? "x64" : "x86")}_{(OS.IsWindows ? "windows" : "linux")}_{ReleaseType}"; }
 			}
 
 			public static string ReleaseType
