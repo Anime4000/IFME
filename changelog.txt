@@ -1,4 +1,8 @@
-﻿Version 5.1 (FLUORITE DIARY)
+﻿Version 5.2 ()
+
+[new] Allow user to save encoded file either same source folder or given path
+
+Version 5.1 (FLUORITE DIARY)
 -----------
 
 [new] Adding 12bit encoding support!

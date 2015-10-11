@@ -242,8 +242,10 @@ namespace ifme
 		public static void Mux(Queue item)
 		{
 			// Final output, a file name without extension
-			string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? null : $"{Default.NamePrefix} ";
-            string fileout = Path.Combine(Default.DirOutput, $"{prefix}{Path.GetFileNameWithoutExtension(item.Data.File)}");
+			string savedir = Default.IsDirOutput ? Default.DirOutput : Path.GetDirectoryName(item.Data.File);
+			string newfile = Path.GetFileNameWithoutExtension(item.Data.File);
+			string prefix = Default.IsDirOutput ? Default.NamePrefix : string.IsNullOrEmpty(Default.NamePrefix) ? "[encoded]" : Default.NamePrefix;
+            string fileout = Path.Combine(savedir, $"{prefix} {newfile}");
 
 			// Destinantion folder check
 			if (!Directory.Exists(Default.DirOutput))

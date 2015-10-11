@@ -178,5 +178,17 @@ namespace ifme.Properties {
                 this["Version"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsDirOutput {
+            get {
+                return ((bool)(this["IsDirOutput"]));
+            }
+            set {
+                this["IsDirOutput"] = value;
+            }
+        }
     }
 }

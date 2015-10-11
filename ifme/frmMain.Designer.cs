@@ -143,7 +143,6 @@
 			this.cboProfile = new System.Windows.Forms.ComboBox();
 			this.btnProfileSave = new System.Windows.Forms.Button();
 			this.btnBrowse = new System.Windows.Forms.Button();
-			this.lblDestination = new System.Windows.Forms.Label();
 			this.sptVert1 = new System.Windows.Forms.Label();
 			this.sptVert2 = new System.Windows.Forms.Label();
 			this.chkShutdown = new System.Windows.Forms.CheckBox();
@@ -156,6 +155,7 @@
 			this.btnDonate = new System.Windows.Forms.Button();
 			this.tipNotify = new System.Windows.Forms.ToolTip(this.components);
 			this.sptVert4 = new System.Windows.Forms.Label();
+			this.chkDestination = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -1542,16 +1542,6 @@
 			this.btnBrowse.UseVisualStyleBackColor = true;
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
-			// lblDestination
-			// 
-			this.lblDestination.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblDestination.Location = new System.Drawing.Point(12, 626);
-			this.lblDestination.Name = "lblDestination";
-			this.lblDestination.Size = new System.Drawing.Size(85, 24);
-			this.lblDestination.TabIndex = 17;
-			this.lblDestination.Text = "&Destination:";
-			this.lblDestination.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
 			// sptVert1
 			// 
 			this.sptVert1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1655,11 +1645,25 @@
 			this.sptVert4.Size = new System.Drawing.Size(2, 24);
 			this.sptVert4.TabIndex = 2;
 			// 
+			// chkDestination
+			// 
+			this.chkDestination.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.chkDestination.Checked = true;
+			this.chkDestination.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkDestination.Location = new System.Drawing.Point(15, 626);
+			this.chkDestination.Name = "chkDestination";
+			this.chkDestination.Size = new System.Drawing.Size(107, 24);
+			this.chkDestination.TabIndex = 23;
+			this.chkDestination.Text = "&Destination:";
+			this.chkDestination.UseVisualStyleBackColor = true;
+			this.chkDestination.CheckedChanged += new System.EventHandler(this.chkDestination_CheckedChanged);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(684, 662);
+			this.Controls.Add(this.chkDestination);
 			this.Controls.Add(this.btnDonate);
 			this.Controls.Add(this.sptVert4);
 			this.Controls.Add(this.txtDestination);
@@ -1669,7 +1673,6 @@
 			this.Controls.Add(this.chkShutdown);
 			this.Controls.Add(this.sptVert2);
 			this.Controls.Add(this.sptVert1);
-			this.Controls.Add(this.lblDestination);
 			this.Controls.Add(this.btnBrowse);
 			this.Controls.Add(this.btnProfileSave);
 			this.Controls.Add(this.cboProfile);
@@ -1754,7 +1757,6 @@
 		private System.Windows.Forms.TabPage tabSubtitles;
 		private System.Windows.Forms.TabPage tabAttachments;
 		private System.Windows.Forms.TabPage tabLogs;
-		private System.Windows.Forms.Label lblDestination;
 		private System.Windows.Forms.GroupBox grpPictureFormat;
 		private System.Windows.Forms.GroupBox grpPictureQuality;
 		private System.Windows.Forms.ComboBox cboPictureYuv;
@@ -1859,5 +1861,6 @@
 		private System.Windows.Forms.ToolTip tipNotify;
 		private System.Windows.Forms.Label sptVert4;
 		private System.Windows.Forms.Button btnDonate;
+		private System.Windows.Forms.CheckBox chkDestination;
 	}
 }

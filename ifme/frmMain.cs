@@ -83,6 +83,7 @@ namespace ifme
 				cboSubLang.Items.Add(item);
 
 			// Setting ready
+			chkDestination.Checked = Default.IsDirOutput;
 			txtDestination.Text = Default.DirOutput;
 
 			// Add profile
@@ -103,7 +104,7 @@ namespace ifme
 			}
 
 			// Default
-			rdoMKV.Checked = true;
+            rdoMKV.Checked = true;
 			cboPictureRes.SelectedIndex = 8;
 			cboPictureFps.SelectedIndex = 5;
 			cboPictureBit.SelectedIndex = 0;
@@ -323,6 +324,14 @@ namespace ifme
 		private void btnDonate_Click(object sender, EventArgs e)
 		{
 			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+		}
+
+		private void chkDestination_CheckedChanged(object sender, EventArgs e)
+		{
+			var x = chkDestination.Checked;
+			Default.IsDirOutput = x;
+			txtDestination.Enabled = x;
+			btnBrowse.Enabled = x;
 		}
 
 		private void txtDestination_TextChanged(object sender, EventArgs e)
