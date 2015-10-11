@@ -29,14 +29,15 @@ mkdir prerequisite\windows\32bit\plugins\
 mkdir prerequisite\windows\64bit\plugins\
 mkdir prerequisite\allos\extension\
 
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/INIFileParser.zip -O "references\INIFileParser.ifx"
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfoDotNet.zip -O "references\MediaInfoDotNet.ifx"
+echo .NET References
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/INIFileParser.zip -O "references\INIFileParser.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfoDotNet.zip -O "references\MediaInfoDotNet.ifx"
 
 echo Binaries
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/7za-x86.zip -O "prerequisite\windows\32bit\7za-x86.ifx"
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/7za-x64.zip -O "prerequisite\windows\64bit\7za-x64.ifx"
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfo-x86.zip -O "prerequisite\windows\32bit\MediaInfo-x86.ifx"
-%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfo-x64.zip -O "prerequisite\windows\64bit\MediaInfo-x64.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/7za-x86.zip -O "prerequisite\windows\32bit\7za-x86.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/7za-x64.zip -O "prerequisite\windows\64bit\7za-x64.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfo-x86.zip -O "prerequisite\windows\32bit\MediaInfo-x86.ifx"
+%WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfo-x64.zip -O "prerequisite\windows\64bit\MediaInfo-x64.ifx"
 
 echo Extensions
 %WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite\allos\extension\hfrgen.ifx"

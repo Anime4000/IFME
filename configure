@@ -12,8 +12,8 @@ mkdir "prerequisite/allos/"
 mkdir "prerequisite/allos/extension"
 
 echo "Downloading References"
-wget --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/INIFileParser.zip -O "references/INIFileParser.ifx"
-wget --no-check-certificate https://github.com/x265/Preparation/releases/download/0.1/MediaInfoDotNet.zip -O "references/MediaInfoDotNet.ifx"
+wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/INIFileParser.zip -O "references/INIFileParser.ifx"
+wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfoDotNet.zip -O "references/MediaInfoDotNet.ifx"
 
 echo "Downloading extension"
 wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite/allos/extension/hfrgen.ifx"
