@@ -1,0 +1,27 @@
+[info]
+format = mkv
+platform = User
+name = Extreme 1080p Encoding
+author = thefinaldegree
+web = http://tfd.im/
+
+[picture]
+resolution = auto
+framerate = auto
+bitdepth = 8
+chroma = 420
+
+[video]
+preset = medium
+tune = psnr
+type = 0
+value = 22
+cmd = --dither --keyint 750 --rc-lookahead 250 --ref 6 --rd 6 --me 3
+
+[audio]
+encoder = Opus Interactive Audio Codec
+bitrate = 320
+frequency = auto
+channel = auto
+compile = false
+cmd = --vbr --comp 10 --framesize 60
