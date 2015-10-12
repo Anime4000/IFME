@@ -151,7 +151,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Take me with your heart.
+        ///   Looks up a localized string similar to Final Hope.
         /// </summary>
         internal static string CodeName {
             get {

@@ -10,6 +10,12 @@ SET CompileMode=Release
 SET BUILDDIR=build
 SET MSBuildVer=14.0
 
+:: Compiler of choice
+:: Visual Studio 2015 or Mono 4.0
+
+SET NETCOMPILER="%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBuild.exe"
+:: SET NETCOMPILER="%ProgramFiles(x86)%\Mono\bin\xbuild.exe"
+
 cls
 
 echo.
@@ -54,9 +60,9 @@ mkdir "%BUILDDIR%"
 timeout /t 1 >nul
 echo.
 
-@title COMPILING IFME (VISUAL STUDIO 2015)
-echo COMPILING IFME (VISUAL STUDIO 2015)
-start "" /B /D . /WAIT "%ProgramFiles(x86)%\MSBuild\%MSBuildVer%\Bin\amd64\MSBuild.exe" /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=%CompileMode%
+@title COMPILING IFME
+echo COMPILING IFME
+call %NETCOMPILER% /nologo /verbosity:normal ifme.sln /t:Build /p:Configuration=%CompileMode%
 timeout /t 5 >nul
 echo.
 

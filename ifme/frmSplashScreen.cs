@@ -267,7 +267,7 @@ namespace ifme
 
 		void DownloadExtract(string url, string targetFolder)
 		{
-			string tempFile = Path.Combine(Global.Folder.DefaultTemp, "package.ifa");
+			string tempFile = Path.Combine(Global.Folder.DefaultTemp, "package.nemu");
 
             try
 			{
@@ -292,7 +292,7 @@ namespace ifme
 			Write($"Extracting...");
 
 			if (File.Exists($"{(OS.IsLinux ? zipApp : $"{zipApp}.exe")}"))
-				TaskManager.Run($"\"{zipApp}\" x \"{archiveFile}\" -y \"-o{targetFolder}\" > {OS.Null} 2>&1");
+				TaskManager.Run($"\"{zipApp}\" x \"{archiveFile}\" -y -o\"{targetFolder}\" > {OS.Null} 2>&1");
 			else
 				Write($"File {zipApp} not found...");
 

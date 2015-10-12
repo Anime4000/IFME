@@ -2,6 +2,7 @@
 
 [new] Allow user to save encoded file either same source folder or given path
 [added] Language: Italian
+[fixed] Updater stuck because wrong agrument
 
 Version 5.1 (FLUORITE DIARY)
 -----------
