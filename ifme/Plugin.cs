@@ -76,8 +76,8 @@ namespace ifme
 		public static string LIBAV = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
 		public static string PROBE = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffprobe");
 		public static string FPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
-		public static string MKVEX = Path.Combine(Global.Folder.Plugins, "mkvtool", "mkvextract");
-		public static string MKVME = Path.Combine(Global.Folder.Plugins, "mkvtool", "mkvmerge");
+		public static string MKVEX = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvextract");
+		public static string MKVME = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvmerge");
 		public static string MP4BX = Path.Combine(Global.Folder.Plugins, "mp4box", "mp4box");
 		public static string AVS4P = Path.Combine(Global.Folder.Plugins, "avisynth", "avs2pipe");
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
@@ -92,6 +92,15 @@ namespace ifme
 		public static bool IsExistHEVCMSVC = false;
 
 		public static List<Plugin> List = new List<Plugin>();
+
+		public static bool IsExist(string name)
+		{
+			foreach (var item in List)
+				if (string.Equals(item.Profile.Name, name, StringComparison.OrdinalIgnoreCase))
+					return true;
+
+			return false;
+		}
 
 		public static void Load()
 		{
@@ -135,15 +144,6 @@ namespace ifme
 
 				List.Add(p);
 			}
-		}
-
-		public static bool IsExist(string name)
-		{
-			foreach (var item in List)
-				if (string.Equals(item.Profile.Name, name, StringComparison.OrdinalIgnoreCase))
-					return true;
-
-			return false;
 		}
 
 		public static void BuildIn()

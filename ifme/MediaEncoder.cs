@@ -151,7 +151,7 @@ namespace ifme
 				{
 					if (item.Picture.IsCopy)
 					{
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -dn -sn -map {video.ID} -vcodec copy -y video0000_{video.Lang}.mp4");
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {video.ID} -c:v copy -bsf hevc_mp4toannexb -y video0000_{video.Lang}.hevc");
 						return;
 					}
 				}
@@ -244,8 +244,8 @@ namespace ifme
 			// Final output, a file name without extension
 			string savedir = Default.IsDirOutput ? Default.DirOutput : Path.GetDirectoryName(item.Data.File);
 			string newfile = Path.GetFileNameWithoutExtension(item.Data.File);
-			string prefix = Default.IsDirOutput ? Default.NamePrefix : string.IsNullOrEmpty(Default.NamePrefix) ? "[encoded]" : Default.NamePrefix;
-            string fileout = Path.Combine(savedir, $"{prefix} {newfile}");
+			string prefix = Default.IsDirOutput ? Default.NamePrefix : string.IsNullOrEmpty(Default.NamePrefix) ? "[encoded] " : Default.NamePrefix + " ";
+            string fileout = Path.Combine(savedir, $"{prefix}{newfile}");
 
 			// Destinantion folder check
 			if (!Directory.Exists(Default.DirOutput))
@@ -303,7 +303,12 @@ namespace ifme
 				{
 					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.*").Where(f => f.EndsWith(".ttf", IC) || f.EndsWith(".otf", IC) || f.EndsWith(".woff", IC)))
 					{
-						cmdattach += $"--attachment-description GG --attach-file \"{attach}\" ";
+						cmdattach += $"--attach-file \"{attach}\" ";
+					}
+
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.pfb"))
+					{
+						cmdattach += $"--attachment-mime-type application/x-font --attach-file \"{attach}\" ";
 					}
 				}
 

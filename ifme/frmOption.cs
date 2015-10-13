@@ -306,6 +306,9 @@ namespace ifme
 			else
 				Default.Language = "en";
 
+			// Temp Folder (again)
+			Default.DirTemp = txtTempFolder.Text;
+
 			// Save
 			Default.Save();
 

@@ -80,11 +80,11 @@ namespace ifme
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				Plugin.IsExistHEVCMSVC = true;
 
-			// Profile
-			Profile.Load();
-
 			// Check IFME if got new update
 			VersionCheck();
+
+			// Profile
+			Profile.Load();
 
 			// Plugin 
 			PluginCheck(); // check repo
@@ -128,7 +128,7 @@ namespace ifme
 
 			// For fun
 			WriteLine("\nEstablishing battlefield control, standby!");
-			System.Threading.Thread.Sleep(3000);
+			Thread.Sleep(3000);
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -136,7 +136,7 @@ namespace ifme
 			Close();
 		}
 
-		private void VersionCheck()
+		void VersionCheck()
 		{
 #if !STEAM
 			if (!string.Equals(Global.App.VersionRelease, DownloadString("https://x265.github.io/update/version.txt")))
@@ -145,7 +145,7 @@ namespace ifme
 		}
 
 		#region Plugins
-		public void PluginCheck()
+		void PluginCheck()
 		{
 			string repo = null;
 			int counter = 0;
@@ -251,21 +251,26 @@ namespace ifme
 
 		string DownloadString(string url)
 		{
-			// Due to mono broken WebClient.DownloadString, using this method
+			// Due to mono broken WebClient.DownloadString, using this kind of trick
+			var file = Path.Combine(Global.Folder.DefaultTemp, "_string.txt");
+			var str = string.Empty;
+
 			try
 			{
-				client.DownloadFile(url, Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
-				
-				if (File.Exists(Path.Combine(Global.Folder.DefaultTemp, "_string.txt")))
-					return File.ReadAllText(Path.Combine(Global.Folder.DefaultTemp, "_string.txt"));
-				else
-					return null;
+				client.DownloadFile(url, file);
 			}
 			catch (Exception)
 			{
 				LogError("WebClient.DownloadString() broken on current version of Mono, skipping...");
-				return null;
 			}
+
+			if (File.Exists(file))
+			{
+				str = File.ReadAllText(file);
+				File.Delete(file);
+			}
+
+			return str;
 		}
 
 		void DownloadExtract(string url, string targetFolder)

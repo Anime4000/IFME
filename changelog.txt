@@ -4,6 +4,7 @@
 [added] Language: Italian
 [fixed] Plugin updater stuck because wrong argument & code
 [fixed] Temp folder will clear after finished encoding, open & close program
+[fixed] HEVC video passthrough not properly save
 
 Version 5.1 (FLUORITE DIARY)
 -----------
