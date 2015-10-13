@@ -1857,9 +1857,6 @@ namespace ifme
 				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
 			}
 
-			// Remove temp file
-			MediaEncoder.CleanUp();
-
 			// Tell user all is done
 			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
 		}
@@ -1869,6 +1866,7 @@ namespace ifme
 			Console.Title = "IFME console";
 			btnQueueStart.Visible = true;
 			btnQueuePause.Visible = false;
+			ControlEnable(true);
 
 			if (e.Error != null)
 			{
@@ -1887,7 +1885,7 @@ namespace ifme
 				}
 			}
 
-			ControlEnable(true);
+			MediaEncoder.CleanUp();
 		}
 
 		void InvokeQueueStatus(int index, string s)
