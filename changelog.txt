@@ -2,7 +2,8 @@
 
 [new] Allow user to save encoded file either same source folder or given path
 [added] Language: Italian
-[fixed] Updater stuck because wrong agrument
+[fixed] Plugin updater stuck because wrong argument & code
+[fixed] Temp folder will clear after finished encoding, open & close program
 
 Version 5.1 (FLUORITE DIARY)
 -----------

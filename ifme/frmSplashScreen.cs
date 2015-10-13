@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 using System.Net;
 
 using static System.Console;
@@ -19,6 +20,8 @@ namespace ifme
 	{
 		WebClient client = new WebClient();
 		bool finish = false;
+		int curX = 0;
+		int curY = 0;
 
 		public frmSplashScreen()
 		{
@@ -171,7 +174,7 @@ namespace ifme
 
 				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, nemu[0])))
 				{
-					Write($"Downloading component {counter,2:##} of {counted,2:##}: {nemu[0]}\n");
+					Write($"\nDownloading component {counter,2:##} of {counted,2:##}: {nemu[0]}");
 					DownloadExtract(nemu[1], Global.Folder.Plugins);
 				}
 			}
@@ -181,7 +184,7 @@ namespace ifme
 		{
 			foreach (var item in Plugin.List)
 			{
-				Write($"Checking for update: {item.Profile.Name}\n");
+				Write($"\nChecking for update: {item.Profile.Name}");
 
 				if (string.IsNullOrEmpty(item.Provider.Update))
 					continue;
@@ -201,7 +204,7 @@ namespace ifme
 				string version = string.Empty;
 				string link = string.Empty;
 
-                Write($"Checking for update: {item.Name}\n");
+                Write($"\nChecking for update: {item.Name}");
 
 				if (string.IsNullOrEmpty(item.UrlVersion))
 					continue;
@@ -273,9 +276,12 @@ namespace ifme
 			{
 				finish = false;
 
+				curX = CursorLeft + 1;
+				curY = CursorTop;
+
 				client.DownloadFileAsync(new Uri(url), tempFile);
 
-				while (!finish) { /* doing nothing, just block stuff */ }
+				while (!finish) { Thread.Sleep(1); }
 
 				Extract(tempFile, targetFolder);
 			}
@@ -289,20 +295,20 @@ namespace ifme
 		{
 			string zipApp = Path.Combine(Global.Folder.App, "7za");
 
+			SetCursorPosition(curX, curY);
 			Write($"Extracting...");
 
-			if (File.Exists($"{(OS.IsLinux ? zipApp : $"{zipApp}.exe")}"))
-				TaskManager.Run($"\"{zipApp}\" x \"{archiveFile}\" -y -o\"{targetFolder}\" > {OS.Null} 2>&1");
-			else
-				Write($"File {zipApp} not found...");
+			TaskManager.Run($"\"{zipApp}\" x \"{archiveFile}\" -y -o\"{targetFolder}\" > {OS.Null} 2>&1");
 
-			Write("Done!\n");
+			Write("Done!");
 			File.Delete(archiveFile);
 		}
 
 		void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			Write($"\r{((float)e.BytesReceived / e.TotalBytesToReceive):P} Completed...");
+			SetCursorPosition(curX, curY);
+			Write($"{((float)e.BytesReceived / e.TotalBytesToReceive):P}");
+			SetCursorPosition(curX, curY);
 		}
 
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

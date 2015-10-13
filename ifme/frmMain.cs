@@ -8,6 +8,7 @@ using System.Media;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 using IniParser;
 using IniParser.Model;
@@ -1856,6 +1857,10 @@ namespace ifme
 				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
 			}
 
+			// Remove temp file
+			MediaEncoder.CleanUp();
+
+			// Tell user all is done
 			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
 		}
 

@@ -372,6 +372,10 @@ namespace ifme
 				ObjectIO.WriteToXmlFile(queueFile, argList);
             }
 
+			// Remove temp file
+			MediaEncoder.CleanUp();
+
+			// Tell user
 			WriteLine(GetInfo.Duration(Session));
 
 			return 0;

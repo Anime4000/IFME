@@ -90,13 +90,10 @@ namespace ifme
 			string[] args = SplitArguments(commandLine);
 			for (int i = args.Length - 1; i > 0; i--)
 			{
-				if (args[i].Contains('\\') || args[i].Contains('/'))
+				if (args[i] == "|")
 				{
-					if (args[i].Contains("plugins"))
-					{
-						CurrentProc = Path.GetFileNameWithoutExtension(args[i]);
-						break;
-					}
+					CurrentProc = Path.GetFileNameWithoutExtension(args[i + 1]);
+					break;
 				}
 			}
 		}
