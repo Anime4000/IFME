@@ -83,10 +83,10 @@ namespace ifme
 			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
 			{
 				Default.Language = "en";
-				Console.WriteLine($"Language file {Default.Language}.ini not found, make sure file name and CODE are same");
+				Console.WriteLine($"\nLanguage file {Default.Language}.ini not found, make sure file name and CODE are same");
 			}
 			Language.Display();
-			Console.WriteLine($"Loading language file: {Default.Language}.ini");
+			Console.WriteLine($"\nLoading language file: {Default.Language}.ini");
 
 			// Detect AviSynth
 			if (Plugin.IsExistAviSynth)

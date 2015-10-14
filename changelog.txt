@@ -1,8 +1,8 @@
-﻿Version 5.2 (Take me with your heart)
+﻿Version 5.2 (Archangel Descending)
 
 [new] Allow user to save encoded file either same source folder or given path
 [added] Language: Italian
-[fixed] Plugin updater stuck because wrong argument & code
+[fixed] Downloader & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
 [fixed] HEVC video passthrough not properly save
 
