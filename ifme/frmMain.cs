@@ -129,8 +129,7 @@ namespace ifme
 			for (int i = 1; i <= 3; i++)
 				Console.WriteLine($"{i}. {TopThree[i]}");
 
-			Console.WriteLine();
-			Console.WriteLine("Thank You for your support!");
+			Console.WriteLine("\nThank You for your support!\n");
 #else
 			btnDonate.Visible = false;
 			sptVert4.Visible = false;
@@ -1920,7 +1919,7 @@ namespace ifme
 
 		void InvokeLog(string message)
 		{
-			message = $"[{DateTime.Now:yyyy/MMM/dd HH:mm:ss}] {message}";
+			message = $"[{DateTime.Now:yyyy/MM/dd HH:mm:ss}] {message}";
 
 			if (InvokeRequired)
 			{

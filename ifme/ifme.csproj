@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRC32.cs" />
+    <Compile Include="Download.cs" />
     <Compile Include="frmDownload.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -47,6 +47,29 @@ namespace ifme
 			}
 		}
 
+		public static void Update()
+		{
+			foreach (var item in Extension.Items)
+			{
+				string version = string.Empty;
+				string link = string.Empty;
+
+				Console.Write($"\nChecking for update: {item.Name}");
+
+				if (string.IsNullOrEmpty(item.UrlVersion))
+					continue;
+
+				version = new Download().GetString(item.UrlVersion);
+
+				if (string.Equals(item.Version, version ?? "0"))
+					continue;
+
+				link = string.Format(item.UrlDownload, version);
+
+				new Download().GetFileExtract(link, Global.Folder.Extension);
+			}
+		}
+
 		public static void CheckDefault()
 		{
 			if (!File.Exists(Path.Combine(Global.Folder.Extension, Properties.Settings.Default.DefaultNotepad)))

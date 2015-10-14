@@ -102,6 +102,62 @@ namespace ifme
 			return false;
 		}
 
+		public static void Repo()
+		{
+			string repo = null;
+			int counter = 0;
+			int counted = 0;
+
+			if (OS.IsWindows)
+				if (OS.Is64bit)
+					repo = Path.Combine(Global.Folder.App, "addons_windows64.repo");
+				else
+					repo = Path.Combine(Global.Folder.App, "addons_windows32.repo");
+
+			if (OS.IsLinux)
+				if (OS.Is64bit)
+					repo = Path.Combine(Global.Folder.App, "addons_linux64.repo");
+				else
+					repo = Path.Combine(Global.Folder.App, "addons_linux32.repo");
+
+			counted = File.ReadAllLines(repo).Length;
+
+			foreach (var item in File.ReadAllLines(repo))
+			{
+				string content = item.Replace("\\n", "\n");
+				string[] nemu = content.Split('\n');
+
+				counter++;
+
+				if (!Directory.Exists(Path.Combine(Global.Folder.Plugins, nemu[0])))
+				{
+					Console.Write($"\nDownloading component {counter,2:##} of {counted,2:##}: {nemu[0]}");
+					new Download().GetFileExtract(nemu[1], Global.Folder.Plugins);
+				}
+			}
+		}
+
+		public static void Update()
+		{
+			foreach (var item in List)
+			{
+				Console.Write($"\nChecking for update: {item.Profile.Name}");
+
+				if (string.IsNullOrEmpty(item.Provider.Update))
+					continue;
+
+				var version = new Download().GetString(item.Provider.Update);
+
+				if (string.IsNullOrEmpty(version))
+					continue;
+
+				if (string.Equals(item.Profile.Ver, version))
+					continue;
+
+				new Download().GetFileExtract(item.Provider.Download, Global.Folder.Plugins);
+			}
+		}
+
 		public static void Load()
 		{
 			// Revoke
