@@ -53,6 +53,8 @@ IF EXIST %UNZIP% (
 	exit 1
 )
 
+timeout /t 3 >nul
+
 @title DELETEING %BUILDDIR%!
 echo DELETEING %BUILDDIR%!
 rmdir /s /q %BUILDDIR%
