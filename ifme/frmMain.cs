@@ -8,7 +8,6 @@ using System.Media;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 using IniParser;
 using IniParser.Model;

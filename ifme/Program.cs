@@ -17,9 +17,15 @@ namespace ifme
 		[STAThread]
 		static int Main(string[] args)
 		{
+			// Never comma under decimal/floating points
+			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
 			// Essential Stuff
 			Title = $"{Global.App.Name} Console";
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+			// Make WinForms much pretty
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
 
 			// Display this program header text
 			Head();
@@ -33,10 +39,6 @@ namespace ifme
 			// Command
 			if (Command(args) == 0)
 				return 0;
-
-			// Make WinForms much pretty
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
 
 			// Splash Screen, loading and update
 			SplashScreen();
