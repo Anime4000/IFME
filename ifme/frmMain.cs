@@ -167,8 +167,6 @@ namespace ifme
 						QueueListSave();
 
 					btnQueueStop.PerformClick();
-
-					MediaEncoder.CleanUp();
 				}
 				else if (MsgBox == DialogResult.Cancel)
 				{
@@ -1882,8 +1880,6 @@ namespace ifme
 					notification.Play();
 				}
 			}
-
-			MediaEncoder.CleanUp();
 		}
 
 		void InvokeQueueStatus(int index, string s)

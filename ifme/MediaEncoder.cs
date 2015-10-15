@@ -14,6 +14,8 @@ namespace ifme
 
 		public static void CleanUp()
 		{
+			Console.WriteLine($"Clearing temp folder: {Default.DirTemp}");
+
 			foreach (var files in Directory.GetFiles(Default.DirTemp))
 				File.Delete(files);
 		}

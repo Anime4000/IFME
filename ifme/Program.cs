@@ -46,6 +46,9 @@ namespace ifme
 			// Main Form
 			MainForm();
 
+			// Clean temp file
+			MediaEncoder.CleanUp();
+
 			// Save settings and exit
 			Default.Save();
 			return 0;
@@ -373,9 +376,6 @@ namespace ifme
 				item.IsEnable = false;
 				ObjectIO.WriteToXmlFile(queueFile, argList);
             }
-
-			// Remove temp file
-			MediaEncoder.CleanUp();
 
 			// Tell user
 			WriteLine(GetInfo.Duration(Session));
