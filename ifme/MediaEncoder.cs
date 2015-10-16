@@ -303,7 +303,17 @@ namespace ifme
 				}
 				else
 				{
-					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.*").Where(f => f.EndsWith(".ttf", IC) || f.EndsWith(".otf", IC) || f.EndsWith(".woff", IC)))
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.ttf"))
+					{
+						cmdattach += $"--attach-file \"{attach}\" ";
+					}
+
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.otf"))
+					{
+						cmdattach += $"--attach-file \"{attach}\" ";
+					}
+
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.woff"))
 					{
 						cmdattach += $"--attach-file \"{attach}\" ";
 					}
@@ -337,14 +347,16 @@ namespace ifme
 					timecode = tc; break;
 				}
 
+				int cntv = 0;
 				foreach (var video in Directory.GetFiles(Default.DirTemp, "video*"))
 				{
-					cmdvideo += $"-add \"{video}#video:name=IFME:lang={GetInfo.FileLang(video)}:fmt=HEVC\" ";
+					cmdvideo += $"-add \"{video}#video:name=Video {++cntv}:lang={GetInfo.FileLang(video)}:fmt=HEVC\" ";
 				}
 
+				int cnta = 0;
 				foreach (var audio in Directory.GetFiles(Default.DirTemp, "audio*"))
 				{
-					cmdaudio += $"-add \"{audio}#audio:name=IFME:lang={GetInfo.FileLang(audio)}\" ";
+					cmdaudio += $"-add \"{audio}#audio:name=Audio {++cnta}:lang={GetInfo.FileLang(audio)}\" ";
 				}
 
 				if (string.IsNullOrEmpty(timecode))

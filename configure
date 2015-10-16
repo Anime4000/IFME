@@ -2,7 +2,11 @@
 cd "$(dirname $(readlink -f $0))"
 
 echo "This will download all required files to make IFME working fine..."
-sleep 3
+echo " "
+echo "Required:"
+echo " 1. 7za"
+echo " 2. wget"
+sleep 5
 
 echo "Creating folder"
 mkdir "prerequisite/linux"
@@ -10,6 +14,11 @@ mkdir "prerequisite/linux/64bit"
 mkdir "prerequisite/linux/64bit/plugins"
 mkdir "prerequisite/allos/"
 mkdir "prerequisite/allos/extension"
+
+wget --no-check-certificate https://github.com/x265/x265.github.io/raw/master/supporter.txt -O "sources/metauser.if"
+
+echo "Downloading library"
+wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/libmediainfo.so.0-x64.zip -O "prerequisite/linux/64bit/libmediainfo.so.0-x64.ifx"
 
 echo "Downloading References"
 wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/INIFileParser.zip -O "references/INIFileParser.ifx"

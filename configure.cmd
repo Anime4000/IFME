@@ -29,6 +29,8 @@ mkdir prerequisite\windows\32bit\plugins\
 mkdir prerequisite\windows\64bit\plugins\
 mkdir prerequisite\allos\extension\
 
+%WGET% --no-check-certificate https://github.com/x265/x265.github.io/raw/master/supporter.txt -O "sources\metauser.if"
+
 echo .NET References
 %WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/INIFileParser.zip -O "references\INIFileParser.ifx"
 %WGET% --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfoDotNet.zip -O "references\MediaInfoDotNet.ifx"

@@ -63,7 +63,8 @@ namespace ifme
 
 #if !STEAM
 			Console.Write("Checking version...");
-			Global.App.NewRelease = !string.Equals(Global.App.VersionRelease, new Download().GetString("https://x265.github.io/update/version.txt"));
+			string version = new Download().GetString("https://x265.github.io/update/version.txt");
+			Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
 			Console.WriteLine($"{(Global.App.NewRelease ? "New version is available to download!" : "This is latest version!")}");
 #endif
 

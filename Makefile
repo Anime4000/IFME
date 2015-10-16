@@ -49,11 +49,7 @@ copy:
 	
 copylib:
 	cp "/usr/lib/p7zip/7za" "$(DIR)/"
-	cp -a "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0.0.0" "$(DIR)/"
-	cp -a "/usr/lib/x86_64-linux-gnu/libmediainfo.so.0" "$(DIR)/"
-	cp -a "/usr/lib/x86_64-linux-gnu/libzen.so.0.0.0" "$(DIR)/"
-	cp -a "/usr/lib/x86_64-linux-gnu/libzen.so.0" "$(DIR)/"
-	cp -a "/usr/lib/x86_64-linux-gnu/libtinyxml2.so.0.0.0" "$(DIR)/"
+	cp "prerequisite/linux/64bit/libmediainfo.so.0" "$(DIR)/"
 	
 copymono:
 	cp "ifme/bin/$(MODE)/ifme.exe" "$(DIR)/"
