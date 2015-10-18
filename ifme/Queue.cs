@@ -81,6 +81,8 @@ namespace ifme
 		public int YadifMode;
 		public int YadifField;
 		public int YadifFlag;
+
+		public string Command;
 	}
 
 	public class Video

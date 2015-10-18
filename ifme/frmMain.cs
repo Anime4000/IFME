@@ -459,7 +459,7 @@ namespace ifme
 				Info.Picture.IsHevc = string.Equals(Video.format, "HEVC", IC);
 
 				FileType = $"{Path.GetExtension(file).ToUpper()} ({Video.format})";
-				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
+				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
 
 				if (string.Equals(Video.frameRateMode, "vfr", IC))
 					Info.Prop.IsVFR = true;
@@ -482,7 +482,7 @@ namespace ifme
 					Info.Picture.Chroma = 420;
 
 					FileType = "AviSynth Script";
-					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
+					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
 				}
 				else
 				{
@@ -627,6 +627,9 @@ namespace ifme
 		void QueueDisplay(int index)
 		{
 			var Info = (Queue)lstQueue.Items[index].Tag;
+
+			// FFmpeg extra command-line
+			tsmiFFmpeg.Enabled = !Info.Data.IsFileAvs;
 
 			// Picture
 			rdoMKV.Checked = Info.Data.SaveAsMkv;
@@ -1621,6 +1624,32 @@ namespace ifme
 			}
 		}
 
+		private void tsmiFFmpeg_Click(object sender, EventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count > 0)
+			{
+				string title = tsmiFFmpeg.Text.Replace("&", "");
+				string desc = tsmiFFmpeg.Text;
+				string input = (lstQueue.SelectedItems[0].Tag as Queue).Picture.Command;
+
+                using (var form = new frmInputBox(title, desc, input))
+				{
+					var result = form.ShowDialog();
+					if (result == DialogResult.OK)
+					{
+						foreach (ListViewItem item in lstQueue.SelectedItems)
+						{
+							(item.Tag as Queue).Picture.Command = form.ReturnValue;
+                        }
+					}
+					else
+					{
+						return;
+					}
+				}
+			}
+		}
+
 		private void tsmiQueueAviSynthEdit_Click(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
@@ -1628,7 +1657,7 @@ namespace ifme
 				var item = (lstQueue.SelectedItems[0].Tag as Queue);
 				if (item.Data.IsFileAvs)
 				{
-					string extsfile = Properties.Settings.Default.DefaultNotepad;
+					string extsfile = Default.DefaultNotepad;
 					string typename = Path.GetFileNameWithoutExtension(extsfile); // get namespace
 
 					Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
@@ -1996,6 +2025,8 @@ namespace ifme
 			foreach (ToolStripItem item in tsmiQueueAviSynth.DropDownItems)
 				if (item is ToolStripMenuItem)
 					item.Text = data[Name][item.Name];
+
+			tsmiFFmpeg.Text = $"FFmpeg {data[Name]["lblVideoCmd"].ToLower().Replace(":", "")}";
 
 			foreach (ColumnHeader item in lstQueue.Columns)
 				item.Text = data[Name][$"{item.Tag}"];

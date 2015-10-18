@@ -60,6 +60,7 @@
 			this.tsmiQueueAviSynthEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQueueAviSynthGenerate = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFFmpeg = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnQueuePause = new System.Windows.Forms.Button();
 			this.tabConfig = new System.Windows.Forms.TabControl();
 			this.tabPicture = new System.Windows.Forms.TabPage();
@@ -339,9 +340,10 @@
             this.tsmiQueueSelectNone,
             this.tsmiQueueSelectInvert,
             this.toolStripSeparator2,
-            this.tsmiQueueAviSynth});
+            this.tsmiQueueAviSynth,
+            this.tsmiFFmpeg});
 			this.cmsQueueMenu.Name = "cmsQueueMenu";
-			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 242);
+			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 286);
 			// 
 			// tsmiQueuePreview
 			// 
@@ -470,6 +472,14 @@
 			this.tsmiQueueAviSynthGenerate.Size = new System.Drawing.Size(265, 22);
 			this.tsmiQueueAviSynthGenerate.Text = "Generate &simple AviSynth script";
 			this.tsmiQueueAviSynthGenerate.Click += new System.EventHandler(this.tsmiQueueAviSynthGenerate_Click);
+			// 
+			// tsmiFFmpeg
+			// 
+			this.tsmiFFmpeg.Image = global::ifme.Properties.Resources.application_xp_terminal;
+			this.tsmiFFmpeg.Name = "tsmiFFmpeg";
+			this.tsmiFFmpeg.Size = new System.Drawing.Size(225, 22);
+			this.tsmiFFmpeg.Text = "&FFmpeg";
+			this.tsmiFFmpeg.Click += new System.EventHandler(this.tsmiFFmpeg_Click);
 			// 
 			// btnQueuePause
 			// 
@@ -1862,5 +1872,6 @@
 		private System.Windows.Forms.Label sptVert4;
 		private System.Windows.Forms.Button btnDonate;
 		private System.Windows.Forms.CheckBox chkDestination;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFFmpeg;
 	}
 }

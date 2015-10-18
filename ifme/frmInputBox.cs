@@ -18,8 +18,8 @@ namespace ifme
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
-			ReturnValue = txtInput.Text;
-			Close();
+			ReturnValue = string.IsNullOrEmpty(txtInput.Text) ? null : string.IsNullOrWhiteSpace(txtInput.Text) ? null : txtInput.Text;
+            Close();
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)

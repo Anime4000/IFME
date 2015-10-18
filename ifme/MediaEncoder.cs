@@ -58,6 +58,8 @@ namespace ifme
 			else
 				channel = "-ac 2";
 
+			string ffcmd = item.Picture.Command;
+
 			if (string.Equals(item.Audio.Encoder, "No Audio", IC))
 			{
 				// Do noting
@@ -72,7 +74,7 @@ namespace ifme
 					if (DropCurrentAudio(audio.ID, item))
 						continue;
 
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
+					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
 				}
 
 				// check if got any unsupported codec
@@ -109,7 +111,7 @@ namespace ifme
 								map += $"-map {audio.ID} ";
 							}
 
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} -y audio0000_und.wav");
+							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
 							TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 							File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
 						}
@@ -122,7 +124,7 @@ namespace ifme
 									continue;
 
 								string outfile = $"audio{counter++:0000}_{audio.Lang}";
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} -y {outfile}.wav");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} {ffcmd} -y {outfile}.wav");
 								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
 								File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
 							}
@@ -166,6 +168,7 @@ namespace ifme
 				string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : "";
 				int framecount = item.Prop.FrameCount;
 				string vsync = "cfr";
+				string ffcmd = item.Picture.Command;
 
 				if (string.IsNullOrEmpty(framerate))
 				{
@@ -204,7 +207,9 @@ namespace ifme
 				if (item.Data.IsFileAvs)
 					decbin = Plugin.AVS4P;
 
-				string decoder = item.Data.IsFileAvs ? $"\"{decbin}\" video \"{file}\"" : $"\"{decbin}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} -";
+				string decoder = item.Data.IsFileAvs ? 
+					$"\"{decbin}\" video \"{file}\"" : 
+					$"\"{decbin}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} {ffcmd} -";
 
 				if (bitdepth == 10)
 					encbin = Plugin.HEVC10;
