@@ -6,6 +6,7 @@
 [fixed] Temp folder will clear after finished encoding, open & close program
 [fixed] HEVC video passthrough not properly save
 [fixed] Linux plugin is now statically linked (portable), thanks to darealshinji
+[fixed] Invalid MKV language id (told by Nikolai Lyskov)
 
 Version 5.1 (FLUORITE DIARY)
 -----------

@@ -1137,10 +1137,13 @@ namespace ifme
 
 		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (cboSubLang.Text.Contains("---"))
+				cboSubLang.SelectedIndex = 0;
+
 			foreach (ListViewItem subs in lstSub.SelectedItems)
 			{
 				subs.SubItems[1].Text = cboSubLang.Text;
-				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = cboSubLang.Text;
+				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = cboSubLang.Text; // char limit (SubString) applied at mkv mux code block
 			}
 		}
 		#endregion

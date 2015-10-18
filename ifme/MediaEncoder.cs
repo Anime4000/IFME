@@ -283,7 +283,7 @@ namespace ifme
 				{
 					foreach (var subs in item.Subtitle)
 					{
-						cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{subs.Lang} \"{subs.File}\" ";
+						cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{subs.Lang.Substring(0, 3)} \"{subs.File}\" ";
 					}
 				}
 				else
