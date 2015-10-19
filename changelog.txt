@@ -2,11 +2,13 @@
 
 [new] Allow user to save encoded file either same source folder or given path
 [added] Language: Italian
+[added] Allow user to add FFmpeg arguments/command-line
 [fixed] Downloader & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
 [fixed] HEVC video passthrough not properly save
 [fixed] Linux plugin is now statically linked (portable), thanks to darealshinji
 [fixed] Invalid MKV language id (told by Nikolai Lyskov)
+[fixed] Prevent copy audio tracks cause MKV chapter begin copied
 
 Version 5.1 (FLUORITE DIARY)
 -----------

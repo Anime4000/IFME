@@ -74,7 +74,7 @@ namespace ifme
 					if (DropCurrentAudio(audio.ID, item))
 						continue;
 
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
+					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
 				}
 
 				// check if got any unsupported codec

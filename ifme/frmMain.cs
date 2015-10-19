@@ -142,15 +142,24 @@ namespace ifme
 
 			QueueListFile(ObjectIO.FileName);
 
+			// should fix ballon position: http://stackoverflow.com/a/4646021
+			tipUpdate.Show(null, pbxRight, 0); 
+			tipUpdate.IsBalloon = true;
+
 			// Tell user there are new version can be downloaded
 			if (Global.App.NewRelease)
 			{
 				InvokeLog("New version available, visit: https://x265.github.io/");
-				tipUpdate.Show(null, pbxRight, 0); // should fix ballon position: http://stackoverflow.com/a/4646021
 
-				tipUpdate.IsBalloon = true;
 				tipUpdate.ToolTipTitle = Language.TipUpdateTitle;
 				tipUpdate.Show(Language.TipUpdateMessage, pbxRight, 488, pbxRight.Height / 2, 30000);
+			}
+			else
+			{
+#if !STEAM
+				tipUpdate.ToolTipTitle = "Hi";
+				tipUpdate.Show("Support & Donate to IFME Project", btnDonate, btnDonate.Width / 2, btnDonate.Height / 2, 30000);
+#endif
 			}
 		}
 

@@ -343,7 +343,7 @@
             this.tsmiQueueAviSynth,
             this.tsmiFFmpeg});
 			this.cmsQueueMenu.Name = "cmsQueueMenu";
-			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 286);
+			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 264);
 			// 
 			// tsmiQueuePreview
 			// 
@@ -1642,7 +1642,7 @@
 			this.btnDonate.Name = "btnDonate";
 			this.btnDonate.Size = new System.Drawing.Size(24, 24);
 			this.btnDonate.TabIndex = 1;
-			this.tipUpdate.SetToolTip(this.btnDonate, "Donate to make IFME better!");
+			this.tipUpdate.SetToolTip(this.btnDonate, "Support & Donate to IFME Project");
 			this.btnDonate.UseVisualStyleBackColor = true;
 			this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
 			// 
