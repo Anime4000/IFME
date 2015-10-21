@@ -131,6 +131,7 @@ namespace ifme
 			Console.WriteLine("\nThank You for your support!\n");
 #else
 			btnDonate.Visible = false;
+			btnFacebook.Visible = false;
 			sptVert4.Visible = false;
 #endif
 		}
@@ -330,6 +331,11 @@ namespace ifme
 		private void btnDonate_Click(object sender, EventArgs e)
 		{
 			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+		}
+
+		private void btnFacebook_Click(object sender, EventArgs e)
+		{
+			Process.Start("https://www.facebook.com/internetfriendlymediaencoder");
 		}
 
 		private void chkDestination_CheckedChanged(object sender, EventArgs e)

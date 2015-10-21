@@ -262,6 +262,7 @@
     <None Include="Resources\world.png" />
     <None Include="Resources\donate.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <None Include="Resources\fb.png" />
     <Content Include="sounds\epic.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
