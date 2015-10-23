@@ -25,7 +25,7 @@ namespace ifme
 {
 	public class TaskManager
 	{
-		static string CurrentProc;
+		static string CurrentProc { get; set; }
 
 		public static int Run(string command)
 		{
@@ -53,8 +53,9 @@ namespace ifme
 				UseShellExecute = false,
 				WorkingDirectory = Properties.Settings.Default.DirTemp,
 			};
-
-			p.Start(); CPU.SetPriority(CurrentProc); // set cpu affinity and priority (windows only, linux require root)
+			
+			p.Start();
+			CPU.SetPriority(CurrentProc); // set cpu affinity and priority (windows only, linux require root)
 			p.WaitForExit();
 
 			return p.ExitCode;
@@ -93,9 +94,11 @@ namespace ifme
 				if (args[i] == "|")
 				{
 					CurrentProc = Path.GetFileNameWithoutExtension(args[i + 1]);
-					break;
+					return;
 				}
 			}
+
+			CurrentProc = Path.GetFileNameWithoutExtension(args[0]);
 		}
 
 		static string[] SplitArguments(string CmdLine)
@@ -130,7 +133,7 @@ namespace ifme
 
 			public static string GetAffinity()
 			{
-				BitArray bin = new BitArray(TaskManager.CPU.Affinity);
+				BitArray bin = new BitArray(Affinity);
 				byte[] data = new byte[1];
 				bin.CopyTo(data, 0);
 				return BitConverter.ToString(data, 0);
@@ -138,6 +141,9 @@ namespace ifme
 
 			public static void SetPriority(string app)
 			{
+				if (string.IsNullOrEmpty(app))
+					return;
+
 				var Nice = Properties.Settings.Default.Nice;
 
 				try
@@ -145,7 +151,7 @@ namespace ifme
 					Process[] Task = Process.GetProcessesByName(app);
 					foreach (Process P in Task)
 					{
-						P.ProcessorAffinity = (IntPtr)Int32.Parse(GetAffinity(), NumberStyles.HexNumber);
+						P.ProcessorAffinity = (IntPtr)int.Parse(GetAffinity(), NumberStyles.HexNumber);
 
 						if (Nice == 0)
 							P.PriorityClass = ProcessPriorityClass.RealTime;
@@ -173,11 +179,11 @@ namespace ifme
 		public class Windows
 		{
 			[DllImport("kernel32.dll")]
-			private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, System.UInt32 dwThreadId);
+			private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
 			[DllImport("kernel32.dll")]
-			private static extern System.UInt32 SuspendThread(IntPtr hThread);
+			private static extern uint SuspendThread(IntPtr hThread);
 			[DllImport("kernel32.dll")]
-			private static extern System.UInt32 ResumeThread(IntPtr hThread);
+			private static extern uint ResumeThread(IntPtr hThread);
 			[DllImport("kernel32.dll")]
 			private static extern bool CloseHandle(IntPtr hHandle);
 
