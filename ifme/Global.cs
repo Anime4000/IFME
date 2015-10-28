@@ -72,20 +72,11 @@ namespace ifme
 
 		public class Folder
 		{
-			static string _AppPathA = Directory.GetCurrentDirectory();
-			static string _AppPathB = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-
 			static string _DefaultSave = Path.Combine(Path.GetTempPath(), "ifme");
 
 			public static string App
 			{
-				get
-				{
-					if (!string.IsNullOrEmpty(_AppPathA))
-						return _AppPathA;
-					else
-						return _AppPathB;
-                }
+				get { return OS.IsLinux ? Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) : AppDomain.CurrentDomain.BaseDirectory; }
 			}
 
 			public static string Profile

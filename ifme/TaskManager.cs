@@ -32,12 +32,11 @@ namespace ifme
 			string exe;
 			string arg;
 
-			Environment.SetEnvironmentVariable("IFMECMD", command, EnvironmentVariableTarget.Process);
-
 			if (OS.IsWindows)
 			{
+				Environment.SetEnvironmentVariable("IFME", command, EnvironmentVariableTarget.Process);
 				exe = "cmd";
-				arg = "/c %IFMECMD%"; // allow max args to pass, Windows limit 8191
+				arg = "/c %IFME%"; // allow max args to pass, Windows limit 8191
 			}
 			else
 			{

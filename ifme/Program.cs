@@ -83,7 +83,7 @@ namespace ifme
 			WriteLine();
 			WriteLine("IFME home page: <https://x265.github.io/>");
 			WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
-			WriteLine("IFME fb page  : <https://fb.com/internetfriendlymediaencoder/>");
+			WriteLine("Facebook page : <https://fb.com/internetfriendlymediaencoder/>");
 		}
 
 		static int Command(string[] args)
