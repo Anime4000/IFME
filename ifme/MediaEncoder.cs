@@ -337,7 +337,7 @@ namespace ifme
 				}
 
 				File.WriteAllText(Path.Combine(Default.DirTemp, "tags.xml"), tags);
-                TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" -t 0:tags.xml --disable-track-statistics-tags {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
+                TaskManager.Run($"\"{Plugin.MKVME}\" -o \"{fileout}\" --disable-track-statistics-tags -t 0:tags.xml {cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}");
 			}
 			else
 			{
