@@ -2,3 +2,5 @@ DirectShowSource
 FFVideoSource
 LSMASHVideoSource
 LSMASHAudioSource
+LWLibavVideoSource
+LWLibavAudioSource
