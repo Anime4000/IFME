@@ -185,6 +185,9 @@
     <None Include="lang\tr.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="lang\ua.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="profile\00000000_000000.ifp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -263,6 +266,7 @@
     <None Include="Resources\donate.png" />
     <None Include="Resources\application_xp_terminal.png" />
     <None Include="Resources\fb.png" />
+    <None Include="Resources\cross.png" />
     <Content Include="sounds\epic.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

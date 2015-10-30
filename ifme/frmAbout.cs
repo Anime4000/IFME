@@ -78,6 +78,7 @@ namespace ifme
 		private void frmAbout_Shown(object sender, EventArgs e)
 		{
 			bgThank.RunWorkerAsync();
+			epic.Play();
 		}
 
 		private void frmAbout_FormClosing(object sender, FormClosingEventArgs e)
@@ -89,7 +90,7 @@ namespace ifme
 
 		private void bgThank_DoWork(object sender, DoWorkEventArgs e)
 		{
-			epic.Play();
+			
 
 			if (InvokeRequired)
 				BeginInvoke(new MethodInvoker(() => panelCredit.Top = panelRoll.Height));
@@ -105,13 +106,12 @@ namespace ifme
 
 				Thread.Sleep(35);
 			}
-
-			epic.Stop();
 		}
 
 		private void bgThank_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			bgThank.RunWorkerAsync();
+			epic.Stop();
 		}
 	}
 }

@@ -3,6 +3,9 @@
 [new] Allow user to save encoded file either same source folder or given path
 [added] Language: Italian
 [added] Allow user to add FFmpeg arguments/command-line
+[added] Allow user to delete Encoding Preset via Button (Git #55)
+[added] Allow user to delete queue by pressing DEL key (Git #55)
+[fixed] CPU Affinity & Priority has been fix!
 [fixed] Downloader & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
 [fixed] HEVC video passthrough not properly save

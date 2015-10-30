@@ -325,6 +325,28 @@ namespace ifme
 			Profile.Load(); //reload list
 			ProfileAdd();
 		}
+
+		private void btnProfileDelete_Click(object sender, EventArgs e)
+		{
+			var i = cboProfile.SelectedIndex;
+			if (i == 0)
+			{
+				// Here should load last saved
+			}
+			else
+			{
+				--i;
+				var p = Profile.List[i];
+
+				if (File.Exists(p.File))
+					File.Delete(p.File);
+
+				InvokeLog($"Deleted encoding preset: {p.File}");
+
+				Profile.Load();
+				ProfileAdd();
+			}
+		}
 		#endregion
 
 		#region Browse, Config & About button
@@ -1613,6 +1635,11 @@ namespace ifme
 				ObjectIO.WriteToXmlFile(SaveFile.FileName, gg);
 				QueueListFile(SaveFile.FileName);
 			}
+		}
+
+		private void tsmiQueueDelete_Click(object sender, EventArgs e)
+		{
+			btnQueueRemove.PerformClick(); // share same hook
 		}
 
 		private void tsmiQueueSelectAll_Click(object sender, EventArgs e)

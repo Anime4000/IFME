@@ -52,6 +52,7 @@
 			this.tsmiQueueSave = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiQueueDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectNone = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQueueSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,6 +159,7 @@
 			this.sptVert4 = new System.Windows.Forms.Label();
 			this.chkDestination = new System.Windows.Forms.CheckBox();
 			this.btnFacebook = new System.Windows.Forms.Button();
+			this.btnProfileDelete = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -337,6 +339,7 @@
             this.tsmiQueueSave,
             this.tsmiQueueSaveAs,
             this.toolStripSeparator4,
+            this.tsmiQueueDelete,
             this.tsmiQueueSelectAll,
             this.tsmiQueueSelectNone,
             this.tsmiQueueSelectInvert,
@@ -344,7 +347,7 @@
             this.tsmiQueueAviSynth,
             this.tsmiFFmpeg});
 			this.cmsQueueMenu.Name = "cmsQueueMenu";
-			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 264);
+			this.cmsQueueMenu.Size = new System.Drawing.Size(226, 286);
 			// 
 			// tsmiQueuePreview
 			// 
@@ -410,6 +413,14 @@
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(222, 6);
+			// 
+			// tsmiQueueDelete
+			// 
+			this.tsmiQueueDelete.Name = "tsmiQueueDelete";
+			this.tsmiQueueDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+			this.tsmiQueueDelete.Size = new System.Drawing.Size(225, 22);
+			this.tsmiQueueDelete.Text = "&Delete";
+			this.tsmiQueueDelete.Click += new System.EventHandler(this.tsmiQueueDelete_Click);
 			// 
 			// tsmiQueueSelectAll
 			// 
@@ -1527,7 +1538,7 @@
             "<new>"});
 			this.cboProfile.Location = new System.Drawing.Point(128, 596);
 			this.cboProfile.Name = "cboProfile";
-			this.cboProfile.Size = new System.Drawing.Size(514, 24);
+			this.cboProfile.Size = new System.Drawing.Size(484, 24);
 			this.cboProfile.TabIndex = 16;
 			this.cboProfile.SelectedIndexChanged += new System.EventHandler(this.cboProfile_SelectedIndexChanged);
 			// 
@@ -1535,7 +1546,7 @@
 			// 
 			this.btnProfileSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnProfileSave.Image = global::ifme.Properties.Resources.disk;
-			this.btnProfileSave.Location = new System.Drawing.Point(648, 596);
+			this.btnProfileSave.Location = new System.Drawing.Point(618, 596);
 			this.btnProfileSave.Name = "btnProfileSave";
 			this.btnProfileSave.Size = new System.Drawing.Size(24, 24);
 			this.btnProfileSave.TabIndex = 17;
@@ -1680,11 +1691,23 @@
 			this.btnFacebook.UseVisualStyleBackColor = true;
 			this.btnFacebook.Click += new System.EventHandler(this.btnFacebook_Click);
 			// 
+			// btnProfileDelete
+			// 
+			this.btnProfileDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnProfileDelete.Image = global::ifme.Properties.Resources.cross;
+			this.btnProfileDelete.Location = new System.Drawing.Point(648, 596);
+			this.btnProfileDelete.Name = "btnProfileDelete";
+			this.btnProfileDelete.Size = new System.Drawing.Size(24, 24);
+			this.btnProfileDelete.TabIndex = 24;
+			this.btnProfileDelete.UseVisualStyleBackColor = true;
+			this.btnProfileDelete.Click += new System.EventHandler(this.btnProfileDelete_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(684, 662);
+			this.Controls.Add(this.btnProfileDelete);
 			this.Controls.Add(this.btnFacebook);
 			this.Controls.Add(this.chkDestination);
 			this.Controls.Add(this.btnDonate);
@@ -1887,5 +1910,7 @@
 		private System.Windows.Forms.CheckBox chkDestination;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFFmpeg;
 		private System.Windows.Forms.Button btnFacebook;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQueueDelete;
+		private System.Windows.Forms.Button btnProfileDelete;
 	}
 }
