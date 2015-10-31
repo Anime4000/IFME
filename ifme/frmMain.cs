@@ -262,22 +262,9 @@ namespace ifme
 
 			if (i == 0)
 			{
-				using (var form = new frmInputBox(Language.SaveNewProfilesTitle, Language.SaveNewProfilesInfo, ""))
-				{
-					var result = form.ShowDialog();
-					if (result == DialogResult.OK)
-					{
-						name = form.ReturnValue; // return
-					}
-					else
-					{
-						return;
-					}
-				}
-
 				file = Path.Combine(Global.Folder.Profile, $"{DateTime.Now:yyyyMMdd_HHmmss}.ifp");
 				platform = "User";
-				// return
+				name = $"{DateTime.Now:yyyy-MM-dd_HH:mm:ss}";
 				author = Environment.UserName;
 				web = "";
 			}
@@ -288,6 +275,19 @@ namespace ifme
 				name = p.Info.Name;
 				author = p.Info.Author;
 				web = p.Info.Web;
+			}
+
+			using (var form = new frmInputBox(Language.SaveNewProfilesTitle, Language.SaveNewProfilesInfo, name))
+			{
+				var result = form.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					name = form.ReturnValue; // return
+				}
+				else
+				{
+					return;
+				}
 			}
 
 			var parser = new FileIniDataParser();
