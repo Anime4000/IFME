@@ -1545,7 +1545,7 @@
 			// btnProfileSave
 			// 
 			this.btnProfileSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnProfileSave.Image = global::ifme.Properties.Resources.disk;
+			this.btnProfileSave.Image = global::ifme.Properties.Resources.pencil;
 			this.btnProfileSave.Location = new System.Drawing.Point(618, 596);
 			this.btnProfileSave.Name = "btnProfileSave";
 			this.btnProfileSave.Size = new System.Drawing.Size(24, 24);
