@@ -692,9 +692,7 @@ namespace ifme
 
 			// Audio
 			cboAudioEncoder.Text = Info.Audio.Encoder;
-			cboAudioBit.Text = Info.Audio.BitRate;
-			cboAudioFreq.Text = Info.Audio.Frequency;
-			cboAudioChannel.Text = Info.Audio.Channel;
+			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
 			chkAudioMerge.Checked = Info.Audio.Merge;
 			txtAudioCmd.Text = Info.Audio.Command;
 
@@ -1034,11 +1032,24 @@ namespace ifme
 				{
 					if (item.Profile.Name == cboAudioEncoder.Text)
 					{
+						// get value from
+						string bitrate = item.App.Default;
+						string freq = "44100";
+						string chan = "auto";
+
+						if (lstQueue.SelectedItems.Count > 0)
+						{
+							var Info = (Queue)lstQueue.SelectedItems[0].Tag;
+							bitrate = Info.Audio.BitRate;
+							freq = Info.Audio.Frequency;
+							chan = Info.Audio.Channel;
+						}
+
 						cboAudioBit.Items.Clear();
 						cboAudioBit.Items.AddRange(item.App.Quality);
-						cboAudioBit.Text = item.App.Default;
-						cboAudioFreq.SelectedIndex = 0;
-						cboAudioChannel.SelectedIndex = 0;
+						cboAudioBit.Text = bitrate;
+						cboAudioFreq.Text = freq;
+						cboAudioChannel.Text = chan;
 						txtAudioCmd.Text = item.Arg.Advance;
 
 						QueueUpdate(QueueProp.AudioEncoder);

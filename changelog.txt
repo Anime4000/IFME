@@ -13,6 +13,7 @@
 [fixed] Linux plugin is now statically linked (portable), thanks to darealshinji
 [fixed] Invalid MKV language id (told by Nikolai Lyskov)
 [fixed] Prevent copy audio tracks cause MKV chapter begin copied
+[fixed] Queue item value on audio bit-rate, Freq, and Channel revert to default (Git #57)
 
 Version 5.1 (FLUORITE DIARY)
 -----------
