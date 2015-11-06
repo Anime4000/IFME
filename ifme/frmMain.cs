@@ -56,9 +56,6 @@ namespace ifme
 				grpPictureYadif.Height += 20;
 				chkPictureYadif.Top += 8;
 				chkPictureVideoCopy.Top += 22;
-
-				grpAudioDrop.Top += 6;
-				grpAudioDrop.Height -= 6;
 			}
 
 			tsmiQueueAviSynth.Enabled = Plugin.IsExistAviSynth;
@@ -546,15 +543,27 @@ namespace ifme
 
 			// Audio section
 			bool exist = Plugin.IsExist(p.Audio.Encoder);
-            Info.Audio.Encoder = i == 0 || !exist ? Plugin.Default.Audio.Name : p.Audio.Encoder;
-			Info.Audio.BitRate = i == 0 || !exist ? Plugin.Default.Audio.BitRate : p.Audio.BitRate;
-			Info.Audio.Frequency = i == 0 || !exist ? Plugin.Default.Audio.Frequency : p.Audio.Frequency;
-			Info.Audio.Channel = i == 0 || !exist ? Plugin.Default.Audio.Channel : p.Audio.Channel;
-			Info.Audio.Command = i == 0 || !exist ? Plugin.Default.Audio.Command : p.Audio.Command;
+            string encoder = i == 0 || !exist ? Plugin.Default.Audio.Name : p.Audio.Encoder;
+			string bitRate = i == 0 || !exist ? Plugin.Default.Audio.BitRate : p.Audio.BitRate;
+			string frequency = i == 0 || !exist ? Plugin.Default.Audio.Frequency : p.Audio.Frequency;
+			string channel = i == 0 || !exist ? Plugin.Default.Audio.Channel : p.Audio.Channel;
+			string command = i == 0 || !exist ? Plugin.Default.Audio.Command : p.Audio.Command;
 
-			// Drop audio tracks support
 			foreach (var item in GetStream.Media(file, StreamType.Audio))
-				Info.DropAudioId.Add(new DropAudio { Id = item.ID, Text = $"{item.ID}, {item.Lang}, {item.OtherInfo}", Checked = false });
+				Info.Audio.Add(new audio
+				{
+					Enable = true,
+					Id = item.ID,
+					Lang = item.Lang,
+					Info = $"{item.ID}, {item.Lang}, {item.OtherInfo}",
+
+					Encoder = encoder,
+					BitRate = bitRate,
+					Frequency = frequency,
+					Channel = channel,
+					Merge = false,
+					Command = command
+				});
 			
 			// Add to queue list
 			ListViewItem qItem = new ListViewItem(new[] {
@@ -691,13 +700,16 @@ namespace ifme
 			txtVideoCmd.Text = Info.Video.Command;
 
 			// Audio
-			cboAudioEncoder.Text = Info.Audio.Encoder;
+			//cboAudioEncoder.Text = Info.Audio.Encoder;
 			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
-			chkAudioMerge.Checked = Info.Audio.Merge;
-			txtAudioCmd.Text = Info.Audio.Command;
+			//chkAudioMerge.Checked = Info.Audio.Merge;
+			//txtAudioCmd.Text = Info.Audio.Command;
 
-			// Audio Tracks
-			chkAudioDrop.Checked = Info.DropAudioTracks;
+			foreach (var item in Info.Audio)
+				clbAudioTracks.Items.Add(item.Info, item.Enable);
+
+			if (clbAudioTracks.Items.Count > 0)
+				clbAudioTracks.SelectedIndex = 0;
 
 			// Subtitles
 			lstSub.Items.Clear();
@@ -723,8 +735,7 @@ namespace ifme
 
 		void QueueUnselect()
 		{
-			// Audio Drop
-			chkAudioDrop.Checked = false;
+			// Audio Tracks
 			clbAudioTracks.Items.Clear();
 
 			// Subtitles
@@ -968,39 +979,6 @@ namespace ifme
 		#endregion
 
 		#region Queue: Property update - Audio Tab
-		private void chkAudioDrop_CheckedChanged(object sender, EventArgs e)
-		{
-			if (lstQueue.SelectedItems.Count == 1)
-			{
-				var qitem = lstQueue.SelectedItems[0].Tag as Queue;
-				string file = qitem.Data.File;
-
-				if (chkAudioDrop.Checked)
-				{
-					clbAudioTracks.Items.Clear();
-
-					foreach (var item in qitem.DropAudioId)
-						clbAudioTracks.Items.Add(item.Text, item.Checked);
-
-					qitem.DropAudioTracks = true;
-				}
-				else
-				{
-					clbAudioTracks.Items.Clear();
-                    qitem.DropAudioTracks = false;
-				}
-			}
-			else
-			{
-				if (chkAudioDrop.Checked)
-					MessageBox.Show(Language.OneItem);
-
-				chkAudioDrop.Checked = false;
-			}
-
-			clbAudioTracks.Visible = chkAudioDrop.Checked;
-        }
-
 		private void clbAudioTracks_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			// Ref: http://stackoverflow.com/a/17511730
@@ -1019,7 +997,18 @@ namespace ifme
 
 			// Do stuff
 			if (lstQueue.SelectedItems.Count == 1)
-				(lstQueue.SelectedItems[0].Tag as Queue).DropAudioId[e.Index].Checked = e.NewValue == CheckState.Checked ? true : false;
+				(lstQueue.SelectedItems[0].Tag as Queue).Audio[e.Index].Enable = e.NewValue == CheckState.Checked ? true : false;
+		}
+
+		private void clbAudioTracks_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (clbAudioTracks.Items.Count > 0)
+			{
+				int i = clbAudioTracks.SelectedIndex;
+				var Info = (Queue)lstQueue.SelectedItems[0].Tag;
+
+				cboAudioEncoder.Text = Info.Audio[i].Encoder;
+			}
 		}
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
@@ -1033,21 +1022,34 @@ namespace ifme
 					if (item.Profile.Name == cboAudioEncoder.Text)
 					{
 						// get value from
-						string bitrate = item.App.Default;
+						string bitrate = "";
 						string freq = "44100";
 						string chan = "auto";
 
+						// load
 						if (lstQueue.SelectedItems.Count > 0)
 						{
 							var Info = (Queue)lstQueue.SelectedItems[0].Tag;
-							bitrate = Info.Audio.BitRate;
-							freq = Info.Audio.Frequency;
-							chan = Info.Audio.Channel;
+							if (clbAudioTracks.Items.Count > 0)
+							{
+								int i = clbAudioTracks.SelectedIndex;
+
+								bitrate = Info.Audio[i].BitRate;
+								freq = Info.Audio[i].Frequency;
+								chan = Info.Audio[i].Channel;
+							}
 						}
 
 						cboAudioBit.Items.Clear();
 						cboAudioBit.Items.AddRange(item.App.Quality);
-						cboAudioBit.Text = bitrate;
+
+						// display
+						foreach (string q in cboAudioBit.Items)
+							if (string.Equals(q, bitrate, IC))
+								cboAudioBit.Text = bitrate;
+							else
+								cboAudioBit.Text = item.App.Default;
+
 						cboAudioFreq.Text = freq;
 						cboAudioChannel.Text = chan;
 						txtAudioCmd.Text = item.Arg.Advance;
@@ -1159,7 +1161,7 @@ namespace ifme
 				return;
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Subtitle.Add(new Subtitle() { File = file, Lang = "und (Undetermined)" });
+				(item.Tag as Queue).Subtitle.Add(new subtitle() { File = file, Lang = "und (Undetermined)" });
 
 			lstSub.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), "und (Undetermined)" }));
 		}
@@ -1270,7 +1272,7 @@ namespace ifme
 		void AttachAdd(string file)
 		{
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Attach.Add(new Attachment() { File = file, MIME = GetInfo.AttachmentValid(file), Comment = "No" });
+				(item.Tag as Queue).Attach.Add(new attachment() { File = file, MIME = GetInfo.AttachmentValid(file), Comment = "No" });
 
 			lstAttach.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), GetInfo.AttachmentValid(file), "No" }));
 		}
@@ -1318,99 +1320,100 @@ namespace ifme
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)
 			{
-				var X = item.Tag as Queue;
+				var x = item.Tag as Queue;
+				var t = clbAudioTracks.SelectedIndex >= 0 ? clbAudioTracks.SelectedIndex : 0;
 
 				switch (Id)
 				{
 					case QueueProp.FormatMkv:
 						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MP4","MKV");
-						X.Data.SaveAsMkv = true;
+						x.Data.SaveAsMkv = true;
 						break;
 
 					case QueueProp.FormatMp4:
 						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MKV", "MP4");
-						X.Data.SaveAsMkv = false;
+						x.Data.SaveAsMkv = false;
 						break;
 
 					case QueueProp.PictureResolution:
-						X.Picture.Resolution = cboPictureRes.Text;
+						x.Picture.Resolution = cboPictureRes.Text;
 						break;
 
 					case QueueProp.PictureFrameRate:
-						X.Picture.FrameRate = cboPictureFps.Text;
+						x.Picture.FrameRate = cboPictureFps.Text;
 						break;
 
 					case QueueProp.PictureBitDepth:
-						X.Picture.BitDepth = Convert.ToInt32(cboPictureBit.Text);
+						x.Picture.BitDepth = Convert.ToInt32(cboPictureBit.Text);
 						break;
 
 					case QueueProp.PictureChroma:
-						X.Picture.Chroma = Convert.ToInt32(cboPictureYuv.Text);
+						x.Picture.Chroma = Convert.ToInt32(cboPictureYuv.Text);
 						break;
 
 					case QueueProp.PictureYadifEnable:
-						X.Picture.YadifEnable = chkPictureYadif.Checked;
+						x.Picture.YadifEnable = chkPictureYadif.Checked;
 						break;
 
 					case QueueProp.PictureYadifMode:
-						X.Picture.YadifMode = cboPictureYadifMode.SelectedIndex;
+						x.Picture.YadifMode = cboPictureYadifMode.SelectedIndex;
 						break;
 
 					case QueueProp.PictureYadifField:
-						X.Picture.YadifField = cboPictureYadifField.SelectedIndex;
+						x.Picture.YadifField = cboPictureYadifField.SelectedIndex;
 						break;
 
 					case QueueProp.PictureYadifFlag:
-						X.Picture.YadifFlag = cboPictureYadifFlag.SelectedIndex;
+						x.Picture.YadifFlag = cboPictureYadifFlag.SelectedIndex;
 						break;
 
 					case QueueProp.PictureCopyVideo:
-						if (X.Picture.IsHevc)
-							X.Picture.IsCopy = chkPictureVideoCopy.Checked;
+						if (x.Picture.IsHevc)
+							x.Picture.IsCopy = chkPictureVideoCopy.Checked;
 						break;
 
 					case QueueProp.VideoPreset:
-						X.Video.Preset = cboVideoPreset.Text;
+						x.Video.Preset = cboVideoPreset.Text;
 						break;
 
 					case QueueProp.VideoTune:
-						X.Video.Tune = cboVideoTune.Text;
+						x.Video.Tune = cboVideoTune.Text;
 						break;
 
 					case QueueProp.VideoType:
-						X.Video.Type = cboVideoType.SelectedIndex;
+						x.Video.Type = cboVideoType.SelectedIndex;
 						break;
 
 					case QueueProp.VideoValue:
-						X.Video.Value = txtVideoValue.Text;
+						x.Video.Value = txtVideoValue.Text;
 						break;
 
 					case QueueProp.VideoCommand:
-						X.Video.Command = txtVideoCmd.Text;
+						x.Video.Command = txtVideoCmd.Text;
 						break;
 
 					case QueueProp.AudioEncoder:
-						X.Audio.Encoder = cboAudioEncoder.Text;
+						x.Audio[t].Encoder = cboAudioEncoder.Text;
 						break;
 
 					case QueueProp.AudioBitRate:
-						X.Audio.BitRate = cboAudioBit.Text;
+						x.Audio[t].BitRate = cboAudioBit.Text;
 						break;
 
 					case QueueProp.AudioFreq:
-						X.Audio.Frequency = cboAudioFreq.Text;
+						x.Audio[t].Frequency = cboAudioFreq.Text;
 						break;
 
 					case QueueProp.AudioChannel:
-						X.Audio.Channel = cboAudioChannel.Text;
+						x.Audio[t].Channel = cboAudioChannel.Text;
 						break;
 
 					case QueueProp.AudioMerge:
-						X.Audio.Merge = chkAudioMerge.Checked;
+						x.Audio[t].Merge = chkAudioMerge.Checked;
 						break;
 
 					case QueueProp.AudioCommand:
-						X.Audio.Command = txtAudioCmd.Text;
+						x.Audio[t].Command = txtAudioCmd.Text;
 						break;
 
 					default:

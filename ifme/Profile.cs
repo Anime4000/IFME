@@ -11,9 +11,9 @@ namespace ifme
 	{
 		public string File;
 		public info Info = new info();
-		public Picture Picture = new Picture();
-		public Video Video = new Video();
-		public Audio Audio = new Audio();
+		public picture Picture = new picture();
+		public video Video = new video();
+		public audio Audio = new audio();
 
 		public static List<Profile> List = new List<Profile>();
 

@@ -31,26 +31,24 @@ namespace ifme
 	public class Queue
 	{
 		public bool IsEnable;
-		public Data Data = new Data();
-		public Prop Prop = new Prop();
+		public data Data = new data();
+		public prop Prop = new prop();
 
-		public Picture Picture = new Picture();
-		public Video Video = new Video();
-		public Audio Audio = new Audio();
+		public picture Picture = new picture();
+		public video Video = new video();
 
-		public bool DropAudioTracks;
-		public List<DropAudio> DropAudioId = new List<DropAudio>();
+		public List<audio> Audio = new List<audio>();
 
 		public bool SubtitleEnable;
-		public List<Subtitle> Subtitle = new List<Subtitle>();
+		public List<subtitle> Subtitle = new List<subtitle>();
 
 		public bool AttachEnable;
-		public List<Attachment> Attach = new List<Attachment>();
+		public List<attachment> Attach = new List<attachment>();
 
 		public static string SaveFile;
 	}
 
-	public class Data
+	public class data
 	{
 		public string File;
 
@@ -60,14 +58,14 @@ namespace ifme
 		public bool SaveAsMkv;
 	}
 
-	public class Prop
+	public class prop
 	{
 		public bool IsVFR;
 		public int Duration; // in ms
 		public int FrameCount;
 	}
 
-	public class Picture
+	public class picture
 	{
 		public bool IsCopy;
 		public bool IsHevc;
@@ -85,7 +83,7 @@ namespace ifme
 		public string Command;
 	}
 
-	public class Video
+	public class video
 	{
 		public string Preset;
 		public string Tune;
@@ -94,8 +92,13 @@ namespace ifme
 		public string Command;
 	}
 
-	public class Audio
+	public class audio
 	{
+		public bool Enable;
+		public string Id;
+		public string Lang;
+		public string Info;
+
 		public string Encoder;
 		public string BitRate;
 		public string Frequency;
@@ -104,20 +107,13 @@ namespace ifme
 		public string Command;
 	}
 
-	public class DropAudio
-	{
-		public string Id;
-		public string Text;
-		public bool Checked;
-	}
-
-	public class Subtitle
+	public class subtitle
 	{
 		public string File;
 		public string Lang;
 	}
 
-	public class Attachment
+	public class attachment
 	{
 		public string File;
 		public string MIME;

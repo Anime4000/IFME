@@ -44,106 +44,90 @@ namespace ifme
 			if (string.IsNullOrEmpty(filereal))
 				return;
 
-			string frequency;
-			if (string.Equals(item.Audio.Frequency, "auto", IC))
-				frequency = "";
-			else
-				frequency = "-ar " + item.Audio.Frequency;
-
-			string channel;
-			if (string.Equals(item.Audio.Channel, "auto", IC))
-				channel = "";
-			else if (string.Equals(item.Audio.Channel, "mono", IC))
-				channel = "-ac 1";
-			else
-				channel = "-ac 2";
-
-			string ffcmd = item.Picture.Command;
-
-			if (string.Equals(item.Audio.Encoder, "No Audio", IC))
+			foreach (var track in item.Audio)
 			{
-				// Do noting
-			}
-			else if (string.Equals(item.Audio.Encoder, "Passthrough (Extract all audio)", IC))
-			{
-				// Extract all
-				int counter = 0;
-				foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+				if (!track.Enable)
+					continue;
+
+				string frequency;
+				if (string.Equals(track.Frequency, "auto", IC))
+					frequency = "";
+				else
+					frequency = "-ar " + track.Frequency;
+
+				string channel;
+				if (string.Equals(track.Channel, "auto", IC))
+					channel = "";
+				else if (string.Equals(track.Channel, "mono", IC))
+					channel = "-ac 1";
+				else
+					channel = "-ac 2";
+
+				string ffcmd = item.Picture.Command;
+
+				if (string.Equals(track.Encoder, "No Audio", IC))
 				{
-					// Drop current tracks if set
-					if (DropCurrentAudio(audio.ID, item))
-						continue;
-
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
+					// Do noting
 				}
-
-				// check if got any unsupported codec
-				if (!item.Data.SaveAsMkv)
+				else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
 				{
-					foreach (var audio in Directory.GetFiles(Default.DirTemp, "audio*"))
+					// Extract all
+					int counter = 0;
+					foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
 					{
-						if (!string.Equals(Path.GetExtension(audio), ".mp4", IC))
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
+					}
+
+					// check if got any unsupported codec
+					if (!item.Data.SaveAsMkv)
+					{
+						foreach (var audio in Directory.GetFiles(Default.DirTemp, "audio*"))
 						{
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict -2 -c:a aac -b:a {item.Audio.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
-                            File.Delete(audio); // delete unwanted
+							if (!string.Equals(Path.GetExtension(audio), ".mp4", IC))
+							{
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict -2 -c:a aac -b:a {track.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
+								File.Delete(audio); // delete unwanted
+							}
+						}
+					}
+				}
+				else
+				{
+					int counter = 0;
+					foreach (var codec in Plugin.List)
+					{
+						if (string.Equals(codec.Profile.Name, track.Encoder, IC))
+						{
+							if (track.Merge)
+							{
+								int count = 0;
+								string map = string.Empty;
+								foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+								{
+									count++;
+									map += $"-map {audio.ID} ";
+								}
+
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
+								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+								File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
+							}
+							else
+							{
+								foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+								{
+									string outfile = $"audio{counter++:0000}_{audio.Lang}";
+									TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} {ffcmd} -y {outfile}.wav");
+									TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
+									File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
+								}
+							}
+
+							break;
 						}
 					}
 				}
 			}
-			else
-			{
-				int counter = 0;
-				foreach (var codec in Plugin.List)
-				{
-					if (string.Equals(codec.Profile.Name, item.Audio.Encoder, IC))
-					{
-						if (item.Audio.Merge)
-						{
-							int count = 0;
-							string map = string.Empty;
-							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-							{
-								// Drop current tracks if set
-								if (DropCurrentAudio(audio.ID, item))
-									continue;
-
-								count++;
-								map += $"-map {audio.ID} ";
-							}
-
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
-							TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
-							File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
-						}
-						else
-						{
-							foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-							{
-								// Drop current tracks if set
-								if (DropCurrentAudio(audio.ID, item))
-									continue;
-
-								string outfile = $"audio{counter++:0000}_{audio.Lang}";
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} {ffcmd} -y {outfile}.wav");
-								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {item.Audio.BitRate} {item.Audio.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
-								File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
-							}
-						}
-
-						break;
-					}
-				}
-			}
-		}
-
-		private static bool DropCurrentAudio(string currentId, Queue currentAudio)
-		{
-			if (currentAudio.DropAudioTracks)
-				foreach (var item in currentAudio.DropAudioId)
-					if (string.Equals(currentId, item.Id, IC))
-						if (item.Checked)
-							return true;
-			return false;
 		}
 
 		public static void Video(string file, Queue item)
