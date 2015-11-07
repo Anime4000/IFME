@@ -103,11 +103,11 @@
 			this.cboVideoPreset = new System.Windows.Forms.ComboBox();
 			this.lblVideoPreset = new System.Windows.Forms.Label();
 			this.tabAudio = new System.Windows.Forms.TabPage();
+			this.chkAudioMerge = new System.Windows.Forms.CheckBox();
 			this.clbAudioTracks = new System.Windows.Forms.CheckedListBox();
 			this.txtAudioCmd = new System.Windows.Forms.TextBox();
 			this.lblAudioCmd = new System.Windows.Forms.Label();
 			this.grpAudioBasic = new System.Windows.Forms.GroupBox();
-			this.chkAudioMerge = new System.Windows.Forms.CheckBox();
 			this.cboAudioChannel = new System.Windows.Forms.ComboBox();
 			this.lblAudioChannel = new System.Windows.Forms.Label();
 			this.cboAudioFreq = new System.Windows.Forms.ComboBox();
@@ -1061,6 +1061,18 @@
 			this.tabAudio.Text = "Audio";
 			this.tabAudio.UseVisualStyleBackColor = true;
 			// 
+			// chkAudioMerge
+			// 
+			this.chkAudioMerge.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.chkAudioMerge.Location = new System.Drawing.Point(329, 131);
+			this.chkAudioMerge.Name = "chkAudioMerge";
+			this.chkAudioMerge.Size = new System.Drawing.Size(317, 48);
+			this.chkAudioMerge.TabIndex = 8;
+			this.chkAudioMerge.Text = "&Compile all stream into single stream (not applicable for Passthrough)";
+			this.chkAudioMerge.UseVisualStyleBackColor = true;
+			this.chkAudioMerge.CheckedChanged += new System.EventHandler(this.chkAudioMerge_CheckedChanged);
+			// 
 			// clbAudioTracks
 			// 
 			this.clbAudioTracks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1112,18 +1124,6 @@
 			this.grpAudioBasic.TabIndex = 0;
 			this.grpAudioBasic.TabStop = false;
 			this.grpAudioBasic.Text = "&Basic";
-			// 
-			// chkAudioMerge
-			// 
-			this.chkAudioMerge.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.chkAudioMerge.Location = new System.Drawing.Point(329, 131);
-			this.chkAudioMerge.Name = "chkAudioMerge";
-			this.chkAudioMerge.Size = new System.Drawing.Size(317, 48);
-			this.chkAudioMerge.TabIndex = 8;
-			this.chkAudioMerge.Text = "&Compile all stream into single stream (not applicable for Passthrough)";
-			this.chkAudioMerge.UseVisualStyleBackColor = true;
-			this.chkAudioMerge.CheckedChanged += new System.EventHandler(this.chkAudioMerge_CheckedChanged);
 			// 
 			// cboAudioChannel
 			// 
