@@ -4,7 +4,7 @@
 	terminal open just like Windows Console
 */
 
-#include <stdio.h>
+#include <stdlib.h>
 
 int main() {
 	system("chmod +x ./ifme");
