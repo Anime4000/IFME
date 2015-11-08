@@ -44,11 +44,12 @@ namespace ifme
 			if (string.IsNullOrEmpty(filereal))
 				return;
 
+			string ffmap = "";
+			string ffcmd = item.Picture.Command;
+			int counter = 0;
+
 			foreach (var track in item.Audio)
 			{
-				if (!track.Enable)
-					continue;
-
 				string frequency;
 				if (string.Equals(track.Frequency, "auto", IC))
 					frequency = "";
@@ -63,67 +64,71 @@ namespace ifme
 				else
 					channel = "-ac 2";
 
-				string ffcmd = item.Picture.Command;
-
-				if (string.Equals(track.Encoder, "No Audio", IC))
+				if (item.AudioMerge)
 				{
-					// Do noting
-				}
-				else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
-				{
-					// Extract all
-					int counter = 0;
-					foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
+					counter++;
+					ffmap += $"{track.Id} ";
+					
+					if (item.Audio.Count == counter)
 					{
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {audio.ID} -acodec copy {ffcmd} -y audio{counter++:0000}_{audio.Lang}.{audio.Format}");
-					}
-
-					// check if got any unsupported codec
-					if (!item.Data.SaveAsMkv)
-					{
-						foreach (var audio in Directory.GetFiles(Default.DirTemp, "audio*"))
+						foreach (var codec in Plugin.List)
 						{
-							if (!string.Equals(Path.GetExtension(audio), ".mp4", IC))
+							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{audio}\" -strict -2 -c:a aac -b:a {track.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(audio)}.mp4");
-								File.Delete(audio); // delete unwanted
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
+								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+								File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
 							}
 						}
 					}
 				}
 				else
 				{
-					int counter = 0;
-					foreach (var codec in Plugin.List)
+					if (!track.Enable)
+						continue;
+
+					if (string.Equals(track.Encoder, "No Audio", IC))
 					{
-						if (string.Equals(codec.Profile.Name, track.Encoder, IC))
+						// Do noting
+					}
+					else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
+					{
+						// File
+						string outfile = $"audio{counter++:0000}_{track.Lang}.{track.Format}";
+
+						// Extract all
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {track.Id} -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+
+						// check if got any unsupported codec
+						if (!item.Data.SaveAsMkv)
 						{
-							if (track.Merge)
+							if (!string.Equals(track.Format, "mp4", IC))
 							{
-								int count = 0;
-								string map = string.Empty;
-								foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-								{
-									count++;
-									map += $"-map {audio.ID} ";
-								}
-
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {map} -filter_complex amix=inputs={count}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
-								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
-								File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{outfile}\" -strict -2 -c:a aac -b:a {track.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(outfile)}.mp4");
+								File.Delete(outfile); // delete unwanted
 							}
-							else
+						}
+					}
+					else
+					{
+						foreach (var codec in Plugin.List)
+						{
+							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
 							{
-								foreach (var audio in GetStream.Media(filereal, StreamType.Audio))
-								{
-									string outfile = $"audio{counter++:0000}_{audio.Lang}";
-									TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {audio.ID} {frequency} {channel} {ffcmd} -y {outfile}.wav");
-									TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}.{codec.App.Ext}");
-									File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
-								}
-							}
+								// File
+								string outfile = $"audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
 
-							break;
+								// Decode
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {track.Id} {frequency} {channel} {ffcmd} -y {outfile}.wav");
+
+								// Encode
+								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}");
+
+								// Delete
+								File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
+
+								break;
+							}
 						}
 					}
 				}

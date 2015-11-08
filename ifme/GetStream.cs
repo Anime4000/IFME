@@ -23,8 +23,12 @@ namespace ifme
 	{
 		public string ID;
 		public string Lang;
+		public string Codec;
 		public string Format;
-		public string OtherInfo;
+
+		public int AudioRawBit;
+		public int AudioRawFreq;
+		public int AudioRawChan;
 	}
 
 	public class StreamMatroska
@@ -36,7 +40,9 @@ namespace ifme
 
 	public class GetStream
 	{
-		private static IniData GetFmt = new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.App, "format.ini"), Encoding.UTF8);
+		private static StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
+
+		private static IniData GetFmt { get { return new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.App, "format.ini"), Encoding.UTF8); } }
 
         public static List<StreamMedia> Media(string file, StreamType kind)
 		{
@@ -75,6 +81,11 @@ namespace ifme
 					string codec = string.Empty;
 					string format = string.Empty;
 					string otherinfo = string.Empty;
+
+					// Audio
+					string audiobit = string.Empty;
+					string audiofreq = string.Empty;
+					string audiochan = string.Empty;
 
 					if (item.Contains(Kind))
 					{
@@ -121,8 +132,79 @@ namespace ifme
 							if (string.IsNullOrEmpty(format))
 								format = codec;
 						}
-						
-						Items.Add(new StreamMedia() { ID = id, Lang = lang, Format = format, OtherInfo = otherinfo });
+
+						if (kind == StreamType.Audio)
+						{
+							if (item.Contains(Kind))
+							{
+								// Frequency
+								for (int i = item.IndexOf("Hz, ") - 2; ; i--)
+								{
+									if (item[i] == ' ')
+										break;
+
+									if (char.IsDigit(item[i]))
+										audiofreq += item[i];
+								}
+
+								audiofreq = new string(audiofreq.Reverse().ToArray());
+
+								// Channel
+								for (int i = item.IndexOf("Hz, ") + 4; ; i++)
+								{
+									if (item[i] == ',')
+										break;
+
+									if (item[i] == '(')
+										break;
+
+									audiochan += item[i];
+								}
+
+								if (string.Equals("stereo", audiochan, IC))
+									audiochan = "2";
+								else if (string.Equals("mono", audiochan, IC))
+									audiochan = "1";
+								else
+									audiochan = $"{Convert.ToInt32(audiochan.Split('.')[0]) + Convert.ToInt32(audiochan.Split('.')[1])}";
+
+								// Bit
+								for (int i = item.IndexOf("Hz, ") + 4; i < item.Length; i++)
+								{
+									if (item[i] == ',')
+									{
+										i += 2;
+
+										while (i < item.Length)
+										{
+											if (item[i] == ',')
+												break;
+
+											if (char.IsDigit(item[i]))
+												audiobit += item[i];
+
+											i++;
+										}
+
+										break;
+									}
+								}
+
+								if (string.IsNullOrEmpty(audiobit))
+									audiobit = "32"; // fltp
+							}
+                        }
+
+						Items.Add(new StreamMedia() {
+							ID = id,
+							Lang = lang,
+							Codec = codec,
+							Format = format,
+
+							AudioRawBit = Convert.ToInt32(audiobit),
+							AudioRawFreq = Convert.ToInt32(audiofreq),
+							AudioRawChan = Convert.ToInt32(audiochan)
+						});
 					}
 				}
 			}

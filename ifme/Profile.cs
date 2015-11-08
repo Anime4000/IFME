@@ -47,7 +47,6 @@ namespace ifme
 				p.Audio.BitRate = data["audio"]["bitrate"];
 				p.Audio.Frequency = data["audio"]["frequency"];
 				p.Audio.Channel = data["audio"]["channel"];
-				p.Audio.Merge = Convert.ToBoolean(data["audio"]["compile"]);
 				p.Audio.Command = data["audio"]["cmd"];
 
 				List.Add(p);

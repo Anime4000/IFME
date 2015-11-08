@@ -19,7 +19,7 @@ namespace ifme
 {
     public partial class frmMain : Form
 	{
-		StringComparison IC = StringComparison.OrdinalIgnoreCase; // Just ignore case what ever it is.
+		StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
 
 		public frmMain()
 		{
@@ -238,7 +238,6 @@ namespace ifme
 				cboAudioBit.Text = exist ? p.Audio.BitRate : Plugin.Default.Audio.BitRate;
 				cboAudioFreq.Text = exist ? p.Audio.Frequency : Plugin.Default.Audio.Frequency;
 				cboAudioChannel.Text = exist ? p.Audio.Channel : Plugin.Default.Audio.Channel;
-				chkAudioMerge.Checked = exist ? p.Audio.Merge : Plugin.Default.Audio.Merge;
 				txtAudioCmd.Text = exist ? p.Audio.Command : Plugin.Default.Audio.Command;
 			}
 		}
@@ -555,13 +554,17 @@ namespace ifme
 					Enable = true,
 					Id = item.ID,
 					Lang = item.Lang,
-					Info = $"{item.ID}, {item.Lang}, {item.OtherInfo}",
+					Codec = item.Codec,
+					Format = item.Format,
+
+					RawBit = item.AudioRawBit,
+					RawFreq = item.AudioRawFreq,
+					RawChan = item.AudioRawChan,
 
 					Encoder = encoder,
 					BitRate = bitRate,
 					Frequency = frequency,
 					Channel = channel,
-					Merge = false,
 					Command = command
 				});
 			
@@ -702,11 +705,11 @@ namespace ifme
 			// Audio
 			//cboAudioEncoder.Text = Info.Audio.Encoder;
 			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
-			//chkAudioMerge.Checked = Info.Audio.Merge;
+			chkAudioMerge.Checked = Info.AudioMerge;
 			//txtAudioCmd.Text = Info.Audio.Command;
 
 			foreach (var item in Info.Audio)
-				clbAudioTracks.Items.Add(item.Info, item.Enable);
+				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz @ {item.RawBit} Bit ({item.RawChan} Channel)", item.Enable);
 
 			if (clbAudioTracks.Items.Count > 0)
 				clbAudioTracks.SelectedIndex = 0;
@@ -1079,6 +1082,11 @@ namespace ifme
 
 		private void chkAudioMerge_CheckedChanged(object sender, EventArgs e)
 		{
+			if (clbAudioTracks.SelectedIndex > 0)
+				clbAudioTracks.SelectedIndex = 0;
+
+			clbAudioTracks.Enabled = !chkAudioMerge.Checked;
+
 			QueueUpdate(QueueProp.AudioMerge);
 		}
 
@@ -1409,7 +1417,7 @@ namespace ifme
 						break;
 
 					case QueueProp.AudioMerge:
-						x.Audio[t].Merge = chkAudioMerge.Checked;
+						x.AudioMerge = chkAudioMerge.Checked;
 						break;
 
 					case QueueProp.AudioCommand:

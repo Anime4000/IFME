@@ -37,6 +37,7 @@ namespace ifme
 		public picture Picture = new picture();
 		public video Video = new video();
 
+		public bool AudioMerge;
 		public List<audio> Audio = new List<audio>();
 
 		public bool SubtitleEnable;
@@ -97,13 +98,17 @@ namespace ifme
 		public bool Enable;
 		public string Id;
 		public string Lang;
-		public string Info;
+		public string Codec;
+		public string Format;
+
+		public int RawBit;
+		public int RawFreq;
+		public int RawChan;
 
 		public string Encoder;
 		public string BitRate;
 		public string Frequency;
 		public string Channel;
-		public bool Merge;
 		public string Command;
 	}
 
