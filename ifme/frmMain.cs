@@ -234,11 +234,11 @@ namespace ifme
 				txtVideoCmd.Text = p.Video.Command;
 
 				bool exist = Plugin.IsExist(p.Audio.Encoder);
-                cboAudioEncoder.Text = exist ? p.Audio.Encoder : Plugin.Default.Audio.Name;
-				cboAudioBit.Text = exist ? p.Audio.BitRate : Plugin.Default.Audio.BitRate;
-				cboAudioFreq.Text = exist ? p.Audio.Frequency : Plugin.Default.Audio.Frequency;
-				cboAudioChannel.Text = exist ? p.Audio.Channel : Plugin.Default.Audio.Channel;
-				txtAudioCmd.Text = exist ? p.Audio.Command : Plugin.Default.Audio.Command;
+                cboAudioEncoder.Text = exist ? p.Audio.Encoder : "Passthrough (Extract all audio)";
+				cboAudioBit.Text = exist ? p.Audio.BitRate : "256";
+				cboAudioFreq.Text = exist ? p.Audio.Freq : "auto";
+				cboAudioChannel.Text = exist ? p.Audio.Chan : "auto";
+				txtAudioCmd.Text = exist ? p.Audio.Args: null;
 			}
 		}
 
@@ -458,7 +458,7 @@ namespace ifme
 			MediaFile AVI = new MediaFile(file);
 
 			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
-			Info.Data.IsFileAvs = GetInfo.IsAviSynth(file);
+			Info.Data.IsFileAvs = GetStream.IsAviSynth(file);
 
 			if (!Plugin.IsExistAviSynth)
 			{
@@ -507,29 +507,21 @@ namespace ifme
 			}
 			else
 			{
-				if (Info.Data.IsFileAvs)
-				{
-					Info.Picture.Resolution = "auto";
-					Info.Picture.FrameRate = "auto";
-					Info.Picture.BitDepth = 8;
-					Info.Picture.Chroma = 420;
+				Info.Picture.Resolution = "auto";
+				Info.Picture.FrameRate = "auto";
+				Info.Picture.BitDepth = 8;
+				Info.Picture.Chroma = 420;
 
-					FileType = "AviSynth Script";
-					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
+				if (AVI.Audio.Count > 0)
+				{
+					var Audio = AVI.Audio[0];
+					FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
+					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
 				}
 				else
 				{
-					if (AVI.Audio.Count > 0)
-					{
-						var Audio = AVI.Audio[0];
-						FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
-						FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
-                    }
-					else
-					{
-						FileType = "Unknown";
-						FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (H265)";
-                    }
+					FileType = "AviSynth Script";
+					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
 				}
 			}
 
@@ -542,11 +534,11 @@ namespace ifme
 
 			// Audio section
 			bool exist = Plugin.IsExist(p.Audio.Encoder);
-            string encoder = i == 0 || !exist ? Plugin.Default.Audio.Name : p.Audio.Encoder;
-			string bitRate = i == 0 || !exist ? Plugin.Default.Audio.BitRate : p.Audio.BitRate;
-			string frequency = i == 0 || !exist ? Plugin.Default.Audio.Frequency : p.Audio.Frequency;
-			string channel = i == 0 || !exist ? Plugin.Default.Audio.Channel : p.Audio.Channel;
-			string command = i == 0 || !exist ? Plugin.Default.Audio.Command : p.Audio.Command;
+            string encoder = i == 0 || !exist ? "Passthrough (Extract all audio)" : p.Audio.Encoder;
+			string bitRate = i == 0 || !exist ? "256" : p.Audio.BitRate;
+			string frequency = i == 0 || !exist ? "auto" : p.Audio.Freq;
+			string channel = i == 0 || !exist ? "auto" : p.Audio.Chan;
+			string command = i == 0 || !exist ? null : p.Audio.Args;
 
 			foreach (var item in GetStream.Media(file, StreamType.Audio))
 				Info.Audio.Add(new audio
@@ -563,11 +555,11 @@ namespace ifme
 
 					Encoder = encoder,
 					BitRate = bitRate,
-					Frequency = frequency,
-					Channel = channel,
-					Command = command
+					Freq = frequency,
+					Chan = channel,
+					Args = command
 				});
-			
+
 			// Add to queue list
 			ListViewItem qItem = new ListViewItem(new[] {
 				GetInfo.FileName(file),
@@ -1025,8 +1017,8 @@ namespace ifme
 					if (item.Profile.Name == cboAudioEncoder.Text)
 					{
 						// get value from
-						string bitrate = "";
-						string freq = "44100";
+						string bitrate = "256";
+						string freq = "auto";
 						string chan = "auto";
 
 						// load
@@ -1038,8 +1030,8 @@ namespace ifme
 								int i = clbAudioTracks.SelectedIndex;
 
 								bitrate = Info.Audio[i].BitRate;
-								freq = Info.Audio[i].Frequency;
-								chan = Info.Audio[i].Channel;
+								freq = Info.Audio[i].Freq;
+								chan = Info.Audio[i].Chan;
 							}
 						}
 
@@ -1409,11 +1401,11 @@ namespace ifme
 						break;
 
 					case QueueProp.AudioFreq:
-						x.Audio[t].Frequency = cboAudioFreq.Text;
+						x.Audio[t].Freq = cboAudioFreq.Text;
 						break;
 
 					case QueueProp.AudioChannel:
-						x.Audio[t].Channel = cboAudioChannel.Text;
+						x.Audio[t].Chan = cboAudioChannel.Text;
 						break;
 
 					case QueueProp.AudioMerge:
@@ -1421,7 +1413,7 @@ namespace ifme
 						break;
 
 					case QueueProp.AudioCommand:
-						x.Audio[t].Command = txtAudioCmd.Text;
+						x.Audio[t].Args = txtAudioCmd.Text;
 						break;
 
 					default:
@@ -1576,7 +1568,7 @@ namespace ifme
 
 			foreach (var item in gg)
 			{
-				if (GetInfo.IsAviSynth(item.Data.File))
+				if (GetStream.IsAviSynth(item.Data.File))
 					if (!Plugin.IsExistAviSynth)
 						continue;
 
@@ -1892,13 +1884,12 @@ namespace ifme
 				// Log current queue
 				InvokeLog("Processing: " + item.Data.File);
 
-				// AviSynth aware
+				// Current media
 				string file = item.Data.File;
-				string filereal = GetStream.AviSynthGetFile(file);
 
 				// Extract mkv embedded subtitle, font and chapter
 				InvokeQueueStatus(id, "Extracting");
-				MediaEncoder.Extract(filereal, item);
+				MediaEncoder.Extract(file, item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)
@@ -1910,7 +1901,7 @@ namespace ifme
 
 				// Audio
 				InvokeQueueStatus(id, "Processing Audio");
-				MediaEncoder.Audio(filereal, item);
+				MediaEncoder.Audio(file, item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)
@@ -2044,7 +2035,9 @@ namespace ifme
 			grpVideoRateCtrl.Enabled = x;
 			txtVideoCmd.Enabled = x;
 
+			clbAudioTracks.Enabled = x;
 			grpAudioBasic.Enabled = x;
+			chkAudioMerge.Enabled = x;
 			txtAudioCmd.Enabled = x;
 
 			chkSubEnable.Enabled = x;

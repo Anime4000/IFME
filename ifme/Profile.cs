@@ -45,9 +45,9 @@ namespace ifme
 				p.Video.Command = data["video"]["cmd"];
 				p.Audio.Encoder = data["audio"]["encoder"];
 				p.Audio.BitRate = data["audio"]["bitrate"];
-				p.Audio.Frequency = data["audio"]["frequency"];
-				p.Audio.Channel = data["audio"]["channel"];
-				p.Audio.Command = data["audio"]["cmd"];
+				p.Audio.Freq = data["audio"]["frequency"];
+				p.Audio.Chan = data["audio"]["channel"];
+				p.Audio.Args = data["audio"]["cmd"];
 
 				List.Add(p);
 			}

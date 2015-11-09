@@ -18,12 +18,6 @@ namespace ifme
 			return false;
 		}
 
-		public static bool IsAviSynth(string file)
-		{
-			string exts = Path.GetExtension(file);
-			return string.Equals(exts, ".avs", IC) ? true : false;
-		}
-
 		public static bool SubtitleValid(string file)
 		{
 			string exts = Path.GetExtension(file);
@@ -44,7 +38,7 @@ namespace ifme
 			if (f.Length >= 1073741824)
 				return "application/octet-stream";
 
-			byte[] data = System.IO.File.ReadAllBytes(file);
+			byte[] data = File.ReadAllBytes(file);
 			byte[] MagicTTF = { 0x00, 0x01, 0x00, 0x00, 0x00 };
 			byte[] MagicOTF = { 0x4F, 0x54, 0x54, 0x4F, 0x00 };
 			byte[] MagicWOFF = { 0x77, 0x4F, 0x46, 0x46, 0x00 };

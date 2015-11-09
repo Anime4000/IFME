@@ -9,7 +9,7 @@ namespace ifme
 {
 	public class MediaEncoder
 	{
-		private static StringComparison IC = StringComparison.OrdinalIgnoreCase; // Just ignore case what ever it is.
+		private static StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
 		private static string NULL = OS.Null;
 
 		public static void CleanUp()
@@ -20,49 +20,45 @@ namespace ifme
 				File.Delete(files);
 		}
 
-		public static void Extract(string filereal, Queue item)
+		public static void Extract(string file, Queue item)
 		{
-			if (string.IsNullOrEmpty(filereal))
+			if (item.Data.IsFileAvs)
+				file = GetStream.AviSynthGetFile(file);
+
+			if (string.IsNullOrEmpty(file))
 				return;
 
 			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Default.AvsMkvCopy))
 			{
 				int sc = 0;
-				foreach (var subs in GetStream.Media(filereal, StreamType.Subtitle))
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {subs.ID} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
+				foreach (var subs in GetStream.Media(file, StreamType.Subtitle))
+					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {subs.ID} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
 
 
-				foreach (var font in GetStream.MediaMkv(filereal, StreamType.Attachment))
-					TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{filereal}\" {font.ID}:\"{font.File}\"");
+				foreach (var font in GetStream.MediaMkv(file, StreamType.Attachment))
+					TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{file}\" {font.ID}:\"{font.File}\"");
 
-				TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{filereal}\" > chapters.xml");
+				TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{file}\" > chapters.xml");
 			}
 		}
 
-		public static void Audio(string filereal, Queue item)
+		public static void Audio(string file, Queue item)
 		{
-			if (string.IsNullOrEmpty(filereal))
+			if (item.Data.IsFileAvs)
+				file = GetStream.AviSynthGetFile(file);
+
+			if (string.IsNullOrEmpty(file))
 				return;
 
 			string ffmap = "";
 			string ffcmd = item.Picture.Command;
-			int counter = 0;
 
+			int counter = 0;
 			foreach (var track in item.Audio)
 			{
-				string frequency;
-				if (string.Equals(track.Frequency, "auto", IC))
-					frequency = "";
-				else
-					frequency = "-ar " + track.Frequency;
-
-				string channel;
-				if (string.Equals(track.Channel, "auto", IC))
-					channel = "";
-				else if (string.Equals(track.Channel, "mono", IC))
-					channel = "-ac 1";
-				else
-					channel = "-ac 2";
+				string bit = $"{track.RawBit}";
+				string frequency = string.Equals(track.Freq, "auto", IC) ? $"{track.RawFreq}" : $"{track.Freq}";
+				string channel = string.Equals(track.Chan, "auto", IC) ? $"{track.RawChan}" : string.Equals(track.Chan, "stereo", IC) ? "2" : "1";
 
 				if (item.AudioMerge)
 				{
@@ -75,9 +71,7 @@ namespace ifme
 						{
 							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 {frequency} {channel} {ffcmd} -y audio0000_und.wav");
-								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} audio0000_und.wav {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
-								File.Delete(Path.Combine(Default.DirTemp, "audio0000_und.wav"));
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -f s{bit}le -ar {frequency} -ac {channel} {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {codec.Arg.Raw} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 							}
 						}
 					}
@@ -93,19 +87,19 @@ namespace ifme
 					}
 					else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
 					{
-						// File
-						string outfile = $"audio{counter++:0000}_{track.Lang}.{track.Format}";
-
-						// Extract all
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -dn -vn -sn -map {track.Id} -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
-
-						// check if got any unsupported codec
-						if (!item.Data.SaveAsMkv)
+						if (item.Data.SaveAsMkv)
 						{
-							if (!string.Equals(track.Format, "mp4", IC))
+							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+						}
+						else
+						{
+							if (string.Equals("mp4", track.Format))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{outfile}\" -strict -2 -c:a aac -b:a {track.BitRate}k {frequency} {channel} -y {Path.GetFileNameWithoutExtension(outfile)}.mp4");
-								File.Delete(outfile); // delete unwanted
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+							}
+							else
+							{
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -ar {frequency} -ac {channel} -strict -2 -c:a aac -b:a {track.BitRate}k -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 						}
 					}
@@ -115,18 +109,7 @@ namespace ifme
 						{
 							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
 							{
-								// File
-								string outfile = $"audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
-
-								// Decode
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{filereal}\" -map {track.Id} {frequency} {channel} {ffcmd} -y {outfile}.wav");
-
-								// Encode
-								TaskManager.Run($"\"{codec.App.Bin}\" {codec.Arg.Bitrate} {track.BitRate} {track.Command} {codec.Arg.Input} {outfile}.wav {codec.Arg.Output} {outfile}");
-
-								// Delete
-								File.Delete(Path.Combine(Default.DirTemp, outfile + ".wav"));
-
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -f s{bit}le -ar {frequency} -ac {channel} {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {string.Format(codec.Arg.Raw, frequency, bit, channel)} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}");
 								break;
 							}
 						}

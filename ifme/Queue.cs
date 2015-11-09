@@ -107,9 +107,9 @@ namespace ifme
 
 		public string Encoder;
 		public string BitRate;
-		public string Frequency;
-		public string Channel;
-		public string Command;
+		public string Freq;
+		public string Chan;
+		public string Args;
 	}
 
 	public class subtitle

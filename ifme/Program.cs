@@ -351,15 +351,14 @@ namespace ifme
 				// Remove temp file
 				MediaEncoder.CleanUp();
 
-				// AviSynth aware
+				// Current media
 				string file = item.Data.File;
-				string filereal = GetStream.AviSynthGetFile(file);
 
 				// Extract mkv embedded subtitle, font and chapter
-				MediaEncoder.Extract(filereal, item);
+				MediaEncoder.Extract(file, item);
 
 				// Audio
-				MediaEncoder.Audio(filereal, item);
+				MediaEncoder.Audio(file, item);
 
 				// Tell User
 				WriteLine($"File: {Path.GetFileName(item.Data.File)}");

@@ -48,23 +48,11 @@ namespace ifme
 
 		public class arg
 		{
+			public string Raw;
 			public string Input;
 			public string Output;
 			public string Bitrate;
 			public string Advance;
-		}
-
-		public class Default
-		{
-			public class Audio
-			{
-				public static string Name = "Passthrough (Extract all audio)";
-				public static string BitRate = "256";
-				public static string Frequency = "auto";
-				public static string Channel = "auto";
-				public static bool Merge = false;
-				public static string Command = null;
-			}
 		}
 
 		// This 'get' always retrive latest variable data
@@ -192,6 +180,7 @@ namespace ifme
 					p.App.Ext = data["app"]["ext"];
 					p.App.Quality = data["app"]["quality"].Split(',');
 					p.App.Default = data["app"]["default"];
+					p.Arg.Raw = data["arg"]["raw"];
 					p.Arg.Input = data["arg"]["input"];
 					p.Arg.Output = data["arg"]["output"];
 					p.Arg.Bitrate = data["arg"]["bitrate"];
@@ -218,6 +207,7 @@ namespace ifme
 			a.App.Bin = null;
 			a.App.Quality = new[] { "0" };
 			a.App.Default = "0";
+			a.Arg.Raw = null;
 			a.Arg.Input = null;
 			a.Arg.Output = null;
 			a.Arg.Bitrate = null;
@@ -228,7 +218,7 @@ namespace ifme
 			var b = new Plugin();
 			b.Info.Type = "audio";
 			b.Info.Support = "mp4";
-			b.Profile.Name = Default.Audio.Name;
+			b.Profile.Name = "Passthrough (Extract all audio)";
 			b.Profile.Dev = "Anime4000";
 			b.Profile.Ver = Global.App.Version;
 			b.Profile.Web = "https://x265.github.io/";
@@ -237,7 +227,8 @@ namespace ifme
 			b.Provider.Download = null;
 			b.App.Bin = null;
 			b.App.Quality = new[] { "128", "192", "256", "384", "512", "768", "1024" };
-			b.App.Default = Default.Audio.BitRate;
+			b.App.Default = "256";
+			b.Arg.Raw = null;
 			b.Arg.Input = null;
 			b.Arg.Output = null;
 			b.Arg.Bitrate = null;

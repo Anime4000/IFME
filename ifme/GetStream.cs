@@ -65,10 +65,15 @@ namespace ifme
 					break;
 			}
 
-			if (GetInfo.IsAviSynth(file) && StreamType.Video == kind)
+			if (IsAviSynth(file) && StreamType.Video == kind)
 			{
-				Items.Add(new StreamMedia() { ID = "0:0", Lang = "und", Format = "avs" }); // send fake data for AviSynth
+				Items.Add(new StreamMedia() { ID = "0:0", Lang = "und", Format = "avs", Codec = "avs" }); // send fake data for AviSynth
 				return Items;
+			}
+			else
+			{
+				// Get internal media file
+				file = AviSynthGetFile(file);
 			}
 
 			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> streams.id");
@@ -80,15 +85,15 @@ namespace ifme
 					string lang = string.Empty;
 					string codec = string.Empty;
 					string format = string.Empty;
-					string otherinfo = string.Empty;
 
 					// Audio
-					string audiobit = string.Empty;
-					string audiofreq = string.Empty;
-					string audiochan = string.Empty;
+					string audiobit = "0";
+					string audiofreq = "0";
+					string audiochan = "0";
 
 					if (item.Contains(Kind))
 					{
+						// Basic data
 						for (int i = item.IndexOf('#') + 1; i < item.Length; i++)
 						{
 							if (item[i] == '(')
@@ -117,8 +122,6 @@ namespace ifme
 							codec += item[i];
 						}
 
-						otherinfo = item.Substring(x);
-
 						try
 						{
 							format = GetFmt["format"][codec];
@@ -133,12 +136,18 @@ namespace ifme
 								format = codec;
 						}
 
+						// Audio data
 						if (kind == StreamType.Audio)
 						{
+							// Re init
+							audiobit = string.Empty;
+							audiofreq = string.Empty;
+							audiochan = string.Empty;
+
 							if (item.Contains(Kind))
 							{
 								// Frequency
-								for (int i = item.IndexOf("Hz, ") - 2; ; i--)
+								for (int i = item.IndexOf("Hz, ") - 2; i > -1; i--)
 								{
 									if (item[i] == ' ')
 										break;
@@ -150,7 +159,7 @@ namespace ifme
 								audiofreq = new string(audiofreq.Reverse().ToArray());
 
 								// Channel
-								for (int i = item.IndexOf("Hz, ") + 4; ; i++)
+								for (int i = item.IndexOf("Hz, ") + 4; i < item.Length; i++)
 								{
 									if (item[i] == ',')
 										break;
@@ -165,8 +174,10 @@ namespace ifme
 									audiochan = "2";
 								else if (string.Equals("mono", audiochan, IC))
 									audiochan = "1";
-								else
+								else if (!string.IsNullOrEmpty(audiochan))
 									audiochan = $"{Convert.ToInt32(audiochan.Split('.')[0]) + Convert.ToInt32(audiochan.Split('.')[1])}";
+								else
+									audiochan = "2"; // default
 
 								// Bit
 								for (int i = item.IndexOf("Hz, ") + 4; i < item.Length; i++)
@@ -191,7 +202,7 @@ namespace ifme
 								}
 
 								if (string.IsNullOrEmpty(audiobit))
-									audiobit = "32"; // fltp
+									audiobit = "16"; // fltp (32 bits floats, planar) use for decode lossy codec
 							}
                         }
 
@@ -333,6 +344,12 @@ namespace ifme
 			}
 
 			return Convert.ToInt32(frame);
+		}
+
+		public static bool IsAviSynth(string file)
+		{
+			string exts = Path.GetExtension(file);
+			return string.Equals(exts, ".avs", IC) ? true : false;
 		}
 
 		public static string AviSynthGetFile(string file)
