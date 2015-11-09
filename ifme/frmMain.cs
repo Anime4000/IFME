@@ -656,13 +656,12 @@ namespace ifme
 		private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count > 0)
-			{
 				QueueDisplay(lstQueue.SelectedItems[0].Index);
-			}
 			else
-			{
 				QueueUnselect();
-			}
+
+			if (bgwEncoding.IsBusy)
+				ControlEnable(false);
 		}
 
 		void QueueDisplay(int index)
@@ -2017,9 +2016,6 @@ namespace ifme
 
 		void ControlEnable(bool x)
 		{
-			foreach (ListViewItem item in lstQueue.SelectedItems)
-				item.Selected = false;
-
 			btnQueueAdd.Enabled = x;
 			btnQueueRemove.Enabled = x;
 			btnQueueMoveUp.Enabled = x;
