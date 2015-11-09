@@ -99,7 +99,7 @@ namespace ifme
 							}
 							else
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -ar {frequency} -ac {channel} -strict -2 -c:a aac -b:a {track.BitRate}k -y audio{counter++:0000}_{track.Lang}.mp4");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 						}
 					}
