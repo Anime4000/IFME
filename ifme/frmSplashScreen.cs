@@ -21,7 +21,7 @@ namespace ifme
 			InitializeComponent();
 
 			Icon = Properties.Resources.ifme5;
-			BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen6A : Properties.Resources.SplashScreen6B;
+			BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen5CA : Properties.Resources.SplashScreen5CB;
 		}
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)

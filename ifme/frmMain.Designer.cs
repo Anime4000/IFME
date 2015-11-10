@@ -1628,9 +1628,12 @@
 			this.btnDonate.Name = "btnDonate";
 			this.btnDonate.Size = new System.Drawing.Size(24, 24);
 			this.btnDonate.TabIndex = 2;
-			this.tipUpdate.SetToolTip(this.btnDonate, "Support & Donate to IFME Project");
 			this.btnDonate.UseVisualStyleBackColor = true;
 			this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
+			// 
+			// tipNotify
+			// 
+			this.tipNotify.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
 			// 
 			// sptVert4
 			// 

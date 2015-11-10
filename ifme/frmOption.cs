@@ -351,6 +351,9 @@ namespace ifme
 
 			foreach (ColumnHeader item in lstProfile.Columns)
 				item.Text = data[Name][$"{item.Tag}"];
+
+			Language.Installed = data[Name]["Installed"];
+			Language.NotInstalled = data[Name]["NotInstalled"];
 		}
 
 		void LangCreate()

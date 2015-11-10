@@ -422,9 +422,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen6A {
+        internal static System.Drawing.Bitmap SplashScreen5CA {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen6A", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreen5CA", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -432,9 +432,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen6B {
+        internal static System.Drawing.Bitmap SplashScreen5CB {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen6B", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreen5CB", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

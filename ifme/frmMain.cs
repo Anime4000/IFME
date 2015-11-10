@@ -125,7 +125,7 @@ namespace ifme
 			for (int i = 1; i <= 3; i++)
 				Console.WriteLine($"{i}. {TopThree[i]}");
 
-			Console.WriteLine("\nThank You for your support!\n");
+			Console.WriteLine("\nThank You for your support!\nSupport & donate to IFME project via Paypal.\n");
 #else
 			btnDonate.Visible = false;
 			btnFacebook.Visible = false;
@@ -156,7 +156,7 @@ namespace ifme
 			{
 #if !STEAM
 				tipUpdate.ToolTipTitle = "Hi";
-				tipUpdate.Show("Support & Donate to IFME Project", btnDonate, btnDonate.Width / 2, btnDonate.Height / 2, 30000);
+				tipUpdate.Show(Language.Donate, btnDonate, btnDonate.Width / 2, btnDonate.Height / 2, 30000);
 #endif
 			}
 		}
@@ -694,16 +694,19 @@ namespace ifme
 			txtVideoCmd.Text = Info.Video.Command;
 
 			// Audio
-			//cboAudioEncoder.Text = Info.Audio.Encoder;
-			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
-			chkAudioMerge.Checked = Info.AudioMerge;
-			//txtAudioCmd.Text = Info.Audio.Command;
-
 			foreach (var item in Info.Audio)
 				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz @ {item.RawBit} Bit ({item.RawChan} Channel)", item.Enable);
 
+			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
 			if (clbAudioTracks.Items.Count > 0)
 				clbAudioTracks.SelectedIndex = 0;
+
+			if (clbAudioTracks.Items.Count > 1)
+				chkAudioMerge.Enabled = true;
+			else
+				chkAudioMerge.Enabled = false;
+
+			chkAudioMerge.Checked = Info.AudioMerge;
 
 			// Subtitles
 			lstSub.Items.Clear();
@@ -1314,7 +1317,7 @@ namespace ifme
 			{
 				tipNotify.ToolTipIcon = ToolTipIcon.Warning;
 				tipNotify.ToolTipTitle = Language.TipUpdateTitle;
-				tipNotify.Show(Language.OneItem, tabConfig, 0, 0, 5000);
+				tipNotify.Show(Language.OneItem, lstQueue, lstQueue.Width / 4, lstQueue.Height / 2, 5000);
 			}
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)
@@ -1513,7 +1516,7 @@ namespace ifme
 		{
 			// Program Start, New, Open, Save As
 			if (string.IsNullOrEmpty(file))
-				Text = $"Untitled - {Global.App.NameFull}";
+				Text = $"{Language.Untitled} - {Global.App.NameFull}";
 			else
 				Text = $"{Path.GetFileName(file)} - {Global.App.NameFull}";
 
@@ -2110,6 +2113,21 @@ namespace ifme
 
 			Language.TipUpdateTitle = data.Sections[Name]["TipUpdateTitle"];
 			Language.TipUpdateMessage = data.Sections[Name]["TipUpdateMessage"];
+
+			cboPictureYadifMode.Items.Clear();
+			for (int i = 0; i < 4; i++)
+				cboPictureYadifMode.Items.Add(data.Sections[Name][$"DeInterlaceMode{i}"]);
+
+			cboPictureYadifField.Items.Clear();
+			for (int i = 0; i < 2; i++)
+				cboPictureYadifField.Items.Add(data.Sections[Name][$"DeInterlaceField{i}"]);
+
+			cboPictureYadifFlag.Items.Clear();
+			for (int i = 0; i < 2; i++)
+				cboPictureYadifFlag.Items.Add(data.Sections[Name][$"DeInterlaceFlag{i}"]);
+
+			Language.Untitled = data.Sections[Name]["Untitled"];
+			Language.Donate = data.Sections[Name]["Donate"];
 		}
 
 		void LangCreate()
@@ -2181,6 +2199,18 @@ namespace ifme
 
 			data.Sections[Name].AddKey("TipUpdateTitle", Language.TipUpdateTitle);
 			data.Sections[Name].AddKey("TipUpdateMessage", Language.TipUpdateMessage);
+
+			for (int i = 0; i < cboPictureYadifMode.Items.Count; i++)
+				data.Sections[Name].AddKey($"DeInterlaceMode{i}", (string)cboPictureYadifMode.Items[i]);
+
+			for (int i = 0; i < cboPictureYadifField.Items.Count; i++)
+				data.Sections[Name].AddKey($"DeInterlaceField{i}", (string)cboPictureYadifField.Items[i]);
+
+			for (int i = 0; i < cboPictureYadifFlag.Items.Count; i++)
+				data.Sections[Name].AddKey($"DeInterlaceFlag{i}", (string)cboPictureYadifFlag.Items[i]);
+
+			data.Sections[Name].AddKey("Untitled", Language.Untitled);
+			data.Sections[Name].AddKey("Untitled", Language.Donate);
 
 			parser.WriteFile(Path.Combine(Global.Folder.Language, "en.ini"), data, Encoding.UTF8);		
 		}

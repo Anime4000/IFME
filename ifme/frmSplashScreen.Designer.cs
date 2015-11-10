@@ -28,28 +28,28 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.bgwThread = new System.ComponentModel.BackgroundWorker();
-            this.SuspendLayout();
-            // 
-            // bgwThread
-            // 
-            this.bgwThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwThread_DoWork);
-            this.bgwThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwThread_RunWorkerCompleted);
-            // 
-            // frmSplashScreen
-            // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(696, 360);
-            this.ControlBox = false;
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Tahoma", 8F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(580, 300);
-            this.Name = "frmSplashScreen";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "IFME Loading";
-            this.Load += new System.EventHandler(this.frmSplashScreen_Load);
-            this.ResumeLayout(false);
+			this.bgwThread = new System.ComponentModel.BackgroundWorker();
+			this.SuspendLayout();
+			// 
+			// bgwThread
+			// 
+			this.bgwThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwThread_DoWork);
+			this.bgwThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwThread_RunWorkerCompleted);
+			// 
+			// frmSplashScreen
+			// 
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.ClientSize = new System.Drawing.Size(600, 320);
+			this.ControlBox = false;
+			this.DoubleBuffered = true;
+			this.Font = new System.Drawing.Font("Tahoma", 8F);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.MinimumSize = new System.Drawing.Size(600, 320);
+			this.Name = "frmSplashScreen";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "IFME Loading";
+			this.Load += new System.EventHandler(this.frmSplashScreen_Load);
+			this.ResumeLayout(false);
 
 		}
 

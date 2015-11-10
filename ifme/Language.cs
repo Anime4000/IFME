@@ -55,6 +55,20 @@ namespace ifme
 		public static string QueueOpenChange = "Do you want to save changes to Untitled?";
 		public static string Quit = "Do you want to quit and save this queue list?";
 
+		// Deinterlace
+		public static string DeInterlaceMode0 = "Deinterlace only frame";
+		public static string DeInterlaceMode1 = "Deinterlace each field";
+		public static string DeInterlaceMode2 = "Skips spatial interlacing frame check";
+		public static string DeInterlaceMode3 = "Skips spatial interlacing field check";
+		public static string DeInterlaceField0 = "Top Field First";
+		public static string DeInterlaceField1 = "Bottom Field First";
+		public static string DeInterlaceFlag0 = "Deinterlace all frames";
+		public static string DeInterlaceFlag1 = "Deinterlace marked frames";
+
+		//
+		public static string Untitled = "Untitled";
+		public static string Donate = "Donate";
+
 		// Option, AviSynth tab
 		public static string Installed = "Installed";
 		public static string NotInstalled = "Not Found";

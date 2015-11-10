@@ -15,6 +15,7 @@
 [fixed] Prevent copy audio tracks cause MKV chapter begin copied
 [fixed] Queue item value on audio bit-rate, Freq, and Channel revert to default (Git #57)
 [fixed] Remove 4GB wav limit (Git #56)
+[fixed] Missing translation strings
 
 Version 5.1 (FLUORITE DIARY)
 -----------
