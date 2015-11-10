@@ -266,8 +266,8 @@
     <None Include="Resources\fb.png" />
     <None Include="Resources\cross.png" />
     <None Include="Resources\pencil.png" />
-    <None Include="Resources\SplashScreen5CB.png" />
-    <None Include="Resources\SplashScreen5CA.png" />
+    <None Include="Resources\SplashScreen5CB.jpg" />
+    <None Include="Resources\SplashScreen5CA.jpg" />
     <Content Include="sounds\epic.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
