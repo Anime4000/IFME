@@ -43,7 +43,7 @@ echo Binaries
 
 echo Extensions
 %WGET% --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite\allos\extension\hfrgen.ifx"
-%WGET% --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.3/holobenchmark.zip -O "prerequisite\allos\extension\holobenchmark.ifx"
+%WGET% --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.4/holobenchmark.7z -O "prerequisite\allos\extension\holobenchmark.ifx"
 %WGET% --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.dll.zip -O "prerequisite\allos\extension\nemupad.dll.ifx"
 
 echo Extension - AvsPmod
