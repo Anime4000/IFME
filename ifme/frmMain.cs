@@ -1955,7 +1955,7 @@ namespace ifme
 
 			if (e.Error != null)
 			{
-				InvokeLog("Error was found, sorry could finsih it.");
+				InvokeLog("Error was found, sorry could finish it.");
 			}
 			else if (e.Cancelled)
 			{
