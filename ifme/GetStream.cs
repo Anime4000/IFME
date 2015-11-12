@@ -174,8 +174,10 @@ namespace ifme
 									audiochan = "2";
 								else if (string.Equals("mono", audiochan, IC))
 									audiochan = "1";
-								else if (!string.IsNullOrEmpty(audiochan))
+								else if (!string.IsNullOrEmpty(audiochan) && audiochan.Contains('.'))
 									audiochan = $"{Convert.ToInt32(audiochan.Split('.')[0]) + Convert.ToInt32(audiochan.Split('.')[1])}";
+								else if (char.IsDigit(audiochan[0]))
+									audiochan = $"{audiochan[0]}";
 								else
 									audiochan = "2"; // default
 
