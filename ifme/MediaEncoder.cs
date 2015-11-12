@@ -71,7 +71,7 @@ namespace ifme
 						{
 							if (string.Equals(item.Audio[0].Encoder, codec.Profile.Name, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -f s{bit}le -ar {frequency} -ac {channel} {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {string.Format(codec.Arg.Raw, frequency, bit, channel)} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, frequency, bit, channel))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 							}
 						}
 					}
@@ -109,7 +109,7 @@ namespace ifme
 						{
 							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -f s{bit}le -ar {frequency} -ac {channel} {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {string.Format(codec.Arg.Raw, frequency, bit, channel)} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, frequency, bit, channel))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}");
 								break;
 							}
 						}

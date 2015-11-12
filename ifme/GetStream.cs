@@ -203,6 +203,10 @@ namespace ifme
 									}
 								}
 
+								if (audiobit.Length > 2)
+									if (audiobit[0] == '3' && audiobit[1] == '2')
+										audiobit = "24"; // force to 24
+								
 								if (string.IsNullOrEmpty(audiobit))
 									audiobit = "16"; // fltp (32 bits floats, planar) use for decode lossy codec
 							}
