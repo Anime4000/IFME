@@ -354,6 +354,8 @@ namespace ifme
 
 		public static string AviSynthGetFile(string file)
 		{
+			string folder = Path.GetDirectoryName(file);
+
 			if (string.Equals(Path.GetExtension(file), ".avs", StringComparison.OrdinalIgnoreCase))
 			{
 				foreach (var item in File.ReadAllLines(file))
@@ -362,12 +364,12 @@ namespace ifme
 					{
 						if (item.Contains(code))
 						{
-							for (int i = 0; i < item.Length; i++)
+							for (int i = item.IndexOf(code) + code.Length; i < item.Length; i++)
 							{
 								if (item[i] == '(' && item[i + 1] == '"')
 								{
 									i += 2;
-									file = "";
+									file = string.Empty;
 									while (i < item.Length)
 									{
 										if (item[i] == '"' && (item[i + 1] == ',' || item[i + 1] == ')'))
@@ -385,9 +387,16 @@ namespace ifme
 						}
 					}
 				}
-				return file; // return file
 			}
-			return file; // return if not avs file
+
+			if (file[0] == '/' || file?[1] == ':') // check path is full or just file
+			{
+				return file; // return if file is full path
+			}
+			else
+			{
+				return Path.Combine(folder, file); // merge current folder & path
+			}
 		}
 
 		public static int AviSynthFrameCount(string file)
