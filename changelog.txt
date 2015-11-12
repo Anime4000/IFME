@@ -16,6 +16,7 @@
 [fixed] Queue item value on audio bit-rate, Freq, and Channel revert to default (Git #57)
 [fixed] Remove 4GB wav limit (Git #56)
 [fixed] Missing translation strings
+[fixed] better detecting media files inside AviSynth script (Git #54)
 
 Version 5.1 (FLUORITE DIARY)
 -----------
