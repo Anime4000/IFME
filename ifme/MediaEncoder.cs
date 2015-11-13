@@ -89,11 +89,18 @@ namespace ifme
 					{
 						if (item.Data.SaveAsMkv)
 						{
-							TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+							if (string.Equals("wma", track.Format, IC))
+							{
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
+							}
+							else
+							{
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+							}
 						}
 						else
 						{
-							if (string.Equals("mp4", track.Format))
+							if (string.Equals("mp4", track.Format, IC))
 							{
 								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
 							}
