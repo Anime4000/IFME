@@ -695,7 +695,7 @@ namespace ifme
 
 			// Audio
 			foreach (var item in Info.Audio)
-				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz @ {item.RawBit} Bit, {item.RawChan} Channel(s)", item.Enable);
+				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz {item.RawBit} Bit @ {item.RawChan} Channel(s)", item.Enable);
 
 			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
 			if (clbAudioTracks.Items.Count > 0)
