@@ -11,8 +11,6 @@ This latest version very versatile and expandable, rework new GUI, better code. 
 ### Version 4
 You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
 
-### Version 3
-
 ## License
 IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allow to sell either in **Source Code** or **Binaries** form.
 
