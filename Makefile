@@ -7,7 +7,7 @@ DIR=build
 
 all: only
 	mv $(DIR) ifme5
-	tar -cvJf ifme5-x64_linux.tar.xz ifme5
+	tar -cvJf ifme5-amd64_linux.tar.xz ifme5
 	mv ifme5 $(DIR)
 
 only: clean compile copy copylib copymono
