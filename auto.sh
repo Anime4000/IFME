@@ -10,7 +10,7 @@ do
     git fetch origin > auto.log 2>&1
 
     if [[ -s auto.log ]] ; then
-        echo "New changes detected, building..."
+        echo "[$(date +"%Y:%m:%d %H:%M:%S")] New changes detected, building..."
 
         make
         
@@ -19,7 +19,7 @@ do
 
         mv -f ifme5-x64_linux.tar.xz ../builds/ifme5-amd64_linux-build-$(date +"%Y%m%d_%H%M%S").tar.xz
     else
-        echo "No changes detected"
+        echo "[$(date +"%Y:%m:%d %H:%M:%S")] No changes detected"
         sleep 60
     fi
 done
