@@ -10,6 +10,8 @@ do
     git fetch origin > auto.log 2>&1
 
     if [[ -s auto.log ]] ; then
+		git pull
+	
         echo "[$(date +"%Y:%m:%d %H:%M:%S")] New changes detected, building..."
 
         make
