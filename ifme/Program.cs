@@ -175,7 +175,7 @@ namespace ifme
 				{
 					if (!IsGUI)
 					{
-						MessageBox.Show("Please use \"ifme-xterm\" to run, this intend for CLI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show("Under linux, please use \"ifme-xterm\" to run, this intend for CLI.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						DisplayHelp();
 						return 0;
 					}
