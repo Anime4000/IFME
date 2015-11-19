@@ -18,6 +18,8 @@
 [fixed] Missing translation strings
 [fixed] better detecting media files inside AviSynth script (Git #54)
 [fixed] WMA will force to AAC either MKV or MP4 (Git #51)
+[fixed] Invalid language id become "und" (Git #62)
+[fixed] In video tab, different mode cause set to default value.
 
 Version 5.1 (FLUORITE DIARY)
 -----------

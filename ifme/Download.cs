@@ -130,7 +130,7 @@ namespace ifme
 
 		private void Extract(string archivefile, string savefolder)
 		{
-			string unzip = Path.Combine(Global.Folder.App, "7za");
+			string unzip = "7za";
 
 			Console.SetCursorPosition(curX, curY);
 			Console.Write($"Extracting...");

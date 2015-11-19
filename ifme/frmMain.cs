@@ -119,7 +119,7 @@ namespace ifme
 
 			// Fun
 #if !STEAM
-			var TopThree = File.ReadAllLines(Path.Combine(Global.Folder.App, "metauser.if"));
+			var TopThree = File.ReadAllLines("metauser.if");
 			Console.WriteLine("Top #3 donor");
 			Console.WriteLine("------------");
 			for (int i = 1; i <= 3; i++)
@@ -880,42 +880,50 @@ namespace ifme
 
 		private void cboVideoType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			switch (cboVideoType.SelectedIndex)
+			if (lstQueue.SelectedItems.Count > 0)
 			{
-				case 0:
-					lblVideoRateH.Visible = true;
-					lblVideoRateL.Visible = true;
-					trkVideoRate.Visible = true;
+				string value = (lstQueue.SelectedItems[0].Tag as Queue).Video.Value;
 
-					trkVideoRate.Minimum = 0;
-					trkVideoRate.Maximum = 510;
-					trkVideoRate.TickFrequency = 10;
+				switch (cboVideoType.SelectedIndex)
+				{
+					case 0:
+						lblVideoRateH.Visible = true;
+						lblVideoRateL.Visible = true;
+						trkVideoRate.Visible = true;
 
-					lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
-					txtVideoValue.Text = $"{(trkVideoRate.Value = 260) / 10:0.0}";
-                    break;
+						trkVideoRate.Minimum = 0;
+						trkVideoRate.Maximum = 510;
+						trkVideoRate.TickFrequency = 10;
 
-				case 1:
-					lblVideoRateH.Visible = true;
-					lblVideoRateL.Visible = true;
-					trkVideoRate.Visible = true;
+						lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
+						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(value) * 10);
+						txtVideoValue.Text = value;
+						break;
 
-					trkVideoRate.Minimum = 0;
-					trkVideoRate.Maximum = 51;
-					trkVideoRate.TickFrequency = 1;
+					case 1:
+						lblVideoRateH.Visible = true;
+						lblVideoRateL.Visible = true;
+						trkVideoRate.Visible = true;
 
-					lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
-					txtVideoValue.Text = Convert.ToString(trkVideoRate.Value = 26);
-					break;
+						trkVideoRate.Minimum = 0;
+						trkVideoRate.Maximum = 51;
+						trkVideoRate.TickFrequency = 1;
 
-				default:
-					lblVideoRateH.Visible = false;
-					lblVideoRateL.Visible = false;
-					trkVideoRate.Visible = false;
+						lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
+						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(value));
+						txtVideoValue.Text = value;
+                        break;
 
-					lblVideoRateValue.Text = $"{Language.Get[Name][lblVideoRateValue.Name].Replace(":", "")} (kbps):";
-					txtVideoValue.Text = "2048";
-					break;
+					default:
+						lblVideoRateH.Visible = false;
+						lblVideoRateL.Visible = false;
+						trkVideoRate.Visible = false;
+
+						lblVideoRateValue.Text = $"{Language.Get[Name][lblVideoRateValue.Name].Replace(":", "")} (kbps):";
+						trkVideoRate.Value = 0;
+						txtVideoValue.Text = value;
+						break;
+				}
 			}
 
 			QueueUpdate(QueueProp.VideoType);

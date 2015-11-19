@@ -42,7 +42,7 @@ namespace ifme
 	{
 		private static StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
 
-		private static IniData GetFmt { get { return new FileIniDataParser().ReadFile(Path.Combine(Global.Folder.App, "format.ini"), Encoding.UTF8); } }
+		private static IniData GetFmt { get { return new FileIniDataParser().ReadFile("format.ini", Encoding.UTF8); } }
 
         public static List<StreamMedia> Media(string file, StreamType kind)
 		{
@@ -212,9 +212,10 @@ namespace ifme
 							}
                         }
 
+						// Add
 						Items.Add(new StreamMedia() {
 							ID = id,
-							Lang = lang,
+							Lang = Language.IdLookup(lang),
 							Codec = codec,
 							Format = format,
 
@@ -366,7 +367,7 @@ namespace ifme
 			{
 				foreach (var item in File.ReadAllLines(file))
 				{
-					foreach (var code in File.ReadAllLines(Path.Combine(Global.Folder.App, "avisynthsource.code")))
+					foreach (var code in File.ReadAllLines("avisynthsource.code"))
 					{
 						if (item.Contains(code))
 						{

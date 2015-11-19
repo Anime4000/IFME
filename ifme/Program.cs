@@ -20,6 +20,9 @@ namespace ifme
 			// Never comma under decimal/floating points
 			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
+			// Modify current working directory, portable!
+			Environment.CurrentDirectory = Global.Folder.Root;
+
 			// Essential Stuff
 			Title = $"{Global.App.Name} Console";
 

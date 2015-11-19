@@ -98,15 +98,15 @@ namespace ifme
 
 			if (OS.IsWindows)
 				if (OS.Is64bit)
-					repo = Path.Combine(Global.Folder.App, "addons_windows64.repo");
+					repo = "addons_windows64.repo";
 				else
-					repo = Path.Combine(Global.Folder.App, "addons_windows32.repo");
+					repo = "addons_windows32.repo";
 
 			if (OS.IsLinux)
 				if (OS.Is64bit)
-					repo = Path.Combine(Global.Folder.App, "addons_linux64.repo");
+					repo = "addons_linux64.repo";
 				else
-					repo = Path.Combine(Global.Folder.App, "addons_linux32.repo");
+					repo = "addons_linux32.repo";
 
 			counted = File.ReadAllLines(repo).Length;
 

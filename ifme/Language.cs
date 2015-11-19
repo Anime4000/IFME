@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,6 +10,8 @@ namespace ifme
 {
 	public class Language
 	{
+		private static StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
+
 		public string Code;
 		public string Name;
 		public string Author;
@@ -16,6 +19,19 @@ namespace ifme
 
 		// No shorting, gonna use foreach that equal index of Combobox
 		public static List<Language> Lists = new List<Language>();
+
+		// Lookup
+		public static string IdLookup(string Id)
+		{
+			foreach (var item in File.ReadAllLines("iso.code"))
+			{
+				string iso = item.Substring(0, 3);
+				if (string.Equals(Id, iso, IC))
+					return iso;
+			}
+
+			return "und";
+		}
 
 		public static void Display()
 		{

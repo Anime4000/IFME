@@ -66,7 +66,7 @@ namespace ifme
 		{
 			public static string Finish
 			{
-				get { return Path.Combine(Folder.App, "sounds", "finish.wav"); }
+				get { return Path.Combine("sounds", "finish.wav"); }
 			}
 		}
 
@@ -74,19 +74,19 @@ namespace ifme
 		{
 			static string _DefaultSave = Path.Combine(Path.GetTempPath(), "ifme");
 
-			public static string App
+			public static string Root
 			{
 				get { return OS.IsLinux ? Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]) : AppDomain.CurrentDomain.BaseDirectory; }
 			}
 
 			public static string Profile
 			{
-				get { return Path.Combine(App, "profile"); }
+				get { return "profile"; }
 			}
 
 			public static string Plugins
 			{
-				get { return Path.Combine(App, "plugins"); }
+				get { return "plugins"; }
 			}
 
 			public static string DefaultTemp
@@ -101,17 +101,17 @@ namespace ifme
 
 			public static string Language
 			{
-				get { return Path.Combine(App, "lang"); }
+				get { return "lang"; }
 			}
 
 			public static string Benchmark
 			{
-				get { return Path.Combine(App, "benchmark"); }
+				get { return "benchmark"; }
 			}
 
 			public static string Extension
 			{
-				get { return Path.Combine(App, "extension"); }
+				get { return "extension"; }
 			}
 		}
 
