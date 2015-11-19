@@ -96,17 +96,21 @@ namespace ifme
 			else
 				Console.WriteLine("AviSynth not detected!");
 
-			// Format fix
-			Console.WriteLine("Loading codec fingerprint");
-			new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/format.ini", "format.ini");
+			// Fetch latest file
+			if (!Program.ApplyUpdate)
+			{
+				// Format fix
+				Console.WriteLine("Fetch codec fingerprint");
+				new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/format.ini", "format.ini");
 
-			// AviSynth filter, allow IFME to find real file
-			Console.WriteLine("Loading AviSynth filter");
-			new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/avisynthsource.code", "avisynthsource.code");
+				// AviSynth filter, allow IFME to find real file
+				Console.WriteLine("Fetch AviSynth filter");
+				new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/avisynthsource.code", "avisynthsource.code");
 
-			// Thanks to our donor
-			Console.WriteLine("Loading our donor list :) you can see via \"About IFME\"");
-			new Download().GetFile("http://x265.github.io/supporter.txt", "metauser.if");
+				// Thanks to our donor
+				Console.WriteLine("Fetch our donor list :) you can see via \"About IFME\"");
+				new Download().GetFile("http://x265.github.io/supporter.txt", "metauser.if");
+			}
 
 			// Save all settings
 			Default.Save();
