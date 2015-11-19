@@ -72,7 +72,7 @@ namespace ifme
 
 		public class Folder
 		{
-			static string _DefaultSave = Path.Combine(Path.GetTempPath(), "ifme");
+			static string _DefaultTemp = Path.Combine(Path.GetTempPath(), "ifme");
 
 			public static string Root
 			{
@@ -81,37 +81,37 @@ namespace ifme
 
 			public static string Profile
 			{
-				get { return "profile"; }
+				get { return Path.Combine(Root, "profile"); }
 			}
 
 			public static string Plugins
 			{
-				get { return "plugins"; }
+				get { return Path.Combine(Root, "plugins"); }
+			}
+
+			public static string Language
+			{
+				get { return Path.Combine(Root, "lang"); }
+			}
+
+			public static string Benchmark
+			{
+				get { return Path.Combine(Root, "benchmark"); }
+			}
+
+			public static string Extension
+			{
+				get { return Path.Combine(Root, "extension"); }
 			}
 
 			public static string DefaultTemp
 			{
-				get { if (!Directory.Exists(_DefaultSave)) { Directory.CreateDirectory(_DefaultSave); } return _DefaultSave; }
+				get { if (!Directory.Exists(_DefaultTemp)) { Directory.CreateDirectory(_DefaultTemp); } return _DefaultTemp; }
 			}
 
 			public static string DefaultSave
 			{
 				get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME"); }
-			}
-
-			public static string Language
-			{
-				get { return "lang"; }
-			}
-
-			public static string Benchmark
-			{
-				get { return "benchmark"; }
-			}
-
-			public static string Extension
-			{
-				get { return "extension"; }
 			}
 		}
 
