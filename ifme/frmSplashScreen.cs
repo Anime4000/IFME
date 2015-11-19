@@ -61,50 +61,34 @@ namespace ifme
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				Plugin.IsExistHEVCMSVC = true;
 
-#if !STEAM
-			Console.Write("Checking version...");
-			string version = new Download().GetString("https://x265.github.io/update/version.txt");
-			Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
-			Console.WriteLine($"{(Global.App.NewRelease ? "New version is available to download!" : "This is latest version!")}");
-#endif
-
 			// Profile
 			Profile.Load();
 
 			// Plugin 
 			Plugin.Repo(); // check repo
 			Plugin.Load(); // load to memory
-			if (!Program.ApplyUpdate) { Plugin.Update(); Plugin.Load(); }
 
 			// Extension
 			Extension.Load();
 			Extension.CheckDefault();
-			if (!Program.ApplyUpdate) { Extension.Update(); Extension.Load(); }
-
-			// Language
-			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
-			{
-				Default.Language = "en";
-				Console.WriteLine($"\nLanguage file {Default.Language}.ini not found, make sure file name and CODE are same");
-			}
-			Language.Display();
-			Console.WriteLine($"\nLoading language file: {Default.Language}.ini");
-
-			// Detect AviSynth
-			if (Plugin.IsExistAviSynth)
-				Console.WriteLine("AviSynth detected!");
-			else
-				Console.WriteLine("AviSynth not detected!");
 
 			// Fetch latest file
 			if (!Program.ApplyUpdate)
 			{
+				// Plugins
+				Plugin.Update();
+				Plugin.Load();
+
+				// Extension
+				Extension.Update();
+				Extension.Load();
+
 				// Format fix
-				Console.WriteLine("Fetch codec fingerprint");
+				Console.WriteLine("\nFetch codec fingerprint from GitHub Repo");
 				new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/format.ini", "format.ini");
 
 				// AviSynth filter, allow IFME to find real file
-				Console.WriteLine("Fetch AviSynth filter");
+				Console.WriteLine("Fetch AviSynth filter from GitHub Repo");
 				new Download().GetFile("https://github.com/Anime4000/IFME/raw/master/ifme/avisynthsource.code", "avisynthsource.code");
 
 				// Thanks to our donor
@@ -112,12 +96,35 @@ namespace ifme
 				new Download().GetFile("http://x265.github.io/supporter.txt", "metauser.if");
 			}
 
+			// Detect AviSynth
+			if (Plugin.IsExistAviSynth)
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine("AviSynth detected!");
+				Console.ResetColor();
+			}
+			else
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("AviSynth not detected!");
+				Console.ResetColor();
+			}
+
+			// Language
+			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
+			{
+				Default.Language = "en";
+				Console.WriteLine($"Language file {Default.Language}.ini not found, make sure file name and CODE are same");
+			}
+			Language.Display();
+			Console.WriteLine($"Loading language file: {Default.Language}.ini");
+
 			// Save all settings
 			Default.Save();
 
 			// For fun
 			Console.WriteLine("\nEstablishing battlefield control, standby!");
-			Thread.Sleep(3000);
+			Thread.Sleep(1000);
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

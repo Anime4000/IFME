@@ -35,7 +35,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				str = null;
+				str = string.Empty;
 				LogError("Not connected to the internet?");
 			}
 

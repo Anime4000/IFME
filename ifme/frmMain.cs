@@ -144,6 +144,7 @@ namespace ifme
 			tipUpdate.Show(null, pbxRight, 0); 
 			tipUpdate.IsBalloon = true;
 
+#if !STEAM
 			// Tell user there are new version can be downloaded
 			if (Global.App.NewRelease)
 			{
@@ -154,7 +155,6 @@ namespace ifme
 			}
 			else
 			{
-#if !STEAM
 				tipUpdate.ToolTipTitle = "Hi";
 				tipUpdate.Show(Language.Donate, btnDonate, btnDonate.Width / 2, btnDonate.Height / 2, 30000);
 #endif
