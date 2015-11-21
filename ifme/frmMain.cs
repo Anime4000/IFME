@@ -694,6 +694,7 @@ namespace ifme
 			txtVideoCmd.Text = Info.Video.Command;
 
 			// Audio
+			clbAudioTracks.Items.Clear(); // clear before add Git #64
 			foreach (var item in Info.Audio)
 				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz {item.RawBit} Bit @ {item.RawChan} Channel(s)", item.Enable);
 
@@ -727,7 +728,6 @@ namespace ifme
 			grpPictureBasic.Enabled = !x;
 			grpPictureQuality.Enabled = !x;
 			chkPictureYadif.Enabled = !x;
-
 		}
 
 		void QueueUnselect()
@@ -986,23 +986,25 @@ namespace ifme
 		#region Queue: Property update - Audio Tab
 		private void clbAudioTracks_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
-			// Ref: http://stackoverflow.com/a/17511730
-			// Due this event fire 2 times and no ItemChecked event,
-			// Apply this trick or hacks
-
-			// Copy
-			CheckedListBox clb = (CheckedListBox)sender;
-
-			// Switch off event handler
-			clb.ItemCheck -= clbAudioTracks_ItemCheck;
-			clb.SetItemCheckState(e.Index, e.NewValue);
-
-			// Switch on event handler
-			clb.ItemCheck += clbAudioTracks_ItemCheck;
-
-			// Do stuff
 			if (lstQueue.SelectedItems.Count == 1)
+			{
+				// Ref: http://stackoverflow.com/a/17511730
+				// Due this event fire 2 times and no ItemChecked event,
+				// Apply this trick or hacks
+
+				// Copy
+				CheckedListBox clb = (CheckedListBox)sender;
+
+				// Switch off event handler
+				clb.ItemCheck -= clbAudioTracks_ItemCheck;
+				clb.SetItemCheckState(e.Index, e.NewValue);
+
+				// Switch on event handler
+				clb.ItemCheck += clbAudioTracks_ItemCheck;
+
+				// Do stuff
 				(lstQueue.SelectedItems[0].Tag as Queue).Audio[e.Index].Enable = e.NewValue == CheckState.Checked ? true : false;
+			}	
 		}
 
 		private void clbAudioTracks_SelectedIndexChanged(object sender, EventArgs e)
