@@ -32,7 +32,7 @@ namespace ifme
 	{
 		public bool IsEnable;
 		public data Data = new data();
-		public prop Prop = new prop();
+		public properties Prop = new properties();
 
 		public picture Picture = new picture();
 		public video Video = new video();
@@ -59,7 +59,7 @@ namespace ifme
 		public bool SaveAsMkv;
 	}
 
-	public class prop
+	public class properties
 	{
 		public bool IsVFR;
 		public int Duration; // in ms

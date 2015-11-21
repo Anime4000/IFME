@@ -33,12 +33,6 @@ namespace ifme
 			// Display this program header text
 			Head();
 
-#if !STEAM
-			// Update check
-			string version = new Download().GetString("https://x265.github.io/update/version.txt");
-			Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
-#endif
-
 			// Load settings
 			SettingsLoad();
 
@@ -48,6 +42,15 @@ namespace ifme
 			// Command
 			if (Command(args) == 0)
 				return 0;
+
+#if !STEAM
+			// Update check
+			if (!ApplyUpdate)
+			{
+				string version = new Download().GetString("https://x265.github.io/update/version.txt");
+				Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
+			}
+#endif
 
 			// Splash Screen, loading and update
 			SplashScreen();

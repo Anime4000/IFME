@@ -119,13 +119,25 @@ namespace ifme
 
 			// Fun
 #if !STEAM
-			var TopThree = File.ReadAllLines("metauser.if");
-			Console.WriteLine("Top #3 donor");
-			Console.WriteLine("------------");
-			for (int i = 1; i <= 3; i++)
-				Console.WriteLine($"{i}. {TopThree[i]}");
+			if (File.Exists("metauser.if"))
+			{
+				var TopThree = File.ReadAllLines("metauser.if");
+				Console.WriteLine("Top #3 donor");
+				Console.WriteLine("------------");
+				for (int i = 1; i <= 3; i++)
+					Console.WriteLine($"{i}. {TopThree[i]}");
 
-			Console.WriteLine("\nThank You for your support!\nSupport & donate to IFME project via Paypal.\n");
+				Console.WriteLine("\nThank You for your support!\nSupport & donate to IFME project via Paypal.\n");
+			}
+			else
+			{
+				Console.ForegroundColor = ConsoleColor.Black;
+				Console.BackgroundColor = ConsoleColor.Red;
+				Console.WriteLine("\nERROR! Incomplete installation, this application will not working properly!\n");
+				Console.ResetColor();
+			}
+
+			
 #else
 			btnDonate.Visible = false;
 			btnFacebook.Visible = false;
@@ -140,11 +152,11 @@ namespace ifme
 
 			QueueListFile(ObjectIO.FileName);
 
+#if !STEAM
 			// should fix ballon position: http://stackoverflow.com/a/4646021
 			tipUpdate.Show(null, pbxRight, 0); 
 			tipUpdate.IsBalloon = true;
 
-#if !STEAM
 			// Tell user there are new version can be downloaded
 			if (Global.App.NewRelease)
 			{
@@ -157,8 +169,8 @@ namespace ifme
 			{
 				tipUpdate.ToolTipTitle = "Hi";
 				tipUpdate.Show(Language.Donate, btnDonate, btnDonate.Width / 2, btnDonate.Height / 2, 30000);
-#endif
 			}
+#endif
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -441,7 +453,7 @@ namespace ifme
 		{
 			if (GetInfo.IsPathNetwork(file))
 			{
-				InvokeLog($"Rejected! Please mount as \"Network Drive\" File: {file}");
+				InvokeLog($"Rejected! Please mount as \"Network Drive\" like \"Z:\\\"");
 				return;
 			}
 
@@ -460,6 +472,7 @@ namespace ifme
 			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
 			Info.Data.IsFileAvs = GetStream.IsAviSynth(file);
 
+			// Check if user want to force AviSynth script added to queue
 			if (!Plugin.IsExistAviSynth)
 			{
 				if (Info.Data.IsFileAvs)
@@ -505,24 +518,27 @@ namespace ifme
 					Info.Picture.YadifFlag = 0;
 				}
 			}
-			else
+			else if (Info.Data.IsFileAvs)
 			{
 				Info.Picture.Resolution = "auto";
 				Info.Picture.FrameRate = "auto";
 				Info.Picture.BitDepth = 8;
 				Info.Picture.Chroma = 420;
 
-				if (AVI.Audio.Count > 0)
-				{
-					var Audio = AVI.Audio[0];
-					FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
-					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
-				}
-				else
-				{
-					FileType = "AviSynth Script";
-					FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
-				}
+				FileType = "AviSynth Script";
+				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
+			}
+			else
+			{
+				Info.Picture.Resolution = "auto";
+				Info.Picture.FrameRate = "auto";
+				Info.Picture.BitDepth = 8;
+				Info.Picture.Chroma = 420;
+				Info.Picture.IsCopy = true;
+
+				var Audio = AVI.Audio[0];
+				FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
+				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
 			}
 
 			// Video section

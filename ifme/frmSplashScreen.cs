@@ -95,6 +95,11 @@ namespace ifme
 				Console.WriteLine("Fetch our donor list :) you can see via \"About IFME\"");
 				new Download().GetFile("http://x265.github.io/supporter.txt", "metauser.if");
 			}
+			else
+			{
+				// Tell
+				Console.WriteLine("Skipping update checks!");
+			}
 
 			// Detect AviSynth
 			if (Plugin.IsExistAviSynth)
