@@ -65,9 +65,15 @@ namespace ifme
 					break;
 			}
 
+			// send fake data for AviSynth
 			if (IsAviSynth(file) && StreamType.Video == kind)
 			{
-				Items.Add(new StreamMedia() { ID = "0:0", Lang = "und", Format = "avs", Codec = "avs" }); // send fake data for AviSynth
+				Items.Add(new StreamMedia() { ID = "0:0", Lang = "und", Format = "avs", Codec = "avs" }); 
+				return Items;
+			}
+			else if (IsAviSynth(file) && StreamType.Audio == kind)
+			{
+				Items.Add(new StreamMedia() { ID = "0:0", Lang = "und", Format = "avs", Codec = "wav", AudioRawBit = 24, AudioRawFreq = 48000, AudioRawChan = 2	});
 				return Items;
 			}
 			else

@@ -1,6 +1,7 @@
 ﻿Version 5.2 (Archangel Descending)
 
 [new] Allow user to save encoded file either same source folder or given path
+[new] Capable to encode audio files, but not fully supported
 [added] Language: Italian
 [added] Allow user to add FFmpeg arguments/command-line
 [added] Allow user to edit/rename Encoding Preset (Git #55)

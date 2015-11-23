@@ -139,6 +139,7 @@ namespace ifme
 					}
 				}
 
+				
 				// ffmpeg settings
 				string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? "" : $"-s {item.Picture.Resolution}";
 				string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? "" : $"-r {item.Picture.FrameRate}";
