@@ -25,7 +25,7 @@ namespace ifme
 		{
 			InitializeComponent();
 
-			Icon = Properties.Resources.ifme5;
+			Icon = Properties.Resources.ifme_zenui;
 
 			pbxRight.Parent = pbxLeft;
 			pbxLeft.Image = Properties.Resources.BannerA;
@@ -153,14 +153,14 @@ namespace ifme
 			QueueListFile(ObjectIO.FileName);
 
 #if !STEAM
-			// should fix ballon position: http://stackoverflow.com/a/4646021
-			tipUpdate.Show(null, pbxRight, 0); 
-			tipUpdate.IsBalloon = true;
-
 			// Tell user there are new version can be downloaded
 			if (Global.App.NewRelease)
 			{
 				InvokeLog("New version available, visit: https://x265.github.io/");
+
+				// should fix ballon position: http://stackoverflow.com/a/4646021
+				tipUpdate.Show(null, pbxRight, 0);
+				tipUpdate.IsBalloon = true;
 
 				tipUpdate.ToolTipTitle = Language.TipUpdateTitle;
 				tipUpdate.Show(Language.TipUpdateMessage, pbxRight, 488, pbxRight.Height / 2, 30000);
@@ -556,18 +556,18 @@ namespace ifme
 			string channel = i == 0 || !exist ? "auto" : p.Audio.Chan;
 			string command = i == 0 || !exist ? null : p.Audio.Args;
 
-			foreach (var item in GetStream.Media(file, StreamType.Audio))
+			foreach (var item in GetStream.Audio(file))
 				Info.Audio.Add(new audio
 				{
 					Enable = true,
-					Id = item.ID,
+					Id = item.Id,
 					Lang = item.Lang,
 					Codec = item.Codec,
 					Format = item.Format,
 
-					RawBit = item.AudioRawBit,
-					RawFreq = item.AudioRawFreq,
-					RawChan = item.AudioRawChan,
+					RawBit = item.RawBit,
+					RawFreq = item.RawFreq,
+					RawChan = item.RawChan,
 
 					Encoder = encoder,
 					BitRate = bitRate,
@@ -1107,7 +1107,14 @@ namespace ifme
 
 			clbAudioTracks.Enabled = !chkAudioMerge.Checked;
 
-			QueueUpdate(QueueProp.AudioMerge);
+			if (clbAudioTracks.Items.Count > 1)
+			{
+				QueueUpdate(QueueProp.AudioMerge);
+			}
+			else
+			{
+				chkAudioMerge.Checked = false;
+			}
 		}
 
 		private void txtAudioCmd_TextChanged(object sender, EventArgs e)
@@ -1343,7 +1350,7 @@ namespace ifme
 			{
 				tipNotify.ToolTipIcon = ToolTipIcon.Warning;
 				tipNotify.ToolTipTitle = Language.TipUpdateTitle;
-				tipNotify.Show(Language.OneItem, lstQueue, lstQueue.Width / 4, lstQueue.Height / 2, 5000);
+				tipNotify.Show(Language.OneItem, tabConfig, 0, 0, 5000);
 			}
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)

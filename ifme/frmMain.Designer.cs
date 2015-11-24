@@ -1616,7 +1616,6 @@
 			// 
 			// tipUpdate
 			// 
-			this.tipUpdate.IsBalloon = true;
 			this.tipUpdate.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			this.tipUpdate.ToolTipTitle = "Info";
 			// 
@@ -1630,10 +1629,6 @@
 			this.btnDonate.TabIndex = 2;
 			this.btnDonate.UseVisualStyleBackColor = true;
 			this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
-			// 
-			// tipNotify
-			// 
-			this.tipNotify.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
 			// 
 			// sptVert4
 			// 

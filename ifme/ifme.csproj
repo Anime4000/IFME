@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\ifme5.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\ifme-zenui.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -231,7 +231,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\ifme5.ico" />
     <None Include="Resources\drive_network.ico" />
     <None Include="Resources\BannerA.png" />
     <None Include="Resources\BannerB.png" />
@@ -271,6 +270,7 @@
     <None Include="Resources\pencil.png" />
     <None Include="Resources\SplashScreen5CB.jpg" />
     <None Include="Resources\SplashScreen5CA.jpg" />
+    <None Include="Resources\ifme-zenui.ico" />
     <Content Include="sounds\epic.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

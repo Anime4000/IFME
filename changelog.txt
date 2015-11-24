@@ -22,6 +22,8 @@
 [fixed] Invalid language id become "und" (Git #62)
 [fixed] In video tab, different mode cause set to default value.
 [fixed] Faster loading time by adding "-s" as argument (skip update)
+[fixed] Avisynth Trim command doesn't apply for audio (Git #51)
+[change] Media Encoder engine improved
 
 Version 5.1 (FLUORITE DIARY)
 -----------

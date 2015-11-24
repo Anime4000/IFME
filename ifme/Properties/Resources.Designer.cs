@@ -161,7 +161,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sugar decoration style.
+        ///   Looks up a localized string similar to Misaki Meguri.
         /// </summary>
         internal static string CodeName {
             get {
@@ -292,9 +292,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon ifme5 {
+        internal static System.Drawing.Icon ifme_zenui {
             get {
-                object obj = ResourceManager.GetObject("ifme5", resourceCulture);
+                object obj = ResourceManager.GetObject("ifme_zenui", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

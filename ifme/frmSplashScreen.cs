@@ -20,7 +20,7 @@ namespace ifme
 		{
 			InitializeComponent();
 
-			Icon = Properties.Resources.ifme5;
+			Icon = Properties.Resources.ifme_zenui;
 			BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen5CA : Properties.Resources.SplashScreen5CB;
 		}
 

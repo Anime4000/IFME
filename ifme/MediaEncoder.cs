@@ -22,31 +22,27 @@ namespace ifme
 
 		public static void Extract(string file, Queue item)
 		{
-			if (item.Data.IsFileAvs)
-				file = GetStream.AviSynthGetFile(file);
-
 			if (string.IsNullOrEmpty(file))
 				return;
+
+			string realfile = GetStream.AviSynthGetFile(file);
 
 			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Default.AvsMkvCopy))
 			{
 				int sc = 0;
-				foreach (var subs in GetStream.Media(file, StreamType.Subtitle))
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {subs.ID} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
+				foreach (var subs in GetStream.Subtitle(realfile))
+					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{realfile}\" -map {subs.Id} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
 
 
-				foreach (var font in GetStream.MediaMkv(file, StreamType.Attachment))
-					TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{file}\" {font.ID}:\"{font.File}\"");
+				foreach (var font in GetStream.MkvAttachment(realfile))
+					TaskManager.Run($"\"{Plugin.MKVEX}\" attachments \"{realfile}\" {font.ID}:\"{font.File}\"");
 
-				TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{file}\" > chapters.xml");
+				TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{realfile}\" > chapters.xml");
 			}
 		}
 
 		public static void Audio(string file, Queue item)
 		{
-			if (item.Data.IsFileAvs)
-				file = GetStream.AviSynthGetFile(file);
-
 			if (string.IsNullOrEmpty(file))
 				return;
 
@@ -56,8 +52,8 @@ namespace ifme
 			int counter = 0;
 			foreach (var track in item.Audio)
 			{
-				string bit = $"{track.RawBit}";
 				string frequency = string.Equals(track.Freq, "auto", IC) ? $"{track.RawFreq}" : $"{track.Freq}";
+				string bit = $"{track.RawBit}";
 				string channel = string.Equals(track.Chan, "auto", IC) ? $"{track.RawChan}" : string.Equals(track.Chan, "stereo", IC) ? "2" : "1";
 
 				if (item.AudioMerge)
@@ -87,7 +83,11 @@ namespace ifme
 					}
 					else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
 					{
-						if (item.Data.SaveAsMkv)
+						if (item.Data.IsFileAvs)
+						{
+							TaskManager.Run($"{Plugin.AVS4P} audio \"{file}\" | {Plugin.LIBAV} -i - -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
+						}
+						else if (item.Data.SaveAsMkv)
 						{
 							if (string.Equals("wma", track.Format, IC))
 							{
@@ -114,10 +114,34 @@ namespace ifme
 					{
 						foreach (var codec in Plugin.List)
 						{
-							if (string.Equals(codec.Profile.Name, track.Encoder, IC))
+							if (string.Equals(track.Encoder, codec.Profile.Name, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, frequency, bit, channel))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}");
-								break;
+								string rawArgs = string.Empty;
+
+								try
+								{
+									if (!string.IsNullOrEmpty(codec.Arg.Raw))
+										rawArgs = string.Format(codec.Arg.Raw, frequency, bit, channel);
+                                }
+								catch (Exception e)
+								{
+									Console.ForegroundColor = ConsoleColor.Red;
+									Console.Error.WriteLine($"Raw arguments incomplete, ignored!\n{e}");
+									Console.ResetColor();
+								}
+
+                                string encArgs = $"\"{codec.App.Bin}\" {rawArgs} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
+
+								if (item.Data.IsFileAvs)
+								{
+									TaskManager.Run($"\"{Plugin.AVS4P}\" audio \"{file}\" | \"{Plugin.LIBAV}\" -loglevel panic -i - -f wav - | {encArgs}"); // double pipe due some encoder didn't read avs2pipe properly, example: opusenc.exe
+                                    break;
+								}
+								else
+								{
+									TaskManager.Run($"\"{Plugin.LIBAV}\" -loglevel panic -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - | {encArgs}");
+									break;
+								}
 							}
 						}
 					}
@@ -127,14 +151,14 @@ namespace ifme
 
 		public static void Video(string file, Queue item)
 		{
-			foreach (var video in GetStream.Media(file, StreamType.Video))
+			foreach (var video in GetStream.Video(file))
 			{
 				// Copy
 				if (item.Picture.IsHevc)
 				{
 					if (item.Picture.IsCopy)
 					{
-						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {video.ID} -c:v copy -bsf hevc_mp4toannexb -y video0000_{video.Lang}.hevc");
+						TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {video.Id} -c:v copy -bsf hevc_mp4toannexb -y video0000_{video.Lang}.hevc");
 						return;
 					}
 				}
