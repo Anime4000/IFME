@@ -949,25 +949,53 @@ namespace ifme
 		{
 			var i = cboVideoType.SelectedIndex;
 			if (i == 0)
+			{
 				if (!string.IsNullOrEmpty(txtVideoValue.Text))
+				{
 					if (Convert.ToDouble(txtVideoValue.Text) >= 51.0)
+					{
 						txtVideoValue.Text = "51";
+						trkVideoRate.Value = 510;
+					}
 					else if (Convert.ToDouble(txtVideoValue.Text) <= 0.0)
+					{
 						txtVideoValue.Text = "0";
+						trkVideoRate.Value = 0;
+					}
 					else
+					{
 						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(txtVideoValue.Text) * 10.0);
+					}
+				}
 				else
+				{
 					trkVideoRate.Value = 0;
+				}
+			}
 			else if (i == 1)
+			{
 				if (!string.IsNullOrEmpty(txtVideoValue.Text))
+				{
 					if (Convert.ToInt32(txtVideoValue.Text) >= 51)
+					{
 						txtVideoValue.Text = "51";
+						trkVideoRate.Value = 51;
+					}
 					else if (Convert.ToInt32(txtVideoValue.Text) <= 0)
+					{
 						txtVideoValue.Text = "0";
+						trkVideoRate.Value = 0;
+					}
 					else
+					{
 						trkVideoRate.Value = Convert.ToInt32(txtVideoValue.Text);
+					}
+				}
 				else
+				{
 					trkVideoRate.Value = 0;
+				}
+			}
 		}
 
 		private void txtVideoValue_TextChanged(object sender, EventArgs e)
@@ -1030,7 +1058,10 @@ namespace ifme
 				int i = clbAudioTracks.SelectedIndex;
 				var Info = (Queue)lstQueue.SelectedItems[0].Tag;
 
-				cboAudioEncoder.Text = Info.Audio[i].Encoder;
+				if (string.IsNullOrEmpty(Info.Audio[i].Encoder))
+					cboAudioEncoder.SelectedIndex = 1; // default
+				else
+					cboAudioEncoder.Text = Info.Audio[i].Encoder;
 			}
 		}
 
@@ -1044,10 +1075,10 @@ namespace ifme
 				{
 					if (item.Profile.Name == cboAudioEncoder.Text)
 					{
-						// get value from
-						string bitrate = "256";
-						string freq = "auto";
-						string chan = "auto";
+						// default value
+						string kbit = string.Empty;
+						string freq = string.Empty;
+						string chan = string.Empty;
 
 						// load
 						if (lstQueue.SelectedItems.Count > 0)
@@ -1057,7 +1088,7 @@ namespace ifme
 							{
 								int i = clbAudioTracks.SelectedIndex;
 
-								bitrate = Info.Audio[i].BitRate;
+								kbit = Info.Audio[i].BitRate;
 								freq = Info.Audio[i].Freq;
 								chan = Info.Audio[i].Chan;
 							}
@@ -1066,17 +1097,26 @@ namespace ifme
 						cboAudioBit.Items.Clear();
 						cboAudioBit.Items.AddRange(item.App.Quality);
 
-						// display
-						foreach (string q in cboAudioBit.Items)
-							if (string.Equals(q, bitrate, IC))
-								cboAudioBit.Text = bitrate;
+						// display, apply default if null
+						foreach (string kb in cboAudioBit.Items)
+							if (string.Equals(kbit, kb, IC))
+								cboAudioBit.Text = kb;
 							else
 								cboAudioBit.Text = item.App.Default;
 
-						cboAudioFreq.Text = freq;
-						cboAudioChannel.Text = chan;
-						txtAudioCmd.Text = item.Arg.Advance;
+						foreach (string hz in cboAudioFreq.Items)
+							if (string.Equals(freq, hz, IC))
+								cboAudioFreq.Text = freq;
+							else
+								cboAudioFreq.Text = "auto";
 
+						foreach (string ch in cboAudioChannel.Items)
+							if (string.Equals(chan, ch, IC))
+								cboAudioChannel.Text = ch;
+							else
+								cboAudioChannel.Text = "auto";
+
+						txtAudioCmd.Text = item.Arg.Advance;
 						QueueUpdate(QueueProp.AudioEncoder);
 
 						return;
@@ -1784,14 +1824,28 @@ namespace ifme
 							UTF8Encoding UTF8 = new UTF8Encoding(false);
 							string newfile = Path.Combine(Path.GetDirectoryName(item.Data.File), Path.GetFileNameWithoutExtension(item.Data.File)) + ".avs";
 
-							File.WriteAllText(newfile, $"{Properties.Settings.Default.AvsDecoder}(\"{item.Data.File}\")", UTF8);
+							File.WriteAllText(newfile, $"{Default.AvsDecoder}(\"{item.Data.File}\")", UTF8);
 
 							items.SubItems[0].Text = GetInfo.FileName(newfile);
 							items.SubItems[1].Text = GetInfo.FileSize(newfile);
 							items.SubItems[2].Text = "AviSynth Script";
 							item.Data.IsFileAvs = true;
 							item.Data.File = newfile;
-						}
+
+							item.Audio.Clear(); // reset
+							foreach (var audio in GetStream.Audio(newfile))
+								item.Audio.Add(new audio
+								{
+									Id = audio.Id,
+									Lang = audio.Lang,
+									Codec = audio.Codec,
+									Format = audio.Format,
+
+									RawFreq = audio.RawFreq,
+									RawBit = audio.RawBit,
+									RawChan = audio.RawChan
+								});
+                        }
 					}
 				}
 				else

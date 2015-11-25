@@ -98,7 +98,7 @@ namespace ifme
 			else
 			{
 				// Tell
-				Console.WriteLine("Skipping update checks!");
+				Console.WriteLine("\nSkipping update checks!");
 			}
 
 			// Detect AviSynth

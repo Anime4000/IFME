@@ -922,11 +922,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.trkVideoRate.BackColor = System.Drawing.Color.White;
 			this.trkVideoRate.Location = new System.Drawing.Point(6, 82);
-			this.trkVideoRate.Maximum = 51;
+			this.trkVideoRate.Maximum = 510;
 			this.trkVideoRate.Name = "trkVideoRate";
 			this.trkVideoRate.Size = new System.Drawing.Size(305, 45);
 			this.trkVideoRate.TabIndex = 3;
-			this.trkVideoRate.Value = 26;
+			this.trkVideoRate.TickFrequency = 10;
+			this.trkVideoRate.Value = 260;
 			this.trkVideoRate.ValueChanged += new System.EventHandler(this.trkVideoRate_ValueChanged);
 			// 
 			// txtVideoValue

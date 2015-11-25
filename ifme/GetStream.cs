@@ -53,49 +53,52 @@ namespace ifme
 			string codec = string.Empty;
 			string format = string.Empty;
 
-			// ID section
-			for (int i = data.IndexOf('#') + 1; i < data.Length; i++)
+			if (data.Contains("Stream #"))
 			{
-				if (data[i] == '(')
-					break;
-				if (data[i] == '[')
-					break;
-				if (data[i] == ':' && id.Contains(':'))
-					break;
+				// ID section
+				for (int i = data.IndexOf('#') + 1; i < data.Length; i++)
+				{
+					if (data[i] == '(')
+						break;
+					if (data[i] == '[')
+						break;
+					if (data[i] == ':' && id.Contains(':'))
+						break;
 
-				id += data[i];
-			}
+					id += data[i];
+				}
 
-			// Lang section
-			if (data[data.IndexOf(kind) - 3] == ')')
-				lang = data.Substring(data.IndexOf('(') + 1, data.IndexOf(')') - (data.IndexOf('(') + 1));
-			else
-				lang = "und";
+				// Lang section
+				if (data[data.IndexOf(kind) - 3] == ')')
+					lang = data.Substring(data.IndexOf('(') + 1, data.IndexOf(')') - (data.IndexOf('(') + 1));
+				else
+					lang = "und";
 
-			// Codec section
-			int x = data.IndexOf(kind) + (kind.Length + 2);
-			for (int i = x; i < data.Length; i++)
-			{
-				if (data[i] == ' ')
-					break;
-				if (data[i] == ',')
-					break;
+				// Codec section
+				int x = data.IndexOf(kind) + (kind.Length + 2);
+				for (int i = x; i < data.Length; i++)
+				{
+					if (data[i] == ' ')
+						break;
+					if (data[i] == ',')
+						break;
 
-				codec += data[i];
-			}
+					codec += data[i];
+				}
 
-			try
-			{
-				format = GetFmt["format"][codec];
-			}
-			catch (Exception)
-			{
-				Console.WriteLine("Requested query not found, using default");
-			}
-			finally
-			{
-				if (string.IsNullOrEmpty(format))
-					format = codec;
+				try
+				{
+					format = GetFmt["format"][codec];
+				}
+				catch (Exception)
+				{
+					Console.WriteLine("Requested query not found, using default");
+				}
+				finally
+				{
+					if (string.IsNullOrEmpty(format))
+						format = codec;
+				}
 			}
 
 			return new basic { Id = id, Lang = lang, Codec = codec, Format = format };
@@ -161,6 +164,10 @@ namespace ifme
 
 					if (item.Contains("a:channels"))
 						audiochan = item.Substring(14);
+
+					// limit max value
+					if (Convert.ToInt32(audiobit) >= 32)
+						audiobit = "24";
                 }
 
 				Items.Add(new audio()
