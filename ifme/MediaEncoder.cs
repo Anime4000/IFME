@@ -116,6 +116,9 @@ namespace ifme
 						{
 							if (string.Equals(track.Encoder, codec.Profile.Name, IC))
 							{
+								if (Convert.ToInt32(bit) >= 32)
+									bit = "24"; // force to 24bit max
+
 								string rawArgs = string.Empty;
 
 								try
@@ -134,7 +137,7 @@ namespace ifme
 
 								if (item.Data.IsFileAvs)
 								{
-									TaskManager.Run($"\"{Plugin.AVS4P}\" audio \"{file}\" | \"{Plugin.LIBAV}\" -loglevel panic -i - -f wav - | {encArgs}"); // double pipe due some encoder didn't read avs2pipe properly, example: opusenc.exe
+									TaskManager.Run($"\"{Plugin.AVS4P}\" audio \"{file}\" | \"{Plugin.LIBAV}\" -loglevel panic -i - -acodec pcm_s{bit}le -f wav - | {encArgs}"); // double pipe due some encoder didn't read avs2pipe properly, example: opusenc.exe
                                     break;
 								}
 								else

@@ -164,10 +164,6 @@ namespace ifme
 
 					if (item.Contains("a:channels"))
 						audiochan = item.Substring(14);
-
-					// limit max value
-					if (Convert.ToInt32(audiobit) >= 32)
-						audiobit = "24";
                 }
 
 				Items.Add(new audio()
@@ -256,10 +252,6 @@ namespace ifme
 									break;
 								}
 							}
-
-							if (audiobit.Length > 2)
-								if (audiobit[0] == '3' && audiobit[1] == '2')
-									audiobit = "24"; // force to 24
 
 							if (string.IsNullOrEmpty(audiobit))
 								audiobit = "16"; // fltp (32 bits floats, planar) use for decode lossy codec
