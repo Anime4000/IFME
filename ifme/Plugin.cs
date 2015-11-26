@@ -66,7 +66,7 @@ namespace ifme
 		public static string FPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
 		public static string MKVEX = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvextract");
 		public static string MKVME = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvmerge");
-		public static string MP4BX = Path.Combine(Global.Folder.Plugins, "mp4box", "mp4box");
+		public static string MP4BX = Path.Combine(Global.Folder.Plugins, "mp4box", "MP4Box");
 		public static string AVS4P = Path.Combine(Global.Folder.Plugins, "avisynth", "avs2pipe");
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
 		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");

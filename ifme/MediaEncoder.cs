@@ -258,12 +258,16 @@ namespace ifme
 			// Final output, a file name without extension
 			string savedir = Default.IsDirOutput ? Default.DirOutput : Path.GetDirectoryName(item.Data.File);
 			string newfile = Path.GetFileNameWithoutExtension(item.Data.File);
-			string prefix = Default.IsDirOutput ? Default.NamePrefix : string.IsNullOrEmpty(Default.NamePrefix) ? "[encoded] " : Default.NamePrefix + " ";
+			string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? string.Empty : Default.NamePrefix + " ";
             string fileout = Path.Combine(savedir, $"{prefix}{newfile}");
 
 			// Destinantion folder check
 			if (!Directory.Exists(Default.DirOutput))
 				Directory.CreateDirectory(Default.DirOutput);
+
+			// File exist check
+			if (File.Exists($"{fileout}.mp4") || File.Exists($"{fileout}.mkv"))
+				fileout += $"_encoded-{DateTime.Now:yyyyMMdd_HHmmss}";
 
 			if (item.Data.SaveAsMkv)
 			{
