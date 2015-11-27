@@ -23,10 +23,7 @@ namespace ifme
 
 		public class audio
 		{
-			public string Id;
-			public string Lang;
-			public string Codec;
-			public string Format;
+			public basic Basic;
 			public int RawBit;
 			public int RawFreq;
 			public int RawChan;
@@ -53,6 +50,7 @@ namespace ifme
 			string codec = string.Empty;
 			string format = string.Empty;
 
+			// Besure it's right line
 			if (data.Contains("Stream #"))
 			{
 				// ID section
@@ -168,10 +166,14 @@ namespace ifme
 
 				Items.Add(new audio()
 				{
-					Id = "0:0",
-					Lang = "und",
-					Codec = "pcm",
-					Format = "avs",
+					Basic = new basic
+					{
+						Id = "0:0",
+						Lang = "und",
+						Codec = "pcm",
+						Format = "avs",
+					},
+
 					RawFreq = Convert.ToInt32(audiofreq),
 					RawBit = Convert.ToInt32(audiobit),
 					RawChan = Convert.ToInt32(audiochan)
@@ -258,10 +260,14 @@ namespace ifme
 
 							Items.Add(new audio()
 							{
-								Id = Common.Id,
-								Lang = Common.Lang,
-								Codec = Common.Codec,
-								Format = Common.Format,
+								Basic = new basic
+								{
+									Id = Common.Id,
+									Lang = Common.Lang,
+									Codec = Common.Codec,
+									Format = Common.Format,
+								},
+
 								RawFreq = Convert.ToInt32(audiofreq),
 								RawBit = Convert.ToInt32(audiobit),
 								RawChan = Convert.ToInt32(audiochan)

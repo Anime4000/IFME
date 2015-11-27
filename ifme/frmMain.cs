@@ -560,10 +560,10 @@ namespace ifme
 				Info.Audio.Add(new audio
 				{
 					Enable = true,
-					Id = item.Id,
-					Lang = item.Lang,
-					Codec = item.Codec,
-					Format = item.Format,
+					Id = item.Basic.Id,
+					Lang = item.Basic.Lang,
+					Codec = item.Basic.Codec,
+					Format = item.Basic.Format,
 
 					RawBit = item.RawBit,
 					RawFreq = item.RawFreq,
@@ -1836,10 +1836,10 @@ namespace ifme
 							foreach (var audio in GetStream.Audio(newfile))
 								item.Audio.Add(new audio
 								{
-									Id = audio.Id,
-									Lang = audio.Lang,
-									Codec = audio.Codec,
-									Format = audio.Format,
+									Id = audio.Basic.Id,
+									Lang = audio.Basic.Lang,
+									Codec = audio.Basic.Codec,
+									Format = audio.Basic.Format,
 
 									RawFreq = audio.RawFreq,
 									RawBit = audio.RawBit,

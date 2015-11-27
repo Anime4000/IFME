@@ -257,9 +257,9 @@ namespace ifme
 		{
 			// Final output, a file name without extension
 			string savedir = Default.IsDirOutput ? Default.DirOutput : Path.GetDirectoryName(item.Data.File);
-			string newfile = Path.GetFileNameWithoutExtension(item.Data.File);
 			string prefix = string.IsNullOrEmpty(Default.NamePrefix) ? string.Empty : Default.NamePrefix + " ";
-            string fileout = Path.Combine(savedir, $"{prefix}{newfile}");
+            string newfile = Path.GetFileNameWithoutExtension(item.Data.File);
+			string fileout = Path.Combine(savedir, $"{prefix}{newfile}");
 
 			// Destinantion folder check
 			if (!Directory.Exists(Default.DirOutput))
@@ -274,11 +274,11 @@ namespace ifme
 				fileout += ".mkv";
 
 				string tags = string.Format(Properties.Resources.Tags, Global.App.NameFull, Global.App.VersionCompiled);
-                string cmdvideo = null;
-				string cmdaudio = null;
-				string cmdsubs = null;
-				string cmdattach = null;
-				string cmdchapter = null;
+                string cmdvideo = string.Empty;
+				string cmdaudio = string.Empty;
+				string cmdsubs = string.Empty;
+				string cmdattach = string.Empty;
+				string cmdchapter = string.Empty;
 
 				foreach (var tc in Directory.GetFiles(Default.DirTemp, "timecode_*"))
 				{
@@ -354,9 +354,9 @@ namespace ifme
 			{
 				fileout += ".mp4";
 
-				string timecode = null;
-				string cmdvideo = null;
-				string cmdaudio = null;
+				string timecode = string.Empty;
+				string cmdvideo = string.Empty;
+				string cmdaudio = string.Empty;
 
 				foreach (var tc in Directory.GetFiles(Default.DirTemp, "timecode_*"))
 				{
