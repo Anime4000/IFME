@@ -19,7 +19,7 @@ namespace ifme
 {
     public partial class frmMain : Form
 	{
-		StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
+		StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
 
 		public frmMain()
 		{
