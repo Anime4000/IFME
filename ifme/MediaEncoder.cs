@@ -9,8 +9,8 @@ namespace ifme
 {
 	public class MediaEncoder
 	{
-		private static StringComparison IC = StringComparison.InvariantCultureIgnoreCase; // Just ignore case what ever it is.
-		private static string NULL = OS.Null;
+		StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
+		private static string NULL { get { return OS.Null; } }
 
 		public static void CleanUp()
 		{

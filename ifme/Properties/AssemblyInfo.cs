@@ -9,7 +9,7 @@ using System.Resources;
 [assembly: AssemblyTitle("Internet Friendly Media Encoder")]
 [assembly: AssemblyDescription("HEVC/H265 Multimedia Encoder")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hitoha Project")]
+[assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]
 [assembly: AssemblyCopyright("Anime4000, GNU GPL v2")]
 [assembly: AssemblyTrademark("IFME")]

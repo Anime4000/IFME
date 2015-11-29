@@ -84,7 +84,7 @@ namespace ifme
 		public static bool IsExist(string name)
 		{
 			foreach (var item in List)
-				if (string.Equals(item.Profile.Name, name, StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(item.Profile.Name, name, StringComparison.InvariantCultureIgnoreCase))
 					return true;
 
 			return false;
