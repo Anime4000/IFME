@@ -9,7 +9,7 @@ namespace ifme
 {
 	public class MediaEncoder
 	{
-		StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
+		static StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
 		private static string NULL { get { return OS.Null; } }
 
 		public static void CleanUp()
