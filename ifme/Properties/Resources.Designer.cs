@@ -161,7 +161,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Misaki Meguri.
+        ///   Looks up a localized string similar to Burning Love.
         /// </summary>
         internal static string CodeName {
             get {
