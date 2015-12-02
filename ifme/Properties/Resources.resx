@@ -190,6 +190,7 @@
 		&lt;/Simple&gt;
 	&lt;/Tag&gt;
 &lt;/Tags&gt;</value>
+    <comment>MKV Tags</comment>
   </data>
   <data name="wrench" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wrench.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
