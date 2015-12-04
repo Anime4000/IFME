@@ -25,6 +25,7 @@
 [fixed] Avisynth Trim command doesn't apply for audio (Git #65)
 [change] Media Encoder engine improved
 [change] Prefix [encoded] now changed to current date-time postfix (Git #68)
+[TODO] Allow to add audio
 
 Version 5.1 (FLUORITE DIARY)
 -----------
