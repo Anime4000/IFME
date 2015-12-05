@@ -106,8 +106,6 @@
 			this.chkAudioMerge = new System.Windows.Forms.CheckBox();
 			this.clbAudioTracks = new System.Windows.Forms.CheckedListBox();
 			this.txtAudioCmd = new System.Windows.Forms.TextBox();
-			this.lblAudioCmd = new System.Windows.Forms.Label();
-			this.grpAudioBasic = new System.Windows.Forms.GroupBox();
 			this.cboAudioChannel = new System.Windows.Forms.ComboBox();
 			this.lblAudioChannel = new System.Windows.Forms.Label();
 			this.cboAudioFreq = new System.Windows.Forms.ComboBox();
@@ -158,6 +156,9 @@
 			this.chkDestination = new System.Windows.Forms.CheckBox();
 			this.btnFacebook = new System.Windows.Forms.Button();
 			this.btnProfileDelete = new System.Windows.Forms.Button();
+			this.lblAudioCmd = new System.Windows.Forms.Label();
+			this.btnAudioAdd = new System.Windows.Forms.Button();
+			this.btnAudioRemove = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pbxLeft)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbxRight)).BeginInit();
 			this.cmsQueueMenu.SuspendLayout();
@@ -172,7 +173,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.trkVideoRate)).BeginInit();
 			this.grpVideoBasic.SuspendLayout();
 			this.tabAudio.SuspendLayout();
-			this.grpAudioBasic.SuspendLayout();
 			this.tabSubtitles.SuspendLayout();
 			this.tabAttachments.SuspendLayout();
 			this.tabLogs.SuspendLayout();
@@ -1049,11 +1049,20 @@
 			// 
 			// tabAudio
 			// 
+			this.tabAudio.Controls.Add(this.btnAudioRemove);
+			this.tabAudio.Controls.Add(this.btnAudioAdd);
+			this.tabAudio.Controls.Add(this.lblAudioChannel);
+			this.tabAudio.Controls.Add(this.cboAudioChannel);
 			this.tabAudio.Controls.Add(this.chkAudioMerge);
 			this.tabAudio.Controls.Add(this.clbAudioTracks);
+			this.tabAudio.Controls.Add(this.lblAudioFreq);
+			this.tabAudio.Controls.Add(this.cboAudioFreq);
 			this.tabAudio.Controls.Add(this.txtAudioCmd);
 			this.tabAudio.Controls.Add(this.lblAudioCmd);
-			this.tabAudio.Controls.Add(this.grpAudioBasic);
+			this.tabAudio.Controls.Add(this.lblAudioBit);
+			this.tabAudio.Controls.Add(this.cboAudioBit);
+			this.tabAudio.Controls.Add(this.cboAudioEncoder);
+			this.tabAudio.Controls.Add(this.lblAudioEncoder);
 			this.tabAudio.Location = new System.Drawing.Point(4, 22);
 			this.tabAudio.Name = "tabAudio";
 			this.tabAudio.Padding = new System.Windows.Forms.Padding(3);
@@ -1064,11 +1073,10 @@
 			// 
 			// chkAudioMerge
 			// 
-			this.chkAudioMerge.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.chkAudioMerge.Location = new System.Drawing.Point(329, 131);
+			this.chkAudioMerge.AutoSize = true;
+			this.chkAudioMerge.Location = new System.Drawing.Point(6, 11);
 			this.chkAudioMerge.Name = "chkAudioMerge";
-			this.chkAudioMerge.Size = new System.Drawing.Size(317, 48);
+			this.chkAudioMerge.Size = new System.Drawing.Size(356, 17);
 			this.chkAudioMerge.TabIndex = 8;
 			this.chkAudioMerge.Text = "&Compile all stream into single stream (not applicable for Passthrough)";
 			this.chkAudioMerge.UseVisualStyleBackColor = true;
@@ -1080,9 +1088,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.clbAudioTracks.FormattingEnabled = true;
-			this.clbAudioTracks.Location = new System.Drawing.Point(6, 10);
+			this.clbAudioTracks.Location = new System.Drawing.Point(6, 36);
 			this.clbAudioTracks.Name = "clbAudioTracks";
-			this.clbAudioTracks.Size = new System.Drawing.Size(317, 169);
+			this.clbAudioTracks.Size = new System.Drawing.Size(640, 94);
 			this.clbAudioTracks.TabIndex = 0;
 			this.clbAudioTracks.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbAudioTracks_ItemCheck);
 			this.clbAudioTracks.SelectedIndexChanged += new System.EventHandler(this.clbAudioTracks_SelectedIndexChanged);
@@ -1091,50 +1099,23 @@
 			// 
 			this.txtAudioCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtAudioCmd.Location = new System.Drawing.Point(6, 198);
+			this.txtAudioCmd.Location = new System.Drawing.Point(312, 158);
+			this.txtAudioCmd.Multiline = true;
 			this.txtAudioCmd.Name = "txtAudioCmd";
-			this.txtAudioCmd.Size = new System.Drawing.Size(640, 20);
+			this.txtAudioCmd.Size = new System.Drawing.Size(334, 60);
 			this.txtAudioCmd.TabIndex = 2;
 			this.txtAudioCmd.TextChanged += new System.EventHandler(this.txtAudioCmd_TextChanged);
 			// 
-			// lblAudioCmd
-			// 
-			this.lblAudioCmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblAudioCmd.AutoSize = true;
-			this.lblAudioCmd.Location = new System.Drawing.Point(6, 182);
-			this.lblAudioCmd.Name = "lblAudioCmd";
-			this.lblAudioCmd.Size = new System.Drawing.Size(105, 13);
-			this.lblAudioCmd.TabIndex = 1;
-			this.lblAudioCmd.Text = "&Extra command-line:";
-			// 
-			// grpAudioBasic
-			// 
-			this.grpAudioBasic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpAudioBasic.Controls.Add(this.cboAudioChannel);
-			this.grpAudioBasic.Controls.Add(this.lblAudioChannel);
-			this.grpAudioBasic.Controls.Add(this.cboAudioFreq);
-			this.grpAudioBasic.Controls.Add(this.lblAudioFreq);
-			this.grpAudioBasic.Controls.Add(this.cboAudioBit);
-			this.grpAudioBasic.Controls.Add(this.lblAudioBit);
-			this.grpAudioBasic.Controls.Add(this.cboAudioEncoder);
-			this.grpAudioBasic.Controls.Add(this.lblAudioEncoder);
-			this.grpAudioBasic.Location = new System.Drawing.Point(329, 6);
-			this.grpAudioBasic.Name = "grpAudioBasic";
-			this.grpAudioBasic.Size = new System.Drawing.Size(317, 119);
-			this.grpAudioBasic.TabIndex = 0;
-			this.grpAudioBasic.TabStop = false;
-			this.grpAudioBasic.Text = "&Basic";
-			// 
 			// cboAudioChannel
 			// 
+			this.cboAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cboAudioChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioChannel.FormattingEnabled = true;
 			this.cboAudioChannel.Items.AddRange(new object[] {
             "auto",
             "mono",
             "stereo"});
-			this.cboAudioChannel.Location = new System.Drawing.Point(213, 79);
+			this.cboAudioChannel.Location = new System.Drawing.Point(210, 197);
 			this.cboAudioChannel.Name = "cboAudioChannel";
 			this.cboAudioChannel.Size = new System.Drawing.Size(96, 21);
 			this.cboAudioChannel.TabIndex = 7;
@@ -1142,8 +1123,9 @@
 			// 
 			// lblAudioChannel
 			// 
+			this.lblAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblAudioChannel.AutoSize = true;
-			this.lblAudioChannel.Location = new System.Drawing.Point(210, 63);
+			this.lblAudioChannel.Location = new System.Drawing.Point(207, 182);
 			this.lblAudioChannel.Name = "lblAudioChannel";
 			this.lblAudioChannel.Size = new System.Drawing.Size(50, 13);
 			this.lblAudioChannel.TabIndex = 6;
@@ -1151,6 +1133,7 @@
 			// 
 			// cboAudioFreq
 			// 
+			this.cboAudioFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cboAudioFreq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioFreq.FormattingEnabled = true;
 			this.cboAudioFreq.Items.AddRange(new object[] {
@@ -1165,7 +1148,7 @@
             "48000",
             "96000",
             "192000"});
-			this.cboAudioFreq.Location = new System.Drawing.Point(111, 79);
+			this.cboAudioFreq.Location = new System.Drawing.Point(108, 198);
 			this.cboAudioFreq.Name = "cboAudioFreq";
 			this.cboAudioFreq.Size = new System.Drawing.Size(96, 21);
 			this.cboAudioFreq.TabIndex = 5;
@@ -1173,8 +1156,9 @@
 			// 
 			// lblAudioFreq
 			// 
+			this.lblAudioFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblAudioFreq.AutoSize = true;
-			this.lblAudioFreq.Location = new System.Drawing.Point(108, 63);
+			this.lblAudioFreq.Location = new System.Drawing.Point(109, 182);
 			this.lblAudioFreq.Name = "lblAudioFreq";
 			this.lblAudioFreq.Size = new System.Drawing.Size(62, 13);
 			this.lblAudioFreq.TabIndex = 4;
@@ -1182,9 +1166,10 @@
 			// 
 			// cboAudioBit
 			// 
+			this.cboAudioBit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cboAudioBit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioBit.FormattingEnabled = true;
-			this.cboAudioBit.Location = new System.Drawing.Point(9, 79);
+			this.cboAudioBit.Location = new System.Drawing.Point(6, 198);
 			this.cboAudioBit.Name = "cboAudioBit";
 			this.cboAudioBit.Size = new System.Drawing.Size(96, 21);
 			this.cboAudioBit.TabIndex = 3;
@@ -1192,8 +1177,9 @@
 			// 
 			// lblAudioBit
 			// 
+			this.lblAudioBit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblAudioBit.AutoSize = true;
-			this.lblAudioBit.Location = new System.Drawing.Point(6, 63);
+			this.lblAudioBit.Location = new System.Drawing.Point(6, 182);
 			this.lblAudioBit.Name = "lblAudioBit";
 			this.lblAudioBit.Size = new System.Drawing.Size(72, 13);
 			this.lblAudioBit.TabIndex = 2;
@@ -1201,9 +1187,10 @@
 			// 
 			// cboAudioEncoder
 			// 
+			this.cboAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cboAudioEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioEncoder.FormattingEnabled = true;
-			this.cboAudioEncoder.Location = new System.Drawing.Point(9, 39);
+			this.cboAudioEncoder.Location = new System.Drawing.Point(6, 158);
 			this.cboAudioEncoder.Name = "cboAudioEncoder";
 			this.cboAudioEncoder.Size = new System.Drawing.Size(300, 21);
 			this.cboAudioEncoder.TabIndex = 1;
@@ -1211,8 +1198,9 @@
 			// 
 			// lblAudioEncoder
 			// 
+			this.lblAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblAudioEncoder.AutoSize = true;
-			this.lblAudioEncoder.Location = new System.Drawing.Point(6, 23);
+			this.lblAudioEncoder.Location = new System.Drawing.Point(6, 142);
 			this.lblAudioEncoder.Name = "lblAudioEncoder";
 			this.lblAudioEncoder.Size = new System.Drawing.Size(50, 13);
 			this.lblAudioEncoder.TabIndex = 0;
@@ -1675,6 +1663,34 @@
 			this.btnProfileDelete.UseVisualStyleBackColor = true;
 			this.btnProfileDelete.Click += new System.EventHandler(this.btnProfileDelete_Click);
 			// 
+			// lblAudioCmd
+			// 
+			this.lblAudioCmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lblAudioCmd.AutoSize = true;
+			this.lblAudioCmd.Location = new System.Drawing.Point(312, 142);
+			this.lblAudioCmd.Name = "lblAudioCmd";
+			this.lblAudioCmd.Size = new System.Drawing.Size(105, 13);
+			this.lblAudioCmd.TabIndex = 1;
+			this.lblAudioCmd.Text = "&Extra command-line:";
+			// 
+			// btnAudioAdd
+			// 
+			this.btnAudioAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAudioAdd.Location = new System.Drawing.Point(622, 6);
+			this.btnAudioAdd.Name = "btnAudioAdd";
+			this.btnAudioAdd.Size = new System.Drawing.Size(24, 24);
+			this.btnAudioAdd.TabIndex = 9;
+			this.btnAudioAdd.UseVisualStyleBackColor = true;
+			// 
+			// btnAudioRemove
+			// 
+			this.btnAudioRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAudioRemove.Location = new System.Drawing.Point(592, 6);
+			this.btnAudioRemove.Name = "btnAudioRemove";
+			this.btnAudioRemove.Size = new System.Drawing.Size(24, 24);
+			this.btnAudioRemove.TabIndex = 10;
+			this.btnAudioRemove.UseVisualStyleBackColor = true;
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1738,8 +1754,6 @@
 			this.grpVideoBasic.PerformLayout();
 			this.tabAudio.ResumeLayout(false);
 			this.tabAudio.PerformLayout();
-			this.grpAudioBasic.ResumeLayout(false);
-			this.grpAudioBasic.PerformLayout();
 			this.tabSubtitles.ResumeLayout(false);
 			this.tabSubtitles.PerformLayout();
 			this.tabAttachments.ResumeLayout(false);
@@ -1814,7 +1828,6 @@
 		private System.Windows.Forms.TrackBar trkVideoRate;
 		private System.Windows.Forms.Label lblVideoCmd;
 		private System.Windows.Forms.TextBox txtVideoCmd;
-		private System.Windows.Forms.GroupBox grpAudioBasic;
 		private System.Windows.Forms.Label lblAudioEncoder;
 		private System.Windows.Forms.ComboBox cboAudioEncoder;
 		private System.Windows.Forms.Label lblAudioBit;
@@ -1825,7 +1838,6 @@
 		private System.Windows.Forms.ComboBox cboAudioChannel;
 		private System.Windows.Forms.CheckBox chkAudioMerge;
 		private System.Windows.Forms.TextBox txtAudioCmd;
-		private System.Windows.Forms.Label lblAudioCmd;
 		private System.Windows.Forms.CheckBox chkSubEnable;
 		private System.Windows.Forms.Button btnSubAdd;
 		private System.Windows.Forms.Button btnSubRemove;
@@ -1882,5 +1894,8 @@
 		private System.Windows.Forms.Button btnFacebook;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQueueDelete;
 		private System.Windows.Forms.Button btnProfileDelete;
+		private System.Windows.Forms.Label lblAudioCmd;
+		private System.Windows.Forms.Button btnAudioAdd;
+		private System.Windows.Forms.Button btnAudioRemove;
 	}
 }
