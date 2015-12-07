@@ -2122,7 +2122,7 @@ namespace ifme
 			txtVideoCmd.Enabled = x;
 
 			clbAudioTracks.Enabled = x;
-			grpAudioBasic.Enabled = x;
+			//grpAudioBasic.Enabled = x;
 			chkAudioMerge.Enabled = x;
 			txtAudioCmd.Enabled = x;
 

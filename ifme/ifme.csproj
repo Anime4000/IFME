@@ -248,8 +248,6 @@
     <None Include="Resources\film_delete.png" />
     <None Include="Resources\folder_explore.png" />
     <None Include="Resources\information.png" />
-    <None Include="Resources\page_add.png" />
-    <None Include="Resources\page_delete.png" />
     <None Include="Resources\wrench.png" />
     <None Include="Resources\applications_internet.png" />
     <None Include="Resources\newstuff.png" />
@@ -271,6 +269,8 @@
     <None Include="Resources\SplashScreen5CB.jpg" />
     <None Include="Resources\SplashScreen5CA.jpg" />
     <None Include="Resources\ifme-zenui.ico" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\add.png" />
     <Content Include="sounds\epic.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
