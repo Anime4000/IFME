@@ -1080,6 +1080,7 @@
 			this.btnAudioRemove.Size = new System.Drawing.Size(24, 24);
 			this.btnAudioRemove.TabIndex = 10;
 			this.btnAudioRemove.UseVisualStyleBackColor = true;
+			this.btnAudioRemove.Click += new System.EventHandler(this.btnAudioRemove_Click);
 			// 
 			// btnAudioAdd
 			// 
@@ -1090,6 +1091,7 @@
 			this.btnAudioAdd.Size = new System.Drawing.Size(24, 24);
 			this.btnAudioAdd.TabIndex = 9;
 			this.btnAudioAdd.UseVisualStyleBackColor = true;
+			this.btnAudioAdd.Click += new System.EventHandler(this.btnAudioAdd_Click);
 			// 
 			// lblAudioChannel
 			// 

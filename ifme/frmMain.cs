@@ -1028,6 +1028,16 @@ namespace ifme
 		#endregion
 
 		#region Queue: Property update - Audio Tab
+		private void btnAudioAdd_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnAudioRemove_Click(object sender, EventArgs e)
+		{
+
+		}
+
 		private void clbAudioTracks_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)

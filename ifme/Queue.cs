@@ -96,6 +96,7 @@ namespace ifme
 	public class audio
 	{
 		public bool Enable;
+		public string File;
 		public string Id;
 		public string Lang;
 		public string Codec;
