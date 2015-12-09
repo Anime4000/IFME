@@ -364,17 +364,17 @@ namespace ifme
 				string file = item.Data.File;
 
 				// Extract mkv embedded subtitle, font and chapter
-				MediaEncoder.Extract(file, item);
+				MediaEncoder.Extract(item);
 
 				// Audio
-				MediaEncoder.Audio(file, item);
+				MediaEncoder.Audio(item);
 
 				// Tell User
 				WriteLine($"File: {Path.GetFileName(item.Data.File)}");
 				WriteLine($"Current queue {id + 1} of {argList.Count}");
 
 				// Video
-				MediaEncoder.Video(file, item);
+				MediaEncoder.Video(item);
 
 				// Mux
 				MediaEncoder.Mux(item);

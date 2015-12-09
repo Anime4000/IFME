@@ -1111,6 +1111,12 @@ namespace ifme
 					RawBit = item.RawBit,
 					RawFreq = item.RawFreq,
 					RawChan = item.RawChan,
+
+					Encoder = "Passthrough (Extract all audio)",
+					BitRate = "256",
+					Freq = "auto",
+					Chan = "auto",
+					Args = string.Empty
 				});
 		}
 
@@ -1150,6 +1156,11 @@ namespace ifme
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (chkAudioMerge.Checked)
+				if (cboAudioEncoder.Items.Count > 1)
+					if (cboAudioEncoder.SelectedIndex < 2)
+						cboAudioEncoder.SelectedIndex = 2;
+
 			PluginAudioCheck();
 
 			foreach (var item in Plugin.List)
@@ -1230,14 +1241,16 @@ namespace ifme
 
 			clbAudioTracks.Enabled = !chkAudioMerge.Checked;
 
+			if (chkAudioMerge.Checked)
+				if (cboAudioEncoder.Items.Count > 1)
+					if (cboAudioEncoder.SelectedIndex < 2)
+						cboAudioEncoder.SelectedIndex = 2;
+
 			if (clbAudioTracks.Items.Count > 1)
-			{
 				QueueUpdate(QueueProp.AudioMerge);
-			}
 			else
-			{
 				chkAudioMerge.Checked = false;
-			}
+			
 		}
 
 		private void txtAudioCmd_TextChanged(object sender, EventArgs e)
@@ -2061,7 +2074,7 @@ namespace ifme
 
 				// Extract mkv embedded subtitle, font and chapter
 				InvokeQueueStatus(id, "Extracting");
-				MediaEncoder.Extract(file, item);
+				MediaEncoder.Extract(item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)
@@ -2073,7 +2086,7 @@ namespace ifme
 
 				// Audio
 				InvokeQueueStatus(id, "Processing Audio");
-				MediaEncoder.Audio(file, item);
+				MediaEncoder.Audio(item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)
@@ -2085,7 +2098,7 @@ namespace ifme
 
 				// Video
 				InvokeQueueStatus(id, "Processing Video");
-				MediaEncoder.Video(file, item);
+				MediaEncoder.Video(item);
 
 				// User cancel
 				if (bgwEncoding.CancellationPending)

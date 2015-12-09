@@ -16,8 +16,6 @@ namespace ifme
 		HashSet<string> Lng = new HashSet<string>();
 		HashSet<string> Sup = new HashSet<string>(File.ReadAllLines("metauser.if"));
 
-		SoundPlayer epic = new SoundPlayer(Path.Combine("sounds", "epic.wav"));
-
 		public frmAbout()
 		{
 			InitializeComponent();
@@ -78,13 +76,10 @@ namespace ifme
 		private void frmAbout_Shown(object sender, EventArgs e)
 		{
 			bgThank.RunWorkerAsync();
-			epic.Play();
 		}
 
 		private void frmAbout_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			epic.Stop();
-			epic.Dispose();
 			bgThank.Dispose();
 		}
 
@@ -111,7 +106,6 @@ namespace ifme
 		private void bgThank_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			bgThank.RunWorkerAsync();
-			epic.Stop();
 		}
 	}
 }

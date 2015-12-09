@@ -271,9 +271,6 @@
     <None Include="Resources\ifme-zenui.ico" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\add.png" />
-    <Content Include="sounds\epic.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

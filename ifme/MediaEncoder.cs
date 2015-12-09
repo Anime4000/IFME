@@ -20,12 +20,12 @@ namespace ifme
 				File.Delete(files);
 		}
 
-		public static void Extract(string file, Queue item)
+		public static void Extract(Queue item)
 		{
-			if (string.IsNullOrEmpty(file))
+            if (string.IsNullOrEmpty(item.Data.File))
 				return;
 
-			string realfile = GetStream.AviSynthGetFile(file);
+			string realfile = GetStream.AviSynthGetFile(item.Data.File);
 
 			if (item.Data.IsFileMkv || (item.Data.IsFileAvs && Default.AvsMkvCopy))
 			{
@@ -41,25 +41,29 @@ namespace ifme
 			}
 		}
 
-		public static void Audio(string file, Queue item)
+		public static void Audio(Queue item)
 		{
-			if (string.IsNullOrEmpty(file))
-				return;
-
-			string ffmap = "";
+			string ffile = string.Empty;
+			string ffmap = string.Empty;
 			string ffcmd = item.Picture.Command;
 
 			int counter = 0;
 			foreach (var track in item.Audio)
 			{
-				string frequency = string.Equals(track.Freq, "auto", IC) ? $"{track.RawFreq}" : $"{track.Freq}";
+				string file = track.File;
+
+				if (string.IsNullOrEmpty(file))
+					continue;
+
+				string freq = string.Equals(track.Freq, "auto", IC) ? $"{track.RawFreq}" : $"{track.Freq}";
 				string bit = $"{track.RawBit}";
-				string channel = string.Equals(track.Chan, "auto", IC) ? $"{track.RawChan}" : string.Equals(track.Chan, "stereo", IC) ? "2" : "1";
+				string chan = string.Equals(track.Chan, "auto", IC) ? $"{track.RawChan}" : string.Equals(track.Chan, "stereo", IC) ? "2" : "1";
 
 				if (item.AudioMerge)
 				{
 					counter++;
-					ffmap += $"-map {track.Id} ";
+					ffile += $"-i \"{file}\"";
+                    ffmap += $"-map {track.Id} ";
 					
 					if (item.Audio.Count == counter)
 					{
@@ -67,7 +71,7 @@ namespace ifme
 						{
 							if (string.Equals(item.Audio[0].Encoder, codec.Profile.Name, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - 2> {NULL} | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, frequency, bit, channel))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" {ffile} {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, freq, bit, chan))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 							}
 						}
 					}
@@ -85,13 +89,13 @@ namespace ifme
 					{
 						if (item.Data.IsFileAvs)
 						{
-							TaskManager.Run($"{Plugin.AVS4P} audio \"{file}\" | {Plugin.LIBAV} -i - -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
+							TaskManager.Run($"{Plugin.AVS4P} audio \"{file}\" | {Plugin.LIBAV} -i - -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
 						}
 						else if (item.Data.SaveAsMkv)
 						{
 							if (string.Equals("wma", track.Format, IC))
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 							else
 							{
@@ -106,7 +110,7 @@ namespace ifme
 							}
 							else
 							{
-								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {frequency} -ac {channel} -y audio{counter++:0000}_{track.Lang}.mp4");
+								TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 						}
 					}
@@ -124,7 +128,7 @@ namespace ifme
 								try
 								{
 									if (!string.IsNullOrEmpty(codec.Arg.Raw))
-										rawArgs = string.Format(codec.Arg.Raw, frequency, bit, channel);
+										rawArgs = string.Format(codec.Arg.Raw, freq, bit, chan);
                                 }
 								catch (Exception e)
 								{
@@ -142,7 +146,7 @@ namespace ifme
 								}
 								else
 								{
-									TaskManager.Run($"\"{Plugin.LIBAV}\" -loglevel panic -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {frequency} -ac {channel} -f wav {ffcmd} - | {encArgs}");
+									TaskManager.Run($"\"{Plugin.LIBAV}\" -loglevel panic -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | {encArgs}");
 									break;
 								}
 							}
@@ -152,9 +156,11 @@ namespace ifme
 			}
 		}
 
-		public static void Video(string file, Queue item)
+		public static void Video(Queue item)
 		{
-			foreach (var video in GetStream.Video(file))
+			string file = item.Data.File;
+
+            foreach (var video in GetStream.Video(file))
 			{
 				// Copy
 				if (item.Picture.IsHevc)
