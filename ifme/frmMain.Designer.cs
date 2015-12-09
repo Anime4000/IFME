@@ -1078,7 +1078,7 @@
 			this.btnAudioRemove.Location = new System.Drawing.Point(622, 6);
 			this.btnAudioRemove.Name = "btnAudioRemove";
 			this.btnAudioRemove.Size = new System.Drawing.Size(24, 24);
-			this.btnAudioRemove.TabIndex = 10;
+			this.btnAudioRemove.TabIndex = 2;
 			this.btnAudioRemove.UseVisualStyleBackColor = true;
 			this.btnAudioRemove.Click += new System.EventHandler(this.btnAudioRemove_Click);
 			// 
@@ -1089,7 +1089,7 @@
 			this.btnAudioAdd.Location = new System.Drawing.Point(592, 6);
 			this.btnAudioAdd.Name = "btnAudioAdd";
 			this.btnAudioAdd.Size = new System.Drawing.Size(24, 24);
-			this.btnAudioAdd.TabIndex = 9;
+			this.btnAudioAdd.TabIndex = 1;
 			this.btnAudioAdd.UseVisualStyleBackColor = true;
 			this.btnAudioAdd.Click += new System.EventHandler(this.btnAudioAdd_Click);
 			// 
@@ -1100,7 +1100,7 @@
 			this.lblAudioChannel.Location = new System.Drawing.Point(207, 173);
 			this.lblAudioChannel.Name = "lblAudioChannel";
 			this.lblAudioChannel.Size = new System.Drawing.Size(50, 13);
-			this.lblAudioChannel.TabIndex = 6;
+			this.lblAudioChannel.TabIndex = 10;
 			this.lblAudioChannel.Text = "&Channel:";
 			// 
 			// cboAudioChannel
@@ -1115,7 +1115,7 @@
 			this.cboAudioChannel.Location = new System.Drawing.Point(210, 189);
 			this.cboAudioChannel.Name = "cboAudioChannel";
 			this.cboAudioChannel.Size = new System.Drawing.Size(96, 21);
-			this.cboAudioChannel.TabIndex = 7;
+			this.cboAudioChannel.TabIndex = 11;
 			this.cboAudioChannel.SelectedIndexChanged += new System.EventHandler(this.cboAudioChannel_SelectedIndexChanged);
 			// 
 			// chkAudioMerge
@@ -1124,13 +1124,14 @@
 			this.chkAudioMerge.Location = new System.Drawing.Point(6, 11);
 			this.chkAudioMerge.Name = "chkAudioMerge";
 			this.chkAudioMerge.Size = new System.Drawing.Size(356, 17);
-			this.chkAudioMerge.TabIndex = 8;
+			this.chkAudioMerge.TabIndex = 0;
 			this.chkAudioMerge.Text = "&Compile all stream into single stream (not applicable for Passthrough)";
 			this.chkAudioMerge.UseVisualStyleBackColor = true;
 			this.chkAudioMerge.CheckedChanged += new System.EventHandler(this.chkAudioMerge_CheckedChanged);
 			// 
 			// clbAudioTracks
 			// 
+			this.clbAudioTracks.AllowDrop = true;
 			this.clbAudioTracks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1138,9 +1139,12 @@
 			this.clbAudioTracks.Location = new System.Drawing.Point(6, 36);
 			this.clbAudioTracks.Name = "clbAudioTracks";
 			this.clbAudioTracks.Size = new System.Drawing.Size(640, 94);
-			this.clbAudioTracks.TabIndex = 0;
+			this.clbAudioTracks.TabIndex = 3;
 			this.clbAudioTracks.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbAudioTracks_ItemCheck);
 			this.clbAudioTracks.SelectedIndexChanged += new System.EventHandler(this.clbAudioTracks_SelectedIndexChanged);
+			this.clbAudioTracks.DragDrop += new System.Windows.Forms.DragEventHandler(this.clbAudioTracks_DragDrop);
+			this.clbAudioTracks.DragEnter += new System.Windows.Forms.DragEventHandler(this.clbAudioTracks_DragEnter);
+			this.clbAudioTracks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clbAudioTracks_KeyDown);
 			// 
 			// lblAudioFreq
 			// 
@@ -1149,7 +1153,7 @@
 			this.lblAudioFreq.Location = new System.Drawing.Point(105, 173);
 			this.lblAudioFreq.Name = "lblAudioFreq";
 			this.lblAudioFreq.Size = new System.Drawing.Size(62, 13);
-			this.lblAudioFreq.TabIndex = 4;
+			this.lblAudioFreq.TabIndex = 8;
 			this.lblAudioFreq.Text = "&Frequency:";
 			// 
 			// cboAudioFreq
@@ -1172,7 +1176,7 @@
 			this.cboAudioFreq.Location = new System.Drawing.Point(108, 189);
 			this.cboAudioFreq.Name = "cboAudioFreq";
 			this.cboAudioFreq.Size = new System.Drawing.Size(96, 21);
-			this.cboAudioFreq.TabIndex = 5;
+			this.cboAudioFreq.TabIndex = 9;
 			this.cboAudioFreq.SelectedIndexChanged += new System.EventHandler(this.cboAudioFreq_SelectedIndexChanged);
 			// 
 			// txtAudioCmd
@@ -1183,7 +1187,7 @@
 			this.txtAudioCmd.Multiline = true;
 			this.txtAudioCmd.Name = "txtAudioCmd";
 			this.txtAudioCmd.Size = new System.Drawing.Size(334, 61);
-			this.txtAudioCmd.TabIndex = 2;
+			this.txtAudioCmd.TabIndex = 13;
 			this.txtAudioCmd.TextChanged += new System.EventHandler(this.txtAudioCmd_TextChanged);
 			// 
 			// lblAudioCmd
@@ -1193,7 +1197,7 @@
 			this.lblAudioCmd.Location = new System.Drawing.Point(309, 133);
 			this.lblAudioCmd.Name = "lblAudioCmd";
 			this.lblAudioCmd.Size = new System.Drawing.Size(105, 13);
-			this.lblAudioCmd.TabIndex = 1;
+			this.lblAudioCmd.TabIndex = 12;
 			this.lblAudioCmd.Text = "&Extra command-line:";
 			// 
 			// lblAudioBit
@@ -1203,7 +1207,7 @@
 			this.lblAudioBit.Location = new System.Drawing.Point(3, 173);
 			this.lblAudioBit.Name = "lblAudioBit";
 			this.lblAudioBit.Size = new System.Drawing.Size(72, 13);
-			this.lblAudioBit.TabIndex = 2;
+			this.lblAudioBit.TabIndex = 6;
 			this.lblAudioBit.Text = "&Bit rate/level:";
 			// 
 			// cboAudioBit
@@ -1214,7 +1218,7 @@
 			this.cboAudioBit.Location = new System.Drawing.Point(6, 189);
 			this.cboAudioBit.Name = "cboAudioBit";
 			this.cboAudioBit.Size = new System.Drawing.Size(96, 21);
-			this.cboAudioBit.TabIndex = 3;
+			this.cboAudioBit.TabIndex = 7;
 			this.cboAudioBit.SelectedIndexChanged += new System.EventHandler(this.cboAudioBit_SelectedIndexChanged);
 			// 
 			// cboAudioEncoder
@@ -1225,7 +1229,7 @@
 			this.cboAudioEncoder.Location = new System.Drawing.Point(6, 149);
 			this.cboAudioEncoder.Name = "cboAudioEncoder";
 			this.cboAudioEncoder.Size = new System.Drawing.Size(300, 21);
-			this.cboAudioEncoder.TabIndex = 1;
+			this.cboAudioEncoder.TabIndex = 5;
 			this.cboAudioEncoder.SelectedIndexChanged += new System.EventHandler(this.cboAudioEncoder_SelectedIndexChanged);
 			// 
 			// lblAudioEncoder
@@ -1235,7 +1239,7 @@
 			this.lblAudioEncoder.Location = new System.Drawing.Point(3, 133);
 			this.lblAudioEncoder.Name = "lblAudioEncoder";
 			this.lblAudioEncoder.Size = new System.Drawing.Size(50, 13);
-			this.lblAudioEncoder.TabIndex = 0;
+			this.lblAudioEncoder.TabIndex = 4;
 			this.lblAudioEncoder.Text = "&Encoder:";
 			// 
 			// tabSubtitles
@@ -1284,7 +1288,7 @@
 			// 
 			this.lblSubLang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblSubLang.AutoSize = true;
-			this.lblSubLang.Location = new System.Drawing.Point(6, 182);
+			this.lblSubLang.Location = new System.Drawing.Point(3, 182);
 			this.lblSubLang.Name = "lblSubLang";
 			this.lblSubLang.Size = new System.Drawing.Size(58, 13);
 			this.lblSubLang.TabIndex = 4;
@@ -1404,7 +1408,7 @@
 			// 
 			this.lblAttachDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblAttachDescription.AutoSize = true;
-			this.lblAttachDescription.Location = new System.Drawing.Point(6, 182);
+			this.lblAttachDescription.Location = new System.Drawing.Point(3, 182);
 			this.lblAttachDescription.Name = "lblAttachDescription";
 			this.lblAttachDescription.Size = new System.Drawing.Size(64, 13);
 			this.lblAttachDescription.TabIndex = 4;

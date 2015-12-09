@@ -560,6 +560,8 @@ namespace ifme
 				Info.Audio.Add(new audio
 				{
 					Enable = true,
+					File = file,
+					Embedded = true,
 					Id = item.Basic.Id,
 					Lang = item.Basic.Lang,
 					Codec = item.Basic.Codec,
@@ -712,7 +714,7 @@ namespace ifme
 			// Audio
 			clbAudioTracks.Items.Clear(); // clear before add Git #64
 			foreach (var item in Info.Audio)
-				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz {item.RawBit} Bit @ {item.RawChan} Channel(s)", item.Enable);
+				clbAudioTracks.Items.Add($"{item.Id}, {item.Lang}, {item.Format} ({item.Codec}), {item.RawFreq} Hz {item.RawBit} Bit @ {item.RawChan} Channel(s){(item.Embedded ? "" : "*")}", item.Enable);
 
 			/* Bitrate, Freq & Channel are inherit changes of Audio Encoder, refer to cboAudioEncoder_SelectedIndexChanged() */
 			if (clbAudioTracks.Items.Count > 0)
@@ -1030,12 +1032,86 @@ namespace ifme
 		#region Queue: Property update - Audio Tab
 		private void btnAudioAdd_Click(object sender, EventArgs e)
 		{
+			if (lstQueue.SelectedItems.Count == 1)
+			{
+				// Add new track after
+				OpenFileDialog GetFiles = new OpenFileDialog();
+				GetFiles.Filter = "Supported Audio Format|*.wav;*.wave;*.w64;*.mp2;*.mp3;*.mp4;*.m4a;*.aac;*.ogg;*.opus;*.flac;*.wma|"
+					+ "Waveform Audio File Format|*.wav;*.wave;*.w64|"
+					+ "MPEG Audio|*.mp2;*.mp3;*.mp4;*.m4a;*.aac|"
+					+ "Xiph.Org Foundation|*.ogg;*.opus;*.flac|"
+					+ "Windows Media|*.wma|"
+					+ "All Files|*.*";
+				GetFiles.FilterIndex = 1;
+				GetFiles.Multiselect = true;
 
+				if (GetFiles.ShowDialog() == DialogResult.OK)
+					foreach (var item in GetFiles.FileNames)
+						QueueAddAudio(item);
+
+				// Reload listing
+				QueueDisplay(lstQueue.SelectedItems[0].Index);
+			}
+		}
+
+		private void clbAudioTracks_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void clbAudioTracks_DragDrop(object sender, DragEventArgs e)
+		{
+			if (lstQueue.SelectedItems.Count == 1)
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				foreach (var file in files)
+					QueueAddAudio(file);
+
+				// Reload listing
+				QueueDisplay(lstQueue.SelectedItems[0].Index);
+			}
 		}
 
 		private void btnAudioRemove_Click(object sender, EventArgs e)
 		{
+			if (lstQueue.SelectedItems.Count == 1)
+			{
+				// Removing
+				for (int i = 0; i < clbAudioTracks.Items.Count; i++)
+					if (clbAudioTracks.GetSelected(i))
+						((Queue)lstQueue.SelectedItems[0].Tag).Audio.RemoveAt(i);
 
+				// Reload listing
+				QueueDisplay(lstQueue.SelectedItems[0].Index);
+			}
+		}
+
+		private void clbAudioTracks_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Delete)
+				btnAudioRemove.PerformClick(); // share code, fall back
+		}
+
+		private void QueueAddAudio(string file)
+		{
+			var Info = (Queue)lstQueue.SelectedItems[0].Tag;
+
+			foreach (var item in GetStream.Audio(file))
+				Info.Audio.Add(new audio
+				{
+					Enable = true,
+					File = file,
+					Embedded = false,
+					Id = item.Basic.Id,
+					Lang = item.Basic.Lang,
+					Codec = item.Basic.Codec,
+					Format = item.Basic.Format,
+
+					RawBit = item.RawBit,
+					RawFreq = item.RawFreq,
+					RawChan = item.RawChan,
+				});
 		}
 
 		private void clbAudioTracks_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -1063,16 +1139,13 @@ namespace ifme
 
 		private void clbAudioTracks_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (clbAudioTracks.Items.Count > 0)
-			{
-				int i = clbAudioTracks.SelectedIndex;
-				var Info = (Queue)lstQueue.SelectedItems[0].Tag;
+			int i = clbAudioTracks.SelectedIndex;
+			var Info = (Queue)lstQueue.SelectedItems[0].Tag;
 
-				if (string.IsNullOrEmpty(Info.Audio[i].Encoder))
-					cboAudioEncoder.SelectedIndex = 1; // default
-				else
-					cboAudioEncoder.Text = Info.Audio[i].Encoder;
-			}
+			if (string.IsNullOrEmpty(Info.Audio[i].Encoder))
+				cboAudioEncoder.SelectedIndex = 1; // default
+			else
+				cboAudioEncoder.Text = Info.Audio[i].Encoder;
 		}
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)

@@ -97,6 +97,7 @@ namespace ifme
 	{
 		public bool Enable;
 		public string File;
+		public bool Embedded;
 		public string Id;
 		public string Lang;
 		public string Codec;
