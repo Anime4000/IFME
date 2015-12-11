@@ -175,6 +175,12 @@ namespace ifme
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			if (bgwEncoding.IsBusy)
+			{
+				e.Cancel = true;
+				return;
+			}
+
 			if (lstQueue.Items.Count > 1)
 			{
 				var MsgBox = MessageBox.Show(Language.Quit, null, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
@@ -184,8 +190,6 @@ namespace ifme
 						QueueListSaveAs();
 					else
 						QueueListSave();
-
-					btnQueueStop.PerformClick();
 				}
 				else if (MsgBox == DialogResult.Cancel)
 				{
