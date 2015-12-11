@@ -808,10 +808,10 @@ namespace ifme
 
 		private void cboPictureRes_Leave(object sender, EventArgs e)
 		{
-			Regex regex = new Regex("([0-9+x])|([auto])");
+			Regex regex = new Regex(@"(^\d{3,5}x\d{3,5}$)|^auto$");
 			MatchCollection matches = regex.Matches(cboPictureRes.Text);
 
-			if (matches.Count != cboPictureRes.Text.Length)
+			if (matches.Count == 0)
 			{
 				cboPictureRes.Text = "auto";
 				InvokeLog("Input resolution format was invalid, back to auto.");
@@ -831,10 +831,10 @@ namespace ifme
 
 		private void cboPictureFps_Leave(object sender, EventArgs e)
 		{
-			Regex regex = new Regex("([0-9+.])|([auto])");
+			Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
 			MatchCollection matches = regex.Matches(cboPictureFps.Text);
 
-			if (matches.Count != cboPictureFps.Text.Length)
+			if (matches.Count == 0)
 			{
 				cboPictureFps.Text = "auto";
 				InvokeLog("Input frame rate format was invalid, back to auto.");
