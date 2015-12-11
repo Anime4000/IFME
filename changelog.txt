@@ -1,4 +1,5 @@
 ﻿Version 5.2 (Archangel Descending)
+----------------------------------
 
 [new] Allow user to save encoded file either same source folder or given path
 [new] Capable to encode audio files, but not fully supported
@@ -9,7 +10,7 @@
 [added] Allow user to delete queue by pressing DEL key (Git #55)
 [added] Allow user to add more Audio track
 [fixed] CPU Affinity & Priority has been fix! [Windows] (Git #61)
-[fixed] Downloader & Updater engine improved!
+[fixed] Download & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
 [fixed] HEVC video passthrough not properly save
 [fixed] Linux plugin is now statically linked (portable), thanks to darealshinji
@@ -23,7 +24,7 @@
 [fixed] Invalid language id become "und" (Git #62)
 [fixed] In video tab, different mode cause set to default value.
 [fixed] Faster loading time by adding "-s" as argument (skip update)
-[fixed] Avisynth Trim command doesn't apply for audio (Git #65)
+[fixed] AviSynth Trim command doesn't apply for audio (Git #65)
 [change] Media Encoder engine improved
 [change] Prefix [encoded] now changed to current date-time postfix (Git #68)
 [change] Music removed for About IFME, not suitable for professional environment

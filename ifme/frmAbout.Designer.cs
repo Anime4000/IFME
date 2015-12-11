@@ -33,6 +33,8 @@
 			this.lblAppBuild = new System.Windows.Forms.Label();
 			this.bgThank = new System.ComponentModel.BackgroundWorker();
 			this.panelCredit = new System.Windows.Forms.Panel();
+			this.lblName5 = new System.Windows.Forms.Label();
+			this.lblTitleE = new System.Windows.Forms.Label();
 			this.lblLast = new System.Windows.Forms.Label();
 			this.lblName4 = new System.Windows.Forms.Label();
 			this.lblName3 = new System.Windows.Forms.Label();
@@ -42,8 +44,6 @@
 			this.lblName1 = new System.Windows.Forms.Label();
 			this.lblTitleA = new System.Windows.Forms.Label();
 			this.panelRoll = new System.Windows.Forms.Panel();
-			this.lblName5 = new System.Windows.Forms.Label();
-			this.lblTitleE = new System.Windows.Forms.Label();
 			this.panelCredit.SuspendLayout();
 			this.panelRoll.SuspendLayout();
 			this.SuspendLayout();
@@ -110,6 +110,29 @@
 			this.panelCredit.Size = new System.Drawing.Size(576, 314);
 			this.panelCredit.TabIndex = 11;
 			// 
+			// lblName5
+			// 
+			this.lblName5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblName5.Location = new System.Drawing.Point(0, 160);
+			this.lblName5.Name = "lblName5";
+			this.lblName5.Size = new System.Drawing.Size(576, 25);
+			this.lblName5.TabIndex = 10;
+			this.lblName5.Text = " ";
+			this.lblName5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			// 
+			// lblTitleE
+			// 
+			this.lblTitleE.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblTitleE.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+			this.lblTitleE.Location = new System.Drawing.Point(0, 130);
+			this.lblTitleE.Name = "lblTitleE";
+			this.lblTitleE.Size = new System.Drawing.Size(576, 30);
+			this.lblTitleE.TabIndex = 9;
+			this.lblTitleE.Text = "Special Thanks";
+			this.lblTitleE.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
 			// lblLast
 			// 
 			this.lblLast.Font = new System.Drawing.Font("Tahoma", 12F);
@@ -160,9 +183,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblName2.Location = new System.Drawing.Point(0, 85);
 			this.lblName2.Name = "lblName2";
-			this.lblName2.Size = new System.Drawing.Size(576, 48);
+			this.lblName2.Size = new System.Drawing.Size(576, 50);
 			this.lblName2.TabIndex = 3;
-			this.lblName2.Text = "53C aka Ray-en\r\nhttp://53c.deviantart.com/";
+			this.lblName2.Text = "53C aka Ray-en\r\nhttp://53c.deviantart.com/\r\nAdeq\r\nhttps://www.facebook.com/liyana" +
+    ".0426\r\n";
 			this.lblName2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
 			// lblTitleB
@@ -209,29 +233,6 @@
 			this.panelRoll.Name = "panelRoll";
 			this.panelRoll.Size = new System.Drawing.Size(576, 354);
 			this.panelRoll.TabIndex = 12;
-			// 
-			// lblName5
-			// 
-			this.lblName5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblName5.Location = new System.Drawing.Point(0, 160);
-			this.lblName5.Name = "lblName5";
-			this.lblName5.Size = new System.Drawing.Size(576, 25);
-			this.lblName5.TabIndex = 10;
-			this.lblName5.Text = " ";
-			this.lblName5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-			// 
-			// lblTitleE
-			// 
-			this.lblTitleE.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblTitleE.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-			this.lblTitleE.Location = new System.Drawing.Point(0, 130);
-			this.lblTitleE.Name = "lblTitleE";
-			this.lblTitleE.Size = new System.Drawing.Size(576, 30);
-			this.lblTitleE.TabIndex = 9;
-			this.lblTitleE.Text = "Special Thanks";
-			this.lblTitleE.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
 			// frmAbout
 			// 

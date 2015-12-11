@@ -11,7 +11,7 @@ namespace ifme
     public partial class frmAbout : Form
 	{
 		HashSet<string> Pro = new HashSet<string>(new string[] { "Anime4000", "Nemu", "Pis", "SailorOnDaTea", "Bvzcoder" });
-		HashSet<string> Art = new HashSet<string>(new string[] { "53C aka Ray-en", "http://53c.deviantart.com/" });
+		HashSet<string> Art = new HashSet<string>(new string[] { "53C", "http://53c.deviantart.com/", "Adeq", "https://www.facebook.com/liyana.0426" });
 		HashSet<string> Dev = new HashSet<string>();
 		HashSet<string> Lng = new HashSet<string>();
 		HashSet<string> Sup = new HashSet<string>(File.ReadAllLines("metauser.if"));

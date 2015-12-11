@@ -746,6 +746,9 @@ namespace ifme
 			grpPictureBasic.Enabled = !x;
 			grpPictureQuality.Enabled = !x;
 			chkPictureYadif.Enabled = !x;
+			btnAudioAdd.Enabled = !x;
+			btnAudioRemove.Enabled = !x;
+			clbAudioTracks.Enabled = !x;
 		}
 
 		void QueueUnselect()

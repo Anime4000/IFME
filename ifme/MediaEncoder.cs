@@ -222,7 +222,7 @@ namespace ifme
 
 				string decoder = item.Data.IsFileAvs ? 
 					$"\"{decbin}\" video \"{file}\"" : 
-					$"\"{decbin}\" -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} {ffcmd} -";
+					$"\"{decbin}\" -loglevel panic -i \"{file}\" -vsync {vsync} -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} {ffcmd} -";
 
 				if (bitdepth == 10)
 					encbin = Plugin.HEVC10;
@@ -247,12 +247,12 @@ namespace ifme
 							framecount = GetStream.FrameCount(Path.Combine(Default.DirTemp, $"video0000_{video.Lang}.hevc"));
 
 						Console.WriteLine($"Pass {i + 1} of {type + 1}"); // human read no index
-						TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount} --pass {pass}");
+						TaskManager.Run($"{decoder} | {encoder} -f {framecount} --pass {pass}");
 					}
 				}
 				else
 				{
-					TaskManager.Run($"{decoder} 2> {NULL} | {encoder} -f {framecount}");
+					TaskManager.Run($"{decoder} | {encoder} -f {framecount}");
 				}
 
 				break;

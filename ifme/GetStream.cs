@@ -164,6 +164,13 @@ namespace ifme
 						audiochan = item.Substring(14);
                 }
 
+				int freq = Convert.ToInt32(audiofreq);
+                int bit = Convert.ToInt32(audiobit);
+				int chan = Convert.ToInt32(audiochan);
+
+				if (freq == 0 || bit == 0 || chan == 0)
+					return Items;
+
 				Items.Add(new audio()
 				{
 					Basic = new basic
@@ -174,9 +181,9 @@ namespace ifme
 						Format = "avs",
 					},
 
-					RawFreq = Convert.ToInt32(audiofreq),
-					RawBit = Convert.ToInt32(audiobit),
-					RawChan = Convert.ToInt32(audiochan)
+					RawFreq = freq,
+					RawBit = bit,
+					RawChan = chan
 				});
 
 				return Items;
@@ -258,6 +265,13 @@ namespace ifme
 							if (string.IsNullOrEmpty(audiobit))
 								audiobit = "16"; // fltp (32 bits floats, planar) use for decode lossy codec
 
+							int freq = Convert.ToInt32(audiofreq);
+							int bit = Convert.ToInt32(audiobit);
+							int chan = Convert.ToInt32(audiochan);
+
+							if (freq == 0 || bit == 0 || chan == 0)
+								continue;
+
 							Items.Add(new audio()
 							{
 								Basic = new basic
@@ -268,9 +282,9 @@ namespace ifme
 									Format = Common.Format,
 								},
 
-								RawFreq = Convert.ToInt32(audiofreq),
-								RawBit = Convert.ToInt32(audiobit),
-								RawChan = Convert.ToInt32(audiochan)
+								RawFreq = freq,
+								RawBit = bit,
+								RawChan = chan
 							});
 						}
                     }
