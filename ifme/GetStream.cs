@@ -8,6 +8,7 @@ using IniParser;
 using IniParser.Model;
 
 using static ifme.Properties.Settings;
+using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -46,7 +47,7 @@ namespace ifme
 		{
 			// Basic
 			string id = string.Empty;
-			string lang = string.Empty;
+			string lang = "und";
 			string codec = string.Empty;
 			string format = string.Empty;
 
@@ -54,35 +55,31 @@ namespace ifme
 			if (data.Contains("Stream #"))
 			{
 				// ID section
-				for (int i = data.IndexOf('#') + 1; i < data.Length; i++)
-				{
-					if (data[i] == '(')
-						break;
-					if (data[i] == '[')
-						break;
-					if (data[i] == ':' && id.Contains(':'))
-						break;
+				Regex regId = new Regex(@"#\d+:\d+");
+				Match matchId = regId.Match(data);
 
-					id += data[i];
-				}
+				if (matchId.Success)
+				{
+					id = matchId.Value.Substring(1);
+                }
 
 				// Lang section
-				if (data[data.IndexOf(kind) - 3] == ')')
-					lang = data.Substring(data.IndexOf('(') + 1, data.IndexOf(')') - (data.IndexOf('(') + 1));
-				else
-					lang = "und";
+				Regex regLang = new Regex(@"\(([a-z]{3})\):");
+				Match matchLang = regLang.Match(data);
+
+				if (matchLang.Success)
+				{
+					lang = matchLang.Value.Substring(1, 3);
+                }
 
 				// Codec section
-				int x = data.IndexOf(kind) + (kind.Length + 2);
-				for (int i = x; i < data.Length; i++)
-				{
-					if (data[i] == ' ')
-						break;
-					if (data[i] == ',')
-						break;
+				Regex regCodec = new Regex($@"{kind}: \w+");
+				Match matchCodec = regCodec.Match(data);
 
-					codec += data[i];
-				}
+				if (matchCodec.Success)
+				{
+					codec = matchCodec.Value.Substring(7);
+                }
 
 				try
 				{
@@ -147,26 +144,22 @@ namespace ifme
 
 			if (IsAviSynth(file))
 			{
-				string audiobit = "0";
-				string audiofreq = "0";
-				string audiochan = "0";
+				int bit = 0;
+				int freq = 0;
+				int chan = 0;
 
 				TaskManager.Run($"\"{Plugin.AVS4P}\" info \"{file}\" > {IdAvs}");
 				foreach (var item in File.ReadAllLines(IdAvs))
 				{
 					if (item.Contains("a:sample_rate"))
-						audiofreq = item.Substring(14);
+						freq = int.Parse(item.Substring(14));
 
 					if (item.Contains("a:bit_depth"))
-						audiobit = item.Substring(14);
+						bit = int.Parse(item.Substring(14));
 
 					if (item.Contains("a:channels"))
-						audiochan = item.Substring(14);
+						chan = int.Parse(item.Substring(14));
                 }
-
-				int freq = Convert.ToInt32(audiofreq);
-                int bit = Convert.ToInt32(audiobit);
-				int chan = Convert.ToInt32(audiochan);
 
 				if (freq == 0 || bit == 0 || chan == 0)
 					return Items;
@@ -201,76 +194,45 @@ namespace ifme
 							var Common = Basic(kind, item);
 
 							// Audio section
-							string audiobit = string.Empty;
-							string audiofreq = string.Empty;
-							string audiochan = string.Empty;
+							int bit = 24;
+							int freq = 48000;
+							int chan = 2;
 
 							// Frequency
-							for (int i = item.IndexOf("Hz, ") - 2; i > -1; i--)
+							Regex regFreq = new Regex(@"\d{4,6} Hz");
+							Match matchFreq = regFreq.Match(item);
+
+							if (matchFreq.Success)
 							{
-								if (item[i] == ' ')
-									break;
-
-								if (char.IsDigit(item[i]))
-									audiofreq += item[i];
+								freq = int.Parse(new Regex(@"\d+").Match(matchFreq.Value).Value);
 							}
-
-							audiofreq = new string(audiofreq.Reverse().ToArray());
 
 							// Channel
-							for (int i = item.IndexOf("Hz, ") + 4; i < item.Length; i++)
+							Regex regChan = new Regex(@"(stereo|mono|\d\.\d)");
+							Match matchChan = regChan.Match(item);
+
+							if (matchChan.Success)
 							{
-								if (item[i] == ',')
-									break;
-
-								if (item[i] == '(')
-									break;
-
-								audiochan += item[i];
+								if (matchChan.Value.Contains('.'))
+									chan = int.Parse(matchChan.Value.Split('.')[0]) + int.Parse(matchChan.Value.Split('.')[1]);
+								else if (string.Equals(matchChan.Value, "mono", IC))
+									chan = 1;
+								else
+									chan = 2;
 							}
-
-							if (string.Equals("stereo", audiochan, IC))
-								audiochan = "2";
-							else if (string.Equals("mono", audiochan, IC))
-								audiochan = "1";
-							else if (!string.IsNullOrEmpty(audiochan) && audiochan.Contains('.'))
-								audiochan = $"{Convert.ToInt32(audiochan.Split('.')[0]) + Convert.ToInt32(audiochan.Split('.')[1])}";
-							else if (char.IsDigit(audiochan[0]))
-								audiochan = $"{audiochan[0]}";
-							else
-								audiochan = "2"; // default
 
 							// Bit
-							for (int i = item.IndexOf("Hz, ") + 4; i < item.Length; i++)
+							Regex regBit = new Regex(@"(fltp|s\d{1,2})");
+							Match matchBit = regBit.Match(item);
+
+							if (matchBit.Success)
 							{
-								if (item[i] == ',')
-								{
-									i += 2;
+								if (matchBit.Value.Contains('s'))
+									bit = int.Parse(matchBit.Value.Substring(1));
 
-									while (i < item.Length)
-									{
-										if (item[i] == ',')
-											break;
-
-										if (char.IsDigit(item[i]))
-											audiobit += item[i];
-
-										i++;
-									}
-
-									break;
-								}
+								if (bit >= 32)
+									bit = 24;
 							}
-
-							if (string.IsNullOrEmpty(audiobit))
-								audiobit = "16"; // fltp (32 bits floats, planar) use for decode lossy codec
-
-							int freq = Convert.ToInt32(audiofreq);
-							int bit = Convert.ToInt32(audiobit);
-							int chan = Convert.ToInt32(audiochan);
-
-							if (freq == 0 || bit == 0 || chan == 0)
-								continue;
 
 							Items.Add(new audio()
 							{
