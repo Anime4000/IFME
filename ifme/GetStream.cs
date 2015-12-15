@@ -55,12 +55,12 @@ namespace ifme
 			if (data.Contains("Stream #"))
 			{
 				// ID section
-				Regex regId = new Regex(@"#\d+:\d+");
+				Regex regId = new Regex(@"#(\d+:\d+)");
 				Match matchId = regId.Match(data);
 
 				if (matchId.Success)
 				{
-					id = matchId.Value.Substring(1);
+					id = matchId.Groups[1].Value;
                 }
 
 				// Lang section
@@ -69,16 +69,16 @@ namespace ifme
 
 				if (matchLang.Success)
 				{
-					lang = matchLang.Value.Substring(1, 3);
+					lang = matchLang.Groups[1].Value;
                 }
 
 				// Codec section
-				Regex regCodec = new Regex($@"{kind}: \w+");
+				Regex regCodec = new Regex($@"{kind}: (\w+)");
 				Match matchCodec = regCodec.Match(data);
 
 				if (matchCodec.Success)
 				{
-					codec = matchCodec.Value.Substring(7);
+					codec = matchCodec.Groups[1].Value;
                 }
 
 				try
@@ -281,65 +281,6 @@ namespace ifme
                 }
 			}
 
-			return Items;
-		}
-
-		public static List<matroska> MkvAttachment(string file)
-		{
-			List<matroska> Items = new List<matroska>();
-			string Kind = "Attachment";
-
-			TaskManager.Run($"\"{Plugin.MKVME}\" -i \"{file}\" > {IdMkv}");
-			foreach (var x in File.ReadAllLines(IdMkv))
-			{
-				if (x.Contains(Kind))
-				{
-					string id = null;
-					string fn = null;
-					string me = null;
-					char[] f = x.ToCharArray();
-
-					for (int i = 0; i < f.Length; i++)
-					{
-						if (f[i] == ':')
-							break;
-
-						if (char.IsNumber(f[i]))
-							id += f[i];
-					}
-
-					for (int i = f.Length - 1; i > 0; i--)
-					{
-						if (f[i] == '\'' && f[i - 1] == ' ')
-							break;
-
-						if (f[i] == '\'')
-							continue;
-
-						fn += f[i];
-					}
-
-					char[] tmp = fn.ToCharArray();
-					Array.Reverse(tmp);
-					fn = new string(tmp);
-
-					for (int i = 0; i < f.Length; i++)
-					{
-						if (f[i] == '\'')
-						{
-							for (int c = i + 1; c < f.Length; c++)
-							{
-								if (f[c] == '\'')
-									break;
-
-								me += f[c];
-							}
-							break;
-						}
-					}
-					Items.Add(new matroska() { ID = id, File = fn, Mime = me });
-				}
-			}
 			return Items;
 		}
 
