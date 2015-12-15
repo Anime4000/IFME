@@ -29,6 +29,7 @@
 [change] Prefix [encoded] now changed to current date-time postfix (Git #68)
 [change] Music removed for About IFME, not suitable for professional environment
 [change] Updated ISO 639-2 language code
+[change] Using FFmpeg to extract font files
 
 Version 5.1 (FLUORITE DIARY)
 -----------
