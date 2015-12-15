@@ -30,7 +30,7 @@ namespace ifme
 			{
 				int sc = 0;
 				foreach (var subs in GetStream.Subtitle(realfile))
-					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{realfile}\" -map {subs.Id} -y sub{sc++:0000}_{subs.Lang}.{subs.Format}");
+					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{realfile}\" -map {subs.Id} -y subtitle{sc++:0000}_{subs.Lang}.{subs.Format}");
 
 				TaskManager.Run($"\"{Plugin.LIBAV}\" -dump_attachment:t \"\" -i \"{realfile}\"");
 
@@ -307,7 +307,7 @@ namespace ifme
 				}
 				else
 				{
-					foreach (var subs in Directory.GetFiles(Default.DirTemp, "sub*"))
+					foreach (var subs in Directory.GetFiles(Default.DirTemp, "subtitle*"))
 					{
 						cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{GetInfo.FileLang(subs)} \"{subs}\" ";
 					}
