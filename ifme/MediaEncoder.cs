@@ -229,7 +229,7 @@ namespace ifme
 				string encoder = $"\"{encbin}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
 
 				// Encoding start
-				if (type-- >= 3) // multi pass
+				if ((--type) >= 3) // multi pass
 				{
 					for (int i = 0; i < type; i++)
 					{
@@ -243,7 +243,7 @@ namespace ifme
 						if (i == 1) // get actual frame count
 							framecount = GetStream.FrameCount(Path.Combine(Default.DirTemp, $"video0000_{video.Lang}.hevc"));
 
-						Console.WriteLine($"Pass {i + 1} of {type + 1}"); // human read no index
+						Console.WriteLine($"Pass {i + 1} of {type}"); // human read no index
 						TaskManager.Run($"{decoder} | {encoder} -f {framecount} --pass {pass}");
 					}
 				}

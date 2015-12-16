@@ -908,6 +908,7 @@ namespace ifme
 			if (lstQueue.SelectedItems.Count > 0)
 			{
 				string value = (lstQueue.SelectedItems[0].Tag as Queue).Video.Value;
+				float f;
 
 				switch (cboVideoType.SelectedIndex)
 				{
@@ -921,6 +922,10 @@ namespace ifme
 						trkVideoRate.TickFrequency = 10;
 
 						lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
+
+						if (float.Parse(value) > 52.0)
+							value = "26.0";
+
 						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(value) * 10);
 						txtVideoValue.Text = value;
 						break;
@@ -935,6 +940,13 @@ namespace ifme
 						trkVideoRate.TickFrequency = 1;
 
 						lblVideoRateValue.Text = Language.Get[Name][lblVideoRateValue.Name];
+
+						if (float.TryParse(value, out f))
+							value = "26";
+
+						if (int.Parse(value) > 52)
+							value = "26";
+
 						trkVideoRate.Value = Convert.ToInt32(Convert.ToDouble(value));
 						txtVideoValue.Text = value;
                         break;
@@ -945,6 +957,13 @@ namespace ifme
 						trkVideoRate.Visible = false;
 
 						lblVideoRateValue.Text = $"{Language.Get[Name][lblVideoRateValue.Name].Replace(":", "")} (kbps):";
+
+						if (float.TryParse(value, out f))
+							value = "1024";
+
+						if (int.Parse(value) < 128)
+							value = "1024";
+
 						trkVideoRate.Value = 0;
 						txtVideoValue.Text = value;
 						break;
@@ -1013,13 +1032,14 @@ namespace ifme
 		}
 
 		private void txtVideoValue_KeyPress(object sender, KeyPressEventArgs e)
-		{
-			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-				e.Handled = true;
+		{ 
+			if (cboVideoType.SelectedIndex == 0) // float
+				if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && !(e.KeyChar == '.'))
+					e.Handled = true;
 
-			// only allow one decimal point
-			if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
-				e.Handled = true;
+			if (cboVideoType.SelectedIndex >= 1) // int
+				if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+					e.Handled = true;
 		}
 
 		private void trkVideoRate_ValueChanged(object sender, EventArgs e)
@@ -2234,6 +2254,7 @@ namespace ifme
 
 			cboProfile.Enabled = x;
 			btnProfileSave.Enabled = x;
+			btnProfileDelete.Enabled = x;
 
 			txtDestination.Enabled = x;
 			btnBrowse.Enabled = x;
