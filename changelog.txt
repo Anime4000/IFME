@@ -9,6 +9,7 @@
 [added] Allow user to delete Encoding Preset (Git #55)
 [added] Allow user to delete queue by pressing DEL key (Git #55)
 [added] Allow user to add more Audio track
+[added] Allow TTC (TrueType Font Collection) to be embedded
 [fixed] CPU Affinity & Priority has been fix! [Windows] (Git #61)
 [fixed] Download & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
