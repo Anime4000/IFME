@@ -337,6 +337,11 @@ namespace ifme
 						cmdattach += $"--attach-file \"{attach}\" ";
 					}
 
+					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.ttc"))
+					{
+						cmdattach += $"--attach-file \"{attach}\" ";
+					}
+
 					foreach (var attach in Directory.GetFiles(Default.DirTemp, "*.pfb"))
 					{
 						cmdattach += $"--attachment-mime-type application/x-font --attach-file \"{attach}\" ";
