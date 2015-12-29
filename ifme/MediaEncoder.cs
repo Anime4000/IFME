@@ -32,7 +32,7 @@ namespace ifme
 				foreach (var subs in GetStream.Subtitle(realfile))
 					TaskManager.Run($"\"{Plugin.LIBAV}\" -i \"{realfile}\" -map {subs.Id} -y subtitle{sc++:0000}_{subs.Lang}.{subs.Format}");
 
-				TaskManager.Run($"\"{Plugin.LIBAV}\" -dump_attachment:t \"\" -i \"{realfile}\"");
+				TaskManager.Run($"\"{Plugin.LIBAV}\" -dump_attachment:t \"\" -i \"{realfile}\" -y");
 
 				TaskManager.Run($"\"{Plugin.MKVEX}\" chapters \"{realfile}\" > chapters.xml");
 			}
