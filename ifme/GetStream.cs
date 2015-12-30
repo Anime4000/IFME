@@ -148,7 +148,7 @@ namespace ifme
 				int freq = 0;
 				int chan = 0;
 
-				TaskManager.Run($"\"{Plugin.AVS4P}\" info \"{file}\" > {IdAvs}");
+				TaskManager.Run($"\"{Plugin.AVSPIPE}\" info \"{file}\" > {IdAvs}");
 				foreach (var item in File.ReadAllLines(IdAvs))
 				{
 					if (item.Contains("a:sample_rate"))
@@ -375,7 +375,7 @@ namespace ifme
 			Console.WriteLine("Please wait while IFME analysing AviSynth file...");
 			Console.ResetColor();
 
-			TaskManager.Run($"\"{Plugin.AVS4P}\" info \"{file}\" > avisynth.id");
+			TaskManager.Run($"\"{Plugin.AVSPIPE}\" info \"{file}\" > avisynth.id");
 			string[] result = File.ReadAllLines(Path.Combine(Default.DirTemp, "avisynth.id"));
 
 			foreach (var item in result)

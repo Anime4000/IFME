@@ -61,15 +61,15 @@ namespace ifme
 		public static string HEVC12 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-12"); } }
 
 		// Run once, can be modified
-		public static string LIBAV = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
+		public static string FFMPEG = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg");
 		public static string PROBE = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffprobe");
-		public static string FPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
-		public static string MKVEX = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvextract");
-		public static string MKVME = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvmerge");
-		public static string MP4BX = Path.Combine(Global.Folder.Plugins, "mp4box", "MP4Box");
-		public static string AVS4P = Path.Combine(Global.Folder.Plugins, "avisynth", "avs2pipe");
+		public static string FFPLAY = Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay");
+		public static string MKVEXT = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvextract");
+		public static string MKVMER = Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvmerge");
+		public static string MP4BOX = Path.Combine(Global.Folder.Plugins, "mp4box", "MP4Box");
+		public static string AVSPIPE = Path.Combine(Global.Folder.Plugins, "avisynth", "avs2pipe");
 		public static string FFMS2 = Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex");
-		public static string MP4FP = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
+		public static string MP4FPS = Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod");
 
 		public static string AviSynthFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll");
 		public static bool IsExistAviSynth = File.Exists(AviSynthFile);
@@ -202,16 +202,16 @@ namespace ifme
 			a.Profile.Ver = Global.App.Version;
 			a.Profile.Web = "https://x265.github.io/";
 			a.Provider.Name = "IFME";
-			a.Provider.Update = null;
-			a.Provider.Download = null;
-			a.App.Bin = null;
+			a.Provider.Update = string.Empty;
+			a.Provider.Download = string.Empty;
+			a.App.Bin = string.Empty;
 			a.App.Quality = new[] { "0" };
 			a.App.Default = "0";
-			a.Arg.Raw = null;
-			a.Arg.Input = null;
-			a.Arg.Output = null;
-			a.Arg.Bitrate = null;
-			a.Arg.Advance = null;
+			a.Arg.Raw = string.Empty;
+			a.Arg.Input = string.Empty;
+			a.Arg.Output = string.Empty;
+			a.Arg.Bitrate = string.Empty;
+			a.Arg.Advance = string.Empty;
 
 			List.Add(a);
 
@@ -223,16 +223,16 @@ namespace ifme
 			b.Profile.Ver = Global.App.Version;
 			b.Profile.Web = "https://x265.github.io/";
 			b.Provider.Name = "IFME";
-			b.Provider.Update = null;
-			b.Provider.Download = null;
-			b.App.Bin = null;
+			b.Provider.Update = string.Empty;
+			b.Provider.Download = string.Empty;
+			b.App.Bin = string.Empty;
 			b.App.Quality = new[] { "128", "192", "256", "384", "512", "768", "1024" };
 			b.App.Default = "256";
-			b.Arg.Raw = null;
-			b.Arg.Input = null;
-			b.Arg.Output = null;
-			b.Arg.Bitrate = null;
-			b.Arg.Advance = null;
+			b.Arg.Raw = string.Empty;
+			b.Arg.Input = string.Empty;
+			b.Arg.Output = string.Empty;
+			b.Arg.Bitrate = string.Empty;
+			b.Arg.Advance = string.Empty;
 
 			List.Add(b);
 		}

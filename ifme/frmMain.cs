@@ -1628,7 +1628,7 @@ namespace ifme
 			{
 				foreach (var item in Directory.GetFiles(Path.Combine(Properties.Settings.Default.DirTemp), "video*"))
 				{
-					TaskManager.Run($"\"{Plugin.FPLAY}\" \"{item}\" > {OS.Null} 2>&1");
+					TaskManager.Run($"\"{Plugin.FFPLAY}\" \"{item}\" > {OS.Null} 2>&1");
 				}
 			}
 			else
