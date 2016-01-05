@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 enum QueueProp
 {
@@ -47,83 +48,83 @@ namespace ifme
 		public List<attachment> Attach = new List<attachment>();
 
 		public static string SaveFile;
-	}
 
-	public class data
-	{
-		public string File;
+		public class data
+		{
+			public string File;
 
-		public bool IsFileMkv;
-		public bool IsFileAvs;
+			public bool IsFileMkv;
+			public bool IsFileAvs;
 
-		public bool SaveAsMkv;
-	}
+			public bool SaveAsMkv;
+		}
 
-	public class properties
-	{
-		public bool IsVFR;
-		public int Duration; // in ms
-		public int FrameCount;
-	}
+		public class properties
+		{
+			public bool IsVFR;
+			public int Duration; // in ms
+			public int FrameCount;
+		}
 
-	public class picture
-	{
-		public bool IsCopy;
-		public bool IsHevc;
+		public class picture
+		{
+			public bool IsCopy;
+			public bool IsHevc;
 
-		public string Resolution;
-		public string FrameRate;
-		public int BitDepth;
-		public int Chroma;
+			public string Resolution;
+			public string FrameRate;
+			public int BitDepth;
+			public int Chroma;
 
-		public bool YadifEnable;
-		public int YadifMode;
-		public int YadifField;
-		public int YadifFlag;
+			public bool YadifEnable;
+			public int YadifMode;
+			public int YadifField;
+			public int YadifFlag;
 
-		public string Command;
-	}
+			public string Command;
+		}
 
-	public class video
-	{
-		public string Preset;
-		public string Tune;
-		public int Type;
-		public string Value;
-		public string Command;
-	}
+		public class video
+		{
+			public string Preset;
+			public string Tune;
+			public int Type;
+			public string Value;
+			public string Command;
+		}
 
-	public class audio
-	{
-		public bool Enable;
-		public string File;
-		public bool Embedded;
-		public string Id;
-		public string Lang;
-		public string Codec;
-		public string Format;
+		public class audio
+		{
+			public bool Enable;
+			public string File;
+			public bool Embedded;
+			public string Id;
+			public string Lang;
+			public string Codec;
+			public string Format;
 
-		public int RawBit;
-		public int RawFreq;
-		public int RawChan;
+			public int RawBit;
+			public int RawFreq;
+			public int RawChan;
 
-		public string Encoder;
-		public string BitRate;
-		public string Freq;
-		public string Chan;
-		public string Args;
-	}
+			public Guid Encoder;
+			public string BitRate;
+			public string Freq;
+			public string Chan;
+			public string Args;
+		}
 
-	public class subtitle
-	{
-		public string File;
-		public string Lang;
-	}
+		public class subtitle
+		{
+			public string File;
+			public string Lang;
+		}
 
-	public class attachment
-	{
-		public string File;
-		public string MIME;
-		public string Comment = "No";
+		public class attachment
+		{
+			public string File;
+			public string MIME;
+			public string Comment = "No";
+		}
 	}
 }

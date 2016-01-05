@@ -67,13 +67,14 @@ namespace ifme
 				cboPictureBit.Items.Add("12");
 
 			// Audio
+			Dictionary<Guid, string> audio = new Dictionary<Guid, string>();
 			foreach (var item in Plugin.List)
-			{
-				if (item.Info.Type.ToLower() == "audio")
-				{
-					cboAudioEncoder.Items.Add(item.Profile.Name);
-				}
-			}
+				if (string.Equals("audio", item.Value.Info.Type, IC))
+					audio.Add(item.Key, item.Value.Profile.Name);
+
+			cboAudioEncoder.DisplayMember = "Value";
+			cboAudioEncoder.ValueMember = "Key";
+			cboAudioEncoder.DataSource = new BindingSource(audio, null);
 
 			// Add language list
 			foreach (var item in File.ReadAllLines("iso.code"))
@@ -249,12 +250,14 @@ namespace ifme
 				txtVideoValue.Text = p.Video.Value;
 				txtVideoCmd.Text = p.Video.Command;
 
-				bool exist = Plugin.IsExist(p.Audio.Encoder);
-                cboAudioEncoder.Text = exist ? p.Audio.Encoder : "Passthrough (Extract all audio)";
+				Plugin dummy;
+				bool exist = Plugin.List.TryGetValue(p.Audio.Encoder, out dummy);
+
+				cboAudioEncoder.SelectedValue = exist ? p.Audio.Encoder : new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
 				cboAudioBit.Text = exist ? p.Audio.BitRate : "256";
 				cboAudioFreq.Text = exist ? p.Audio.Freq : "auto";
 				cboAudioChannel.Text = exist ? p.Audio.Chan : "auto";
-				txtAudioCmd.Text = exist ? p.Audio.Args: null;
+				txtAudioCmd.Text = exist ? p.Audio.Args: string.Empty;
 			}
 		}
 
@@ -326,7 +329,7 @@ namespace ifme
 			data["video"].AddKey("cmd", txtVideoCmd.Text);
 
 			data.Sections.AddSection("audio");
-			data["audio"].AddKey("encoder", cboAudioEncoder.Text);
+			data["audio"].AddKey("encoder", $"{cboAudioEncoder.SelectedValue}");
 			data["audio"].AddKey("bitrate", cboAudioBit.Text);
 			data["audio"].AddKey("frequency", cboAudioFreq.Text);
 			data["audio"].AddKey("channel", cboAudioChannel.Text);
@@ -553,15 +556,17 @@ namespace ifme
 			Info.Video.Command = i == 0 ? "--dither" : p.Video.Command;
 
 			// Audio section
-			bool exist = Plugin.IsExist(p.Audio.Encoder);
-            string encoder = i == 0 || !exist ? "Passthrough (Extract all audio)" : p.Audio.Encoder;
+			Plugin dummy;
+			bool exist = Plugin.List.TryGetValue(p.Audio.Encoder, out dummy);
+
+            Guid encoder = i == 0 || !exist ? new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff") : p.Audio.Encoder;
 			string bitRate = i == 0 || !exist ? "256" : p.Audio.BitRate;
 			string frequency = i == 0 || !exist ? "auto" : p.Audio.Freq;
 			string channel = i == 0 || !exist ? "auto" : p.Audio.Chan;
 			string command = i == 0 || !exist ? null : p.Audio.Args;
 
 			foreach (var item in GetStream.Audio(file))
-				Info.Audio.Add(new audio
+				Info.Audio.Add(new Queue.audio
 				{
 					Enable = true,
 					File = file,
@@ -788,18 +793,13 @@ namespace ifme
 		{
 			if (rdoMP4.Checked)
 			{
-				foreach (var item in Plugin.List)
+				Plugin test;
+				if (Plugin.List.TryGetValue((Guid)cboAudioEncoder.SelectedValue, out test))
 				{
-					if (string.Equals(item.Info.Type, "audio", IC))
+					if (!string.Equals(test.Info.Support, "mp4", IC))
 					{
-						if (string.Equals(item.Profile.Name, cboAudioEncoder.Text, IC))
-						{
-							if (!string.Equals(item.Info.Support, "mp4", IC))
-							{
-								InvokeLog($"Encoder \"{cboAudioEncoder.Text}\" was not supported by MP4, choose MKV or different encoder");
-								cboAudioEncoder.SelectedIndex = 1;
-                            }
-						}
+						InvokeLog($"Encoder \"{cboAudioEncoder.Text}\" was not supported by MP4, choose MKV or different encoder");
+						cboAudioEncoder.SelectedIndex = 1;
 					}
 				}
 			}
@@ -1125,7 +1125,7 @@ namespace ifme
 			var Info = (Queue)lstQueue.SelectedItems[0].Tag;
 
 			foreach (var item in GetStream.Audio(file))
-				Info.Audio.Add(new audio
+				Info.Audio.Add(new Queue.audio
 				{
 					Enable = true,
 					File = file,
@@ -1139,7 +1139,7 @@ namespace ifme
 					RawFreq = item.RawFreq,
 					RawChan = item.RawChan,
 
-					Encoder = "Passthrough (Extract all audio)",
+					Encoder = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 					BitRate = "256",
 					Freq = "auto",
 					Chan = "auto",
@@ -1174,11 +1174,12 @@ namespace ifme
 		{
 			int i = clbAudioTracks.SelectedIndex;
 			var Info = (Queue)lstQueue.SelectedItems[0].Tag;
+			Plugin dummy;
 
-			if (string.IsNullOrEmpty(Info.Audio[i].Encoder))
-				cboAudioEncoder.SelectedIndex = 1; // default
+			if (Plugin.List.TryGetValue(Info.Audio[i].Encoder, out dummy))
+				cboAudioEncoder.SelectedValue = Info.Audio[i].Encoder;
 			else
-				cboAudioEncoder.Text = Info.Audio[i].Encoder;
+				cboAudioEncoder.SelectedIndex = 1; // default
 		}
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
@@ -1190,59 +1191,36 @@ namespace ifme
 
 			PluginAudioCheck();
 
-			foreach (var item in Plugin.List)
+			Plugin test;
+			var keyid = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+
+            if (Plugin.List.TryGetValue(keyid, out test))
 			{
-				if (item.Info.Type.ToLower() == "audio")
+				cboAudioBit.Items.Clear();
+				cboAudioBit.Items.AddRange(test.App.Quality);
+								
+				if (clbAudioTracks.Items.Count > 0)
 				{
-					if (item.Profile.Name == cboAudioEncoder.Text)
-					{
-						// default value
-						string kbit = string.Empty;
-						string freq = string.Empty;
-						string chan = string.Empty;
+					var n = (Queue)lstQueue.SelectedItems[0].Tag;
+					int i = clbAudioTracks.SelectedIndex;
 
-						// load
-						if (lstQueue.SelectedItems.Count > 0)
-						{
-							var Info = (Queue)lstQueue.SelectedItems[0].Tag;
-							if (clbAudioTracks.Items.Count > 0)
-							{
-								int i = clbAudioTracks.SelectedIndex;
+					cboAudioBit.Text = test.App.Default;
+					cboAudioFreq.SelectedIndex = 0;
+					cboAudioChannel.SelectedValue = 0;
 
-								kbit = Info.Audio[i].BitRate;
-								freq = Info.Audio[i].Freq;
-								chan = Info.Audio[i].Chan;
-							}
-						}
+					foreach (var item in cboAudioBit.Items)
+						if (Equals(n.Audio[i].BitRate, item))
+							cboAudioBit.Text = n.Audio[i].BitRate;
 
-						cboAudioBit.Items.Clear();
-						cboAudioBit.Items.AddRange(item.App.Quality);
+					if (!string.IsNullOrEmpty(n.Audio[i].Freq))
+						cboAudioFreq.Text = n.Audio[i].Freq;
 
-						// display, apply default if null
-						foreach (string kb in cboAudioBit.Items)
-							if (string.Equals(kbit, kb, IC))
-								cboAudioBit.Text = kb;
-							else
-								cboAudioBit.Text = item.App.Default;
+					if (!string.IsNullOrEmpty(n.Audio[i].Chan))
+						cboAudioChannel.Text = n.Audio[i].Chan;
 
-						foreach (string hz in cboAudioFreq.Items)
-							if (string.Equals(freq, hz, IC))
-								cboAudioFreq.Text = freq;
-							else
-								cboAudioFreq.Text = "auto";
-
-						foreach (string ch in cboAudioChannel.Items)
-							if (string.Equals(chan, ch, IC))
-								cboAudioChannel.Text = ch;
-							else
-								cboAudioChannel.Text = "auto";
-
-						txtAudioCmd.Text = item.Arg.Advance;
-						QueueUpdate(QueueProp.AudioEncoder);
-
-						return;
-					}
+					QueueUpdate(QueueProp.AudioEncoder);
 				}
+
 			}
 		}
 
@@ -1359,7 +1337,7 @@ namespace ifme
 				return;
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Subtitle.Add(new subtitle() { File = file, Lang = "und (Undetermined)" });
+				(item.Tag as Queue).Subtitle.Add(new Queue.subtitle() { File = file, Lang = "und (Undetermined)" });
 
 			lstSub.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), "und (Undetermined)" }));
 		}
@@ -1470,7 +1448,7 @@ namespace ifme
 		void AttachAdd(string file)
 		{
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Attach.Add(new attachment() { File = file, MIME = GetInfo.AttachmentValid(file), Comment = "No" });
+				(item.Tag as Queue).Attach.Add(new Queue.attachment() { File = file, MIME = GetInfo.AttachmentValid(file), Comment = "No" });
 
 			lstAttach.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), GetInfo.AttachmentValid(file), "No" }));
 		}
@@ -1591,8 +1569,8 @@ namespace ifme
 						break;
 
 					case QueueProp.AudioEncoder:
-						x.Audio[t].Encoder = cboAudioEncoder.Text;
-						break;
+						x.Audio[t].Encoder = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                        break;
 
 					case QueueProp.AudioBitRate:
 						x.Audio[t].BitRate = cboAudioBit.Text;
@@ -1957,7 +1935,7 @@ namespace ifme
 
 							item.Audio.Clear(); // reset
 							foreach (var audio in GetStream.Audio(newfile))
-								item.Audio.Add(new audio
+								item.Audio.Add(new Queue.audio
 								{
 									Id = audio.Basic.Id,
 									Lang = audio.Basic.Lang,

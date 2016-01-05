@@ -76,13 +76,13 @@ namespace ifme
 			foreach (var item in Plugin.List)
 			{
 				ListViewItem x = new ListViewItem(new[] {
-					$"{item.Profile.Name}{(OS.Is64bit ? $" {(item.Profile.Arch == 32 ? "*32" : "")}" : "")}",
-					item.Profile.Ver,
-					item.Profile.Dev,
-					item.Provider.Name
+					$"{item.Value.Profile.Name}{(OS.Is64bit ? $" {(item.Value.Profile.Arch == 32 ? "*32" : "")}" : "")}",
+					item.Value.Profile.Ver,
+					item.Value.Profile.Dev,
+					item.Value.Provider.Name
 				});
 
-				x.Tag = item.Profile.Web;
+				x.Tag = item.Value.Profile.Web;
 
 				lstPlugin.Items.Add(x);
 			}

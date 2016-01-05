@@ -19,7 +19,7 @@ value = 24
 cmd = --dither
 
 [audio]
-encoder = Freeware Advanced Audio Coder
+encoder = faacfaac-faac-faac-faac-faceb00cdead
 bitrate = 112
 frequency = auto
 channel = auto

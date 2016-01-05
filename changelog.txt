@@ -1,4 +1,4 @@
-﻿Version 5.2 (Archangel Descending)
+﻿Version 6.0 (Archangel Descending)
 ----------------------------------
 
 [new] Allow user to save encoded file either same source folder or given path
@@ -31,6 +31,7 @@
 [change] Music removed for About IFME, not suitable for professional environment
 [change] Updated ISO 639-2 language code
 [change] Using FFmpeg to extract font files
+[change] Using GUID rather then string equalities for Audio encoder (API change)
 
 Version 5.1 (FLUORITE DIARY)
 -----------

@@ -27,7 +27,7 @@ namespace ifme
 		private void frmAbout_Load(object sender, EventArgs e)
 		{
 			foreach (var item in Plugin.List)
-				Dev.Add(item.Profile.Dev);
+				Dev.Add(item.Value.Profile.Dev);
 
 			foreach (var item in Language.Lists)
 			{

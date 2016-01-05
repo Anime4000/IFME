@@ -61,15 +61,13 @@ namespace ifme
 					counter++;
 					ffile += $"-i \"{file}\"";
                     ffmap += $"-map {track.Id} ";
-					
+
 					if (item.Audio.Count == counter)
 					{
-						foreach (var codec in Plugin.List)
+						Plugin codec;
+						if (Plugin.List.TryGetValue(item.Audio[0].Encoder, out codec))
 						{
-							if (string.Equals(item.Audio[0].Encoder, codec.Profile.Name, IC))
-							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" {ffile} {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, freq, bit, chan))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
-							}
+							TaskManager.Run($"\"{Plugin.FFMPEG}\" {ffile} {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, freq, bit, chan))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 						}
 					}
 				}
@@ -78,11 +76,45 @@ namespace ifme
 					if (!track.Enable)
 						continue;
 
-					if (string.Equals(track.Encoder, "No Audio", IC))
+					if (Equals(new Guid("00000000-0000-0000-0000-000000000000"), track.Encoder))
 					{
-						// Do noting
+						continue;
 					}
-					else if (string.Equals(track.Encoder, "Passthrough (Extract all audio)", IC))
+
+					Plugin codec;
+
+					if (Plugin.List.TryGetValue(track.Encoder, out codec) &&
+						!Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), track.Encoder))
+					{
+						if (Convert.ToInt32(bit) >= 32)
+							bit = "24"; // force to 24bit max
+
+						string rawArgs = string.Empty;
+
+						try
+						{
+							if (!string.IsNullOrEmpty(codec.Arg.Raw))
+								rawArgs = string.Format(codec.Arg.Raw, freq, bit, chan);
+						}
+						catch (Exception e)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.Error.WriteLine($"Raw arguments incomplete, ignored!\n{e}");
+							Console.ResetColor();
+						}
+
+						string encArgs = $"\"{codec.App.Bin}\" {rawArgs} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
+
+						if (item.Data.IsFileAvs)
+						{
+							TaskManager.Run($"\"{Plugin.AVSPIPE}\" audio \"{file}\" | \"{Plugin.FFMPEG}\" -loglevel panic -i - -acodec pcm_s{bit}le -f wav - | {encArgs}"); // double pipe due some encoder didn't read avs2pipe properly, example: opusenc.exe
+						}
+						else
+						{
+							TaskManager.Run($"\"{Plugin.FFMPEG}\" -loglevel panic -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | {encArgs}");
+						}
+					}
+					else
 					{
 						if (item.Data.IsFileAvs)
 						{
@@ -108,44 +140,6 @@ namespace ifme
 							else
 							{
 								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map {track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
-							}
-						}
-					}
-					else
-					{
-						foreach (var codec in Plugin.List)
-						{
-							if (string.Equals(track.Encoder, codec.Profile.Name, IC))
-							{
-								if (Convert.ToInt32(bit) >= 32)
-									bit = "24"; // force to 24bit max
-
-								string rawArgs = string.Empty;
-
-								try
-								{
-									if (!string.IsNullOrEmpty(codec.Arg.Raw))
-										rawArgs = string.Format(codec.Arg.Raw, freq, bit, chan);
-                                }
-								catch (Exception e)
-								{
-									Console.ForegroundColor = ConsoleColor.Red;
-									Console.Error.WriteLine($"Raw arguments incomplete, ignored!\n{e}");
-									Console.ResetColor();
-								}
-
-                                string encArgs = $"\"{codec.App.Bin}\" {rawArgs} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
-
-								if (item.Data.IsFileAvs)
-								{
-									TaskManager.Run($"\"{Plugin.AVSPIPE}\" audio \"{file}\" | \"{Plugin.FFMPEG}\" -loglevel panic -i - -acodec pcm_s{bit}le -f wav - | {encArgs}"); // double pipe due some encoder didn't read avs2pipe properly, example: opusenc.exe
-                                    break;
-								}
-								else
-								{
-									TaskManager.Run($"\"{Plugin.FFMPEG}\" -loglevel panic -i \"{file}\" -map {track.Id} -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | {encArgs}");
-									break;
-								}
 							}
 						}
 					}

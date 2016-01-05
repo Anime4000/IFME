@@ -43,7 +43,7 @@ namespace ifme
 				p.Video.Type = Convert.ToInt32(data["video"]["type"]);
 				p.Video.Value = data["video"]["value"];
 				p.Video.Command = data["video"]["cmd"];
-				p.Audio.Encoder = data["audio"]["encoder"];
+				p.Audio.Encoder = new Guid(data["audio"]["encoder"]);
 				p.Audio.BitRate = data["audio"]["bitrate"];
 				p.Audio.Freq = data["audio"]["frequency"];
 				p.Audio.Chan = data["audio"]["channel"];
@@ -61,5 +61,32 @@ namespace ifme
 			public string Author;
 			public string Web;
 		}
+
+		public class picture
+		{
+			public string Resolution;
+			public string FrameRate;
+			public int BitDepth;
+			public int Chroma;
+		}
+
+		public class video
+		{
+			public string Preset;
+			public string Tune;
+			public int Type;
+			public string Value;
+			public string Command;
+		}
+
+		public class audio
+		{
+			public Guid Encoder;
+			public string BitRate;
+			public string Freq;
+			public string Chan;
+			public string Merge;
+			public string Args;
+        }
 	}
 }

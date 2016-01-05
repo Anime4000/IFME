@@ -1224,12 +1224,14 @@
 			// cboAudioEncoder
 			// 
 			this.cboAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.cboAudioEncoder.DisplayMember = "Value";
 			this.cboAudioEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioEncoder.FormattingEnabled = true;
 			this.cboAudioEncoder.Location = new System.Drawing.Point(6, 149);
 			this.cboAudioEncoder.Name = "cboAudioEncoder";
 			this.cboAudioEncoder.Size = new System.Drawing.Size(300, 21);
 			this.cboAudioEncoder.TabIndex = 5;
+			this.cboAudioEncoder.ValueMember = "Key";
 			this.cboAudioEncoder.SelectedIndexChanged += new System.EventHandler(this.cboAudioEncoder_SelectedIndexChanged);
 			// 
 			// lblAudioEncoder

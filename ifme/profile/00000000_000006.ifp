@@ -19,7 +19,7 @@ value = 22.0
 cmd = --dither --keyint 150 --rc-lookahead 100 --frame-threads 1
 
 [audio]
-encoder = Passthrough (Extract all audio)
+encoder = ffffffff-ffff-ffff-ffff-ffffffffffff
 bitrate = 128
 frequency = auto
 channel = auto

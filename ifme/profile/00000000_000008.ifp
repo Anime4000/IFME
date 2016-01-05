@@ -19,7 +19,7 @@ value = 26.5
 cmd = --bframes 3 --ref 3 --rc-lookahead 40 --merange 40 --aq-mode 1 --aq-strength 0.6 --psy-rd 0.62 --psy-rdoq 0.00 --rd 6 --vbv-maxrate 1500 --vbv-bufsize 1500
 
 [audio]
-encoder = NeroAAC - BVZ
+encoder = 43504350-4350-4350-4350-faceb00cdead
 bitrate = 64000
 frequency = 44100
 channel = stereo

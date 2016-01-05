@@ -19,7 +19,7 @@ value = 22
 cmd = --dither --keyint 750 --rc-lookahead 250 --ref 6 --rd 6 --me 3
 
 [audio]
-encoder = Opus Interactive Audio Codec
+encoder = 04650465-0465-0465-0465-faceb00cdead
 bitrate = 320
 frequency = auto
 channel = auto

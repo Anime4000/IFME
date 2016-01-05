@@ -79,16 +79,7 @@ namespace ifme
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;
 
-		public static List<Plugin> List = new List<Plugin>();
-
-		public static bool IsExist(string name)
-		{
-			foreach (var item in List)
-				if (string.Equals(item.Profile.Name, name, StringComparison.InvariantCultureIgnoreCase))
-					return true;
-
-			return false;
-		}
+		public static Dictionary<Guid, Plugin> List = new Dictionary<Guid, Plugin>();
 
 		public static void Repo()
 		{
@@ -129,20 +120,21 @@ namespace ifme
 		{
 			foreach (var item in List)
 			{
-				Console.Write($"\nChecking for update: {item.Profile.Name}");
+				var obj = item.Value;
+				Console.Write($"\nChecking for update: {obj.Profile.Name}");
 
-				if (string.IsNullOrEmpty(item.Provider.Update))
+				if (string.IsNullOrEmpty(obj.Provider.Update))
 					continue;
 
-				var version = new Download().GetString(item.Provider.Update);
+				var version = new Download().GetString(obj.Provider.Update);
 
 				if (string.IsNullOrEmpty(version))
 					continue;
 
-				if (string.Equals(item.Profile.Ver, version))
+				if (string.Equals(obj.Profile.Ver, version))
 					continue;
 
-				new Download().GetFileExtract(item.Provider.Download, Global.Folder.Plugins);
+				new Download().GetFileExtract(obj.Provider.Download, Global.Folder.Plugins);
 			}
 		}
 
@@ -187,7 +179,7 @@ namespace ifme
 					p.Arg.Advance = data["arg"]["advance"];
 				}
 
-				List.Add(p);
+				List.Add(new Guid(data["info"]["guid"]), p);
 			}
 		}
 
@@ -213,7 +205,7 @@ namespace ifme
 			a.Arg.Bitrate = string.Empty;
 			a.Arg.Advance = string.Empty;
 
-			List.Add(a);
+			List.Add(new Guid("00000000-0000-0000-0000-000000000000"), a);
 
 			var b = new Plugin();
 			b.Info.Type = "audio";
@@ -234,7 +226,7 @@ namespace ifme
 			b.Arg.Bitrate = string.Empty;
 			b.Arg.Advance = string.Empty;
 
-			List.Add(b);
-		}
+			List.Add(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), b);
+        }
 	}
 }
