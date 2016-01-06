@@ -39,10 +39,6 @@ namespace ifme
 
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				Plugin.IsExistHEVCMSVC = true;
-
-			// FFmpeg 64
-			if (OS.IsLinux)
-				Default.UseFFmpeg64 = true; // always use
 		}
 
 		public static void RunLoad()
@@ -106,20 +102,6 @@ namespace ifme
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine("AviSynth not detected!");
-				Console.ResetColor();
-			}
-
-			// FFmpeg check
-			if (Default.UseFFmpeg64)
-			{
-				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.WriteLine("Using FFmpeg 64bit require AviSynth 64bit support!");
-				Console.ResetColor();
-			}
-			else
-			{
-				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.WriteLine("Using FFmpeg 32bit (default)");
 				Console.ResetColor();
 			}
 

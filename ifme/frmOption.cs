@@ -38,13 +38,6 @@ namespace ifme
 			txtNamePrefix.Text = Default.NamePrefix;
 			chkSoundDone.Checked = Default.SoundFinish;
 
-			// FFmpeg 64
-			grpFFmpeg.Enabled = OS.Is64bit && OS.IsWindows;
-			grpFFmpeg.Text = "&FFmpeg";
-
-			chkFFmpeg64.Checked = Default.UseFFmpeg64;
-			chkFFmpeg64.Text = "FFmpeg &64bit*";
-
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
 			{
@@ -295,9 +288,6 @@ namespace ifme
 				Default.Save();
 				return;
 			}
-
-			// FFmpeg 64
-			Default.UseFFmpeg64 = chkFFmpeg64.Checked;
 
 			// Save CPU affinity
 			string aff = "";

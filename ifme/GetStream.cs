@@ -222,7 +222,7 @@ namespace ifme
 							}
 
 							// Bit
-							Regex regBit = new Regex(@"(fltp|s\d{1,2})");
+							Regex regBit = new Regex(@"(flt|fltp|s\d{1,2})");
 							Match matchBit = regBit.Match(item);
 
 							if (matchBit.Success)
