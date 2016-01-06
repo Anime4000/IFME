@@ -20,10 +20,6 @@ wget --no-check-certificate https://github.com/x265/x265.github.io/raw/master/su
 echo "Downloading library"
 wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/libmediainfo.so.0-x64.zip -O "prerequisite/linux/64bit/libmediainfo.so.0-x64.ifx"
 
-echo "Downloading References"
-wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/INIFileParser.zip -O "references/INIFileParser.ifx"
-wget --no-check-certificate https://github.com/x265/Preparation/releases/download/v0.0.1/MediaInfoDotNet.zip -O "references/MediaInfoDotNet.ifx"
-
 echo "Downloading extension"
 wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite/allos/extension/hfrgen.ifx"
 wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.4/holobenchmark.7z -O "prerequisite/allos/extension/holobenchmark.ifx"

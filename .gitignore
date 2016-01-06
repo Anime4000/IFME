@@ -221,7 +221,6 @@ installer/*.dll
 prerequisite/allos/
 prerequisite/linux/
 prerequisite/windows/
-references/*.dll
 prerequisite/windows/*.dll
 prerequisite/windows/*.exe
 prerequisite/windows/addons
