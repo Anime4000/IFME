@@ -94,6 +94,8 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
+			this.grpFFmpeg = new System.Windows.Forms.GroupBox();
+			this.chkFFmpeg64 = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
@@ -118,6 +120,7 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
+			this.grpFFmpeg.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -306,6 +309,7 @@
 			// 
 			// tabDefault
 			// 
+			this.tabDefault.Controls.Add(this.grpFFmpeg);
 			this.tabDefault.Controls.Add(this.grpBenchmark);
 			this.tabDefault.Controls.Add(this.grpEditor);
 			this.tabDefault.Location = new System.Drawing.Point(4, 22);
@@ -318,6 +322,8 @@
 			// 
 			// grpBenchmark
 			// 
+			this.grpBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpBenchmark.Controls.Add(this.cboDefaultBenchmark);
 			this.grpBenchmark.Location = new System.Drawing.Point(6, 112);
 			this.grpBenchmark.Name = "grpBenchmark";
@@ -799,6 +805,26 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* is require restart application";
 			// 
+			// grpFFmpeg
+			// 
+			this.grpFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpFFmpeg.Controls.Add(this.chkFFmpeg64);
+			this.grpFFmpeg.Location = new System.Drawing.Point(6, 218);
+			this.grpFFmpeg.Name = "grpFFmpeg";
+			this.grpFFmpeg.Size = new System.Drawing.Size(580, 100);
+			this.grpFFmpeg.TabIndex = 2;
+			this.grpFFmpeg.TabStop = false;
+			// 
+			// chkFFmpeg64
+			// 
+			this.chkFFmpeg64.AutoSize = true;
+			this.chkFFmpeg64.Location = new System.Drawing.Point(75, 46);
+			this.chkFFmpeg64.Name = "chkFFmpeg64";
+			this.chkFFmpeg64.Size = new System.Drawing.Size(15, 14);
+			this.chkFFmpeg64.TabIndex = 0;
+			this.chkFFmpeg64.UseVisualStyleBackColor = true;
+			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -845,6 +871,8 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
+			this.grpFFmpeg.ResumeLayout(false);
+			this.grpFFmpeg.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -917,5 +945,7 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.Label lblLangWhoWeb;
+		private System.Windows.Forms.GroupBox grpFFmpeg;
+		private System.Windows.Forms.CheckBox chkFFmpeg64;
 	}
 }

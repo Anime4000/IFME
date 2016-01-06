@@ -111,7 +111,7 @@ namespace ifme
 			}
 			else
 			{
-				TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> {IdFFm}");
+				TaskManager.Run($"\"{Plugin.FFPROBE}\" \"{file}\" 2> {IdFFm}");
 				foreach (var item in File.ReadAllLines(IdFFm))
 				{
 					if (item.Contains("Stream #"))
@@ -183,7 +183,7 @@ namespace ifme
 			}
 			else
 			{
-				TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> {IdFFm}");
+				TaskManager.Run($"\"{Plugin.FFPROBE}\" \"{file}\" 2> {IdFFm}");
 				foreach (var item in File.ReadAllLines(IdFFm))
 				{
 					if (item.Contains("Stream #"))
@@ -261,7 +261,7 @@ namespace ifme
 			List<basic> Items = new List<basic>();
 			string kind = "Subtitle";
 
-			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" 2> {IdFFm}");
+			TaskManager.Run($"\"{Plugin.FFPROBE}\" \"{file}\" 2> {IdFFm}");
 			foreach (var item in File.ReadAllLines(IdFFm))
 			{
 				if (item.Contains("Stream #"))
@@ -287,7 +287,7 @@ namespace ifme
 		public static int FrameCount(string file)
 		{
 			Console.WriteLine("Reading encoded total frame, please wait...");
-			TaskManager.Run($"\"{Plugin.PROBE}\" \"{file}\" -hide_banner -show_streams -count_frames -select_streams v:0 > streams.ff 2>&1");
+			TaskManager.Run($"\"{Plugin.FFPROBE}\" \"{file}\" -hide_banner -show_streams -count_frames -select_streams v:0 > streams.ff 2>&1");
 
 			string frame = null;
 			bool equal = false;

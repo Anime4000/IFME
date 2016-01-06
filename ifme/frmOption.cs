@@ -38,6 +38,13 @@ namespace ifme
 			txtNamePrefix.Text = Default.NamePrefix;
 			chkSoundDone.Checked = Default.SoundFinish;
 
+			// FFmpeg 64
+			grpFFmpeg.Enabled = OS.Is64bit && OS.IsWindows;
+			grpFFmpeg.Text = "&FFmpeg";
+
+			chkFFmpeg64.Checked = Default.UseFFmpeg64;
+			chkFFmpeg64.Text = "FFmpeg &64bit*";
+
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
 			{
@@ -57,11 +64,11 @@ namespace ifme
 			{
 				if (string.Equals(CRC32.GetFile(Plugin.AviSynthFile), "0x073A3318"))
 				{
-					lblAviSynthStatus.Text += ", 2.6 MT (2015.02.20)";
+					lblAviSynthStatus.Text += ", 2.6 MT (32bit, 2015.02.20)";
 				}
 				else if (string.Equals(CRC32.GetFile(Plugin.AviSynthFile), "0x30E0D263"))
 				{
-					lblAviSynthStatus.Text += ", 2.6 ST (Original)";
+					lblAviSynthStatus.Text += ", 2.6 ST (32bit, Original)";
 				}
 				else
 				{
@@ -288,6 +295,9 @@ namespace ifme
 				Default.Save();
 				return;
 			}
+
+			// FFmpeg 64
+			Default.UseFFmpeg64 = chkFFmpeg64.Checked;
 
 			// Save CPU affinity
 			string aff = "";

@@ -34,6 +34,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FFmpegDotNet">
+      <HintPath>..\references\FFmpegDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="INIFileParser">
       <HintPath>..\references\INIFileParser.dll</HintPath>
     </Reference>
@@ -112,6 +115,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Queue.cs" />
+    <Compile Include="StartUp.cs" />
     <Compile Include="TaskManager.cs" />
   </ItemGroup>
   <ItemGroup>
