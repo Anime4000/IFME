@@ -496,7 +496,7 @@ namespace ifme
 				}
 			}
 
-			// Picture section aa
+			// Picture section
 			if (AVI.Video.Count > 0)
 			{
 				var Video = AVI.Video[0];
