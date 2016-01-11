@@ -39,7 +39,12 @@ namespace ifme
 
 			if (Directory.Exists(Path.Combine(Global.Folder.Plugins, "x265msvc")))
 				Plugin.IsExistHEVCMSVC = true;
-		}
+
+			// Check FFmpeg 64bit, make sure not enable in 32bit OS
+			if (!OS.Is64bit)
+				if (Default.UseFFmpeg64)
+					Default.UseFFmpeg64 = false;
+        }
 
 		public static void RunLoad()
 		{

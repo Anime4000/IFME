@@ -38,6 +38,12 @@ namespace ifme
 			txtNamePrefix.Text = Default.NamePrefix;
 			chkSoundDone.Checked = Default.SoundFinish;
 
+			// FFmpeg 64bit
+			chkFFmpeg64.Enabled = OS.Is64bit;
+			chkFFmpeg64.Checked = Default.UseFFmpeg64;
+			grpFFmpeg.Text = "&FFmpeg";
+			chkFFmpeg64.Text = "FFmpeg &64bit *";
+
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
 			{
@@ -308,6 +314,9 @@ namespace ifme
 
 			// Temp Folder (again)
 			Default.DirTemp = txtTempFolder.Text;
+
+			// FFmpeg 64bit
+			Default.UseFFmpeg64 = chkFFmpeg64.Checked;
 
 			// Save
 			Default.Save();

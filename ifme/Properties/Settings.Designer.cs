@@ -190,5 +190,17 @@ namespace ifme.Properties {
                 this["IsDirOutput"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseFFmpeg64 {
+            get {
+                return ((bool)(this["UseFFmpeg64"]));
+            }
+            set {
+                this["UseFFmpeg64"] = value;
+            }
+        }
     }
 }
