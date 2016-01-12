@@ -464,8 +464,8 @@ namespace ifme
 				return;
 			}
 
-			string FileType = null;
-			string FileOut = null;
+			string FileType = string.Empty;
+			string FileOut = string.Empty;
 			var Info = new Queue();
 
 			var i = cboProfile.SelectedIndex;			// Profiles
@@ -473,6 +473,8 @@ namespace ifme
 
 			Info.Data.File = file;
 			Info.Data.SaveAsMkv = i == 0 ? true : string.Equals(p.Info.Format, "mkv", IC);
+
+			// todo
 
 			MediaFile AVI = new MediaFile(file);
 

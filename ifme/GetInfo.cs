@@ -15,6 +15,11 @@ namespace ifme
 			if (path[0] == '\\')
 				if (path[1] == '\\')
 					return true;
+
+			if (path[0] == 'f')
+				if (path[1] == 'i')
+					return true;
+
 			return false;
 		}
 
