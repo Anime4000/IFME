@@ -2,13 +2,16 @@
 using System.IO;
 using System.Linq;
 
-using static ifme.Properties.Settings;
-
 namespace ifme
 {
 	class GetInfo
 	{
 		static StringComparison IC = StringComparison.OrdinalIgnoreCase;
+
+		public static bool IsAviSynth(string path)
+		{
+			return string.Equals(Path.GetExtension(path), ".avs", IC);
+		}
 
 		public static bool IsPathNetwork(string path)
 		{

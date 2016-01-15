@@ -34,6 +34,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FFmpegDotNet">
+      <HintPath>..\references\FFmpegDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="INIFileParser">
       <HintPath>..\references\INIFileParser.dll</HintPath>
     </Reference>
