@@ -8,9 +8,12 @@ namespace ifme
 	{
 		static StringComparison IC = StringComparison.OrdinalIgnoreCase;
 
-		public static bool IsAviSynth(string path)
+		public static bool UseFFmpeg(string file)
 		{
-			return string.Equals(Path.GetExtension(path), ".avs", IC);
+			if (string.Equals(Path.GetExtension(file), ".avs", IC))
+				return true;
+
+			return false;
 		}
 
 		public static bool IsPathNetwork(string path)
