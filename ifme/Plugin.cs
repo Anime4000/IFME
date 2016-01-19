@@ -61,9 +61,10 @@ namespace ifme
 		public static string HEVC12 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-12"); } }
 
 		// Run once
-		public static string FFMPEG { get { return Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffmpeg"); } }
-		public static string FFPROBE { get { return Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffprobe"); } }
-		public static string FFPLAY { get { return Path.Combine(Global.Folder.Plugins, "ffmpeg", "ffplay"); } }
+		private static string DEFAULT_FFMPEG { get { return Properties.Settings.Default.UseFFmpeg64 ? "ffmpeg64" : "ffmpeg"; } }
+		public static string FFMPEG { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffmpeg"); } }
+		public static string FFPROBE { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffprobe"); } }
+		public static string FFPLAY { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffplay"); } }
 		public static string MKVEXT { get { return Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvextract"); } }
 		public static string MKVMER { get { return Path.Combine(Global.Folder.Plugins, "mkvtoolnix", "mkvmerge"); } }
 		public static string MP4BOX { get { return Path.Combine(Global.Folder.Plugins, "mp4box", "MP4Box"); } }
