@@ -46,11 +46,16 @@
 			this.lblLangWho = new System.Windows.Forms.Label();
 			this.cboLang = new System.Windows.Forms.ComboBox();
 			this.tabDefault = new System.Windows.Forms.TabPage();
+			this.grpFFmpeg = new System.Windows.Forms.GroupBox();
+			this.chkFFmpeg64 = new System.Windows.Forms.CheckBox();
 			this.grpBenchmark = new System.Windows.Forms.GroupBox();
 			this.cboDefaultBenchmark = new System.Windows.Forms.ComboBox();
 			this.grpEditor = new System.Windows.Forms.GroupBox();
 			this.cboDefaultEditor = new System.Windows.Forms.ComboBox();
 			this.tabPerformance = new System.Windows.Forms.TabPage();
+			this.grpIndexing = new System.Windows.Forms.GroupBox();
+			this.rdoIndexingSlow = new System.Windows.Forms.RadioButton();
+			this.rdoIndexingFast = new System.Windows.Forms.RadioButton();
 			this.grpCompiler = new System.Windows.Forms.GroupBox();
 			this.rdoCompilerMicrosoft = new System.Windows.Forms.RadioButton();
 			this.rdoCompilerIntel = new System.Windows.Forms.RadioButton();
@@ -94,8 +99,6 @@
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.lblInfoRestart = new System.Windows.Forms.Label();
-			this.grpFFmpeg = new System.Windows.Forms.GroupBox();
-			this.chkFFmpeg64 = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.grpSound.SuspendLayout();
@@ -105,9 +108,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabDefault.SuspendLayout();
+			this.grpFFmpeg.SuspendLayout();
 			this.grpBenchmark.SuspendLayout();
 			this.grpEditor.SuspendLayout();
 			this.tabPerformance.SuspendLayout();
+			this.grpIndexing.SuspendLayout();
 			this.grpCompiler.SuspendLayout();
 			this.grpProcessor.SuspendLayout();
 			this.tabAviSynth.SuspendLayout();
@@ -120,7 +125,6 @@
 			this.cmsExtension.SuspendLayout();
 			this.tabProfile.SuspendLayout();
 			this.cmsProfile.SuspendLayout();
-			this.grpFFmpeg.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -320,6 +324,25 @@
 			this.tabDefault.Text = "Defaults";
 			this.tabDefault.UseVisualStyleBackColor = true;
 			// 
+			// grpFFmpeg
+			// 
+			this.grpFFmpeg.Controls.Add(this.chkFFmpeg64);
+			this.grpFFmpeg.Location = new System.Drawing.Point(6, 218);
+			this.grpFFmpeg.Name = "grpFFmpeg";
+			this.grpFFmpeg.Size = new System.Drawing.Size(580, 139);
+			this.grpFFmpeg.TabIndex = 2;
+			this.grpFFmpeg.TabStop = false;
+			// 
+			// chkFFmpeg64
+			// 
+			this.chkFFmpeg64.AutoSize = true;
+			this.chkFFmpeg64.Location = new System.Drawing.Point(75, 65);
+			this.chkFFmpeg64.Name = "chkFFmpeg64";
+			this.chkFFmpeg64.Size = new System.Drawing.Size(15, 14);
+			this.chkFFmpeg64.TabIndex = 0;
+			this.chkFFmpeg64.UseVisualStyleBackColor = true;
+			this.chkFFmpeg64.CheckedChanged += new System.EventHandler(this.chkFFmpeg64_CheckedChanged);
+			// 
 			// grpBenchmark
 			// 
 			this.grpBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -370,6 +393,7 @@
 			// 
 			// tabPerformance
 			// 
+			this.tabPerformance.Controls.Add(this.grpIndexing);
 			this.tabPerformance.Controls.Add(this.grpCompiler);
 			this.tabPerformance.Controls.Add(this.grpProcessor);
 			this.tabPerformance.Location = new System.Drawing.Point(4, 22);
@@ -380,24 +404,60 @@
 			this.tabPerformance.Text = "Performance";
 			this.tabPerformance.UseVisualStyleBackColor = true;
 			// 
+			// grpIndexing
+			// 
+			this.grpIndexing.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpIndexing.Controls.Add(this.rdoIndexingSlow);
+			this.grpIndexing.Controls.Add(this.rdoIndexingFast);
+			this.grpIndexing.Location = new System.Drawing.Point(299, 184);
+			this.grpIndexing.Name = "grpIndexing";
+			this.grpIndexing.Size = new System.Drawing.Size(287, 173);
+			this.grpIndexing.TabIndex = 6;
+			this.grpIndexing.TabStop = false;
+			this.grpIndexing.Text = "&Indexing";
+			// 
+			// rdoIndexingSlow
+			// 
+			this.rdoIndexingSlow.AutoSize = true;
+			this.rdoIndexingSlow.Location = new System.Drawing.Point(56, 92);
+			this.rdoIndexingSlow.Name = "rdoIndexingSlow";
+			this.rdoIndexingSlow.Size = new System.Drawing.Size(166, 17);
+			this.rdoIndexingSlow.TabIndex = 1;
+			this.rdoIndexingSlow.TabStop = true;
+			this.rdoIndexingSlow.Text = "&Decoding (Slowest, accurate)";
+			this.rdoIndexingSlow.UseVisualStyleBackColor = true;
+			this.rdoIndexingSlow.CheckedChanged += new System.EventHandler(this.rdoIndexingSlow_CheckedChanged);
+			// 
+			// rdoIndexingFast
+			// 
+			this.rdoIndexingFast.AutoSize = true;
+			this.rdoIndexingFast.Location = new System.Drawing.Point(56, 69);
+			this.rdoIndexingFast.Name = "rdoIndexingFast";
+			this.rdoIndexingFast.Size = new System.Drawing.Size(174, 17);
+			this.rdoIndexingFast.TabIndex = 0;
+			this.rdoIndexingFast.TabStop = true;
+			this.rdoIndexingFast.Text = "&Seeking (Fast, may inaccurate)";
+			this.rdoIndexingFast.UseVisualStyleBackColor = true;
+			this.rdoIndexingFast.CheckedChanged += new System.EventHandler(this.rdoIndexingFast_CheckedChanged);
+			// 
 			// grpCompiler
 			// 
-			this.grpCompiler.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpCompiler.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpCompiler.Controls.Add(this.rdoCompilerMicrosoft);
 			this.grpCompiler.Controls.Add(this.rdoCompilerIntel);
 			this.grpCompiler.Controls.Add(this.rdoCompilerGCC);
 			this.grpCompiler.Location = new System.Drawing.Point(299, 6);
 			this.grpCompiler.Name = "grpCompiler";
-			this.grpCompiler.Size = new System.Drawing.Size(287, 351);
+			this.grpCompiler.Size = new System.Drawing.Size(287, 172);
 			this.grpCompiler.TabIndex = 5;
 			this.grpCompiler.TabStop = false;
-			this.grpCompiler.Text = "Compiler";
+			this.grpCompiler.Text = "&Compiler";
 			// 
 			// rdoCompilerMicrosoft
 			// 
 			this.rdoCompilerMicrosoft.AutoSize = true;
-			this.rdoCompilerMicrosoft.Location = new System.Drawing.Point(93, 190);
+			this.rdoCompilerMicrosoft.Location = new System.Drawing.Point(56, 104);
 			this.rdoCompilerMicrosoft.Name = "rdoCompilerMicrosoft";
 			this.rdoCompilerMicrosoft.Size = new System.Drawing.Size(153, 17);
 			this.rdoCompilerMicrosoft.TabIndex = 2;
@@ -409,7 +469,7 @@
 			// rdoCompilerIntel
 			// 
 			this.rdoCompilerIntel.AutoSize = true;
-			this.rdoCompilerIntel.Location = new System.Drawing.Point(93, 167);
+			this.rdoCompilerIntel.Location = new System.Drawing.Point(56, 81);
 			this.rdoCompilerIntel.Name = "rdoCompilerIntel";
 			this.rdoCompilerIntel.Size = new System.Drawing.Size(101, 17);
 			this.rdoCompilerIntel.TabIndex = 1;
@@ -421,7 +481,7 @@
 			// rdoCompilerGCC
 			// 
 			this.rdoCompilerGCC.AutoSize = true;
-			this.rdoCompilerGCC.Location = new System.Drawing.Point(93, 144);
+			this.rdoCompilerGCC.Location = new System.Drawing.Point(56, 58);
 			this.rdoCompilerGCC.Name = "rdoCompilerGCC";
 			this.rdoCompilerGCC.Size = new System.Drawing.Size(70, 17);
 			this.rdoCompilerGCC.TabIndex = 0;
@@ -443,7 +503,7 @@
 			this.grpProcessor.Size = new System.Drawing.Size(287, 351);
 			this.grpProcessor.TabIndex = 4;
 			this.grpProcessor.TabStop = false;
-			this.grpProcessor.Text = "Processor";
+			this.grpProcessor.Text = "&Processor";
 			// 
 			// cboCPUPriority
 			// 
@@ -805,24 +865,6 @@
 			this.lblInfoRestart.TabIndex = 4;
 			this.lblInfoRestart.Text = "* is require restart application";
 			// 
-			// grpFFmpeg
-			// 
-			this.grpFFmpeg.Controls.Add(this.chkFFmpeg64);
-			this.grpFFmpeg.Location = new System.Drawing.Point(6, 218);
-			this.grpFFmpeg.Name = "grpFFmpeg";
-			this.grpFFmpeg.Size = new System.Drawing.Size(580, 100);
-			this.grpFFmpeg.TabIndex = 2;
-			this.grpFFmpeg.TabStop = false;
-			// 
-			// chkFFmpeg64
-			// 
-			this.chkFFmpeg64.AutoSize = true;
-			this.chkFFmpeg64.Location = new System.Drawing.Point(75, 45);
-			this.chkFFmpeg64.Name = "chkFFmpeg64";
-			this.chkFFmpeg64.Size = new System.Drawing.Size(15, 14);
-			this.chkFFmpeg64.TabIndex = 0;
-			this.chkFFmpeg64.UseVisualStyleBackColor = true;
-			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -852,9 +894,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabDefault.ResumeLayout(false);
+			this.grpFFmpeg.ResumeLayout(false);
+			this.grpFFmpeg.PerformLayout();
 			this.grpBenchmark.ResumeLayout(false);
 			this.grpEditor.ResumeLayout(false);
 			this.tabPerformance.ResumeLayout(false);
+			this.grpIndexing.ResumeLayout(false);
+			this.grpIndexing.PerformLayout();
 			this.grpCompiler.ResumeLayout(false);
 			this.grpCompiler.PerformLayout();
 			this.grpProcessor.ResumeLayout(false);
@@ -869,8 +915,6 @@
 			this.cmsExtension.ResumeLayout(false);
 			this.tabProfile.ResumeLayout(false);
 			this.cmsProfile.ResumeLayout(false);
-			this.grpFFmpeg.ResumeLayout(false);
-			this.grpFFmpeg.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -945,5 +989,8 @@
 		private System.Windows.Forms.Label lblLangWhoWeb;
 		private System.Windows.Forms.GroupBox grpFFmpeg;
 		private System.Windows.Forms.CheckBox chkFFmpeg64;
+		private System.Windows.Forms.GroupBox grpIndexing;
+		private System.Windows.Forms.RadioButton rdoIndexingFast;
+		private System.Windows.Forms.RadioButton rdoIndexingSlow;
 	}
 }

@@ -42,7 +42,7 @@ namespace ifme
 			chkFFmpeg64.Enabled = OS.Is64bit;
 			chkFFmpeg64.Checked = Default.UseFFmpeg64;
 			grpFFmpeg.Text = "&FFmpeg";
-			chkFFmpeg64.Text = "FFmpeg &64bit *";
+			chkFFmpeg64.Text = "FFmpeg && AviSynth &64bit *";
 
 			// Load CPU stuff
 			for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -54,6 +54,29 @@ namespace ifme
 			}
 
 			cboCPUPriority.SelectedIndex = Default.Nice;
+
+			// Compiler
+			if (string.Equals(Default.Compiler, "gcc", IC))
+				rdoCompilerGCC.Checked = true;
+
+			if (string.Equals(Default.Compiler, "icc", IC))
+				rdoCompilerIntel.Checked = true;
+
+			if (string.Equals(Default.Compiler, "msvc", IC))
+				rdoCompilerMicrosoft.Checked = true;
+
+			if (!Plugin.IsExistHEVCGCC)
+				rdoCompilerGCC.Enabled = false;
+
+			if (!Plugin.IsExistHEVCICC)
+				rdoCompilerIntel.Enabled = false;
+
+			if (!Plugin.IsExistHEVCMSVC)
+				rdoCompilerMicrosoft.Enabled = false;
+
+			// Indexing
+			rdoIndexingFast.Checked = !Default.UseFrameAccurate;
+			rdoIndexingSlow.Checked = Default.UseFrameAccurate;
 
 			// AviSynth
 			lblAviSynthStatus.Text = Plugin.IsExistAviSynth ? Language.Installed : Language.NotInstalled;
@@ -147,25 +170,6 @@ namespace ifme
 				lstProfile.Items.Add(x);
 			}
 
-			// Compiler
-			if (string.Equals(Default.Compiler, "gcc", IC))
-				rdoCompilerGCC.Checked = true;
-
-			if (string.Equals(Default.Compiler, "icc", IC))
-				rdoCompilerIntel.Checked = true;
-
-			if (string.Equals(Default.Compiler, "msvc", IC))
-				rdoCompilerMicrosoft.Checked = true;				
-
-			if (!Plugin.IsExistHEVCGCC)
-				rdoCompilerGCC.Enabled = false;
-
-			if (!Plugin.IsExistHEVCICC)
-				rdoCompilerIntel.Enabled = false;
-
-			if (!Plugin.IsExistHEVCMSVC)
-				rdoCompilerMicrosoft.Enabled = false;
-
 			// Language List
 			foreach (var item in Language.Lists)
 			{
@@ -240,6 +244,11 @@ namespace ifme
 			Default.DefaultBenchmark = item.Substring(item.IndexOf('(') + 1).Replace(")", "");
 		}
 
+		private void chkFFmpeg64_CheckedChanged(object sender, EventArgs e)
+		{
+			Default.UseFFmpeg64 = chkFFmpeg64.Checked;
+		}
+
 		private void txtAvsDecoder_TextChanged(object sender, EventArgs e)
 		{
 			Default.AvsDecoder = txtAvsDecoder.Text;
@@ -263,6 +272,16 @@ namespace ifme
 		private void rdoCompilerMicrosoft_CheckedChanged(object sender, EventArgs e)
 		{
 			Default.Compiler = "msvc";
+		}
+
+		private void rdoIndexingFast_CheckedChanged(object sender, EventArgs e)
+		{
+			Default.UseFrameAccurate = !rdoIndexingFast.Checked; //reverse
+		}
+
+		private void rdoIndexingSlow_CheckedChanged(object sender, EventArgs e)
+		{
+			Default.UseFrameAccurate = rdoIndexingSlow.Checked;
 		}
 
 		private void tsmiPluginWeb_Click(object sender, EventArgs e)
@@ -314,9 +333,6 @@ namespace ifme
 
 			// Temp Folder (again)
 			Default.DirTemp = txtTempFolder.Text;
-
-			// FFmpeg 64bit
-			Default.UseFFmpeg64 = chkFFmpeg64.Checked;
 
 			// Save
 			Default.Save();

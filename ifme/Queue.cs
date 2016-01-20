@@ -13,7 +13,6 @@ enum QueueProp
 	PictureYadifMode,
 	PictureYadifField,
 	PictureYadifFlag,
-	PictureCopyVideo,
 	VideoPreset,
 	VideoTune,
 	VideoType,
@@ -32,8 +31,8 @@ namespace ifme
 	public class Queue
 	{
 		public bool IsEnable;
-		public data Data = new data();
-		public properties Prop = new properties();
+		public string FilePath;
+		public general General = new general();
 
 		public picture Picture = new picture();
 		public video Video = new video();
@@ -49,28 +48,16 @@ namespace ifme
 
 		public static string SaveFile;
 
-		public class data
+		public class general
 		{
-			public string File;
-
-			public bool IsFileMkv;
-			public bool IsFileAvs;
-
-			public bool SaveAsMkv;
-		}
-
-		public class properties
-		{
-			public bool IsVFR;
-			public int Duration; // in ms
-			public int FrameCount;
+			public float Duration;
+			public bool IsAviSynth;
+			public bool IsOutputMKV;
 		}
 
 		public class picture
 		{
-			public bool IsCopy;
-			public bool IsHevc;
-
+			public int FrameCount;
 			public string Resolution;
 			public string FrameRate;
 			public int BitDepth;
@@ -98,7 +85,7 @@ namespace ifme
 			public bool Enable;
 			public string File;
 			public bool Embedded;
-			public string Id;
+			public int Id;
 			public string Lang;
 			public string Codec;
 			public string Format;
@@ -117,7 +104,10 @@ namespace ifme
 		public class subtitle
 		{
 			public string File;
+			public int Id; // -1 means for subtitle file, other mean subtitle embeded on video file
 			public string Lang;
+			public string Codec;
+			public string Format;
 		}
 
 		public class attachment

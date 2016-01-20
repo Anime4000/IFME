@@ -11,7 +11,8 @@ using System.Text.RegularExpressions;
 
 using IniParser;
 using IniParser.Model;
-using MediaInfoDotNet;
+
+using FFmpegDotNet;
 
 using static ifme.Properties.Settings;
 
@@ -55,7 +56,6 @@ namespace ifme
 				grpPictureYadif.Top += 6;
 				grpPictureYadif.Height += 20;
 				chkPictureYadif.Top += 8;
-				chkPictureVideoCopy.Top += 22;
 			}
 
 			tsmiQueueAviSynth.Enabled = Plugin.IsExistAviSynth;
@@ -458,96 +458,41 @@ namespace ifme
 
 		void QueueAdd(string file)
 		{
-			if (GetInfo.IsPathNetwork(file))
+			if (Get.IsPathNetwork(file))
 			{
-				InvokeLog($"Rejected! Please mount as \"Network Drive\" like \"Z:\\\"");
+				InvokeLog($"This file from Network, please mount, rejected: {file}");
 				return;
 			}
 
-			string FileType = string.Empty;
-			string FileOut = string.Empty;
+			FFmpeg.Bin = Plugin.FFMPEG;
+			FFmpeg.Probe = Plugin.FFPROBE;
+
 			var Info = new Queue();
 
 			var i = cboProfile.SelectedIndex;			// Profiles
-			var p = Profile.List[i == 0 ? 0 : i - 1];	// When profiles at <new> mean auto detect
-
-			Info.Data.File = file;
-			Info.Data.SaveAsMkv = i == 0 ? true : string.Equals(p.Info.Format, "mkv", IC);
+			var p = Profile.List[i == 0 ? 0 : i - 1];   // When profiles at <new> mean auto detect
 
 			// todo
+			var ff = new FFmpeg.Stream(file);
 
-			MediaFile AVI = new MediaFile(file);
+			Info.FilePath = file;
+			Info.General.IsOutputMKV = i == 0 ? true : string.Equals(p.Info.Format, "mkv", IC);
+			Info.General.IsAviSynth = string.Equals(ff.FormatName, "avisynth", IC);
+			Info.General.Duration = ff.Duration;
 
-			Info.Data.IsFileMkv = string.Equals(AVI.format, "Matroska", IC);
-			Info.Data.IsFileAvs = GetStream.IsAviSynth(file);
-
-			// Check if user want to force AviSynth script added to queue
-			if (!Plugin.IsExistAviSynth)
+			if (ff.Video.Count > 0)
 			{
-				if (Info.Data.IsFileAvs)
-				{
-					if (Plugin.IsForceAviSynth)
-					{
-						InvokeLog($"Forcing AviSynth added to queue: {file}");
-					}
-					else
-					{
-						InvokeLog($"AviSynth not installed, skipping this file: {file}");
-						return;
-					}
-				}
-			}
-
-			// Picture section
-			if (AVI.Video.Count > 0)
-			{
-				var Video = AVI.Video[0];
+				// Picture section
+				Info.Picture.FrameCount = ff.Video[0].FrameCount;
 				Info.Picture.Resolution = i == 0 ? "auto" : p.Picture.Resolution;
 				Info.Picture.FrameRate = i == 0 ? "auto" : p.Picture.FrameRate;
-				Info.Picture.BitDepth = i == 0 ? Video.bitDepth : p.Picture.BitDepth;
+				Info.Picture.BitDepth = i == 0 ? ff.Video[0].BitPerColour : p.Picture.BitDepth;
 				Info.Picture.Chroma = i == 0 ? 420 : p.Picture.Chroma;
-
-				Info.Prop.Duration = Video.duration;
-				Info.Prop.FrameCount = Video.frameCount;
-
-				Info.Picture.IsCopy = false;
-				Info.Picture.IsHevc = string.Equals(Video.format, "HEVC", IC);
-
-				FileType = $"{Path.GetExtension(file).ToUpper()} ({Video.format})";
-				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
-
-				if (string.Equals(Video.frameRateMode, "vfr", IC))
-					Info.Prop.IsVFR = true;
-
-				if (Video.isInterlace)
-				{
-					Info.Picture.YadifEnable = true;
-					Info.Picture.YadifMode = 0;
-					Info.Picture.YadifField = (Video.isTopFieldFirst ? 0 : 1);
-					Info.Picture.YadifFlag = 0;
-				}
-			}
-			else if (Info.Data.IsFileAvs)
-			{
-				Info.Picture.Resolution = "auto";
-				Info.Picture.FrameRate = "auto";
-				Info.Picture.BitDepth = 8;
-				Info.Picture.Chroma = 420;
-
-				FileType = "AviSynth Script";
-				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")} (HEVC)";
 			}
 			else
 			{
-				Info.Picture.Resolution = "auto";
-				Info.Picture.FrameRate = "auto";
-				Info.Picture.BitDepth = 8;
-				Info.Picture.Chroma = 420;
-				Info.Picture.IsCopy = true;
-
-				var Audio = AVI.Audio[0];
-				FileType = $"{Path.GetExtension(file).ToUpper()} ({Audio.format})";
-				FileOut = $".{(Info.Data.SaveAsMkv ? "MKV" : "MP4")}";
+				InvokeLog($"This file has no video, rejected: {file}");
+				return;
 			}
 
 			// Video section
@@ -567,20 +512,20 @@ namespace ifme
 			string channel = i == 0 || !exist ? "auto" : p.Audio.Chan;
 			string command = i == 0 || !exist ? null : p.Audio.Args;
 
-			foreach (var item in GetStream.Audio(file))
+			foreach (var item in ff.Audio)
 				Info.Audio.Add(new Queue.audio
 				{
 					Enable = true,
 					File = file,
 					Embedded = true,
-					Id = item.Basic.Id,
-					Lang = item.Basic.Lang,
-					Codec = item.Basic.Codec,
-					Format = item.Basic.Format,
+					Id = item.Id,
+					Lang = item.Language,
+					Codec = item.Codec,
+					Format = Get.MediaContainer(item.Codec),
 
-					RawBit = item.RawBit,
-					RawFreq = item.RawFreq,
-					RawChan = item.RawChan,
+					RawBit = item.BitDepth,
+					RawFreq = item.SampleRate,
+					RawChan = item.Channel,
 
 					Encoder = encoder,
 					BitRate = bitRate,
@@ -589,12 +534,26 @@ namespace ifme
 					Args = command
 				});
 
+			// Subtitle
+			Info.SubtitleEnable = ff.Subtitle.Count > 0;
+			foreach (var item in ff.Subtitle)
+			{
+				Info.Subtitle.Add(new Queue.subtitle
+				{
+					File = file,
+					Id = item.Id,
+					Lang = item.Language,
+					Codec = item.Codec,
+					Format = Get.MediaContainer(item.Codec),
+				});
+			}
+
 			// Add to queue list
 			ListViewItem qItem = new ListViewItem(new[] {
-				GetInfo.FileName(file),
-				GetInfo.FileSize(file),
-				FileType,
-				FileOut,
+				Get.FileName(file),
+				Get.FileSize(file),
+				ff.FormatNameFull,
+				Info.General.IsOutputMKV ? "Matroska" : "MPEG-4",
 				"Ready"
 			});
 			qItem.Tag = Info;
@@ -602,7 +561,7 @@ namespace ifme
 			lstQueue.Items.Add(qItem);
 
 			// Print to log
-			InvokeLog($"File added {Info.Data.File}");
+			InvokeLog($"File added {Info.FilePath}");
 		}
 		#endregion
 
@@ -698,10 +657,10 @@ namespace ifme
 			var Info = (Queue)lstQueue.Items[index].Tag;
 
 			// FFmpeg extra command-line
-			tsmiFFmpeg.Enabled = !Info.Data.IsFileAvs;
+			tsmiFFmpeg.Enabled = !Info.General.IsAviSynth;
 
 			// Picture
-			rdoMKV.Checked = Info.Data.SaveAsMkv;
+			rdoMKV.Checked = Info.General.IsOutputMKV;
 			rdoMP4.Checked = !rdoMKV.Checked;
 			cboPictureRes.Text = Info.Picture.Resolution;
 			cboPictureFps.Text = Info.Picture.FrameRate;
@@ -711,9 +670,6 @@ namespace ifme
 			cboPictureYadifMode.SelectedIndex = Info.Picture.YadifMode;
 			cboPictureYadifField.SelectedIndex = Info.Picture.YadifField;
 			cboPictureYadifFlag.SelectedIndex = Info.Picture.YadifFlag;
-
-			chkPictureVideoCopy.Enabled = Info.Picture.IsHevc;
-			chkPictureVideoCopy.Checked = Info.Picture.IsCopy;
 
 			// Video
 			cboVideoPreset.Text = Info.Video.Preset;
@@ -743,17 +699,17 @@ namespace ifme
 			chkSubEnable.Checked = Info.SubtitleEnable;
 			if (Info.Subtitle != null)
 				foreach (var item in Info.Subtitle)
-					lstSub.Items.Add(new ListViewItem(new[] { GetInfo.FileName(item.File), item.Lang }));
+					lstSub.Items.Add(new ListViewItem(new[] { $"{item.Id}", Get.FileName(item.File), item.Lang }));
 			
 			// Attachments
 			lstAttach.Items.Clear();
 			chkAttachEnable.Checked = Info.AttachEnable;
 			if (Info.Attach != null)
 				foreach (var item in Info.Attach)
-					lstAttach.Items.Add(new ListViewItem(new[] { GetInfo.FileName(item.File), item.MIME }));
+					lstAttach.Items.Add(new ListViewItem(new[] { Get.FileName(item.File), item.MIME }));
 			
 			// AviSynth
-			var x = Info.Data.IsFileAvs;
+			var x = Info.General.IsAviSynth;
 			grpPictureBasic.Enabled = !x;
 			grpPictureQuality.Enabled = !x;
 			chkPictureYadif.Enabled = !x;
@@ -886,11 +842,6 @@ namespace ifme
 		private void cboPictureYadifFlag_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			QueueUpdate(QueueProp.PictureYadifFlag);
-		}
-
-		private void chkPictureVideoCopy_CheckedChanged(object sender, EventArgs e)
-		{
-			QueueUpdate(QueueProp.PictureCopyVideo);
 		}
 		#endregion
 
@@ -1126,20 +1077,20 @@ namespace ifme
 		{
 			var Info = (Queue)lstQueue.SelectedItems[0].Tag;
 
-			foreach (var item in GetStream.Audio(file))
+			foreach (var item in new FFmpeg.Stream(file).Audio)
 				Info.Audio.Add(new Queue.audio
 				{
 					Enable = true,
 					File = file,
 					Embedded = false,
-					Id = item.Basic.Id,
-					Lang = item.Basic.Lang,
-					Codec = item.Basic.Codec,
-					Format = item.Basic.Format,
+					Id = item.Id,
+					Lang = item.Language,
+					Codec = item.Codec,
+					Format = Get.MediaContainer(item.Codec),
 
-					RawBit = item.RawBit,
-					RawFreq = item.RawFreq,
-					RawChan = item.RawChan,
+					RawBit = item.BitDepth,
+					RawFreq = item.SampleRate,
+					RawChan = item.Channel,
 
 					Encoder = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 					BitRate = "256",
@@ -1335,13 +1286,13 @@ namespace ifme
 
 		void SubAdd(string file)
 		{
-			if (!GetInfo.SubtitleValid(file))
+			if (!Get.SubtitleValid(file))
 				return;
 
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Subtitle.Add(new Queue.subtitle() { File = file, Lang = "und (Undetermined)" });
+				(item.Tag as Queue).Subtitle.Add(new Queue.subtitle() { File = file, Id = -1, Lang = "und (Undetermined)", Format = Get.FileExtension(file) });
 
-			lstSub.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), "und (Undetermined)" }));
+			lstSub.Items.Add(new ListViewItem(new[] { $"{-1}", Get.FileName(file), "und (Undetermined)" }));
 		}
 
 		private void btnSubRemove_Click(object sender, EventArgs e)
@@ -1450,9 +1401,9 @@ namespace ifme
 		void AttachAdd(string file)
 		{
 			foreach (ListViewItem item in lstQueue.SelectedItems)
-				(item.Tag as Queue).Attach.Add(new Queue.attachment() { File = file, MIME = GetInfo.AttachmentValid(file), Comment = "No" });
+				(item.Tag as Queue).Attach.Add(new Queue.attachment() { File = file, MIME = Get.AttachmentValid(file), Comment = "No" });
 
-			lstAttach.Items.Add(new ListViewItem(new[] { GetInfo.FileName(file), GetInfo.AttachmentValid(file), "No" }));
+			lstAttach.Items.Add(new ListViewItem(new[] { Get.FileName(file), Get.AttachmentValid(file), "No" }));
 		}
 
 		private void btnAttachRemove_Click(object sender, EventArgs e)
@@ -1505,12 +1456,12 @@ namespace ifme
 				{
 					case QueueProp.FormatMkv:
 						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MP4","MKV");
-						x.Data.SaveAsMkv = true;
+						x.General.IsOutputMKV = true;
 						break;
 
 					case QueueProp.FormatMp4:
 						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MKV", "MP4");
-						x.Data.SaveAsMkv = false;
+						x.General.IsOutputMKV = false;
 						break;
 
 					case QueueProp.PictureResolution:
@@ -1543,11 +1494,6 @@ namespace ifme
 
 					case QueueProp.PictureYadifFlag:
 						x.Picture.YadifFlag = cboPictureYadifFlag.SelectedIndex;
-						break;
-
-					case QueueProp.PictureCopyVideo:
-						if (x.Picture.IsHevc)
-							x.Picture.IsCopy = chkPictureVideoCopy.Checked;
 						break;
 
 					case QueueProp.VideoPreset:
@@ -1621,9 +1567,9 @@ namespace ifme
 		{
 			if (lstQueue.SelectedItems.Count == 1)
 			{
-				if (!(lstQueue.SelectedItems[0].Tag as Queue).Data.IsFileAvs)
+				if (!(lstQueue.SelectedItems[0].Tag as Queue).General.IsAviSynth)
 				{
-					Benchmark((lstQueue.SelectedItems[0].Tag as Queue).Data.File);
+					Benchmark((lstQueue.SelectedItems[0].Tag as Queue).FilePath);
 				}
 				else
 				{
@@ -1737,24 +1683,24 @@ namespace ifme
 			// Remove file that not exist
 			for (int i = 0; i < gg.Count; i++)
 			{
-				if (!File.Exists(gg[i].Data.File))
+				if (!File.Exists(gg[i].FilePath))
 				{
-					InvokeLog($"File not found: {gg[i].Data.File}");
+					InvokeLog($"File not found: {gg[i].FilePath}");
 					gg.RemoveAt(i);
 				}
 			}
 
 			foreach (var item in gg)
 			{
-				if (GetStream.IsAviSynth(item.Data.File))
+				if (GetStream.IsAviSynth(item.FilePath))
 					if (!Plugin.IsExistAviSynth)
 						continue;
 
 				ListViewItem qItem = new ListViewItem(new[] {
-						GetInfo.FileName(item.Data.File),
-						GetInfo.FileSize(item.Data.File),
-						$"{Path.GetExtension(item.Data.File).ToUpper()} ({new MediaFile(item.Data.File).Video[0].format})",
-						$"{(item.Data.SaveAsMkv ? ".MKV" : ".MP4")} (HEVC)",
+						Get.FileName(item.FilePath),
+						Get.FileSize(item.FilePath),
+						new FFmpeg.Stream(item.FilePath).FormatNameFull,
+						$"{(item.General.IsOutputMKV ? "Matroska" : "MPEG-4")}",
 						item.IsEnable ? "Ready" : "Done"
 					});
 
@@ -1889,17 +1835,17 @@ namespace ifme
 			if (lstQueue.SelectedItems.Count == 1)
 			{
 				var item = (lstQueue.SelectedItems[0].Tag as Queue);
-				if (item.Data.IsFileAvs)
+				if (item.General.IsAviSynth)
 				{
 					string extsfile = Default.DefaultNotepad;
 					string typename = Path.GetFileNameWithoutExtension(extsfile); // get namespace
 
 					Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
 					Type type = asm.GetType(typename + ".frmMain");
-					Form form = (Form)Activator.CreateInstance(type, new object[] { item.Data.File, Properties.Settings.Default.Language });
+					Form form = (Form)Activator.CreateInstance(type, new object[] { item.FilePath, Default.Language });
 					form.ShowDialog();
 
-					lstQueue.SelectedItems[0].SubItems[1].Text = GetInfo.FileSize(item.Data.File); // refresh new size
+					lstQueue.SelectedItems[0].SubItems[1].Text = Get.FileSize(item.FilePath); // refresh new size
 				}
 				else
 				{
@@ -1922,31 +1868,31 @@ namespace ifme
 					foreach (ListViewItem items in lstQueue.SelectedItems)
 					{
 						var item = (items.Tag as Queue);
-						if (!item.Data.IsFileAvs)
+						if (!item.General.IsAviSynth)
 						{
 							UTF8Encoding UTF8 = new UTF8Encoding(false);
-							string newfile = Path.Combine(Path.GetDirectoryName(item.Data.File), Path.GetFileNameWithoutExtension(item.Data.File)) + ".avs";
+							string newfile = Path.Combine(Path.GetDirectoryName(item.FilePath), Path.GetFileNameWithoutExtension(item.FilePath)) + ".avs";
 
-							File.WriteAllText(newfile, $"{Default.AvsDecoder}(\"{item.Data.File}\")", UTF8);
+							File.WriteAllText(newfile, $"{Default.AvsDecoder}(\"{item.FilePath}\")", UTF8);
 
-							items.SubItems[0].Text = GetInfo.FileName(newfile);
-							items.SubItems[1].Text = GetInfo.FileSize(newfile);
+							items.SubItems[0].Text = Get.FileName(newfile);
+							items.SubItems[1].Text = Get.FileSize(newfile);
 							items.SubItems[2].Text = "AviSynth Script";
-							item.Data.IsFileAvs = true;
-							item.Data.File = newfile;
+							item.General.IsAviSynth = true;
+							item.FilePath = newfile;
 
 							item.Audio.Clear(); // reset
-							foreach (var audio in GetStream.Audio(newfile))
+							foreach (var audio in new FFmpeg.Stream(newfile).Audio)
 								item.Audio.Add(new Queue.audio
 								{
-									Id = audio.Basic.Id,
-									Lang = audio.Basic.Lang,
-									Codec = audio.Basic.Codec,
-									Format = audio.Basic.Format,
+									Id = audio.Id,
+									Lang = audio.Language,
+									Codec = audio.Codec,
+									Format = Get.MediaContainer(audio.Codec),
 
-									RawFreq = audio.RawFreq,
-									RawBit = audio.RawBit,
-									RawChan = audio.RawChan
+									RawBit = audio.BitDepth,
+									RawFreq = audio.SampleRate,
+									RawChan = audio.Channel
 								});
                         }
 					}
@@ -1971,18 +1917,18 @@ namespace ifme
 
 				Assembly asm = Assembly.LoadFrom(Path.Combine("extension", extsfile));
 				Type type = asm.GetType(typename + ".frmMain");
-				Form form = (Form)Activator.CreateInstance(type, new object[] { queue.Data.File, Properties.Settings.Default.Language });
+				Form form = (Form)Activator.CreateInstance(type, new object[] { queue.FilePath, Default.Language });
 				var result = form.ShowDialog();
 
 				if (result == DialogResult.OK)
 				{
 					var filenew = (string)form.GetType().GetField("_fileavs").GetValue(form);
 
-					lstQueue.SelectedItems[0].SubItems[0].Text = GetInfo.FileName(filenew);
-					lstQueue.SelectedItems[0].SubItems[1].Text = GetInfo.FileSize(filenew);
+					lstQueue.SelectedItems[0].SubItems[0].Text = Get.FileName(filenew);
+					lstQueue.SelectedItems[0].SubItems[1].Text = Get.FileSize(filenew);
 					lstQueue.SelectedItems[0].SubItems[2].Text = "AviSynth Script";
-					queue.Data.IsFileAvs = true;
-					queue.Data.File = filenew;
+					queue.General.IsAviSynth = true;
+					queue.FilePath = filenew;
 				}
 			}
 			else
@@ -2074,10 +2020,10 @@ namespace ifme
 				var SessionCurrent = DateTime.Now;
 
 				// Log current queue
-				InvokeLog("Processing: " + item.Data.File);
+				InvokeLog("Processing: " + item.FilePath);
 
 				// Current media
-				string file = item.Data.File;
+				string file = item.FilePath;
 
 				// Extract mkv embedded subtitle, font and chapter
 				InvokeQueueStatus(id, "Extracting");
@@ -2127,13 +2073,13 @@ namespace ifme
 					return;
 				}
 
-				string timeDone = GetInfo.Duration(SessionCurrent);
+				string timeDone = Get.Duration(SessionCurrent);
 				InvokeQueueDone(id, timeDone);
-				InvokeLog($"Completed in {timeDone} for {item.Data.File}");
+				InvokeLog($"Completed in {timeDone} for {item.FilePath}");
 			}
 
 			// Tell user all is done
-			InvokeLog($"All Queue Completed in {GetInfo.Duration(Session)}");
+			InvokeLog($"All Queue Completed in {Get.Duration(Session)}");
 		}
 
 		private void bgwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -72,14 +72,16 @@ namespace ifme
 		public static string FFMS2 { get { return Path.Combine(Global.Folder.Plugins, "ffmsindex", "ffmsindex"); } }
 		public static string MP4FPS { get { return Path.Combine(Global.Folder.Plugins, "mp4fpsmod", "mp4fpsmod"); } }
 
+		// AviSynth
 		public static string AviSynthFile { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "avisynth.dll"); } }
 		public static bool IsExistAviSynth = File.Exists(AviSynthFile);
-		public static bool IsForceAviSynth = false;
 
+		// x265 encoder chain
 		public static bool IsExistHEVCGCC = false;
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;
 
+		// List plugins with GUID
 		public static Dictionary<Guid, Plugin> List = new Dictionary<Guid, Plugin>();
 
 		public static void Repo()

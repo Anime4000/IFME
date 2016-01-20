@@ -89,7 +89,6 @@ namespace ifme
 			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
 			WriteLine("  -s                           skip all update checking (faster loading)");
 			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
-			WriteLine("      --force-avs              force allow AviSynth script added to queue");
 			WriteLine();
 			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
 			WriteLine();
@@ -152,9 +151,6 @@ namespace ifme
 
 					if (args[i] == "--cli")
 						IsCLI = true;
-
-					if (args[i] == "--force-avs")
-						Plugin.IsForceAviSynth = true;
 
 					if (args[i] == "--input")
 						if (i < args.Length)
@@ -311,9 +307,9 @@ namespace ifme
 			WriteLine("Removing file not exist");
 			for (int i = 0; i < argList.Count; i++)
 			{
-				if (!File.Exists(argList[i].Data.File))
+				if (!File.Exists(argList[i].FilePath))
 				{
-					WriteLine($"File Not Found: {argList[i].Data.File}");
+					WriteLine($"File Not Found: {argList[i].FilePath}");
 					argList.RemoveAt(i);
 				}
 			}
@@ -334,7 +330,7 @@ namespace ifme
 
 				for (int i = 0; i < argList.Count; i++)
 				{
-					WriteLine($"{i + 1,3:000} {(argList[i].IsEnable ? "Queued" : " Skip ")} {Path.GetFileName(argList[i].Data.File)}");
+					WriteLine($"{i + 1,3:000} {(argList[i].IsEnable ? "Queued" : " Skip ")} {Path.GetFileName(argList[i].FilePath)}");
 				}
 
 				Write("\nPress any key to begin...");
@@ -361,7 +357,7 @@ namespace ifme
 				MediaEncoder.CleanUp();
 
 				// Current media
-				string file = item.Data.File;
+				string file = item.FilePath;
 
 				// Extract mkv embedded subtitle, font and chapter
 				MediaEncoder.Extract(item);
@@ -370,7 +366,7 @@ namespace ifme
 				MediaEncoder.Audio(item);
 
 				// Tell User
-				WriteLine($"File: {Path.GetFileName(item.Data.File)}");
+				WriteLine($"File: {Path.GetFileName(item.FilePath)}");
 				WriteLine($"Current queue {id + 1} of {argList.Count}");
 
 				// Video
@@ -386,7 +382,7 @@ namespace ifme
             }
 
 			// Tell user
-			WriteLine(GetInfo.Duration(Session));
+			WriteLine(Get.Duration(Session));
 
 			return 0;
 		}

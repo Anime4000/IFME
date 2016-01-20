@@ -87,7 +87,7 @@
     <Compile Include="frmSplashScreen.Designer.cs">
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetInfo.cs" />
+    <Compile Include="Get.cs" />
     <Compile Include="GetStream.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="frmInputBox.cs">
@@ -184,6 +184,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\ja.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="lang\lt.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\pt-PT.ini">

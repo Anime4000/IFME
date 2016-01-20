@@ -1,19 +1,67 @@
 ﻿using System;
+using System.Text;
+
+using IniParser;
+using IniParser.Model;
 using System.IO;
 using System.Linq;
 
 namespace ifme
 {
-	class GetInfo
+	public class Get
 	{
-		static StringComparison IC = StringComparison.OrdinalIgnoreCase;
+		static StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
 
-		public static bool UseFFmpeg(string file)
+		public static string MediaContainer(string codec)
 		{
-			if (string.Equals(Path.GetExtension(file), ".avs", IC))
-				return true;
+			IniData getFmt = new FileIniDataParser().ReadFile("format.ini", Encoding.UTF8);
+			string format = string.Empty;
 
-			return false;
+			try
+			{
+				format = getFmt["format"][codec];
+			}
+			catch (Exception)
+			{
+				Console.WriteLine("Requested file container not found, using default");
+			}
+			finally
+			{
+				if (string.IsNullOrEmpty(format))
+					format = codec;
+            }
+
+			return format;
+		}
+
+		public static string FileName(string file)
+		{
+			return Path.GetFileName(file);
+		}
+
+		public static string FileNameOnly(string file)
+		{
+			return Path.GetFileNameWithoutExtension(file);
+		}
+
+		public static string FileExtension(string filePath)
+		{
+			return Path.GetExtension(filePath).Substring(1); // jump dot
+		}
+
+		public static string FileSize(string file)
+		{
+			FileInfo f = new FileInfo(file);
+			long byteCount = f.Length;
+
+			string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
+			if (byteCount == 0)
+				return "0" + IEC[0];
+
+			long bytes = Math.Abs(byteCount);
+			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+			double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+			return (Math.Sign(byteCount) * num).ToString() + " " + IEC[place];
 		}
 
 		public static bool IsPathNetwork(string path)
@@ -67,31 +115,6 @@ namespace ifme
 				return "application/font-woff";
 
 			return "application/octet-stream";
-		}
-
-		public static string FileName(string file)
-		{
-			return Path.GetFileName(file);
-		}
-
-		public static string FileNameNoExt(string file)
-		{
-			return Path.GetFileNameWithoutExtension(file);
-		}
-
-		public static string FileSize(string file)
-		{
-			FileInfo f = new FileInfo(file);
-			long byteCount = f.Length;
-
-			string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
-			if (byteCount == 0)
-				return "0" + IEC[0];
-
-			long bytes = Math.Abs(byteCount);
-			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
-			double num = Math.Round(bytes / Math.Pow(1024, place), 1);
-			return (Math.Sign(byteCount) * num).ToString() + " " + IEC[place];
 		}
 
 		public static string FileLang(string file)

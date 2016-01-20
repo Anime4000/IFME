@@ -202,5 +202,17 @@ namespace ifme.Properties {
                 this["UseFFmpeg64"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseFrameAccurate {
+            get {
+                return ((bool)(this["UseFrameAccurate"]));
+            }
+            set {
+                this["UseFrameAccurate"] = value;
+            }
+        }
     }
 }
