@@ -1689,6 +1689,7 @@
 			// 
 			// colId
 			// 
+			this.colId.Tag = "colId";
 			this.colId.Text = "Id";
 			this.colId.Width = 32;
 			// 

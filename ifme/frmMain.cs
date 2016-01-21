@@ -117,6 +117,7 @@ namespace ifme
 			cboAudioBit.SelectedIndex = 1;
 			cboAudioFreq.SelectedIndex = 0;
 			cboAudioChannel.SelectedIndex = 0;
+			cboSubLang.SelectedIndex = 0;
 
 			// Fun
 #if !STEAM
@@ -472,7 +473,6 @@ namespace ifme
 			var i = cboProfile.SelectedIndex;			// Profiles
 			var p = Profile.List[i == 0 ? 0 : i - 1];   // When profiles at <new> mean auto detect
 
-			// todo
 			var ff = new FFmpeg.Stream(file);
 
 			Info.FilePath = file;
@@ -483,6 +483,7 @@ namespace ifme
 			if (ff.Video.Count > 0)
 			{
 				// Picture section
+				Info.Picture.Lang = ff.Video[0].Language;
 				Info.Picture.FrameCount = ff.Video[0].FrameCount;
 				Info.Picture.Resolution = i == 0 ? "auto" : p.Picture.Resolution;
 				Info.Picture.FrameRate = i == 0 ? "auto" : p.Picture.FrameRate;
@@ -699,7 +700,7 @@ namespace ifme
 			chkSubEnable.Checked = Info.SubtitleEnable;
 			if (Info.Subtitle != null)
 				foreach (var item in Info.Subtitle)
-					lstSub.Items.Add(new ListViewItem(new[] { $"{item.Id}", Get.FileName(item.File), item.Lang }));
+					lstSub.Items.Add(new ListViewItem(new[] { $"{item.Id}", Get.FileName(item.File), Get.LanguageFullName(item.Lang) }));
 			
 			// Attachments
 			lstAttach.Items.Clear();
@@ -1313,8 +1314,8 @@ namespace ifme
 		private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstQueue.SelectedItems.Count == 1)
-				if (lstSub.SelectedItems.Count > 0)
-					cboSubLang.Text = lstSub.SelectedItems[0].SubItems[1].Text;
+				if (lstSub.SelectedItems.Count == 1)
+					cboSubLang.SelectedItem = lstSub.SelectedItems[0].SubItems[2].Text;
 		}
 
 		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -1324,8 +1325,8 @@ namespace ifme
 
 			foreach (ListViewItem subs in lstSub.SelectedItems)
 			{
-				subs.SubItems[1].Text = cboSubLang.Text;
-				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = cboSubLang.Text; // char limit (SubString) applied at mkv mux code block
+				subs.SubItems[2].Text = cboSubLang.Text;
+				(lstQueue.SelectedItems[0].Tag as Queue).Subtitle[subs.Index].Lang = Get.LanguageCodeName((string)cboSubLang.SelectedItem);
 			}
 		}
 		#endregion
@@ -1455,12 +1456,12 @@ namespace ifme
 				switch (Id)
 				{
 					case QueueProp.FormatMkv:
-						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MP4","MKV");
+						item.SubItems[3].Text = "Matroska";
 						x.General.IsOutputMKV = true;
 						break;
 
 					case QueueProp.FormatMp4:
-						item.SubItems[3].Text = item.SubItems[3].Text.Replace("MKV", "MP4");
+						item.SubItems[3].Text = "MPEG-4";
 						x.General.IsOutputMKV = false;
 						break;
 
@@ -1692,10 +1693,6 @@ namespace ifme
 
 			foreach (var item in gg)
 			{
-				if (GetStream.IsAviSynth(item.FilePath))
-					if (!Plugin.IsExistAviSynth)
-						continue;
-
 				ListViewItem qItem = new ListViewItem(new[] {
 						Get.FileName(item.FilePath),
 						Get.FileSize(item.FilePath),
@@ -1845,6 +1842,16 @@ namespace ifme
 					Form form = (Form)Activator.CreateInstance(type, new object[] { item.FilePath, Default.Language });
 					form.ShowDialog();
 
+					// re-validate
+					var ff = new FFmpeg.Stream(item.FilePath);
+
+					item.General.Duration = ff.Duration;
+
+					if (ff.Video.Count > 0)
+					{
+						item.Picture.FrameCount = ff.Video[0].FrameCount;
+					}
+
 					lstQueue.SelectedItems[0].SubItems[1].Text = Get.FileSize(item.FilePath); // refresh new size
 				}
 				else
@@ -1870,19 +1877,24 @@ namespace ifme
 						var item = (items.Tag as Queue);
 						if (!item.General.IsAviSynth)
 						{
-							UTF8Encoding UTF8 = new UTF8Encoding(false);
 							string newfile = Path.Combine(Path.GetDirectoryName(item.FilePath), Path.GetFileNameWithoutExtension(item.FilePath)) + ".avs";
 
-							File.WriteAllText(newfile, $"{Default.AvsDecoder}(\"{item.FilePath}\")", UTF8);
+							File.WriteAllText(newfile, $"{Default.AvsDecoder}(\"{item.FilePath}\")", new UTF8Encoding(false));
 
-							items.SubItems[0].Text = Get.FileName(newfile);
-							items.SubItems[1].Text = Get.FileSize(newfile);
-							items.SubItems[2].Text = "AviSynth Script";
-							item.General.IsAviSynth = true;
+							// re-validate
+							var ff = new FFmpeg.Stream(newfile);
+
 							item.FilePath = newfile;
+							item.General.IsAviSynth = true;
+							item.General.Duration = ff.Duration;
+
+							if (ff.Video.Count > 0)
+							{
+								item.Picture.FrameCount = ff.Video[0].FrameCount;
+							}
 
 							item.Audio.Clear(); // reset
-							foreach (var audio in new FFmpeg.Stream(newfile).Audio)
+							foreach (var audio in ff.Audio)
 								item.Audio.Add(new Queue.audio
 								{
 									Id = audio.Id,
@@ -1894,7 +1906,11 @@ namespace ifme
 									RawFreq = audio.SampleRate,
 									RawChan = audio.Channel
 								});
-                        }
+
+							items.SubItems[0].Text = Get.FileName(newfile);
+							items.SubItems[1].Text = Get.FileSize(newfile);
+							items.SubItems[2].Text = "AviSynth Script";
+						}
 					}
 				}
 				else
@@ -2084,8 +2100,9 @@ namespace ifme
 
 		private void bgwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			Console.Title = "IFME console";
-			btnQueueStart.Visible = true;
+			Console.Title = $"{Global.App.Name} Console";
+
+            btnQueueStart.Visible = true;
 			btnQueuePause.Visible = false;
 			ControlEnable(true);
 
@@ -2155,37 +2172,31 @@ namespace ifme
 
 		void ControlEnable(bool x)
 		{
-			btnQueueAdd.Enabled = x;
-			btnQueueRemove.Enabled = x;
-			btnQueueMoveUp.Enabled = x;
-			btnQueueMoveDown.Enabled = x;
+			Control ctrl = this;
+			do
+			{
+				ctrl = GetNextControl(ctrl, true);
 
-			grpPictureFormat.Enabled = x;
-			grpPictureBasic.Enabled = x;
-			grpPictureQuality.Enabled = x;
-			chkPictureYadif.Enabled = x;
-			grpPictureYadif.Enabled = x;
+				if (ctrl is TabControl ||
+					ctrl is TabPage)
+					continue;
 
-			grpVideoBasic.Enabled = x;
-			grpVideoRateCtrl.Enabled = x;
-			txtVideoCmd.Enabled = x;
+				if (ctrl != null)
+					ctrl.Enabled = x;
 
-			clbAudioTracks.Enabled = x;
-			//grpAudioBasic.Enabled = x;
-			chkAudioMerge.Enabled = x;
-			txtAudioCmd.Enabled = x;
+			} while (ctrl != null);
 
-			chkSubEnable.Enabled = x;
-			chkAttachEnable.Enabled = x;
+			// exception, do not disable
+			btnFacebook.Enabled = true;
+			btnDonate.Enabled = true;
+			btnQueueStart.Enabled = true;
+			btnQueueStop.Enabled = true;
+			btnQueuePause.Enabled = true;
+			btnAbout.Enabled = true;
 
-			cboProfile.Enabled = x;
-			btnProfileSave.Enabled = x;
-			btnProfileDelete.Enabled = x;
+			txtLog.Enabled = true;
 
-			txtDestination.Enabled = x;
-			btnBrowse.Enabled = x;
-
-			btnConfig.Enabled = x;
+			lstQueue.SelectedItems.Clear();
 		}
 		#endregion
 

@@ -88,7 +88,6 @@
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Get.cs" />
-    <Compile Include="GetStream.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>

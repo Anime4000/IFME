@@ -33,13 +33,13 @@ namespace ifme
 			{
 				if (Default.AvsMkvCopy)
 				{
-					var file = GetStream.AviSynthGetFile(item.FilePath);
+					var file = Get.AviSynthGetFile(item.FilePath);
                     var ff = new FFmpeg.Stream(file);
 
 					foreach (var subs in ff.Subtitle)
-						TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map 0:{subs.Id} -y subtitle{count++:D4}_{subs.Language}.{Get.MediaContainer(subs.Codec)}");
+						TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -loglevel quiet -i \"{file}\" -map 0:{subs.Id} -y subtitle{count++:D4}_{subs.Language}.{Get.MediaContainer(subs.Codec)}");
 
-					TaskManager.Run($"\"{Plugin.FFMPEG}\" -dump_attachment:t \"\" -i \"{file}\" -y");
+					TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -loglevel quiet -dump_attachment:t \"\" -i \"{file}\" -y");
 
 					TaskManager.Run($"\"{Plugin.MKVEXT}\" chapters \"{file}\" > chapters.xml");
 				}
@@ -79,7 +79,7 @@ namespace ifme
 						{
 							if (subs.Id > -1)
 							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{subs.File}\" -map 0:{subs.Id} -y subtitle{count++:D4}_{subs.Lang}.{subs.Format}");
+								TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -loglevel quiet -i \"{subs.File}\" -map 0:{subs.Id} -y subtitle{count++:D4}_{subs.Lang}.{subs.Format}");
 							}
 							else
 							{
@@ -101,7 +101,7 @@ namespace ifme
 				}
 				else
 				{
-					TaskManager.Run($"\"{Plugin.FFMPEG}\" -dump_attachment:t \"\" -i \"{item.FilePath}\" -y");
+					TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -loglevel quiet -dump_attachment:t \"\" -i \"{item.FilePath}\" -y");
 				}
 
 				TaskManager.Run($"\"{Plugin.MKVEXT}\" chapters \"{item.FilePath}\" > chapters.xml");
@@ -137,7 +137,7 @@ namespace ifme
 						Plugin codec;
 						if (Plugin.List.TryGetValue(item.Audio[0].Encoder, out codec))
 						{
-							TaskManager.Run($"\"{Plugin.FFMPEG}\" {ffile} {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, freq, bit, chan))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
+							TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner {ffile} {ffmap} -filter_complex amix=inputs={counter}:duration=first:dropout_transition=0 -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | \"{codec.App.Bin}\" {(string.IsNullOrEmpty(codec.Arg.Raw) ? string.Empty : string.Format(codec.Arg.Raw, freq, bit, chan))} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio0000_und.{codec.App.Ext}");
 						}
 					}
 				}
@@ -174,7 +174,7 @@ namespace ifme
 
 						string encArgs = $"\"{codec.App.Bin}\" {rawArgs} {codec.Arg.Input} {codec.Arg.Bitrate} {track.BitRate} {track.Args} {codec.Arg.Output} audio{counter++:0000}_{track.Lang}.{codec.App.Ext}";
 
-						TaskManager.Run($"\"{Plugin.FFMPEG}\" -loglevel panic -i \"{file}\" -map 0:{track.Id} -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | {encArgs}");
+						TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -loglevel panic -i \"{file}\" -map 0:{track.Id} -acodec pcm_s{bit}le -ar {freq} -ac {chan} -f wav {ffcmd} - | {encArgs}");
 					}
 					else
 					{
@@ -182,22 +182,22 @@ namespace ifme
 						{
 							if (string.Equals("wma", track.Format, IC))
 							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
+								TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 							else
 							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+								TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
 							}
 						}
 						else
 						{
 							if (string.Equals("mp4", track.Format, IC))
 							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
+								TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -acodec copy {ffcmd} -y audio{counter++:0000}_{track.Lang}.{track.Format}");
 							}
 							else
 							{
-								TaskManager.Run($"\"{Plugin.FFMPEG}\" -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
+								TaskManager.Run($"\"{Plugin.FFMPEG}\" -hide_banner -i \"{file}\" -map 0:{track.Id} -dn -vn -sn -strict -2 -c:a aac -b:a {track.BitRate}k -ar {freq} -ac {chan} -y audio{counter++:0000}_{track.Lang}.mp4");
 							}
 						}
 					}
@@ -208,95 +208,91 @@ namespace ifme
 		public static void Video(Queue item)
 		{
 			string file = item.FilePath;
+			string lang = item.Picture.Lang;
 
-            foreach (var video in GetStream.Video(file))
+			// FFmpeg args
+			string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? string.Empty : $"-s {item.Picture.Resolution}";
+			string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? string.Empty : $"-r {item.Picture.FrameRate}";
+			int bitdepth = item.Picture.BitDepth;
+			string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth > 8 ? $"{bitdepth}le" : "")}";
+			string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : "";
+			int framecount = item.Picture.FrameCount;
+			string ffcmd = item.Picture.Command;
+
+			// Indexing
+			if (!item.General.IsAviSynth)
 			{
-				// FFmpeg args
-				string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? string.Empty : $"-s {item.Picture.Resolution}";
-				string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? string.Empty : $"-r {item.Picture.FrameRate}";
-				int bitdepth = item.Picture.BitDepth;
-				string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth > 8 ? $"{bitdepth}le" : "")}";
-				string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : "";
-				int framecount = item.Picture.FrameCount;
-				string ffcmd = item.Picture.Command;
-
-				// Indexing
-				if (!item.General.IsAviSynth)
+				if (framecount <= 0)
 				{
-					if (framecount <= 0)
+					if (Default.UseFrameAccurate)
 					{
-						if (Default.UseFrameAccurate)
-						{
-							Console.WriteLine("Indexing... This may take very long time.");
-							new FFmpeg().FrameCountAccurate(file);
-						}
-						else
-						{
-							Console.WriteLine("Indexing... Please Wait.");
-							new FFmpeg().FrameCount(file);
-						}
+						Console.WriteLine("Indexing... This may take very long time :(");
+						framecount = new FFmpeg().FrameCountAccurate(file);
 					}
-
-					Console.WriteLine("Indexing... Make sure in sync :)");
-					TaskManager.Run($"\"{Plugin.FFMS2}\" -f -c \"{file}\" timecode");
-				}
-
-				if (!string.IsNullOrEmpty(framerate))
-					framecount = (int)Math.Ceiling((item.General.Duration * Convert.ToDouble(item.Picture.FrameRate, CultureInfo.InvariantCulture)));
-
-				if (item.Picture.YadifEnable)
-					if (item.Picture.YadifMode == 1)
-						framecount *= 2; // make each fields as new frame
-
-				// x265 settings
-				string decbin = Plugin.FFMPEG;
-                string encbin = Plugin.HEVC08;
-				string preset = item.Video.Preset;
-				string tune = string.Equals(item.Video.Tune, "off", IC) ? "" : $"--tune {item.Video.Tune}";
-				int type = item.Video.Type;
-				int pass;
-				string value = item.Video.Value;
-				string command = item.Video.Command;
-
-				if (bitdepth == 10)
-					encbin = Plugin.HEVC10;
-				else if (bitdepth == 12)
-					encbin = Plugin.HEVC12;
-
-				string decoder = $"\"{decbin}\" -loglevel panic -i \"{file}\" -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} {ffcmd} -";
-
-				string encoder = $"\"{encbin}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{video.Lang}.hevc";
-
-				// Encoding start
-				if (type >= 3) // multi pass
-				{
-					type--; // re-use
-
-					for (int i = 0; i < type; i++)
+					else
 					{
-						if (i == 0)
-							pass = 1;
-						else if (i == type)
-							pass = 2;
-						else
-							pass = 3;
-
-						if (i == 1) // get actual frame count
-						{
-							Console.WriteLine("Re-indexing encoded file, make sure no damage.");
-							framecount = new FFmpeg().FrameCount(Path.Combine(Default.DirTemp, $"video0000_{video.Lang}.hevc"));
-						}
-
-						Console.WriteLine($"Pass {i + 1} of {type}"); // human read no index
-						TaskManager.Run($"{decoder} | {encoder} -f {framecount} --pass {pass}");
+						Console.WriteLine("Indexing... Please Wait :)");
+						framecount = new FFmpeg().FrameCount(file);
 					}
 				}
-				else
-				{
-					TaskManager.Run($"{decoder} | {encoder} -f {framecount}");
-				}
 
-				break;
+				Console.WriteLine("Indexing... Make sure in sync :)");
+				TaskManager.Run($"\"{Plugin.FFMS2}\" -p -f -c \"{file}\" timecode");
+			}
+
+			if (!string.IsNullOrEmpty(framerate))
+				framecount = (int)Math.Ceiling((item.General.Duration * Convert.ToDouble(item.Picture.FrameRate, CultureInfo.InvariantCulture)));
+
+			if (item.Picture.YadifEnable)
+				if (item.Picture.YadifMode == 1)
+					framecount *= 2; // make each fields as new frame
+
+			// x265 settings
+			string decbin = Plugin.FFMPEG;
+			string encbin = Plugin.HEVC08;
+			string preset = item.Video.Preset;
+			string tune = string.Equals(item.Video.Tune, "off", IC) ? "" : $"--tune {item.Video.Tune}";
+			int type = item.Video.Type;
+			int pass;
+			string value = item.Video.Value;
+			string command = item.Video.Command;
+
+			if (bitdepth == 10)
+				encbin = Plugin.HEVC10;
+			else if (bitdepth == 12)
+				encbin = Plugin.HEVC12;
+
+			string decoder = $"\"{decbin}\" -hide_banner -loglevel panic -i \"{file}\" -f yuv4mpegpipe -pix_fmt {chroma} -strict -1 {resolution} {framerate} {yadif} {ffcmd} -";
+
+			string encoder = $"\"{encbin}\" --y4m - -p {preset} {(type == 0 ? "--crf" : type == 1 ? "--qp" : "--bitrate")} {value} {command} -o video0000_{lang}.hevc";
+
+			// Encoding start
+			if (type >= 3) // multi pass
+			{
+				type--; // re-use
+
+				for (int i = 0; i < type; i++)
+				{
+					if (i == 0)
+						pass = 1;
+					else if (i == type)
+						pass = 2;
+					else
+						pass = 3;
+
+					if (i == 1) // get actual frame count
+					{
+						Console.WriteLine("Re-indexing encoded file, make sure no damage.");
+						framecount = new FFmpeg().FrameCount(Path.Combine(Default.DirTemp, $"video0000_{lang}.hevc"));
+					}
+
+					Console.WriteLine($"Pass {i + 1} of {type}"); // human read no index
+					TaskManager.Run($"{decoder} | {encoder} -f {framecount} --pass {pass}");
+				}
+			}
+			else
+			{
+				TaskManager.Run($"{decoder} | {encoder} -f {framecount}");
 			}
 		}
 

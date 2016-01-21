@@ -57,7 +57,9 @@ namespace ifme
 
 		public class picture
 		{
+			public string Lang;
 			public int FrameCount;
+
 			public string Resolution;
 			public string FrameRate;
 			public int BitDepth;

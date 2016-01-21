@@ -5,6 +5,7 @@ using IniParser;
 using IniParser.Model;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -49,6 +50,17 @@ namespace ifme
 			return Path.GetExtension(filePath).Substring(1); // jump dot
 		}
 
+		public static string FileFolder(string filePath)
+		{
+			return Path.GetDirectoryName(filePath);
+		}
+
+		public static string FileLang(string file)
+		{
+			file = Path.GetFileNameWithoutExtension(file);
+			return file.Substring(file.Length - 3);
+		}
+
 		public static string FileSize(string file)
 		{
 			FileInfo f = new FileInfo(file);
@@ -75,6 +87,20 @@ namespace ifme
 					return true;
 
 			return false;
+		}
+
+		public static string LanguageFullName(string code)
+		{
+			foreach (var item in File.ReadAllLines("iso.code"))
+				if (string.Equals(code, item.Substring(0, 3), IC))
+					return item;
+
+			return string.Empty;
+		}
+
+		public static string LanguageCodeName(string fullname)
+		{
+			return fullname.Substring(0, 3); // capture only 3 letter
 		}
 
 		public static bool SubtitleValid(string file)
@@ -117,12 +143,6 @@ namespace ifme
 			return "application/octet-stream";
 		}
 
-		public static string FileLang(string file)
-		{
-			file = Path.GetFileNameWithoutExtension(file);
-			return file.Substring(file.Length - 3);
-		}
-
 		public static string Duration(DateTime past)
 		{
 			TimeSpan span = DateTime.Now.Subtract(past);
@@ -135,6 +155,36 @@ namespace ifme
 				return $"{span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
 			else
 				return $"{span.Seconds}s {span.Milliseconds}ms";
+		}
+
+		public static string AviSynthGetFile(string file)
+		{
+			if (string.Equals(Path.GetExtension(file), ".avs", IC))
+			{
+				foreach (var item in File.ReadAllLines(file))
+				{
+					foreach (var code in File.ReadAllLines("avisynthsource.code"))
+					{
+						if (item.Contains(code))
+						{
+							var match = Regex.Match(item, $"{code}\\(\"(.*)\"");
+							if (match.Success)
+							{
+								file = match.Groups[1].Value;
+							}
+						}
+					}
+				}
+			}
+
+			if (file[0] == '/' || file[1] == ':') // check path is full or just file
+			{
+				return file; // return if file is full path
+			}
+			else
+			{
+				return Path.Combine(Path.GetDirectoryName(file), file); // merge current folder & path
+			}
 		}
 	}
 }
