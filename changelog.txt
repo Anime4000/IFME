@@ -34,7 +34,7 @@
 [change] Using FFmpeg to extract font files
 [change] Using GUID rather then string equalities for Audio encoder (API change)
 [change] Remove --force-avs command
-[change] Allow AviSynth to use 10/12bit and YUV
+[change] Allow AviSynth to use 10/12bit and YUV (Git #79)
 
 Version 5.1 (FLUORITE DIARY)
 -----------
