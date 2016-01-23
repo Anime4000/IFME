@@ -64,8 +64,8 @@ Source: "..\prerequisite\windows\64bit\MediaInfo.dll"; DestDir: "{app}"; Flags: 
 Source: "..\prerequisite\windows\32bit\plugins\faac\*"; DestDir: "{app}\plugins\faac"; Flags: ignoreversion
 Source: "..\prerequisite\windows\32bit\plugins\mp4fpsmod\*"; DestDir: "{app}\plugins\mp4fpsmod"; Flags: ignoreversion
 Source: "..\prerequisite\windows\32bit\plugins\opus\*"; DestDir: "{app}\plugins\opus"; Flags: ignoreversion
+Source: "..\prerequisite\windows\32bit\plugins\ffmpeg32\*"; DestDir: "{app}\plugins\ffmpeg32"; Flags: ignoreversion;
 
-Source: "..\prerequisite\windows\32bit\plugins\ffmpeg32\*"; DestDir: "{app}\plugins\ffmpeg32"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: not Is64BitInstallMode
