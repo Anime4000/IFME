@@ -6,7 +6,8 @@ cd "%~dp0"
 SET UNZIP="%PROGRAMFILES%\7-Zip\7z.exe"
 SET WGET="%SYSTEMROOT%\System32\wget.exe"
 SET ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
-SET CompileMode=Release
+SET CompileMode=Debug
+::SET CompileMode=Release
 SET BUILDDIR=build
 SET MSBuildVer=14.0
 
