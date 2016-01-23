@@ -10,6 +10,7 @@
 [added] Allow user to delete queue by pressing DEL key (Git #55)
 [added] Allow user to add more Audio track
 [added] Allow TTC (TrueType Font Collection) to be embedded
+[added] Allow user to remove embeded subtitles
 [fixed] CPU Affinity & Priority has been fix! [Windows] (Git #61)
 [fixed] Download & Updater engine improved!
 [fixed] Temp folder will clear after finished encoding, open & close program
@@ -32,6 +33,7 @@
 [change] Updated ISO 639-2 language code
 [change] Using FFmpeg to extract font files
 [change] Using GUID rather then string equalities for Audio encoder (API change)
+[change] Remove --force-avs command
 
 Version 5.1 (FLUORITE DIARY)
 -----------

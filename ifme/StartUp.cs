@@ -168,15 +168,27 @@ namespace ifme
 			if (Plugin.IsExistAviSynth)
 			{
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine("AviSynth detected!");
-				Console.ResetColor();
+				Console.WriteLine("AviSynth was found, enabled!");
 			}
 			else
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("AviSynth not detected!");
-				Console.ResetColor();
+				Console.WriteLine("AviSynth not found, disabled!");
 			}
+
+			// Tell FFmpeg default
+			if (Default.UseFFmpeg64)
+			{
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.WriteLine("Using 64-bit FFmpeg & AviSynth");
+			}
+			else
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine("Using 32-bit FFmpeg & AviSynth");
+			}
+
+			Console.ResetColor();
 
 			// Language
 			if (!File.Exists(Path.Combine(Global.Folder.Language, $"{Default.Language}.ini")))
@@ -189,10 +201,6 @@ namespace ifme
 
 			// Save all settings
 			Default.Save();
-
-			// For fun
-			Console.WriteLine("\nEstablishing battlefield control, standby!");
-			Thread.Sleep(1000);
 		}
 	}
 }

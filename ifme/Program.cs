@@ -188,8 +188,6 @@ namespace ifme
 
 		static void MainForm()
 		{
-			Title = $"{Global.App.Name} Console";
-
 			ForegroundColor = ConsoleColor.Green;
 			WriteLine(" ________________________________________");
 			Write("/ ");
@@ -216,6 +214,14 @@ namespace ifme
 			WriteLine(@"                ||     ||");
 
 			WriteLine();
+
+#if DEBUG
+			ForegroundColor = ConsoleColor.Red;
+			Write("WARNING! ");
+			ForegroundColor = ConsoleColor.White;
+			Write("Experimental build may contain bug, report if found, use with caution.\n");
+			ResetColor();
+#endif
 
 			Application.Run(new frmMain());
 		}

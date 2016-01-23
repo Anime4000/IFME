@@ -124,12 +124,19 @@ namespace ifme
 			if (File.Exists("metauser.if"))
 			{
 				var TopThree = File.ReadAllLines("metauser.if");
-				Console.WriteLine("Top #3 donor");
-				Console.WriteLine("------------");
-				for (int i = 1; i <= 3; i++)
-					Console.WriteLine($"{i}. {TopThree[i]}");
 
-				Console.WriteLine("\nThank You for your support!\nSupport & donate to IFME project via Paypal.\n");
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.Write("Top #3 Donor: ");
+
+				Console.ForegroundColor = ConsoleColor.White;
+				for (int i = 1; i <= 3; i++)
+				{
+					Console.Write($"{TopThree[i]}");
+					if (i != 3)
+						Console.Write(", ");
+				}
+
+				Console.ResetColor();
 			}
 			else
 			{
@@ -138,7 +145,6 @@ namespace ifme
 				Console.WriteLine("\nERROR! Incomplete installation, this application will not working properly!\n");
 				Console.ResetColor();
 			}
-
 			
 #else
 			btnDonate.Visible = false;
