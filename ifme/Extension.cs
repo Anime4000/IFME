@@ -19,6 +19,32 @@ namespace ifme
 
 		public static List<Extension> Items = new List<Extension>();
 
+		public static void Update()
+		{
+			foreach (var item in Items)
+			{
+				string version = string.Empty;
+				string link = string.Empty;
+
+				Console.Write($"\nChecking for update: {item.Name}");
+
+				if (string.IsNullOrEmpty(item.UrlVersion))
+					continue;
+
+				version = new Download().GetString(item.UrlVersion);
+
+				if (string.Equals(item.Version, version ?? "0"))
+					continue;
+
+				link = string.Format(item.UrlDownload, version);
+
+				new Download().GetFileExtract(link, Global.Folder.Extension);
+			}
+
+			// Reload listing
+			Load();
+		}
+
 		public static void Load()
 		{
 			Items.Clear();
@@ -44,29 +70,6 @@ namespace ifme
 				e.UrlDownload = inet[2];
 
 				Items.Add(e);
-			}
-		}
-
-		public static void Update()
-		{
-			foreach (var item in Extension.Items)
-			{
-				string version = string.Empty;
-				string link = string.Empty;
-
-				Console.Write($"\nChecking for update: {item.Name}");
-
-				if (string.IsNullOrEmpty(item.UrlVersion))
-					continue;
-
-				version = new Download().GetString(item.UrlVersion);
-
-				if (string.Equals(item.Version, version ?? "0"))
-					continue;
-
-				link = string.Format(item.UrlDownload, version);
-
-				new Download().GetFileExtract(link, Global.Folder.Extension);
 			}
 		}
 

@@ -269,11 +269,10 @@
     <None Include="Resources\fb.png" />
     <None Include="Resources\cross.png" />
     <None Include="Resources\pencil.png" />
-    <None Include="Resources\SplashScreen5CB.jpg" />
-    <None Include="Resources\SplashScreen5CA.jpg" />
     <None Include="Resources\ifme-zenui.ico" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\add.png" />
+    <None Include="Resources\SplashScreenPlain.png" />
     <Content Include="sounds\finish.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

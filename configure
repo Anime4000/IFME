@@ -10,6 +10,8 @@ sleep 5
 
 echo "Creating folder"
 mkdir "prerequisite/linux"
+mkdir "prerequisite/linux/32bit"
+mkdir "prerequisite/linux/32bit/plugins"
 mkdir "prerequisite/linux/64bit"
 mkdir "prerequisite/linux/64bit/plugins"
 mkdir "prerequisite/allos/"
@@ -26,6 +28,7 @@ wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/downl
 wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.dll.zip -O "prerequisite/allos/extension/nemupad.dll.ifx"
 
 echo "Downloading plugins"
+wget http://sourceforge.net/projects/ifme/files/plugins/linux/32bit/ffmpeg.ifx -O "prerequisite/linux/32bit/plugins/ffmpeg.ifx"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/faac.ifx -O "prerequisite/linux/64bit/plugins/faac.ifx"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/ffmpeg.ifx -O "prerequisite/linux/64bit/plugins/ffmpeg.ifx"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/64bit/ffmsindex.ifx -O "prerequisite/linux/64bit/plugins/ffmsindex.ifx"

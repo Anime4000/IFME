@@ -43,7 +43,7 @@ echo Extensions
 %WGET% --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.dll.zip -O "prerequisite\allos\extension\nemupad.dll.ifx"
 
 echo Extension - AvsPmod
-%WGET% --no-check-certificate https://github.com/x265/AvsPmodBridge/releases/download/v0.0.1/AvsPmodBridge.zip -O "prerequisite\allos\extension\AvsPmodBridge.ifx"
+%WGET% --no-check-certificate https://github.com/x265/AvsPmodBridge/releases/download/v0.2/AvsPmodBridge.zip -O "prerequisite\allos\extension\AvsPmodBridge.ifx"
 %WGET% --no-check-certificate https://github.com/AvsPmod/AvsPmod/releases/download/v2.5.1/AvsPmod_v2.5.1.zip -O "prerequisite\allos\extension\AvsPmod_v2.5.1.ifx"
 
 echo Downloading 32bit plugins!

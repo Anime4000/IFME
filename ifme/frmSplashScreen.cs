@@ -17,10 +17,15 @@ namespace ifme
 			InitializeComponent();
 
 			Icon = Properties.Resources.ifme_zenui;
-			BackgroundImage = Global.GetRandom % 2 != 0 ? Properties.Resources.SplashScreen5CA : Properties.Resources.SplashScreen5CB;
+			BackgroundImage = Properties.Resources.SplashScreenPlain;
 		}
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)
+		{
+			
+		}
+
+		private void frmSplashScreen_Shown(object sender, EventArgs e)
 		{
 			bgwThread.RunWorkerAsync();
 		}

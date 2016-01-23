@@ -12,45 +12,31 @@ namespace ifme
 {
 	class Program
 	{
-		public static bool ApplyUpdate = false;
-
 		[STAThread]
 		static int Main(string[] args)
 		{
-			// Never comma under decimal/floating points
-			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-			// Modify current working directory, portable!
-			Environment.CurrentDirectory = Global.Folder.Root;
-
-			// Essential Stuff
-			Title = $"{Global.App.Name} Console";
+			// Console Title, Intro
+			ConsoleHeader();
 
 			// Make WinForms much pretty
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			// Display this program header text
-			Head();
+			// Modify current working directory, portable!
+			Environment.CurrentDirectory = Global.Folder.Root;
+
+			// Never comma under decimal/floating points
+			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
 			// Load settings
-			SettingsLoad();
+			StartUp.SettingsLoad();
 
 			// Upgrade settings
-			SettingsUpgrade();
+			StartUp.SettingsUpgrade();
 
 			// Command
 			if (Command(args) == 0)
-				return 0;
-
-#if !STEAM
-			// Update check
-			if (!ApplyUpdate)
-			{
-				string version = new Download().GetString("https://x265.github.io/update/version.txt");
-				Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
-			}
-#endif
+				return 0; // finish with console mode
 
 			// Splash Screen, loading and update
 			SplashScreen();
@@ -66,8 +52,10 @@ namespace ifme
 			return 0;
 		}
 
-		static void Head()
+		static void ConsoleHeader()
 		{
+			Title = $"{Global.App.Name} Console";
+
 			ForegroundColor = ConsoleColor.Yellow;
 			WriteLine(Global.App.NameFull);
 			WriteLine("Release: " + Global.App.VersionCompiled);
@@ -77,7 +65,7 @@ namespace ifme
 
 		static void DisplayHelp()
 		{
-			WriteLine("Usage: ifme [OPTION...] INPUT");
+			WriteLine("Usage: ifme [OPTION...] -i INPUT");
 			WriteLine();
 			WriteLine("Mandatory arguments to long options are mandatory for short options too.");
 			WriteLine();
@@ -130,7 +118,7 @@ namespace ifme
 							IsCLI = true;
 
 						if (args[i][n] == 's')
-							ApplyUpdate = true;
+							StartUp.SkipUpdate = true;
 
 						if (args[i][n] == 'f')
 							IsForce = true;
@@ -191,68 +179,6 @@ namespace ifme
 			}
 
 			return 1; // Proceed with GUI
-		}
-
-		static void SettingsLoad()
-		{
-			// Output folder
-			if (string.IsNullOrEmpty(Default.DirOutput))
-				Default.DirOutput = Global.Folder.DefaultSave;
-
-			if (!Directory.Exists(Default.DirOutput))
-				Directory.CreateDirectory(Default.DirOutput);
-
-			// Temporary folder
-			if (string.IsNullOrEmpty(Default.DirTemp))
-				Default.DirTemp = Global.Folder.DefaultTemp;
-
-			if (!Directory.Exists(Default.DirTemp))
-				Directory.CreateDirectory(Default.DirTemp);
-
-			// CPU Affinity, Load previous, if none, set default all CPU
-			if (string.IsNullOrEmpty(Default.CPUAffinity))
-			{
-				Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
-				Default.Save();
-			}
-
-			string[] aff = Default.CPUAffinity.Split(',');
-			for (int i = 0; i < Environment.ProcessorCount; i++)
-			{
-				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
-			}
-		}
-
-		static void SettingsUpgrade()
-		{
-			if (!string.Equals(Default.Version, Global.App.VersionRelease))
-			{
-				Default.Upgrade();
-				Default.Version = Global.App.VersionRelease;
-
-				if (string.IsNullOrEmpty(Default.Language))
-					Default.Language = "en";
-
-				// Compiler
-				if (string.IsNullOrEmpty(Default.Compiler))
-				{
-					if (OS.IsWindows)
-					{
-						if (OS.Is64bit)
-						{
-							Default.Compiler = "gcc";
-						}
-						else
-						{
-							Default.Compiler = "msvc";
-						}
-					}
-					else
-					{
-						Default.Compiler = "gcc";
-					}
-				}
-			}
 		}
 
 		static void SplashScreen()

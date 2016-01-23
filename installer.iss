@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "5.1.13.0"
+#define MyAppVersion "6.0.0.0"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://x265.github.io/"
 #define MyAppExeName "ifme.exe"
@@ -61,12 +61,11 @@ Source: "..\prerequisite\windows\32bit\MediaInfo.dll"; DestDir: "{app}"; Flags: 
 Source: "..\prerequisite\windows\64bit\7za.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\MediaInfo.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode
 
-Source: "..\prerequisite\windows\32bit\plugins\avisynth\*"; DestDir: "{app}\plugins\avisynth"; Flags: ignoreversion
 Source: "..\prerequisite\windows\32bit\plugins\faac\*"; DestDir: "{app}\plugins\faac"; Flags: ignoreversion
 Source: "..\prerequisite\windows\32bit\plugins\mp4fpsmod\*"; DestDir: "{app}\plugins\mp4fpsmod"; Flags: ignoreversion
 Source: "..\prerequisite\windows\32bit\plugins\opus\*"; DestDir: "{app}\plugins\opus"; Flags: ignoreversion
 
-Source: "..\prerequisite\windows\32bit\plugins\ffmpeg\*"; DestDir: "{app}\plugins\ffmpeg"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\ffmpeg32\*"; DestDir: "{app}\plugins\ffmpeg32"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: not Is64BitInstallMode
@@ -74,7 +73,7 @@ Source: "..\prerequisite\windows\32bit\plugins\mp4box\*"; DestDir: "{app}\plugin
 Source: "..\prerequisite\windows\32bit\plugins\ogg\*"; DestDir: "{app}\plugins\ogg"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\x265msvc\*"; DestDir: "{app}\plugins\x265msvc"; Flags: ignoreversion; Check: not Is64BitInstallMode
 
-Source: "..\prerequisite\windows\64bit\plugins\ffmpeg\*"; DestDir: "{app}\plugins\ffmpeg"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\ffmpeg64\*"; DestDir: "{app}\plugins\ffmpeg64"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: Is64BitInstallMode

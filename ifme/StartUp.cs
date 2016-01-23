@@ -8,6 +8,70 @@ namespace ifme
 {
 	public class StartUp
 	{
+		public static bool SkipUpdate { get; set; } = false;
+
+		public static void SettingsLoad()
+		{
+			// Output folder
+			if (string.IsNullOrEmpty(Default.DirOutput))
+				Default.DirOutput = Global.Folder.DefaultSave;
+
+			if (!Directory.Exists(Default.DirOutput))
+				Directory.CreateDirectory(Default.DirOutput);
+
+			// Temporary folder
+			if (string.IsNullOrEmpty(Default.DirTemp))
+				Default.DirTemp = Global.Folder.DefaultTemp;
+
+			if (!Directory.Exists(Default.DirTemp))
+				Directory.CreateDirectory(Default.DirTemp);
+
+			// CPU Affinity, Load previous, if none, set default all CPU
+			if (string.IsNullOrEmpty(Default.CPUAffinity))
+			{
+				Default.CPUAffinity = TaskManager.CPU.DefaultAll(true);
+				Default.Save();
+			}
+
+			string[] aff = Default.CPUAffinity.Split(',');
+			for (int i = 0; i < Environment.ProcessorCount; i++)
+			{
+				TaskManager.CPU.Affinity[i] = Convert.ToBoolean(aff[i]);
+			}
+		}
+
+		public static void SettingsUpgrade()
+		{
+			if (!string.Equals(Default.Version, Global.App.VersionRelease))
+			{
+				Default.Upgrade();
+				Default.Version = Global.App.VersionRelease;
+
+				if (string.IsNullOrEmpty(Default.Language))
+					Default.Language = "en";
+
+				// Compiler
+				if (string.IsNullOrEmpty(Default.Compiler))
+				{
+					if (OS.IsWindows)
+					{
+						if (OS.Is64bit)
+						{
+							Default.Compiler = "gcc";
+						}
+						else
+						{
+							Default.Compiler = "msvc";
+						}
+					}
+					else
+					{
+						Default.Compiler = "gcc";
+					}
+				}
+			}
+		}
+
 		public static void RunSetting()
 		{
 			// Check x265, just incase user remove folder
@@ -65,15 +129,19 @@ namespace ifme
 			RunLoad();
 
 			// Fetch latest file
-			if (!Program.ApplyUpdate)
+			if (!SkipUpdate)
 			{
+#if !STEAM
+				// Update check
+				Console.WriteLine("Checking new version, please wait...");
+				string version = new Download().GetString("https://x265.github.io/update/version.txt");
+				Global.App.NewRelease = string.IsNullOrEmpty(version) ? false : string.Equals(Global.App.VersionRelease, version) ? false : true;
+#endif
 				// Plugins
 				Plugin.Update();
-				Plugin.Load();
 
 				// Extension
 				Extension.Update();
-				Extension.Load();
 
 				// Format fix
 				Console.WriteLine("\nFetch codec fingerprint from GitHub Repo");

@@ -492,7 +492,7 @@ namespace ifme
 			}
 			else
 			{
-				InvokeLog($"This file has no video, rejected: {file}");
+				InvokeLog($"Invalid video file, rejected: {file}");
 				return;
 			}
 
@@ -1161,6 +1161,7 @@ namespace ifme
 					cboAudioBit.Text = test.App.Default;
 					cboAudioFreq.SelectedIndex = 0;
 					cboAudioChannel.SelectedValue = 0;
+					txtAudioCmd.Text = test.Arg.Advance;
 
 					foreach (var item in cboAudioBit.Items)
 						if (Equals(n.Audio[i].BitRate, item))
@@ -1172,9 +1173,11 @@ namespace ifme
 					if (!string.IsNullOrEmpty(n.Audio[i].Chan))
 						cboAudioChannel.Text = n.Audio[i].Chan;
 
+					if (!string.IsNullOrEmpty(n.Audio[i].Args))
+						txtAudioCmd.Text = n.Audio[i].Args;
+
 					QueueUpdate(QueueProp.AudioEncoder);
 				}
-
 			}
 		}
 
@@ -1847,12 +1850,12 @@ namespace ifme
 
 					item.General.Duration = ff.Duration;
 
-					if (ff.Video.Count > 0)
-					{
-						item.Picture.FrameCount = ff.Video[0].FrameCount;
-					}
-
 					lstQueue.SelectedItems[0].SubItems[1].Text = Get.FileSize(item.FilePath); // refresh new size
+
+					if (ff.Video.Count > 0)
+						item.Picture.FrameCount = ff.Video[0].FrameCount;
+					else
+						lstQueue.SelectedItems[0].Checked = false;
 				}
 				else
 				{
@@ -1889,9 +1892,7 @@ namespace ifme
 							item.General.Duration = ff.Duration;
 
 							if (ff.Video.Count > 0)
-							{
 								item.Picture.FrameCount = ff.Video[0].FrameCount;
-							}
 
 							item.Audio.Clear(); // reset
 							foreach (var audio in ff.Audio)

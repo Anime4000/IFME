@@ -39,16 +39,17 @@
 			// frmSplashScreen
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.ClientSize = new System.Drawing.Size(600, 320);
+			this.ClientSize = new System.Drawing.Size(620, 300);
 			this.ControlBox = false;
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-			this.MinimumSize = new System.Drawing.Size(600, 320);
+			this.MinimumSize = new System.Drawing.Size(620, 300);
 			this.Name = "frmSplashScreen";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "IFME Loading";
 			this.Load += new System.EventHandler(this.frmSplashScreen_Load);
+			this.Shown += new System.EventHandler(this.frmSplashScreen_Shown);
 			this.ResumeLayout(false);
 
 		}

@@ -61,7 +61,7 @@ namespace ifme
 		public static string HEVC12 { get { return Path.Combine(Global.Folder.Plugins, $"x265{Properties.Settings.Default.Compiler}", "x265-12"); } }
 
 		// Run once
-		private static string DEFAULT_FFMPEG { get { return Properties.Settings.Default.UseFFmpeg64 ? "ffmpeg64" : "ffmpeg"; } }
+		private static string DEFAULT_FFMPEG { get { return Properties.Settings.Default.UseFFmpeg64 ? "ffmpeg64" : "ffmpeg32"; } }
 		public static string FFMPEG { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffmpeg"); } }
 		public static string FFPROBE { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffprobe"); } }
 		public static string FFPLAY { get { return Path.Combine(Global.Folder.Plugins, DEFAULT_FFMPEG, "ffplay"); } }
@@ -81,12 +81,12 @@ namespace ifme
 		public static bool IsExistHEVCICC = false;
 		public static bool IsExistHEVCMSVC = false;
 
-		// List plugins with GUID
+		// List plugins with GUID as key
 		public static Dictionary<Guid, Plugin> List = new Dictionary<Guid, Plugin>();
 
 		public static void Repo()
 		{
-			string repo = null;
+			string repo = string.Empty;
 			int counter = 0;
 			int counted = 0;
 
@@ -139,6 +139,9 @@ namespace ifme
 
 				new Download().GetFileExtract(obj.Provider.Download, Global.Folder.Plugins);
 			}
+
+			// Reload listing
+			Load();
 		}
 
 		public static void Load()
@@ -146,7 +149,7 @@ namespace ifme
 			// Revoke
 			List.Clear();
 
-			// Ready build-in
+			// Load build-in encoders
 			BuildIn();
 
 			// Load plugins
@@ -186,7 +189,7 @@ namespace ifme
 			}
 		}
 
-		public static void BuildIn()
+		private static void BuildIn()
 		{
 			// Audio section
 			var a = new Plugin();

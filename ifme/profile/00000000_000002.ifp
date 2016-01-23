@@ -19,7 +19,7 @@ value = 24
 cmd = --dither
 
 [audio]
-encoder = faacfaac-faac-faac-faac-faceb00cdead
+encoder = deadface-faac-faac-faac-faacfaacfaac
 bitrate = 128
 frequency = auto
 channel = auto
