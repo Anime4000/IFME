@@ -718,7 +718,6 @@ namespace ifme
 			// AviSynth
 			var x = Info.General.IsAviSynth;
 			grpPictureBasic.Enabled = !x;
-			grpPictureQuality.Enabled = !x;
 			chkPictureYadif.Enabled = !x;
 			btnAudioAdd.Enabled = !x;
 			btnAudioRemove.Enabled = !x;
