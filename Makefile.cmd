@@ -3,11 +3,29 @@
 
 cd "%~dp0"
 
+IF /I "%1"=="" goto HELP
+IF /I "%1"=="debug" goto DEBUG
+IF /I "%1"=="release" goto RELEASE
+
+:HELP
+echo Valid command are:
+echo %~n0 debug
+echo %~n0 release
+pause
+exit
+
+:DEBUG
+SET CompileMode=Debug
+goto MAKEIT
+
+:RELEASE
+SET CompileMode=Release
+goto MAKEIT
+
+:MAKEIT
 SET UNZIP="%PROGRAMFILES%\7-Zip\7z.exe"
 SET WGET="%SYSTEMROOT%\System32\wget.exe"
 SET ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
-SET CompileMode=Debug
-::SET CompileMode=Release
 SET BUILDDIR=build
 SET MSBuildVer=14.0
 
