@@ -68,7 +68,7 @@ Source: "..\prerequisite\windows\32bit\plugins\ffmpeg32\*"; DestDir: "{app}\plug
 
 Source: "..\prerequisite\windows\32bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: not Is64BitInstallMode
-Source: "..\prerequisite\windows\32bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "..\prerequisite\windows\32bit\plugins\mkvtoolnix\*"; DestDir: "{app}\plugins\mkvtoolnix"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\mp4box\*"; DestDir: "{app}\plugins\mp4box"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\ogg\*"; DestDir: "{app}\plugins\ogg"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "..\prerequisite\windows\32bit\plugins\x265msvc\*"; DestDir: "{app}\plugins\x265msvc"; Flags: ignoreversion; Check: not Is64BitInstallMode
@@ -76,7 +76,7 @@ Source: "..\prerequisite\windows\32bit\plugins\x265msvc\*"; DestDir: "{app}\plug
 Source: "..\prerequisite\windows\64bit\plugins\ffmpeg64\*"; DestDir: "{app}\plugins\ffmpeg64"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\ffmsindex\*"; DestDir: "{app}\plugins\ffmsindex"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\flac\*"; DestDir: "{app}\plugins\flac"; Flags: ignoreversion; Check: Is64BitInstallMode
-Source: "..\prerequisite\windows\64bit\plugins\mkvtool\*"; DestDir: "{app}\plugins\mkvtool"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "..\prerequisite\windows\64bit\plugins\mkvtoolnix\*"; DestDir: "{app}\plugins\mkvtoolnix"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\mp4box\*"; DestDir: "{app}\plugins\mp4box"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\ogg\*"; DestDir: "{app}\plugins\ogg"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "..\prerequisite\windows\64bit\plugins\x265gcc\*"; DestDir: "{app}\plugins\x265gcc"; Flags: ignoreversion; Check: Is64BitInstallMode

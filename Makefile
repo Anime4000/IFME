@@ -6,15 +6,15 @@ MODE=Release
 DIR=build
 
 all: only
-	mv $(DIR) ifme5
-	tar -cvJf ifme5-amd64_linux.tar.xz ifme5
+	mv $(DIR) ifme6
+	tar -cvJf ifme6-amd64_linux.tar.xz ifme5
 	mv ifme5 $(DIR)
 
 only: clean compile copy copylib copymono
 	$(CC) "sources/ifme-gnome.c" -o "$(DIR)/ifme-gnome"
 	$(CC) "sources/ifme-xterm.c" -o "$(DIR)/ifme-xterm"
 	cp "sources/ifme.sh" "$(DIR)/ifme"
-	$(MONOMK) -z --deps --static -o "$(DIR)/ifme-bin" "$(DIR)/ifme.exe" "$(DIR)/INIFileParser.dll" "$(DIR)/MediaInfoDotNet.dll"
+	$(MONOMK) -z --deps --static -o "$(DIR)/ifme-bin" "$(DIR)/ifme.exe" "$(DIR)/INIFileParser.dll" "$(DIR)/MediaInfoDotNet.dll" "$(DIR)/FFmpegDotNet.dll"
 	rm -f "$(DIR)/ifme.exe"
 	rm -f "$(DIR)/INIFileParser.dll"
 	rm -f "$(DIR)/MediaInfoDotNet.dll"
@@ -44,6 +44,7 @@ copy:
 	cp "changelog.txt" "$(DIR)/"
 	cp "license.txt" "$(DIR)/"
 	cp "patents.txt" "$(DIR)/"
+	cp -r "prerequisite/linux/32bit/plugins" "$(DIR)/"
 	cp -r "prerequisite/linux/64bit/plugins" "$(DIR)/"
 	cp -r "prerequisite/allos/extension" "$(DIR)/"
 	
@@ -55,6 +56,7 @@ copymono:
 	cp "ifme/bin/$(MODE)/ifme.exe" "$(DIR)/"
 	cp "ifme/bin/$(MODE)/INIFileParser.dll" "$(DIR)/"
 	cp "ifme/bin/$(MODE)/MediaInfoDotNet.dll" "$(DIR)/"
+	cp "ifme/bin/$(MODE)/FFmpegDotNet.dll" "$(DIR)/"
 	cp "sources/MediaInfoDotNet.dll.config" "$(DIR)/"
 
 clean:

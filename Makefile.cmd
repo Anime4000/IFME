@@ -1,5 +1,4 @@
 @echo off
-@title Build IFME and Release!
 
 cd "%~dp0"
 
@@ -23,6 +22,7 @@ SET CompileMode=Release
 goto MAKEIT
 
 :MAKEIT
+@title Build IFME - %CompileMode%
 SET UNZIP="%PROGRAMFILES%\7-Zip\7z.exe"
 SET WGET="%SYSTEMROOT%\System32\wget.exe"
 SET ISCC="%PROGRAMFILES(X86)%\Inno Setup 5\iscc.exe"
@@ -108,6 +108,7 @@ echo COPY COMPILED
 copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
 copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
 copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
+copy ifme\bin\%CompileMode%\FFmpegDotNet.dll %BUILDDIR%
 echo.
 
 @title COPY EXTENSION
