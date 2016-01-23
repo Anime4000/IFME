@@ -76,7 +76,7 @@ timeout /t 3 >nul
 
 @title DELETEING %BUILDDIR%!
 echo DELETEING %BUILDDIR%!
-rmdir /s /q %BUILDDIR%
+rmdir /s /q "%BUILDDIR%"
 mkdir "%BUILDDIR%"
 timeout /t 1 >nul
 echo.
