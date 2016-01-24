@@ -4,6 +4,7 @@
 [new] Allow user to save encoded file either same source folder or given path
 [new] Capable to encode audio files, but not fully supported
 [added] Language: Italian
+[added] Language: Lithuanian (Git #77)
 [added] Allow user to add FFmpeg arguments/command-line
 [added] Allow user to edit/rename Encoding Preset (Git #55)
 [added] Allow user to delete Encoding Preset (Git #55)
