@@ -517,7 +517,7 @@
             "NORMAL",
             "BELOW NORMAL",
             "LOW"});
-			this.cboCPUPriority.Location = new System.Drawing.Point(68, 101);
+			this.cboCPUPriority.Location = new System.Drawing.Point(68, 42);
 			this.cboCPUPriority.Name = "cboCPUPriority";
 			this.cboCPUPriority.Size = new System.Drawing.Size(150, 21);
 			this.cboCPUPriority.TabIndex = 0;
@@ -525,7 +525,7 @@
 			// lblCPUCores
 			// 
 			this.lblCPUCores.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.lblCPUCores.Location = new System.Drawing.Point(68, 125);
+			this.lblCPUCores.Location = new System.Drawing.Point(68, 66);
 			this.lblCPUCores.Name = "lblCPUCores";
 			this.lblCPUCores.Size = new System.Drawing.Size(150, 23);
 			this.lblCPUCores.TabIndex = 3;
@@ -537,15 +537,15 @@
 			this.clbCPU.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.clbCPU.CheckOnClick = true;
 			this.clbCPU.FormattingEnabled = true;
-			this.clbCPU.Location = new System.Drawing.Point(68, 151);
+			this.clbCPU.Location = new System.Drawing.Point(68, 92);
 			this.clbCPU.Name = "clbCPU";
-			this.clbCPU.Size = new System.Drawing.Size(150, 124);
+			this.clbCPU.Size = new System.Drawing.Size(150, 229);
 			this.clbCPU.TabIndex = 1;
 			// 
 			// lblCPUPriority
 			// 
 			this.lblCPUPriority.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.lblCPUPriority.Location = new System.Drawing.Point(68, 75);
+			this.lblCPUPriority.Location = new System.Drawing.Point(68, 16);
 			this.lblCPUPriority.Name = "lblCPUPriority";
 			this.lblCPUPriority.Size = new System.Drawing.Size(150, 23);
 			this.lblCPUPriority.TabIndex = 2;

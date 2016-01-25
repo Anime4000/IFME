@@ -1,4 +1,10 @@
-﻿Version 6.0 (Archangel Descending)
+﻿Version 6.1
+-----------
+
+[fixed] Skip missing plugin executable file
+[fixed] Skip invalid plugins GUID
+
+Version 6.0 (Archangel Descending)
 ----------------------------------
 
 [new] Allow user to save encoded file either same source folder or given path

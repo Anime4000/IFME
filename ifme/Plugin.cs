@@ -183,9 +183,14 @@ namespace ifme
 					p.Arg.Output = data["arg"]["output"];
 					p.Arg.Bitrate = data["arg"]["bitrate"];
 					p.Arg.Advance = data["arg"]["advance"];
+
+					if (!File.Exists(p.App.Bin))
+						continue;
 				}
 
-				List.Add(new Guid(data["info"]["guid"]), p);
+				Guid guid; // Check if valid UUID
+				if (Guid.TryParse(data["info"]["guid"], out guid))
+					List.Add(guid, p);
 			}
 		}
 

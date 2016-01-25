@@ -134,6 +134,8 @@ namespace ifme
 					Console.Write($"{TopThree[i]}");
 					if (i != 3)
 						Console.Write(", ");
+					else
+						Console.Write("\n");
 				}
 
 				Console.ResetColor();

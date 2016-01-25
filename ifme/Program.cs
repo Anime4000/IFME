@@ -12,6 +12,8 @@ namespace ifme
 {
 	class Program
 	{
+		static StringComparison IC { get { return StringComparison.InvariantCultureIgnoreCase; } }
+
 		[STAThread]
 		static int Main(string[] args)
 		{
@@ -75,7 +77,7 @@ namespace ifme
 			WriteLine("  -g, --gui                    open IFME GUI (linux only)");
 			WriteLine("  -c, --cli                    open IFME CLI (impiles -g)");
 			WriteLine("  -i, --input file.xml         load IFME queue file via CLI");
-			WriteLine("  -s                           skip all update checking (faster loading)");
+			WriteLine("  -s, --offline                skip all update checking (faster loading)");
 			WriteLine("  -f                           start encoding immediately! (skip confirmation)");
 			WriteLine();
 			WriteLine("Option GUI & CLI are cannot combine together, CLI will implies GUI.");
@@ -97,52 +99,59 @@ namespace ifme
 			{
 				for (int i = 0; i < args.Length; i++)
 				{
-					for (int n = 0; n < args[i].Length; n++)
+					if (args[i].Length >= 2)
 					{
-						if (args[i][0] != '-')
-							break;
+						if (args[i][0] == '-' && args[i][1] != '-')
+						{
+							var cmd = args[i][1];
 
-						if (args[i][1] == '-')
-							break;
+							if (cmd == 'h')
+								IsHelp = true;
 
-						if (args[i][n] == 'h')
-							IsHelp = true;
+							if (cmd == 'r')
+								IsReset = true;
 
-						if (args[i][n] == 'r')
-							IsReset = true;
+							if (cmd == 'g')
+								IsGUI = true;
 
-						if (args[i][n] == 'g')
-							IsGUI = true;
+							if (cmd == 'c')
+								IsCLI = true;
 
-						if (args[i][n] == 'c')
-							IsCLI = true;
+							if (cmd == 's')
+								StartUp.SkipUpdate = true;
 
-						if (args[i][n] == 's')
-							StartUp.SkipUpdate = true;
+							if (cmd == 'f')
+								IsForce = true;
 
-						if (args[i][n] == 'f')
-							IsForce = true;
+							if (cmd == 'i')
+								if (i < args.Length)
+									ObjectIO.FileName = args[++i];
+						}
 
-						if (args[i][n] == 'i')
-							if (i < args.Length)
-								ObjectIO.FileName = args[++i];
+						if (args[i][0] == '-' && args[i][1] == '-')
+						{
+							var cmd = args[i].Substring(2);
+
+							if (string.Equals("help", cmd, IC))
+								IsHelp = true;
+
+							if (string.Equals("reset", cmd, IC))
+								IsReset = true;
+
+							if (string.Equals("gui", cmd, IC))
+								IsGUI = true;
+
+							if (string.Equals("cli", cmd, IC))
+								IsCLI = true;
+
+							if (string.Equals("offline", cmd, IC))
+								StartUp.SkipUpdate = true;
+
+							if (string.Equals("input", cmd, IC))
+								if (i < args.Length)
+									ObjectIO.FileName = args[++i];
+						}
 					}
-
-					if (args[i] == "--help")
-						IsHelp = true;
-
-					if (args[i] == "--reset")
-						IsReset = true;
-
-					if (args[i] == "--gui")
-						IsGUI = true;
-
-					if (args[i] == "--cli")
-						IsCLI = true;
-
-					if (args[i] == "--input")
-						if (i < args.Length)
-							ObjectIO.FileName = args[++i];
 				}
 			}
 

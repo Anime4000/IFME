@@ -122,9 +122,9 @@ namespace ifme
 				if (string.IsNullOrEmpty(file))
 					continue;
 
-				string freq = string.Equals(track.Freq, "auto", IC) ? $"{track.RawFreq}" : $"{track.Freq}";
-				string bit = $"{track.RawBit}";
-				string chan = string.Equals(track.Chan, "auto", IC) ? $"{track.RawChan}" : string.Equals(track.Chan, "stereo", IC) ? "2" : "1";
+				int freq = string.Equals(track.Freq, "auto", IC) ? track.RawFreq : int.Parse(track.Freq);
+				int bit = track.RawBit;
+				int chan = string.Equals(track.Chan, "auto", IC) ? track.RawChan : string.Equals(track.Chan, "stereo", IC) ? 2 : 1;
 
 				if (item.AudioMerge)
 				{
@@ -147,16 +147,14 @@ namespace ifme
 						continue;
 
 					if (Equals(new Guid("00000000-0000-0000-0000-000000000000"), track.Encoder))
-					{
 						continue;
-					}
 
 					Plugin codec;
 
 					if (Plugin.List.TryGetValue(track.Encoder, out codec) && !Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), track.Encoder))
 					{
-						if (Convert.ToInt32(bit) >= 32)
-							bit = "24"; // force to 24bit max
+						if (bit >= 32)
+							bit = 24; // force to 24bit max
 
 						string rawArgs = string.Empty;
 
@@ -214,8 +212,8 @@ namespace ifme
 			string resolution = string.Equals(item.Picture.Resolution, "auto", IC) ? string.Empty : $"-s {item.Picture.Resolution}";
 			string framerate = string.Equals(item.Picture.FrameRate, "auto", IC) ? string.Empty : $"-r {item.Picture.FrameRate}";
 			int bitdepth = item.Picture.BitDepth;
-			string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth > 8 ? $"{bitdepth}le" : "")}";
-			string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : "";
+			string chroma = $"yuv{item.Picture.Chroma}p{(bitdepth > 8 ? $"{bitdepth}le" : string.Empty)}";
+			string yadif = item.Picture.YadifEnable ? $"-vf \"yadif={item.Picture.YadifMode}:{item.Picture.YadifField}:{item.Picture.YadifFlag}\"" : string.Empty;
 			int framecount = item.Picture.FrameCount;
 			string ffcmd = item.Picture.Command;
 

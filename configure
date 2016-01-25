@@ -25,7 +25,8 @@ wget --no-check-certificate https://github.com/x265/Preparation/releases/downloa
 echo "Downloading extension"
 wget --no-check-certificate https://github.com/x265/HFRGen/releases/download/v0.0.2/hfrgen.zip -O "prerequisite/allos/extension/hfrgen.ifx"
 wget --no-check-certificate https://github.com/x265/HoloBenchmark/releases/download/v0.0.4/holobenchmark.7z -O "prerequisite/allos/extension/holobenchmark.ifx"
-wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.zip -O "prerequisite/allos/extension/nemupad.dll.ifx"
+wget --no-check-certificate https://github.com/x265/Nemupad/releases/download/v0.0.3/nemupad.zip -O "prerequisite/allos/extension/nemupad.ifx"
+wget --no-check-certificate https://github.com/x265/Hardsubbing/releases/download/v0.2/HardSub.zip -O "prerequisite/allos/extension/HardSub.ifx"
 
 echo "Downloading plugins"
 wget http://sourceforge.net/projects/ifme/files/plugins/linux/32bit/ffmpeg.ifx -O "prerequisite/linux/32bit/plugins/ffmpeg.ifx"
