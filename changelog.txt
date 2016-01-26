@@ -2,7 +2,8 @@
 -----------
 
 [fixed] Skip missing plugin executable file
-[fixed] Skip invalid plugins GUID
+[fixed] Skip invalid plugin GUID
+[fixed] Only Variable Frame Rate timecode indexing
 
 Version 6.0 (Archangel Descending)
 ----------------------------------

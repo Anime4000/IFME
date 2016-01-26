@@ -58,6 +58,7 @@ namespace ifme
 		public class picture
 		{
 			public string Lang;
+			public bool IsCFR;
 			public int FrameCount;
 
 			public string Resolution;

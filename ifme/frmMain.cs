@@ -490,9 +490,12 @@ namespace ifme
 
 			if (ff.Video.Count > 0)
 			{
-				// Picture section
+				// Data
 				Info.Picture.Lang = ff.Video[0].Language;
 				Info.Picture.FrameCount = ff.Video[0].FrameCount;
+				Info.Picture.IsCFR = ff.Video[0].IsConstantFrameRate;
+
+				// Picture section
 				Info.Picture.Resolution = i == 0 ? "auto" : p.Picture.Resolution;
 				Info.Picture.FrameRate = i == 0 ? "auto" : p.Picture.FrameRate;
 				Info.Picture.BitDepth = i == 0 ? ff.Video[0].BitPerColour : p.Picture.BitDepth;

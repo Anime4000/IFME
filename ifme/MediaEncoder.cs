@@ -234,8 +234,13 @@ namespace ifme
 					}
 				}
 
-				Console.WriteLine("Indexing... Make sure in sync :)");
-				TaskManager.Run($"\"{Plugin.FFMS2}\" -p -f -c \"{file}\" timecode");
+				if (!item.Picture.IsCFR)
+				{
+					Console.WriteLine("Indexing... Make sure in sync :)");
+					if (TaskManager.Run($"\"{Plugin.FFMS2}\" -p -f -c \"{file}\" timecode") >= 1)
+						foreach (var tc in Directory.GetFiles(Default.DirTemp, "timecode*"))
+							File.Delete(tc);
+				}
 			}
 
 			if (!string.IsNullOrEmpty(framerate))
