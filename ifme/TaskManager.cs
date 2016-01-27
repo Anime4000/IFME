@@ -40,8 +40,8 @@ namespace ifme
 			}
 			else
 			{
-				exe = "bash";
-				arg = $"-c '{command}'"; // POSIX has 2091769, silly Windows
+				exe = "eval"; // use eval instead of bash -c or sh -c
+				arg = "$IFME"; // POSIX has 2091769, silly Windows
 			}
 
 			GetProcess(command); // split command args and capture any binary file, allow modify CPU affinity and priority
