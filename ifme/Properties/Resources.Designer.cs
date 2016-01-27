@@ -171,7 +171,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archangel Descending.
+        ///   Looks up a localized string similar to Pixelaphobia.
         /// </summary>
         internal static string CodeName {
             get {

@@ -606,7 +606,7 @@ namespace ifme
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -638,7 +638,7 @@ namespace ifme
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -648,7 +648,7 @@ namespace ifme
 			{
 				item.Remove();
 				InvokeLog($"File removed {item.SubItems[0].Text}");
-			}
+            }
 		}
 		#endregion
 
@@ -1469,12 +1469,10 @@ namespace ifme
 				switch (Id)
 				{
 					case QueueProp.FormatMkv:
-						item.SubItems[3].Text = "Matroska";
 						x.General.IsOutputMKV = true;
 						break;
 
 					case QueueProp.FormatMp4:
-						item.SubItems[3].Text = "MPEG-4";
 						x.General.IsOutputMKV = false;
 						break;
 
@@ -1557,6 +1555,9 @@ namespace ifme
 					default:
 						break;
 				}
+
+				// UX
+				item.SubItems[3].Text = $"{(x.General.IsOutputMKV ? "Matroska" : "MPEG-4")}";
 			}
 		}
 		#endregion

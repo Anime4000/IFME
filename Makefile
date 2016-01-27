@@ -4,11 +4,12 @@ MONOCC=xbuild
 MONOMK=mkbundle
 MODE=Release
 DIR=build
+IFME=ifme6
 
 all: only
-	mv $(DIR) ifme6
-	tar -cvJf ifme6-amd64_linux.tar.xz ifme5
-	mv ifme5 $(DIR)
+	mv $(DIR) $(IFME)
+	tar -cvJf $(IFME)-amd64_linux.tar.xz $(IFME)
+	mv $(IFME) $(DIR)
 
 only: clean compile copy copylib copymono
 	$(CC) "sources/ifme-gnome.c" -o "$(DIR)/ifme-gnome"
@@ -54,12 +55,13 @@ copylib:
 	
 copymono:
 	cp "ifme/bin/$(MODE)/ifme.exe" "$(DIR)/"
-	cp "ifme/bin/$(MODE)/INIFileParser.dll" "$(DIR)/"
-	cp "ifme/bin/$(MODE)/MediaInfoDotNet.dll" "$(DIR)/"
-	cp "ifme/bin/$(MODE)/FFmpegDotNet.dll" "$(DIR)/"
+	cp "references/INIFileParser.dll" "$(DIR)/"
+	cp "references/MediaInfoDotNet.dll" "$(DIR)/"
+	cp "references/FFmpegDotNet.dll" "$(DIR)/"
 	cp "sources/MediaInfoDotNet.dll.config" "$(DIR)/"
 
 clean:
-	rm -f ifme5-x64_linux.tar.xz
+	rm -f $(IFME)-x64_linux.tar.xz
 	rm -rf "$(DIR)"
+	rm -rf "$(IFME)"
 	mkdir "$(DIR)"

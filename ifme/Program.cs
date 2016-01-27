@@ -60,7 +60,7 @@ namespace ifme
 
 			ForegroundColor = ConsoleColor.Yellow;
 			WriteLine(Global.App.NameFull);
-			WriteLine("Release: " + Global.App.VersionCompiled);
+			WriteLine($"Release: {Global.App.VersionCompiled}");
 			WriteLine();
 			ResetColor();
 		}

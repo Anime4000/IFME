@@ -1,4 +1,4 @@
-﻿Version 6.1
+﻿Version 6.1 (Pixelaphobia)
 -----------
 
 [fixed] Skip missing plugin executable file

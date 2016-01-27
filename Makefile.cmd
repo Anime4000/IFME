@@ -106,9 +106,9 @@ copy sources\metauser.if %BUILDDIR%
 @title COPY COMPILED
 echo COPY COMPILED
 copy ifme\bin\%CompileMode%\ifme.exe %BUILDDIR%
-copy ifme\bin\%CompileMode%\INIFileParser.dll %BUILDDIR%
-copy ifme\bin\%CompileMode%\MediaInfoDotNet.dll %BUILDDIR%
-copy ifme\bin\%CompileMode%\FFmpegDotNet.dll %BUILDDIR%
+copy references\INIFileParser.dll %BUILDDIR%
+copy references\MediaInfoDotNet.dll %BUILDDIR%
+copy references\FFmpegDotNet.dll %BUILDDIR%
 echo.
 
 @title COPY EXTENSION

@@ -256,7 +256,6 @@ namespace ifme
 			string preset = item.Video.Preset;
 			string tune = string.Equals(item.Video.Tune, "off", IC) ? "" : $"--tune {item.Video.Tune}";
 			int type = item.Video.Type;
-			int pass;
 			string value = item.Video.Value;
 			string command = item.Video.Command;
 
@@ -272,6 +271,7 @@ namespace ifme
 			// Encoding start
 			if (type >= 3) // multi pass
 			{
+				int pass;
 				type--; // re-use
 
 				for (int i = 0; i < type; i++)
