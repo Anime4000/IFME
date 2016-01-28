@@ -32,16 +32,17 @@ namespace ifme
 			string exe;
 			string arg;
 
+			Environment.SetEnvironmentVariable("RITSUKO", command, EnvironmentVariableTarget.Process);
+
 			if (OS.IsWindows)
 			{
-				Environment.SetEnvironmentVariable("IFME", command, EnvironmentVariableTarget.Process);
 				exe = "cmd";
-				arg = "/c %IFME%"; // allow max args to pass, Windows limit 8191
+				arg = "/c %RITSUKO%"; // allow max args to pass, Windows limit 8191
 			}
 			else
 			{
-				exe = "eval"; // use eval instead of bash -c or sh -c
-				arg = "$IFME"; // POSIX has 2091769, silly Windows
+				exe = "bash";
+				arg = "-c 'eval $RITSUKO'"; //Git #81
 			}
 
 			GetProcess(command); // split command args and capture any binary file, allow modify CPU affinity and priority
