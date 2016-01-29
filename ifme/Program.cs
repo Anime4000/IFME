@@ -101,9 +101,12 @@ namespace ifme
 				{
 					if (args[i].Length >= 2)
 					{
-						if (args[i][0] == '-' && args[i][1] != '-')
+						for (int x = 1; x < args[i].Length; x++)
 						{
-							var cmd = args[i][1];
+							var cmd = args[i][x];
+
+							if (cmd == '-')
+								break;
 
 							if (cmd == 'h')
 								IsHelp = true;
