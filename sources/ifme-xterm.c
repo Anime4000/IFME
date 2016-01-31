@@ -8,6 +8,6 @@
 
 int main() {
 	system("chmod +x ./ifme");
-	system("xterm -e './ifme --gui'");
+	system("xterm -geometry 120x33 -e './ifme --gui'");
 	return 0;
 }
