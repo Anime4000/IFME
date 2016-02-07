@@ -1,18 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Internet Friendly Media Encoder")]
-[assembly: AssemblyDescription("HEVC/H265 Multimedia Encoder")]
+[assembly: AssemblyDescription("Multimedia Video Encoder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Internet Friendly Media Encoder")]
-[assembly: AssemblyCopyright("Anime4000, GNU GPL v2")]
-[assembly: AssemblyTrademark("IFME")]
+[assembly: AssemblyCopyright("Anime4000, GNU GPL")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -33,6 +32,5 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.1")]
-[assembly: AssemblyFileVersion("6.1")]
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: AssemblyVersion("7.0")]
+[assembly: AssemblyFileVersion("7.0")]
