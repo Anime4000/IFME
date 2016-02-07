@@ -1,5 +1,8 @@
-﻿Version 6.1 (Pixelaphobia)
------------
+﻿Version 7 (Alternate Reality)
+-----------------------------
+
+Version 6.1 (Pixelaphobia)
+--------------------------
 
 [fixed] Skip missing plugin executable file
 [fixed] Skip invalid plugin GUID
