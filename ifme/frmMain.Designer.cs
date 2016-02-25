@@ -144,6 +144,7 @@
             this.btnQueueStop = new System.Windows.Forms.Button();
             this.btnQueuePause = new System.Windows.Forms.Button();
             this.btnQueueStart = new System.Windows.Forms.Button();
+            this.colQueueTarget = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsQueue.SuspendLayout();
             this.tabProp.SuspendLayout();
             this.tabInfo.SuspendLayout();
@@ -202,6 +203,7 @@
             this.lstQueue.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colQueueName,
             this.colQueueDuration,
+            this.colQueueTarget,
             this.colQueueStatus});
             this.lstQueue.ContextMenuStrip = this.cmsQueue;
             this.lstQueue.FullRowSelect = true;
@@ -219,13 +221,13 @@
             // 
             this.colQueueName.Tag = "colQueueName";
             this.colQueueName.Text = "Name";
-            this.colQueueName.Width = 400;
+            this.colQueueName.Width = 392;
             // 
             // colQueueDuration
             // 
             this.colQueueDuration.Tag = "colQueueDuration";
             this.colQueueDuration.Text = "Duration";
-            this.colQueueDuration.Width = 120;
+            this.colQueueDuration.Width = 80;
             // 
             // colQueueStatus
             // 
@@ -1444,6 +1446,12 @@
             this.btnQueueStart.UseVisualStyleBackColor = true;
             this.btnQueueStart.Click += new System.EventHandler(this.btnQueueStart_Click);
             // 
+            // colQueueTarget
+            // 
+            this.colQueueTarget.Tag = "colQueueTarget";
+            this.colQueueTarget.Text = "Target";
+            this.colQueueTarget.Width = 80;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1624,6 +1632,7 @@
         private System.Windows.Forms.TextBox txtOutputInfo;
         private System.Windows.Forms.TextBox txtSourceInfo;
         private System.Windows.Forms.ColumnHeader colAudioName;
+        private System.Windows.Forms.ColumnHeader colQueueTarget;
     }
 }
 

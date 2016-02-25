@@ -60,15 +60,27 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugin.cs" />
+    <Compile Include="PluginAudio.cs" />
+    <Compile Include="PluginAudioApp.cs" />
+    <Compile Include="PluginAudioArg.cs" />
+    <Compile Include="PluginAudioMode.cs" />
+    <Compile Include="PluginCommon.cs" />
+    <Compile Include="PluginCommonConfig.cs" />
+    <Compile Include="PluginCommonProperties.cs" />
+    <Compile Include="PluginCommonUpdate.cs" />
+    <Compile Include="PluginVideo.cs" />
+    <Compile Include="PluginVideoApp.cs" />
+    <Compile Include="PluginVideoArg.cs" />
+    <Compile Include="PluginVideoMode.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queue.cs" />
-    <Compile Include="StreamAttachment.cs" />
-    <Compile Include="StreamAudio.cs" />
-    <Compile Include="StreamCommon.cs" />
-    <Compile Include="StreamSubtitle.cs" />
-    <Compile Include="StreamVideo.cs" />
+    <Compile Include="QueueAttachment.cs" />
+    <Compile Include="QueueAudio.cs" />
+    <Compile Include="QueueCommon.cs" />
+    <Compile Include="QueueSubtitle.cs" />
+    <Compile Include="QueueVideo.cs" />
     <EmbeddedResource Include="frmInputBox.resx">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,7 +161,12 @@
   <ItemGroup>
     <None Include="Resources\icon_film_magic_zenui.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
+      <Project>{e496ad81-7f30-492a-9e00-0eabf86f708a}</Project>
+      <Name>FFmpegDotNet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,16 +5,30 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme", "ifme\ifme.csproj", "{7908AC4A-BC17-4F81-9A89-86E54513F597}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpegDotNet", "..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj", "{E496AD81-7F30-492A-9E00-0EABF86F708A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Debug|x64.ActiveCfg = Debug|x64
 		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Debug|x64.Build.0 = Debug|x64
+		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Release|Any CPU.ActiveCfg = Release|x64
 		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Release|x64.ActiveCfg = Release|x64
 		{7908AC4A-BC17-4F81-9A89-86E54513F597}.Release|x64.Build.0 = Release|x64
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|x64.Build.0 = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|x64.ActiveCfg = Release|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

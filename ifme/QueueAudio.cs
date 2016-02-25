@@ -7,11 +7,13 @@ namespace ifme
 {
     public class QueueAudio : QueueCommon
     {
+        public int BitDepth; // use for decoding, hidden from GUI
+
         public Guid Encoder;
-        public string EncoderMode;
+        public int EncoderMode;
         public string EncoderValue;
-        public string EncoderSampleRate;
-        public string EncoderChannel;
+        public int EncoderSampleRate;
+        public int EncoderChannel;
         public string EncoderArgs;
     }
 }

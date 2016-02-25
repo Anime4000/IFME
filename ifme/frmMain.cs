@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using FFmpegDotNet;
+using System.IO;
+
 namespace ifme
 {
     public partial class frmMain : Form
@@ -383,7 +386,82 @@ namespace ifme
         #region Add Video to Queue
         private void QueueAdd(string filePath)
         {
+            FFmpeg.Probe = Path.Combine(Environment.CurrentDirectory, "binary", "ffmpeg32", "ffprobe");
 
+            var mi = new FFmpeg.Stream(filePath);
+            var qi = new Queue();
+            
+            if (mi.Video.Count > 0)
+            {
+                qi.Enable = true;
+                qi.MkvOut = true;
+
+                foreach (var item in mi.Video)
+                {
+                    qi.Video.Add(new QueueVideo
+                    {
+                        File = filePath,
+                        Id = item.Id,
+                        Width = item.Width,
+                        Height = item.Height,
+                        FrameRate = item.FrameRate,
+                        BitDepth = item.BitDepth,
+                        Chroma = item.Chroma,
+
+                        Deinterlace = false,
+                        DeinterlaceField = 0,
+                        DeinterlaceMode = 0,
+
+                        Encoder = new Guid(),
+                        EncoderPreset = "",
+                        EncoderTune = "",
+                        EncoderRateControl = "",
+                        EncoderRateValue = "",
+                        EncoderMultiPass = 0,
+                        EncoderArgs = "",
+                    });
+                }
+
+                foreach (var item in mi.Audio)
+                {
+                    qi.Audio.Add(new QueueAudio
+                    {
+                        File = filePath,
+                        Id = item.Id,
+
+                        BitDepth = item.BitDepth, // use for decoding, hidden from GUI
+
+                        Encoder = new Guid(),
+                        EncoderMode = 0,
+                        EncoderValue = "0",
+                        EncoderSampleRate = item.SampleRate,
+                        EncoderChannel = item.Channel,
+                        EncoderArgs = "",
+                    });
+                }
+
+                foreach (var item in mi.Subtitle)
+                {
+                    qi.Subtitle.Add(new QueueSubtitle
+                    {
+                        File = filePath,
+                        Id = item.Id,
+                        Language = item.Language,
+                    });
+                }
+
+                ListViewItem lst = new ListViewItem(new[] {
+                    filePath,
+                    TimeSpan.FromSeconds(mi.Duration).ToString("hh\\:mm\\:ss"),
+                    "MKV",
+                    "Ready",
+                });
+                lst.Tag = qi;
+                lst.Checked = true;
+
+                lstQueue.Items.Add(lst);
+
+            }
         }
         #endregion
     }
