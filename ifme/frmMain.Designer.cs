@@ -35,6 +35,7 @@
             this.lstQueue = new System.Windows.Forms.ListView();
             this.colQueueName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colQueueDuration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colQueueTarget = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colQueueStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsQueue = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiQueueNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,8 +57,6 @@
             this.grpPropFormat = new System.Windows.Forms.GroupBox();
             this.rdoMKV = new System.Windows.Forms.RadioButton();
             this.rdoMP4 = new System.Windows.Forms.RadioButton();
-            this.grpPropOutput = new System.Windows.Forms.GroupBox();
-            this.txtOutputInfo = new System.Windows.Forms.TextBox();
             this.grpPropInput = new System.Windows.Forms.GroupBox();
             this.txtSourceInfo = new System.Windows.Forms.TextBox();
             this.tabVideo = new System.Windows.Forms.TabPage();
@@ -144,12 +143,10 @@
             this.btnQueueStop = new System.Windows.Forms.Button();
             this.btnQueuePause = new System.Windows.Forms.Button();
             this.btnQueueStart = new System.Windows.Forms.Button();
-            this.colQueueTarget = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsQueue.SuspendLayout();
             this.tabProp.SuspendLayout();
             this.tabInfo.SuspendLayout();
             this.grpPropFormat.SuspendLayout();
-            this.grpPropOutput.SuspendLayout();
             this.grpPropInput.SuspendLayout();
             this.tabVideo.SuspendLayout();
             this.grpVideoDeInterlace.SuspendLayout();
@@ -228,6 +225,12 @@
             this.colQueueDuration.Tag = "colQueueDuration";
             this.colQueueDuration.Text = "Duration";
             this.colQueueDuration.Width = 80;
+            // 
+            // colQueueTarget
+            // 
+            this.colQueueTarget.Tag = "colQueueTarget";
+            this.colQueueTarget.Text = "Target";
+            this.colQueueTarget.Width = 80;
             // 
             // colQueueStatus
             // 
@@ -375,7 +378,6 @@
             // tabInfo
             // 
             this.tabInfo.Controls.Add(this.grpPropFormat);
-            this.tabInfo.Controls.Add(this.grpPropOutput);
             this.tabInfo.Controls.Add(this.grpPropInput);
             this.tabInfo.Location = new System.Drawing.Point(4, 22);
             this.tabInfo.Name = "tabInfo";
@@ -387,20 +389,22 @@
             // 
             // grpPropFormat
             // 
-            this.grpPropFormat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPropFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPropFormat.Controls.Add(this.rdoMKV);
             this.grpPropFormat.Controls.Add(this.rdoMP4);
-            this.grpPropFormat.Location = new System.Drawing.Point(337, 6);
+            this.grpPropFormat.Location = new System.Drawing.Point(6, 6);
             this.grpPropFormat.Name = "grpPropFormat";
-            this.grpPropFormat.Size = new System.Drawing.Size(325, 50);
+            this.grpPropFormat.Size = new System.Drawing.Size(656, 50);
             this.grpPropFormat.TabIndex = 1;
             this.grpPropFormat.TabStop = false;
             this.grpPropFormat.Text = "Output &Format";
             // 
             // rdoMKV
             // 
+            this.rdoMKV.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.rdoMKV.AutoSize = true;
-            this.rdoMKV.Location = new System.Drawing.Point(165, 19);
+            this.rdoMKV.Location = new System.Drawing.Point(331, 19);
             this.rdoMKV.Name = "rdoMKV";
             this.rdoMKV.Size = new System.Drawing.Size(45, 17);
             this.rdoMKV.TabIndex = 1;
@@ -411,8 +415,9 @@
             // 
             // rdoMP4
             // 
+            this.rdoMP4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.rdoMP4.AutoSize = true;
-            this.rdoMP4.Location = new System.Drawing.Point(114, 19);
+            this.rdoMP4.Location = new System.Drawing.Point(280, 19);
             this.rdoMP4.Name = "rdoMP4";
             this.rdoMP4.Size = new System.Drawing.Size(45, 17);
             this.rdoMP4.TabIndex = 0;
@@ -421,40 +426,15 @@
             this.rdoMP4.UseVisualStyleBackColor = true;
             this.rdoMP4.CheckedChanged += new System.EventHandler(this.rdoMP4_CheckedChanged);
             // 
-            // grpPropOutput
-            // 
-            this.grpPropOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpPropOutput.Controls.Add(this.txtOutputInfo);
-            this.grpPropOutput.Location = new System.Drawing.Point(337, 62);
-            this.grpPropOutput.Name = "grpPropOutput";
-            this.grpPropOutput.Size = new System.Drawing.Size(325, 206);
-            this.grpPropOutput.TabIndex = 2;
-            this.grpPropOutput.TabStop = false;
-            this.grpPropOutput.Text = "&Output Info";
-            // 
-            // txtOutputInfo
-            // 
-            this.txtOutputInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutputInfo.Location = new System.Drawing.Point(3, 16);
-            this.txtOutputInfo.Multiline = true;
-            this.txtOutputInfo.Name = "txtOutputInfo";
-            this.txtOutputInfo.ReadOnly = true;
-            this.txtOutputInfo.Size = new System.Drawing.Size(319, 187);
-            this.txtOutputInfo.TabIndex = 0;
-            this.txtOutputInfo.Text = "Video:\r\nID 0, HEVC, 1280x720 @ 30fps (8bpc @ YUV420)\r\n\r\nAudio:\r\nID 1, AAC, 128 @ " +
-    "44100Hz, 2 Channel\r\nID 2, AAC, 512 @ 44100Hz, 6 Channel\r\n\r\nSubtitle:\r\nID 3, ASS," +
-    " eng (English)";
-            // 
             // grpPropInput
             // 
             this.grpPropInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPropInput.Controls.Add(this.txtSourceInfo);
-            this.grpPropInput.Location = new System.Drawing.Point(6, 6);
+            this.grpPropInput.Location = new System.Drawing.Point(6, 62);
             this.grpPropInput.Name = "grpPropInput";
-            this.grpPropInput.Size = new System.Drawing.Size(325, 262);
+            this.grpPropInput.Size = new System.Drawing.Size(656, 206);
             this.grpPropInput.TabIndex = 0;
             this.grpPropInput.TabStop = false;
             this.grpPropInput.Text = "&Source Info";
@@ -462,12 +442,15 @@
             // txtSourceInfo
             // 
             this.txtSourceInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSourceInfo.Font = new System.Drawing.Font("Lucida Console", 9F);
             this.txtSourceInfo.Location = new System.Drawing.Point(3, 16);
             this.txtSourceInfo.Multiline = true;
             this.txtSourceInfo.Name = "txtSourceInfo";
             this.txtSourceInfo.ReadOnly = true;
-            this.txtSourceInfo.Size = new System.Drawing.Size(319, 243);
+            this.txtSourceInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtSourceInfo.Size = new System.Drawing.Size(650, 187);
             this.txtSourceInfo.TabIndex = 0;
+            this.txtSourceInfo.WordWrap = false;
             // 
             // tabVideo
             // 
@@ -514,6 +497,9 @@
             this.cboVideoDiField.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboVideoDiField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboVideoDiField.FormattingEnabled = true;
+            this.cboVideoDiField.Items.AddRange(new object[] {
+            "Top Field First",
+            "Bottom Field First"});
             this.cboVideoDiField.Location = new System.Drawing.Point(40, 82);
             this.cboVideoDiField.Name = "cboVideoDiField";
             this.cboVideoDiField.Size = new System.Drawing.Size(248, 21);
@@ -535,6 +521,11 @@
             this.cboVideoDiMode.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboVideoDiMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboVideoDiMode.FormattingEnabled = true;
+            this.cboVideoDiMode.Items.AddRange(new object[] {
+            "Deinterlace only frame",
+            "Deinterlace each field",
+            "Skips spatial interlacing frame check",
+            "Skips spatial interlacing field check"});
             this.cboVideoDiMode.Location = new System.Drawing.Point(40, 42);
             this.cboVideoDiMode.Name = "cboVideoDiMode";
             this.cboVideoDiMode.Size = new System.Drawing.Size(248, 21);
@@ -1446,12 +1437,6 @@
             this.btnQueueStart.UseVisualStyleBackColor = true;
             this.btnQueueStart.Click += new System.EventHandler(this.btnQueueStart_Click);
             // 
-            // colQueueTarget
-            // 
-            this.colQueueTarget.Tag = "colQueueTarget";
-            this.colQueueTarget.Text = "Target";
-            this.colQueueTarget.Width = 80;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1490,8 +1475,6 @@
             this.tabInfo.ResumeLayout(false);
             this.grpPropFormat.ResumeLayout(false);
             this.grpPropFormat.PerformLayout();
-            this.grpPropOutput.ResumeLayout(false);
-            this.grpPropOutput.PerformLayout();
             this.grpPropInput.ResumeLayout(false);
             this.grpPropInput.PerformLayout();
             this.tabVideo.ResumeLayout(false);
@@ -1609,7 +1592,6 @@
         private System.Windows.Forms.ListView lstAttach;
         private System.Windows.Forms.ColumnHeader colAttachName;
         private System.Windows.Forms.ColumnHeader colAttachMime;
-        private System.Windows.Forms.GroupBox grpPropOutput;
         private System.Windows.Forms.GroupBox grpPropInput;
         private System.Windows.Forms.GroupBox grpPropFormat;
         private System.Windows.Forms.RadioButton rdoMKV;
@@ -1629,7 +1611,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiQueueAviSynthEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem tsmiQueueAviSynthConvertTo;
-        private System.Windows.Forms.TextBox txtOutputInfo;
         private System.Windows.Forms.TextBox txtSourceInfo;
         private System.Windows.Forms.ColumnHeader colAudioName;
         private System.Windows.Forms.ColumnHeader colQueueTarget;

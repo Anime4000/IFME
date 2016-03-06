@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ifme
 {
-    public class PluginVideoArg
+    public class PluginVideoArgs
     {
         public string Y4M;
         public string Input;

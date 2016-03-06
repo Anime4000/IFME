@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ifme
 {
-    public class PluginAudioArg
+    public class PluginAudioArgs
     {
         public string Input;
         public string Output;

@@ -8,10 +8,10 @@ namespace ifme
     public class PluginVideo
     {
         public PluginCommonConfig Config;
-        public PluginCommonConfig Properties;
-        public PluginCommonConfig Update;
+        public PluginCommonProperties Properties;
+        public PluginCommonUpdate Update;
         public PluginVideoApp App;
-        public PluginVideoArg Arg;
+        public PluginVideoArgs Arg;
         public PluginVideoMode[] Mode;
     }
 }

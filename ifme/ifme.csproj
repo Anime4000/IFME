@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extension.cs" />
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,7 +61,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginAudio.cs" />
     <Compile Include="PluginAudioApp.cs" />
-    <Compile Include="PluginAudioArg.cs" />
+    <Compile Include="PluginAudioArgs.cs" />
     <Compile Include="PluginAudioMode.cs" />
     <Compile Include="PluginCommon.cs" />
     <Compile Include="PluginCommonConfig.cs" />
@@ -70,7 +69,7 @@
     <Compile Include="PluginCommonUpdate.cs" />
     <Compile Include="PluginVideo.cs" />
     <Compile Include="PluginVideoApp.cs" />
-    <Compile Include="PluginVideoArg.cs" />
+    <Compile Include="PluginVideoArgs.cs" />
     <Compile Include="PluginVideoMode.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
@@ -165,6 +164,10 @@
     <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
       <Project>{e496ad81-7f30-492a-9e00-0eabf86f708a}</Project>
       <Name>FFmpegDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ini-parser\src\IniFileParser\INIFileParser.csproj">
+      <Project>{5e46dcf4-c473-4171-9f9b-f3910b5ec407}</Project>
+      <Name>INIFileParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

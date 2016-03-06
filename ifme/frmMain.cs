@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using FFmpegDotNet;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -139,7 +140,8 @@ namespace ifme
         #region Queue List Action
         private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (lstQueue.SelectedItems.Count > 0)
+                QueueDisplay(lstQueue.SelectedItems[0].Index);
         }
 
         private void lstQueue_DragDrop(object sender, DragEventArgs e)
@@ -203,7 +205,18 @@ namespace ifme
 
         private void cboVideoResolution_Leave(object sender, EventArgs e)
         {
+            // prevent user enter invalid value
+            Regex regex = new Regex(@"(^\d{3,5}x\d{3,5}$)");
+            MatchCollection matches = regex.Matches(cboVideoResolution.Text);
 
+            if (matches.Count == 0)
+            {
+                if (lstQueue.SelectedItems.Count > 0)
+                {
+                    var qi = (Queue)lstQueue.Items[0].Tag;
+                    cboVideoResolution.Text = $"{qi.Video[0].Width}x{qi.Video[0].Height}";
+                }   
+            }
         }
 
         private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
@@ -213,7 +226,18 @@ namespace ifme
 
         private void cboVideoFrameRate_Leave(object sender, EventArgs e)
         {
+            // prevent user enter invalid value
+            Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)");
+            MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
 
+            if (matches.Count == 0)
+            {
+                if (lstQueue.SelectedItems.Count > 0)
+                {
+                    var qi = (Queue)lstQueue.Items[0].Tag;
+                    cboVideoFrameRate.Text = $"{qi.Video[0].FrameRate}";
+                }
+            }
         }
 
         private void cboVideoBitDepth_SelectedIndexChanged(object sender, EventArgs e)
@@ -388,10 +412,12 @@ namespace ifme
         {
             FFmpeg.Probe = Path.Combine(Environment.CurrentDirectory, "binary", "ffmpeg32", "ffprobe");
 
-            var mi = new FFmpeg.Stream(filePath);
             var qi = new Queue();
-            
-            if (mi.Video.Count > 0)
+            var mi = new FFmpeg.Stream(filePath);
+
+            qi.Properties = mi;
+
+            if (mi.Video.Count > 0 || mi.Audio.Count > 0)
             {
                 qi.Enable = true;
                 qi.MkvOut = true;
@@ -450,8 +476,9 @@ namespace ifme
                     });
                 }
 
+                // add to queue
                 ListViewItem lst = new ListViewItem(new[] {
-                    filePath,
+                    Path.GetFileName(filePath),
                     TimeSpan.FromSeconds(mi.Duration).ToString("hh\\:mm\\:ss"),
                     "MKV",
                     "Ready",
@@ -460,8 +487,80 @@ namespace ifme
                 lst.Checked = true;
 
                 lstQueue.Items.Add(lst);
-
             }
+        }
+
+        private void QueueDisplay(int index)
+        {
+            var qi = (Queue)lstQueue.Items[index].Tag;
+            var mi = qi.Properties;
+            string source = string.Empty;
+
+            // Properties - Source Info
+            if (mi.Video.Count > 0)
+            {
+                source = "Video:\r\n";
+                foreach (var item in mi.Video)
+                {
+                    source += $"ID {item.Id:D2}, {item.Language}, {item.Codec}, {item.Width}x{item.Height} @ {item.FrameRate:N3} fps, (YUV{item.Chroma} @ {item.BitDepth} bpc)\r\n";
+                }
+            }
+
+            if (mi.Audio.Count > 0)
+            {
+                source += $"\r\nAudio:\r\n";
+                foreach (var item in mi.Audio)
+                {
+                    source += $"ID {item.Id:D2}, {item.Language}, {item.Codec}, {item.SampleRate} Hz @ {item.BitDepth} bit, {item.Channel} channel\r\n";
+                }
+            }
+
+            if (mi.Subtitle.Count > 0)
+            {
+                source += $"\r\nSubtitle:\r\n";
+                foreach (var item in mi.Subtitle)
+                {
+                    source += $"ID {item.Id:D2}, {item.Language}, {item.Codec}\r\n";
+                }
+            }
+
+            if (mi.Attachment.Count > 0)
+            {
+                source += $"\r\nAttachment:\r\n";
+                foreach (var item in mi.Attachment)
+                {
+                    source += $"ID {item.Id:D2}, {item.MimeType}, {item.FileName}\r\n";
+                }
+            }
+
+
+            // Properties - Display
+            txtSourceInfo.Text = source;
+
+            // Properties - Output
+            rdoMKV.Checked = qi.MkvOut;
+            rdoMP4.Checked = !qi.MkvOut;
+
+            // Video
+            foreach (var item in qi.Video)
+            {
+                // Quality
+                cboVideoResolution.Text = $"{item.Width}x{item.Height}";
+                cboVideoFrameRate.Text = $"{item.FrameRate}";
+                cboVideoBitDepth.Text = $"{item.BitDepth}";
+                cboVideoChroma.Text = $"{item.Chroma}";
+
+                // Deinterlace
+                chkVideoDeinterlace.Checked = item.Deinterlace;
+                cboVideoDiMode.SelectedIndex = item.DeinterlaceMode;
+                cboVideoDiField.SelectedIndex = item.DeinterlaceField;
+                break; // only one
+            }
+        }
+
+        private void QueueUnselect()
+        {
+
         }
         #endregion
     }
