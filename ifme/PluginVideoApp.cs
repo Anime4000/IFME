@@ -11,7 +11,9 @@ namespace ifme
         public string Exe;
         public string[] BitDepth;
         public string[] Preset;
+        public string PresetDefault;
         public string[] Tune;
-        public int Mode;
+        public string TuneDefault;
+        public int Mode = 0;
     }
 }

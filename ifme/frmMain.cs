@@ -6,10 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
-using FFmpegDotNet;
 using System.IO;
 using System.Text.RegularExpressions;
+
+using FFmpegDotNet;
 
 namespace ifme
 {
@@ -25,12 +25,12 @@ namespace ifme
         #region Form Action
         private void frmMain_Load(object sender, EventArgs e)
         {
-            
+            Plugin.Initialize();
         }
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-
+            
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -532,7 +532,6 @@ namespace ifme
                     source += $"ID {item.Id:D2}, {item.MimeType}, {item.FileName}\r\n";
                 }
             }
-
 
             // Properties - Display
             txtSourceInfo.Text = source;

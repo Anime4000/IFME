@@ -7,7 +7,6 @@ namespace ifme
 {
     public class PluginCommon
     {
-        public PluginCommonConfig Config;
         public PluginCommonProperties Properties;
         public PluginCommonUpdate Update;
     }

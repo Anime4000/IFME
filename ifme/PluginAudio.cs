@@ -7,11 +7,10 @@ namespace ifme
 {
     public class PluginAudio
     {
-        public PluginCommonConfig Config;
-        public PluginCommonProperties Properties;
-        public PluginCommonUpdate Update;
-        public PluginAudioApp App;
-        public PluginAudioArgs Arg;
-        public PluginAudioMode[] Mode;
+        public PluginCommonProperties Properties = new PluginCommonProperties();
+        public PluginCommonUpdate Update = new PluginCommonUpdate();
+        public PluginAudioApp App = new PluginAudioApp();
+        public PluginAudioArgs Args = new PluginAudioArgs();
+        public List<PluginAudioMode> Mode = new List<PluginAudioMode>();
     }
 }

@@ -9,12 +9,11 @@ namespace ifme
     {
         public string Name;
         public string Arg;
-        public bool IsFloat;
         public int DecimalPlaces;
-        public float Step;
-        public int ValueMin;
-        public int ValueMax;
-        public int ValueDefault;
+        public decimal Step;
+        public decimal ValueMin;
+        public decimal ValueMax;
+        public decimal ValueDefault;
         public bool IsMultipass;
     }
 }

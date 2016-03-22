@@ -9,8 +9,8 @@ namespace ifme
     {
         public string Ext;
         public string Exe;
-        public int[] SampleRate;
-        public int[] Channel;
-        public int Mode;
+        public string[] SampleRate;
+        public string[] Channel;
+        public int Mode = 0;
     }
 }
