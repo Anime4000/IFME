@@ -7,6 +7,6 @@ namespace ifme
 {
     public class QueueSubtitle : QueueCommon
     {
-        public string Language;
+        
     }
 }

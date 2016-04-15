@@ -8,6 +8,7 @@ namespace ifme
     public class QueueCommon
     {
         public int Id;
+        public string Lang;
         public string File;
     }
 }

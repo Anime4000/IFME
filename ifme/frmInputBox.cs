@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ifme
@@ -17,7 +18,7 @@ namespace ifme
 
         private void frmInputBox_Load(object sender, EventArgs e)
         {
-
+            FormBorderStyle = FormBorderStyle.Sizable;
         }
 
         private void txtInput_KeyUp(object sender, KeyEventArgs e)
@@ -28,6 +29,7 @@ namespace ifme
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            ReturnValue = txtInput.Text;
             Close(); // check designer, this button has DialogResult set to OK
         }
 

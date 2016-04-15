@@ -58,6 +58,8 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Get.cs" />
+    <Compile Include="OS.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginAudio.cs" />
     <Compile Include="PluginAudioApp.cs" />
@@ -95,6 +97,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="language.code">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

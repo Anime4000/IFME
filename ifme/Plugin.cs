@@ -30,9 +30,9 @@ namespace ifme
                 var guid = new Guid();
                 var type = -1;
 
-                if (Guid.TryParse(data["config"]["guid"], out guid)) 
+                if (Guid.TryParse(data["data"]["guid"], out guid)) 
                 {
-                    if (int.TryParse(data["config"]["type"], out type))
+                    if (int.TryParse(data["data"]["type"], out type))
                     {
                         if (type == 0)
                         {
@@ -42,8 +42,9 @@ namespace ifme
                         {
                             var p = new PluginVideo();
 
+                            p.Name = data["data"]["name"];
+
                             var prop = "properties";
-                            p.Properties.Name = data[prop]["name"];
                             p.Properties.Version = data[prop]["ver"];
                             p.Properties.Developer = data[prop]["dev"];
                             p.Properties.Homepage = data[prop]["web"];
@@ -59,9 +60,9 @@ namespace ifme
                             p.App.Exe = data[vid]["exe"];
                             p.App.BitDepth = data[vid]["bitdepth"].Split(',');
                             p.App.Preset = data[vid]["preset"].Split(',');
+                            p.App.PresetDefault = data[vid]["presetdefault"];
                             p.App.Tune = data[vid]["tune"].Split(',');
                             p.App.TuneDefault = data[vid]["tunedefault"];
-                            p.App.PresetDefault = data[vid]["presetdefault"];
                             int.TryParse(data[vid]["mode"], out p.App.Mode);
 
                             var arg = $"{vid}.args";
@@ -87,7 +88,7 @@ namespace ifme
                                 decimal.TryParse(data[mod]["min"], out pm.ValueMin);
                                 decimal.TryParse(data[mod]["max"], out pm.ValueMax);
                                 decimal.TryParse(data[mod]["default"], out pm.ValueDefault);
-                                bool.TryParse(data[mod]["multipadd"], out pm.IsMultipass);
+                                bool.TryParse(data[mod]["multipass"], out pm.IsMultipass);
 
                                 p.Mode.Add(pm);
                             }
@@ -98,8 +99,9 @@ namespace ifme
                         {
                             var p = new PluginAudio();
 
+                            p.Name = data["data"]["name"];
+
                             var prop = "properties";
-                            p.Properties.Name = data[prop]["name"];
                             p.Properties.Version = data[prop]["ver"];
                             p.Properties.Developer = data[prop]["dev"];
                             p.Properties.Homepage = data[prop]["web"];
@@ -115,6 +117,8 @@ namespace ifme
                             p.App.Exe = data[aud]["exe"];
                             p.App.SampleRate = data[aud]["frequency"].Split(',');
                             p.App.Channel = data[aud]["channel"].Split(',');
+                            int.TryParse(data[aud]["frequencydefault"], out p.App.SampleRateDefault);
+                            int.TryParse(data[aud]["channeldefault"], out p.App.ChannelDefault);
                             int.TryParse(data[aud]["mode"], out p.App.Mode);
 
                             var arg = $"{aud}.args";
@@ -134,6 +138,8 @@ namespace ifme
 
                                 p.Mode.Add(pm);
                             }
+
+                            Audio.Add(guid, p);
                         }
                     }
                 }

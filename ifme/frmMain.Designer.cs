@@ -95,7 +95,6 @@
             this.lblSpacer4 = new System.Windows.Forms.Label();
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colAudioId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpAudioCodec = new System.Windows.Forms.GroupBox();
             this.lblAudioMode = new System.Windows.Forms.Label();
             this.cboAudioMode = new System.Windows.Forms.ComboBox();
@@ -204,6 +203,7 @@
             this.colQueueStatus});
             this.lstQueue.ContextMenuStrip = this.cmsQueue;
             this.lstQueue.FullRowSelect = true;
+            this.lstQueue.HideSelection = false;
             this.lstQueue.Location = new System.Drawing.Point(12, 108);
             this.lstQueue.Name = "lstQueue";
             this.lstQueue.Size = new System.Drawing.Size(676, 214);
@@ -583,9 +583,24 @@
             // 
             this.nudVideoMultipass.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudVideoMultipass.Location = new System.Drawing.Point(165, 170);
+            this.nudVideoMultipass.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudVideoMultipass.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudVideoMultipass.Name = "nudVideoMultipass";
             this.nudVideoMultipass.Size = new System.Drawing.Size(147, 20);
             this.nudVideoMultipass.TabIndex = 11;
+            this.nudVideoMultipass.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudVideoMultipass.ValueChanged += new System.EventHandler(this.nudVideoMultipass_ValueChanged);
             // 
             // lblVideoMultipass
@@ -689,6 +704,7 @@
             this.cboVideoEncodingType.Size = new System.Drawing.Size(300, 21);
             this.cboVideoEncodingType.TabIndex = 7;
             this.cboVideoEncodingType.SelectedIndexChanged += new System.EventHandler(this.cboVideoEncodingType_SelectedIndexChanged);
+            this.cboVideoEncodingType.Leave += new System.EventHandler(this.cboVideoEncodingType_Leave);
             // 
             // cboVideoEncoder
             // 
@@ -701,6 +717,7 @@
             this.cboVideoEncoder.Size = new System.Drawing.Size(300, 21);
             this.cboVideoEncoder.TabIndex = 1;
             this.cboVideoEncoder.SelectedIndexChanged += new System.EventHandler(this.cboVideoEncoder_SelectedIndexChanged);
+            this.cboVideoEncoder.Leave += new System.EventHandler(this.cboVideoEncoder_Leave);
             // 
             // lblVideoEncoder
             // 
@@ -808,7 +825,6 @@
             this.cboVideoFrameRate.Size = new System.Drawing.Size(121, 21);
             this.cboVideoFrameRate.TabIndex = 3;
             this.cboVideoFrameRate.TextChanged += new System.EventHandler(this.cboVideoFrameRate_TextChanged);
-            this.cboVideoFrameRate.Leave += new System.EventHandler(this.cboVideoFrameRate_Leave);
             // 
             // lblVideoFrameRate
             // 
@@ -842,7 +858,6 @@
             this.cboVideoResolution.Size = new System.Drawing.Size(121, 21);
             this.cboVideoResolution.TabIndex = 1;
             this.cboVideoResolution.TextChanged += new System.EventHandler(this.cboVideoResolution_TextChanged);
-            this.cboVideoResolution.Leave += new System.EventHandler(this.cboVideoResolution_Leave);
             // 
             // lblVideoResolution
             // 
@@ -906,8 +921,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstAudio.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colAudioName,
-            this.colAudioId});
+            this.colAudioName});
+            this.lstAudio.FullRowSelect = true;
+            this.lstAudio.HideSelection = false;
             this.lstAudio.Location = new System.Drawing.Point(6, 44);
             this.lstAudio.MultiSelect = false;
             this.lstAudio.Name = "lstAudio";
@@ -920,14 +936,8 @@
             // colAudioName
             // 
             this.colAudioName.Tag = "colAudioName";
-            this.colAudioName.Text = "Name";
-            this.colAudioName.Width = 160;
-            // 
-            // colAudioId
-            // 
-            this.colAudioId.Tag = "colAudioId";
-            this.colAudioId.Text = "Info";
-            this.colAudioId.Width = 160;
+            this.colAudioName.Text = "Streams";
+            this.colAudioName.Width = 320;
             // 
             // grpAudioCodec
             // 
@@ -971,6 +981,7 @@
             this.cboAudioMode.Size = new System.Drawing.Size(96, 21);
             this.cboAudioMode.TabIndex = 3;
             this.cboAudioMode.SelectedIndexChanged += new System.EventHandler(this.cboAudioMode_SelectedIndexChanged);
+            this.cboAudioMode.Leave += new System.EventHandler(this.cboAudioMode_Leave);
             // 
             // btnAudioEditArg
             // 
@@ -1016,6 +1027,7 @@
             this.cboAudioEncoder.Size = new System.Drawing.Size(198, 21);
             this.cboAudioEncoder.TabIndex = 1;
             this.cboAudioEncoder.SelectedIndexChanged += new System.EventHandler(this.cboAudioEncoder_SelectedIndexChanged);
+            this.cboAudioEncoder.Leave += new System.EventHandler(this.cboAudioEncoder_Leave);
             // 
             // cboAudioChannel
             // 
@@ -1121,13 +1133,16 @@
             // 
             // lstSub
             // 
+            this.lstSub.AllowDrop = true;
             this.lstSub.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstSub.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colSubId,
-            this.colSubName,
-            this.colSubLang});
+            this.colSubLang,
+            this.colSubName});
+            this.lstSub.FullRowSelect = true;
+            this.lstSub.HideSelection = false;
             this.lstSub.Location = new System.Drawing.Point(6, 44);
             this.lstSub.Name = "lstSub";
             this.lstSub.Size = new System.Drawing.Size(656, 197);
@@ -1135,6 +1150,8 @@
             this.lstSub.UseCompatibleStateImageBehavior = false;
             this.lstSub.View = System.Windows.Forms.View.Details;
             this.lstSub.SelectedIndexChanged += new System.EventHandler(this.lstSub_SelectedIndexChanged);
+            this.lstSub.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstSub_DragDrop);
+            this.lstSub.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstSub_DragEnter);
             // 
             // colSubId
             // 
@@ -1145,14 +1162,14 @@
             // colSubName
             // 
             this.colSubName.Tag = "colSubName";
-            this.colSubName.Text = "Name";
-            this.colSubName.Width = 300;
+            this.colSubName.Text = "File Name";
+            this.colSubName.Width = 580;
             // 
             // colSubLang
             // 
             this.colSubLang.Tag = "colSubLang";
             this.colSubLang.Text = "Language";
-            this.colSubLang.Width = 300;
+            this.colSubLang.Width = 35;
             // 
             // lblSpacer5
             // 
@@ -1218,6 +1235,7 @@
             // 
             // lstAttach
             // 
+            this.lstAttach.AllowDrop = true;
             this.lstAttach.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1231,11 +1249,13 @@
             this.lstAttach.UseCompatibleStateImageBehavior = false;
             this.lstAttach.View = System.Windows.Forms.View.Details;
             this.lstAttach.SelectedIndexChanged += new System.EventHandler(this.lstAttach_SelectedIndexChanged);
+            this.lstAttach.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstAttach_DragDrop);
+            this.lstAttach.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstAttach_DragEnter);
             // 
             // colAttachName
             // 
             this.colAttachName.Tag = "colAttachName";
-            this.colAttachName.Text = "Name";
+            this.colAttachName.Text = "File Name";
             this.colAttachName.Width = 325;
             // 
             // colAttachMime
@@ -1571,7 +1591,6 @@
         private System.Windows.Forms.Button btnAudioRemove;
         private System.Windows.Forms.Button btnAudioAdd;
         private System.Windows.Forms.ListView lstAudio;
-        private System.Windows.Forms.ColumnHeader colAudioId;
         private System.Windows.Forms.Label lblSpacer4;
         private System.Windows.Forms.Button btnAudioMoveDown;
         private System.Windows.Forms.Button btnAudioMoveUp;

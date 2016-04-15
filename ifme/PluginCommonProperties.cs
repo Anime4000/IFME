@@ -7,7 +7,6 @@ namespace ifme
 {
     public class PluginCommonProperties
     {
-        public string Name;
         public bool MP4Compatible = false;
         public string Version;
         public bool Is64;

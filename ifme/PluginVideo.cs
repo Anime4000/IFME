@@ -7,6 +7,7 @@ namespace ifme
 {
     public class PluginVideo
     {
+        public string Name = string.Empty;
         public PluginCommonProperties Properties = new PluginCommonProperties();
         public PluginCommonUpdate Update = new PluginCommonUpdate();
         public PluginVideoApp App = new PluginVideoApp();
