@@ -10,5 +10,6 @@ namespace ifme
         public int Id;
         public string Lang;
         public string File;
+        public string Format;
     }
 }

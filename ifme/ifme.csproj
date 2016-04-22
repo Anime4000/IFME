@@ -59,6 +59,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Get.cs" />
+    <Compile Include="MediaEncoding.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginAudio.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="QueueCommon.cs" />
     <Compile Include="QueueSubtitle.cs" />
     <Compile Include="QueueVideo.cs" />
+    <Compile Include="TaskManager.cs" />
     <EmbeddedResource Include="frmInputBox.resx">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -97,6 +99,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
+    <None Include="format.ini" />
     <None Include="language.code">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

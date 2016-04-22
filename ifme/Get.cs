@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using IniParser;
 
 namespace ifme
 {
@@ -33,6 +34,33 @@ namespace ifme
                 return "application/font-woff";
 
             return "application/octet-stream";
+        }
+
+        public static string CodecFormat(string codecId)
+        {
+            var getFmt = new FileIniDataParser().ReadFile("format.ini", Encoding.UTF8);
+            var format = string.Empty;
+
+            try
+            {
+                format = getFmt["format"][codecId];
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Requested file container not found, using default");
+            }
+            finally
+            {
+                if (string.IsNullOrEmpty(format))
+                    format = codecId;
+            }
+
+            return format;
+        }
+
+        public static string FileExtension(string filePath)
+        {
+            return Path.GetExtension(filePath).Substring(1);
         }
     }
 }

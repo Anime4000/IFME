@@ -113,8 +113,8 @@
             this.cboSubLang = new System.Windows.Forms.ComboBox();
             this.lstSub = new System.Windows.Forms.ListView();
             this.colSubId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colSubName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSubLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colSubName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblSpacer5 = new System.Windows.Forms.Label();
             this.btnSubMoveDown = new System.Windows.Forms.Button();
             this.btnSubMoveUp = new System.Windows.Forms.Button();
@@ -142,6 +142,7 @@
             this.btnQueueStop = new System.Windows.Forms.Button();
             this.btnQueuePause = new System.Windows.Forms.Button();
             this.btnQueueStart = new System.Windows.Forms.Button();
+            this.bwEncoding = new System.ComponentModel.BackgroundWorker();
             this.cmsQueue.SuspendLayout();
             this.tabProp.SuspendLayout();
             this.tabInfo.SuspendLayout();
@@ -1159,17 +1160,17 @@
             this.colSubId.Text = "Id";
             this.colSubId.Width = 35;
             // 
-            // colSubName
-            // 
-            this.colSubName.Tag = "colSubName";
-            this.colSubName.Text = "File Name";
-            this.colSubName.Width = 580;
-            // 
             // colSubLang
             // 
             this.colSubLang.Tag = "colSubLang";
             this.colSubLang.Text = "Language";
             this.colSubLang.Width = 35;
+            // 
+            // colSubName
+            // 
+            this.colSubName.Tag = "colSubName";
+            this.colSubName.Text = "File Name";
+            this.colSubName.Width = 580;
             // 
             // lblSpacer5
             // 
@@ -1457,6 +1458,12 @@
             this.btnQueueStart.UseVisualStyleBackColor = true;
             this.btnQueueStart.Click += new System.EventHandler(this.btnQueueStart_Click);
             // 
+            // bwEncoding
+            // 
+            this.bwEncoding.WorkerSupportsCancellation = true;
+            this.bwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwEncoding_DoWork);
+            this.bwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwEncoding_RunWorkerCompleted);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1633,6 +1640,7 @@
         private System.Windows.Forms.TextBox txtSourceInfo;
         private System.Windows.Forms.ColumnHeader colAudioName;
         private System.Windows.Forms.ColumnHeader colQueueTarget;
+        private System.ComponentModel.BackgroundWorker bwEncoding;
     }
 }
 

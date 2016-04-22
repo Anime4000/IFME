@@ -25,6 +25,12 @@ namespace ifme
         #region Form Action
         private void frmMain_Load(object sender, EventArgs e)
         {
+            // Load settings
+            if (string.IsNullOrEmpty(Properties.Settings.Default.TempFolder))
+                Properties.Settings.Default.TempFolder = Path.Combine(Path.GetTempPath(), "ifme");
+
+            Properties.Settings.Default.Save();
+
             // Default
             FFmpeg.Main = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffmpeg");
             FFmpeg.Probe = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffprobe");
@@ -838,6 +844,18 @@ namespace ifme
         }
         #endregion
 
+        #region Background Worker
+        private void bwEncoding_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void bwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+        #endregion
+
         #region Add Video to Queue
         private void QueueAdd(string filePath)
         {
@@ -858,6 +876,7 @@ namespace ifme
                         File = filePath,
                         Id = item.Id,
                         Lang = item.Language,
+                        Format = Get.CodecFormat(item.Codec),
                         Width = item.Width,
                         Height = item.Height,
                         FrameRate = item.FrameRate,
@@ -885,6 +904,7 @@ namespace ifme
                         File = filePath,
                         Id = item.Id,
                         Lang = item.Language,
+                        Format = Get.CodecFormat(item.Codec),
 
                         BitDepth = item.BitDepth, // use for decoding, hidden from GUI
 
@@ -904,6 +924,7 @@ namespace ifme
                         File = filePath,
                         Id = item.Id,
                         Lang = item.Language,
+                        Format = Get.CodecFormat(item.Codec),
                     });
                 }
 
@@ -1017,7 +1038,7 @@ namespace ifme
         {
             foreach (ListViewItem item in lstQueue.SelectedItems)
             {
-                (item.Tag as Queue).Subtitle.Add(new QueueSubtitle() { Id = -1, File = filePath, Lang = "und" });
+                (item.Tag as Queue).Subtitle.Add(new QueueSubtitle() { Id = -1, File = filePath, Lang = "und", Format = Get.FileExtension(filePath) });
             }
         }
         #endregion
