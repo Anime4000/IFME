@@ -58,5 +58,17 @@ namespace ifme.Properties {
                 this["SaveFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveFolderThis {
+            get {
+                return ((bool)(this["SaveFolderThis"]));
+            }
+            set {
+                this["SaveFolderThis"] = value;
+            }
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace ifme
         public Guid Encoder;
         public string EncoderPreset;
         public string EncoderTune;
-        public int EncoderRateControl;
-        public decimal EncoderRateValue;
+        public int EncoderMode;
+        public decimal EncoderModeValue;
         public int EncoderMultiPass;
         public string EncoderArgs;
     }

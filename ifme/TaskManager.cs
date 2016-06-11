@@ -9,75 +9,49 @@ namespace ifme
 {
     public class TaskManager
     {
-        static string Temp { get { return Properties.Settings.Default.TempFolder; } }
-        static int MaxLine { get { return Properties.Settings.Default.LogMaxLines; } }
+        public static int CurrentId { get; set; }
 
-        public static int Run(string command, string workDir)
+        public int RunCmd(string Bin, string Arg)
         {
-            Environment.SetEnvironmentVariable("RITSUKO", $"{command}", EnvironmentVariableTarget.Process);
+            return Run($"{Bin} {Arg}");
+        }
 
-            var enc = new Process();
+        public int RunCmd(string Bin1, string Arg1, string Bin2, string Arg2)
+        {
+            return Run($"{Bin1} {Arg1} 2> {OS.NULL} | {Bin2} {Arg2}");
+        }
+
+        private int Run(string Command)
+        {
+            Environment.SetEnvironmentVariable("HOTARU", "Internet Friendly Media Encoder", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("RITSUKO", $"{Command}", EnvironmentVariableTarget.Process);
+
+            var p = new Process();
 
             if (OS.IsWindows)
             {
-                enc.StartInfo = new ProcessStartInfo("cmd", "/c %RITSUKO%")
+                p.StartInfo = new ProcessStartInfo("cmd", "/c title %HOTARU% && echo %HOTARU% && %RITSUKO%")
                 {
-                    CreateNoWindow = true,
+                    CreateNoWindow = false,
                     UseShellExecute = false,
-                    WorkingDirectory = workDir,
+                    WorkingDirectory = Properties.Settings.Default.TempFolder,
                 };
             }
             else
             {
-                enc.StartInfo = new ProcessStartInfo("bash", "-c 'eval $RITSUKO'")
+                p.StartInfo = new ProcessStartInfo("xterm", "-xrm 'XTerm.vt100.allowTitleOps: false' -T '$HOTARU' -geometry 120x30 -e 'eval $RITSUKO'")
                 {
-                    CreateNoWindow = true,
+                    CreateNoWindow = false,
                     UseShellExecute = false,
-                    WorkingDirectory = workDir,
+                    WorkingDirectory = Properties.Settings.Default.TempFolder,
                 };
             }
 
-            enc.Start();
-            enc.WaitForExit();
+            p.Start();
+            CurrentId = p.Id;
+            p.WaitForExit();
 
-            return enc.ExitCode;
-        }
-
-        public static int Run(string command)
-        {
-            return Run(command, Temp);
-        }
-
-        public static int RunLogs(string command)
-        {
-            return Run($"{command} >> encoding.log 2>&1");
-        }
-
-        public static int RunTail()
-        {
-            var tail = new Process();
-
-            if (OS.IsWindows)
-            {
-                tail.StartInfo = new ProcessStartInfo("tail", $"--retry -n {MaxLine} -qf encoding.log")
-                {
-                    UseShellExecute = false,
-                    WorkingDirectory = Temp,
-                };
-            }
-            else
-            {
-                tail.StartInfo = new ProcessStartInfo("xterm", $"-geometry 120x30 -e 'tail --retry -n {MaxLine} -qf encoding.log'")
-                {
-                    UseShellExecute = false,
-                    WorkingDirectory = Temp,
-                };
-            }
-
-            tail.Start();
-            tail.WaitForExit();
-
-            return tail.ExitCode;
+            return p.ExitCode;
         }
     }
 }

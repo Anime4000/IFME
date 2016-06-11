@@ -62,5 +62,19 @@ namespace ifme
         {
             return Path.GetExtension(filePath).Substring(1);
         }
+
+        public static string ArgsBuilder(string argument, string parameter)
+        {
+            if (string.IsNullOrEmpty(argument))
+                return string.Empty;
+
+            return $"{argument} {parameter}";
+        }
+
+        public static string FileLang(string file)
+        {
+            file = Path.GetFileNameWithoutExtension(file);
+            return file.Substring(file.Length - 3);
+        }
     }
 }

@@ -825,6 +825,7 @@
             this.cboVideoFrameRate.Name = "cboVideoFrameRate";
             this.cboVideoFrameRate.Size = new System.Drawing.Size(121, 21);
             this.cboVideoFrameRate.TabIndex = 3;
+            this.cboVideoFrameRate.SelectedIndexChanged += new System.EventHandler(this.cboVideoFrameRate_SelectedIndexChanged);
             this.cboVideoFrameRate.TextChanged += new System.EventHandler(this.cboVideoFrameRate_TextChanged);
             // 
             // lblVideoFrameRate
@@ -858,6 +859,7 @@
             this.cboVideoResolution.Name = "cboVideoResolution";
             this.cboVideoResolution.Size = new System.Drawing.Size(121, 21);
             this.cboVideoResolution.TabIndex = 1;
+            this.cboVideoResolution.SelectedIndexChanged += new System.EventHandler(this.cboVideoResolution_SelectedIndexChanged);
             this.cboVideoResolution.TextChanged += new System.EventHandler(this.cboVideoResolution_TextChanged);
             // 
             // lblVideoResolution
@@ -1028,7 +1030,6 @@
             this.cboAudioEncoder.Size = new System.Drawing.Size(198, 21);
             this.cboAudioEncoder.TabIndex = 1;
             this.cboAudioEncoder.SelectedIndexChanged += new System.EventHandler(this.cboAudioEncoder_SelectedIndexChanged);
-            this.cboAudioEncoder.Leave += new System.EventHandler(this.cboAudioEncoder_Leave);
             // 
             // cboAudioChannel
             // 
@@ -1039,7 +1040,7 @@
             this.cboAudioChannel.Name = "cboAudioChannel";
             this.cboAudioChannel.Size = new System.Drawing.Size(96, 21);
             this.cboAudioChannel.TabIndex = 9;
-            this.cboAudioChannel.SelectedIndexChanged += new System.EventHandler(this.cboAudioChannel_SelectedIndexChanged);
+            this.cboAudioChannel.Leave += new System.EventHandler(this.cboAudioChannel_Leave);
             // 
             // lblAudioQuality
             // 
@@ -1060,7 +1061,7 @@
             this.cboAudioFreq.Name = "cboAudioFreq";
             this.cboAudioFreq.Size = new System.Drawing.Size(96, 21);
             this.cboAudioFreq.TabIndex = 7;
-            this.cboAudioFreq.SelectedIndexChanged += new System.EventHandler(this.cboAudioFreq_SelectedIndexChanged);
+            this.cboAudioFreq.Leave += new System.EventHandler(this.cboAudioFreq_Leave);
             // 
             // cboAudioQuality
             // 
@@ -1071,7 +1072,7 @@
             this.cboAudioQuality.Name = "cboAudioQuality";
             this.cboAudioQuality.Size = new System.Drawing.Size(96, 21);
             this.cboAudioQuality.TabIndex = 5;
-            this.cboAudioQuality.SelectedIndexChanged += new System.EventHandler(this.cboAudioQuality_SelectedIndexChanged);
+            this.cboAudioQuality.Leave += new System.EventHandler(this.cboAudioQuality_Leave);
             // 
             // lblAudioFreq
             // 

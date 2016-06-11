@@ -12,6 +12,7 @@ namespace ifme
         public string Output;
         public string Preset;
         public string Tune;
+        public string BitDepth;
         public string FrameCount;
         public string PassFirst;
         public string PassLast;

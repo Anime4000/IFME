@@ -169,4 +169,8 @@
   <data name="media_playback_stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\media-playback-stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Tags" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF8"?&gt;&lt;!DOCTYPE Tags SYSTEM "matroskatags.dtd"&gt;&lt;Tags&gt;&lt;Tag&gt;&lt;Simple&gt;&lt;Name&gt;Encoder application&lt;/Name&gt;&lt;String&gt;{0}&lt;/String&gt;&lt;/Simple&gt;&lt;Simple&gt;&lt;Name&gt;Encoder library&lt;/Name&gt;&lt;String&gt;{1}&lt;/String&gt;&lt;/Simple&gt;&lt;/Tag&gt;&lt;/Tags&gt;</value>
+    <comment>mkv tags</comment>
+  </data>
 </root>

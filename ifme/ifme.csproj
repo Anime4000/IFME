@@ -100,7 +100,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="format.ini" />
+    <None Include="format.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="language.code">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

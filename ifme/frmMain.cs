@@ -29,11 +29,17 @@ namespace ifme
             if (string.IsNullOrEmpty(Properties.Settings.Default.TempFolder))
                 Properties.Settings.Default.TempFolder = Path.Combine(Path.GetTempPath(), "ifme");
 
+            if (string.IsNullOrEmpty(Properties.Settings.Default.SaveFolder))
+                Properties.Settings.Default.SaveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+
             Properties.Settings.Default.Save();
 
             // Default
             FFmpeg.Main = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffmpeg");
             FFmpeg.Probe = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffprobe");
+
+            chkOutput.Checked = Properties.Settings.Default.SaveFolderThis;
+            txtOutputFolder.Text = Properties.Settings.Default.SaveFolder;
             
             cboVideoResolution.SelectedIndex = 0;
             cboVideoFrameRate.SelectedIndex = 0;
@@ -178,7 +184,15 @@ namespace ifme
 
         private void btnQueueStart_Click(object sender, EventArgs e)
         {
+            if (!bwEncoding.IsBusy)
+            {
+                List<object> temp = new List<object>();
 
+                foreach (ListViewItem item in lstQueue.Items)
+                    temp.Add(item.Tag);
+
+                bwEncoding.RunWorkerAsync(temp);
+            }
         }
         #endregion
 
@@ -296,6 +310,11 @@ namespace ifme
             }
         }
 
+        private void cboVideoResolution_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
         {
             // prevent user enter invalid value
@@ -327,6 +346,14 @@ namespace ifme
                         float.TryParse(cboVideoFrameRate.Text, out video.FrameRate);
                     }
                 }
+            }
+        }
+
+        private void cboVideoFrameRate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboVideoFrameRate.SelectedIndex == 0)
+            {
+                cboVideoFrameRate.Text = "a";
             }
         }
 
@@ -434,6 +461,19 @@ namespace ifme
                     cboVideoEncodingType.Items.Add(test.Mode[i].Name);
                 cboVideoEncodingType.SelectedIndex = 0; // look on cboVideoEncodingType_SelectedIndexChanged
             }
+
+            if (lstQueue.SelectedItems.Count > 0)
+            {
+                foreach (ListViewItem item in lstQueue.SelectedItems)
+                {
+                    var qi = item.Tag as Queue;
+
+                    foreach (var video in qi.Video)
+                    {
+                        video.EncoderArgs = string.Empty;
+                    }
+                }
+            }
         }
 
         private void cboVideoEncoder_Leave(object sender, EventArgs e)
@@ -516,7 +556,7 @@ namespace ifme
 
                     foreach (var video in qi.Video)
                     {
-                        video.EncoderRateControl = cboVideoEncodingType.SelectedIndex;
+                        video.EncoderMode = cboVideoEncodingType.SelectedIndex;
                     }
                 }
             }
@@ -532,7 +572,7 @@ namespace ifme
 
                     foreach (var video in qi.Video)
                     {
-                        video.EncoderRateValue = nudVideoRateFactor.Value;
+                        video.EncoderModeValue = nudVideoRateFactor.Value;
                     }
                 }
             }
@@ -626,24 +666,33 @@ namespace ifme
 
                 cboAudioFreq.Items.Clear();
                 cboAudioFreq.Items.AddRange(test.App.SampleRate);
-                cboAudioFreq.SelectedItem = $"{test.App.SampleRateDefault}";
+                //cboAudioFreq.SelectedItem = $"{test.App.SampleRateDefault}";
 
                 cboAudioChannel.Items.Clear();
                 cboAudioChannel.Items.AddRange(test.App.Channel);
-                cboAudioChannel.SelectedItem = $"{test.App.ChannelDefault}";
+                //cboAudioChannel.SelectedItem = $"{test.App.ChannelDefault}";
             }
-        }
 
-        private void cboAudioEncoder_Leave(object sender, EventArgs e)
-        {
-            var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            // update
             if (lstQueue.SelectedItems.Count > 0)
             {
                 if (lstAudio.SelectedItems.Count > 0)
                 {
                     foreach (ListViewItem item in lstAudio.SelectedItems)
                     {
-                        (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].Encoder = key;
+                        var a = (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index];
+
+                        if (!Equals(a.Encoder, key))
+                        {
+                            a.Encoder = key;
+                            a.EncoderValue = test.Mode[0].QualityDefault;
+                            a.EncoderSampleRate = test.App.SampleRateDefault;
+                            a.EncoderChannel = test.App.ChannelDefault;
+                        }
+
+                        cboAudioQuality.SelectedItem = $"{a.EncoderValue}";
+                        cboAudioFreq.SelectedItem = $"{a.EncoderSampleRate}";
+                        cboAudioChannel.SelectedItem = $"{a.EncoderChannel}";
                     }
                 }
             }
@@ -670,7 +719,7 @@ namespace ifme
 
         private void cboAudioMode_Leave(object sender, EventArgs e)
         {
-            var m = cboAudioMode.SelectedIndex;
+            int m = cboAudioMode.SelectedIndex;
             if (lstQueue.SelectedItems.Count > 0)
             {
                 if (lstAudio.SelectedItems.Count > 0)
@@ -683,19 +732,47 @@ namespace ifme
             }
         }
 
-        private void cboAudioQuality_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboAudioQuality_Leave(object sender, EventArgs e)
         {
-
+            if (lstQueue.SelectedItems.Count > 0)
+            {
+                if (lstAudio.SelectedItems.Count > 0)
+                {
+                    foreach (ListViewItem item in lstAudio.SelectedItems)
+                    {
+                        if (cboAudioQuality.SelectedIndex >= 0)
+                            (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderValue = cboAudioQuality.Text;
+                    }
+                }
+            }
         }
 
-        private void cboAudioFreq_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboAudioFreq_Leave(object sender, EventArgs e)
         {
-
+            if (lstQueue.SelectedItems.Count > 0)
+            {
+                if (lstAudio.SelectedItems.Count > 0)
+                {
+                    foreach (ListViewItem item in lstAudio.SelectedItems)
+                    {
+                        int.TryParse(cboAudioFreq.Text, out (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderSampleRate);
+                    }
+                }
+            }
         }
 
-        private void cboAudioChannel_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboAudioChannel_Leave(object sender, EventArgs e)
         {
-
+            if (lstQueue.SelectedItems.Count > 0)
+            {
+                if (lstAudio.SelectedItems.Count > 0)
+                {
+                    foreach (ListViewItem item in lstAudio.SelectedItems)
+                    {
+                        int.TryParse(cboAudioChannel.Text, out (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderChannel);
+                    }
+                }
+            }
         }
 
         private void btnAudioEditArg_Click(object sender, EventArgs e)
@@ -847,7 +924,12 @@ namespace ifme
         #region Background Worker
         private void bwEncoding_DoWork(object sender, DoWorkEventArgs e)
         {
+            List<object> qItems = e.Argument as List<object>;
 
+            foreach (Queue item in qItems)
+            {
+                new MediaEncoding(item);
+            }
         }
 
         private void bwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -890,8 +972,8 @@ namespace ifme
                         Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
                         EncoderPreset = "medium",
                         EncoderTune = "psnr",
-                        EncoderRateControl = 0,
-                        EncoderRateValue = 26,
+                        EncoderMode = 0,
+                        EncoderModeValue = 26,
                         EncoderMultiPass = 1,
                         EncoderArgs = "--pme --pmode",
                     });
@@ -973,8 +1055,8 @@ namespace ifme
                 cboVideoEncoder.SelectedValue = item.Encoder; // Guid key
                 cboVideoPreset.SelectedItem = item.EncoderPreset;
                 cboVideoTune.SelectedItem = item.EncoderTune;
-                cboVideoEncodingType.SelectedIndex = item.EncoderRateControl;
-                nudVideoRateFactor.Value = item.EncoderRateValue;
+                cboVideoEncodingType.SelectedIndex = item.EncoderMode;
+                nudVideoRateFactor.Value = item.EncoderModeValue;
                 nudVideoMultipass.Value = item.EncoderMultiPass;
             }
 
@@ -988,6 +1070,8 @@ namespace ifme
                         $"{item.Id:D2}, {item.Lang} @ {Path.GetFileName(item.File)}",
                     }));
                 }
+
+                lstAudio.Items[0].Selected = true;
             }
 
             // Subtitle

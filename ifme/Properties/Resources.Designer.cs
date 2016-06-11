@@ -229,5 +229,14 @@ namespace ifme.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF8&quot;?&gt;&lt;!DOCTYPE Tags SYSTEM &quot;matroskatags.dtd&quot;&gt;&lt;Tags&gt;&lt;Tag&gt;&lt;Simple&gt;&lt;Name&gt;Encoder application&lt;/Name&gt;&lt;String&gt;{0}&lt;/String&gt;&lt;/Simple&gt;&lt;Simple&gt;&lt;Name&gt;Encoder library&lt;/Name&gt;&lt;String&gt;{1}&lt;/String&gt;&lt;/Simple&gt;&lt;/Tag&gt;&lt;/Tags&gt;.
+        /// </summary>
+        internal static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
     }
 }

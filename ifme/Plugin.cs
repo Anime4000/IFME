@@ -57,7 +57,7 @@ namespace ifme
 
                             var vid = "video";
                             p.App.Ext = data[vid]["ext"];
-                            p.App.Exe = data[vid]["exe"];
+                            p.App.Exe = Path.Combine(item, data[vid]["exe"]);
                             p.App.BitDepth = data[vid]["bitdepth"].Split(',');
                             p.App.Preset = data[vid]["preset"].Split(',');
                             p.App.PresetDefault = data[vid]["presetdefault"];
@@ -71,6 +71,7 @@ namespace ifme
                             p.Args.Output = data[arg]["output"];
                             p.Args.Preset = data[arg]["preset"];
                             p.Args.Tune = data[arg]["tune"];
+                            p.Args.BitDepth = data[arg]["bitdepth"];
                             p.Args.FrameCount = data[arg]["framecount"];
                             p.Args.PassFirst = data[arg]["firstpass"];
                             p.Args.PassLast = data[arg]["lastpass"];
@@ -114,7 +115,7 @@ namespace ifme
 
                             var aud = "audio";
                             p.App.Ext = data[aud]["ext"];
-                            p.App.Exe = data[aud]["exe"];
+                            p.App.Exe = Path.Combine(item, data[aud]["exe"]);
                             p.App.SampleRate = data[aud]["frequency"].Split(',');
                             p.App.Channel = data[aud]["channel"].Split(',');
                             int.TryParse(data[aud]["frequencydefault"], out p.App.SampleRateDefault);
