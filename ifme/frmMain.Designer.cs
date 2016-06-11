@@ -38,20 +38,8 @@
             this.colQueueTarget = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colQueueStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsQueue = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiQueueNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiQueueDel = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueSelectAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueSelectNone = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiAviSynth = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiQueueAviSynthEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiQueueAviSynthConvertTo = new System.Windows.Forms.ToolStripMenuItem();
             this.tabProp = new System.Windows.Forms.TabControl();
             this.tabInfo = new System.Windows.Forms.TabPage();
             this.grpPropFormat = new System.Windows.Forms.GroupBox();
@@ -90,8 +78,6 @@
             this.cboVideoResolution = new System.Windows.Forms.ComboBox();
             this.lblVideoResolution = new System.Windows.Forms.Label();
             this.tabAudio = new System.Windows.Forms.TabPage();
-            this.btnAudioMoveDown = new System.Windows.Forms.Button();
-            this.btnAudioMoveUp = new System.Windows.Forms.Button();
             this.lblSpacer4 = new System.Windows.Forms.Label();
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -107,8 +93,6 @@
             this.cboAudioFreq = new System.Windows.Forms.ComboBox();
             this.cboAudioQuality = new System.Windows.Forms.ComboBox();
             this.lblAudioFreq = new System.Windows.Forms.Label();
-            this.btnAudioRemove = new System.Windows.Forms.Button();
-            this.btnAudioAdd = new System.Windows.Forms.Button();
             this.tabSubtitle = new System.Windows.Forms.TabPage();
             this.cboSubLang = new System.Windows.Forms.ComboBox();
             this.lstSub = new System.Windows.Forms.ListView();
@@ -116,16 +100,10 @@
             this.colSubLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSubName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblSpacer5 = new System.Windows.Forms.Label();
-            this.btnSubMoveDown = new System.Windows.Forms.Button();
-            this.btnSubMoveUp = new System.Windows.Forms.Button();
-            this.btnSubRemove = new System.Windows.Forms.Button();
-            this.btnSubAdd = new System.Windows.Forms.Button();
             this.tabAttachment = new System.Windows.Forms.TabPage();
             this.lstAttach = new System.Windows.Forms.ListView();
             this.colAttachName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colAttachMime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnAttachDel = new System.Windows.Forms.Button();
-            this.btnAttachAdd = new System.Windows.Forms.Button();
             this.lblProfile = new System.Windows.Forms.Label();
             this.cboProfile = new System.Windows.Forms.ComboBox();
             this.btnProfileSave = new System.Windows.Forms.Button();
@@ -134,7 +112,30 @@
             this.txtOutputFolder = new System.Windows.Forms.TextBox();
             this.btnBrowseOutput = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bwEncoding = new System.ComponentModel.BackgroundWorker();
             this.pbxBanner = new System.Windows.Forms.PictureBox();
+            this.tsmiQueueNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueDel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueSelectNone = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAviSynth = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiQueueAviSynthEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiQueueAviSynthConvertTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAudioMoveDown = new System.Windows.Forms.Button();
+            this.btnAudioMoveUp = new System.Windows.Forms.Button();
+            this.btnAudioRemove = new System.Windows.Forms.Button();
+            this.btnAudioAdd = new System.Windows.Forms.Button();
+            this.btnSubMoveDown = new System.Windows.Forms.Button();
+            this.btnSubMoveUp = new System.Windows.Forms.Button();
+            this.btnSubRemove = new System.Windows.Forms.Button();
+            this.btnSubAdd = new System.Windows.Forms.Button();
+            this.btnAttachDel = new System.Windows.Forms.Button();
+            this.btnAttachAdd = new System.Windows.Forms.Button();
             this.btnQueueAdd = new System.Windows.Forms.Button();
             this.btnQueueRemove = new System.Windows.Forms.Button();
             this.btnQueueMoveUp = new System.Windows.Forms.Button();
@@ -142,7 +143,7 @@
             this.btnQueueStop = new System.Windows.Forms.Button();
             this.btnQueuePause = new System.Windows.Forms.Button();
             this.btnQueueStart = new System.Windows.Forms.Button();
-            this.bwEncoding = new System.ComponentModel.BackgroundWorker();
+            this.btnOpenFolder = new System.Windows.Forms.Button();
             this.cmsQueue.SuspendLayout();
             this.tabProp.SuspendLayout();
             this.tabInfo.SuspendLayout();
@@ -257,109 +258,15 @@
             this.cmsQueue.Name = "cmsQueue";
             this.cmsQueue.Size = new System.Drawing.Size(193, 214);
             // 
-            // tsmiQueueNew
-            // 
-            this.tsmiQueueNew.Image = global::ifme.Properties.Resources.document_new;
-            this.tsmiQueueNew.Name = "tsmiQueueNew";
-            this.tsmiQueueNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmiQueueNew.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueNew.Text = "&New queue";
-            // 
-            // tsmiQueueOpen
-            // 
-            this.tsmiQueueOpen.Image = global::ifme.Properties.Resources.document_open;
-            this.tsmiQueueOpen.Name = "tsmiQueueOpen";
-            this.tsmiQueueOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmiQueueOpen.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueOpen.Text = "&Open queue";
-            // 
-            // tsmiQueueSave
-            // 
-            this.tsmiQueueSave.Image = global::ifme.Properties.Resources.document_save;
-            this.tsmiQueueSave.Name = "tsmiQueueSave";
-            this.tsmiQueueSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmiQueueSave.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSave.Text = "&Save queue";
-            // 
-            // tsmiQueueSaveAs
-            // 
-            this.tsmiQueueSaveAs.Image = global::ifme.Properties.Resources.document_save_as;
-            this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
-            this.tsmiQueueSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.S)));
-            this.tsmiQueueSaveAs.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSaveAs.Text = "Save &as...";
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(189, 6);
             // 
-            // tsmiQueueDel
-            // 
-            this.tsmiQueueDel.Image = global::ifme.Properties.Resources.edit_delete;
-            this.tsmiQueueDel.Name = "tsmiQueueDel";
-            this.tsmiQueueDel.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.tsmiQueueDel.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueDel.Text = "&Delete";
-            // 
-            // tsmiQueueSelectAll
-            // 
-            this.tsmiQueueSelectAll.Image = global::ifme.Properties.Resources.edit_select_all;
-            this.tsmiQueueSelectAll.Name = "tsmiQueueSelectAll";
-            this.tsmiQueueSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsmiQueueSelectAll.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSelectAll.Text = "S&elect All";
-            // 
-            // tsmiQueueSelectNone
-            // 
-            this.tsmiQueueSelectNone.Image = global::ifme.Properties.Resources.edit_bomb;
-            this.tsmiQueueSelectNone.Name = "tsmiQueueSelectNone";
-            this.tsmiQueueSelectNone.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.tsmiQueueSelectNone.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSelectNone.Text = "Select N&one";
-            // 
-            // tsmiQueueSelectInvert
-            // 
-            this.tsmiQueueSelectInvert.Image = global::ifme.Properties.Resources.edit_redo;
-            this.tsmiQueueSelectInvert.Name = "tsmiQueueSelectInvert";
-            this.tsmiQueueSelectInvert.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.tsmiQueueSelectInvert.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSelectInvert.Text = "&Invert selection";
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(189, 6);
-            // 
-            // tsmiAviSynth
-            // 
-            this.tsmiAviSynth.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiQueueAviSynthEdit,
-            this.toolStripSeparator3,
-            this.tsmiQueueAviSynthConvertTo});
-            this.tsmiAviSynth.Image = global::ifme.Properties.Resources.code_context;
-            this.tsmiAviSynth.Name = "tsmiAviSynth";
-            this.tsmiAviSynth.Size = new System.Drawing.Size(192, 22);
-            this.tsmiAviSynth.Text = "A&viSynth";
-            // 
-            // tsmiQueueAviSynthEdit
-            // 
-            this.tsmiQueueAviSynthEdit.Name = "tsmiQueueAviSynthEdit";
-            this.tsmiQueueAviSynthEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.tsmiQueueAviSynthEdit.Size = new System.Drawing.Size(172, 22);
-            this.tsmiQueueAviSynthEdit.Text = "Edit S&cript";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(169, 6);
-            // 
-            // tsmiQueueAviSynthConvertTo
-            // 
-            this.tsmiQueueAviSynthConvertTo.Name = "tsmiQueueAviSynthConvertTo";
-            this.tsmiQueueAviSynthConvertTo.Size = new System.Drawing.Size(172, 22);
-            this.tsmiQueueAviSynthConvertTo.Text = "&Convert to AviSynth";
             // 
             // tabProp
             // 
@@ -889,26 +796,6 @@
             this.tabAudio.Text = "Audio";
             this.tabAudio.UseVisualStyleBackColor = true;
             // 
-            // btnAudioMoveDown
-            // 
-            this.btnAudioMoveDown.Image = global::ifme.Properties.Resources.go_down;
-            this.btnAudioMoveDown.Location = new System.Drawing.Point(128, 6);
-            this.btnAudioMoveDown.Name = "btnAudioMoveDown";
-            this.btnAudioMoveDown.Size = new System.Drawing.Size(32, 32);
-            this.btnAudioMoveDown.TabIndex = 4;
-            this.btnAudioMoveDown.UseVisualStyleBackColor = true;
-            this.btnAudioMoveDown.Click += new System.EventHandler(this.btnAudioMoveDown_Click);
-            // 
-            // btnAudioMoveUp
-            // 
-            this.btnAudioMoveUp.Image = global::ifme.Properties.Resources.go_up;
-            this.btnAudioMoveUp.Location = new System.Drawing.Point(90, 6);
-            this.btnAudioMoveUp.Name = "btnAudioMoveUp";
-            this.btnAudioMoveUp.Size = new System.Drawing.Size(32, 32);
-            this.btnAudioMoveUp.TabIndex = 3;
-            this.btnAudioMoveUp.UseVisualStyleBackColor = true;
-            this.btnAudioMoveUp.Click += new System.EventHandler(this.btnAudioMoveUp_Click);
-            // 
             // lblSpacer4
             // 
             this.lblSpacer4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1084,26 +971,6 @@
             this.lblAudioFreq.TabIndex = 6;
             this.lblAudioFreq.Text = "&Frequency:";
             // 
-            // btnAudioRemove
-            // 
-            this.btnAudioRemove.Image = global::ifme.Properties.Resources.list_remove;
-            this.btnAudioRemove.Location = new System.Drawing.Point(44, 6);
-            this.btnAudioRemove.Name = "btnAudioRemove";
-            this.btnAudioRemove.Size = new System.Drawing.Size(32, 32);
-            this.btnAudioRemove.TabIndex = 1;
-            this.btnAudioRemove.UseVisualStyleBackColor = true;
-            this.btnAudioRemove.Click += new System.EventHandler(this.btnAudioRemove_Click);
-            // 
-            // btnAudioAdd
-            // 
-            this.btnAudioAdd.Image = global::ifme.Properties.Resources.list_add;
-            this.btnAudioAdd.Location = new System.Drawing.Point(6, 6);
-            this.btnAudioAdd.Name = "btnAudioAdd";
-            this.btnAudioAdd.Size = new System.Drawing.Size(32, 32);
-            this.btnAudioAdd.TabIndex = 0;
-            this.btnAudioAdd.UseVisualStyleBackColor = true;
-            this.btnAudioAdd.Click += new System.EventHandler(this.btnAudioAdd_Click);
-            // 
             // tabSubtitle
             // 
             this.tabSubtitle.Controls.Add(this.cboSubLang);
@@ -1165,13 +1032,13 @@
             // 
             this.colSubLang.Tag = "colSubLang";
             this.colSubLang.Text = "Language";
-            this.colSubLang.Width = 35;
+            this.colSubLang.Width = 290;
             // 
             // colSubName
             // 
             this.colSubName.Tag = "colSubName";
             this.colSubName.Text = "File Name";
-            this.colSubName.Width = 580;
+            this.colSubName.Width = 326;
             // 
             // lblSpacer5
             // 
@@ -1181,46 +1048,6 @@
             this.lblSpacer5.Name = "lblSpacer5";
             this.lblSpacer5.Size = new System.Drawing.Size(2, 32);
             this.lblSpacer5.TabIndex = 3;
-            // 
-            // btnSubMoveDown
-            // 
-            this.btnSubMoveDown.Image = global::ifme.Properties.Resources.go_down;
-            this.btnSubMoveDown.Location = new System.Drawing.Point(128, 6);
-            this.btnSubMoveDown.Name = "btnSubMoveDown";
-            this.btnSubMoveDown.Size = new System.Drawing.Size(32, 32);
-            this.btnSubMoveDown.TabIndex = 5;
-            this.btnSubMoveDown.UseVisualStyleBackColor = true;
-            this.btnSubMoveDown.Click += new System.EventHandler(this.btnSubMoveDown_Click);
-            // 
-            // btnSubMoveUp
-            // 
-            this.btnSubMoveUp.Image = global::ifme.Properties.Resources.go_up;
-            this.btnSubMoveUp.Location = new System.Drawing.Point(90, 6);
-            this.btnSubMoveUp.Name = "btnSubMoveUp";
-            this.btnSubMoveUp.Size = new System.Drawing.Size(32, 32);
-            this.btnSubMoveUp.TabIndex = 4;
-            this.btnSubMoveUp.UseVisualStyleBackColor = true;
-            this.btnSubMoveUp.Click += new System.EventHandler(this.btnSubMoveUp_Click);
-            // 
-            // btnSubRemove
-            // 
-            this.btnSubRemove.Image = global::ifme.Properties.Resources.list_remove;
-            this.btnSubRemove.Location = new System.Drawing.Point(44, 6);
-            this.btnSubRemove.Name = "btnSubRemove";
-            this.btnSubRemove.Size = new System.Drawing.Size(32, 32);
-            this.btnSubRemove.TabIndex = 1;
-            this.btnSubRemove.UseVisualStyleBackColor = true;
-            this.btnSubRemove.Click += new System.EventHandler(this.btnSubRemove_Click);
-            // 
-            // btnSubAdd
-            // 
-            this.btnSubAdd.Image = global::ifme.Properties.Resources.list_add;
-            this.btnSubAdd.Location = new System.Drawing.Point(6, 6);
-            this.btnSubAdd.Name = "btnSubAdd";
-            this.btnSubAdd.Size = new System.Drawing.Size(32, 32);
-            this.btnSubAdd.TabIndex = 0;
-            this.btnSubAdd.UseVisualStyleBackColor = true;
-            this.btnSubAdd.Click += new System.EventHandler(this.btnSubAdd_Click);
             // 
             // tabAttachment
             // 
@@ -1258,33 +1085,13 @@
             // 
             this.colAttachName.Tag = "colAttachName";
             this.colAttachName.Text = "File Name";
-            this.colAttachName.Width = 325;
+            this.colAttachName.Width = 326;
             // 
             // colAttachMime
             // 
             this.colAttachMime.Tag = "colAttachMime";
             this.colAttachMime.Text = "MIME";
             this.colAttachMime.Width = 325;
-            // 
-            // btnAttachDel
-            // 
-            this.btnAttachDel.Image = global::ifme.Properties.Resources.list_remove;
-            this.btnAttachDel.Location = new System.Drawing.Point(44, 6);
-            this.btnAttachDel.Name = "btnAttachDel";
-            this.btnAttachDel.Size = new System.Drawing.Size(32, 32);
-            this.btnAttachDel.TabIndex = 2;
-            this.btnAttachDel.UseVisualStyleBackColor = true;
-            this.btnAttachDel.Click += new System.EventHandler(this.btnAttachDel_Click);
-            // 
-            // btnAttachAdd
-            // 
-            this.btnAttachAdd.Image = global::ifme.Properties.Resources.list_add;
-            this.btnAttachAdd.Location = new System.Drawing.Point(6, 6);
-            this.btnAttachAdd.Name = "btnAttachAdd";
-            this.btnAttachAdd.Size = new System.Drawing.Size(32, 32);
-            this.btnAttachAdd.TabIndex = 1;
-            this.btnAttachAdd.UseVisualStyleBackColor = true;
-            this.btnAttachAdd.Click += new System.EventHandler(this.btnAttachAdd_Click);
             // 
             // lblProfile
             // 
@@ -1346,14 +1153,14 @@
             this.txtOutputFolder.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtOutputFolder.Location = new System.Drawing.Point(148, 664);
             this.txtOutputFolder.Name = "txtOutputFolder";
-            this.txtOutputFolder.Size = new System.Drawing.Size(510, 24);
+            this.txtOutputFolder.Size = new System.Drawing.Size(480, 24);
             this.txtOutputFolder.TabIndex = 18;
             this.txtOutputFolder.TextChanged += new System.EventHandler(this.txtOutputFolder_TextChanged);
             // 
             // btnBrowseOutput
             // 
             this.btnBrowseOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseOutput.Location = new System.Drawing.Point(664, 664);
+            this.btnBrowseOutput.Location = new System.Drawing.Point(634, 664);
             this.btnBrowseOutput.Name = "btnBrowseOutput";
             this.btnBrowseOutput.Size = new System.Drawing.Size(24, 24);
             this.btnBrowseOutput.TabIndex = 19;
@@ -1371,6 +1178,12 @@
             this.panel1.Size = new System.Drawing.Size(700, 64);
             this.panel1.TabIndex = 0;
             // 
+            // bwEncoding
+            // 
+            this.bwEncoding.WorkerSupportsCancellation = true;
+            this.bwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwEncoding_DoWork);
+            this.bwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwEncoding_RunWorkerCompleted);
+            // 
             // pbxBanner
             // 
             this.pbxBanner.BackColor = System.Drawing.Color.Transparent;
@@ -1381,6 +1194,200 @@
             this.pbxBanner.Size = new System.Drawing.Size(640, 64);
             this.pbxBanner.TabIndex = 0;
             this.pbxBanner.TabStop = false;
+            // 
+            // tsmiQueueNew
+            // 
+            this.tsmiQueueNew.Image = global::ifme.Properties.Resources.document_new;
+            this.tsmiQueueNew.Name = "tsmiQueueNew";
+            this.tsmiQueueNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiQueueNew.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueNew.Text = "&New queue";
+            // 
+            // tsmiQueueOpen
+            // 
+            this.tsmiQueueOpen.Image = global::ifme.Properties.Resources.document_open;
+            this.tsmiQueueOpen.Name = "tsmiQueueOpen";
+            this.tsmiQueueOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.tsmiQueueOpen.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueOpen.Text = "&Open queue";
+            // 
+            // tsmiQueueSave
+            // 
+            this.tsmiQueueSave.Image = global::ifme.Properties.Resources.document_save;
+            this.tsmiQueueSave.Name = "tsmiQueueSave";
+            this.tsmiQueueSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.tsmiQueueSave.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueSave.Text = "&Save queue";
+            // 
+            // tsmiQueueSaveAs
+            // 
+            this.tsmiQueueSaveAs.Image = global::ifme.Properties.Resources.document_save_as;
+            this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
+            this.tsmiQueueSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.tsmiQueueSaveAs.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueSaveAs.Text = "Save &as...";
+            // 
+            // tsmiQueueDel
+            // 
+            this.tsmiQueueDel.Image = global::ifme.Properties.Resources.edit_delete;
+            this.tsmiQueueDel.Name = "tsmiQueueDel";
+            this.tsmiQueueDel.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.tsmiQueueDel.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueDel.Text = "&Delete";
+            // 
+            // tsmiQueueSelectAll
+            // 
+            this.tsmiQueueSelectAll.Image = global::ifme.Properties.Resources.edit_select_all;
+            this.tsmiQueueSelectAll.Name = "tsmiQueueSelectAll";
+            this.tsmiQueueSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.tsmiQueueSelectAll.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueSelectAll.Text = "S&elect All";
+            // 
+            // tsmiQueueSelectNone
+            // 
+            this.tsmiQueueSelectNone.Image = global::ifme.Properties.Resources.edit_bomb;
+            this.tsmiQueueSelectNone.Name = "tsmiQueueSelectNone";
+            this.tsmiQueueSelectNone.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.tsmiQueueSelectNone.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueSelectNone.Text = "Select N&one";
+            // 
+            // tsmiQueueSelectInvert
+            // 
+            this.tsmiQueueSelectInvert.Image = global::ifme.Properties.Resources.edit_redo;
+            this.tsmiQueueSelectInvert.Name = "tsmiQueueSelectInvert";
+            this.tsmiQueueSelectInvert.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.tsmiQueueSelectInvert.Size = new System.Drawing.Size(192, 22);
+            this.tsmiQueueSelectInvert.Text = "&Invert selection";
+            // 
+            // tsmiAviSynth
+            // 
+            this.tsmiAviSynth.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiQueueAviSynthEdit,
+            this.toolStripSeparator3,
+            this.tsmiQueueAviSynthConvertTo});
+            this.tsmiAviSynth.Image = global::ifme.Properties.Resources.code_context;
+            this.tsmiAviSynth.Name = "tsmiAviSynth";
+            this.tsmiAviSynth.Size = new System.Drawing.Size(192, 22);
+            this.tsmiAviSynth.Text = "A&viSynth";
+            // 
+            // tsmiQueueAviSynthEdit
+            // 
+            this.tsmiQueueAviSynthEdit.Name = "tsmiQueueAviSynthEdit";
+            this.tsmiQueueAviSynthEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.tsmiQueueAviSynthEdit.Size = new System.Drawing.Size(172, 22);
+            this.tsmiQueueAviSynthEdit.Text = "Edit S&cript";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(169, 6);
+            // 
+            // tsmiQueueAviSynthConvertTo
+            // 
+            this.tsmiQueueAviSynthConvertTo.Name = "tsmiQueueAviSynthConvertTo";
+            this.tsmiQueueAviSynthConvertTo.Size = new System.Drawing.Size(172, 22);
+            this.tsmiQueueAviSynthConvertTo.Text = "&Convert to AviSynth";
+            // 
+            // btnAudioMoveDown
+            // 
+            this.btnAudioMoveDown.Image = global::ifme.Properties.Resources.go_down;
+            this.btnAudioMoveDown.Location = new System.Drawing.Point(128, 6);
+            this.btnAudioMoveDown.Name = "btnAudioMoveDown";
+            this.btnAudioMoveDown.Size = new System.Drawing.Size(32, 32);
+            this.btnAudioMoveDown.TabIndex = 4;
+            this.btnAudioMoveDown.UseVisualStyleBackColor = true;
+            this.btnAudioMoveDown.Click += new System.EventHandler(this.btnAudioMoveDown_Click);
+            // 
+            // btnAudioMoveUp
+            // 
+            this.btnAudioMoveUp.Image = global::ifme.Properties.Resources.go_up;
+            this.btnAudioMoveUp.Location = new System.Drawing.Point(90, 6);
+            this.btnAudioMoveUp.Name = "btnAudioMoveUp";
+            this.btnAudioMoveUp.Size = new System.Drawing.Size(32, 32);
+            this.btnAudioMoveUp.TabIndex = 3;
+            this.btnAudioMoveUp.UseVisualStyleBackColor = true;
+            this.btnAudioMoveUp.Click += new System.EventHandler(this.btnAudioMoveUp_Click);
+            // 
+            // btnAudioRemove
+            // 
+            this.btnAudioRemove.Image = global::ifme.Properties.Resources.list_remove;
+            this.btnAudioRemove.Location = new System.Drawing.Point(44, 6);
+            this.btnAudioRemove.Name = "btnAudioRemove";
+            this.btnAudioRemove.Size = new System.Drawing.Size(32, 32);
+            this.btnAudioRemove.TabIndex = 1;
+            this.btnAudioRemove.UseVisualStyleBackColor = true;
+            this.btnAudioRemove.Click += new System.EventHandler(this.btnAudioRemove_Click);
+            // 
+            // btnAudioAdd
+            // 
+            this.btnAudioAdd.Image = global::ifme.Properties.Resources.list_add;
+            this.btnAudioAdd.Location = new System.Drawing.Point(6, 6);
+            this.btnAudioAdd.Name = "btnAudioAdd";
+            this.btnAudioAdd.Size = new System.Drawing.Size(32, 32);
+            this.btnAudioAdd.TabIndex = 0;
+            this.btnAudioAdd.UseVisualStyleBackColor = true;
+            this.btnAudioAdd.Click += new System.EventHandler(this.btnAudioAdd_Click);
+            // 
+            // btnSubMoveDown
+            // 
+            this.btnSubMoveDown.Image = global::ifme.Properties.Resources.go_down;
+            this.btnSubMoveDown.Location = new System.Drawing.Point(128, 6);
+            this.btnSubMoveDown.Name = "btnSubMoveDown";
+            this.btnSubMoveDown.Size = new System.Drawing.Size(32, 32);
+            this.btnSubMoveDown.TabIndex = 5;
+            this.btnSubMoveDown.UseVisualStyleBackColor = true;
+            this.btnSubMoveDown.Click += new System.EventHandler(this.btnSubMoveDown_Click);
+            // 
+            // btnSubMoveUp
+            // 
+            this.btnSubMoveUp.Image = global::ifme.Properties.Resources.go_up;
+            this.btnSubMoveUp.Location = new System.Drawing.Point(90, 6);
+            this.btnSubMoveUp.Name = "btnSubMoveUp";
+            this.btnSubMoveUp.Size = new System.Drawing.Size(32, 32);
+            this.btnSubMoveUp.TabIndex = 4;
+            this.btnSubMoveUp.UseVisualStyleBackColor = true;
+            this.btnSubMoveUp.Click += new System.EventHandler(this.btnSubMoveUp_Click);
+            // 
+            // btnSubRemove
+            // 
+            this.btnSubRemove.Image = global::ifme.Properties.Resources.list_remove;
+            this.btnSubRemove.Location = new System.Drawing.Point(44, 6);
+            this.btnSubRemove.Name = "btnSubRemove";
+            this.btnSubRemove.Size = new System.Drawing.Size(32, 32);
+            this.btnSubRemove.TabIndex = 1;
+            this.btnSubRemove.UseVisualStyleBackColor = true;
+            this.btnSubRemove.Click += new System.EventHandler(this.btnSubRemove_Click);
+            // 
+            // btnSubAdd
+            // 
+            this.btnSubAdd.Image = global::ifme.Properties.Resources.list_add;
+            this.btnSubAdd.Location = new System.Drawing.Point(6, 6);
+            this.btnSubAdd.Name = "btnSubAdd";
+            this.btnSubAdd.Size = new System.Drawing.Size(32, 32);
+            this.btnSubAdd.TabIndex = 0;
+            this.btnSubAdd.UseVisualStyleBackColor = true;
+            this.btnSubAdd.Click += new System.EventHandler(this.btnSubAdd_Click);
+            // 
+            // btnAttachDel
+            // 
+            this.btnAttachDel.Image = global::ifme.Properties.Resources.list_remove;
+            this.btnAttachDel.Location = new System.Drawing.Point(44, 6);
+            this.btnAttachDel.Name = "btnAttachDel";
+            this.btnAttachDel.Size = new System.Drawing.Size(32, 32);
+            this.btnAttachDel.TabIndex = 2;
+            this.btnAttachDel.UseVisualStyleBackColor = true;
+            this.btnAttachDel.Click += new System.EventHandler(this.btnAttachDel_Click);
+            // 
+            // btnAttachAdd
+            // 
+            this.btnAttachAdd.Image = global::ifme.Properties.Resources.list_add;
+            this.btnAttachAdd.Location = new System.Drawing.Point(6, 6);
+            this.btnAttachAdd.Name = "btnAttachAdd";
+            this.btnAttachAdd.Size = new System.Drawing.Size(32, 32);
+            this.btnAttachAdd.TabIndex = 1;
+            this.btnAttachAdd.UseVisualStyleBackColor = true;
+            this.btnAttachAdd.Click += new System.EventHandler(this.btnAttachAdd_Click);
             // 
             // btnQueueAdd
             // 
@@ -1459,17 +1466,20 @@
             this.btnQueueStart.UseVisualStyleBackColor = true;
             this.btnQueueStart.Click += new System.EventHandler(this.btnQueueStart_Click);
             // 
-            // bwEncoding
+            // btnOpenFolder
             // 
-            this.bwEncoding.WorkerSupportsCancellation = true;
-            this.bwEncoding.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwEncoding_DoWork);
-            this.bwEncoding.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwEncoding_RunWorkerCompleted);
+            this.btnOpenFolder.Location = new System.Drawing.Point(664, 664);
+            this.btnOpenFolder.Name = "btnOpenFolder";
+            this.btnOpenFolder.Size = new System.Drawing.Size(24, 24);
+            this.btnOpenFolder.TabIndex = 20;
+            this.btnOpenFolder.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(700, 700);
+            this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnBrowseOutput);
             this.Controls.Add(this.txtOutputFolder);
@@ -1642,6 +1652,7 @@
         private System.Windows.Forms.ColumnHeader colAudioName;
         private System.Windows.Forms.ColumnHeader colQueueTarget;
         private System.ComponentModel.BackgroundWorker bwEncoding;
+        private System.Windows.Forms.Button btnOpenFolder;
     }
 }
 
