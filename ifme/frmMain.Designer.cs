@@ -256,7 +256,7 @@
             this.toolStripSeparator2,
             this.tsmiAviSynth});
             this.cmsQueue.Name = "cmsQueue";
-            this.cmsQueue.Size = new System.Drawing.Size(193, 214);
+            this.cmsQueue.Size = new System.Drawing.Size(226, 236);
             // 
             // toolStripSeparator1
             // 
@@ -1225,8 +1225,8 @@
             this.tsmiQueueSaveAs.Name = "tsmiQueueSaveAs";
             this.tsmiQueueSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.tsmiQueueSaveAs.Size = new System.Drawing.Size(192, 22);
-            this.tsmiQueueSaveAs.Text = "Save &as...";
+            this.tsmiQueueSaveAs.Size = new System.Drawing.Size(225, 22);
+            this.tsmiQueueSaveAs.Text = "Save queue &as...";
             // 
             // tsmiQueueDel
             // 

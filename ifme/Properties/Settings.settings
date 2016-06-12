@@ -5,9 +5,6 @@
     <Setting Name="TempFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LogMaxLines" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
-    </Setting>
     <Setting Name="SaveFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
