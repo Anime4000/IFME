@@ -10,6 +10,7 @@ namespace ifme
         public int Width;
         public int Height;
         public float FrameRate;
+        public bool FrameRateVariable;
         public int BitDepth;
         public int Chroma;
 

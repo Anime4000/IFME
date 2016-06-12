@@ -85,10 +85,20 @@ namespace ifme
 
         private int Indexing(Queue item)
         {
-            if (item.Video.Count > 0)
-                if (new TaskManager().RunCmd($"\"{FFms}\"", $"-p -f -c \"{item.Video[0].File}\" timecode") >= 1)
-                    foreach (var tc in Directory.GetFiles(Temp, "timecode*"))
-                        File.Delete(tc);
+            foreach (var video in item.Video)
+            {
+                if (video.FrameRateVariable)
+                {
+                    new TaskManager().RunCmd($"\"{FFms}\"", $"-p -f -c \"{video.File}\" timecode");
+
+                    int i = 0;
+                    foreach (var tc in Directory.GetFiles(Temp, "timecod*"))
+                        if (!Path.GetFileName(tc).Contains(".tc.txt"))
+                            File.Delete(tc);
+                        else
+                            File.Move(tc, Path.Combine(Temp, $"timecode{i++:D4}.tc.txt"));
+                }
+            }                   
 
             return 0;
         }
@@ -240,7 +250,7 @@ namespace ifme
                 string cmdattach = string.Empty;
                 string cmdchapter = string.Empty;
 
-                foreach (var tc in Directory.GetFiles(Temp, "timecode_*"))
+                foreach (var tc in Directory.GetFiles(Temp, "timecode*"))
                 {
                     cmdvideo += $"--timecodes 0:\"{tc}\" "; break;
                 }
@@ -285,7 +295,7 @@ namespace ifme
                 string cmdvideo = string.Empty;
                 string cmdaudio = string.Empty;
 
-                foreach (var tc in Directory.GetFiles(Temp, "timecode_*"))
+                foreach (var tc in Directory.GetFiles(Temp, "timecode*"))
                 {
                     timecode = tc; break;
                 }
