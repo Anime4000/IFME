@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7908AC4A-BC17-4F81-9A89-86E54513F597}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ifme</RootNamespace>
     <AssemblyName>ifme</AssemblyName>
@@ -32,6 +32,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\icon_film_magic_zenui.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

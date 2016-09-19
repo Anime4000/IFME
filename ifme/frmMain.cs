@@ -938,7 +938,7 @@ namespace ifme
         }
         #endregion
 
-        #region Add Video to Queue
+        #region Add and Display Video to Queue
         private void QueueAdd(string filePath)
         {
             var qi = new Queue();
@@ -1067,7 +1067,7 @@ namespace ifme
                 foreach (var item in qi.Audio)
                 {
                     lstAudio.Items.Add(new ListViewItem(new[] {
-                        $"{item.Id:D2}, {item.Lang} @ {Path.GetFileName(item.File)}",
+                        $"{item.Id:D2}, {item.Lang}, {item.Format} @ {Path.GetFileName(item.File)}",
                     }));
                 }
 

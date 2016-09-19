@@ -30,7 +30,7 @@ namespace ifme
 
             if (OS.IsWindows)
             {
-                p.StartInfo = new ProcessStartInfo("cmd", "/c title %HOTARU% && echo %HOTARU% && %RITSUKO%")
+                p.StartInfo = new ProcessStartInfo("cmd", "/u /c title %HOTARU% && %RITSUKO%")
                 {
                     CreateNoWindow = false,
                     UseShellExecute = false,

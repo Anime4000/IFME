@@ -10,8 +10,9 @@ namespace ifme
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            Console.Title = "Internet Friendly Media Encoder";
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
 
             Application.EnableVisualStyles();
