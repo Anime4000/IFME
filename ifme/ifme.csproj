@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7908AC4A-BC17-4F81-9A89-86E54513F597}</ProjectGuid>
+    <ProjectGuid>{0BF85867-A4B7-4D52-98A2-01DEEDC701EF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ifme</RootNamespace>
@@ -12,29 +12,30 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\icon_film_magic_zenui.ico</ApplicationIcon>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,46 +50,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmInputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmInputBox.Designer.cs">
-      <DependentUpon>frmInputBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Get.cs" />
-    <Compile Include="MediaEncoding.cs" />
-    <Compile Include="OS.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="PluginAudio.cs" />
-    <Compile Include="PluginAudioApp.cs" />
-    <Compile Include="PluginAudioArgs.cs" />
-    <Compile Include="PluginAudioMode.cs" />
-    <Compile Include="PluginCommon.cs" />
-    <Compile Include="PluginCommonProperties.cs" />
-    <Compile Include="PluginCommonUpdate.cs" />
-    <Compile Include="PluginVideo.cs" />
-    <Compile Include="PluginVideoApp.cs" />
-    <Compile Include="PluginVideoArgs.cs" />
-    <Compile Include="PluginVideoMode.cs" />
-    <Compile Include="Profile.cs" />
+    <Compile Include="Plugin\Plugin.cs" />
+    <Compile Include="Plugin\PluginAudio.cs" />
+    <Compile Include="Plugin\PluginAudioArgs.cs" />
+    <Compile Include="Plugin\PluginAudioMode.cs" />
+    <Compile Include="Plugin\PluginAuthor.cs" />
+    <Compile Include="Plugin\PluginCommon.cs" />
+    <Compile Include="Plugin\PluginTest.cs" />
+    <Compile Include="Plugin\PluginUpdate.cs" />
+    <Compile Include="Plugin\PluginVideo.cs" />
+    <Compile Include="Plugin\PluginVideoArgs.cs" />
+    <Compile Include="Plugin\PluginVideoEncoder.cs" />
+    <Compile Include="Plugin\PluginVideoMode.cs" />
+    <Compile Include="Plugin\PluginVideoModeValue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queue.cs" />
-    <Compile Include="QueueAttachment.cs" />
-    <Compile Include="QueueAudio.cs" />
-    <Compile Include="QueueCommon.cs" />
-    <Compile Include="QueueSubtitle.cs" />
-    <Compile Include="QueueVideo.cs" />
-    <Compile Include="TaskManager.cs" />
-    <EmbeddedResource Include="frmInputBox.resx">
-      <DependentUpon>frmInputBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,13 +84,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
-    <None Include="format.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="language.code">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -120,68 +95,58 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BannerLeft.png" />
+    <None Include="Resources\BannerA.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\media-playback-pause.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\media-playback-start.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\media-playback-stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\list-add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\list-remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\go-up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\go-down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\document-new.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\document-open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\document-save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\document-save-as.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\edit-select-all.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\edit-delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\edit-bomb.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\edit-redo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\code-context.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon_film_magic_zenui.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
-      <Project>{e496ad81-7f30-492a-9e00-0eabf86f708a}</Project>
-      <Name>FFmpegDotNet</Name>
+    <ProjectReference Include="..\..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
+      <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
+      <Name>Newtonsoft.Json.Net40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ini-parser\src\IniFileParser\INIFileParser.csproj">
-      <Project>{5e46dcf4-c473-4171-9f9b-f3910b5ec407}</Project>
-      <Name>INIFileParser</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_del.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_del.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_off-ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_preferences.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon22_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\app.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

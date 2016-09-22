@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ifme
@@ -10,11 +11,8 @@ namespace ifme
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.Title = "Internet Friendly Media Encoder";
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMain());
