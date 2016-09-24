@@ -175,6 +175,7 @@
             // 
             // lstMedia
             // 
+            this.lstMedia.AllowDrop = true;
             this.lstMedia.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -185,6 +186,7 @@
             this.colMediaType,
             this.colMediaTarget,
             this.colMediaStatus});
+            this.lstMedia.FullRowSelect = true;
             this.lstMedia.HideSelection = false;
             this.lstMedia.Location = new System.Drawing.Point(12, 114);
             this.lstMedia.Name = "lstMedia";

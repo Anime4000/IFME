@@ -56,9 +56,11 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Get.cs" />
     <Compile Include="MediaQueue\MediaQueue.cs" />
     <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
     <Compile Include="MediaQueue\MediaQueueAudio.cs" />
+    <Compile Include="MediaQueue\MediaQueueCommon.cs" />
     <Compile Include="MediaQueue\MediaQueueSubtitle.cs" />
     <Compile Include="MediaQueue\MediaQueueVideo.cs" />
     <Compile Include="Plugin\Plugin.cs" />
@@ -90,6 +92,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="format.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

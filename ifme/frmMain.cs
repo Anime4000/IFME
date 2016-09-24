@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
+using Newtonsoft.Json;
 using FFmpegDotNet;
 
 namespace ifme
@@ -30,6 +31,10 @@ namespace ifme
             cboVideoPixelFormat.SelectedIndex = 0;
             cboVideoDeinterlaceMode.SelectedIndex = 1;
             cboVideoDeinterlaceField.SelectedIndex = 0;
+
+            var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
+            FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
 
             // Load plugin
             new PluginLoad();
@@ -56,7 +61,7 @@ namespace ifme
             cboAudioEncoder.DataSource = new BindingSource(audio, null);
             cboAudioEncoder.DisplayMember = "Value";
             cboAudioEncoder.ValueMember = "Key";
-            cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
+            cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
         }
 
         private void btnMediaFileNew_Click(object sender, EventArgs e)
@@ -484,7 +489,85 @@ namespace ifme
 
         private void MediaAdd(string file)
         {
-            
+            var queue = new MediaQueue();
+            var media = new FFmpeg.Stream(file);
+
+            queue.Enable = true;
+            queue.OutputFormat = "mkv";
+
+            foreach (var item in media.Video)
+            {
+                queue.Video.Add(new MediaQueueVideo
+                {
+                    File = file,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Format = new Get().CodecFormat(item.Codec),
+
+                    Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
+                    EncoderPreset = "medium",
+                    EncoderTune = "psnr",
+                    EncoderMode = 0,
+                    EncoderValue = 26,
+                    EncoderMultiPass = 2,
+                    EncoderCommand = "--pme --pmode",
+
+                    Width = item.Width,
+                    Height = item.Height,
+                    FrameRate = item.FrameRate,
+                    FrameRateAvg = item.FrameRateAvg,
+                    IsVFR = !item.FrameRateConstant,
+                    BitDepth = item.BitDepth,
+                    PixelFormat = item.Chroma,
+
+                    DeInterlace = false,
+                    DeInterlaceMode = 1,
+                    DeInterlaceField = 0
+                });
+            }
+
+            foreach (var item in media.Audio)
+            {
+                queue.Audio.Add(new MediaQueueAudio
+                {
+                    File = file,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Format = new Get().CodecFormat(item.Codec),
+
+                    Encoder = new Guid("deadbeef-faac-faac-faac-faacfaacfaac"),
+                    EncoderMode = 0,
+                    EndoderQuality = 128,
+                    EncoderSampleRate = 44100,
+                    EncoderChannel = 0,
+                    EncoderCommand = "-w -s -c 24000"
+                });
+            }
+
+            foreach (var item in media.Subtitle)
+            {
+                queue.Subtitle.Add(new MediaQueueSubtitle
+                {
+                    File = file,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Format = new Get().CodecFormat(item.Codec),
+                });
+            }
+
+            var lst = new ListViewItem(new[] 
+            {
+                    Path.GetFileName(file),
+                    TimeSpan.FromSeconds(media.Duration).ToString("hh\\:mm\\:ss"),
+                    Path.GetExtension(file).Substring(1).ToUpperInvariant(),
+                    "MKV",
+                    "Ready",
+            });
+
+            lst.Tag = queue;
+            lst.Checked = true;
+
+            lstMedia.Items.Add(lst);
         }
     }
 }

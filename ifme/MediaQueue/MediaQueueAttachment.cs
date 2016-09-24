@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ifme
 {
-    public class MediaQueueAttachment
+    public class MediaQueueAttachment : MediaQueueCommon
     {
         public string Mime { get; set; }
     }
