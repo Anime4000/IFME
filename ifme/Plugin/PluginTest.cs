@@ -105,12 +105,13 @@ namespace ifme
             try
             {
                 var Temp = JsonConvert.DeserializeObject<Plugin>(File.ReadAllText("test.json"));
+                var Load = Temp;
             }
             catch (Exception)
             {
-
                 throw;
             }
+
             return false;
         }
     }

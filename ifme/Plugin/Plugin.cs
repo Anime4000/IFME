@@ -9,6 +9,6 @@ namespace ifme
 {
     public class Plugin : PluginCommon
     {
-        public static List<Plugin> Items { get; set; } = new List<Plugin>();
+        public static Dictionary<Guid, Plugin> Items { get; set; } = new Dictionary<Guid, Plugin>();
     }
 }

@@ -8,6 +8,7 @@ namespace ifme
     public class PluginVideoArgs
     {
         public bool Pipe { get; set; }
+        public string UnPipe { get; set; }
         public string Y4M { get; set; }
         public string Input { get; set; }
         public string Output { get; set; }
@@ -18,5 +19,6 @@ namespace ifme
         public string PassFirst { get; set; }
         public string PassLast { get; set; }
         public string PassNth { get; set; }
+        public string Command { get; set; }
     }
 }

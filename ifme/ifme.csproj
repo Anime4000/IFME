@@ -62,6 +62,7 @@
     <Compile Include="Plugin\PluginAudioMode.cs" />
     <Compile Include="Plugin\PluginAuthor.cs" />
     <Compile Include="Plugin\PluginCommon.cs" />
+    <Compile Include="Plugin\PluginLoad.cs" />
     <Compile Include="Plugin\PluginTest.cs" />
     <Compile Include="Plugin\PluginUpdate.cs" />
     <Compile Include="Plugin\PluginVideo.cs" />

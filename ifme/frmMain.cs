@@ -30,7 +30,31 @@ namespace ifme
             cboVideoDeinterlaceField.SelectedIndex = 0;
 
             // Load plugin
-            PluginTest.JsonRead();
+            new PluginLoad();
+
+            var video = new Dictionary<Guid, string>();
+            var audio = new Dictionary<Guid, string>();
+
+            foreach (var item in Plugin.Items)
+            {
+                var value = item.Value;
+
+                if (!string.IsNullOrEmpty(value.Video.Extension))
+                    video.Add(item.Key, value.Name);
+
+                if (!string.IsNullOrEmpty(value.Audio.Extension))
+                    audio.Add(item.Key, value.Name);
+            }
+                
+            cboVideoEncoder.DataSource = new BindingSource(video, null);
+            cboVideoEncoder.DisplayMember = "Value";
+            cboVideoEncoder.ValueMember = "Key";
+            cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
+
+            cboAudioEncoder.DataSource = new BindingSource(audio, null);
+            cboAudioEncoder.DisplayMember = "Value";
+            cboAudioEncoder.ValueMember = "Key";
+            cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
         }
     }
 }
