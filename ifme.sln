@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ifme", "ifme\ifme.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.Net40", "..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj", "{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpegDotNet", "..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj", "{E496AD81-7F30-492A-9E00-0EABF86F708A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E496AD81-7F30-492A-9E00-0EABF86F708A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

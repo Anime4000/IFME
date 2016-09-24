@@ -56,6 +56,7 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Media\Media.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginAudio.cs" />
     <Compile Include="Plugin\PluginAudioArgs.cs" />
@@ -99,6 +100,10 @@
     <None Include="Resources\BannerA.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
+      <Project>{e496ad81-7f30-492a-9e00-0eabf86f708a}</Project>
+      <Name>FFmpegDotNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
       <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
       <Name>Newtonsoft.Json.Net40</Name>
@@ -149,6 +154,10 @@
   <ItemGroup>
     <None Include="Resources\app.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BannerB.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
