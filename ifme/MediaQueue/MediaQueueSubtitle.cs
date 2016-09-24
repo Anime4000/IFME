@@ -5,7 +5,8 @@ using System.Text;
 
 namespace ifme
 {
-    class Media
+    public class MediaQueueSubtitle
     {
+
     }
 }

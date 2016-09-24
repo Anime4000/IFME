@@ -1173,10 +1173,9 @@
             // lblOutputFolder
             // 
             this.lblOutputFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblOutputFolder.AutoSize = true;
-            this.lblOutputFolder.Location = new System.Drawing.Point(12, 569);
+            this.lblOutputFolder.Location = new System.Drawing.Point(12, 564);
             this.lblOutputFolder.Name = "lblOutputFolder";
-            this.lblOutputFolder.Size = new System.Drawing.Size(65, 13);
+            this.lblOutputFolder.Size = new System.Drawing.Size(88, 23);
             this.lblOutputFolder.TabIndex = 17;
             this.lblOutputFolder.Text = "&Destination:";
             this.lblOutputFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1194,10 +1193,9 @@
             // lblEncodingPreset
             // 
             this.lblEncodingPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblEncodingPreset.AutoSize = true;
-            this.lblEncodingPreset.Location = new System.Drawing.Point(12, 542);
+            this.lblEncodingPreset.Location = new System.Drawing.Point(12, 537);
             this.lblEncodingPreset.Name = "lblEncodingPreset";
-            this.lblEncodingPreset.Size = new System.Drawing.Size(88, 13);
+            this.lblEncodingPreset.Size = new System.Drawing.Size(88, 22);
             this.lblEncodingPreset.TabIndex = 14;
             this.lblEncodingPreset.Text = "Encoding &Preset:";
             this.lblEncodingPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

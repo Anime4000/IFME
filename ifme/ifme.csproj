@@ -56,7 +56,11 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Media\Media.cs" />
+    <Compile Include="MediaQueue\MediaQueue.cs" />
+    <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
+    <Compile Include="MediaQueue\MediaQueueAudio.cs" />
+    <Compile Include="MediaQueue\MediaQueueSubtitle.cs" />
+    <Compile Include="MediaQueue\MediaQueueVideo.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginAudio.cs" />
     <Compile Include="Plugin\PluginAudioArgs.cs" />
