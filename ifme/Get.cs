@@ -10,7 +10,15 @@ namespace ifme
 {
     public class Get
     {
-        public string CodecFormat(string codecId)
+		public static Dictionary<string, string> LanguageCode
+		{
+			get
+			{
+				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("language.json"));
+			}
+		}
+
+		public string CodecFormat(string codecId)
         {
             var json = File.ReadAllText("format.json");
             var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);

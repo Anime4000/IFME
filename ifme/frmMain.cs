@@ -21,6 +21,7 @@ namespace ifme
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.Sizable;
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -35,6 +36,12 @@ namespace ifme
             var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
             FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
+
+			// Load Language
+			cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
+			cboSubLang.DisplayMember = "Value";
+			cboSubLang.ValueMember = "Key";
+			cboSubLang.SelectedValue = "und";
 
             // Load plugin
             new PluginLoad();
@@ -128,17 +135,6 @@ namespace ifme
             if (lstMedia.SelectedItems.Count > 0)
             {
                 MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
-            }
-
-            if (lstMedia.SelectedItems.Count == 1)
-            {
-                grpVideoStream.Enabled = true;
-                grpAudioStream.Enabled = true;
-            }
-            else if (lstMedia.SelectedItems.Count > 1)
-            {
-                grpVideoStream.Enabled = false;
-                grpAudioStream.Enabled = false;
             }
         }
 
@@ -326,7 +322,12 @@ namespace ifme
 			//formatting
         }
 
-        private void btnAudioAdd_Click(object sender, EventArgs e)
+		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+		{
+			grpVideoInterlace.Enabled = chkVideoDeinterlace.Checked;
+		}
+
+		private void btnAudioAdd_Click(object sender, EventArgs e)
         {
 
         }
@@ -425,8 +426,18 @@ namespace ifme
 
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
+			var files = new OpenFileDialog();
 
-        }
+			files.Filter = "Subtitle File|*.ssa;*.ass;*.srt|" +
+				"SubStation Alpha|*.ssa;*.ass|" +
+				"SubRip|*.srt";
+			files.FilterIndex = 1;
+			files.Multiselect = true;
+
+			if (files.ShowDialog() == DialogResult.OK)
+				foreach (var item in files.FileNames)
+					SubtitleAdd(item);
+		}
 
         private void btnSubDel_Click(object sender, EventArgs e)
         {
@@ -445,12 +456,15 @@ namespace ifme
 
         private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+					var index = lstSub.SelectedItems[0].Index;
+					cboSubLang.SelectedValue = media.Subtitle[index].Lang;
+				}
+			}
         }
 
         private void btnAttachAdd_Click(object sender, EventArgs e)
@@ -569,6 +583,23 @@ namespace ifme
             lstMedia.Items.Add(lst);
         }
 
+		private void SubtitleAdd(string file)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+
+				queue.Subtitle.Add(new MediaQueueSubtitle
+				{
+					Enable = true,
+					File = file,
+					Id = -1,
+					Lang = "und",
+					Format = ""
+				});
+			}
+		}
+
 		// Minimise code, all controls subscribe one function :)
 		private void ctrlApplyMedia(object sender, EventArgs e)
 		{
@@ -599,7 +630,7 @@ namespace ifme
 				{
 					var i = media.Video[item.Index];
 
-					switch(ctrl)
+					switch (ctrl)
 					{
 						case "cboVideoEncoder":
 							i.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
@@ -619,6 +650,45 @@ namespace ifme
 						case "nudVideoMultiPass":
 							i.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
 							break;
+
+						case "cboVideoResolution":
+							var w = 0;
+							var h = 0;
+							var x = cboVideoResolution.Text;
+							if (x.Contains('x'))
+							{
+								int.TryParse(x.Split('x')[0], out w);
+								int.TryParse(x.Split('x')[1], out h);
+							}
+							i.Width = w;
+							i.Height = h;
+							break;
+						case "cboVideoFrameRate":
+							float f = 0;
+							float.TryParse(cboVideoFrameRate.Text, out f);
+							i.FrameRate = f;
+							break;
+						case "cboVideoBitDepth":
+							var b = 8;
+							int.TryParse(cboVideoBitDepth.Text, out b);
+							i.BitDepth = b;
+							break;
+						case "cboVideoPixelFormat":
+							var y = 420;
+							int.TryParse(cboVideoPixelFormat.Text, out y);
+							i.PixelFormat = y;
+							break;
+
+						case "chkVideoDeinterlace":
+							i.DeInterlace = chkVideoDeinterlace.Checked;
+							break;
+						case "cboVideoDeinterlaceMode":
+							i.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
+							break;
+						case "cboVideoDeinterlaceField":
+							i.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
+							break;
+
 						default:
 							break;
 					}
@@ -627,6 +697,48 @@ namespace ifme
 				foreach (ListViewItem item in lstAudio.SelectedItems)
 				{
 					var i = media.Audio[item.Index];
+
+					switch (ctrl)
+					{
+						case "cboAudioEncoder":
+							i.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
+							break;
+						case "cboAudioMode":
+							i.EncoderMode = cboAudioMode.SelectedIndex;
+							break;
+						case "cboAudioQuality":
+							decimal q = 0;
+							decimal.TryParse(cboAudioQuality.Text, out q);
+							i.EndoderQuality = q;
+							break;
+						case "cboAudioSampleRate":
+							var hz = 0;
+							int.TryParse(cboAudioSampleRate.Text, out hz);
+							i.EncoderSampleRate = hz;
+							break;
+						case "cboAudioChannel":
+							double ch = 0;
+							double.TryParse(cboAudioChannel.Text, out ch);
+							i.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
+							break;
+
+						default:
+							break;
+					}
+				}
+
+				foreach (ListViewItem item in lstSub.SelectedItems)
+				{
+					var i = media.Subtitle[item.Index];
+
+					switch (ctrl)
+					{
+						case "cboSubLang":
+							i.Lang = $"{cboSubLang.SelectedValue}";
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
@@ -675,14 +787,17 @@ namespace ifme
                 {
                     var lst = new ListViewItem(new[]
                     {
-                        $"Id: {item.Id}"
+                        $"{item.Id}",
+						$"{item.Width}x{item.Height}",
+						$"{item.BitDepth} bpc",
+						$"{item.FrameRate} fps"
                     });
                     lst.Checked = item.Enable;
 
                     lstVideo.Items.Add(lst);
                 }
 
-                lstVideo.Items[0].Selected = true;
+				lstVideo.Items[0].Selected = true;
             }
 
             // Audio
@@ -693,7 +808,7 @@ namespace ifme
                 {
                     var lst = new ListViewItem(new[]
                     {
-                        $"Id: {item.Id}"
+                        $"{item.Id}"
                     });
                     lst.Checked = item.Enable;
 
@@ -709,10 +824,15 @@ namespace ifme
             {
                 foreach (var item in media.Subtitle)
                 {
+					var langFull = "";
+					Get.LanguageCode.TryGetValue(item.Lang, out langFull);
+
                     var lst = new ListViewItem(new[] 
                     {
-                        $"Id: {item.File}"
-                    });
+                        $"{item.Id}",
+						item.File,
+						langFull
+					});
                     lst.Checked = item.Enable;
 
                     lstSub.Items.Add(lst);

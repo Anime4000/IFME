@@ -52,7 +52,7 @@
 			this.btnVideoAdd = new System.Windows.Forms.Button();
 			this.btnVideoDel = new System.Windows.Forms.Button();
 			this.lstVideo = new System.Windows.Forms.ListView();
-			this.colVideoStream = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnVideoMoveUp = new System.Windows.Forms.Button();
 			this.btnVideoMoveDown = new System.Windows.Forms.Button();
 			this.grpVideoCodec = new System.Windows.Forms.GroupBox();
@@ -110,6 +110,7 @@
 			this.cboSubLang = new System.Windows.Forms.ComboBox();
 			this.lblSubLang = new System.Windows.Forms.Label();
 			this.lstSub = new System.Windows.Forms.ListView();
+			this.colSubId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colSubFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colSubLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnSubMoveDown = new System.Windows.Forms.Button();
@@ -148,6 +149,9 @@
 			this.btnMediaFileDel = new System.Windows.Forms.Button();
 			this.btnMediaFileOpen = new System.Windows.Forms.Button();
 			this.btnMediaFileNew = new System.Windows.Forms.Button();
+			this.colVideoRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabMediaConfig.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.pnlGeneral.SuspendLayout();
@@ -388,6 +392,7 @@
 			// 
 			// pnlVideo
 			// 
+			this.pnlVideo.Controls.Add(this.chkVideoDeinterlace);
 			this.pnlVideo.Controls.Add(this.grpVideoStream);
 			this.pnlVideo.Controls.Add(this.grpVideoCodec);
 			this.pnlVideo.Controls.Add(this.grpVideoInterlace);
@@ -442,7 +447,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lstVideo.CheckBoxes = true;
 			this.lstVideo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colVideoStream});
+            this.colVideoId,
+            this.colVideoRes,
+            this.colVideoBitDepth,
+            this.colVideoFps});
 			this.lstVideo.FullRowSelect = true;
 			this.lstVideo.HideSelection = false;
 			this.lstVideo.Location = new System.Drawing.Point(6, 49);
@@ -455,10 +463,10 @@
 			this.lstVideo.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstVideo_DragDrop);
 			this.lstVideo.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstVideo_DragEnter);
 			// 
-			// colVideoStream
+			// colVideoId
 			// 
-			this.colVideoStream.Text = "Data";
-			this.colVideoStream.Width = 234;
+			this.colVideoId.Text = "Id";
+			this.colVideoId.Width = 40;
 			// 
 			// btnVideoMoveUp
 			// 
@@ -659,11 +667,11 @@
 			// grpVideoInterlace
 			// 
 			this.grpVideoInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpVideoInterlace.Controls.Add(this.chkVideoDeinterlace);
 			this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceField);
 			this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceField);
 			this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceMode);
 			this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceMode);
+			this.grpVideoInterlace.Enabled = false;
 			this.grpVideoInterlace.Location = new System.Drawing.Point(535, 139);
 			this.grpVideoInterlace.Name = "grpVideoInterlace";
 			this.grpVideoInterlace.Size = new System.Drawing.Size(224, 126);
@@ -674,12 +682,13 @@
 			// 
 			this.chkVideoDeinterlace.AutoSize = true;
 			this.chkVideoDeinterlace.BackColor = System.Drawing.SystemColors.Window;
-			this.chkVideoDeinterlace.Location = new System.Drawing.Point(7, -1);
+			this.chkVideoDeinterlace.Location = new System.Drawing.Point(544, 138);
 			this.chkVideoDeinterlace.Name = "chkVideoDeinterlace";
 			this.chkVideoDeinterlace.Size = new System.Drawing.Size(85, 17);
 			this.chkVideoDeinterlace.TabIndex = 0;
 			this.chkVideoDeinterlace.Text = "&Deinterlace?";
 			this.chkVideoDeinterlace.UseVisualStyleBackColor = false;
+			this.chkVideoDeinterlace.CheckedChanged += new System.EventHandler(this.chkVideoDeinterlace_CheckedChanged);
 			this.chkVideoDeinterlace.Leave += new System.EventHandler(this.ctrlApplyMedia);
 			// 
 			// cboVideoDeinterlaceField
@@ -1152,7 +1161,7 @@
 			this.cboSubLang.Name = "cboSubLang";
 			this.cboSubLang.Size = new System.Drawing.Size(756, 21);
 			this.cboSubLang.TabIndex = 6;
-			this.cboSubLang.SelectedIndexChanged += new System.EventHandler(this.cboSubLang_SelectedIndexChanged);
+			this.cboSubLang.Leave += new System.EventHandler(this.ctrlApplyMedia);
 			// 
 			// lblSubLang
 			// 
@@ -1172,6 +1181,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lstSub.CheckBoxes = true;
 			this.lstSub.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colSubId,
             this.colSubFileName,
             this.colSubLang});
 			this.lstSub.FullRowSelect = true;
@@ -1184,6 +1194,11 @@
 			this.lstSub.View = System.Windows.Forms.View.Details;
 			this.lstSub.SelectedIndexChanged += new System.EventHandler(this.lstSub_SelectedIndexChanged);
 			// 
+			// colSubId
+			// 
+			this.colSubId.Text = "Id";
+			this.colSubId.Width = 50;
+			// 
 			// colSubFileName
 			// 
 			this.colSubFileName.Text = "File name";
@@ -1192,7 +1207,7 @@
 			// colSubLang
 			// 
 			this.colSubLang.Text = "Language";
-			this.colSubLang.Width = 252;
+			this.colSubLang.Width = 220;
 			// 
 			// btnSubMoveDown
 			// 
@@ -1578,6 +1593,19 @@
 			this.btnMediaFileNew.UseVisualStyleBackColor = true;
 			this.btnMediaFileNew.Click += new System.EventHandler(this.btnMediaFileNew_Click);
 			// 
+			// colVideoRes
+			// 
+			this.colVideoRes.Text = "Size";
+			this.colVideoRes.Width = 74;
+			// 
+			// colVideoBitDepth
+			// 
+			this.colVideoBitDepth.Text = "Bit Depth";
+			// 
+			// colVideoFps
+			// 
+			this.colVideoFps.Text = "FPS";
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1616,12 +1644,12 @@
 			this.grpTargetFormat.ResumeLayout(false);
 			this.tabVideo.ResumeLayout(false);
 			this.pnlVideo.ResumeLayout(false);
+			this.pnlVideo.PerformLayout();
 			this.grpVideoStream.ResumeLayout(false);
 			this.grpVideoCodec.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.nudVideoMultiPass)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudVideoRateFactor)).EndInit();
 			this.grpVideoInterlace.ResumeLayout(false);
-			this.grpVideoInterlace.PerformLayout();
 			this.grpVideoPicture.ResumeLayout(false);
 			this.tabAudio.ResumeLayout(false);
 			this.pnlAudio.ResumeLayout(false);
@@ -1684,7 +1712,7 @@
         private System.Windows.Forms.ListView lstVideo;
         private System.Windows.Forms.Button btnVideoMoveDown;
         private System.Windows.Forms.Button btnVideoMoveUp;
-        private System.Windows.Forms.ColumnHeader colVideoStream;
+        private System.Windows.Forms.ColumnHeader colVideoId;
         private System.Windows.Forms.GroupBox grpVideoCodec;
         private System.Windows.Forms.GroupBox grpVideoInterlace;
         private System.Windows.Forms.GroupBox grpVideoPicture;
@@ -1761,6 +1789,10 @@
         private System.Windows.Forms.Label lblAudioMode;
         private System.Windows.Forms.Panel pnlBanner;
         private System.Windows.Forms.PictureBox pbxBannerB;
-    }
+		private System.Windows.Forms.ColumnHeader colSubId;
+		private System.Windows.Forms.ColumnHeader colVideoRes;
+		private System.Windows.Forms.ColumnHeader colVideoBitDepth;
+		private System.Windows.Forms.ColumnHeader colVideoFps;
+	}
 }
 
