@@ -57,6 +57,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Get.cs" />
+    <Compile Include="MediaEncoder.cs" />
     <Compile Include="MediaQueue\MediaQueue.cs" />
     <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
     <Compile Include="MediaQueue\MediaQueueAudio.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Plugin\PluginVideoEncoder.cs" />
     <Compile Include="Plugin\PluginVideoMode.cs" />
     <Compile Include="Plugin\PluginVideoModeValue.cs" />
+    <Compile Include="ProcessManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMain.resx">
