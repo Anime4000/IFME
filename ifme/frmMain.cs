@@ -134,6 +134,10 @@ namespace ifme
         {
             if (lstMedia.SelectedItems.Count > 0)
             {
+				var tf = !(lstMedia.SelectedItems.Count > 1);
+				grpVideoStream.Enabled = tf;
+				grpAudioStream.Enabled = tf;
+
                 MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
             }
         }
@@ -601,145 +605,180 @@ namespace ifme
 		}
 
 		// Minimise code, all controls subscribe one function :)
-		private void ctrlApplyMedia(object sender, EventArgs e)
+		private void MediaApply(object sender, EventArgs e)
 		{
 			var ctrl = (sender as Control).Name;
 
-			if (lstMedia.SelectedItems.Count > 0)
+			foreach (ListViewItem q in lstMedia.SelectedItems)
 			{
-				var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+				var m = q.Tag as MediaQueue;
 
 				if (rdoFormatMp4.Checked)
-					media.OutputFormat = "mp4";
+					m.OutputFormat = "mp4";
 				else if (rdoFormatMkv.Checked)
-					media.OutputFormat = "mkv";
+					m.OutputFormat = "mkv";
 				else if (rdoFormatWebm.Checked)
-					media.OutputFormat = "webm";
+					m.OutputFormat = "webm";
 				else if (rdoFormatAudioMp3.Checked)
-					media.OutputFormat = "mp3";
+					m.OutputFormat = "mp3";
 				else if (rdoFormatAudioMp4.Checked)
-					media.OutputFormat = "m4a";
+					m.OutputFormat = "m4a";
 				else if (rdoFormatAudioOgg.Checked)
-					media.OutputFormat = "ogg";
+					m.OutputFormat = "ogg";
 				else if (rdoFormatAudioOpus.Checked)
-					media.OutputFormat = "opus";
+					m.OutputFormat = "opus";
 				else if (rdoFormatAudioFlac.Checked)
-					media.OutputFormat = "flac";
+					m.OutputFormat = "flac";
 
-				foreach (ListViewItem item in lstVideo.SelectedItems)
+				if (lstMedia.SelectedItems.Count > 1)
 				{
-					var i = media.Video[item.Index];
-
-					switch (ctrl)
+					for (int i = 0; i < m.Video.Count; i++)
 					{
-						case "cboVideoEncoder":
-							i.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
-							break;
-						case "cboVideoPreset":
-							i.EncoderPreset = cboVideoPreset.Text;
-							break;
-						case "cboVideoTune":
-							i.EncoderTune = cboVideoTune.Text;
-							break;
-						case "cboVideoRateControl":
-							i.EncoderMode = cboVideoRateControl.SelectedIndex;
-							break;
-						case "nudVideoRateFactor":
-							i.EncoderValue = nudVideoRateFactor.Value;
-							break;
-						case "nudVideoMultiPass":
-							i.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
-							break;
+						var temp = m.Video[i];
+						MediaApplyVideo(ctrl, ref temp);
+					}
 
-						case "cboVideoResolution":
-							var w = 0;
-							var h = 0;
-							var x = cboVideoResolution.Text;
-							if (x.Contains('x'))
-							{
-								int.TryParse(x.Split('x')[0], out w);
-								int.TryParse(x.Split('x')[1], out h);
-							}
-							i.Width = w;
-							i.Height = h;
-							break;
-						case "cboVideoFrameRate":
-							float f = 0;
-							float.TryParse(cboVideoFrameRate.Text, out f);
-							i.FrameRate = f;
-							break;
-						case "cboVideoBitDepth":
-							var b = 8;
-							int.TryParse(cboVideoBitDepth.Text, out b);
-							i.BitDepth = b;
-							break;
-						case "cboVideoPixelFormat":
-							var y = 420;
-							int.TryParse(cboVideoPixelFormat.Text, out y);
-							i.PixelFormat = y;
-							break;
+					for (int i = 0; i < m.Audio.Count; i++)
+					{
+						var temp = m.Audio[i];
+						MediaApplyAudio(ctrl, ref temp);
+					}
 
-						case "chkVideoDeinterlace":
-							i.DeInterlace = chkVideoDeinterlace.Checked;
-							break;
-						case "cboVideoDeinterlaceMode":
-							i.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
-							break;
-						case "cboVideoDeinterlaceField":
-							i.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
-							break;
-
-						default:
-							break;
+					for (int i = 0; i < m.Subtitle.Count; i++)
+					{
+						var temp = m.Subtitle[i];
+						MediaApplySubtitle(ctrl, ref temp);
 					}
 				}
-
-				foreach (ListViewItem item in lstAudio.SelectedItems)
+				else
 				{
-					var i = media.Audio[item.Index];
-
-					switch (ctrl)
+					foreach (ListViewItem i in lstVideo.SelectedItems)
 					{
-						case "cboAudioEncoder":
-							i.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
-							break;
-						case "cboAudioMode":
-							i.EncoderMode = cboAudioMode.SelectedIndex;
-							break;
-						case "cboAudioQuality":
-							decimal q = 0;
-							decimal.TryParse(cboAudioQuality.Text, out q);
-							i.EndoderQuality = q;
-							break;
-						case "cboAudioSampleRate":
-							var hz = 0;
-							int.TryParse(cboAudioSampleRate.Text, out hz);
-							i.EncoderSampleRate = hz;
-							break;
-						case "cboAudioChannel":
-							double ch = 0;
-							double.TryParse(cboAudioChannel.Text, out ch);
-							i.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
-							break;
+						var temp = m.Video[i.Index];
+						MediaApplyVideo(ctrl, ref temp);
+					}
 
-						default:
-							break;
+					foreach (ListViewItem i in lstAudio.SelectedItems)
+					{
+						var temp = m.Audio[i.Index];
+						MediaApplyAudio(ctrl, ref temp);
+					}
+
+					foreach (ListViewItem i in lstSub.SelectedItems)
+					{
+						var temp = m.Subtitle[i.Index];
+						MediaApplySubtitle(ctrl, ref temp);
 					}
 				}
+			}
+		}
 
-				foreach (ListViewItem item in lstSub.SelectedItems)
-				{
-					var i = media.Subtitle[item.Index];
+		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
+		{
+			switch (ctrl)
+			{
+				case "cboVideoEncoder":
+					video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
+					break;
+				case "cboVideoPreset":
+					video.EncoderPreset = cboVideoPreset.Text;
+					break;
+				case "cboVideoTune":
+					video.EncoderTune = cboVideoTune.Text;
+					break;
+				case "cboVideoRateControl":
+					video.EncoderMode = cboVideoRateControl.SelectedIndex;
+					break;
+				case "nudVideoRateFactor":
+					video.EncoderValue = nudVideoRateFactor.Value;
+					break;
+				case "nudVideoMultiPass":
+					video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
+					break;
 
-					switch (ctrl)
+				case "cboVideoResolution":
+					var w = 0;
+					var h = 0;
+					var x = cboVideoResolution.Text;
+					if (x.Contains('x'))
 					{
-						case "cboSubLang":
-							i.Lang = $"{cboSubLang.SelectedValue}";
-							break;
-						default:
-							break;
+						int.TryParse(x.Split('x')[0], out w);
+						int.TryParse(x.Split('x')[1], out h);
 					}
-				}
+					video.Width = w;
+					video.Height = h;
+					break;
+				case "cboVideoFrameRate":
+					float f = 0;
+					float.TryParse(cboVideoFrameRate.Text, out f);
+					video.FrameRate = f;
+					break;
+				case "cboVideoBitDepth":
+					var b = 8;
+					int.TryParse(cboVideoBitDepth.Text, out b);
+					video.BitDepth = b;
+					break;
+				case "cboVideoPixelFormat":
+					var y = 420;
+					int.TryParse(cboVideoPixelFormat.Text, out y);
+					video.PixelFormat = y;
+					break;
+
+				case "chkVideoDeinterlace":
+					video.DeInterlace = chkVideoDeinterlace.Checked;
+					break;
+				case "cboVideoDeinterlaceMode":
+					video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
+					break;
+				case "cboVideoDeinterlaceField":
+					video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private void MediaApplyAudio(string ctrl, ref MediaQueueAudio audio)
+		{
+			switch (ctrl)
+			{
+				case "cboAudioEncoder":
+					audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
+					break;
+				case "cboAudioMode":
+					audio.EncoderMode = cboAudioMode.SelectedIndex;
+					break;
+				case "cboAudioQuality":
+					decimal q = 0;
+					decimal.TryParse(cboAudioQuality.Text, out q);
+					audio.EndoderQuality = q;
+					break;
+				case "cboAudioSampleRate":
+					var hz = 0;
+					int.TryParse(cboAudioSampleRate.Text, out hz);
+					audio.EncoderSampleRate = hz;
+					break;
+				case "cboAudioChannel":
+					double ch = 0;
+					double.TryParse(cboAudioChannel.Text, out ch);
+					audio.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private void MediaApplySubtitle(string ctrl, ref MediaQueueSubtitle subtitle)
+		{
+			switch (ctrl)
+			{
+				case "cboSubLang":
+					subtitle.Lang = $"{cboSubLang.SelectedValue}";
+					break;
+				default:
+					break;
 			}
 		}
 

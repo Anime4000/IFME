@@ -48,11 +48,15 @@
 			this.rdoFormatAudioOpus = new System.Windows.Forms.RadioButton();
 			this.tabVideo = new System.Windows.Forms.TabPage();
 			this.pnlVideo = new System.Windows.Forms.Panel();
+			this.chkVideoDeinterlace = new System.Windows.Forms.CheckBox();
 			this.grpVideoStream = new System.Windows.Forms.GroupBox();
 			this.btnVideoAdd = new System.Windows.Forms.Button();
 			this.btnVideoDel = new System.Windows.Forms.Button();
 			this.lstVideo = new System.Windows.Forms.ListView();
 			this.colVideoId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnVideoMoveUp = new System.Windows.Forms.Button();
 			this.btnVideoMoveDown = new System.Windows.Forms.Button();
 			this.grpVideoCodec = new System.Windows.Forms.GroupBox();
@@ -70,7 +74,6 @@
 			this.cboVideoEncoder = new System.Windows.Forms.ComboBox();
 			this.lblVideoEncoder = new System.Windows.Forms.Label();
 			this.grpVideoInterlace = new System.Windows.Forms.GroupBox();
-			this.chkVideoDeinterlace = new System.Windows.Forms.CheckBox();
 			this.cboVideoDeinterlaceField = new System.Windows.Forms.ComboBox();
 			this.lblVideoDeinterlaceField = new System.Windows.Forms.Label();
 			this.cboVideoDeinterlaceMode = new System.Windows.Forms.ComboBox();
@@ -149,9 +152,6 @@
 			this.btnMediaFileDel = new System.Windows.Forms.Button();
 			this.btnMediaFileOpen = new System.Windows.Forms.Button();
 			this.btnMediaFileNew = new System.Windows.Forms.Button();
-			this.colVideoRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabMediaConfig.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.pnlGeneral.SuspendLayout();
@@ -291,7 +291,7 @@
 			this.rdoFormatAudioFlac.TabIndex = 7;
 			this.rdoFormatAudioFlac.Text = "&FLAC (Audio only)";
 			this.rdoFormatAudioFlac.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioFlac.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatAudioFlac.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatMp4
 			// 
@@ -303,7 +303,7 @@
 			this.rdoFormatMp4.TabIndex = 0;
 			this.rdoFormatMp4.Text = "&MP4";
 			this.rdoFormatMp4.UseVisualStyleBackColor = true;
-			this.rdoFormatMp4.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatMp4.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatWebm
 			// 
@@ -315,7 +315,7 @@
 			this.rdoFormatWebm.TabIndex = 2;
 			this.rdoFormatWebm.Text = "&WEBM";
 			this.rdoFormatWebm.UseVisualStyleBackColor = true;
-			this.rdoFormatWebm.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatWebm.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatAudioOgg
 			// 
@@ -327,7 +327,7 @@
 			this.rdoFormatAudioOgg.TabIndex = 5;
 			this.rdoFormatAudioOgg.Text = "&OGG (Audio only)";
 			this.rdoFormatAudioOgg.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioOgg.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatAudioOgg.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatAudioMp4
 			// 
@@ -339,7 +339,7 @@
 			this.rdoFormatAudioMp4.TabIndex = 4;
 			this.rdoFormatAudioMp4.Text = "&MP&4 (Audio only)";
 			this.rdoFormatAudioMp4.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioMp4.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatAudioMp4.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatAudioMp3
 			// 
@@ -351,7 +351,7 @@
 			this.rdoFormatAudioMp3.TabIndex = 3;
 			this.rdoFormatAudioMp3.Text = "MP&3 (Audio only)";
 			this.rdoFormatAudioMp3.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioMp3.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatAudioMp3.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatMkv
 			// 
@@ -365,7 +365,7 @@
 			this.rdoFormatMkv.TabStop = true;
 			this.rdoFormatMkv.Text = "M&KV";
 			this.rdoFormatMkv.UseVisualStyleBackColor = true;
-			this.rdoFormatMkv.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatMkv.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatAudioOpus
 			// 
@@ -377,7 +377,7 @@
 			this.rdoFormatAudioOpus.TabIndex = 6;
 			this.rdoFormatAudioOpus.Text = "O&PUS (Audio only)";
 			this.rdoFormatAudioOpus.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioOpus.CheckedChanged += new System.EventHandler(this.ctrlApplyMedia);
+			this.rdoFormatAudioOpus.CheckedChanged += new System.EventHandler(this.MediaApply);
 			// 
 			// tabVideo
 			// 
@@ -402,6 +402,20 @@
 			this.pnlVideo.Name = "pnlVideo";
 			this.pnlVideo.Size = new System.Drawing.Size(762, 268);
 			this.pnlVideo.TabIndex = 0;
+			// 
+			// chkVideoDeinterlace
+			// 
+			this.chkVideoDeinterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.chkVideoDeinterlace.AutoSize = true;
+			this.chkVideoDeinterlace.BackColor = System.Drawing.SystemColors.Window;
+			this.chkVideoDeinterlace.Location = new System.Drawing.Point(544, 138);
+			this.chkVideoDeinterlace.Name = "chkVideoDeinterlace";
+			this.chkVideoDeinterlace.Size = new System.Drawing.Size(85, 17);
+			this.chkVideoDeinterlace.TabIndex = 0;
+			this.chkVideoDeinterlace.Text = "&Deinterlace?";
+			this.chkVideoDeinterlace.UseVisualStyleBackColor = false;
+			this.chkVideoDeinterlace.CheckedChanged += new System.EventHandler(this.chkVideoDeinterlace_CheckedChanged);
+			this.chkVideoDeinterlace.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// grpVideoStream
 			// 
@@ -468,6 +482,19 @@
 			this.colVideoId.Text = "Id";
 			this.colVideoId.Width = 40;
 			// 
+			// colVideoRes
+			// 
+			this.colVideoRes.Text = "Size";
+			this.colVideoRes.Width = 74;
+			// 
+			// colVideoBitDepth
+			// 
+			this.colVideoBitDepth.Text = "Bit Depth";
+			// 
+			// colVideoFps
+			// 
+			this.colVideoFps.Text = "FPS";
+			// 
 			// btnVideoMoveUp
 			// 
 			this.btnVideoMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -522,7 +549,7 @@
 			this.btnVideoAdv.TabIndex = 12;
 			this.btnVideoAdv.Text = "&Advance e&ncoder options";
 			this.btnVideoAdv.UseVisualStyleBackColor = true;
-			this.btnVideoAdv.Click += new System.EventHandler(this.ctrlApplyMedia);
+			this.btnVideoAdv.Click += new System.EventHandler(this.MediaApply);
 			// 
 			// nudVideoMultiPass
 			// 
@@ -545,7 +572,7 @@
             0,
             0,
             0});
-			this.nudVideoMultiPass.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.nudVideoMultiPass.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoMultiPass
 			// 
@@ -565,7 +592,7 @@
 			this.nudVideoRateFactor.Name = "nudVideoRateFactor";
 			this.nudVideoRateFactor.Size = new System.Drawing.Size(121, 20);
 			this.nudVideoRateFactor.TabIndex = 9;
-			this.nudVideoRateFactor.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.nudVideoRateFactor.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoRateFactor
 			// 
@@ -587,7 +614,7 @@
 			this.cboVideoRateControl.Size = new System.Drawing.Size(248, 21);
 			this.cboVideoRateControl.TabIndex = 7;
 			this.cboVideoRateControl.SelectedIndexChanged += new System.EventHandler(this.cboVideoRateControl_SelectedIndexChanged);
-			this.cboVideoRateControl.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoRateControl.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoRateControl
 			// 
@@ -608,7 +635,7 @@
 			this.cboVideoTune.Name = "cboVideoTune";
 			this.cboVideoTune.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoTune.TabIndex = 5;
-			this.cboVideoTune.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoTune.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoTune
 			// 
@@ -629,7 +656,7 @@
 			this.cboVideoPreset.Name = "cboVideoPreset";
 			this.cboVideoPreset.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoPreset.TabIndex = 3;
-			this.cboVideoPreset.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoPreset.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoPreset
 			// 
@@ -651,7 +678,7 @@
 			this.cboVideoEncoder.Size = new System.Drawing.Size(248, 21);
 			this.cboVideoEncoder.TabIndex = 1;
 			this.cboVideoEncoder.SelectedIndexChanged += new System.EventHandler(this.cboVideoEncoder_SelectedIndexChanged);
-			this.cboVideoEncoder.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoEncoder.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoEncoder
 			// 
@@ -678,19 +705,6 @@
 			this.grpVideoInterlace.TabIndex = 3;
 			this.grpVideoInterlace.TabStop = false;
 			// 
-			// chkVideoDeinterlace
-			// 
-			this.chkVideoDeinterlace.AutoSize = true;
-			this.chkVideoDeinterlace.BackColor = System.Drawing.SystemColors.Window;
-			this.chkVideoDeinterlace.Location = new System.Drawing.Point(544, 138);
-			this.chkVideoDeinterlace.Name = "chkVideoDeinterlace";
-			this.chkVideoDeinterlace.Size = new System.Drawing.Size(85, 17);
-			this.chkVideoDeinterlace.TabIndex = 0;
-			this.chkVideoDeinterlace.Text = "&Deinterlace?";
-			this.chkVideoDeinterlace.UseVisualStyleBackColor = false;
-			this.chkVideoDeinterlace.CheckedChanged += new System.EventHandler(this.chkVideoDeinterlace_CheckedChanged);
-			this.chkVideoDeinterlace.Leave += new System.EventHandler(this.ctrlApplyMedia);
-			// 
 			// cboVideoDeinterlaceField
 			// 
 			this.cboVideoDeinterlaceField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -702,7 +716,7 @@
 			this.cboVideoDeinterlaceField.Name = "cboVideoDeinterlaceField";
 			this.cboVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
 			this.cboVideoDeinterlaceField.TabIndex = 3;
-			this.cboVideoDeinterlaceField.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoDeinterlaceField.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoDeinterlaceField
 			// 
@@ -728,7 +742,7 @@
 			this.cboVideoDeinterlaceMode.Name = "cboVideoDeinterlaceMode";
 			this.cboVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
 			this.cboVideoDeinterlaceMode.TabIndex = 1;
-			this.cboVideoDeinterlaceMode.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoDeinterlaceMode.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoDeinterlaceMode
 			// 
@@ -772,7 +786,7 @@
 			this.cboVideoPixelFormat.Name = "cboVideoPixelFormat";
 			this.cboVideoPixelFormat.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoPixelFormat.TabIndex = 7;
-			this.cboVideoPixelFormat.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoPixelFormat.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblPixelFormat
 			// 
@@ -793,7 +807,7 @@
 			this.cboVideoBitDepth.Name = "cboVideoBitDepth";
 			this.cboVideoBitDepth.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoBitDepth.TabIndex = 5;
-			this.cboVideoBitDepth.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoBitDepth.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoBitDepth
 			// 
@@ -833,7 +847,7 @@
 			this.cboVideoFrameRate.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoFrameRate.TabIndex = 3;
 			this.cboVideoFrameRate.TextChanged += new System.EventHandler(this.cboVideoFrameRate_TextChanged);
-			this.cboVideoFrameRate.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoFrameRate.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoFrameRate
 			// 
@@ -867,7 +881,7 @@
 			this.cboVideoResolution.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoResolution.TabIndex = 1;
 			this.cboVideoResolution.TextChanged += new System.EventHandler(this.cboVideoResolution_TextChanged);
-			this.cboVideoResolution.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboVideoResolution.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoResolution
 			// 
@@ -1161,7 +1175,7 @@
 			this.cboSubLang.Name = "cboSubLang";
 			this.cboSubLang.Size = new System.Drawing.Size(756, 21);
 			this.cboSubLang.TabIndex = 6;
-			this.cboSubLang.Leave += new System.EventHandler(this.ctrlApplyMedia);
+			this.cboSubLang.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblSubLang
 			// 
@@ -1202,7 +1216,7 @@
 			// colSubFileName
 			// 
 			this.colSubFileName.Text = "File name";
-			this.colSubFileName.Width = 500;
+			this.colSubFileName.Width = 482;
 			// 
 			// colSubLang
 			// 
@@ -1592,19 +1606,6 @@
 			this.btnMediaFileNew.TabIndex = 0;
 			this.btnMediaFileNew.UseVisualStyleBackColor = true;
 			this.btnMediaFileNew.Click += new System.EventHandler(this.btnMediaFileNew_Click);
-			// 
-			// colVideoRes
-			// 
-			this.colVideoRes.Text = "Size";
-			this.colVideoRes.Width = 74;
-			// 
-			// colVideoBitDepth
-			// 
-			this.colVideoBitDepth.Text = "Bit Depth";
-			// 
-			// colVideoFps
-			// 
-			this.colVideoFps.Text = "FPS";
 			// 
 			// frmMain
 			// 
