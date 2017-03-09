@@ -19,56 +19,14 @@ namespace ifme
         public frmMain()
         {
             InitializeComponent();
-            FormBorderStyle = FormBorderStyle.Sizable;
-            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 
-        }
+			FormBorderStyle = FormBorderStyle.Sizable;
+			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+		}
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // Load default
-            cboVideoResolution.Text = "1920x1080";
-            cboVideoFrameRate.Text = "23.976";
-            cboVideoPixelFormat.SelectedIndex = 0;
-            cboVideoDeinterlaceMode.SelectedIndex = 1;
-            cboVideoDeinterlaceField.SelectedIndex = 0;
-
-            var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
-            FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
-
-			// Load Language
-			cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
-			cboSubLang.DisplayMember = "Value";
-			cboSubLang.ValueMember = "Key";
-			cboSubLang.SelectedValue = "und";
-
-            // Load plugin
-            new PluginLoad();
-
-            var video = new Dictionary<Guid, string>();
-            var audio = new Dictionary<Guid, string>();
-
-            foreach (var item in Plugin.Items)
-            {
-                var value = item.Value;
-
-                if (!string.IsNullOrEmpty(value.Video.Extension))
-                    video.Add(item.Key, value.Name);
-
-                if (!string.IsNullOrEmpty(value.Audio.Extension))
-                    audio.Add(item.Key, value.Name);
-            }
-                
-            cboVideoEncoder.DataSource = new BindingSource(video, null);
-            cboVideoEncoder.DisplayMember = "Value";
-            cboVideoEncoder.ValueMember = "Key";
-            cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
-
-            cboAudioEncoder.DataSource = new BindingSource(audio, null);
-            cboAudioEncoder.DisplayMember = "Value";
-            cboAudioEncoder.ValueMember = "Key";
-            cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
+			InitializeUX();
         }
 
         private void btnMediaFileNew_Click(object sender, EventArgs e)
@@ -78,16 +36,11 @@ namespace ifme
 
         private void btnMediaFileOpen_Click(object sender, EventArgs e)
         {
-            var files = new OpenFileDialog();
+			foreach (var item in OpenFiles(MediaType.VideoAudio))
+				MediaAdd(item);
 
-            files.Filter = "All Files|*.*";
-            files.FilterIndex = 1;
-            files.Multiselect = true;
-
-            if (files.ShowDialog() == DialogResult.OK)
-                foreach (var item in files.FileNames)
-                    MediaAdd(item);
-        }
+			MediaSelect();
+		}
 
         private void btnMediaFileDel_Click(object sender, EventArgs e)
         {
@@ -102,13 +55,59 @@ namespace ifme
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstMedia.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstMedia.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstMedia.Items.Count;
 
-        }
+					if (indx == 0)
+					{
+						lstMedia.Items.Remove(selected);
+						lstMedia.Items.Insert(totl - 1, selected);
+					}
+					else
+					{
+						lstMedia.Items.Remove(selected);
+						lstMedia.Items.Insert(indx - 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void btnMediaMoveDown_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstMedia.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstMedia.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstMedia.Items.Count;
 
-        }
+					if (indx == totl - 1)
+					{
+						lstMedia.Items.Remove(selected);
+						lstMedia.Items.Insert(0, selected);
+					}
+					else
+					{
+						lstMedia.Items.Remove(selected);
+						lstMedia.Items.Insert(indx + 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void btnDonePowerOff_Click(object sender, EventArgs e)
         {
@@ -177,16 +176,11 @@ namespace ifme
 
         private void btnVideoAdd_Click(object sender, EventArgs e)
         {
-            var files = new OpenFileDialog();
+			foreach (var item in OpenFiles(MediaType.Video))
+				VideoAdd(item);
 
-            files.Filter = "All Files|*.*";
-            files.FilterIndex = 1;
-            files.Multiselect = true;
-
-            if (files.ShowDialog() == DialogResult.OK)
-                foreach (var item in files.FileNames)
-                    lstVideo_Add(item);
-        }
+			MediaRefresh();
+		}
 
         private void lstVideo_DragDrop(object sender, DragEventArgs e)
         {
@@ -198,44 +192,6 @@ namespace ifme
 
         }
 
-        private void lstVideo_Add(string file)
-        {
-            var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
-
-            foreach (var item in new FFmpeg.Stream(file).Video)
-            {
-                media.Video.Add(new MediaQueueVideo
-                {
-                    Enable = true,
-                    File = file,
-                    Id = item.Id,
-                    Lang = item.Language,
-                    Format = new Get().CodecFormat(item.Codec),
-
-                    Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
-                    EncoderPreset = "medium",
-                    EncoderTune = "psnr",
-                    EncoderMode = 0,
-                    EncoderValue = 26,
-                    EncoderMultiPass = 2,
-                    EncoderCommand = "--pme --pmode",
-
-                    Width = item.Width,
-                    Height = item.Height,
-                    FrameRate = item.FrameRate,
-                    FrameRateAvg = item.FrameRateAvg,
-                    IsVFR = !item.FrameRateConstant,
-                    BitDepth = item.BitDepth,
-                    PixelFormat = item.Chroma,
-
-                    DeInterlace = false,
-                    DeInterlaceMode = 1,
-                    DeInterlaceField = 0
-
-                });
-            }
-        }
-
         private void btnVideoDel_Click(object sender, EventArgs e)
         {
 
@@ -243,13 +199,67 @@ namespace ifme
 
         private void btnVideoMoveUp_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstVideo.SelectedItems.Count > 0)
+				{
+					var v = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video;
 
-        }
+					for (int i = 0; i < v.Count; i++)
+						lstVideo.Items[i].Tag = v[i];
+
+					ListViewItem selected = lstVideo.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstVideo.Items.Count;
+
+					if (indx == 0)
+					{
+						lstVideo.Items.Remove(selected);
+						lstVideo.Items.Insert(totl - 1, selected);
+					}
+					else
+					{
+						lstVideo.Items.Remove(selected);
+						lstVideo.Items.Insert(indx - 1, selected);
+					}
+
+					for (int i = 0; i < v.Count; i++)
+						v[i] = lstVideo.Items[i].Tag as MediaQueueVideo;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void btnVideoMoveDown_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstVideo.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstVideo.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstVideo.Items.Count;
 
-        }
+					if (indx == totl - 1)
+					{
+						lstVideo.Items.Remove(selected);
+						lstVideo.Items.Insert(0, selected);
+					}
+					else
+					{
+						lstVideo.Items.Remove(selected);
+						lstVideo.Items.Insert(indx + 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -333,7 +343,8 @@ namespace ifme
 
 		private void btnAudioAdd_Click(object sender, EventArgs e)
         {
-
+			foreach (var item in OpenFiles(MediaType.Audio))
+				AddAudio(item);
         }
 
         private void btnAudioDel_Click(object sender, EventArgs e)
@@ -343,13 +354,59 @@ namespace ifme
 
         private void btnAudioMoveUp_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstAudio.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstAudio.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstAudio.Items.Count;
 
-        }
+					if (indx == 0)
+					{
+						lstAudio.Items.Remove(selected);
+						lstAudio.Items.Insert(totl - 1, selected);
+					}
+					else
+					{
+						lstAudio.Items.Remove(selected);
+						lstAudio.Items.Insert(indx - 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void btnAudioMoveDown_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstAudio.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstAudio.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstAudio.Items.Count;
 
-        }
+					if (indx == totl - 1)
+					{
+						lstAudio.Items.Remove(selected);
+						lstAudio.Items.Insert(0, selected);
+					}
+					else
+					{
+						lstAudio.Items.Remove(selected);
+						lstAudio.Items.Insert(indx + 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -430,17 +487,8 @@ namespace ifme
 
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
-			var files = new OpenFileDialog();
-
-			files.Filter = "Subtitle File|*.ssa;*.ass;*.srt|" +
-				"SubStation Alpha|*.ssa;*.ass|" +
-				"SubRip|*.srt";
-			files.FilterIndex = 1;
-			files.Multiselect = true;
-
-			if (files.ShowDialog() == DialogResult.OK)
-				foreach (var item in files.FileNames)
-					SubtitleAdd(item);
+			foreach (var item in OpenFiles(MediaType.Subtitle))
+				SubtitleAdd(item);
 		}
 
         private void btnSubDel_Click(object sender, EventArgs e)
@@ -450,13 +498,59 @@ namespace ifme
 
         private void btnSubMoveUp_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstSub.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstSub.Items.Count;
 
-        }
+					if (indx == 0)
+					{
+						lstSub.Items.Remove(selected);
+						lstSub.Items.Insert(totl - 1, selected);
+					}
+					else
+					{
+						lstSub.Items.Remove(selected);
+						lstSub.Items.Insert(indx - 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void btnSubMoveDown_Click(object sender, EventArgs e)
         {
+			try
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					ListViewItem selected = lstSub.SelectedItems[0];
+					int indx = selected.Index;
+					int totl = lstSub.Items.Count;
 
-        }
+					if (indx == totl - 1)
+					{
+						lstSub.Items.Remove(selected);
+						lstSub.Items.Insert(0, selected);
+					}
+					else
+					{
+						lstSub.Items.Remove(selected);
+						lstSub.Items.Insert(indx + 1, selected);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -481,16 +575,6 @@ namespace ifme
 
         }
 
-        private void btnAttachMoveUp_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAttachMoveDown_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -501,457 +585,279 @@ namespace ifme
 
         }
 
-        private void MediaAdd(string file)
-        {
-            var queue = new MediaQueue();
-            var media = new FFmpeg.Stream(file);
-
-            queue.Enable = true;
-            queue.OutputFormat = "mkv";
-
-            foreach (var item in media.Video)
-            {
-                queue.Video.Add(new MediaQueueVideo
-                {
-                    Enable = true,
-                    File = file,
-                    Id = item.Id,
-                    Lang = item.Language,
-                    Format = new Get().CodecFormat(item.Codec),
-
-                    Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
-                    EncoderPreset = "medium",
-                    EncoderTune = "psnr",
-                    EncoderMode = 0,
-                    EncoderValue = 26,
-                    EncoderMultiPass = 2,
-                    EncoderCommand = "--pme --pmode",
-
-                    Width = item.Width,
-                    Height = item.Height,
-                    FrameRate = item.FrameRate,
-                    FrameRateAvg = item.FrameRateAvg,
-                    IsVFR = !item.FrameRateConstant,
-                    BitDepth = item.BitDepth,
-                    PixelFormat = item.Chroma,
-
-                    DeInterlace = false,
-                    DeInterlaceMode = 1,
-                    DeInterlaceField = 0
-                });
-            }
-
-            foreach (var item in media.Audio)
-            {
-                queue.Audio.Add(new MediaQueueAudio
-                {
-                    Enable = true,
-                    File = file,
-                    Id = item.Id,
-                    Lang = item.Language,
-                    Format = new Get().CodecFormat(item.Codec),
-
-                    Encoder = new Guid("deadbeef-faac-faac-faac-faacfaacfaac"),
-                    EncoderMode = 0,
-                    EndoderQuality = 128,
-                    EncoderSampleRate = 44100,
-                    EncoderChannel = 0,
-                    EncoderCommand = "-w -s -c 24000"
-                });
-            }
-
-            foreach (var item in media.Subtitle)
-            {
-                queue.Subtitle.Add(new MediaQueueSubtitle
-                {
-                    Enable = true,
-                    File = file,
-                    Id = item.Id,
-                    Lang = item.Language,
-                    Format = new Get().CodecFormat(item.Codec),
-                });
-            }
-
-            var lst = new ListViewItem(new[] 
-            {
-                    Path.GetFileName(file),
-                    TimeSpan.FromSeconds(media.Duration).ToString("hh\\:mm\\:ss"),
-                    Path.GetExtension(file).Substring(1).ToUpperInvariant(),
-                    "MKV",
-                    "Ready",
-            });
-
-            lst.Tag = queue;
-            lst.Checked = true;
-
-            lstMedia.Items.Add(lst);
-        }
-
-		private void SubtitleAdd(string file)
+		private void tabMediaConfig_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (lstMedia.SelectedItems.Count > 0)
-			{
-				var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
-				queue.Subtitle.Add(new MediaQueueSubtitle
-				{
-					Enable = true,
-					File = file,
-					Id = -1,
-					Lang = "und",
-					Format = ""
-				});
-			}
 		}
 
-		// Minimise code, all controls subscribe one function :)
-		private void MediaApply(object sender, EventArgs e)
+		private void tabGeneral_Click(object sender, EventArgs e)
 		{
-			var ctrl = (sender as Control).Name;
 
-			foreach (ListViewItem q in lstMedia.SelectedItems)
-			{
-				var m = q.Tag as MediaQueue;
-
-				if (rdoFormatMp4.Checked)
-					m.OutputFormat = "mp4";
-				else if (rdoFormatMkv.Checked)
-					m.OutputFormat = "mkv";
-				else if (rdoFormatWebm.Checked)
-					m.OutputFormat = "webm";
-				else if (rdoFormatAudioMp3.Checked)
-					m.OutputFormat = "mp3";
-				else if (rdoFormatAudioMp4.Checked)
-					m.OutputFormat = "m4a";
-				else if (rdoFormatAudioOgg.Checked)
-					m.OutputFormat = "ogg";
-				else if (rdoFormatAudioOpus.Checked)
-					m.OutputFormat = "opus";
-				else if (rdoFormatAudioFlac.Checked)
-					m.OutputFormat = "flac";
-
-				if (lstMedia.SelectedItems.Count > 1)
-				{
-					for (int i = 0; i < m.Video.Count; i++)
-					{
-						var temp = m.Video[i];
-						MediaApplyVideo(ctrl, ref temp);
-					}
-
-					for (int i = 0; i < m.Audio.Count; i++)
-					{
-						var temp = m.Audio[i];
-						MediaApplyAudio(ctrl, ref temp);
-					}
-
-					for (int i = 0; i < m.Subtitle.Count; i++)
-					{
-						var temp = m.Subtitle[i];
-						MediaApplySubtitle(ctrl, ref temp);
-					}
-				}
-				else
-				{
-					foreach (ListViewItem i in lstVideo.SelectedItems)
-					{
-						var temp = m.Video[i.Index];
-						MediaApplyVideo(ctrl, ref temp);
-					}
-
-					foreach (ListViewItem i in lstAudio.SelectedItems)
-					{
-						var temp = m.Audio[i.Index];
-						MediaApplyAudio(ctrl, ref temp);
-					}
-
-					foreach (ListViewItem i in lstSub.SelectedItems)
-					{
-						var temp = m.Subtitle[i.Index];
-						MediaApplySubtitle(ctrl, ref temp);
-					}
-				}
-			}
 		}
 
-		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
+		private void pnlGeneral_Paint(object sender, PaintEventArgs e)
 		{
-			switch (ctrl)
-			{
-				case "cboVideoEncoder":
-					video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
-					break;
-				case "cboVideoPreset":
-					video.EncoderPreset = cboVideoPreset.Text;
-					break;
-				case "cboVideoTune":
-					video.EncoderTune = cboVideoTune.Text;
-					break;
-				case "cboVideoRateControl":
-					video.EncoderMode = cboVideoRateControl.SelectedIndex;
-					break;
-				case "nudVideoRateFactor":
-					video.EncoderValue = nudVideoRateFactor.Value;
-					break;
-				case "nudVideoMultiPass":
-					video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
-					break;
 
-				case "cboVideoResolution":
-					var w = 0;
-					var h = 0;
-					var x = cboVideoResolution.Text;
-					if (x.Contains('x'))
-					{
-						int.TryParse(x.Split('x')[0], out w);
-						int.TryParse(x.Split('x')[1], out h);
-					}
-					video.Width = w;
-					video.Height = h;
-					break;
-				case "cboVideoFrameRate":
-					float f = 0;
-					float.TryParse(cboVideoFrameRate.Text, out f);
-					video.FrameRate = f;
-					break;
-				case "cboVideoBitDepth":
-					var b = 8;
-					int.TryParse(cboVideoBitDepth.Text, out b);
-					video.BitDepth = b;
-					break;
-				case "cboVideoPixelFormat":
-					var y = 420;
-					int.TryParse(cboVideoPixelFormat.Text, out y);
-					video.PixelFormat = y;
-					break;
-
-				case "chkVideoDeinterlace":
-					video.DeInterlace = chkVideoDeinterlace.Checked;
-					break;
-				case "cboVideoDeinterlaceMode":
-					video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
-					break;
-				case "cboVideoDeinterlaceField":
-					video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
-					break;
-
-				default:
-					break;
-			}
 		}
 
-		private void MediaApplyAudio(string ctrl, ref MediaQueueAudio audio)
+		private void grpTargetFormat_Enter(object sender, EventArgs e)
 		{
-			switch (ctrl)
-			{
-				case "cboAudioEncoder":
-					audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
-					break;
-				case "cboAudioMode":
-					audio.EncoderMode = cboAudioMode.SelectedIndex;
-					break;
-				case "cboAudioQuality":
-					decimal q = 0;
-					decimal.TryParse(cboAudioQuality.Text, out q);
-					audio.EndoderQuality = q;
-					break;
-				case "cboAudioSampleRate":
-					var hz = 0;
-					int.TryParse(cboAudioSampleRate.Text, out hz);
-					audio.EncoderSampleRate = hz;
-					break;
-				case "cboAudioChannel":
-					double ch = 0;
-					double.TryParse(cboAudioChannel.Text, out ch);
-					audio.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
-					break;
 
-				default:
-					break;
-			}
 		}
 
-		private void MediaApplySubtitle(string ctrl, ref MediaQueueSubtitle subtitle)
+		private void tabVideo_Click(object sender, EventArgs e)
 		{
-			switch (ctrl)
-			{
-				case "cboSubLang":
-					subtitle.Lang = $"{cboSubLang.SelectedValue}";
-					break;
-				default:
-					break;
-			}
+
 		}
 
-        private void MediaPopulate(MediaQueue media)
-        {
-            // Format choice
-            var format = media.OutputFormat;
+		private void pnlVideo_Paint(object sender, PaintEventArgs e)
+		{
 
-            switch (format)
-            {
-                case "mp4":
-                    rdoFormatMp4.Checked = true;
-                    break;
-                case "mkv":
-                    rdoFormatMkv.Checked = true;
-                    break;
-                case "webm":
-                    rdoFormatWebm.Checked = true;
-                    break;
-                case "mp3":
-                    rdoFormatAudioMp3.Checked = true;
-                    break;
-                case "m4a":
-                    rdoFormatAudioMp4.Checked = true;
-                    break;
-                case "ogg":
-                    rdoFormatAudioOgg.Checked = true;
-                    break;
-                case "opus":
-                    rdoFormatAudioOpus.Checked = true;
-                    break;
-                case "flac":
-                    rdoFormatAudioFlac.Checked = true;
-                    break;
-                default:
-                    rdoFormatMkv.Checked = true;
-                    break;
-            }
+		}
 
-            // Video
-            lstVideo.Items.Clear();
-            if (media.Video.Count > 0)
-            {
-                foreach (var item in media.Video)
-                {
-                    var lst = new ListViewItem(new[]
-                    {
-                        $"{item.Id}",
-						$"{item.Width}x{item.Height}",
-						$"{item.BitDepth} bpc",
-						$"{item.FrameRate} fps"
-                    });
-                    lst.Checked = item.Enable;
+		private void grpVideoStream_Enter(object sender, EventArgs e)
+		{
 
-                    lstVideo.Items.Add(lst);
-                }
+		}
 
-				lstVideo.Items[0].Selected = true;
-            }
+		private void grpVideoCodec_Enter(object sender, EventArgs e)
+		{
 
-            // Audio
-            lstAudio.Items.Clear();
-            if (media.Audio.Count > 0)
-            {
-                foreach (var item in media.Audio)
-                {
-                    var lst = new ListViewItem(new[]
-                    {
-                        $"{item.Id}"
-                    });
-                    lst.Checked = item.Enable;
+		}
 
-                    lstAudio.Items.Add(lst);
-                }
+		private void nudVideoMultiPass_ValueChanged(object sender, EventArgs e)
+		{
 
-                lstAudio.Items[0].Selected = true;
-            }
+		}
 
-            // Subtitle
-            lstSub.Items.Clear();
-            if (media.Subtitle.Count > 0)
-            {
-                foreach (var item in media.Subtitle)
-                {
-					var langFull = "";
-					Get.LanguageCode.TryGetValue(item.Lang, out langFull);
+		private void lblVideoMultiPass_Click(object sender, EventArgs e)
+		{
 
-                    var lst = new ListViewItem(new[] 
-                    {
-                        $"{item.Id}",
-						item.File,
-						langFull
-					});
-                    lst.Checked = item.Enable;
+		}
 
-                    lstSub.Items.Add(lst);
-                }
+		private void nudVideoRateFactor_ValueChanged(object sender, EventArgs e)
+		{
 
-                lstSub.Items[0].Selected = true;
-            }
+		}
 
-            // Attachment
-            if (media.Attachment.Count > 0)
-            {
-                foreach (var item in media.Attachment)
-                {
-                    lstAttach.Items.Add(new ListViewItem(new[]
-                    {
-                        $"Id: {item.File}"
-                    }));
-                }
-            }
-        }
+		private void lblVideoRateFactor_Click(object sender, EventArgs e)
+		{
 
-        private void MediaPopulateVideo(object video)
-        {
-            // delay
-            Thread.Sleep(100);
+		}
 
-            // populate
-            var v = video as MediaQueueVideo;
+		private void lblVideoRateControl_Click(object sender, EventArgs e)
+		{
 
-            // select encoder and wait ui thread to load
-            BeginInvoke((Action)delegate () { cboVideoEncoder.SelectedValue = v.Encoder; });
-            Thread.Sleep(1);
+		}
 
-            // select mode and wait ui thread to load
-            BeginInvoke((Action)delegate () { cboVideoRateControl.SelectedIndex = v.EncoderMode; });
-            Thread.Sleep(1);
+		private void cboVideoTune_SelectedIndexChanged(object sender, EventArgs e)
+		{
 
-            // when control is loaded, begin to display
-            BeginInvoke((Action)delegate ()
-            {
-                cboVideoPreset.SelectedItem = v.EncoderPreset;
-                cboVideoTune.SelectedItem = v.EncoderTune;
-                
-                nudVideoRateFactor.Value = v.EncoderValue;
-                nudVideoMultiPass.Value = v.EncoderMultiPass;
+		}
 
-                cboVideoResolution.Text = $"{v.Width}x{v.Height}";
-                cboVideoFrameRate.Text = $"{v.FrameRate}";
-                cboVideoBitDepth.Text = $"{v.BitDepth}";
-                cboVideoPixelFormat.Text = $"{v.PixelFormat}";
+		private void lblVideoTune_Click(object sender, EventArgs e)
+		{
 
-                chkVideoDeinterlace.Checked = v.DeInterlace;
-                cboVideoDeinterlaceMode.SelectedIndex = v.DeInterlaceMode;
-                cboVideoDeinterlaceField.SelectedIndex = v.DeInterlaceField;
-            });
-        }
+		}
 
-        private void MediaPopulateAudio(object audio)
-        {
-            // delay
-            Thread.Sleep(3);
+		private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
+		{
 
-            // populate
-            var a = audio as MediaQueueAudio;
+		}
 
-            // select encoder and wait ui thread to load
-            BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Encoder; });
-            Thread.Sleep(1);
+		private void lblVideoPreset_Click(object sender, EventArgs e)
+		{
 
-            // select mode and wait ui thread to load
-            BeginInvoke((Action)delegate () { cboAudioMode.SelectedIndex = a.EncoderMode; });
-            Thread.Sleep(1);
+		}
 
-            // when ui is loaded, begin to display
-            BeginInvoke((Action)delegate ()
-            {
-                cboAudioQuality.SelectedItem = $"{a.EndoderQuality}";
-                cboAudioSampleRate.SelectedItem = $"{a.EncoderSampleRate}";
-                cboAudioChannel.SelectedItem = $"{a.EncoderChannel}";
-            });
-        }
+		private void lblVideoEncoder_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void grpVideoInterlace_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoDeinterlaceField_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblVideoDeinterlaceField_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoDeinterlaceMode_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblVideoDeinterlaceMode_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void grpVideoPicture_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoPixelFormat_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblPixelFormat_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoBitDepth_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblVideoBitDepth_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoFrameRate_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblVideoFrameRate_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void cboVideoResolution_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblVideoResolution_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void tabAudio_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pnlAudio_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void grpAudioCodec_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblAudioMode_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblAudioChannel_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblAudioSampleRate_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblAudioQuality_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblAudioEncoder_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void grpAudioStream_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void tabSubtitle_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pnlSubtitle_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblSubLang_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void tabAttachment_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pnlAttachment_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void lblAttachMime_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblOutputFolder_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblEncodingPreset_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblSplit1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lblSplit2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pnlBanner_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void pbxBannerA_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pbxBannerB_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

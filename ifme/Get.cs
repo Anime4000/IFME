@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace ifme
 {
-    public class Get
+    public static class Get
     {
 		public static Dictionary<string, string> LanguageCode
 		{
@@ -18,7 +18,7 @@ namespace ifme
 			}
 		}
 
-		public string CodecFormat(string codecId)
+		public static string CodecFormat(string codecId)
         {
             var json = File.ReadAllText("format.json");
             var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
