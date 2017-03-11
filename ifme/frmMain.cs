@@ -10,8 +10,6 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 
-using FFmpegDotNet;
-
 namespace ifme
 {
     public partial class frmMain : Form
@@ -55,58 +53,12 @@ namespace ifme
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstMedia.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstMedia.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstMedia.Items.Count;
-
-					if (indx == 0)
-					{
-						lstMedia.Items.Remove(selected);
-						lstMedia.Items.Insert(totl - 1, selected);
-					}
-					else
-					{
-						lstMedia.Items.Remove(selected);
-						lstMedia.Items.Insert(indx - 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Media, Direction.Up);
 		}
 
         private void btnMediaMoveDown_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstMedia.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstMedia.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstMedia.Items.Count;
-
-					if (indx == totl - 1)
-					{
-						lstMedia.Items.Remove(selected);
-						lstMedia.Items.Insert(0, selected);
-					}
-					else
-					{
-						lstMedia.Items.Remove(selected);
-						lstMedia.Items.Insert(indx + 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Media, Direction.Down);
 		}
 
         private void btnDonePowerOff_Click(object sender, EventArgs e)
@@ -132,14 +84,22 @@ namespace ifme
         private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstMedia.SelectedItems.Count > 0)
-            {
+			{
 				var tf = !(lstMedia.SelectedItems.Count > 1);
 				grpVideoStream.Enabled = tf;
 				grpAudioStream.Enabled = tf;
 
-                MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
-            }
-        }
+				MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
+			}
+
+			if (lstMedia.SelectedItems.Count == 0)
+			{
+				lstVideo.Items.Clear();
+				lstAudio.Items.Clear();
+				lstSub.Items.Clear();
+				lstAttach.Items.Clear();
+			}
+		}
 
         private void lstMedia_DragDrop(object sender, DragEventArgs e)
         {
@@ -176,10 +136,23 @@ namespace ifme
 
         private void btnVideoAdd_Click(object sender, EventArgs e)
         {
-			foreach (var item in OpenFiles(MediaType.Video))
-				VideoAdd(item);
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video))
+					VideoAdd(item);
 
-			MediaRefresh();
+			UXReloadMedia();
+		}
+        private void btnVideoDel_Click(object sender, EventArgs e)
+        {
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstVideo.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Video.RemoveAt(id);
+				}
+			}
 		}
 
         private void lstVideo_DragDrop(object sender, DragEventArgs e)
@@ -192,73 +165,14 @@ namespace ifme
 
         }
 
-        private void btnVideoDel_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnVideoMoveUp_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstVideo.SelectedItems.Count > 0)
-				{
-					var v = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video;
-
-					for (int i = 0; i < v.Count; i++)
-						lstVideo.Items[i].Tag = v[i];
-
-					ListViewItem selected = lstVideo.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstVideo.Items.Count;
-
-					if (indx == 0)
-					{
-						lstVideo.Items.Remove(selected);
-						lstVideo.Items.Insert(totl - 1, selected);
-					}
-					else
-					{
-						lstVideo.Items.Remove(selected);
-						lstVideo.Items.Insert(indx - 1, selected);
-					}
-
-					for (int i = 0; i < v.Count; i++)
-						v[i] = lstVideo.Items[i].Tag as MediaQueueVideo;
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Video, Direction.Up);
 		}
 
         private void btnVideoMoveDown_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstVideo.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstVideo.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstVideo.Items.Count;
-
-					if (indx == totl - 1)
-					{
-						lstVideo.Items.Remove(selected);
-						lstVideo.Items.Insert(0, selected);
-					}
-					else
-					{
-						lstVideo.Items.Remove(selected);
-						lstVideo.Items.Insert(indx + 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Video, Direction.Down);
 		}
 
         private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
@@ -267,8 +181,8 @@ namespace ifme
             {
                 if (lstVideo.SelectedItems.Count > 0)
                 {
-                    var t = new Thread(MediaPopulateVideo);
-                    t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index]);
+					var t = new Thread(MediaPopulateVideo);
+					t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index]);
                 }
             }
         }
@@ -280,25 +194,37 @@ namespace ifme
 
             if (Plugin.Items.TryGetValue(key, out temp))
             {
-                var video = temp.Video;
+				if ((rdoFormatMp4.Checked && temp.Format.Contains("mp4")) ||
+					(rdoFormatMkv.Checked && temp.Format.Contains("mkv")) ||
+					(rdoFormatWebm.Checked && temp.Format.Contains("webm")))
+				{
+					var video = temp.Video;
 
-                cboVideoBitDepth.Items.Clear();
-                foreach (var item in video.Encoder)
-                    cboVideoBitDepth.Items.Add(item.BitDepth);
-                cboVideoBitDepth.SelectedIndex = 0;
+					cboVideoBitDepth.Items.Clear();
+					foreach (var item in video.Encoder)
+						cboVideoBitDepth.Items.Add(item.BitDepth);
+					cboVideoBitDepth.SelectedIndex = 0;
 
-                cboVideoPreset.Items.Clear();
-                cboVideoPreset.Items.AddRange(video.Preset);
-                cboVideoPreset.SelectedItem = video.PresetDefault;
+					cboVideoPreset.Items.Clear();
+					cboVideoPreset.Items.AddRange(video.Preset);
+					cboVideoPreset.SelectedItem = video.PresetDefault;
 
-                cboVideoTune.Items.Clear();
-                cboVideoTune.Items.AddRange(video.Tune);
-                cboVideoTune.SelectedItem = video.TuneDefault;
+					cboVideoTune.Items.Clear();
+					cboVideoTune.Items.AddRange(video.Tune);
+					cboVideoTune.SelectedItem = video.TuneDefault;
 
-                cboVideoRateControl.Items.Clear();
-                foreach (var item in video.Mode)
-                    cboVideoRateControl.Items.Add(item.Name);
-                cboVideoRateControl.SelectedIndex = 0;
+					cboVideoRateControl.Items.Clear();
+					foreach (var item in video.Mode)
+						cboVideoRateControl.Items.Add(item.Name);
+					cboVideoRateControl.SelectedIndex = 0;
+
+					LastCorrectVideo = cboVideoEncoder.SelectedIndex;
+				}
+				else
+				{
+					MessageBox.Show("Output format and codec are not compatible! Choose different one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					cboVideoEncoder.SelectedIndex = LastCorrectVideo;
+				}
             }
         }
 
@@ -343,69 +269,34 @@ namespace ifme
 
 		private void btnAudioAdd_Click(object sender, EventArgs e)
         {
-			foreach (var item in OpenFiles(MediaType.Audio))
-				AddAudio(item);
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Audio))
+					AudioAdd(item);
+
+			UXReloadMedia();
+		}
 
         private void btnAudioDel_Click(object sender, EventArgs e)
         {
-
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstAudio.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Audio.RemoveAt(id);
+				}
+			}
+		}
 
         private void btnAudioMoveUp_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstAudio.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstAudio.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstAudio.Items.Count;
-
-					if (indx == 0)
-					{
-						lstAudio.Items.Remove(selected);
-						lstAudio.Items.Insert(totl - 1, selected);
-					}
-					else
-					{
-						lstAudio.Items.Remove(selected);
-						lstAudio.Items.Insert(indx - 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Audio, Direction.Up);
 		}
 
         private void btnAudioMoveDown_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstAudio.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstAudio.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstAudio.Items.Count;
-
-					if (indx == totl - 1)
-					{
-						lstAudio.Items.Remove(selected);
-						lstAudio.Items.Insert(0, selected);
-					}
-					else
-					{
-						lstAudio.Items.Remove(selected);
-						lstAudio.Items.Insert(indx + 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Audio, Direction.Down);
 		}
 
         private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
@@ -487,69 +378,34 @@ namespace ifme
 
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
-			foreach (var item in OpenFiles(MediaType.Subtitle))
-				SubtitleAdd(item);
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Subtitle))
+					SubtitleAdd(item);
+
+			UXReloadMedia();
 		}
 
         private void btnSubDel_Click(object sender, EventArgs e)
         {
-
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstSub.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(id);
+				}
+			}
+		}
 
         private void btnSubMoveUp_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstSub.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstSub.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstSub.Items.Count;
-
-					if (indx == 0)
-					{
-						lstSub.Items.Remove(selected);
-						lstSub.Items.Insert(totl - 1, selected);
-					}
-					else
-					{
-						lstSub.Items.Remove(selected);
-						lstSub.Items.Insert(indx - 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Subtitle, Direction.Up);
 		}
 
         private void btnSubMoveDown_Click(object sender, EventArgs e)
         {
-			try
-			{
-				if (lstSub.SelectedItems.Count > 0)
-				{
-					ListViewItem selected = lstSub.SelectedItems[0];
-					int indx = selected.Index;
-					int totl = lstSub.Items.Count;
-
-					if (indx == totl - 1)
-					{
-						lstSub.Items.Remove(selected);
-						lstSub.Items.Insert(0, selected);
-					}
-					else
-					{
-						lstSub.Items.Remove(selected);
-						lstSub.Items.Insert(indx + 1, selected);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			ListViewItemMove(ListViewItemType.Subtitle, Direction.Down);
 		}
 
         private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
@@ -567,297 +423,65 @@ namespace ifme
 
         private void btnAttachAdd_Click(object sender, EventArgs e)
         {
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Attachment))
+					AttachmentAdd(item);
 
-        }
+			UXReloadMedia();
+		}
 
         private void btnAttachDel_Click(object sender, EventArgs e)
         {
-
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstAttach.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(id);
+				}
+			}
+		}
 
         private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstAttach.SelectedItems.Count > 0)
+				{
+					var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+					var index = lstAttach.SelectedItems[0].Index;
+					cboAttachMime.Text = media.Attachment[index].Mime;
+				}
+			}
+		}
 
         private void cboAttachMime_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-		private void tabMediaConfig_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void tabGeneral_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlGeneral_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
-		private void grpTargetFormat_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void tabVideo_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlVideo_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
-		private void grpVideoStream_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void grpVideoCodec_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void nudVideoMultiPass_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoMultiPass_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void nudVideoRateFactor_ValueChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoRateFactor_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoRateControl_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoTune_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoTune_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoPreset_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoEncoder_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void grpVideoInterlace_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoDeinterlaceField_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoDeinterlaceField_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoDeinterlaceMode_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoDeinterlaceMode_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void grpVideoPicture_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoPixelFormat_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblPixelFormat_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoBitDepth_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoBitDepth_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoFrameRate_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoFrameRate_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void cboVideoResolution_SelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblVideoResolution_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void tabAudio_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlAudio_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
-		private void grpAudioCodec_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblAudioMode_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblAudioChannel_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblAudioSampleRate_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblAudioQuality_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblAudioEncoder_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void grpAudioStream_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void tabSubtitle_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlSubtitle_Paint(object sender, PaintEventArgs e)
-		{
-
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					foreach (ListViewItem item in lstAttach.SelectedItems)
+					{
+						item.SubItems[1].Text = cboAttachMime.Text;
+					}
+				}
+			}
 		}
 
 		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
-		}
-
-		private void lblSubLang_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void tabAttachment_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlAttachment_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
-		private void lblAttachMime_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblOutputFolder_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblEncodingPreset_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblSplit1_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void lblSplit2_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pnlBanner_Paint(object sender, PaintEventArgs e)
-		{
-
-		}
-
-		private void pbxBannerA_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pbxBannerB_Click(object sender, EventArgs e)
-		{
-
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					foreach (ListViewItem item in lstSub.SelectedItems)
+					{
+						item.SubItems[2].Text = cboSubLang.Text;
+					}
+				}
+			}
 		}
 	}
 }

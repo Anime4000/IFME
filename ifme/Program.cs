@@ -14,7 +14,7 @@ namespace ifme
         [STAThread]
         static void Main()
         {
-            Console.Title = "Internet Friendly Media Encoder (Log)";
+			Console.Title = "Internet Friendly Media Encoder (Log)";
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

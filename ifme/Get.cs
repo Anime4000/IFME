@@ -18,6 +18,14 @@ namespace ifme
 			}
 		}
 
+		public static Dictionary<string, string> MimeType
+		{
+			get
+			{
+				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mime.json"));
+			}
+		}
+
 		public static string CodecFormat(string codecId)
         {
             var json = File.ReadAllText("format.json");

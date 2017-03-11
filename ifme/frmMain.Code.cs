@@ -20,6 +20,23 @@ namespace ifme
 			VideoAudio
 		}
 
+		enum ListViewItemType
+		{
+			Media,
+			Video,
+			Audio,
+			Subtitle
+		}
+
+		enum Direction
+		{
+			Up,
+			Down
+		}
+
+		int LastCorrectVideo = 0;
+		int LastCorrentAudio = 0;
+
 		public void InitializeUX()
 		{
 			// Load default
@@ -38,6 +55,12 @@ namespace ifme
 			cboSubLang.DisplayMember = "Value";
 			cboSubLang.ValueMember = "Key";
 			cboSubLang.SelectedValue = "und";
+
+			// Load Mime
+			cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
+			cboAttachMime.DisplayMember = "Value";
+			cboAttachMime.ValueMember = "Key";
+			cboAttachMime.SelectedValue = ".aca";
 
 			// Load plugin
 			new PluginLoad();
@@ -108,6 +131,200 @@ namespace ifme
 			return new string[0];
 		}
 
+		private void ListViewItemMove(ListViewItemType type, Direction direction)
+		{
+			try
+			{
+				if (type == ListViewItemType.Media)
+				{
+					if (lstMedia.SelectedItems.Count > 0)
+					{
+						ListViewItem selected = lstMedia.SelectedItems[0];
+						int indx = selected.Index;
+						int totl = lstMedia.Items.Count;
+
+						if (direction == Direction.Up)
+						{
+							if (indx == 0)
+							{
+								lstMedia.Items.Remove(selected);
+								lstMedia.Items.Insert(totl - 1, selected);
+							}
+							else
+							{
+								lstMedia.Items.Remove(selected);
+								lstMedia.Items.Insert(indx - 1, selected);
+							}
+						}
+						else
+						{
+							if (indx == totl - 1)
+							{
+								lstMedia.Items.Remove(selected);
+								lstMedia.Items.Insert(0, selected);
+							}
+							else
+							{
+								lstMedia.Items.Remove(selected);
+								lstMedia.Items.Insert(indx + 1, selected);
+							}
+						}
+					}
+				}
+				else if (type == ListViewItemType.Video)
+				{
+					if (lstMedia.SelectedItems.Count > 0 && lstVideo.SelectedItems.Count > 0)
+					{
+						// copy
+						var data = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video;
+						for (int i = 0; i < data.Count; i++)
+							lstVideo.Items[i].Tag = data[i];
+
+						// arrange item
+						ListViewItem selected = lstVideo.SelectedItems[0];
+						int indx = selected.Index;
+						int totl = lstVideo.Items.Count;
+
+						if (direction == Direction.Up)
+						{
+							if (indx == 0)
+							{
+								lstVideo.Items.Remove(selected);
+								lstVideo.Items.Insert(totl - 1, selected);
+							}
+							else
+							{
+								lstVideo.Items.Remove(selected);
+								lstVideo.Items.Insert(indx - 1, selected);
+							}
+						}
+						else
+						{
+							if (indx == totl - 1)
+							{
+								lstVideo.Items.Remove(selected);
+								lstVideo.Items.Insert(0, selected);
+							}
+							else
+							{
+								lstVideo.Items.Remove(selected);
+								lstVideo.Items.Insert(indx + 1, selected);
+							}
+						}
+
+						// copy back new arrange data
+						for (int i = 0; i < data.Count; i++)
+							data[i] = lstVideo.Items[i].Tag as MediaQueueVideo;
+
+						// refresh UI
+						UXReloadVideo();
+					}
+				}
+				else if (type == ListViewItemType.Audio)
+				{
+					if (lstMedia.SelectedItems.Count > 0 && lstAudio.SelectedItems.Count > 0)
+					{
+						// copy
+						var data = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio;
+						for (int i = 0; i < data.Count; i++)
+							lstAudio.Items[i].Tag = data[i];
+
+						// arrange item
+						ListViewItem selected = lstAudio.SelectedItems[0];
+						int indx = selected.Index;
+						int totl = lstAudio.Items.Count;
+
+						if (direction == Direction.Up)
+						{
+							if (indx == 0)
+							{
+								lstAudio.Items.Remove(selected);
+								lstAudio.Items.Insert(totl - 1, selected);
+							}
+							else
+							{
+								lstAudio.Items.Remove(selected);
+								lstAudio.Items.Insert(indx - 1, selected);
+							}
+						}
+						else
+						{
+							if (indx == totl - 1)
+							{
+								lstAudio.Items.Remove(selected);
+								lstAudio.Items.Insert(0, selected);
+							}
+							else
+							{
+								lstAudio.Items.Remove(selected);
+								lstAudio.Items.Insert(indx + 1, selected);
+							}
+						}
+
+						// copy back new arrange data
+						for (int i = 0; i < data.Count; i++)
+							data[i] = lstAudio.Items[i].Tag as MediaQueueAudio;
+
+						// refresh UI
+						UXReloadAudio();
+					}
+				}
+				else if (type == ListViewItemType.Subtitle)
+				{
+					if (lstMedia.SelectedItems.Count > 0 && lstSub.SelectedItems.Count > 0)
+					{
+						// copy
+						var data = (lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle;
+						for (int i = 0; i < data.Count; i++)
+							lstSub.Items[i].Tag = data[i];
+
+						// arrange item
+						ListViewItem selected = lstSub.SelectedItems[0];
+						int indx = selected.Index;
+						int totl = lstSub.Items.Count;
+
+						if (direction == Direction.Up)
+						{
+							if (indx == 0)
+							{
+								lstSub.Items.Remove(selected);
+								lstSub.Items.Insert(totl - 1, selected);
+							}
+							else
+							{
+								lstSub.Items.Remove(selected);
+								lstSub.Items.Insert(indx - 1, selected);
+							}
+						}
+						else
+						{
+							if (indx == totl - 1)
+							{
+								lstSub.Items.Remove(selected);
+								lstSub.Items.Insert(0, selected);
+							}
+							else
+							{
+								lstSub.Items.Remove(selected);
+								lstSub.Items.Insert(indx + 1, selected);
+							}
+						}
+
+						// copy back new arrange data
+						for (int i = 0; i < data.Count; i++)
+							data[i] = lstSub.Items[i].Tag as MediaQueueSubtitle;
+
+						// refresh
+						UXReloadSubtitle();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
 		private void MediaSelect()
 		{
 			if (lstMedia.Items.Count > 0)
@@ -118,7 +335,7 @@ namespace ifme
 			}
 		}
 
-		private void MediaRefresh()
+		private void UXReloadMedia()
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -128,6 +345,31 @@ namespace ifme
 			}
 		}
 
+		private void UXReloadVideo()
+		{
+			Thread.Sleep(1);
+			var id = lstVideo.SelectedItems[0].Index;
+			lstVideo.SelectedItems[0].Selected = false;
+			lstVideo.Items[id].Selected = true;
+		}
+
+		private void UXReloadAudio()
+		{
+			Thread.Sleep(1);
+			var id = lstAudio.SelectedItems[0].Index;
+			lstAudio.SelectedItems[0].Selected = false;
+			lstAudio.Items[id].Selected = true;
+
+		}
+
+		private void UXReloadSubtitle()
+		{
+			Thread.Sleep(1);
+			var id = lstSub.SelectedItems[0].Index;
+			lstSub.SelectedItems[0].Selected = false;
+			lstSub.Items[id].Selected = true;
+		}
+
 		private void MediaAdd(string file)
 		{
 			var queue = new MediaQueue();
@@ -135,6 +377,8 @@ namespace ifme
 
 			queue.Enable = true;
 			queue.OutputFormat = "mkv";
+
+			queue.MediaInfo = media;
 
 			foreach (var item in media.Video)
 			{
@@ -252,7 +496,7 @@ namespace ifme
 			}
 		}
 
-		private void AddAudio(string file)
+		private void AudioAdd(string file)
 		{
 			var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
@@ -289,6 +533,90 @@ namespace ifme
 					Lang = "und",
 					Format = ""
 				});
+			}
+		}
+
+		private void AttachmentAdd(string file)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+				var mime = "application/octet-stream";
+
+				Get.MimeType.TryGetValue(Path.GetExtension(file), out mime);
+
+				queue.Attachment.Add(new MediaQueueAttachment
+				{
+					Enable = true,
+					File = file,
+					Mime = mime
+				});
+			}
+		}
+
+		private void MediaFormatDefault(object sender, EventArgs e)
+		{
+			foreach (ListViewItem q in lstMedia.SelectedItems)
+			{
+				if (rdoFormatMp4.Checked)
+				{
+					cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
+					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
+					pnlVideo.Enabled = true;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatMkv.Checked)
+				{
+					cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
+					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
+					pnlVideo.Enabled = true;
+					pnlSubtitle.Enabled = true;
+					pnlAttachment.Enabled = true;
+				}
+				else if (rdoFormatWebm.Checked)
+				{
+					cboVideoEncoder.SelectedValue = new Guid("deadbeef-9999-9999-9999-999999999999");
+					cboAudioEncoder.SelectedValue = new Guid("deadface-f154-f154-f154-f154f154f154");
+					pnlVideo.Enabled = true;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatAudioMp3.Checked)
+				{
+					cboAudioEncoder.SelectedValue = new Guid("deadbeef-d003-d003-d003-d003d003d003");
+					pnlVideo.Enabled = false;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatAudioMp4.Checked)
+				{
+					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
+					pnlVideo.Enabled = false;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatAudioOgg.Checked)
+				{
+					cboAudioEncoder.SelectedValue = new Guid("deadface-f154-f154-f154-f154f154f154");
+					pnlVideo.Enabled = false;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatAudioOpus.Checked)
+				{
+					cboAudioEncoder.SelectedValue = new Guid("deadface-f00d-f00d-f00d-f00df00df00d");
+					pnlVideo.Enabled = false;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
+				else if (rdoFormatAudioFlac.Checked)
+				{
+					cboAudioEncoder.SelectedValue = new Guid("deadface-f1ac-f1ac-f1ac-f1acf1acf1ac");
+					pnlVideo.Enabled = false;
+					pnlSubtitle.Enabled = false;
+					pnlAttachment.Enabled = false;
+				}
 			}
 		}
 
@@ -337,6 +665,12 @@ namespace ifme
 						var temp = m.Subtitle[i];
 						MediaApplySubtitle(ctrl, ref temp);
 					}
+
+					for (int i = 0; i < m.Attachment.Count; i++)
+					{
+						var temp = m.Attachment[i];
+						MediaApplyAttachment(ctrl, ref temp);
+					}
 				}
 				else
 				{
@@ -356,6 +690,12 @@ namespace ifme
 					{
 						var temp = m.Subtitle[i.Index];
 						MediaApplySubtitle(ctrl, ref temp);
+					}
+
+					foreach (ListViewItem i in lstAttach.SelectedItems)
+					{
+						var temp = m.Attachment[i.Index];
+						MediaApplyAttachment(ctrl, ref temp);
 					}
 				}
 			}
@@ -470,8 +810,60 @@ namespace ifme
 			}
 		}
 
+		private void MediaApplyAttachment(string ctrl, ref MediaQueueAttachment attachment)
+		{
+			switch (ctrl)
+			{
+				case "cboAttachMime":
+					attachment.Mime = cboAttachMime.Text;
+					break;
+				default:
+					break;
+			}
+		}
+
 		private void MediaPopulate(MediaQueue media)
 		{
+			// Media Info
+			var mf = media.MediaInfo;
+			var md = string.Empty;
+
+			md =
+				$"File path : {mf.FilePath}\r\n" +
+				$"File size : {mf.FileSize}\r\n" +
+				$"Bitrate   : {mf.BitRate}\r\n" +
+				$"Duration  : {mf.Duration} (estimated)\r\n" +
+				$"Format    : {mf.FormatName} ({mf.FormatNameFull})\r\n";
+
+			if (mf.Video.Count > 0)
+			{
+				md += "\r\nVideo:\r\n";
+				foreach (var item in mf.Video)
+				{
+					md += $"{item.Id:00}, {item.Codec}, {item.Width}x{item.Height}, {item.FrameRate:00.000}fps (avg: {item.FrameRateAvg:00.000}fps), {item.BitDepth}bit @ {item.Chroma}\r\n";
+				}
+			}
+
+			if (mf.Audio.Count > 0)
+			{
+				md += "\r\nAudio:\r\n";
+				foreach (var item in mf.Audio)
+				{
+					md += $"{item.Id:00}, {item.Codec}, {item.SampleRate}Hz, {item.Channel}Ch\r\n";
+				}
+			}
+
+			if (mf.Subtitle.Count > 0)
+			{
+				md += "\r\nSubtitle:\r\n";
+				foreach (var item in mf.Subtitle)
+				{
+					md += $"{item.Id:00}, {item.Codec}, {item.Language}\r\n";
+				}
+			}
+
+			txtMediaInfo.Text = md;
+
 			// Format choice
 			var format = media.OutputFormat;
 
@@ -520,6 +912,7 @@ namespace ifme
 						$"{item.FrameRate} fps"
 					});
 					lst.Checked = item.Enable;
+					lst.Tag = item; // allow lstVideo to arrange item UP or DOWN
 
 					lstVideo.Items.Add(lst);
 				}
@@ -535,9 +928,12 @@ namespace ifme
 				{
 					var lst = new ListViewItem(new[]
 					{
-						$"{item.Id}"
+						$"{item.Id}",
+						$"{item.EncoderSampleRate}Hz",
+						$"{(item.EncoderChannel == 0 ? "auto" : $"{item.EncoderChannel}")}"
 					});
 					lst.Checked = item.Enable;
+					lst.Tag = item; // allow lstAudio to arrange item UP or DOWN
 
 					lstAudio.Items.Add(lst);
 				}
@@ -561,6 +957,7 @@ namespace ifme
 						langFull
 					});
 					lst.Checked = item.Enable;
+					lst.Tag = item; //allow lstSub to arrange item UP or DOWN
 
 					lstSub.Items.Add(lst);
 				}
@@ -575,7 +972,8 @@ namespace ifme
 				{
 					lstAttach.Items.Add(new ListViewItem(new[]
 					{
-						$"Id: {item.File}"
+						$"{item.File}",
+						$"{item.Mime}"
 					}));
 				}
 			}
@@ -584,7 +982,7 @@ namespace ifme
 		private void MediaPopulateVideo(object video)
 		{
 			// delay
-			Thread.Sleep(100);
+			Thread.Sleep(1);
 
 			// populate
 			var v = video as MediaQueueVideo;
@@ -620,7 +1018,7 @@ namespace ifme
 		private void MediaPopulateAudio(object audio)
 		{
 			// delay
-			Thread.Sleep(3);
+			Thread.Sleep(1);
 
 			// populate
 			var a = audio as MediaQueueAudio;
@@ -636,10 +1034,15 @@ namespace ifme
 			// when ui is loaded, begin to display
 			BeginInvoke((Action)delegate ()
 			{
-				cboAudioQuality.SelectedItem = $"{a.EndoderQuality}";
-				cboAudioSampleRate.SelectedItem = $"{a.EncoderSampleRate}";
-				cboAudioChannel.SelectedItem = $"{a.EncoderChannel}";
+				cboAudioQuality.Text = $"{a.EndoderQuality}";
+				cboAudioSampleRate.Text = $"{a.EncoderSampleRate}";
+				cboAudioChannel.Text = $"{a.EncoderChannel}";
 			});
+		}
+
+		private void MediaPopulateSubtitle(object subtitle)
+		{
+
 		}
 	}
 }
