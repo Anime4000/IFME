@@ -39,7 +39,24 @@ namespace ifme
 
 		public void InitializeUX()
 		{
+			// Checking
+			if (string.IsNullOrEmpty(Properties.Settings.Default.TempDir))
+				Properties.Settings.Default.TempDir = Path.Combine(Path.GetTempPath(), "IFME");
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.OutputDir))
+				Properties.Settings.Default.OutputDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME");
+
+			Properties.Settings.Default.Save();
+
+			if (!Directory.Exists(Properties.Settings.Default.TempDir))
+				Directory.CreateDirectory(Properties.Settings.Default.TempDir);
+
+			if (!Directory.Exists(Properties.Settings.Default.OutputDir))
+				Directory.CreateDirectory(Properties.Settings.Default.OutputDir);
+
 			// Load default
+			txtFolderOutput.Text = Properties.Settings.Default.OutputDir;
+
 			cboVideoResolution.Text = "1920x1080";
 			cboVideoFrameRate.Text = "23.976";
 			cboVideoPixelFormat.SelectedIndex = 0;
@@ -376,6 +393,7 @@ namespace ifme
 			var media = new FFmpegDotNet.FFmpeg.Stream(file);
 
 			queue.Enable = true;
+			queue.File = file;
 			queue.OutputFormat = "mkv";
 
 			queue.MediaInfo = media;
@@ -402,6 +420,7 @@ namespace ifme
 					Height = item.Height,
 					FrameRate = item.FrameRate,
 					FrameRateAvg = item.FrameRateAvg,
+					FrameCount = item.FrameCount,
 					IsVFR = !item.FrameRateConstant,
 					BitDepth = item.BitDepth,
 					PixelFormat = item.Chroma,
@@ -531,7 +550,7 @@ namespace ifme
 					File = file,
 					Id = -1,
 					Lang = "und",
-					Format = ""
+					Format = Path.GetExtension(file).Remove(1)
 				});
 			}
 		}
@@ -829,36 +848,51 @@ namespace ifme
 			var md = string.Empty;
 
 			md =
-				$"File path : {mf.FilePath}\r\n" +
-				$"File size : {mf.FileSize}\r\n" +
-				$"Bitrate   : {mf.BitRate}\r\n" +
-				$"Duration  : {mf.Duration} (estimated)\r\n" +
-				$"Format    : {mf.FormatName} ({mf.FormatNameFull})\r\n";
+				$"File path          : {mf.FilePath}\r\n" +
+				$"File size          : {mf.FileSize}\r\n" +
+				$"Bitrate            : {mf.BitRate}\r\n" +
+				$"Duration           : {mf.Duration} (estimated)\r\n" +
+				$"Format             : {mf.FormatName} ({mf.FormatNameFull})\r\n";
 
 			if (mf.Video.Count > 0)
 			{
-				md += "\r\nVideo:\r\n";
+				md += "\r\nVideo\r\n";
 				foreach (var item in mf.Video)
 				{
-					md += $"{item.Id:00}, {item.Codec}, {item.Width}x{item.Height}, {item.FrameRate:00.000}fps (avg: {item.FrameRateAvg:00.000}fps), {item.BitDepth}bit @ {item.Chroma}\r\n";
+					md += 
+						$"ID                 : {item.Id:00}\r\n" +
+						$"Codec              : {item.Codec}\r\n" +
+						$"Width              : {item.Width}\r\n" +
+						$"Height             : {item.Height}\r\n" +
+						$"Frame rate         : {item.FrameRate:00.000}fps\r\n" +
+						$"Frame rate (avg)   : {item.FrameRateAvg:00.000}fps\r\n" +
+						$"Bit Depth          : {item.BitDepth}bit per channel\r\n" +
+						$"Chroma             : {item.Chroma}\r\n";
 				}
 			}
 
 			if (mf.Audio.Count > 0)
 			{
-				md += "\r\nAudio:\r\n";
+				md += "\r\nAudio\r\n";
 				foreach (var item in mf.Audio)
 				{
-					md += $"{item.Id:00}, {item.Codec}, {item.SampleRate}Hz, {item.Channel}Ch\r\n";
+					md += 
+						$"ID                 : {item.Id:00}\r\n" +
+						$"Codec              : {item.Codec}\r\n" +
+						$"Sample rate        : {item.SampleRate}Hz\r\n" +
+						$"Channel            : {item.Channel}Ch\r\n";
 				}
 			}
 
 			if (mf.Subtitle.Count > 0)
 			{
-				md += "\r\nSubtitle:\r\n";
+				md += "\r\nSubtitle\r\n";
 				foreach (var item in mf.Subtitle)
 				{
-					md += $"{item.Id:00}, {item.Codec}, {item.Language}\r\n";
+					md += 
+						$"ID                 : {item.Id:00}\r\n" +
+						$"Codec              : {item.Codec}\r\n" +
+						$"Language           : {item.Language}\r\n";
 				}
 			}
 

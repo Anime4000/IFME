@@ -20,6 +20,7 @@ namespace ifme
         public bool IsVFR { get; set; }
         public float FrameRate { get; set; }
         public float FrameRateAvg { get; set; }
+		public int FrameCount { get; set; }
         public int BitDepth { get; set; }
         public int PixelFormat { get; set; }
 

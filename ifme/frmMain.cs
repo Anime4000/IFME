@@ -68,7 +68,7 @@ namespace ifme
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-
+			
         }
 
         private void btnPause_Click(object sender, EventArgs e)

@@ -55,7 +55,9 @@
     </Compile>
     <Compile Include="frmMain.Code.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
+    </Compile>
+	<Compile Include="frmMain.Code.Thread.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -68,6 +70,7 @@
     <Compile Include="MediaQueue\MediaQueueCommon.cs" />
     <Compile Include="MediaQueue\MediaQueueSubtitle.cs" />
     <Compile Include="MediaQueue\MediaQueueVideo.cs" />
+    <Compile Include="OS.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginAudio.cs" />
     <Compile Include="Plugin\PluginAudioArgs.cs" />
@@ -98,6 +101,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="format.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
