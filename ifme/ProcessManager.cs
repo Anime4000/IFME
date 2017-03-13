@@ -33,23 +33,27 @@ namespace ifme
 		[DllImport("kernel32.dll")]
 		private static extern bool CloseHandle(IntPtr hHandle);
 
-		Process Proc = new Process();
-		string EnvCmd = string.Empty;
-		string CrProc = string.Empty;
+		static string CrProc = string.Empty;
 
-		public ProcessManager(string ExePath, string Args)
+		public static int Start(string ExePath, string Args)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			EnvCmd = $"\"{ExePath}\" {Args}";
+			return Run($"\"{ExePath}\" {Args}", Properties.Settings.Default.TempDir);
 		}
 
-		public ProcessManager(string ExePath, string Args, string PipeExePath, string PipeArgs)
+		public static int Start(string ExePath, string Args, string WorkDir)
+		{
+			CrProc = Path.GetFileNameWithoutExtension(ExePath);
+			return Run($"\"{ExePath}\" {Args}", WorkDir);
+		}
+
+		public static int Start(string ExePath, string Args, string PipeExePath, string PipeArgs)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(PipeExePath);
-			EnvCmd = $"\"{ExePath}\" {Args} | \"{PipeExePath}\" {PipeArgs}";
+			return Run($"\"{ExePath}\" {Args} | \"{PipeExePath}\" {PipeArgs}", Properties.Settings.Default.TempDir);
 		}
 
-		public void Run()
+		private static int Run(string EnvCmd, string workDir)
 		{
 			var cmd = string.Empty;
 			var arg = string.Empty;
@@ -67,22 +71,19 @@ namespace ifme
 				arg = "-c 'eval $HITOHA'";
 			}
 
-			Proc.StartInfo = new ProcessStartInfo("", "")
+			Process Proc = new Process();
+			Proc.StartInfo = new ProcessStartInfo(cmd, arg)
 			{
 				UseShellExecute = false,
-				WorkingDirectory = Properties.Settings.Default.TempDir
+				WorkingDirectory = workDir
 			};
 
 			Proc.Start();
-		}
-
-		public int Wait()
-		{
 			Proc.WaitForExit();
 			return Proc.ExitCode;
 		}
 
-		public void Stop()
+		public static void Stop()
 		{
 			Process[] Task = Process.GetProcessesByName(CrProc);
 			foreach (Process p in Task)
@@ -91,7 +92,7 @@ namespace ifme
 			}
 		}
 
-		public void Pause()
+		public static void Pause()
 		{
 			foreach (var item in Process.GetProcessesByName(CrProc))
 			{
@@ -115,7 +116,7 @@ namespace ifme
 			}
 		}
 
-		public void Resume()
+		public static void Resume()
 		{
 			foreach (var item in Process.GetProcessesByName(CrProc))
 			{

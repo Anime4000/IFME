@@ -46,5 +46,17 @@ namespace ifme.Properties {
                 this["OutputDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32")]
+        public int FFmpegArch {
+            get {
+                return ((int)(this["FFmpegArch"]));
+            }
+            set {
+                this["FFmpegArch"] = value;
+            }
+        }
     }
 }

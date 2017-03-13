@@ -50,20 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Code.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
-	<Compile Include="frmMain.Code.Thread.cs">
+    <Compile Include="frmMain.Code.Thread.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Get.cs" />
-    <Compile Include="MediaEncoder.cs" />
+    <Compile Include="MediaDefault\MediaDefaultAudio.cs" />
+    <Compile Include="MediaDefault\MediaDefaultVideo.cs" />
     <Compile Include="MediaQueue\MediaQueue.cs" />
     <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
     <Compile Include="MediaQueue\MediaQueueAudio.cs" />

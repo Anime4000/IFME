@@ -68,17 +68,50 @@ namespace ifme
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-			
+			if (bgThread.IsBusy)
+			{
+				if (!btnPause.Enabled)
+				{
+					btnStart.Enabled = false;
+					btnPause.Enabled = true;
+
+					ProcessManager.Resume();
+					return;
+				}
+
+				bgThread.CancelAsync();
+
+				btnStart.Enabled = true;
+			}
+			else
+			{
+				List<MediaQueue> obj = new List<MediaQueue>();
+				foreach (ListViewItem item in lstMedia.Items)
+					obj.Add(item.Tag as MediaQueue);
+
+				bgThread.RunWorkerAsync(obj);
+
+				btnStart.Enabled = false;
+				btnPause.Enabled = true;
+				btnStop.Enabled = true;
+			}
         }
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-
+			if (btnPause.Enabled)
+			{
+				btnStart.Enabled = true;
+				btnPause.Enabled = false;
+				ProcessManager.Pause();
+			}
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-
+			bgThread.CancelAsync();
+			ProcessManager.Stop();
+			btnStop.Enabled = false;
         }
 
         private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
@@ -134,7 +167,49 @@ namespace ifme
 
         }
 
-        private void btnVideoAdd_Click(object sender, EventArgs e)
+		private void tabMediaConfig_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				switch ((sender as TabControl).SelectedIndex)
+				{
+					case 0:
+						break;
+					case 1:
+						if (lstVideo.Items.Count > 0)
+						{
+							lstVideo.SelectedIndices.Clear();
+							lstVideo.Items[0].Selected = true;
+						}
+						break;
+					case 2:
+						if (lstAudio.Items.Count > 0)
+						{
+							lstAudio.SelectedIndices.Clear();
+							lstAudio.Items[0].Selected = true;
+						}
+						break;
+					case 3:
+						if (lstSub.Items.Count > 0)
+						{
+							lstSub.SelectedIndices.Clear();
+							lstSub.Items[0].Selected = true;
+						}
+						break;
+					case 4:
+						if (lstAttach.Items.Count > 0)
+						{
+							lstAttach.SelectedIndices.Clear();
+							lstAttach.Items[0].Selected = true;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		private void btnVideoAdd_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Video))

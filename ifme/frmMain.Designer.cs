@@ -40,12 +40,12 @@
 			this.grpStreamInfo = new System.Windows.Forms.GroupBox();
 			this.txtMediaInfo = new System.Windows.Forms.TextBox();
 			this.grpTargetFormat = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
 			this.rdoFormatAudioFlac = new System.Windows.Forms.RadioButton();
-			this.rdoFormatAudioMp3 = new System.Windows.Forms.RadioButton();
+			this.label1 = new System.Windows.Forms.Label();
 			this.rdoFormatAudioOpus = new System.Windows.Forms.RadioButton();
-			this.rdoFormatAudioMp4 = new System.Windows.Forms.RadioButton();
+			this.rdoFormatAudioMp3 = new System.Windows.Forms.RadioButton();
 			this.rdoFormatAudioOgg = new System.Windows.Forms.RadioButton();
+			this.rdoFormatAudioMp4 = new System.Windows.Forms.RadioButton();
 			this.rdoFormatMp4 = new System.Windows.Forms.RadioButton();
 			this.rdoFormatWebm = new System.Windows.Forms.RadioButton();
 			this.rdoFormatMkv = new System.Windows.Forms.RadioButton();
@@ -155,6 +155,7 @@
 			this.btnMediaFileDel = new System.Windows.Forms.Button();
 			this.btnMediaFileOpen = new System.Windows.Forms.Button();
 			this.btnMediaFileNew = new System.Windows.Forms.Button();
+			this.bgThread = new System.ComponentModel.BackgroundWorker();
 			this.tabMediaConfig.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.pnlGeneral.SuspendLayout();
@@ -245,6 +246,7 @@
 			this.tabMediaConfig.SelectedIndex = 0;
 			this.tabMediaConfig.Size = new System.Drawing.Size(776, 300);
 			this.tabMediaConfig.TabIndex = 13;
+			this.tabMediaConfig.SelectedIndexChanged += new System.EventHandler(this.tabMediaConfig_SelectedIndexChanged);
 			// 
 			// tabGeneral
 			// 
@@ -315,16 +317,6 @@
 			this.grpTargetFormat.TabStop = false;
 			this.grpTargetFormat.Text = "&Target Format";
 			// 
-			// label1
-			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.label1.Location = new System.Drawing.Point(6, 106);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(148, 2);
-			this.label1.TabIndex = 8;
-			// 
 			// rdoFormatAudioFlac
 			// 
 			this.rdoFormatAudioFlac.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -338,18 +330,15 @@
 			this.rdoFormatAudioFlac.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
 			this.rdoFormatAudioFlac.Leave += new System.EventHandler(this.MediaApply);
 			// 
-			// rdoFormatAudioMp3
+			// label1
 			// 
-			this.rdoFormatAudioMp3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioMp3.Location = new System.Drawing.Point(6, 111);
-			this.rdoFormatAudioMp3.Name = "rdoFormatAudioMp3";
-			this.rdoFormatAudioMp3.Size = new System.Drawing.Size(65, 24);
-			this.rdoFormatAudioMp3.TabIndex = 3;
-			this.rdoFormatAudioMp3.Text = "MP&3";
-			this.rdoFormatAudioMp3.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioMp3.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
-			this.rdoFormatAudioMp3.Leave += new System.EventHandler(this.MediaApply);
+			this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.label1.Location = new System.Drawing.Point(6, 106);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(148, 2);
+			this.label1.TabIndex = 8;
 			// 
 			// rdoFormatAudioOpus
 			// 
@@ -364,18 +353,18 @@
 			this.rdoFormatAudioOpus.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
 			this.rdoFormatAudioOpus.Leave += new System.EventHandler(this.MediaApply);
 			// 
-			// rdoFormatAudioMp4
+			// rdoFormatAudioMp3
 			// 
-			this.rdoFormatAudioMp4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.rdoFormatAudioMp3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioMp4.Location = new System.Drawing.Point(6, 141);
-			this.rdoFormatAudioMp4.Name = "rdoFormatAudioMp4";
-			this.rdoFormatAudioMp4.Size = new System.Drawing.Size(65, 24);
-			this.rdoFormatAudioMp4.TabIndex = 4;
-			this.rdoFormatAudioMp4.Text = "MP&4";
-			this.rdoFormatAudioMp4.UseVisualStyleBackColor = true;
-			this.rdoFormatAudioMp4.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
-			this.rdoFormatAudioMp4.Leave += new System.EventHandler(this.MediaApply);
+			this.rdoFormatAudioMp3.Location = new System.Drawing.Point(6, 111);
+			this.rdoFormatAudioMp3.Name = "rdoFormatAudioMp3";
+			this.rdoFormatAudioMp3.Size = new System.Drawing.Size(65, 24);
+			this.rdoFormatAudioMp3.TabIndex = 3;
+			this.rdoFormatAudioMp3.Text = "MP&3";
+			this.rdoFormatAudioMp3.UseVisualStyleBackColor = true;
+			this.rdoFormatAudioMp3.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
+			this.rdoFormatAudioMp3.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatAudioOgg
 			// 
@@ -389,6 +378,19 @@
 			this.rdoFormatAudioOgg.UseVisualStyleBackColor = true;
 			this.rdoFormatAudioOgg.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
 			this.rdoFormatAudioOgg.Leave += new System.EventHandler(this.MediaApply);
+			// 
+			// rdoFormatAudioMp4
+			// 
+			this.rdoFormatAudioMp4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.rdoFormatAudioMp4.Location = new System.Drawing.Point(6, 141);
+			this.rdoFormatAudioMp4.Name = "rdoFormatAudioMp4";
+			this.rdoFormatAudioMp4.Size = new System.Drawing.Size(65, 24);
+			this.rdoFormatAudioMp4.TabIndex = 4;
+			this.rdoFormatAudioMp4.Text = "MP&4";
+			this.rdoFormatAudioMp4.UseVisualStyleBackColor = true;
+			this.rdoFormatAudioMp4.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
+			this.rdoFormatAudioMp4.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// rdoFormatMp4
 			// 
@@ -1568,6 +1570,7 @@
 			// btnStop
 			// 
 			this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnStop.Enabled = false;
 			this.btnStop.Image = global::ifme.Properties.Resources.icon22_stop;
 			this.btnStop.Location = new System.Drawing.Point(756, 76);
 			this.btnStop.Name = "btnStop";
@@ -1579,6 +1582,7 @@
 			// btnPause
 			// 
 			this.btnPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPause.Enabled = false;
 			this.btnPause.Image = global::ifme.Properties.Resources.icon22_pause;
 			this.btnPause.Location = new System.Drawing.Point(718, 76);
 			this.btnPause.Name = "btnPause";
@@ -1649,6 +1653,12 @@
 			this.btnMediaFileNew.TabIndex = 0;
 			this.btnMediaFileNew.UseVisualStyleBackColor = true;
 			this.btnMediaFileNew.Click += new System.EventHandler(this.btnMediaFileNew_Click);
+			// 
+			// bgThread
+			// 
+			this.bgThread.WorkerSupportsCancellation = true;
+			this.bgThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgThread_DoWork);
+			this.bgThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgThread_RunWorkerCompleted);
 			// 
 			// frmMain
 			// 
@@ -1842,6 +1852,7 @@
 		private System.Windows.Forms.ColumnHeader colAudioFq;
 		private System.Windows.Forms.ColumnHeader colAudioCh;
 		private System.Windows.Forms.Label label1;
+		private System.ComponentModel.BackgroundWorker bgThread;
 	}
 }
 

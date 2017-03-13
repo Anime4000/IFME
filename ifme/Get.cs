@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace ifme
 {
@@ -23,6 +24,14 @@ namespace ifme
 			get
 			{
 				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mime.json"));
+			}
+		}
+
+		public static string AppRootFolder
+		{
+			get
+			{
+				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			}
 		}
 

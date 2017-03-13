@@ -11,15 +11,6 @@ namespace ifme
 {
 	partial class frmMain
 	{
-		enum MediaType
-		{
-			Video,
-			Audio,
-			Subtitle,
-			Attachment,
-			VideoAudio
-		}
-
 		enum ListViewItemType
 		{
 			Media,
@@ -39,6 +30,10 @@ namespace ifme
 
 		public void InitializeUX()
 		{
+			var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
+			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
+
 			// Checking
 			if (string.IsNullOrEmpty(Properties.Settings.Default.TempDir))
 				Properties.Settings.Default.TempDir = Path.Combine(Path.GetTempPath(), "IFME");
@@ -62,10 +57,6 @@ namespace ifme
 			cboVideoPixelFormat.SelectedIndex = 0;
 			cboVideoDeinterlaceMode.SelectedIndex = 1;
 			cboVideoDeinterlaceField.SelectedIndex = 0;
-
-			var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
-			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
 
 			// Load Language
 			cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
@@ -398,6 +389,9 @@ namespace ifme
 
 			queue.MediaInfo = media;
 
+			var vdef = new MediaDefaultVideo(MediaTypeVideo.MKV);
+			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
 			foreach (var item in media.Video)
 			{
 				queue.Video.Add(new MediaQueueVideo
@@ -405,22 +399,23 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = item.Id,
+					Duration = item.Duration,
 					Lang = item.Language,
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
-					EncoderPreset = "medium",
-					EncoderTune = "psnr",
-					EncoderMode = 0,
-					EncoderValue = 26,
-					EncoderMultiPass = 2,
-					EncoderCommand = "--pme --pmode",
+					Encoder = vdef.Encoder,
+					EncoderPreset = vdef.Preset,
+					EncoderTune = vdef.Tune,
+					EncoderMode = vdef.Mode,
+					EncoderValue = vdef.Value,
+					EncoderMultiPass = vdef.Pass,
+					EncoderCommand = vdef.Command,
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = item.FrameRate,
+					FrameRate = (float)Math.Round(item.FrameRate),
 					FrameRateAvg = item.FrameRateAvg,
-					FrameCount = item.FrameCount,
+					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
 					BitDepth = item.BitDepth,
 					PixelFormat = item.Chroma,
@@ -441,12 +436,12 @@ namespace ifme
 					Lang = item.Language,
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new Guid("deadbeef-faac-faac-faac-faacfaacfaac"),
-					EncoderMode = 0,
-					EndoderQuality = 128,
-					EncoderSampleRate = 44100,
-					EncoderChannel = 0,
-					EncoderCommand = "-w -s -c 24000"
+					Encoder = adef.Encoder,
+					EncoderMode = adef.Mode,
+					EndoderQuality = adef.Quality,
+					EncoderSampleRate = adef.SampleRate,
+					EncoderChannel = adef.Channel,
+					EncoderCommand = adef.Command
 				});
 			}
 
@@ -479,6 +474,11 @@ namespace ifme
 
 		private void VideoAdd(string file)
 		{
+			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
+
+			if (rdoFormatWebm.Checked)
+				vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
+
 			var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
 			foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Video)
@@ -488,21 +488,23 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = item.Id,
+					Duration = item.Duration,
 					Lang = item.Language,
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
-					EncoderPreset = "medium",
-					EncoderTune = "psnr",
-					EncoderMode = 0,
-					EncoderValue = 26,
-					EncoderMultiPass = 2,
-					EncoderCommand = "--pme --pmode",
+					Encoder = vdef.Encoder,
+					EncoderPreset = vdef.Preset,
+					EncoderTune = vdef.Tune,
+					EncoderMode = vdef.Mode,
+					EncoderValue = vdef.Value,
+					EncoderMultiPass = vdef.Pass,
+					EncoderCommand = vdef.Command,
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = item.FrameRate,
+					FrameRate = (float)Math.Round(item.FrameRate),
 					FrameRateAvg = item.FrameRateAvg,
+					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
 					BitDepth = item.BitDepth,
 					PixelFormat = item.Chroma,
@@ -517,6 +519,17 @@ namespace ifme
 
 		private void AudioAdd(string file)
 		{
+			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+			if (rdoFormatAudioMp3.Checked)
+				adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
+			else if (rdoFormatAudioOgg.Checked || rdoFormatWebm.Checked)
+				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
+			else if (rdoFormatAudioOpus.Checked)
+				adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
+			else if (rdoFormatAudioFlac.Checked)
+				adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
+
 			var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
 			foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Audio)
@@ -529,11 +542,12 @@ namespace ifme
 					Lang = item.Language,
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac"),
-					EncoderMode = 0,
-					EndoderQuality = 128000,
-					EncoderSampleRate = 44100,
-					EncoderChannel = 0,
+					Encoder = adef.Encoder,
+					EncoderMode = adef.Mode,
+					EndoderQuality = adef.Quality,
+					EncoderSampleRate = adef.SampleRate,
+					EncoderChannel = adef.Channel,
+					EncoderCommand = adef.Command
 				});
 			}
 		}
@@ -575,66 +589,96 @@ namespace ifme
 
 		private void MediaFormatDefault(object sender, EventArgs e)
 		{
-			foreach (ListViewItem q in lstMedia.SelectedItems)
+			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
+			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+			if (rdoFormatWebm.Checked)
+			{
+				vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
+				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
+
+				pnlVideo.Enabled = true;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else if (rdoFormatAudioMp3.Checked)
+			{
+				adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
+
+				pnlVideo.Enabled = false;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else if (rdoFormatAudioMp4.Checked)
+			{
+				adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+				pnlVideo.Enabled = false;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else if (rdoFormatAudioOgg.Checked)
+			{
+				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
+
+				pnlVideo.Enabled = false;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else if (rdoFormatAudioOpus.Checked)
+			{
+				adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
+
+				pnlVideo.Enabled = false;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else if (rdoFormatAudioFlac.Checked)
+			{
+				adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
+
+				pnlVideo.Enabled = false;
+				pnlSubtitle.Enabled = false;
+				pnlAttachment.Enabled = false;
+			}
+			else
 			{
 				if (rdoFormatMp4.Checked)
 				{
-					cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
-					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
 					pnlVideo.Enabled = true;
 					pnlSubtitle.Enabled = false;
 					pnlAttachment.Enabled = false;
 				}
-				else if (rdoFormatMkv.Checked)
+				else
 				{
-					cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
-					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
 					pnlVideo.Enabled = true;
 					pnlSubtitle.Enabled = true;
 					pnlAttachment.Enabled = true;
 				}
-				else if (rdoFormatWebm.Checked)
+			}
+
+			foreach (ListViewItem q in lstMedia.SelectedItems)
+			{
+				var mf = q.Tag as MediaQueue;
+
+				foreach (var v in mf.Video)
 				{
-					cboVideoEncoder.SelectedValue = new Guid("deadbeef-9999-9999-9999-999999999999");
-					cboAudioEncoder.SelectedValue = new Guid("deadface-f154-f154-f154-f154f154f154");
-					pnlVideo.Enabled = true;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
+					v.Encoder = vdef.Encoder;
+					v.EncoderPreset = vdef.Preset;
+					v.EncoderTune = vdef.Tune;
+					v.EncoderMode = vdef.Mode;
+					v.EncoderValue = vdef.Value;
+					v.EncoderMultiPass = vdef.Pass;
+					v.EncoderCommand = vdef.Command;
 				}
-				else if (rdoFormatAudioMp3.Checked)
+
+				foreach (var a in mf.Audio)
 				{
-					cboAudioEncoder.SelectedValue = new Guid("deadbeef-d003-d003-d003-d003d003d003");
-					pnlVideo.Enabled = false;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
-				}
-				else if (rdoFormatAudioMp4.Checked)
-				{
-					cboAudioEncoder.SelectedValue = new Guid("deadbeef-eaac-eaac-eaac-eaaceaaceaac");
-					pnlVideo.Enabled = false;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
-				}
-				else if (rdoFormatAudioOgg.Checked)
-				{
-					cboAudioEncoder.SelectedValue = new Guid("deadface-f154-f154-f154-f154f154f154");
-					pnlVideo.Enabled = false;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
-				}
-				else if (rdoFormatAudioOpus.Checked)
-				{
-					cboAudioEncoder.SelectedValue = new Guid("deadface-f00d-f00d-f00d-f00df00df00d");
-					pnlVideo.Enabled = false;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
-				}
-				else if (rdoFormatAudioFlac.Checked)
-				{
-					cboAudioEncoder.SelectedValue = new Guid("deadface-f1ac-f1ac-f1ac-f1acf1acf1ac");
-					pnlVideo.Enabled = false;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
+					a.Encoder = adef.Encoder;
+					a.EncoderMode = adef.Mode;
+					a.EndoderQuality = adef.Quality;
+					a.EncoderSampleRate = adef.SampleRate;
+					a.EncoderChannel = adef.Channel;
 				}
 			}
 		}
@@ -759,6 +803,7 @@ namespace ifme
 					float f = 0;
 					float.TryParse(cboVideoFrameRate.Text, out f);
 					video.FrameRate = f;
+					video.FrameCount = (int)Math.Ceiling(video.Duration * f);
 					break;
 				case "cboVideoBitDepth":
 					var b = 8;
