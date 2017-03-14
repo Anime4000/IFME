@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using System.Windows.Forms;
 
 using Newtonsoft.Json;
-using System.Reflection;
+
 
 namespace ifme
 {
@@ -32,6 +34,22 @@ namespace ifme
 			get
 			{
 				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			}
+		}
+
+		public static string AppName
+		{
+			get
+			{
+				return Properties.Resources.AppTitle;
+			}
+		}
+
+		public static string AppNameLong
+		{
+			get
+			{
+				return $"{Properties.Resources.AppTitle} ( {Properties.Resources.AppCodeName} ) [ v{Application.ProductVersion} ]";
 			}
 		}
 

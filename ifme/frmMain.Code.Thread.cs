@@ -44,7 +44,7 @@ namespace ifme
 				}
 				catch (Exception)
 				{
-					Console.WriteLine($"ERROR clearing temp folder: {tempDir}");
+					Console.WriteLine($"ERROR  clearing temp folder: {tempDir}");
 					e.Cancel = true;
 					return;
 				}
@@ -229,6 +229,8 @@ namespace ifme
 
 		private void bgThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			Console.Title = Get.AppName;
+
 			btnStart.Enabled = true;
 			btnStop.Enabled = false;
 			btnPause.Enabled = false;

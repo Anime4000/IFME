@@ -19,6 +19,7 @@ namespace ifme
             InitializeComponent();
 
 			FormBorderStyle = FormBorderStyle.Sizable;
+			Text = Get.AppNameLong;
 			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 		}
 

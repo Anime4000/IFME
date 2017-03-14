@@ -61,6 +61,24 @@ namespace ifme.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eridanus.
+        /// </summary>
+        internal static string AppCodeName {
+            get {
+                return ResourceManager.GetString("AppCodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internet Friendly Media Encoder.
+        /// </summary>
+        internal static string AppTitle {
+            get {
+                return ResourceManager.GetString("AppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap BannerA {
