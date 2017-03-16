@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ifme
 {
@@ -14,7 +11,7 @@ namespace ifme
 				case MediaTypeAudio.MP3:
 					Encoder = new Guid("deadbeef-d003-d003-d003-d003d003d003");
 					Mode = 0;
-					Quality = 128;
+					Quality = 128000;
 					SampleRate = 44100;
 					Channel = 2;
 					Command = string.Empty;
@@ -25,20 +22,20 @@ namespace ifme
 					Quality = 128;
 					SampleRate = 44100;
 					Channel = 0;
-					Command = "-w -s -c 24000";
+					Command = string.Empty;
 					break;
 				case MediaTypeAudio.OGG:
 					Encoder = new Guid("deadface-f154-f154-f154-f154f154f154");
 					Mode = 0;
-					Quality = 128;
+					Quality = 128000;
 					SampleRate = 44100;
 					Channel = 0;
-					Command = "--ignorelength --managed";
+					Command = string.Empty;
 					break;
 				case MediaTypeAudio.OPUS:
 					Encoder = new Guid("deadface-f00d-f00d-f00d-f00df00df00d");
 					Mode = 0;
-					Quality = 128;
+					Quality = 128000;
 					SampleRate = 44100;
 					Channel = 0;
 					Command = string.Empty;
@@ -46,7 +43,7 @@ namespace ifme
 				case MediaTypeAudio.FLAC:
 					Encoder = new Guid("deadface-f1ac-f1ac-f1ac-f1acf1acf1ac");
 					Mode = 0;
-					Quality = -8;
+					Quality = 12;
 					SampleRate = 44100;
 					Channel = 0;
 					Command = string.Empty;

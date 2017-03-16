@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Threading;
+
 using Newtonsoft.Json;
 
 namespace ifme
 {
-    public class PluginLoad
+	public class PluginLoad
     {
         public PluginLoad()
         {
@@ -24,8 +23,12 @@ namespace ifme
 
                 plugin.Path = item;
 
+				Console.WriteLine($"Loading {plugin.Name}");
+
                 Plugin.Items.Add(plugin.GUID, plugin);
             }
-        }
+
+			Thread.Sleep(3000);
+		}
     }
 }

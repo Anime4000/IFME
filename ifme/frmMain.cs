@@ -30,7 +30,7 @@ namespace ifme
 
         private void btnMediaFileNew_Click(object sender, EventArgs e)
         {
-
+			
         }
 
         private void btnMediaFileOpen_Click(object sender, EventArgs e)
@@ -88,7 +88,9 @@ namespace ifme
 			{
 				List<MediaQueue> obj = new List<MediaQueue>();
 				foreach (ListViewItem item in lstMedia.Items)
-					obj.Add(item.Tag as MediaQueue);
+					if (item.Checked)
+						obj.Add(item.Tag as MediaQueue);
+				
 
 				bgThread.RunWorkerAsync(obj);
 

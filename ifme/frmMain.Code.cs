@@ -34,20 +34,11 @@ namespace ifme
 			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
 			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
 
-			// Checking
-			if (string.IsNullOrEmpty(Properties.Settings.Default.TempDir))
-				Properties.Settings.Default.TempDir = Path.Combine(Path.GetTempPath(), "IFME");
+			if (!Directory.Exists(Get.FolderTemp))
+				Directory.CreateDirectory(Get.FolderTemp);
 
-			if (string.IsNullOrEmpty(Properties.Settings.Default.OutputDir))
-				Properties.Settings.Default.OutputDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME");
-
-			Properties.Settings.Default.Save();
-
-			if (!Directory.Exists(Properties.Settings.Default.TempDir))
-				Directory.CreateDirectory(Properties.Settings.Default.TempDir);
-
-			if (!Directory.Exists(Properties.Settings.Default.OutputDir))
-				Directory.CreateDirectory(Properties.Settings.Default.OutputDir);
+			if (!Directory.Exists(Get.FolderSave))
+				Directory.CreateDirectory(Get.FolderSave);
 
 			// Load default
 			txtFolderOutput.Text = Properties.Settings.Default.OutputDir;
@@ -71,7 +62,7 @@ namespace ifme
 			cboAttachMime.SelectedValue = ".aca";
 
 			// Load plugin
-			new PluginLoad();
+			new frmSplashScreen().ShowDialog();
 
 			var video = new Dictionary<Guid, string>();
 			var audio = new Dictionary<Guid, string>();
@@ -385,7 +376,7 @@ namespace ifme
 
 			queue.Enable = true;
 			queue.File = file;
-			queue.OutputFormat = "mkv";
+			queue.OutputFormat = TargetFormat.MKV;
 
 			queue.MediaInfo = media;
 
@@ -413,7 +404,7 @@ namespace ifme
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = (float)Math.Round(item.FrameRate),
+					FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
@@ -502,7 +493,7 @@ namespace ifme
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = (float)Math.Round(item.FrameRate),
+					FrameRate = (float)Math.Round(item.FrameRate, 3),
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
@@ -693,21 +684,21 @@ namespace ifme
 				var m = q.Tag as MediaQueue;
 
 				if (rdoFormatMp4.Checked)
-					m.OutputFormat = "mp4";
+					m.OutputFormat = TargetFormat.MP4;
 				else if (rdoFormatMkv.Checked)
-					m.OutputFormat = "mkv";
+					m.OutputFormat = TargetFormat.MKV;
 				else if (rdoFormatWebm.Checked)
-					m.OutputFormat = "webm";
+					m.OutputFormat = TargetFormat.WEBM;
 				else if (rdoFormatAudioMp3.Checked)
-					m.OutputFormat = "mp3";
+					m.OutputFormat = TargetFormat.MP3;
 				else if (rdoFormatAudioMp4.Checked)
-					m.OutputFormat = "m4a";
+					m.OutputFormat = TargetFormat.M4A;
 				else if (rdoFormatAudioOgg.Checked)
-					m.OutputFormat = "ogg";
+					m.OutputFormat = TargetFormat.OGG;
 				else if (rdoFormatAudioOpus.Checked)
-					m.OutputFormat = "opus";
+					m.OutputFormat = TargetFormat.OPUS;
 				else if (rdoFormatAudioFlac.Checked)
-					m.OutputFormat = "flac";
+					m.OutputFormat = TargetFormat.FLAC;
 
 				if (lstMedia.SelectedItems.Count > 1)
 				{
@@ -948,28 +939,28 @@ namespace ifme
 
 			switch (format)
 			{
-				case "mp4":
+				case TargetFormat.MP4:
 					rdoFormatMp4.Checked = true;
 					break;
-				case "mkv":
+				case TargetFormat.MKV:
 					rdoFormatMkv.Checked = true;
 					break;
-				case "webm":
+				case TargetFormat.WEBM:
 					rdoFormatWebm.Checked = true;
 					break;
-				case "mp3":
+				case TargetFormat.MP3:
 					rdoFormatAudioMp3.Checked = true;
 					break;
-				case "m4a":
+				case TargetFormat.M4A:
 					rdoFormatAudioMp4.Checked = true;
 					break;
-				case "ogg":
+				case TargetFormat.OGG:
 					rdoFormatAudioOgg.Checked = true;
 					break;
-				case "opus":
+				case TargetFormat.OPUS:
 					rdoFormatAudioOpus.Checked = true;
 					break;
-				case "flac":
+				case TargetFormat.FLAC:
 					rdoFormatAudioFlac.Checked = true;
 					break;
 				default:
@@ -1084,7 +1075,7 @@ namespace ifme
 				nudVideoMultiPass.Value = v.EncoderMultiPass;
 
 				cboVideoResolution.Text = $"{v.Width}x{v.Height}";
-				cboVideoFrameRate.Text = $"{v.FrameRate}";
+				cboVideoFrameRate.Text = $"{Math.Round(v.FrameRate, 3)}";
 				cboVideoBitDepth.Text = $"{v.BitDepth}";
 				cboVideoPixelFormat.Text = $"{v.PixelFormat}";
 

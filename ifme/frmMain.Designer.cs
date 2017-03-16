@@ -1538,6 +1538,7 @@
 			// pbxBannerB
 			// 
 			this.pbxBannerB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.pbxBannerB.BackColor = System.Drawing.Color.Transparent;
 			this.pbxBannerB.BackgroundImage = global::ifme.Properties.Resources.BannerB;
 			this.pbxBannerB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.pbxBannerB.Location = new System.Drawing.Point(160, 0);
@@ -1686,6 +1687,7 @@
 			this.Controls.Add(this.btnMediaFileDel);
 			this.Controls.Add(this.btnMediaFileOpen);
 			this.Controls.Add(this.btnMediaFileNew);
+			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "frmMain";
