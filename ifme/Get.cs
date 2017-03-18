@@ -49,7 +49,15 @@ namespace ifme
 		{
 			get
 			{
-				return $"{Properties.Resources.AppTitle} v{Application.ProductVersion} ( '{Properties.Resources.AppCodeName}' )";
+				return $"{Properties.Resources.AppTitle} v{Application.ProductVersion} ('{Properties.Resources.AppCodeName}')";
+			}
+		}
+
+		public static string AppNameLib
+		{
+			get
+			{
+				return $"IFME v{Application.ProductVersion} {(OS.Is64bit ? "amd64" : "i686")} {(OS.IsWindows ? "windows" : "unix-like")}";
 			}
 		}
 
@@ -99,6 +107,46 @@ namespace ifme
 			return file.Substring(file.Length - 3);
 		}
 
+		public static string FileSizeIEC(long InBytes)
+		{
+			string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
+
+			if (InBytes == 0)
+				return $"0{IEC[0]}";
+
+			long bytes = Math.Abs(InBytes);
+			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+			double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+			return $"{(Math.Sign(InBytes) * num)}{IEC[place]}";
+		}
+
+		public static string FileSizeDEC(long InBytes)
+		{
+			string[] DEC = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+
+			if (InBytes == 0)
+				return $"0{DEC[0]}";
+
+			long bytes = Math.Abs(InBytes);
+			int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1000)));
+			double num = Math.Round(bytes / Math.Pow(1000, place), 1);
+			return $"{(Math.Sign(InBytes) * num)}{DEC[place]}";
+		}
+
+		public static string Duration(DateTime past)
+		{
+			var span = DateTime.Now.Subtract(past);
+
+			if (span.Days != 0)
+				return $"{span.Days}d {span.Hours}h {span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
+			else if (span.Hours != 0)
+				return $"{span.Hours}h {span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
+			else if (span.Minutes != 0)
+				return $"{span.Minutes}m {span.Seconds}s {span.Milliseconds}ms";
+			else
+				return $"{span.Seconds}s {span.Milliseconds}ms";
+		}
+
 		internal static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
 		{
 			// Get the subdirectories for the specified directory.
@@ -135,6 +183,7 @@ namespace ifme
 			}
 		}
 
+		// Extension
 		internal static bool IsOneOf<T>(this T value, params T[] items)
 		{
 			for (int i = 0; i < items.Length; ++i)

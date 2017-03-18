@@ -30,6 +30,8 @@
   "vorbis": "ogg",
   "oga": "ogg",
   "aiff": "mka",
-  "subrip": "srt",
+	"subrip": "srt",
+	"ass": "ass",
+	"ssa": "ass", 
   "dca": "mka"
 }

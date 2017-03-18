@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.ComponentModel;
 
 namespace ifme
 {
@@ -24,9 +24,6 @@ namespace ifme
 			Up,
 			Down
 		}
-
-		int LastCorrectVideo = 0;
-		int LastCorrentAudio = 0;
 
 		public void InitializeUX()
 		{
@@ -757,123 +754,140 @@ namespace ifme
 
 		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
 		{
-			switch (ctrl)
+			if (string.Equals(ctrl, "cboVideoEncoder"))
 			{
-				case "cboVideoEncoder":
-					video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
-					break;
-				case "cboVideoPreset":
-					video.EncoderPreset = cboVideoPreset.Text;
-					break;
-				case "cboVideoTune":
-					video.EncoderTune = cboVideoTune.Text;
-					break;
-				case "cboVideoRateControl":
-					video.EncoderMode = cboVideoRateControl.SelectedIndex;
-					break;
-				case "nudVideoRateFactor":
-					video.EncoderValue = nudVideoRateFactor.Value;
-					break;
-				case "nudVideoMultiPass":
-					video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
-					break;
+				video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
+			}
 
-				case "cboVideoResolution":
-					var w = 0;
-					var h = 0;
-					var x = cboVideoResolution.Text;
-					if (x.Contains('x'))
-					{
-						int.TryParse(x.Split('x')[0], out w);
-						int.TryParse(x.Split('x')[1], out h);
-					}
-					video.Width = w;
-					video.Height = h;
-					break;
-				case "cboVideoFrameRate":
-					float f = 0;
-					float.TryParse(cboVideoFrameRate.Text, out f);
-					video.FrameRate = f;
-					video.FrameCount = (int)Math.Ceiling(video.Duration * f);
-					break;
-				case "cboVideoBitDepth":
-					var b = 8;
-					int.TryParse(cboVideoBitDepth.Text, out b);
-					video.BitDepth = b;
-					break;
-				case "cboVideoPixelFormat":
-					var y = 420;
-					int.TryParse(cboVideoPixelFormat.Text, out y);
-					video.PixelFormat = y;
-					break;
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoPreset"))
+			{
+				video.EncoderPreset = cboVideoPreset.Text;
+			}
 
-				case "chkVideoDeinterlace":
-					video.DeInterlace = chkVideoDeinterlace.Checked;
-					break;
-				case "cboVideoDeinterlaceMode":
-					video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
-					break;
-				case "cboVideoDeinterlaceField":
-					video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
-					break;
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoTune"))
+			{
+				video.EncoderTune = cboVideoTune.Text;
+			}
 
-				default:
-					break;
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoRateControl"))
+			{
+				
+				video.EncoderMode = cboVideoRateControl.SelectedIndex;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "nudVideoRateFactor"))
+			{
+				video.EncoderValue = nudVideoRateFactor.Value;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "nudVideoMultiPass"))
+			{
+				video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
+			}
+
+			// Video pixel
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoResolution"))
+			{
+				var w = 0;
+				var h = 0;
+				var x = cboVideoResolution.Text;
+				if (x.Contains('x'))
+				{
+					int.TryParse(x.Split('x')[0], out w);
+					int.TryParse(x.Split('x')[1], out h);
+				}
+				video.Width = w;
+				video.Height = h;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoFrameRate"))
+			{
+				float f = 0;
+				float.TryParse(cboVideoFrameRate.Text, out f);
+				video.FrameRate = f;
+				video.FrameCount = (int)Math.Ceiling(video.Duration * f);
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoBitDepth"))
+			{
+				var b = 8;
+				int.TryParse(cboVideoBitDepth.Text, out b);
+				video.BitDepth = b;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoPixelFormat"))
+			{
+				var y = 420;
+				int.TryParse(cboVideoPixelFormat.Text, out y);
+				video.PixelFormat = y;
+			}
+
+			// Video Interlace
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "chkVideoDeinterlace"))
+			{
+				video.DeInterlace = chkVideoDeinterlace.Checked;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoDeinterlaceMode"))
+			{
+				video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
+			}
+
+			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoDeinterlaceField"))
+			{
+				video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
 			}
 		}
 
 		private void MediaApplyAudio(string ctrl, ref MediaQueueAudio audio)
 		{
-			switch (ctrl)
+			if (string.Equals(ctrl, "cboAudioEncoder"))
 			{
-				case "cboAudioEncoder":
-					audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
-					break;
-				case "cboAudioMode":
-					audio.EncoderMode = cboAudioMode.SelectedIndex;
-					break;
-				case "cboAudioQuality":
-					decimal q = 0;
-					decimal.TryParse(cboAudioQuality.Text, out q);
-					audio.EndoderQuality = q;
-					break;
-				case "cboAudioSampleRate":
-					var hz = 0;
-					int.TryParse(cboAudioSampleRate.Text, out hz);
-					audio.EncoderSampleRate = hz;
-					break;
-				case "cboAudioChannel":
-					double ch = 0;
-					double.TryParse(cboAudioChannel.Text, out ch);
-					audio.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
-					break;
+				audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
+			}
 
-				default:
-					break;
+			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioMode"))
+			{
+				audio.EncoderMode = cboAudioMode.SelectedIndex;
+			}
+
+			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioQuality"))
+			{
+				decimal q = 0;
+				decimal.TryParse(cboAudioQuality.Text, out q);
+				audio.EndoderQuality = q;
+			}
+
+			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioSampleRate"))
+			{
+				var hz = 0;
+				int.TryParse(cboAudioSampleRate.Text, out hz);
+				audio.EncoderSampleRate = hz;
+			}
+
+			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioChannel"))
+			{
+				double ch = 0;
+				double.TryParse(cboAudioChannel.Text, out ch);
+				audio.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
 			}
 		}
 
 		private void MediaApplySubtitle(string ctrl, ref MediaQueueSubtitle subtitle)
 		{
-			switch (ctrl)
+			if (string.Equals(ctrl, "cboSubLang"))
 			{
-				case "cboSubLang":
-					subtitle.Lang = $"{cboSubLang.SelectedValue}";
-					break;
-				default:
-					break;
+				subtitle.Lang = $"{cboSubLang.SelectedValue}";
 			}
 		}
 
 		private void MediaApplyAttachment(string ctrl, ref MediaQueueAttachment attachment)
 		{
-			switch (ctrl)
+			if (string.Equals(ctrl, "cboAttachMime"))
 			{
-				case "cboAttachMime":
-					attachment.Mime = cboAttachMime.Text;
-					break;
-				default:
-					break;
+				attachment.Mime = cboAttachMime.Text;
 			}
 		}
 
@@ -882,12 +896,13 @@ namespace ifme
 			// Media Info
 			var mf = media.MediaInfo;
 			var md = string.Empty;
+			var du = TimeSpan.FromSeconds(mf.Duration);
 
 			md =
 				$"File path          : {mf.FilePath}\r\n" +
-				$"File size          : {mf.FileSize}\r\n" +
+				$"File size          : {Get.FileSizeDEC((long)mf.FileSize)} (base 10), {Get.FileSizeIEC((long)mf.FileSize)} (base 2)\r\n" +
 				$"Bitrate            : {mf.BitRate}\r\n" +
-				$"Duration           : {mf.Duration} (estimated)\r\n" +
+				$"Duration           : {du.Hours:D2}:{du.Minutes:D2}:{du.Seconds:D2} (estimated)\r\n" +
 				$"Format             : {mf.FormatName} ({mf.FormatNameFull})\r\n";
 
 			if (mf.Video.Count > 0)
@@ -1112,7 +1127,57 @@ namespace ifme
 
 		private void MediaPopulateSubtitle(object subtitle)
 		{
+		
+		}
 
+		// BackgroundWorker with Abort support
+		// refer to AbortableBackgroundWorker.cs file
+		AbortableBackgroundWorker bgThread = new AbortableBackgroundWorker();
+		private void bgThread_DoWork(object sender, DoWorkEventArgs e)
+		{
+			var media = e.Argument as Dictionary<int, MediaQueue>;
+
+			foreach (var item in media)
+			{
+				var id = item.Key;
+				var mq = item.Value;
+
+				if (mq.Enable)
+				{
+					var tt = DateTime.Now;
+
+					lstMedia.Invoke((MethodInvoker)delegate
+					{
+						lstMedia.Items[id].SubItems[4].Text = "Encoding...";
+					});
+
+					new MediaEncoding(mq);
+
+					lstMedia.Invoke((MethodInvoker)delegate
+					{
+						lstMedia.Items[id].Checked = false;
+						lstMedia.Items[id].SubItems[4].Text = $"Done! ({Get.Duration(tt)})";
+					});
+				}
+			}
+		}
+
+		private void bgThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (e.Cancelled)
+			{
+				ProcessManager.Stop();
+				Console.WriteLine("\n\nEncoding cancel by user...");
+
+				foreach (ListViewItem item in lstMedia.Items)
+					item.SubItems[4].Text = "Abort!";
+			}
+
+			Console.Write("\n\n");
+
+			btnStop.Enabled = false;
+			btnPause.Enabled = false;
+			btnStart.Enabled = true;
 		}
 	}
 }

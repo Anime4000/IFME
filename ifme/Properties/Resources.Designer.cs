@@ -121,6 +121,16 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon16_document_save {
+            get {
+                object obj = ResourceManager.GetObject("icon16_document_save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon16_down {
             get {
                 object obj = ResourceManager.GetObject("icon16_down", resourceCulture);
@@ -235,6 +245,28 @@ namespace ifme.Properties {
             get {
                 object obj = ResourceManager.GetObject("icon22_up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF8&quot;?&gt;
+        ///&lt;!DOCTYPE Tags SYSTEM &quot;matroskatags.dtd&quot;&gt;
+        ///&lt;Tags&gt;
+        ///	&lt;Tag&gt;
+        ///		&lt;Simple&gt;
+        ///			&lt;Name&gt;Writing application&lt;/Name&gt;
+        ///			&lt;String&gt;{0}&lt;/String&gt;
+        ///		&lt;/Simple&gt;
+        ///		&lt;Simple&gt;
+        ///			&lt;Name&gt;Writing library&lt;/Name&gt;
+        ///			&lt;String&gt;{1}&lt;/String&gt;
+        ///		&lt;/Simple&gt;
+        ///	&lt;/Tag&gt;
+        ///&lt;/Tags&gt;.
+        /// </summary>
+        internal static string MkvTags {
+            get {
+                return ResourceManager.GetString("MkvTags", resourceCulture);
             }
         }
         

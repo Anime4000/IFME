@@ -50,17 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbortableBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Enum.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Code.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmMain.Code.Thread.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -74,6 +72,7 @@
     <Compile Include="Get.cs" />
     <Compile Include="MediaDefault\MediaDefaultAudio.cs" />
     <Compile Include="MediaDefault\MediaDefaultVideo.cs" />
+    <Compile Include="MediaEncoding.cs" />
     <Compile Include="MediaQueue\MediaQueue.cs" />
     <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
     <Compile Include="MediaQueue\MediaQueueAudio.cs" />
@@ -197,6 +196,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SplashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_document-save.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

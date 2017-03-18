@@ -155,7 +155,6 @@
 			this.btnMediaFileDel = new System.Windows.Forms.Button();
 			this.btnMediaFileOpen = new System.Windows.Forms.Button();
 			this.btnMediaFileNew = new System.Windows.Forms.Button();
-			this.bgThread = new System.ComponentModel.BackgroundWorker();
 			this.tabMediaConfig.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.pnlGeneral.SuspendLayout();
@@ -1453,6 +1452,7 @@
 			// btnBrowseFolderOutput
 			// 
 			this.btnBrowseFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseFolderOutput.Image = global::ifme.Properties.Resources.icon16_document_save;
 			this.btnBrowseFolderOutput.Location = new System.Drawing.Point(764, 564);
 			this.btnBrowseFolderOutput.Name = "btnBrowseFolderOutput";
 			this.btnBrowseFolderOutput.Size = new System.Drawing.Size(24, 24);
@@ -1486,6 +1486,7 @@
 			// btnEncodingPresetSave
 			// 
 			this.btnEncodingPresetSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnEncodingPresetSave.Image = global::ifme.Properties.Resources.icon16_add;
 			this.btnEncodingPresetSave.Location = new System.Drawing.Point(764, 536);
 			this.btnEncodingPresetSave.Name = "btnEncodingPresetSave";
 			this.btnEncodingPresetSave.Size = new System.Drawing.Size(24, 24);
@@ -1654,12 +1655,6 @@
 			this.btnMediaFileNew.TabIndex = 0;
 			this.btnMediaFileNew.UseVisualStyleBackColor = true;
 			this.btnMediaFileNew.Click += new System.EventHandler(this.btnMediaFileNew_Click);
-			// 
-			// bgThread
-			// 
-			this.bgThread.WorkerSupportsCancellation = true;
-			this.bgThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgThread_DoWork);
-			this.bgThread.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgThread_RunWorkerCompleted);
 			// 
 			// frmMain
 			// 
@@ -1854,7 +1849,6 @@
 		private System.Windows.Forms.ColumnHeader colAudioFq;
 		private System.Windows.Forms.ColumnHeader colAudioCh;
 		private System.Windows.Forms.Label label1;
-		private System.ComponentModel.BackgroundWorker bgThread;
 	}
 }
 

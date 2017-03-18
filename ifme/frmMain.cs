@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using System.IO;
 
 namespace ifme
 {
-    public partial class frmMain : Form
+	public partial class frmMain : Form
     {
         public frmMain()
         {
@@ -69,6 +65,9 @@ namespace ifme
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+			if (lstMedia.Items.Count == 0)
+				return;
+
 			if (bgThread.IsBusy)
 			{
 				if (!btnPause.Enabled)
@@ -79,28 +78,32 @@ namespace ifme
 					ProcessManager.Resume();
 					return;
 				}
-
-				bgThread.CancelAsync();
-
-				btnStart.Enabled = true;
 			}
 			else
 			{
-				List<MediaQueue> obj = new List<MediaQueue>();
+				// thread safe, make a copy
+				// int = ListView Index
+				// MediaQueue = ListView Tag
+				var dict = new Dictionary<int, MediaQueue>();
 				foreach (ListViewItem item in lstMedia.Items)
-					if (item.Checked)
-						obj.Add(item.Tag as MediaQueue);
-				
+				{
+					dict.Add(item.Index, item.Tag as MediaQueue);
+					item.SubItems[4].Text = "Waiting...";
+				}
 
-				bgThread.RunWorkerAsync(obj);
+				// using custom BackgroundWorker with Abort support
+				// refer here: http://stackoverflow.com/questions/800767/how-to-kill-background-worker-completely
+				bgThread.DoWork += bgThread_DoWork;
+				bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
+				bgThread.RunWorkerAsync(dict);
 
 				btnStart.Enabled = false;
 				btnPause.Enabled = true;
 				btnStop.Enabled = true;
 			}
-        }
+		}
 
-        private void btnPause_Click(object sender, EventArgs e)
+		private void btnPause_Click(object sender, EventArgs e)
         {
 			if (btnPause.Enabled)
 			{
@@ -112,9 +115,11 @@ namespace ifme
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-			bgThread.CancelAsync();
-			ProcessManager.Stop();
-			btnStop.Enabled = false;
+			if (bgThread.IsBusy)
+			{
+				bgThread.Abort();
+				bgThread.Dispose();
+			}
         }
 
         private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
@@ -162,13 +167,32 @@ namespace ifme
 
         private void txtFolderOutput_TextChanged(object sender, EventArgs e)
         {
-
+			Properties.Settings.Default.OutputDir = txtFolderOutput.Text;
+			Properties.Settings.Default.Save();
         }
 
         private void btnBrowseFolderOutput_Click(object sender, EventArgs e)
         {
+			var GetDir = new FolderBrowserDialog();
 
-        }
+			GetDir.Description = "Choose a folder that IFME can save all encoded files";
+			GetDir.ShowNewFolderButton = true;
+			GetDir.RootFolder = Environment.SpecialFolder.MyComputer;
+
+			if (GetDir.ShowDialog() == DialogResult.OK)
+			{
+				if (GetDir.SelectedPath[0] == '\\' && GetDir.SelectedPath[1] == '\\')
+				{
+					MessageBox.Show("Over network not supported, please mount it as drive", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+
+				txtFolderOutput.Text = GetDir.SelectedPath;
+
+				Properties.Settings.Default.OutputDir = GetDir.SelectedPath;
+				Properties.Settings.Default.Save();
+			}
+		}
 
 		private void tabMediaConfig_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -267,6 +291,9 @@ namespace ifme
 
         private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
+			if (cboVideoEncoder.SelectedIndex <= -1)
+				return;
+
             var temp = new Plugin();
             var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 
@@ -295,13 +322,17 @@ namespace ifme
 					foreach (var item in video.Mode)
 						cboVideoRateControl.Items.Add(item.Name);
 					cboVideoRateControl.SelectedIndex = 0;
-
-					LastCorrectVideo = cboVideoEncoder.SelectedIndex;
 				}
 				else
 				{
 					MessageBox.Show("Output format and codec are not compatible! Choose different one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					cboVideoEncoder.SelectedIndex = LastCorrectVideo;
+
+					var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
+
+					if (rdoFormatWebm.Checked)
+						vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
+
+					cboVideoEncoder.SelectedValue = vdef.Encoder;
 				}
             }
         }
@@ -391,30 +422,60 @@ namespace ifme
 
         private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
+			if (cboAudioEncoder.SelectedIndex <= -1)
+				return;
+
             var temp = new Plugin();
             var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
 
             if (Plugin.Items.TryGetValue(key, out temp))
             {
-                var audio = temp.Audio;
+				if (((rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp3")) ||
+					((rdoFormatAudioMp4.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp4")) ||
+					((rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked) && temp.Format.Contains("ogg")) ||
+					((rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("opus")) ||
+					((rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("flac")))
+				{
+					var audio = temp.Audio;
 
-                cboAudioMode.Items.Clear();
-                foreach (var item in audio.Mode)
-                    cboAudioMode.Items.Add(item.Name);
-                cboAudioMode.SelectedIndex = 0;
+					cboAudioMode.Items.Clear();
+					foreach (var item in audio.Mode)
+						cboAudioMode.Items.Add(item.Name);
+					cboAudioMode.SelectedIndex = 0;
 
-                cboAudioSampleRate.Items.Clear();
-                foreach (var item in audio.SampleRate)
-                    cboAudioSampleRate.Items.Add(item);
-                cboAudioSampleRate.SelectedItem = audio.SampleRateDefault;
+					cboAudioQuality.Items.Clear();
+					foreach (var item in audio.Mode[0].Quality)
+						cboAudioQuality.Items.Add(item);
+					cboAudioQuality.SelectedItem = audio.Mode[0].Default;
 
-                cboAudioChannel.Items.Clear();
-                foreach (var item in audio.Channel)
-                    cboAudioChannel.Items.Add(item);
-                cboAudioChannel.SelectedItem = audio.ChannelDefault;            
+					cboAudioSampleRate.Items.Clear();
+					foreach (var item in audio.SampleRate)
+						cboAudioSampleRate.Items.Add(item);
+					cboAudioSampleRate.SelectedItem = audio.SampleRateDefault;
+
+					cboAudioChannel.Items.Clear();
+					foreach (var item in audio.Channel)
+						cboAudioChannel.Items.Add(item);
+					cboAudioChannel.SelectedItem = audio.ChannelDefault;
+				}
+				else
+				{
+					MessageBox.Show("Output format and codec are not compatible! Choose different one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+					if (rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
+					else if (rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
+					else if (rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
+					else if (rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
+
+					cboAudioEncoder.SelectedValue = adef.Encoder;
+				}
             }
-
-
         }
 
         private void cboAudioMode_SelectedIndexChanged(object sender, EventArgs e)
