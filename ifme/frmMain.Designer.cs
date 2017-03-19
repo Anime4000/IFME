@@ -209,7 +209,7 @@
 			// colMediaFileName
 			// 
 			this.colMediaFileName.Text = "File name";
-			this.colMediaFileName.Width = 370;
+			this.colMediaFileName.Width = 330;
 			// 
 			// colMediaDuration
 			// 
@@ -229,7 +229,7 @@
 			// colMediaStatus
 			// 
 			this.colMediaStatus.Text = "Status";
-			this.colMediaStatus.Width = 100;
+			this.colMediaStatus.Width = 140;
 			// 
 			// tabMediaConfig
 			// 
@@ -665,6 +665,7 @@
 			this.cboVideoRateControl.Name = "cboVideoRateControl";
 			this.cboVideoRateControl.Size = new System.Drawing.Size(248, 21);
 			this.cboVideoRateControl.TabIndex = 7;
+			this.cboVideoRateControl.SelectedIndexChanged += new System.EventHandler(this.cboVideoRateControl_SelectedIndexChanged);
 			this.cboVideoRateControl.Leave += new System.EventHandler(this.MediaApply);
 			// 
 			// lblVideoRateControl

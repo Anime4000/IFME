@@ -53,7 +53,9 @@
     <Compile Include="AbortableBackgroundWorker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ConsoleEx.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,10 +197,22 @@
     <None Include="Resources\BannerB.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen.png" />
+    <None Include="Resources\icon16_document-save.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon16_document-save.png" />
+    <None Include="Resources\SplashScreen1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen5.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,7 +26,7 @@ namespace ifme
 
         private void btnMediaFileNew_Click(object sender, EventArgs e)
         {
-			
+			MessageBox.Show("Coming soon: New media file\nThis feature is like MkvToolNix GUI, mux raw video, audio and subtitle", "Not available");
         }
 
         private void btnMediaFileOpen_Click(object sender, EventArgs e)
@@ -45,8 +45,8 @@ namespace ifme
 
         private void btnOption_Click(object sender, EventArgs e)
         {
-
-        }
+			MessageBox.Show("Coming soon: Option\nGiving power to user to tweak IFME as they like", "Not available");
+		}
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
         {
@@ -60,8 +60,8 @@ namespace ifme
 
         private void btnDonePowerOff_Click(object sender, EventArgs e)
         {
-
-        }
+			MessageBox.Show("Coming soon: Shutdown when done switch\nTurn off computer when encoding complete", "Not available");
+		}
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -434,7 +434,8 @@ namespace ifme
 					((rdoFormatAudioMp4.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp4")) ||
 					((rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked) && temp.Format.Contains("ogg")) ||
 					((rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("opus")) ||
-					((rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("flac")))
+					((rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("flac")) ||
+					(rdoFormatMkv.Checked && (temp.Format.Contains("mkv") || temp.Format.Contains("mka"))))
 				{
 					var audio = temp.Audio;
 

@@ -16,7 +16,18 @@ namespace ifme
         {
 			Console.Title = Get.AppName;
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
-            Application.EnableVisualStyles();
+
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(Get.AppNameLong);
+			Console.WriteLine($"Release: {Get.AppNameLib}");
+			Console.ResetColor();
+			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Cyan;
+			Console.WriteLine($"(c) {DateTime.Now.Year} Anime4000, FFmpeg team, MulticoreWare, x264 team,\nXiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.");
+			Console.ResetColor();
+			Console.WriteLine();
+
+			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMain());
         }

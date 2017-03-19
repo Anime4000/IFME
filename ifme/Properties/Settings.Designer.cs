@@ -58,5 +58,17 @@ namespace ifme.Properties {
                 this["FFmpegArch"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int SplashScreenRand {
+            get {
+                return ((int)(this["SplashScreenRand"]));
+            }
+            set {
+                this["SplashScreenRand"] = value;
+            }
+        }
     }
 }

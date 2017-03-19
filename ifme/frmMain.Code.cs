@@ -27,10 +27,15 @@ namespace ifme
 
 		public void InitializeUX()
 		{
+			// Load plugin
+			new frmSplashScreen().ShowDialog();
+
+			// Init FFmpeg
 			var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
 			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
 
+			// Init Folder
 			if (!Directory.Exists(Get.FolderTemp))
 				Directory.CreateDirectory(Get.FolderTemp);
 
@@ -57,9 +62,6 @@ namespace ifme
 			cboAttachMime.DisplayMember = "Value";
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".aca";
-
-			// Load plugin
-			new frmSplashScreen().ShowDialog();
 
 			var video = new Dictionary<Guid, string>();
 			var audio = new Dictionary<Guid, string>();
@@ -370,6 +372,9 @@ namespace ifme
 		{
 			var queue = new MediaQueue();
 			var media = new FFmpegDotNet.FFmpeg.Stream(file);
+
+			if (media.Video.Count == 0 || media.Audio.Count == 0)
+				return;
 
 			queue.Enable = true;
 			queue.File = file;
@@ -1032,13 +1037,13 @@ namespace ifme
 			{
 				foreach (var item in media.Subtitle)
 				{
-					var langFull = "";
+					var langFull = string.Empty;
 					Get.LanguageCode.TryGetValue(item.Lang, out langFull);
 
 					var lst = new ListViewItem(new[]
 					{
 						$"{item.Id}",
-						item.File,
+						Path.GetFileName(item.File),
 						langFull
 					});
 					lst.Checked = item.Enable;
@@ -1167,7 +1172,7 @@ namespace ifme
 			if (e.Cancelled)
 			{
 				ProcessManager.Stop();
-				Console.WriteLine("\n\nEncoding cancel by user...");
+				ConsoleEx.Write(LogLevel.Warning, "IFME", "\n\nEncoding cancel by user...");
 
 				foreach (ListViewItem item in lstMedia.Items)
 					item.SubItems[4].Text = "Abort!";

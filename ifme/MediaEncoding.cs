@@ -26,7 +26,7 @@ namespace ifme
 			// Clean temp folder
 			try
 			{
-				Console.WriteLine($"\n\nClearing temp folder: {tempDir}");
+				ConsoleEx.Write(LogLevel.Normal, "IFME", $"Clearing temp folder: {tempDir}");
 
 				if (Directory.Exists(tempDir))
 					Directory.Delete(tempDir, true);
@@ -39,7 +39,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				Console.WriteLine($"ERROR clearing temp folder: {tempDir}");
+				ConsoleEx.Write(LogLevel.Error, "IFME", $"ERROR clearing temp folder: {tempDir}");
 				return;
 			}
 
@@ -62,11 +62,13 @@ namespace ifme
 				VideoMuxing(queue);
 			}
 
-			Console.WriteLine("Yay! All media done encoding...");
+			ConsoleEx.Write(LogLevel.Normal, "IFME", "Yay! All media done encoding...");
 		}
 
 		private int VideoExtract(MediaQueue queue)
 		{
+			ConsoleEx.Write(LogLevel.Normal, "IFME", "Extracting chapters, subtitles and fonts :)");
+
 			var id = 0;
 			foreach (var item in queue.Subtitle)
 			{
@@ -76,7 +78,7 @@ namespace ifme
 				}
 				else
 				{
-					ProcessManager.Start(FFmpeg, $"-hide_banner -loglevel quiet -i \"{item.File}\" -map 0:{item.Id} -y subtitle{id++:D4}_{item.Lang}.{item.Format}");
+					ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -y subtitle{id++:D4}_{item.Lang}.{item.Format}");
 				}
 			}
 
@@ -87,7 +89,7 @@ namespace ifme
 
 			if (!string.IsNullOrEmpty(queue.File))
 			{
-				ProcessManager.Start(FFmpeg, $"-hide_banner -loglevel quiet -dump_attachment:t \"\" -i \"{queue.File}\" -y", Path.Combine(tempDir, "attachments"));
+				ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -dump_attachment:t \"\" -i \"{queue.File}\" -y", Path.Combine(tempDir, "attachments"));
 
 				var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.File}\" > chapters.xml");
 				if (ec >= 1)
@@ -99,6 +101,8 @@ namespace ifme
 
 		private int AudioEncoding(MediaQueue queue, ModeSave mode)
 		{
+			ConsoleEx.Write(LogLevel.Normal, "IFME", "Encoding audio, please wait...");
+
 			var ec = 0;
 			var id = 0;
 
@@ -110,21 +114,25 @@ namespace ifme
 				{
 					var ac = codec.Audio;
 
+					var qu = (string.IsNullOrEmpty(ac.Mode[item.EncoderMode].Args) ? string.Empty : $"{ac.Mode[item.EncoderMode].Args} {item.EndoderQuality}");
+					var hz = (item.EncoderSampleRate == 0 ? string.Empty : $"-ar {item.EncoderSampleRate}");
+					var ch = (item.EncoderChannel == 0 ? string.Empty : $"-ac {item.EncoderChannel}");
+
 					var newfile = (mode == ModeSave.Temp ? $"audio{id++:D4}_{item.Lang}.{ac.Extension}" : Path.Combine(saveDir, $"{Path.GetFileNameWithoutExtension(queue.File)}_ID{id++:D2}.{ac.Extension}"));
 
 					if (ac.Args.Pipe)
 					{
-						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -loglevel quiet -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le -ar {item.EncoderSampleRate} -ac {item.EncoderChannel} -f wav -", Path.Combine(codec.Path, ac.Encoder), $"{ac.Mode[item.EncoderMode].Args} {item.EndoderQuality} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.Path, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
 					}
 					else
 					{
-						ec = ProcessManager.Start(Path.Combine(codec.Path, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {ac.Mode[item.EncoderMode].Args} {item.EndoderQuality} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(Path.Combine(codec.Path, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
 					}
 
 					if (ec == 0)
-						Console.WriteLine("Audio encoding OK!");
+						ConsoleEx.Write(LogLevel.Normal, "IFME", "Audio encoding OK!");
 					else
-						Console.WriteLine("Audio encoding might have a problem!");
+						ConsoleEx.Write(LogLevel.Warning, "IFME", "Audio encoding might have a problem!");
 				}
 			}
 
@@ -133,6 +141,8 @@ namespace ifme
 
 		private int VideoEncoding(MediaQueue queue)
 		{
+			ConsoleEx.Write(LogLevel.Normal, "IFME", "Encoding video, this may take a while...");
+
 			var id = 0;
 			foreach (var item in queue.Video)
 			{
@@ -143,33 +153,47 @@ namespace ifme
 					var vc = codec.Video;
 					var en = Path.Combine(codec.Path, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
 
-					if (vc.Args.Pipe)
+					var yuv = $"yuv{item.PixelFormat}p{(item.BitDepth == 8 ? string.Empty : $"{item.BitDepth}le")}";
+
+					var preset = (string.IsNullOrEmpty(vc.Args.Preset) ? string.Empty : $"{vc.Args.Preset} {item.EncoderPreset}");
+					var quality = (string.IsNullOrEmpty(vc.Mode[item.EncoderMode].Args) ? string.Empty : $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}");
+					var tune = (string.IsNullOrEmpty(vc.Args.Tune) ? string.Empty : $"{vc.Args.Tune} {item.EncoderTune}");
+
+					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
-						if (vc.Mode[item.EncoderMode].MultiPass)
+						for (int i = 0; i < item.EncoderMultiPass; i++)
 						{
-							for (int i = 0; i < item.EncoderMultiPass; i++)
+							var pass = string.Empty;
+
+							if (i == 0)
+								pass = vc.Args.PassFirst;
+							else if (i == (item.EncoderMultiPass - 1))
+								pass = vc.Args.PassLast;
+							else
+								pass = vc.Args.PassNth;
+
+							if (vc.Args.Pipe)
 							{
-								var pass = string.Empty;
-
-								if (i == 0)
-									pass = vc.Args.PassFirst;
-								else if (i == (item.EncoderMultiPass - 1))
-									pass = vc.Args.PassLast;
-								else
-									pass = vc.Args.PassNth;
-
-								ProcessManager.Start(FFmpeg, $"-hide_banner -loglevel panic -i \"{item.File}\" -f yuv4mpegpipe -pix_fmt yuv{item.PixelFormat}p{(item.BitDepth == 8 ? "" : $"{item.BitDepth}le")} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {vc.Args.Preset} {item.EncoderPreset} {vc.Mode[item.EncoderMode].Args} {item.EncoderValue} {vc.Args.Tune} {item.EncoderTune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+								ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
 							}
-						}
-						else
-						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -loglevel panic -i \"{item.File}\" -f yuv4mpegpipe -pix_fmt yuv{item.PixelFormat}p{(item.BitDepth == 8 ? "" : $"{item.BitDepth}le")} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {vc.Args.Preset} {item.EncoderPreset} {vc.Mode[item.EncoderMode].Args} {item.EncoderValue} {vc.Args.Tune} {item.EncoderTune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+							else
+							{
+								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+							}
 						}
 					}
 					else
 					{
-						ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {(string.IsNullOrEmpty(vc.Args.Preset) ? "" : $"{vc.Args.Preset} {item.EncoderPreset}")} {vc.Mode[item.EncoderMode].Args} {item.EncoderValue} {vc.Args.Tune} {item.EncoderTune} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+						if (vc.Args.Pipe)
+						{
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+						}
+						else
+						{
+							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+						}
 					}
+
 				}
 			}
 
@@ -178,6 +202,8 @@ namespace ifme
 
 		private int VideoMuxing(MediaQueue queue)
 		{
+			ConsoleEx.Write(LogLevel.Normal, "IFME", "Merging RAW files as single media file");
+
 			var fileout = Path.Combine(saveDir, $"[IFME] {Path.GetFileNameWithoutExtension(queue.File)}");
 
 			if (queue.OutputFormat == TargetFormat.MP4)
@@ -197,7 +223,12 @@ namespace ifme
 					cmdaudio += $"-add \"{audio}#audio:name=Audio {mp4aid++}:lang={Get.FileLang(audio)}\" ";
 				}
 
-				ProcessManager.Start(Mp4Box, $"{cmdvideo} {cmdaudio} -itags tool=\"{Get.AppNameLong}\" -new \"{fileout}.mp4\"");
+				int exitcode = ProcessManager.Start(Mp4Box, $"{cmdvideo} {cmdaudio} -itags tool=\"{Get.AppNameLong}\" -new \"{fileout}.mp4\"");
+
+				if (exitcode == 1)
+					ConsoleEx.Write(LogLevel.Normal, "IFME", "MP4Box merge perfectly!");
+				else
+					ConsoleEx.Write(LogLevel.Warning, "IFME", "MP4Box merge with warning...");
 			}
 			else if (queue.OutputFormat == TargetFormat.MKV)
 			{
@@ -235,15 +266,15 @@ namespace ifme
 
 				if (exitcode == 0)
 				{
-					Console.WriteLine("MkvToolNix exit perfectly on first attempt!");
+					ConsoleEx.Write(LogLevel.Normal, "IFME", "MkvToolNix exit perfectly on first attempt!");
 				}
 				else if (exitcode == 1)
 				{
-					Console.WriteLine("MkvToolNix exit with warning on first attempt, it should work.");
+					ConsoleEx.Write(LogLevel.Warning, "IFME", "MkvToolNix exit with warning on first attempt, it should work.");
 				}
 				else
 				{
-					Console.WriteLine("MkvToolNix can't merge on first attempt, trying to skip adding tags, chapters & fonts!");
+					ConsoleEx.Write(LogLevel.Error, "IFME", "MkvToolNix can't merge on first attempt, trying to skip adding tags, chapters & fonts!");
 
 					// try without chapter and fonts
 					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs}";
@@ -251,16 +282,16 @@ namespace ifme
 
 					if (exitcode == 0)
 					{
-						Console.WriteLine("MkvToolNix merge perfectly without tags, chapters & fonts on second attempt!");
+						ConsoleEx.Write(LogLevel.Normal, "IFME", "MkvToolNix merge perfectly without tags, chapters & fonts on second attempt!");
 					}
 					else if (exitcode == 1)
 					{
-						Console.WriteLine("MkvToolNix merge with warning on second attempt even without tags, chapters & fonts, it should work.");
+						ConsoleEx.Write(LogLevel.Warning, "IFME", "MkvToolNix merge with warning on second attempt even without tags, chapters & fonts, it should work.");
 					}
 					else
 					{
 						// copy whole thing
-						Console.WriteLine("MkvToolNix still can't merge on second attempt! BACKUP ALL RAW FILE TO SAVE FOLDER!");
+						ConsoleEx.Write(LogLevel.Error, "IFME", "MkvToolNix still can't merge on second attempt! BACKUP ALL RAW FILE TO SAVE FOLDER!");
 						Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
 					}
 				}
@@ -280,7 +311,7 @@ namespace ifme
 					cmdaudio += $"-i \"{audio}\" ";
 				}
 
-				ProcessManager.Start(FFmpeg, $"{cmdvideo} {cmdaudio} -vcodec copy -acodec copy -y \"{fileout}.webm\"");
+				ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -stats {cmdvideo} {cmdaudio} -vcodec copy -acodec copy -y \"{fileout}.webm\"");
 			}
 
 			return 0;

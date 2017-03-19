@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace ifme
 {
-    public static class Get
+    static class Get
     {
 		public static Dictionary<string, string> LanguageCode
 		{
@@ -181,20 +181,6 @@ namespace ifme
 					DirectoryCopy(subdir.FullName, temppath, copySubDirs);
 				}
 			}
-		}
-
-		// Extension
-		internal static bool IsOneOf<T>(this T value, params T[] items)
-		{
-			for (int i = 0; i < items.Length; ++i)
-			{
-				if (items[i].Equals(value))
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 	}
 }

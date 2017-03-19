@@ -273,9 +273,49 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen {
+        internal static System.Drawing.Bitmap SplashScreen1 {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreen1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreen2 {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreen3 {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreen4 {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SplashScreen5 {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
