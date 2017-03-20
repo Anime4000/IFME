@@ -14,5 +14,11 @@
     <Setting Name="SplashScreenRand" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="FileNamePrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[IFME]</Value>
+    </Setting>
+    <Setting Name="FileNamePrefixType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -70,5 +70,29 @@ namespace ifme.Properties {
                 this["SplashScreenRand"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[IFME]")]
+        public string FileNamePrefix {
+            get {
+                return ((string)(this["FileNamePrefix"]));
+            }
+            set {
+                this["FileNamePrefix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FileNamePrefixType {
+            get {
+                return ((int)(this["FileNamePrefixType"]));
+            }
+            set {
+                this["FileNamePrefixType"] = value;
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
-
+using System.Drawing;
 
 namespace ifme
 {
@@ -29,11 +29,27 @@ namespace ifme
 			}
 		}
 
+		public static string AppPath
+		{
+			get
+			{
+				return Assembly.GetExecutingAssembly().Location;
+			}
+		}
+
 		public static string AppRootFolder
 		{
 			get
 			{
 				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			}
+		}
+
+		public static Icon AppIcon
+		{
+			get
+			{
+				return Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			}
 		}
 

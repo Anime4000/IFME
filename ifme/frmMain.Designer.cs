@@ -209,7 +209,7 @@
 			// colMediaFileName
 			// 
 			this.colMediaFileName.Text = "File name";
-			this.colMediaFileName.Width = 330;
+			this.colMediaFileName.Width = 310;
 			// 
 			// colMediaDuration
 			// 

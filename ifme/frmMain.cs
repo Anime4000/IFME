@@ -18,10 +18,9 @@ namespace ifme
 			bgThread.DoWork += bgThread_DoWork;
 			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
-			FormBorderStyle = FormBorderStyle.Sizable;
-
+			Icon = Get.AppIcon;
 			Text = Get.AppNameLong;
-			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+			FormBorderStyle = FormBorderStyle.Sizable;
 		}
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -50,7 +49,7 @@ namespace ifme
 
         private void btnOption_Click(object sender, EventArgs e)
         {
-			MessageBox.Show("Coming soon: Option\nGiving power to user to tweak IFME as they like", "Not available");
+			new frmOption().ShowDialog();
 		}
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
@@ -65,7 +64,7 @@ namespace ifme
 
         private void btnDonePowerOff_Click(object sender, EventArgs e)
         {
-			MessageBox.Show("Coming soon: Shutdown when done switch\nTurn off computer when encoding complete", "Not available");
+			
 		}
 
         private void btnStart_Click(object sender, EventArgs e)
