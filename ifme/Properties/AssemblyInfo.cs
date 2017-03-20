@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Anime400, et al.")]
 [assembly: AssemblyProduct("Audio & Video")]
 [assembly: AssemblyCopyright("Anime4000, GNU GPL 3")]
-[assembly: AssemblyTrademark("Anime4000, GNU GPL 3")]
+[assembly: AssemblyTrademark("Anime4000, FFmpeg team, MulticoreWare, x264 team, Xiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
