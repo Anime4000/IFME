@@ -14,7 +14,12 @@ namespace ifme
         {
             InitializeComponent();
 
+			// BackgroundWorkerEx Event
+			bgThread.DoWork += bgThread_DoWork;
+			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
+
 			FormBorderStyle = FormBorderStyle.Sizable;
+
 			Text = Get.AppNameLong;
 			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 		}
@@ -91,10 +96,6 @@ namespace ifme
 					item.SubItems[4].Text = "Waiting...";
 				}
 
-				// using custom BackgroundWorker with Abort support
-				// refer here: http://stackoverflow.com/questions/800767/how-to-kill-background-worker-completely
-				bgThread.DoWork += bgThread_DoWork;
-				bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 				bgThread.RunWorkerAsync(dict);
 
 				btnStart.Enabled = false;

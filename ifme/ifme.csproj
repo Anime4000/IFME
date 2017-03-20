@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbortableBackgroundWorker.cs">
+    <Compile Include="BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ConsoleEx.cs" />
@@ -59,10 +59,10 @@
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Code.cs">
+    <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.Designer.cs">
+    <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplashScreen.cs">

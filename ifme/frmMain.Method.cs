@@ -25,6 +25,10 @@ namespace ifme
 			Down
 		}
 
+		// BackgroundWorker with Abort support
+		// refer to BackgroundWorkerEx.cs file
+		private BackgroundWorkerEx bgThread = new BackgroundWorkerEx();
+
 		public void InitializeUX()
 		{
 			// Load plugin
@@ -1135,9 +1139,6 @@ namespace ifme
 		
 		}
 
-		// BackgroundWorker with Abort support
-		// refer to AbortableBackgroundWorker.cs file
-		AbortableBackgroundWorker bgThread = new AbortableBackgroundWorker();
 		private void bgThread_DoWork(object sender, DoWorkEventArgs e)
 		{
 			var media = e.Argument as Dictionary<int, MediaQueue>;

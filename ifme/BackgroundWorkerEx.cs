@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Threading;
 
 namespace ifme
 {
-	public class AbortableBackgroundWorker : BackgroundWorker
+	// using custom BackgroundWorker with Abort support
+	// refer here: http://stackoverflow.com/questions/800767/how-to-kill-background-worker-completely
+
+	public class BackgroundWorkerEx : BackgroundWorker
 	{
 		private Thread WorkerThread;
 

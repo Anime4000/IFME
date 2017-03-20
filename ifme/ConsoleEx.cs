@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 enum LogLevel
 {
@@ -43,7 +40,7 @@ namespace ifme
 			}
 
 			Console.ResetColor();
-			Console.Write($"] {message}\n");
+			Console.Write($"]: {message}\n");
 		}
 	}
 }
