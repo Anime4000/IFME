@@ -903,60 +903,67 @@ namespace ifme
 		private void MediaPopulate(MediaQueue media)
 		{
 			// Media Info
-			var mf = media.MediaInfo;
-			var md = string.Empty;
-			var du = TimeSpan.FromSeconds(mf.Duration);
-
-			md =
-				$"File path          : {mf.FilePath}\r\n" +
-				$"File size          : {Get.FileSizeDEC((long)mf.FileSize)} (base 10), {Get.FileSizeIEC((long)mf.FileSize)} (base 2)\r\n" +
-				$"Bitrate            : {mf.BitRate}\r\n" +
-				$"Duration           : {du.Hours:D2}:{du.Minutes:D2}:{du.Seconds:D2} (estimated)\r\n" +
-				$"Format             : {mf.FormatName} ({mf.FormatNameFull})\r\n";
-
-			if (mf.Video.Count > 0)
+			try
 			{
-				md += "\r\nVideo\r\n";
-				foreach (var item in mf.Video)
-				{
-					md += 
-						$"ID                 : {item.Id:00}\r\n" +
-						$"Codec              : {item.Codec}\r\n" +
-						$"Width              : {item.Width}\r\n" +
-						$"Height             : {item.Height}\r\n" +
-						$"Frame rate         : {item.FrameRate:00.000}fps\r\n" +
-						$"Frame rate (avg)   : {item.FrameRateAvg:00.000}fps\r\n" +
-						$"Bit Depth          : {item.BitDepth}bit per channel\r\n" +
-						$"Chroma             : {item.Chroma}\r\n";
-				}
-			}
+				var mf = media.MediaInfo;
+				var md = string.Empty;
+				var du = TimeSpan.FromSeconds(mf.Duration);
 
-			if (mf.Audio.Count > 0)
+				md =
+					$"File path          : {mf.FilePath}\r\n" +
+					$"File size          : {Get.FileSizeDEC((long)mf.FileSize)} (base 10), {Get.FileSizeIEC((long)mf.FileSize)} (base 2)\r\n" +
+					$"Bitrate            : {mf.BitRate}\r\n" +
+					$"Duration           : {du.Hours:D2}:{du.Minutes:D2}:{du.Seconds:D2} (estimated)\r\n" +
+					$"Format             : {mf.FormatName} ({mf.FormatNameFull})\r\n";
+
+				if (mf.Video.Count > 0)
+				{
+					md += "\r\nVideo\r\n";
+					foreach (var item in mf.Video)
+					{
+						md +=
+							$"ID                 : {item.Id:00}\r\n" +
+							$"Codec              : {item.Codec}\r\n" +
+							$"Width              : {item.Width}\r\n" +
+							$"Height             : {item.Height}\r\n" +
+							$"Frame rate         : {item.FrameRate:00.000}fps\r\n" +
+							$"Frame rate (avg)   : {item.FrameRateAvg:00.000}fps\r\n" +
+							$"Bit Depth          : {item.BitDepth}bit per channel\r\n" +
+							$"Chroma             : {item.Chroma}\r\n";
+					}
+				}
+
+				if (mf.Audio.Count > 0)
+				{
+					md += "\r\nAudio\r\n";
+					foreach (var item in mf.Audio)
+					{
+						md +=
+							$"ID                 : {item.Id:00}\r\n" +
+							$"Codec              : {item.Codec}\r\n" +
+							$"Sample rate        : {item.SampleRate}Hz\r\n" +
+							$"Channel            : {item.Channel}Ch\r\n";
+					}
+				}
+
+				if (mf.Subtitle.Count > 0)
+				{
+					md += "\r\nSubtitle\r\n";
+					foreach (var item in mf.Subtitle)
+					{
+						md +=
+							$"ID                 : {item.Id:00}\r\n" +
+							$"Codec              : {item.Codec}\r\n" +
+							$"Language           : {item.Language}\r\n";
+					}
+				}
+
+				txtMediaInfo.Text = md;
+			}
+			catch
 			{
-				md += "\r\nAudio\r\n";
-				foreach (var item in mf.Audio)
-				{
-					md += 
-						$"ID                 : {item.Id:00}\r\n" +
-						$"Codec              : {item.Codec}\r\n" +
-						$"Sample rate        : {item.SampleRate}Hz\r\n" +
-						$"Channel            : {item.Channel}Ch\r\n";
-				}
+				txtMediaInfo.Text = "New file, no main data to display";
 			}
-
-			if (mf.Subtitle.Count > 0)
-			{
-				md += "\r\nSubtitle\r\n";
-				foreach (var item in mf.Subtitle)
-				{
-					md += 
-						$"ID                 : {item.Id:00}\r\n" +
-						$"Codec              : {item.Codec}\r\n" +
-						$"Language           : {item.Language}\r\n";
-				}
-			}
-
-			txtMediaInfo.Text = md;
 
 			// Format choice
 			var format = media.OutputFormat;
@@ -1180,6 +1187,15 @@ namespace ifme
 			}
 
 			Console.Write("\n\n");
+
+			if (Properties.Settings.Default.ShutdownType == 1)
+			{
+				ProcessManager.ComputerReboot();
+			}
+			else if (Properties.Settings.Default.ShutdownType == 2)
+			{
+				ProcessManager.ComputerShutdown();
+			}
 
 			btnStop.Enabled = false;
 			btnPause.Enabled = false;

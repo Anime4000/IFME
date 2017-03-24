@@ -94,5 +94,17 @@ namespace ifme.Properties {
                 this["FileNamePrefixType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShutdownType {
+            get {
+                return ((int)(this["ShutdownType"]));
+            }
+            set {
+                this["ShutdownType"] = value;
+            }
+        }
     }
 }

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
@@ -38,6 +31,12 @@ namespace ifme
 				rdoFFmpeg32.Checked = true;
 			else
 				rdoFFmpeg64.Checked = true;
+
+			if (AviSynth.IsInstalled)
+			{
+				lblAviSynthInstall.Text = "Installed!";
+				lblAviSynthVersion.Text = AviSynth.InstalledVersion;
+			}
 
 			// List all plugins
 			foreach (var item in Plugin.Items)

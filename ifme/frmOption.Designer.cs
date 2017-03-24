@@ -30,36 +30,40 @@
 		{
 			this.tabOption = new System.Windows.Forms.TabControl();
 			this.tabOptionGeneral = new System.Windows.Forms.TabPage();
-			this.tabOptionEncoding = new System.Windows.Forms.TabPage();
-			this.btnCancel = new System.Windows.Forms.Button();
-			this.btnOk = new System.Windows.Forms.Button();
-			this.tabOptionModule = new System.Windows.Forms.TabPage();
-			this.grpLanguage = new System.Windows.Forms.GroupBox();
-			this.grpTempFolder = new System.Windows.Forms.GroupBox();
-			this.grpFFmpeg = new System.Windows.Forms.GroupBox();
-			this.cboLanguage = new System.Windows.Forms.ComboBox();
-			this.lblLanguageAuthor = new System.Windows.Forms.Label();
-			this.txtTempPath = new System.Windows.Forms.TextBox();
-			this.btnTempPath = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.rdoNamePrefixNone = new System.Windows.Forms.RadioButton();
-			this.rdoNamePrefixDateTime = new System.Windows.Forms.RadioButton();
-			this.rdoNamePrefixCustom = new System.Windows.Forms.RadioButton();
 			this.txtNamePrefix = new System.Windows.Forms.TextBox();
-			this.rdoFFmpeg32 = new System.Windows.Forms.RadioButton();
+			this.rdoNamePrefixCustom = new System.Windows.Forms.RadioButton();
+			this.rdoNamePrefixDateTime = new System.Windows.Forms.RadioButton();
+			this.rdoNamePrefixNone = new System.Windows.Forms.RadioButton();
+			this.grpTempFolder = new System.Windows.Forms.GroupBox();
+			this.btnTempPath = new System.Windows.Forms.Button();
+			this.txtTempPath = new System.Windows.Forms.TextBox();
+			this.grpLanguage = new System.Windows.Forms.GroupBox();
+			this.lblLanguageAuthor = new System.Windows.Forms.Label();
+			this.cboLanguage = new System.Windows.Forms.ComboBox();
+			this.tabOptionEncoding = new System.Windows.Forms.TabPage();
+			this.grpAviSynth = new System.Windows.Forms.GroupBox();
+			this.lblAviSynthVersion = new System.Windows.Forms.Label();
+			this.lblAviSynthInstall = new System.Windows.Forms.Label();
+			this.grpFFmpeg = new System.Windows.Forms.GroupBox();
 			this.rdoFFmpeg64 = new System.Windows.Forms.RadioButton();
+			this.rdoFFmpeg32 = new System.Windows.Forms.RadioButton();
+			this.tabOptionModule = new System.Windows.Forms.TabPage();
 			this.lstModule = new System.Windows.Forms.ListView();
 			this.colModName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colModArch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.btnCancel = new System.Windows.Forms.Button();
+			this.btnOk = new System.Windows.Forms.Button();
 			this.tabOption.SuspendLayout();
 			this.tabOptionGeneral.SuspendLayout();
-			this.tabOptionEncoding.SuspendLayout();
-			this.tabOptionModule.SuspendLayout();
-			this.grpLanguage.SuspendLayout();
-			this.grpTempFolder.SuspendLayout();
-			this.grpFFmpeg.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.grpTempFolder.SuspendLayout();
+			this.grpLanguage.SuspendLayout();
+			this.tabOptionEncoding.SuspendLayout();
+			this.grpAviSynth.SuspendLayout();
+			this.grpFFmpeg.SuspendLayout();
+			this.tabOptionModule.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabOption
@@ -89,135 +93,6 @@
 			this.tabOptionGeneral.Text = "General";
 			this.tabOptionGeneral.UseVisualStyleBackColor = true;
 			// 
-			// tabOptionEncoding
-			// 
-			this.tabOptionEncoding.Controls.Add(this.grpFFmpeg);
-			this.tabOptionEncoding.Location = new System.Drawing.Point(4, 22);
-			this.tabOptionEncoding.Name = "tabOptionEncoding";
-			this.tabOptionEncoding.Padding = new System.Windows.Forms.Padding(3);
-			this.tabOptionEncoding.Size = new System.Drawing.Size(608, 281);
-			this.tabOptionEncoding.TabIndex = 1;
-			this.tabOptionEncoding.Text = "Encoding";
-			this.tabOptionEncoding.UseVisualStyleBackColor = true;
-			// 
-			// btnCancel
-			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(553, 325);
-			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(75, 23);
-			this.btnCancel.TabIndex = 1;
-			this.btnCancel.Text = "&Cancel";
-			this.btnCancel.UseVisualStyleBackColor = true;
-			// 
-			// btnOk
-			// 
-			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOk.Location = new System.Drawing.Point(472, 325);
-			this.btnOk.Name = "btnOk";
-			this.btnOk.Size = new System.Drawing.Size(75, 23);
-			this.btnOk.TabIndex = 2;
-			this.btnOk.Text = "&OK";
-			this.btnOk.UseVisualStyleBackColor = true;
-			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-			// 
-			// tabOptionModule
-			// 
-			this.tabOptionModule.Controls.Add(this.lstModule);
-			this.tabOptionModule.Location = new System.Drawing.Point(4, 22);
-			this.tabOptionModule.Name = "tabOptionModule";
-			this.tabOptionModule.Padding = new System.Windows.Forms.Padding(3);
-			this.tabOptionModule.Size = new System.Drawing.Size(608, 281);
-			this.tabOptionModule.TabIndex = 2;
-			this.tabOptionModule.Text = "Module";
-			this.tabOptionModule.UseVisualStyleBackColor = true;
-			// 
-			// grpLanguage
-			// 
-			this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpLanguage.Controls.Add(this.lblLanguageAuthor);
-			this.grpLanguage.Controls.Add(this.cboLanguage);
-			this.grpLanguage.Location = new System.Drawing.Point(6, 6);
-			this.grpLanguage.Name = "grpLanguage";
-			this.grpLanguage.Size = new System.Drawing.Size(596, 97);
-			this.grpLanguage.TabIndex = 0;
-			this.grpLanguage.TabStop = false;
-			this.grpLanguage.Text = "&Language";
-			// 
-			// grpTempFolder
-			// 
-			this.grpTempFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpTempFolder.Controls.Add(this.btnTempPath);
-			this.grpTempFolder.Controls.Add(this.txtTempPath);
-			this.grpTempFolder.Location = new System.Drawing.Point(6, 109);
-			this.grpTempFolder.Name = "grpTempFolder";
-			this.grpTempFolder.Size = new System.Drawing.Size(596, 80);
-			this.grpTempFolder.TabIndex = 1;
-			this.grpTempFolder.TabStop = false;
-			this.grpTempFolder.Text = "&Temporary folder";
-			// 
-			// grpFFmpeg
-			// 
-			this.grpFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg64);
-			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg32);
-			this.grpFFmpeg.Location = new System.Drawing.Point(6, 6);
-			this.grpFFmpeg.Name = "grpFFmpeg";
-			this.grpFFmpeg.Size = new System.Drawing.Size(596, 100);
-			this.grpFFmpeg.TabIndex = 0;
-			this.grpFFmpeg.TabStop = false;
-			this.grpFFmpeg.Text = "&Default Decoder";
-			// 
-			// cboLanguage
-			// 
-			this.cboLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.cboLanguage.FormattingEnabled = true;
-			this.cboLanguage.Location = new System.Drawing.Point(89, 22);
-			this.cboLanguage.Name = "cboLanguage";
-			this.cboLanguage.Size = new System.Drawing.Size(418, 24);
-			this.cboLanguage.TabIndex = 0;
-			// 
-			// lblLanguageAuthor
-			// 
-			this.lblLanguageAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblLanguageAuthor.Location = new System.Drawing.Point(89, 49);
-			this.lblLanguageAuthor.Name = "lblLanguageAuthor";
-			this.lblLanguageAuthor.Size = new System.Drawing.Size(418, 32);
-			this.lblLanguageAuthor.TabIndex = 1;
-			this.lblLanguageAuthor.Text = "Line 1\r\nLine 2";
-			// 
-			// txtTempPath
-			// 
-			this.txtTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtTempPath.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtTempPath.Location = new System.Drawing.Point(89, 28);
-			this.txtTempPath.Name = "txtTempPath";
-			this.txtTempPath.ReadOnly = true;
-			this.txtTempPath.Size = new System.Drawing.Size(388, 24);
-			this.txtTempPath.TabIndex = 0;
-			// 
-			// btnTempPath
-			// 
-			this.btnTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnTempPath.Image = global::ifme.Properties.Resources.icon16_document_save;
-			this.btnTempPath.Location = new System.Drawing.Point(483, 28);
-			this.btnTempPath.Name = "btnTempPath";
-			this.btnTempPath.Size = new System.Drawing.Size(24, 24);
-			this.btnTempPath.TabIndex = 1;
-			this.btnTempPath.UseVisualStyleBackColor = true;
-			this.btnTempPath.Click += new System.EventHandler(this.btnTempPath_Click);
-			// 
 			// groupBox1
 			// 
 			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -233,25 +108,14 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "&New file name prefix";
 			// 
-			// rdoNamePrefixNone
+			// txtNamePrefix
 			// 
-			this.rdoNamePrefixNone.Location = new System.Drawing.Point(89, 32);
-			this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
-			this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePrefixNone.TabIndex = 0;
-			this.rdoNamePrefixNone.TabStop = true;
-			this.rdoNamePrefixNone.Text = "&None";
-			this.rdoNamePrefixNone.UseVisualStyleBackColor = true;
-			// 
-			// rdoNamePrefixDateTime
-			// 
-			this.rdoNamePrefixDateTime.Location = new System.Drawing.Point(185, 32);
-			this.rdoNamePrefixDateTime.Name = "rdoNamePrefixDateTime";
-			this.rdoNamePrefixDateTime.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePrefixDateTime.TabIndex = 1;
-			this.rdoNamePrefixDateTime.TabStop = true;
-			this.rdoNamePrefixDateTime.Text = "&Date Time";
-			this.rdoNamePrefixDateTime.UseVisualStyleBackColor = true;
+			this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtNamePrefix.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtNamePrefix.Location = new System.Drawing.Point(377, 32);
+			this.txtNamePrefix.Name = "txtNamePrefix";
+			this.txtNamePrefix.Size = new System.Drawing.Size(130, 24);
+			this.txtNamePrefix.TabIndex = 3;
 			// 
 			// rdoNamePrefixCustom
 			// 
@@ -264,14 +128,169 @@
 			this.rdoNamePrefixCustom.Text = "&Custom:";
 			this.rdoNamePrefixCustom.UseVisualStyleBackColor = true;
 			// 
-			// txtNamePrefix
+			// rdoNamePrefixDateTime
 			// 
-			this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtNamePrefix.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtNamePrefix.Location = new System.Drawing.Point(377, 32);
-			this.txtNamePrefix.Name = "txtNamePrefix";
-			this.txtNamePrefix.Size = new System.Drawing.Size(130, 24);
-			this.txtNamePrefix.TabIndex = 3;
+			this.rdoNamePrefixDateTime.Location = new System.Drawing.Point(185, 32);
+			this.rdoNamePrefixDateTime.Name = "rdoNamePrefixDateTime";
+			this.rdoNamePrefixDateTime.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePrefixDateTime.TabIndex = 1;
+			this.rdoNamePrefixDateTime.TabStop = true;
+			this.rdoNamePrefixDateTime.Text = "&Date Time";
+			this.rdoNamePrefixDateTime.UseVisualStyleBackColor = true;
+			// 
+			// rdoNamePrefixNone
+			// 
+			this.rdoNamePrefixNone.Location = new System.Drawing.Point(89, 32);
+			this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
+			this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePrefixNone.TabIndex = 0;
+			this.rdoNamePrefixNone.TabStop = true;
+			this.rdoNamePrefixNone.Text = "&None";
+			this.rdoNamePrefixNone.UseVisualStyleBackColor = true;
+			// 
+			// grpTempFolder
+			// 
+			this.grpTempFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpTempFolder.Controls.Add(this.btnTempPath);
+			this.grpTempFolder.Controls.Add(this.txtTempPath);
+			this.grpTempFolder.Location = new System.Drawing.Point(6, 109);
+			this.grpTempFolder.Name = "grpTempFolder";
+			this.grpTempFolder.Size = new System.Drawing.Size(596, 80);
+			this.grpTempFolder.TabIndex = 1;
+			this.grpTempFolder.TabStop = false;
+			this.grpTempFolder.Text = "&Temporary folder";
+			// 
+			// btnTempPath
+			// 
+			this.btnTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnTempPath.Image = global::ifme.Properties.Resources.icon16_document_save;
+			this.btnTempPath.Location = new System.Drawing.Point(483, 28);
+			this.btnTempPath.Name = "btnTempPath";
+			this.btnTempPath.Size = new System.Drawing.Size(24, 24);
+			this.btnTempPath.TabIndex = 1;
+			this.btnTempPath.UseVisualStyleBackColor = true;
+			this.btnTempPath.Click += new System.EventHandler(this.btnTempPath_Click);
+			// 
+			// txtTempPath
+			// 
+			this.txtTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtTempPath.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtTempPath.Location = new System.Drawing.Point(89, 28);
+			this.txtTempPath.Name = "txtTempPath";
+			this.txtTempPath.ReadOnly = true;
+			this.txtTempPath.Size = new System.Drawing.Size(388, 24);
+			this.txtTempPath.TabIndex = 0;
+			// 
+			// grpLanguage
+			// 
+			this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpLanguage.Controls.Add(this.lblLanguageAuthor);
+			this.grpLanguage.Controls.Add(this.cboLanguage);
+			this.grpLanguage.Location = new System.Drawing.Point(6, 6);
+			this.grpLanguage.Name = "grpLanguage";
+			this.grpLanguage.Size = new System.Drawing.Size(596, 97);
+			this.grpLanguage.TabIndex = 0;
+			this.grpLanguage.TabStop = false;
+			this.grpLanguage.Text = "&Language";
+			// 
+			// lblLanguageAuthor
+			// 
+			this.lblLanguageAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblLanguageAuthor.Location = new System.Drawing.Point(89, 49);
+			this.lblLanguageAuthor.Name = "lblLanguageAuthor";
+			this.lblLanguageAuthor.Size = new System.Drawing.Size(418, 32);
+			this.lblLanguageAuthor.TabIndex = 1;
+			this.lblLanguageAuthor.Text = "Line 1\r\nLine 2";
+			// 
+			// cboLanguage
+			// 
+			this.cboLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.cboLanguage.FormattingEnabled = true;
+			this.cboLanguage.Location = new System.Drawing.Point(89, 22);
+			this.cboLanguage.Name = "cboLanguage";
+			this.cboLanguage.Size = new System.Drawing.Size(418, 24);
+			this.cboLanguage.TabIndex = 0;
+			// 
+			// tabOptionEncoding
+			// 
+			this.tabOptionEncoding.Controls.Add(this.grpAviSynth);
+			this.tabOptionEncoding.Controls.Add(this.grpFFmpeg);
+			this.tabOptionEncoding.Location = new System.Drawing.Point(4, 22);
+			this.tabOptionEncoding.Name = "tabOptionEncoding";
+			this.tabOptionEncoding.Padding = new System.Windows.Forms.Padding(3);
+			this.tabOptionEncoding.Size = new System.Drawing.Size(608, 281);
+			this.tabOptionEncoding.TabIndex = 1;
+			this.tabOptionEncoding.Text = "Encoding";
+			this.tabOptionEncoding.UseVisualStyleBackColor = true;
+			// 
+			// grpAviSynth
+			// 
+			this.grpAviSynth.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpAviSynth.Controls.Add(this.lblAviSynthVersion);
+			this.grpAviSynth.Controls.Add(this.lblAviSynthInstall);
+			this.grpAviSynth.Location = new System.Drawing.Point(6, 112);
+			this.grpAviSynth.Name = "grpAviSynth";
+			this.grpAviSynth.Size = new System.Drawing.Size(596, 163);
+			this.grpAviSynth.TabIndex = 1;
+			this.grpAviSynth.TabStop = false;
+			this.grpAviSynth.Text = "&AviSynth";
+			// 
+			// lblAviSynthVersion
+			// 
+			this.lblAviSynthVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAviSynthVersion.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.lblAviSynthVersion.Location = new System.Drawing.Point(148, 81);
+			this.lblAviSynthVersion.Name = "lblAviSynthVersion";
+			this.lblAviSynthVersion.Size = new System.Drawing.Size(300, 48);
+			this.lblAviSynthVersion.TabIndex = 1;
+			this.lblAviSynthVersion.Text = "Unknown Version";
+			this.lblAviSynthVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblAviSynthInstall
+			// 
+			this.lblAviSynthInstall.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAviSynthInstall.Font = new System.Drawing.Font("Tahoma", 14F);
+			this.lblAviSynthInstall.Location = new System.Drawing.Point(148, 33);
+			this.lblAviSynthInstall.Name = "lblAviSynthInstall";
+			this.lblAviSynthInstall.Size = new System.Drawing.Size(300, 48);
+			this.lblAviSynthInstall.TabIndex = 0;
+			this.lblAviSynthInstall.Text = "Not Found";
+			this.lblAviSynthInstall.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// grpFFmpeg
+			// 
+			this.grpFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg64);
+			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg32);
+			this.grpFFmpeg.Location = new System.Drawing.Point(6, 6);
+			this.grpFFmpeg.Name = "grpFFmpeg";
+			this.grpFFmpeg.Size = new System.Drawing.Size(596, 100);
+			this.grpFFmpeg.TabIndex = 0;
+			this.grpFFmpeg.TabStop = false;
+			this.grpFFmpeg.Text = "&Default Decoder";
+			// 
+			// rdoFFmpeg64
+			// 
+			this.rdoFFmpeg64.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.rdoFFmpeg64.Location = new System.Drawing.Point(168, 53);
+			this.rdoFFmpeg64.Name = "rdoFFmpeg64";
+			this.rdoFFmpeg64.Size = new System.Drawing.Size(300, 24);
+			this.rdoFFmpeg64.TabIndex = 1;
+			this.rdoFFmpeg64.TabStop = true;
+			this.rdoFFmpeg64.Text = "FFmpeg &64bit (Support large resolution && high bitdepth)";
+			this.rdoFFmpeg64.UseVisualStyleBackColor = true;
 			// 
 			// rdoFFmpeg32
 			// 
@@ -285,17 +304,16 @@
 			this.rdoFFmpeg32.Text = "FFmpeg &32bit (Support AviSynth)";
 			this.rdoFFmpeg32.UseVisualStyleBackColor = true;
 			// 
-			// rdoFFmpeg64
+			// tabOptionModule
 			// 
-			this.rdoFFmpeg64.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFFmpeg64.Location = new System.Drawing.Point(168, 53);
-			this.rdoFFmpeg64.Name = "rdoFFmpeg64";
-			this.rdoFFmpeg64.Size = new System.Drawing.Size(300, 24);
-			this.rdoFFmpeg64.TabIndex = 1;
-			this.rdoFFmpeg64.TabStop = true;
-			this.rdoFFmpeg64.Text = "FFmpeg &64bit (Support large resolution && high bitdepth)";
-			this.rdoFFmpeg64.UseVisualStyleBackColor = true;
+			this.tabOptionModule.Controls.Add(this.lstModule);
+			this.tabOptionModule.Location = new System.Drawing.Point(4, 22);
+			this.tabOptionModule.Name = "tabOptionModule";
+			this.tabOptionModule.Padding = new System.Windows.Forms.Padding(3);
+			this.tabOptionModule.Size = new System.Drawing.Size(608, 281);
+			this.tabOptionModule.TabIndex = 2;
+			this.tabOptionModule.Text = "Module";
+			this.tabOptionModule.UseVisualStyleBackColor = true;
 			// 
 			// lstModule
 			// 
@@ -326,10 +344,33 @@
 			this.colModAuthor.Text = "Developer";
 			this.colModAuthor.Width = 200;
 			// 
+			// btnCancel
+			// 
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnCancel.Location = new System.Drawing.Point(553, 325);
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.Size = new System.Drawing.Size(75, 23);
+			this.btnCancel.TabIndex = 1;
+			this.btnCancel.Text = "&Cancel";
+			this.btnCancel.UseVisualStyleBackColor = true;
+			// 
+			// btnOk
+			// 
+			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnOk.Location = new System.Drawing.Point(472, 325);
+			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(75, 23);
+			this.btnOk.TabIndex = 2;
+			this.btnOk.Text = "&OK";
+			this.btnOk.UseVisualStyleBackColor = true;
+			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+			// 
 			// frmOption
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(640, 360);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.btnCancel);
@@ -342,14 +383,15 @@
 			this.Load += new System.EventHandler(this.frmOption_Load);
 			this.tabOption.ResumeLayout(false);
 			this.tabOptionGeneral.ResumeLayout(false);
-			this.tabOptionEncoding.ResumeLayout(false);
-			this.tabOptionModule.ResumeLayout(false);
-			this.grpLanguage.ResumeLayout(false);
-			this.grpTempFolder.ResumeLayout(false);
-			this.grpTempFolder.PerformLayout();
-			this.grpFFmpeg.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.grpTempFolder.ResumeLayout(false);
+			this.grpTempFolder.PerformLayout();
+			this.grpLanguage.ResumeLayout(false);
+			this.tabOptionEncoding.ResumeLayout(false);
+			this.grpAviSynth.ResumeLayout(false);
+			this.grpFFmpeg.ResumeLayout(false);
+			this.tabOptionModule.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -380,5 +422,8 @@
 		private System.Windows.Forms.ColumnHeader colModName;
 		private System.Windows.Forms.ColumnHeader colModArch;
 		private System.Windows.Forms.ColumnHeader colModAuthor;
+		private System.Windows.Forms.GroupBox grpAviSynth;
+		private System.Windows.Forms.Label lblAviSynthInstall;
+		private System.Windows.Forms.Label lblAviSynthVersion;
 	}
 }

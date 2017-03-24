@@ -207,10 +207,13 @@ namespace ifme
 			var tag = string.Empty;
 			if (Properties.Settings.Default.FileNamePrefixType == 1)
 				tag = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
-			else if (Properties.Settings.Default.FileNamePrefixType == 1)
+			else if (Properties.Settings.Default.FileNamePrefixType == 2)
 				tag = $"{Properties.Settings.Default.FileNamePrefix} ";
 
 			var fileout = Path.Combine(saveDir, $"{tag}{Path.GetFileNameWithoutExtension(queue.File)}");
+
+			if (File.Exists(fileout))
+				fileout = Path.Combine(saveDir, $"{tag}{Path.GetFileNameWithoutExtension(queue.File)}_");
 
 			if (queue.OutputFormat == TargetFormat.MP4)
 			{

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
 
 namespace ifme
 {
@@ -30,7 +31,36 @@ namespace ifme
 
         private void btnMediaFileNew_Click(object sender, EventArgs e)
         {
-			MessageBox.Show("Coming soon: New media file\nThis feature is like MkvToolNix GUI, mux raw video, audio and subtitle", "Not available");
+			var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts. This way you can add files and convert them or just merge (copy stream) into a new MKV file\n\nEnter a new file name:");
+			
+			if (frm.ShowDialog() == DialogResult.OK)
+			{
+				if (string.IsNullOrEmpty(frm.ReturnValue))
+					return;
+
+				if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+					return;
+
+				var queue = new MediaQueue();
+
+				queue.Enable = true;
+				queue.File = frm.ReturnValue;
+				queue.OutputFormat = TargetFormat.MKV;
+
+				var lst = new ListViewItem(new[]
+				{
+					frm.ReturnValue,
+					"",
+					"New",
+					"MKV",
+					"Ready",
+				});
+
+				lst.Tag = queue;
+				lst.Checked = true;
+
+				lstMedia.Items.Add(lst);
+			}
         }
 
         private void btnMediaFileOpen_Click(object sender, EventArgs e)
@@ -64,7 +94,7 @@ namespace ifme
 
         private void btnDonePowerOff_Click(object sender, EventArgs e)
         {
-			
+			new frmShutdown().ShowDialog();
 		}
 
         private void btnStart_Click(object sender, EventArgs e)

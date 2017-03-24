@@ -50,12 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AviSynth.cs" />
     <Compile Include="BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ConsoleEx.cs" />
+    <Compile Include="CRC32.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="frmInputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInputBox.Designer.cs">
+      <DependentUpon>frmInputBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +78,12 @@
     </Compile>
     <Compile Include="frmOption.Designer.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmShutdown.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShutdown.Designer.cs">
+      <DependentUpon>frmShutdown.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -105,11 +119,17 @@
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmInputBox.resx">
+      <DependentUpon>frmInputBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOption.resx">
       <DependentUpon>frmOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShutdown.resx">
+      <DependentUpon>frmShutdown.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSplashScreen.resx">
       <DependentUpon>frmSplashScreen.cs</DependentUpon>

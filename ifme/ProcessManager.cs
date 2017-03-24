@@ -139,5 +139,21 @@ namespace ifme
 				}
 			}
 		}
+
+		public static void ComputerReboot()
+		{
+			if (OS.IsWindows)
+				Process.Start("shutdown.exe", "-r -f -t 0");
+			else if (OS.IsLinux)
+				Process.Start("bash", "-c 'reboot'");
+		}
+
+		public static void ComputerShutdown()
+		{
+			if (OS.IsWindows)
+				Process.Start("shutdown.exe", "-s -f -t 0");
+			else if (OS.IsLinux)
+				Process.Start("bash", "-c 'poweroff'");
+		}
 	}
 }
