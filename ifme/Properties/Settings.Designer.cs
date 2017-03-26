@@ -106,5 +106,29 @@ namespace ifme.Properties {
                 this["ShutdownType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("x265")]
+        public string FileNamePostfix {
+            get {
+                return ((string)(this["FileNamePostfix"]));
+            }
+            set {
+                this["FileNamePostfix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FileNamePostfixType {
+            get {
+                return ((int)(this["FileNamePostfixType"]));
+            }
+            set {
+                this["FileNamePostfixType"] = value;
+            }
+        }
     }
 }

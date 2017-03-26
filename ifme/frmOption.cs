@@ -18,6 +18,7 @@ namespace ifme
 			// General
 			txtTempPath.Text = Properties.Settings.Default.TempDir;
 			txtNamePrefix.Text = Properties.Settings.Default.FileNamePrefix;
+			txtNamePostfix.Text = Properties.Settings.Default.FileNamePostfix;
 
 			if (Properties.Settings.Default.FileNamePrefixType == 0)
 				rdoNamePrefixNone.Checked = true;
@@ -25,6 +26,11 @@ namespace ifme
 				rdoNamePrefixDateTime.Checked = true;
 			else
 				rdoNamePrefixCustom.Checked = true;
+
+			if (Properties.Settings.Default.FileNamePostfixType == 0)
+				rdoNamePostfixNone.Checked = true;
+			else
+				rdoNamePostfixCustom.Checked = true;
 
 			// Encoding
 			if (Properties.Settings.Default.FFmpegArch == 32)
@@ -78,6 +84,7 @@ namespace ifme
 			// General
 			Properties.Settings.Default.TempDir = txtTempPath.Text;
 			Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
+			Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
 
 			if (rdoNamePrefixCustom.Checked)
 				Properties.Settings.Default.FileNamePrefixType = 2;
@@ -85,6 +92,11 @@ namespace ifme
 				Properties.Settings.Default.FileNamePrefixType = 1;
 			else
 				Properties.Settings.Default.FileNamePrefixType = 0;
+
+			if (rdoNamePostfixNone.Checked)
+				Properties.Settings.Default.FileNamePostfixType = 0;
+			else
+				Properties.Settings.Default.FileNamePostfixType = 1;
 
 			// Encoding
 			if (rdoFFmpeg32.Checked)

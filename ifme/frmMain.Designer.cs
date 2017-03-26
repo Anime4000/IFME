@@ -601,7 +601,7 @@
 			this.btnVideoAdv.TabIndex = 12;
 			this.btnVideoAdv.Text = "&Advance e&ncoder options";
 			this.btnVideoAdv.UseVisualStyleBackColor = true;
-			this.btnVideoAdv.Click += new System.EventHandler(this.MediaApply);
+			this.btnVideoAdv.Click += new System.EventHandler(this.btnVideoAdv_Click);
 			// 
 			// nudVideoMultiPass
 			// 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Linq;
 
 using Newtonsoft.Json;
 
@@ -16,12 +17,13 @@ namespace ifme
 
             // Read plugin JSON file
             var folder = Path.Combine(Directory.GetCurrentDirectory(), "plugin");
-            foreach (var item in Directory.GetDirectories(folder))
+			
+			foreach (var item in Directory.EnumerateFiles(folder, "_plugin*.json", SearchOption.AllDirectories).OrderBy(file => file))
             {
-                var json = File.ReadAllText(Path.Combine(item, "_plugin.json"));
+				var json = File.ReadAllText(item);
                 var plugin = JsonConvert.DeserializeObject<Plugin>(json);
 
-                plugin.Path = item;
+                plugin.Path = Path.GetDirectoryName(item);
 
 				Console.WriteLine($"Loading {plugin.Name}");
 

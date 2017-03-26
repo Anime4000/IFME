@@ -102,6 +102,13 @@ namespace ifme
 			if (lstMedia.Items.Count == 0)
 				return;
 
+			if (Properties.Settings.Default.ShutdownType == 1 || Properties.Settings.Default.ShutdownType == 2)
+			{
+				var msg = MessageBox.Show("Shutdown or Restart is set!\nThis computer will do that when encoding completed. Proceed?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				if (msg == DialogResult.No)
+					return;
+			}
+
 			if (bgThread.IsBusy)
 			{
 				if (!btnPause.Enabled)
@@ -401,6 +408,52 @@ namespace ifme
 			//formatting
         }
 
+		private void btnVideoAdv_Click(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var cmd = string.Empty;
+				try
+				{
+					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
+					var id = lstVideo.SelectedItems[0].Index;
+					cmd = mq.Video[id].EncoderCommand;
+				}
+				catch
+				{
+					cmd = string.Empty;
+				}
+
+
+				var frm = new frmInputBox("Advance Command Line", "Modify encoder command-line arguments", cmd);
+				if (frm.ShowDialog() == DialogResult.OK)
+				{
+					cmd = frm.ReturnValue;
+				}
+
+				// if apply one item in the queue including selected audio
+				if (lstMedia.SelectedItems.Count == 1)
+				{
+					foreach (ListViewItem v in lstVideo.SelectedItems)
+					{
+						(lstMedia.SelectedItems[0].Tag as MediaQueue).Video[v.Index].EncoderCommand = cmd;
+					}
+				}
+
+				// if apply every item in the queue including every audio
+				if (lstMedia.SelectedItems.Count >= 2)
+				{
+					foreach (ListViewItem q in lstMedia.SelectedItems)
+					{
+						foreach (var v in (q.Tag as MediaQueue).Video)
+						{
+							v.EncoderCommand = cmd;
+						}
+					}
+				}
+			}
+		}
+
 		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
 		{
 			grpVideoInterlace.Enabled = chkVideoDeinterlace.Checked;
@@ -543,7 +596,48 @@ namespace ifme
 
         private void btnAudioAdv_Click(object sender, EventArgs e)
         {
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var cmd = string.Empty;
+				try
+				{
+					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
+					var id = lstAudio.SelectedItems[0].Index;
+					cmd = mq.Audio[id].EncoderCommand;
+				}
+				catch
+				{
+					cmd = string.Empty;
+				}
+					
+				
+				var frm = new frmInputBox("Advance Command Line", "Modify encoder command-line arguments", cmd);
+				if (frm.ShowDialog() == DialogResult.OK)
+				{
+					cmd = frm.ReturnValue;
+				}
 
+				// if apply one item in the queue including selected audio
+				if (lstMedia.SelectedItems.Count == 1)
+				{
+					foreach (ListViewItem a in lstAudio.SelectedItems)
+					{
+						(lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[a.Index].EncoderCommand = cmd;
+					}
+				}
+
+				// if apply every item in the queue including every audio
+				if (lstMedia.SelectedItems.Count >= 2)
+				{
+					foreach (ListViewItem q in lstMedia.SelectedItems)
+					{
+						foreach (var a in (q.Tag as MediaQueue).Audio)
+						{
+							a.EncoderCommand = cmd;
+						}
+					}
+				}
+			}
         }
 
         private void btnSubAdd_Click(object sender, EventArgs e)

@@ -204,16 +204,27 @@ namespace ifme
 		{
 			ConsoleEx.Write(LogLevel.Normal, "ifme", "Merging RAW files as single media file");
 
-			var tag = string.Empty;
+			// ready
+			var filename = Path.GetFileNameWithoutExtension(queue.File);
+			var prefix = string.Empty;
+			var postfix = string.Empty;
+
+			// prefix
 			if (Properties.Settings.Default.FileNamePrefixType == 1)
-				tag = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
+				prefix = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
 			else if (Properties.Settings.Default.FileNamePrefixType == 2)
-				tag = $"{Properties.Settings.Default.FileNamePrefix} ";
+				prefix = Properties.Settings.Default.FileNamePrefix;
 
-			var fileout = Path.Combine(saveDir, $"{tag}{Path.GetFileNameWithoutExtension(queue.File)}");
+			// postfix
+			if (Properties.Settings.Default.FileNamePostfixType == 1)
+				postfix = Properties.Settings.Default.FileNamePostfix;
 
+			// final
+			var fileout = Path.Combine(saveDir, $"{prefix}{filename}{postfix}");
+
+			// check if exist
 			if (File.Exists(fileout))
-				fileout = Path.Combine(saveDir, $"{tag}{Path.GetFileNameWithoutExtension(queue.File)}_");
+				fileout = $"{fileout} NEW";
 
 			if (queue.OutputFormat == TargetFormat.MP4)
 			{

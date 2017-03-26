@@ -23,5 +23,11 @@
     <Setting Name="ShutdownType" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="FileNamePostfix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">x265</Value>
+    </Setting>
+    <Setting Name="FileNamePostfixType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

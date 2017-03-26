@@ -24,6 +24,19 @@ namespace ifme
 			lblMessage.Text = Message;
 		}
 
+		public frmInputBox(string Title, string Message, string Value)
+		{
+			InitializeComponent();
+
+			Icon = Get.AppIcon;
+			Text = Title;
+			FormBorderStyle = FormBorderStyle.Sizable;
+
+			lblMessage.Text = Message;
+
+			txtInput.Text = Value;
+		}
+
 		private void frmInputBox_Load(object sender, EventArgs e)
 		{
 

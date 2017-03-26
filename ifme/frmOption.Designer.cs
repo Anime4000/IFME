@@ -30,7 +30,7 @@
 		{
 			this.tabOption = new System.Windows.Forms.TabControl();
 			this.tabOptionGeneral = new System.Windows.Forms.TabPage();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.grpNewFilename = new System.Windows.Forms.GroupBox();
 			this.txtNamePrefix = new System.Windows.Forms.TextBox();
 			this.rdoNamePrefixCustom = new System.Windows.Forms.RadioButton();
 			this.rdoNamePrefixDateTime = new System.Windows.Forms.RadioButton();
@@ -55,15 +55,22 @@
 			this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
+			this.grpNewFilenamePrefix = new System.Windows.Forms.GroupBox();
+			this.grpNewFilenamePostfix = new System.Windows.Forms.GroupBox();
+			this.rdoNamePostfixNone = new System.Windows.Forms.RadioButton();
+			this.rdoNamePostfixCustom = new System.Windows.Forms.RadioButton();
+			this.txtNamePostfix = new System.Windows.Forms.TextBox();
 			this.tabOption.SuspendLayout();
 			this.tabOptionGeneral.SuspendLayout();
-			this.groupBox1.SuspendLayout();
+			this.grpNewFilename.SuspendLayout();
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
 			this.tabOptionEncoding.SuspendLayout();
 			this.grpAviSynth.SuspendLayout();
 			this.grpFFmpeg.SuspendLayout();
 			this.tabOptionModule.SuspendLayout();
+			this.grpNewFilenamePrefix.SuspendLayout();
+			this.grpNewFilenamePostfix.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabOption
@@ -77,50 +84,49 @@
 			this.tabOption.Location = new System.Drawing.Point(12, 12);
 			this.tabOption.Name = "tabOption";
 			this.tabOption.SelectedIndex = 0;
-			this.tabOption.Size = new System.Drawing.Size(616, 307);
+			this.tabOption.Size = new System.Drawing.Size(616, 427);
 			this.tabOption.TabIndex = 0;
 			// 
 			// tabOptionGeneral
 			// 
-			this.tabOptionGeneral.Controls.Add(this.groupBox1);
+			this.tabOptionGeneral.Controls.Add(this.grpNewFilename);
 			this.tabOptionGeneral.Controls.Add(this.grpTempFolder);
 			this.tabOptionGeneral.Controls.Add(this.grpLanguage);
 			this.tabOptionGeneral.Location = new System.Drawing.Point(4, 22);
 			this.tabOptionGeneral.Name = "tabOptionGeneral";
 			this.tabOptionGeneral.Padding = new System.Windows.Forms.Padding(3);
-			this.tabOptionGeneral.Size = new System.Drawing.Size(608, 281);
+			this.tabOptionGeneral.Size = new System.Drawing.Size(608, 401);
 			this.tabOptionGeneral.TabIndex = 0;
 			this.tabOptionGeneral.Text = "General";
 			this.tabOptionGeneral.UseVisualStyleBackColor = true;
 			// 
-			// groupBox1
+			// grpNewFilename
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.grpNewFilename.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.txtNamePrefix);
-			this.groupBox1.Controls.Add(this.rdoNamePrefixCustom);
-			this.groupBox1.Controls.Add(this.rdoNamePrefixDateTime);
-			this.groupBox1.Controls.Add(this.rdoNamePrefixNone);
-			this.groupBox1.Location = new System.Drawing.Point(6, 195);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(596, 80);
-			this.groupBox1.TabIndex = 2;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "&New file name prefix";
+			this.grpNewFilename.Controls.Add(this.grpNewFilenamePostfix);
+			this.grpNewFilename.Controls.Add(this.grpNewFilenamePrefix);
+			this.grpNewFilename.Location = new System.Drawing.Point(6, 260);
+			this.grpNewFilename.Name = "grpNewFilename";
+			this.grpNewFilename.Size = new System.Drawing.Size(596, 135);
+			this.grpNewFilename.TabIndex = 2;
+			this.grpNewFilename.TabStop = false;
+			this.grpNewFilename.Text = "&New filename";
 			// 
 			// txtNamePrefix
 			// 
-			this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtNamePrefix.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtNamePrefix.Location = new System.Drawing.Point(377, 32);
+			this.txtNamePrefix.Location = new System.Drawing.Point(102, 79);
 			this.txtNamePrefix.Name = "txtNamePrefix";
-			this.txtNamePrefix.Size = new System.Drawing.Size(130, 24);
+			this.txtNamePrefix.Size = new System.Drawing.Size(181, 24);
 			this.txtNamePrefix.TabIndex = 3;
 			// 
 			// rdoNamePrefixCustom
 			// 
-			this.rdoNamePrefixCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoNamePrefixCustom.Location = new System.Drawing.Point(281, 32);
+			this.rdoNamePrefixCustom.Location = new System.Drawing.Point(6, 79);
 			this.rdoNamePrefixCustom.Name = "rdoNamePrefixCustom";
 			this.rdoNamePrefixCustom.Size = new System.Drawing.Size(90, 24);
 			this.rdoNamePrefixCustom.TabIndex = 2;
@@ -130,7 +136,7 @@
 			// 
 			// rdoNamePrefixDateTime
 			// 
-			this.rdoNamePrefixDateTime.Location = new System.Drawing.Point(185, 32);
+			this.rdoNamePrefixDateTime.Location = new System.Drawing.Point(6, 49);
 			this.rdoNamePrefixDateTime.Name = "rdoNamePrefixDateTime";
 			this.rdoNamePrefixDateTime.Size = new System.Drawing.Size(90, 24);
 			this.rdoNamePrefixDateTime.TabIndex = 1;
@@ -140,7 +146,7 @@
 			// 
 			// rdoNamePrefixNone
 			// 
-			this.rdoNamePrefixNone.Location = new System.Drawing.Point(89, 32);
+			this.rdoNamePrefixNone.Location = new System.Drawing.Point(6, 19);
 			this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
 			this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
 			this.rdoNamePrefixNone.TabIndex = 0;
@@ -150,13 +156,13 @@
 			// 
 			// grpTempFolder
 			// 
-			this.grpTempFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.grpTempFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpTempFolder.Controls.Add(this.btnTempPath);
 			this.grpTempFolder.Controls.Add(this.txtTempPath);
-			this.grpTempFolder.Location = new System.Drawing.Point(6, 109);
+			this.grpTempFolder.Location = new System.Drawing.Point(6, 138);
 			this.grpTempFolder.Name = "grpTempFolder";
-			this.grpTempFolder.Size = new System.Drawing.Size(596, 80);
+			this.grpTempFolder.Size = new System.Drawing.Size(596, 116);
 			this.grpTempFolder.TabIndex = 1;
 			this.grpTempFolder.TabStop = false;
 			this.grpTempFolder.Text = "&Temporary folder";
@@ -165,7 +171,7 @@
 			// 
 			this.btnTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnTempPath.Image = global::ifme.Properties.Resources.icon16_document_save;
-			this.btnTempPath.Location = new System.Drawing.Point(483, 28);
+			this.btnTempPath.Location = new System.Drawing.Point(483, 46);
 			this.btnTempPath.Name = "btnTempPath";
 			this.btnTempPath.Size = new System.Drawing.Size(24, 24);
 			this.btnTempPath.TabIndex = 1;
@@ -177,7 +183,7 @@
 			this.txtTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtTempPath.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtTempPath.Location = new System.Drawing.Point(89, 28);
+			this.txtTempPath.Location = new System.Drawing.Point(89, 46);
 			this.txtTempPath.Name = "txtTempPath";
 			this.txtTempPath.ReadOnly = true;
 			this.txtTempPath.Size = new System.Drawing.Size(388, 24);
@@ -185,14 +191,13 @@
 			// 
 			// grpLanguage
 			// 
-			this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpLanguage.Controls.Add(this.lblLanguageAuthor);
 			this.grpLanguage.Controls.Add(this.cboLanguage);
 			this.grpLanguage.Location = new System.Drawing.Point(6, 6);
 			this.grpLanguage.Name = "grpLanguage";
-			this.grpLanguage.Size = new System.Drawing.Size(596, 97);
+			this.grpLanguage.Size = new System.Drawing.Size(596, 126);
 			this.grpLanguage.TabIndex = 0;
 			this.grpLanguage.TabStop = false;
 			this.grpLanguage.Text = "&Language";
@@ -201,7 +206,7 @@
 			// 
 			this.lblLanguageAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblLanguageAuthor.Location = new System.Drawing.Point(89, 49);
+			this.lblLanguageAuthor.Location = new System.Drawing.Point(89, 61);
 			this.lblLanguageAuthor.Name = "lblLanguageAuthor";
 			this.lblLanguageAuthor.Size = new System.Drawing.Size(418, 32);
 			this.lblLanguageAuthor.TabIndex = 1;
@@ -214,7 +219,7 @@
 			this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
 			this.cboLanguage.FormattingEnabled = true;
-			this.cboLanguage.Location = new System.Drawing.Point(89, 22);
+			this.cboLanguage.Location = new System.Drawing.Point(89, 34);
 			this.cboLanguage.Name = "cboLanguage";
 			this.cboLanguage.Size = new System.Drawing.Size(418, 24);
 			this.cboLanguage.TabIndex = 0;
@@ -226,7 +231,7 @@
 			this.tabOptionEncoding.Location = new System.Drawing.Point(4, 22);
 			this.tabOptionEncoding.Name = "tabOptionEncoding";
 			this.tabOptionEncoding.Padding = new System.Windows.Forms.Padding(3);
-			this.tabOptionEncoding.Size = new System.Drawing.Size(608, 281);
+			this.tabOptionEncoding.Size = new System.Drawing.Size(608, 401);
 			this.tabOptionEncoding.TabIndex = 1;
 			this.tabOptionEncoding.Text = "Encoding";
 			this.tabOptionEncoding.UseVisualStyleBackColor = true;
@@ -240,7 +245,7 @@
 			this.grpAviSynth.Controls.Add(this.lblAviSynthInstall);
 			this.grpAviSynth.Location = new System.Drawing.Point(6, 112);
 			this.grpAviSynth.Name = "grpAviSynth";
-			this.grpAviSynth.Size = new System.Drawing.Size(596, 163);
+			this.grpAviSynth.Size = new System.Drawing.Size(596, 283);
 			this.grpAviSynth.TabIndex = 1;
 			this.grpAviSynth.TabStop = false;
 			this.grpAviSynth.Text = "&AviSynth";
@@ -249,7 +254,7 @@
 			// 
 			this.lblAviSynthVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblAviSynthVersion.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.lblAviSynthVersion.Location = new System.Drawing.Point(148, 81);
+			this.lblAviSynthVersion.Location = new System.Drawing.Point(148, 141);
 			this.lblAviSynthVersion.Name = "lblAviSynthVersion";
 			this.lblAviSynthVersion.Size = new System.Drawing.Size(300, 48);
 			this.lblAviSynthVersion.TabIndex = 1;
@@ -260,7 +265,7 @@
 			// 
 			this.lblAviSynthInstall.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblAviSynthInstall.Font = new System.Drawing.Font("Tahoma", 14F);
-			this.lblAviSynthInstall.Location = new System.Drawing.Point(148, 33);
+			this.lblAviSynthInstall.Location = new System.Drawing.Point(148, 93);
 			this.lblAviSynthInstall.Name = "lblAviSynthInstall";
 			this.lblAviSynthInstall.Size = new System.Drawing.Size(300, 48);
 			this.lblAviSynthInstall.TabIndex = 0;
@@ -310,7 +315,7 @@
 			this.tabOptionModule.Location = new System.Drawing.Point(4, 22);
 			this.tabOptionModule.Name = "tabOptionModule";
 			this.tabOptionModule.Padding = new System.Windows.Forms.Padding(3);
-			this.tabOptionModule.Size = new System.Drawing.Size(608, 281);
+			this.tabOptionModule.Size = new System.Drawing.Size(608, 401);
 			this.tabOptionModule.TabIndex = 2;
 			this.tabOptionModule.Text = "Module";
 			this.tabOptionModule.UseVisualStyleBackColor = true;
@@ -325,7 +330,7 @@
 			this.lstModule.FullRowSelect = true;
 			this.lstModule.Location = new System.Drawing.Point(3, 3);
 			this.lstModule.Name = "lstModule";
-			this.lstModule.Size = new System.Drawing.Size(602, 275);
+			this.lstModule.Size = new System.Drawing.Size(602, 395);
 			this.lstModule.TabIndex = 0;
 			this.lstModule.UseCompatibleStateImageBehavior = false;
 			this.lstModule.View = System.Windows.Forms.View.Details;
@@ -348,7 +353,7 @@
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(553, 325);
+			this.btnCancel.Location = new System.Drawing.Point(553, 445);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 1;
@@ -359,7 +364,7 @@
 			// 
 			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOk.Location = new System.Drawing.Point(472, 325);
+			this.btnOk.Location = new System.Drawing.Point(472, 445);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 2;
@@ -367,11 +372,71 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
+			// grpNewFilenamePrefix
+			// 
+			this.grpNewFilenamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixNone);
+			this.grpNewFilenamePrefix.Controls.Add(this.txtNamePrefix);
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixDateTime);
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixCustom);
+			this.grpNewFilenamePrefix.Location = new System.Drawing.Point(6, 19);
+			this.grpNewFilenamePrefix.Name = "grpNewFilenamePrefix";
+			this.grpNewFilenamePrefix.Size = new System.Drawing.Size(289, 110);
+			this.grpNewFilenamePrefix.TabIndex = 4;
+			this.grpNewFilenamePrefix.TabStop = false;
+			this.grpNewFilenamePrefix.Text = "P&refix";
+			// 
+			// grpNewFilenamePostfix
+			// 
+			this.grpNewFilenamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpNewFilenamePostfix.Controls.Add(this.txtNamePostfix);
+			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixCustom);
+			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixNone);
+			this.grpNewFilenamePostfix.Location = new System.Drawing.Point(301, 19);
+			this.grpNewFilenamePostfix.Name = "grpNewFilenamePostfix";
+			this.grpNewFilenamePostfix.Size = new System.Drawing.Size(289, 110);
+			this.grpNewFilenamePostfix.TabIndex = 5;
+			this.grpNewFilenamePostfix.TabStop = false;
+			this.grpNewFilenamePostfix.Text = "P&ostfix";
+			// 
+			// rdoNamePostfixNone
+			// 
+			this.rdoNamePostfixNone.Location = new System.Drawing.Point(6, 28);
+			this.rdoNamePostfixNone.Name = "rdoNamePostfixNone";
+			this.rdoNamePostfixNone.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePostfixNone.TabIndex = 0;
+			this.rdoNamePostfixNone.TabStop = true;
+			this.rdoNamePostfixNone.Text = "Non&e";
+			this.rdoNamePostfixNone.UseVisualStyleBackColor = true;
+			// 
+			// rdoNamePostfixCustom
+			// 
+			this.rdoNamePostfixCustom.Location = new System.Drawing.Point(6, 58);
+			this.rdoNamePostfixCustom.Name = "rdoNamePostfixCustom";
+			this.rdoNamePostfixCustom.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePostfixCustom.TabIndex = 1;
+			this.rdoNamePostfixCustom.TabStop = true;
+			this.rdoNamePostfixCustom.Text = "C&ustom:";
+			this.rdoNamePostfixCustom.UseVisualStyleBackColor = true;
+			// 
+			// txtNamePostfix
+			// 
+			this.txtNamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtNamePostfix.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtNamePostfix.Location = new System.Drawing.Point(102, 58);
+			this.txtNamePostfix.Name = "txtNamePostfix";
+			this.txtNamePostfix.Size = new System.Drawing.Size(181, 24);
+			this.txtNamePostfix.TabIndex = 2;
+			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.ClientSize = new System.Drawing.Size(640, 360);
+			this.ClientSize = new System.Drawing.Size(640, 480);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.tabOption);
@@ -383,8 +448,7 @@
 			this.Load += new System.EventHandler(this.frmOption_Load);
 			this.tabOption.ResumeLayout(false);
 			this.tabOptionGeneral.ResumeLayout(false);
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.grpNewFilename.ResumeLayout(false);
 			this.grpTempFolder.ResumeLayout(false);
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
@@ -392,6 +456,10 @@
 			this.grpAviSynth.ResumeLayout(false);
 			this.grpFFmpeg.ResumeLayout(false);
 			this.tabOptionModule.ResumeLayout(false);
+			this.grpNewFilenamePrefix.ResumeLayout(false);
+			this.grpNewFilenamePrefix.PerformLayout();
+			this.grpNewFilenamePostfix.ResumeLayout(false);
+			this.grpNewFilenamePostfix.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -411,7 +479,7 @@
 		private System.Windows.Forms.Button btnTempPath;
 		private System.Windows.Forms.TextBox txtTempPath;
 		private System.Windows.Forms.Label lblLanguageAuthor;
-		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox grpNewFilename;
 		private System.Windows.Forms.TextBox txtNamePrefix;
 		private System.Windows.Forms.RadioButton rdoNamePrefixCustom;
 		private System.Windows.Forms.RadioButton rdoNamePrefixDateTime;
@@ -425,5 +493,10 @@
 		private System.Windows.Forms.GroupBox grpAviSynth;
 		private System.Windows.Forms.Label lblAviSynthInstall;
 		private System.Windows.Forms.Label lblAviSynthVersion;
+		private System.Windows.Forms.GroupBox grpNewFilenamePrefix;
+		private System.Windows.Forms.GroupBox grpNewFilenamePostfix;
+		private System.Windows.Forms.TextBox txtNamePostfix;
+		private System.Windows.Forms.RadioButton rdoNamePostfixCustom;
+		private System.Windows.Forms.RadioButton rdoNamePostfixNone;
 	}
 }
