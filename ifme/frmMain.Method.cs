@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -685,6 +686,30 @@ namespace ifme
 		{
 			var ctrl = (sender as Control).Name;
 
+			// input validation
+			if (string.Equals(ctrl, cboVideoResolution.Name))
+			{
+				Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
+				MatchCollection matches = regex.Matches(cboVideoResolution.Text);
+
+				if (matches.Count == 0)
+				{
+					cboVideoResolution.Text = "1280x720";
+				}
+			}
+
+			if (string.Equals(ctrl, cboVideoFrameRate.Name))
+			{
+				Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
+				MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
+
+				if (matches.Count == 0)
+				{
+					cboVideoFrameRate.Text = "24";
+				}
+			}
+
+			// data update
 			foreach (ListViewItem q in lstMedia.SelectedItems)
 			{
 				var m = q.Tag as MediaQueue;
@@ -763,40 +788,38 @@ namespace ifme
 
 		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
 		{
-			if (string.Equals(ctrl, "cboVideoEncoder"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name))
 			{
 				video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoPreset"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoPreset.Name))
 			{
 				video.EncoderPreset = cboVideoPreset.Text;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoTune"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoTune.Name))
 			{
 				video.EncoderTune = cboVideoTune.Text;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoRateControl"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoRateControl.Name))
 			{
-				
 				video.EncoderMode = cboVideoRateControl.SelectedIndex;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "nudVideoRateFactor"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, nudVideoRateFactor.Name))
 			{
 				video.EncoderValue = nudVideoRateFactor.Value;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "nudVideoMultiPass"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, nudVideoMultiPass.Name))
 			{
 				video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
 			}
 
 			// Video pixel
-
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoResolution"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoResolution.Name))
 			{
 				var w = 0;
 				var h = 0;
@@ -810,7 +833,7 @@ namespace ifme
 				video.Height = h;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoFrameRate"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoFrameRate.Name))
 			{
 				float f = 0;
 				float.TryParse(cboVideoFrameRate.Text, out f);
@@ -818,14 +841,14 @@ namespace ifme
 				video.FrameCount = (int)Math.Ceiling(video.Duration * f);
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoBitDepth"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoBitDepth.Name))
 			{
 				var b = 8;
 				int.TryParse(cboVideoBitDepth.Text, out b);
 				video.BitDepth = b;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoPixelFormat"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoPixelFormat.Name))
 			{
 				var y = 420;
 				int.TryParse(cboVideoPixelFormat.Text, out y);
@@ -833,18 +856,17 @@ namespace ifme
 			}
 
 			// Video Interlace
-
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "chkVideoDeinterlace"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, chkVideoDeinterlace.Name))
 			{
 				video.DeInterlace = chkVideoDeinterlace.Checked;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoDeinterlaceMode"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoDeinterlaceMode.Name))
 			{
 				video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
 			}
 
-			if (string.Equals(ctrl, "cboVideoEncoder") || string.Equals(ctrl, "cboVideoDeinterlaceField"))
+			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoDeinterlaceField.Name))
 			{
 				video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
 			}
@@ -852,31 +874,31 @@ namespace ifme
 
 		private void MediaApplyAudio(string ctrl, ref MediaQueueAudio audio)
 		{
-			if (string.Equals(ctrl, "cboAudioEncoder"))
+			if (string.Equals(ctrl, cboAudioEncoder.Name))
 			{
 				audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
 			}
 
-			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioMode"))
+			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioMode.Name))
 			{
 				audio.EncoderMode = cboAudioMode.SelectedIndex;
 			}
 
-			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioQuality"))
+			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioQuality.Name))
 			{
 				decimal q = 0;
 				decimal.TryParse(cboAudioQuality.Text, out q);
 				audio.EndoderQuality = q;
 			}
 
-			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioSampleRate"))
+			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioSampleRate.Name))
 			{
 				var hz = 0;
 				int.TryParse(cboAudioSampleRate.Text, out hz);
 				audio.EncoderSampleRate = hz;
 			}
 
-			if (string.Equals(ctrl, "cboAudioEncoder") || string.Equals(ctrl, "cboAudioChannel"))
+			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioChannel.Name))
 			{
 				double ch = 0;
 				double.TryParse(cboAudioChannel.Text, out ch);
@@ -886,7 +908,7 @@ namespace ifme
 
 		private void MediaApplySubtitle(string ctrl, ref MediaQueueSubtitle subtitle)
 		{
-			if (string.Equals(ctrl, "cboSubLang"))
+			if (string.Equals(ctrl, cboSubLang.Name))
 			{
 				subtitle.Lang = $"{cboSubLang.SelectedValue}";
 			}
@@ -894,7 +916,7 @@ namespace ifme
 
 		private void MediaApplyAttachment(string ctrl, ref MediaQueueAttachment attachment)
 		{
-			if (string.Equals(ctrl, "cboAttachMime"))
+			if (string.Equals(ctrl, cboAttachMime.Name))
 			{
 				attachment.Mime = cboAttachMime.Text;
 			}
@@ -1180,10 +1202,12 @@ namespace ifme
 			if (e.Cancelled)
 			{
 				ProcessManager.Stop();
-				ConsoleEx.Write(LogLevel.Warning, "IFME", "\n\nEncoding cancel by user...");
+
+				Console.Write("\n\n");
+				ConsoleEx.Write(LogLevel.Warning, "ifme", "Encoding cancel by user...");
 
 				foreach (ListViewItem item in lstMedia.Items)
-					item.SubItems[4].Text = "Abort!";
+					item.SubItems[4].Text = "Abort by user";
 			}
 
 			Console.Write("\n\n");

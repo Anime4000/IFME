@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ifme
@@ -154,10 +153,13 @@ namespace ifme
 					var en = Path.Combine(codec.Path, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
 
 					var yuv = $"yuv{item.PixelFormat}p{(item.BitDepth == 8 ? string.Empty : $"{item.BitDepth}le")}";
+					var deinterlace = item.DeInterlace ? $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"" : string.Empty;
 
 					var preset = (string.IsNullOrEmpty(vc.Args.Preset) ? string.Empty : $"{vc.Args.Preset} {item.EncoderPreset}");
 					var quality = (string.IsNullOrEmpty(vc.Mode[item.EncoderMode].Args) ? string.Empty : $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}");
 					var tune = (string.IsNullOrEmpty(vc.Args.Tune) ? string.Empty : $"{vc.Args.Tune} {item.EncoderTune}");
+
+					var framecount = item.FrameCount + Properties.Settings.Default.FrameCountOffset;
 
 					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
@@ -174,7 +176,7 @@ namespace ifme
 
 							if (vc.Args.Pipe)
 							{
-								ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+								ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
 							}
 							else
 							{
@@ -186,7 +188,7 @@ namespace ifme
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {item.FrameCount} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
 						}
 						else
 						{

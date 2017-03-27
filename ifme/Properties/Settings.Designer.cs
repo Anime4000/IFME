@@ -130,5 +130,17 @@ namespace ifme.Properties {
                 this["FileNamePostfixType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int FrameCountOffset {
+            get {
+                return ((int)(this["FrameCountOffset"]));
+            }
+            set {
+                this["FrameCountOffset"] = value;
+            }
+        }
     }
 }

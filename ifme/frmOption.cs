@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace ifme
 {
@@ -41,8 +42,11 @@ namespace ifme
 			if (AviSynth.IsInstalled)
 			{
 				lblAviSynthInstall.Text = "Installed!";
+				lblAviSynthInstall.ForeColor = Color.Green;
 				lblAviSynthVersion.Text = AviSynth.InstalledVersion;
 			}
+
+			nudFrameCountOffset.Value = Properties.Settings.Default.FrameCountOffset;
 
 			// List all plugins
 			foreach (var item in Plugin.Items)
@@ -103,6 +107,8 @@ namespace ifme
 				Properties.Settings.Default.FFmpegArch = 32;
 			else
 				Properties.Settings.Default.FFmpegArch = 64;
+
+			Properties.Settings.Default.FrameCountOffset = (int)nudFrameCountOffset.Value;
 
 			// Final
 			Properties.Settings.Default.Save();

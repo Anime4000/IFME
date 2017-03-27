@@ -92,6 +92,8 @@
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Get.cs" />
+    <Compile Include="Language\Language.cs" />
+    <Compile Include="Language\LanguageClass.cs" />
     <Compile Include="MediaDefault\MediaDefaultAudio.cs" />
     <Compile Include="MediaDefault\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />

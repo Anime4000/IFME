@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Threading;
-using System.IO;
 
 namespace ifme
 {
@@ -273,6 +270,7 @@ namespace ifme
 			}
 		}
 
+		// Video
 		private void btnVideoAdd_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
@@ -296,13 +294,18 @@ namespace ifme
 
         private void lstVideo_DragDrop(object sender, DragEventArgs e)
         {
-
-        }
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
         private void lstVideo_DragEnter(object sender, DragEventArgs e)
         {
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				VideoAdd(file);
 
-        }
+			UXReloadMedia();
+		}
 
         private void btnVideoMoveUp_Click(object sender, EventArgs e)
         {
@@ -359,6 +362,10 @@ namespace ifme
 					foreach (var item in video.Mode)
 						cboVideoRateControl.Items.Add(item.Name);
 					cboVideoRateControl.SelectedIndex = 0;
+
+					var dei = temp.Video.Args.Pipe;
+					chkVideoDeinterlace.Enabled = dei;
+					grpVideoInterlace.Enabled = dei;
 				}
 				else
 				{
@@ -396,16 +403,6 @@ namespace ifme
                 }
 
             }
-        }
-
-        private void cboVideoResolution_TextChanged(object sender, EventArgs e)
-        {
-			//formatting
-        }
-
-        private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
-        {
-			//formatting
         }
 
 		private void btnVideoAdv_Click(object sender, EventArgs e)
@@ -459,6 +456,7 @@ namespace ifme
 			grpVideoInterlace.Enabled = chkVideoDeinterlace.Checked;
 		}
 
+		// Audio
 		private void btnAudioAdd_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
@@ -468,7 +466,7 @@ namespace ifme
 			UXReloadMedia();
 		}
 
-        private void btnAudioDel_Click(object sender, EventArgs e)
+		private void btnAudioDel_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -491,7 +489,22 @@ namespace ifme
 			ListViewItemMove(ListViewItemType.Audio, Direction.Down);
 		}
 
-        private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstAudio_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstAudio_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				AudioAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstMedia.SelectedItems.Count > 0)
             {
@@ -579,21 +592,6 @@ namespace ifme
             }
         }
 
-        private void cboAudioQuality_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboAudioSampleRate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboAudioChannel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAudioAdv_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
@@ -640,6 +638,7 @@ namespace ifme
 			}
         }
 
+		// Subtitle
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
@@ -672,7 +671,22 @@ namespace ifme
 			ListViewItemMove(ListViewItemType.Subtitle, Direction.Down);
 		}
 
-        private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstSub_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstSub_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				SubtitleAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -685,7 +699,22 @@ namespace ifme
 			}
         }
 
-        private void btnAttachAdd_Click(object sender, EventArgs e)
+		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					foreach (ListViewItem item in lstSub.SelectedItems)
+					{
+						item.SubItems[2].Text = cboSubLang.Text;
+					}
+				}
+			}
+		}
+
+		// Attachment
+		private void btnAttachAdd_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Attachment))
@@ -707,7 +736,22 @@ namespace ifme
 			}
 		}
 
-        private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstAttach_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstAttach_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				AttachmentAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -729,20 +773,6 @@ namespace ifme
 					foreach (ListViewItem item in lstAttach.SelectedItems)
 					{
 						item.SubItems[1].Text = cboAttachMime.Text;
-					}
-				}
-			}
-		}
-
-		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (lstMedia.SelectedItems.Count > 0)
-			{
-				if (lstSub.SelectedItems.Count > 0)
-				{
-					foreach (ListViewItem item in lstSub.SelectedItems)
-					{
-						item.SubItems[2].Text = cboSubLang.Text;
 					}
 				}
 			}

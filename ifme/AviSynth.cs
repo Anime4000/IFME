@@ -32,11 +32,11 @@ namespace ifme
 				{
 					if (string.Equals(CRC32.GetFile(AviSynthPath), "0x073A3318"))
 					{
-						return "2.6 MT (32bit, 2015.02.20)";
+						return "2.6 MT 32bit (2015.02.20)";
 					}
 					else if (string.Equals(CRC32.GetFile(AviSynthPath), "0x30E0D263"))
 					{
-						return "2.6 ST (32bit, Original)";
+						return "2.6 ST 32bit (Original)";
 					}
 				}
 

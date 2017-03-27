@@ -28,13 +28,19 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmOption));
 			this.tabOption = new System.Windows.Forms.TabControl();
 			this.tabOptionGeneral = new System.Windows.Forms.TabPage();
 			this.grpNewFilename = new System.Windows.Forms.GroupBox();
-			this.txtNamePrefix = new System.Windows.Forms.TextBox();
-			this.rdoNamePrefixCustom = new System.Windows.Forms.RadioButton();
-			this.rdoNamePrefixDateTime = new System.Windows.Forms.RadioButton();
+			this.grpNewFilenamePostfix = new System.Windows.Forms.GroupBox();
+			this.txtNamePostfix = new System.Windows.Forms.TextBox();
+			this.rdoNamePostfixCustom = new System.Windows.Forms.RadioButton();
+			this.rdoNamePostfixNone = new System.Windows.Forms.RadioButton();
+			this.grpNewFilenamePrefix = new System.Windows.Forms.GroupBox();
 			this.rdoNamePrefixNone = new System.Windows.Forms.RadioButton();
+			this.txtNamePrefix = new System.Windows.Forms.TextBox();
+			this.rdoNamePrefixDateTime = new System.Windows.Forms.RadioButton();
+			this.rdoNamePrefixCustom = new System.Windows.Forms.RadioButton();
 			this.grpTempFolder = new System.Windows.Forms.GroupBox();
 			this.btnTempPath = new System.Windows.Forms.Button();
 			this.txtTempPath = new System.Windows.Forms.TextBox();
@@ -55,22 +61,22 @@
 			this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
-			this.grpNewFilenamePrefix = new System.Windows.Forms.GroupBox();
-			this.grpNewFilenamePostfix = new System.Windows.Forms.GroupBox();
-			this.rdoNamePostfixNone = new System.Windows.Forms.RadioButton();
-			this.rdoNamePostfixCustom = new System.Windows.Forms.RadioButton();
-			this.txtNamePostfix = new System.Windows.Forms.TextBox();
+			this.grpFrameCountOffset = new System.Windows.Forms.GroupBox();
+			this.lblFrameCountOffset = new System.Windows.Forms.Label();
+			this.nudFrameCountOffset = new System.Windows.Forms.NumericUpDown();
 			this.tabOption.SuspendLayout();
 			this.tabOptionGeneral.SuspendLayout();
 			this.grpNewFilename.SuspendLayout();
+			this.grpNewFilenamePostfix.SuspendLayout();
+			this.grpNewFilenamePrefix.SuspendLayout();
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
 			this.tabOptionEncoding.SuspendLayout();
 			this.grpAviSynth.SuspendLayout();
 			this.grpFFmpeg.SuspendLayout();
 			this.tabOptionModule.SuspendLayout();
-			this.grpNewFilenamePrefix.SuspendLayout();
-			this.grpNewFilenamePostfix.SuspendLayout();
+			this.grpFrameCountOffset.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabOption
@@ -114,6 +120,76 @@
 			this.grpNewFilename.TabStop = false;
 			this.grpNewFilename.Text = "&New filename";
 			// 
+			// grpNewFilenamePostfix
+			// 
+			this.grpNewFilenamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpNewFilenamePostfix.Controls.Add(this.txtNamePostfix);
+			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixCustom);
+			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixNone);
+			this.grpNewFilenamePostfix.Location = new System.Drawing.Point(301, 19);
+			this.grpNewFilenamePostfix.Name = "grpNewFilenamePostfix";
+			this.grpNewFilenamePostfix.Size = new System.Drawing.Size(289, 110);
+			this.grpNewFilenamePostfix.TabIndex = 5;
+			this.grpNewFilenamePostfix.TabStop = false;
+			this.grpNewFilenamePostfix.Text = "P&ostfix";
+			// 
+			// txtNamePostfix
+			// 
+			this.txtNamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtNamePostfix.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.txtNamePostfix.Location = new System.Drawing.Point(102, 58);
+			this.txtNamePostfix.Name = "txtNamePostfix";
+			this.txtNamePostfix.Size = new System.Drawing.Size(181, 24);
+			this.txtNamePostfix.TabIndex = 2;
+			// 
+			// rdoNamePostfixCustom
+			// 
+			this.rdoNamePostfixCustom.Location = new System.Drawing.Point(6, 58);
+			this.rdoNamePostfixCustom.Name = "rdoNamePostfixCustom";
+			this.rdoNamePostfixCustom.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePostfixCustom.TabIndex = 1;
+			this.rdoNamePostfixCustom.TabStop = true;
+			this.rdoNamePostfixCustom.Text = "C&ustom:";
+			this.rdoNamePostfixCustom.UseVisualStyleBackColor = true;
+			// 
+			// rdoNamePostfixNone
+			// 
+			this.rdoNamePostfixNone.Location = new System.Drawing.Point(6, 28);
+			this.rdoNamePostfixNone.Name = "rdoNamePostfixNone";
+			this.rdoNamePostfixNone.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePostfixNone.TabIndex = 0;
+			this.rdoNamePostfixNone.TabStop = true;
+			this.rdoNamePostfixNone.Text = "Non&e";
+			this.rdoNamePostfixNone.UseVisualStyleBackColor = true;
+			// 
+			// grpNewFilenamePrefix
+			// 
+			this.grpNewFilenamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixNone);
+			this.grpNewFilenamePrefix.Controls.Add(this.txtNamePrefix);
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixDateTime);
+			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixCustom);
+			this.grpNewFilenamePrefix.Location = new System.Drawing.Point(6, 19);
+			this.grpNewFilenamePrefix.Name = "grpNewFilenamePrefix";
+			this.grpNewFilenamePrefix.Size = new System.Drawing.Size(289, 110);
+			this.grpNewFilenamePrefix.TabIndex = 4;
+			this.grpNewFilenamePrefix.TabStop = false;
+			this.grpNewFilenamePrefix.Text = "P&refix";
+			// 
+			// rdoNamePrefixNone
+			// 
+			this.rdoNamePrefixNone.Location = new System.Drawing.Point(6, 19);
+			this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
+			this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePrefixNone.TabIndex = 0;
+			this.rdoNamePrefixNone.TabStop = true;
+			this.rdoNamePrefixNone.Text = "&None";
+			this.rdoNamePrefixNone.UseVisualStyleBackColor = true;
+			// 
 			// txtNamePrefix
 			// 
 			this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -123,16 +199,6 @@
 			this.txtNamePrefix.Name = "txtNamePrefix";
 			this.txtNamePrefix.Size = new System.Drawing.Size(181, 24);
 			this.txtNamePrefix.TabIndex = 3;
-			// 
-			// rdoNamePrefixCustom
-			// 
-			this.rdoNamePrefixCustom.Location = new System.Drawing.Point(6, 79);
-			this.rdoNamePrefixCustom.Name = "rdoNamePrefixCustom";
-			this.rdoNamePrefixCustom.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePrefixCustom.TabIndex = 2;
-			this.rdoNamePrefixCustom.TabStop = true;
-			this.rdoNamePrefixCustom.Text = "&Custom:";
-			this.rdoNamePrefixCustom.UseVisualStyleBackColor = true;
 			// 
 			// rdoNamePrefixDateTime
 			// 
@@ -144,15 +210,15 @@
 			this.rdoNamePrefixDateTime.Text = "&Date Time";
 			this.rdoNamePrefixDateTime.UseVisualStyleBackColor = true;
 			// 
-			// rdoNamePrefixNone
+			// rdoNamePrefixCustom
 			// 
-			this.rdoNamePrefixNone.Location = new System.Drawing.Point(6, 19);
-			this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
-			this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePrefixNone.TabIndex = 0;
-			this.rdoNamePrefixNone.TabStop = true;
-			this.rdoNamePrefixNone.Text = "&None";
-			this.rdoNamePrefixNone.UseVisualStyleBackColor = true;
+			this.rdoNamePrefixCustom.Location = new System.Drawing.Point(6, 79);
+			this.rdoNamePrefixCustom.Name = "rdoNamePrefixCustom";
+			this.rdoNamePrefixCustom.Size = new System.Drawing.Size(90, 24);
+			this.rdoNamePrefixCustom.TabIndex = 2;
+			this.rdoNamePrefixCustom.TabStop = true;
+			this.rdoNamePrefixCustom.Text = "&Custom:";
+			this.rdoNamePrefixCustom.UseVisualStyleBackColor = true;
 			// 
 			// grpTempFolder
 			// 
@@ -226,6 +292,7 @@
 			// 
 			// tabOptionEncoding
 			// 
+			this.tabOptionEncoding.Controls.Add(this.grpFrameCountOffset);
 			this.tabOptionEncoding.Controls.Add(this.grpAviSynth);
 			this.tabOptionEncoding.Controls.Add(this.grpFFmpeg);
 			this.tabOptionEncoding.Location = new System.Drawing.Point(4, 22);
@@ -243,10 +310,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpAviSynth.Controls.Add(this.lblAviSynthVersion);
 			this.grpAviSynth.Controls.Add(this.lblAviSynthInstall);
-			this.grpAviSynth.Location = new System.Drawing.Point(6, 112);
+			this.grpAviSynth.Location = new System.Drawing.Point(6, 6);
 			this.grpAviSynth.Name = "grpAviSynth";
-			this.grpAviSynth.Size = new System.Drawing.Size(596, 283);
-			this.grpAviSynth.TabIndex = 1;
+			this.grpAviSynth.Size = new System.Drawing.Size(596, 150);
+			this.grpAviSynth.TabIndex = 0;
 			this.grpAviSynth.TabStop = false;
 			this.grpAviSynth.Text = "&AviSynth";
 			// 
@@ -254,7 +321,7 @@
 			// 
 			this.lblAviSynthVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblAviSynthVersion.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.lblAviSynthVersion.Location = new System.Drawing.Point(148, 141);
+			this.lblAviSynthVersion.Location = new System.Drawing.Point(148, 74);
 			this.lblAviSynthVersion.Name = "lblAviSynthVersion";
 			this.lblAviSynthVersion.Size = new System.Drawing.Size(300, 48);
 			this.lblAviSynthVersion.TabIndex = 1;
@@ -265,7 +332,7 @@
 			// 
 			this.lblAviSynthInstall.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblAviSynthInstall.Font = new System.Drawing.Font("Tahoma", 14F);
-			this.lblAviSynthInstall.Location = new System.Drawing.Point(148, 93);
+			this.lblAviSynthInstall.Location = new System.Drawing.Point(148, 26);
 			this.lblAviSynthInstall.Name = "lblAviSynthInstall";
 			this.lblAviSynthInstall.Size = new System.Drawing.Size(300, 48);
 			this.lblAviSynthInstall.TabIndex = 0;
@@ -274,14 +341,14 @@
 			// 
 			// grpFFmpeg
 			// 
-			this.grpFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.grpFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg64);
 			this.grpFFmpeg.Controls.Add(this.rdoFFmpeg32);
-			this.grpFFmpeg.Location = new System.Drawing.Point(6, 6);
+			this.grpFFmpeg.Location = new System.Drawing.Point(6, 162);
 			this.grpFFmpeg.Name = "grpFFmpeg";
 			this.grpFFmpeg.Size = new System.Drawing.Size(596, 100);
-			this.grpFFmpeg.TabIndex = 0;
+			this.grpFFmpeg.TabIndex = 1;
 			this.grpFFmpeg.TabStop = false;
 			this.grpFFmpeg.Text = "&Default Decoder";
 			// 
@@ -372,65 +439,45 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
-			// grpNewFilenamePrefix
+			// grpFrameCountOffset
 			// 
-			this.grpNewFilenamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.grpFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpFrameCountOffset.Controls.Add(this.nudFrameCountOffset);
+			this.grpFrameCountOffset.Controls.Add(this.lblFrameCountOffset);
+			this.grpFrameCountOffset.Location = new System.Drawing.Point(6, 268);
+			this.grpFrameCountOffset.Name = "grpFrameCountOffset";
+			this.grpFrameCountOffset.Size = new System.Drawing.Size(596, 127);
+			this.grpFrameCountOffset.TabIndex = 2;
+			this.grpFrameCountOffset.TabStop = false;
+			this.grpFrameCountOffset.Text = "&Frame Count Offset";
+			// 
+			// lblFrameCountOffset
+			// 
+			this.lblFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixNone);
-			this.grpNewFilenamePrefix.Controls.Add(this.txtNamePrefix);
-			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixDateTime);
-			this.grpNewFilenamePrefix.Controls.Add(this.rdoNamePrefixCustom);
-			this.grpNewFilenamePrefix.Location = new System.Drawing.Point(6, 19);
-			this.grpNewFilenamePrefix.Name = "grpNewFilenamePrefix";
-			this.grpNewFilenamePrefix.Size = new System.Drawing.Size(289, 110);
-			this.grpNewFilenamePrefix.TabIndex = 4;
-			this.grpNewFilenamePrefix.TabStop = false;
-			this.grpNewFilenamePrefix.Text = "P&refix";
+			this.lblFrameCountOffset.Location = new System.Drawing.Point(6, 18);
+			this.lblFrameCountOffset.Name = "lblFrameCountOffset";
+			this.lblFrameCountOffset.Size = new System.Drawing.Size(584, 64);
+			this.lblFrameCountOffset.TabIndex = 0;
+			this.lblFrameCountOffset.Text = resources.GetString("lblFrameCountOffset.Text");
+			this.lblFrameCountOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// grpNewFilenamePostfix
+			// nudFrameCountOffset
 			// 
-			this.grpNewFilenamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.nudFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpNewFilenamePostfix.Controls.Add(this.txtNamePostfix);
-			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixCustom);
-			this.grpNewFilenamePostfix.Controls.Add(this.rdoNamePostfixNone);
-			this.grpNewFilenamePostfix.Location = new System.Drawing.Point(301, 19);
-			this.grpNewFilenamePostfix.Name = "grpNewFilenamePostfix";
-			this.grpNewFilenamePostfix.Size = new System.Drawing.Size(289, 110);
-			this.grpNewFilenamePostfix.TabIndex = 5;
-			this.grpNewFilenamePostfix.TabStop = false;
-			this.grpNewFilenamePostfix.Text = "P&ostfix";
-			// 
-			// rdoNamePostfixNone
-			// 
-			this.rdoNamePostfixNone.Location = new System.Drawing.Point(6, 28);
-			this.rdoNamePostfixNone.Name = "rdoNamePostfixNone";
-			this.rdoNamePostfixNone.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePostfixNone.TabIndex = 0;
-			this.rdoNamePostfixNone.TabStop = true;
-			this.rdoNamePostfixNone.Text = "Non&e";
-			this.rdoNamePostfixNone.UseVisualStyleBackColor = true;
-			// 
-			// rdoNamePostfixCustom
-			// 
-			this.rdoNamePostfixCustom.Location = new System.Drawing.Point(6, 58);
-			this.rdoNamePostfixCustom.Name = "rdoNamePostfixCustom";
-			this.rdoNamePostfixCustom.Size = new System.Drawing.Size(90, 24);
-			this.rdoNamePostfixCustom.TabIndex = 1;
-			this.rdoNamePostfixCustom.TabStop = true;
-			this.rdoNamePostfixCustom.Text = "C&ustom:";
-			this.rdoNamePostfixCustom.UseVisualStyleBackColor = true;
-			// 
-			// txtNamePostfix
-			// 
-			this.txtNamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtNamePostfix.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.txtNamePostfix.Location = new System.Drawing.Point(102, 58);
-			this.txtNamePostfix.Name = "txtNamePostfix";
-			this.txtNamePostfix.Size = new System.Drawing.Size(181, 24);
-			this.txtNamePostfix.TabIndex = 2;
+			this.nudFrameCountOffset.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.nudFrameCountOffset.Location = new System.Drawing.Point(238, 85);
+			this.nudFrameCountOffset.Maximum = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+			this.nudFrameCountOffset.Name = "nudFrameCountOffset";
+			this.nudFrameCountOffset.Size = new System.Drawing.Size(120, 24);
+			this.nudFrameCountOffset.TabIndex = 1;
 			// 
 			// frmOption
 			// 
@@ -449,6 +496,10 @@
 			this.tabOption.ResumeLayout(false);
 			this.tabOptionGeneral.ResumeLayout(false);
 			this.grpNewFilename.ResumeLayout(false);
+			this.grpNewFilenamePostfix.ResumeLayout(false);
+			this.grpNewFilenamePostfix.PerformLayout();
+			this.grpNewFilenamePrefix.ResumeLayout(false);
+			this.grpNewFilenamePrefix.PerformLayout();
 			this.grpTempFolder.ResumeLayout(false);
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
@@ -456,10 +507,8 @@
 			this.grpAviSynth.ResumeLayout(false);
 			this.grpFFmpeg.ResumeLayout(false);
 			this.tabOptionModule.ResumeLayout(false);
-			this.grpNewFilenamePrefix.ResumeLayout(false);
-			this.grpNewFilenamePrefix.PerformLayout();
-			this.grpNewFilenamePostfix.ResumeLayout(false);
-			this.grpNewFilenamePostfix.PerformLayout();
+			this.grpFrameCountOffset.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -498,5 +547,8 @@
 		private System.Windows.Forms.TextBox txtNamePostfix;
 		private System.Windows.Forms.RadioButton rdoNamePostfixCustom;
 		private System.Windows.Forms.RadioButton rdoNamePostfixNone;
+		private System.Windows.Forms.GroupBox grpFrameCountOffset;
+		private System.Windows.Forms.Label lblFrameCountOffset;
+		private System.Windows.Forms.NumericUpDown nudFrameCountOffset;
 	}
 }
