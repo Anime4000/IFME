@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblFrameCountOffset.Text" xml:space="preserve">
-    <value>Any variable frame rate, video will be converted to a constant frame rate that you set, IFME will try to calculate how many frames (duration in second * given frame rate). By adding offset value, IFME will add more frames to compensate unindexed/broken container data to ensure no missing frame during encoding.</value>
+    <value>Any variable frame rate, video will be converted to a constant frame rate that you set, IFME will calculate frames (duration in sec. * given fps). By adding offset value, IFME will add more frame count to compensate unindexed/broken container data to ensure no missing frame during encoding.</value>
   </data>
 </root>

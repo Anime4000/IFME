@@ -133,7 +133,7 @@ namespace ifme.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
         public int FrameCountOffset {
             get {
                 return ((int)(this["FrameCountOffset"]));

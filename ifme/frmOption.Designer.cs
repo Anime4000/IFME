@@ -48,6 +48,9 @@
 			this.lblLanguageAuthor = new System.Windows.Forms.Label();
 			this.cboLanguage = new System.Windows.Forms.ComboBox();
 			this.tabOptionEncoding = new System.Windows.Forms.TabPage();
+			this.grpFrameCountOffset = new System.Windows.Forms.GroupBox();
+			this.nudFrameCountOffset = new System.Windows.Forms.NumericUpDown();
+			this.lblFrameCountOffset = new System.Windows.Forms.Label();
 			this.grpAviSynth = new System.Windows.Forms.GroupBox();
 			this.lblAviSynthVersion = new System.Windows.Forms.Label();
 			this.lblAviSynthInstall = new System.Windows.Forms.Label();
@@ -61,9 +64,6 @@
 			this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOk = new System.Windows.Forms.Button();
-			this.grpFrameCountOffset = new System.Windows.Forms.GroupBox();
-			this.lblFrameCountOffset = new System.Windows.Forms.Label();
-			this.nudFrameCountOffset = new System.Windows.Forms.NumericUpDown();
 			this.tabOption.SuspendLayout();
 			this.tabOptionGeneral.SuspendLayout();
 			this.grpNewFilename.SuspendLayout();
@@ -72,11 +72,11 @@
 			this.grpTempFolder.SuspendLayout();
 			this.grpLanguage.SuspendLayout();
 			this.tabOptionEncoding.SuspendLayout();
+			this.grpFrameCountOffset.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).BeginInit();
 			this.grpAviSynth.SuspendLayout();
 			this.grpFFmpeg.SuspendLayout();
 			this.tabOptionModule.SuspendLayout();
-			this.grpFrameCountOffset.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabOption
@@ -276,7 +276,6 @@
 			this.lblLanguageAuthor.Name = "lblLanguageAuthor";
 			this.lblLanguageAuthor.Size = new System.Drawing.Size(418, 32);
 			this.lblLanguageAuthor.TabIndex = 1;
-			this.lblLanguageAuthor.Text = "Line 1\r\nLine 2";
 			// 
 			// cboLanguage
 			// 
@@ -302,6 +301,46 @@
 			this.tabOptionEncoding.TabIndex = 1;
 			this.tabOptionEncoding.Text = "Encoding";
 			this.tabOptionEncoding.UseVisualStyleBackColor = true;
+			// 
+			// grpFrameCountOffset
+			// 
+			this.grpFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpFrameCountOffset.Controls.Add(this.nudFrameCountOffset);
+			this.grpFrameCountOffset.Controls.Add(this.lblFrameCountOffset);
+			this.grpFrameCountOffset.Location = new System.Drawing.Point(6, 268);
+			this.grpFrameCountOffset.Name = "grpFrameCountOffset";
+			this.grpFrameCountOffset.Size = new System.Drawing.Size(596, 127);
+			this.grpFrameCountOffset.TabIndex = 2;
+			this.grpFrameCountOffset.TabStop = false;
+			this.grpFrameCountOffset.Text = "&Frame Count Offset";
+			// 
+			// nudFrameCountOffset
+			// 
+			this.nudFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.nudFrameCountOffset.Font = new System.Drawing.Font("Tahoma", 10F);
+			this.nudFrameCountOffset.Location = new System.Drawing.Point(238, 85);
+			this.nudFrameCountOffset.Maximum = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+			this.nudFrameCountOffset.Name = "nudFrameCountOffset";
+			this.nudFrameCountOffset.Size = new System.Drawing.Size(120, 24);
+			this.nudFrameCountOffset.TabIndex = 1;
+			// 
+			// lblFrameCountOffset
+			// 
+			this.lblFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblFrameCountOffset.Location = new System.Drawing.Point(6, 18);
+			this.lblFrameCountOffset.Name = "lblFrameCountOffset";
+			this.lblFrameCountOffset.Size = new System.Drawing.Size(584, 64);
+			this.lblFrameCountOffset.TabIndex = 0;
+			this.lblFrameCountOffset.Text = resources.GetString("lblFrameCountOffset.Text");
+			this.lblFrameCountOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// grpAviSynth
 			// 
@@ -361,7 +400,7 @@
 			this.rdoFFmpeg64.Size = new System.Drawing.Size(300, 24);
 			this.rdoFFmpeg64.TabIndex = 1;
 			this.rdoFFmpeg64.TabStop = true;
-			this.rdoFFmpeg64.Text = "FFmpeg &64bit (Support large resolution && high bitdepth)";
+			this.rdoFFmpeg64.Text = "FFmpeg &64bit (Support large resolution && high bit depth)";
 			this.rdoFFmpeg64.UseVisualStyleBackColor = true;
 			// 
 			// rdoFFmpeg32
@@ -439,46 +478,6 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
-			// grpFrameCountOffset
-			// 
-			this.grpFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.grpFrameCountOffset.Controls.Add(this.nudFrameCountOffset);
-			this.grpFrameCountOffset.Controls.Add(this.lblFrameCountOffset);
-			this.grpFrameCountOffset.Location = new System.Drawing.Point(6, 268);
-			this.grpFrameCountOffset.Name = "grpFrameCountOffset";
-			this.grpFrameCountOffset.Size = new System.Drawing.Size(596, 127);
-			this.grpFrameCountOffset.TabIndex = 2;
-			this.grpFrameCountOffset.TabStop = false;
-			this.grpFrameCountOffset.Text = "&Frame Count Offset";
-			// 
-			// lblFrameCountOffset
-			// 
-			this.lblFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblFrameCountOffset.Location = new System.Drawing.Point(6, 18);
-			this.lblFrameCountOffset.Name = "lblFrameCountOffset";
-			this.lblFrameCountOffset.Size = new System.Drawing.Size(584, 64);
-			this.lblFrameCountOffset.TabIndex = 0;
-			this.lblFrameCountOffset.Text = resources.GetString("lblFrameCountOffset.Text");
-			this.lblFrameCountOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// nudFrameCountOffset
-			// 
-			this.nudFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.nudFrameCountOffset.Font = new System.Drawing.Font("Tahoma", 10F);
-			this.nudFrameCountOffset.Location = new System.Drawing.Point(238, 85);
-			this.nudFrameCountOffset.Maximum = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-			this.nudFrameCountOffset.Name = "nudFrameCountOffset";
-			this.nudFrameCountOffset.Size = new System.Drawing.Size(120, 24);
-			this.nudFrameCountOffset.TabIndex = 1;
-			// 
 			// frmOption
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -504,11 +503,11 @@
 			this.grpTempFolder.PerformLayout();
 			this.grpLanguage.ResumeLayout(false);
 			this.tabOptionEncoding.ResumeLayout(false);
+			this.grpFrameCountOffset.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).EndInit();
 			this.grpAviSynth.ResumeLayout(false);
 			this.grpFFmpeg.ResumeLayout(false);
 			this.tabOptionModule.ResumeLayout(false);
-			this.grpFrameCountOffset.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.nudFrameCountOffset)).EndInit();
 			this.ResumeLayout(false);
 
 		}

@@ -142,9 +142,7 @@
 			this.btnEncodingPresetSave = new System.Windows.Forms.Button();
 			this.lblSplit1 = new System.Windows.Forms.Label();
 			this.lblSplit2 = new System.Windows.Forms.Label();
-			this.pnlBanner = new System.Windows.Forms.Panel();
-			this.pbxBannerA = new System.Windows.Forms.PictureBox();
-			this.pbxBannerB = new System.Windows.Forms.PictureBox();
+			this.pbxBanner = new System.Windows.Forms.PictureBox();
 			this.btnDonePowerOff = new System.Windows.Forms.Button();
 			this.btnOption = new System.Windows.Forms.Button();
 			this.btnStop = new System.Windows.Forms.Button();
@@ -176,9 +174,7 @@
 			this.pnlSubtitle.SuspendLayout();
 			this.tabAttachment.SuspendLayout();
 			this.pnlAttachment.SuspendLayout();
-			this.pnlBanner.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbxBannerA)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pbxBannerB)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lstMedia
@@ -1519,40 +1515,18 @@
 			this.lblSplit2.Size = new System.Drawing.Size(2, 32);
 			this.lblSplit2.TabIndex = 8;
 			// 
-			// pnlBanner
+			// pbxBanner
 			// 
-			this.pnlBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.pbxBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.pnlBanner.BackColor = System.Drawing.Color.Black;
-			this.pnlBanner.Controls.Add(this.pbxBannerA);
-			this.pnlBanner.Controls.Add(this.pbxBannerB);
-			this.pnlBanner.Location = new System.Drawing.Point(0, 0);
-			this.pnlBanner.Name = "pnlBanner";
-			this.pnlBanner.Size = new System.Drawing.Size(800, 64);
-			this.pnlBanner.TabIndex = 20;
-			// 
-			// pbxBannerA
-			// 
-			this.pbxBannerA.BackColor = System.Drawing.Color.Transparent;
-			this.pbxBannerA.BackgroundImage = global::ifme.Properties.Resources.BannerA;
-			this.pbxBannerA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.pbxBannerA.Location = new System.Drawing.Point(0, 0);
-			this.pbxBannerA.Name = "pbxBannerA";
-			this.pbxBannerA.Size = new System.Drawing.Size(640, 64);
-			this.pbxBannerA.TabIndex = 0;
-			this.pbxBannerA.TabStop = false;
-			// 
-			// pbxBannerB
-			// 
-			this.pbxBannerB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.pbxBannerB.BackColor = System.Drawing.Color.Transparent;
-			this.pbxBannerB.BackgroundImage = global::ifme.Properties.Resources.BannerB;
-			this.pbxBannerB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.pbxBannerB.Location = new System.Drawing.Point(160, 0);
-			this.pbxBannerB.Name = "pbxBannerB";
-			this.pbxBannerB.Size = new System.Drawing.Size(640, 64);
-			this.pbxBannerB.TabIndex = 1;
-			this.pbxBannerB.TabStop = false;
+			this.pbxBanner.BackColor = System.Drawing.Color.Black;
+			this.pbxBanner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.pbxBanner.Location = new System.Drawing.Point(0, 0);
+			this.pbxBanner.Name = "pbxBanner";
+			this.pbxBanner.Size = new System.Drawing.Size(800, 64);
+			this.pbxBanner.TabIndex = 0;
+			this.pbxBanner.TabStop = false;
+			this.pbxBanner.Resize += new System.EventHandler(this.pbxBanner_Resize);
 			// 
 			// btnDonePowerOff
 			// 
@@ -1667,7 +1641,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(800, 600);
-			this.Controls.Add(this.pnlBanner);
+			this.Controls.Add(this.pbxBanner);
 			this.Controls.Add(this.lblSplit2);
 			this.Controls.Add(this.lblSplit1);
 			this.Controls.Add(this.btnDonePowerOff);
@@ -1718,9 +1692,7 @@
 			this.pnlSubtitle.ResumeLayout(false);
 			this.tabAttachment.ResumeLayout(false);
 			this.pnlAttachment.ResumeLayout(false);
-			this.pnlBanner.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pbxBannerA)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pbxBannerB)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1728,7 +1700,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox pbxBannerA;
+		private System.Windows.Forms.PictureBox pbxBanner;
 		private System.Windows.Forms.Button btnMediaFileNew;
 		private System.Windows.Forms.Button btnMediaFileOpen;
 		private System.Windows.Forms.Button btnMediaFileDel;
@@ -1843,8 +1815,6 @@
 		private System.Windows.Forms.Label lblSplit2;
 		private System.Windows.Forms.ComboBox cboAudioMode;
 		private System.Windows.Forms.Label lblAudioMode;
-		private System.Windows.Forms.Panel pnlBanner;
-		private System.Windows.Forms.PictureBox pbxBannerB;
 		private System.Windows.Forms.ColumnHeader colSubId;
 		private System.Windows.Forms.ColumnHeader colVideoRes;
 		private System.Windows.Forms.ColumnHeader colVideoBitDepth;

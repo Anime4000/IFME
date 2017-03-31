@@ -26,7 +26,12 @@ namespace ifme
 			InitializeUX();
         }
 
-        private void btnMediaFileNew_Click(object sender, EventArgs e)
+		private void pbxBanner_Resize(object sender, EventArgs e)
+		{
+			DrawBanner();
+		}
+
+		private void btnMediaFileNew_Click(object sender, EventArgs e)
         {
 			var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts. This way you can add files and convert them or just merge (copy stream) into a new MKV file\n\nEnter a new file name:");
 			

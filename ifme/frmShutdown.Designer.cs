@@ -42,7 +42,7 @@
 			this.lblInfo.Name = "lblInfo";
 			this.lblInfo.Size = new System.Drawing.Size(276, 48);
 			this.lblInfo.TabIndex = 0;
-			this.lblInfo.Text = "What will happen if all media done encoding?";
+			this.lblInfo.Text = "What happen if all media done encoding?";
 			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// cboShutdown

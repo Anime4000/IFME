@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace ifme
 {
@@ -91,6 +92,31 @@ namespace ifme
 			cboAudioEncoder.DisplayMember = "Value";
 			cboAudioEncoder.ValueMember = "Key";
 			cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
+
+			DrawBanner();
+		}
+
+		private void DrawBanner()
+		{
+			var width = pbxBanner.Width;
+
+			var background = new Bitmap(width, 64);
+			var banner1 = new Bitmap(Properties.Resources.BannerA);
+			var banner2 = new Bitmap(Properties.Resources.BannerB);
+			var banner3 = new Bitmap(Properties.Resources.BannerC);
+
+			using (Graphics g = Graphics.FromImage(background))
+			{
+				g.DrawImage(banner1, new Point(0, 0));
+
+				// random 2nd banner
+				if (Properties.Settings.Default.SplashScreenRand % 2 == 0)
+					g.DrawImage(banner2, new Point(width - 640, 0));
+				else
+					g.DrawImage(banner3, new Point(width - 640, 0));
+			}
+
+			pbxBanner.BackgroundImage = background;
 		}
 
 		private string[] OpenFiles(MediaType type)
