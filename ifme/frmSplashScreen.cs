@@ -48,6 +48,7 @@ namespace ifme
 		private void frmSplashScreen_Shown(object sender, EventArgs e)
 		{
 			new PluginLoad();
+			new MediaPresetLoad();
 
 			Close();
 		}

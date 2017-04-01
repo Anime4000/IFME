@@ -97,6 +97,10 @@
     <Compile Include="MediaDefault\MediaDefaultAudio.cs" />
     <Compile Include="MediaDefault\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />
+    <Compile Include="MediaPreset\MediaPreset.cs" />
+    <Compile Include="MediaPreset\MediaPresetAudio.cs" />
+    <Compile Include="MediaPreset\MediaPresetLoad.cs" />
+    <Compile Include="MediaPreset\MediaPresetVideo.cs" />
     <Compile Include="MediaQueue\MediaQueue.cs" />
     <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
     <Compile Include="MediaQueue\MediaQueueAudio.cs" />

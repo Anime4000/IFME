@@ -1521,6 +1521,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pbxBanner.BackColor = System.Drawing.Color.Black;
 			this.pbxBanner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.pbxBanner.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pbxBanner.Location = new System.Drawing.Point(0, 0);
 			this.pbxBanner.Name = "pbxBanner";
 			this.pbxBanner.Size = new System.Drawing.Size(800, 64);

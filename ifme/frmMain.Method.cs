@@ -33,7 +33,7 @@ namespace ifme
 
 		public void InitializeUX()
 		{
-			// Load plugin
+			// Load plugin & preset
 			new frmSplashScreen().ShowDialog();
 
 			// Init FFmpeg
@@ -94,6 +94,7 @@ namespace ifme
 			cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
 
 			DrawBanner();
+			Test();
 		}
 
 		private void DrawBanner()
@@ -117,6 +118,21 @@ namespace ifme
 			}
 
 			pbxBanner.BackgroundImage = background;
+		}
+
+		private void Test()
+		{
+			var preset = new MediaPreset();
+			var vdef = new MediaDefaultVideo(MediaTypeVideo.MKV);
+			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+			preset.Video.Encoder = vdef.Encoder;
+			preset.Video.EncoderPreset = vdef.Preset;
+
+			preset.Audio.Encoder = adef.Encoder;
+
+			var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
+			File.WriteAllText("test.json", json);
 		}
 
 		private string[] OpenFiles(MediaType type)

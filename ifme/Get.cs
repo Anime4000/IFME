@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Drawing;
 
 using Newtonsoft.Json;
-using System.Drawing;
+
 
 namespace ifme
 {
-    static class Get
+	static class Get
     {
 		public static Dictionary<string, string> LanguageCode
 		{
