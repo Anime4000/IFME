@@ -4,6 +4,13 @@ namespace ifme
 {
 	class MediaDefaultAudio
 	{
+		public Guid Encoder { get; private set; }
+		public int Mode { get; private set; }
+		public decimal Quality { get; private set; }
+		public int SampleRate { get; private set; }
+		public int Channel { get; private set; }
+		public string Command { get; private set; }
+
 		public MediaDefaultAudio(MediaTypeAudio type)
 		{
 			switch (type)
@@ -52,12 +59,5 @@ namespace ifme
 					break;
 			}
 		}
-
-		public Guid Encoder { get; private set; }
-		public int Mode { get; private set; }
-		public decimal Quality { get; private set; }
-		public int SampleRate { get; private set; }
-		public int Channel { get; private set; }
-		public string Command { get; private set; }
 	}
 }

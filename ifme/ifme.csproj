@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -94,19 +95,19 @@
     <Compile Include="Get.cs" />
     <Compile Include="Language\Language.cs" />
     <Compile Include="Language\LanguageClass.cs" />
-    <Compile Include="MediaDefault\MediaDefaultAudio.cs" />
-    <Compile Include="MediaDefault\MediaDefaultVideo.cs" />
+    <Compile Include="Media\Default\MediaDefaultAudio.cs" />
+    <Compile Include="Media\Default\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />
-    <Compile Include="MediaPreset\MediaPreset.cs" />
-    <Compile Include="MediaPreset\MediaPresetAudio.cs" />
-    <Compile Include="MediaPreset\MediaPresetLoad.cs" />
-    <Compile Include="MediaPreset\MediaPresetVideo.cs" />
-    <Compile Include="MediaQueue\MediaQueue.cs" />
-    <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
-    <Compile Include="MediaQueue\MediaQueueAudio.cs" />
-    <Compile Include="MediaQueue\MediaQueueCommon.cs" />
-    <Compile Include="MediaQueue\MediaQueueSubtitle.cs" />
-    <Compile Include="MediaQueue\MediaQueueVideo.cs" />
+    <Compile Include="Media\Preset\MediaPreset.cs" />
+    <Compile Include="Media\Preset\MediaPresetAudio.cs" />
+    <Compile Include="Media\Preset\MediaPresetLoad.cs" />
+    <Compile Include="Media\Preset\MediaPresetVideo.cs" />
+    <Compile Include="Media\Queue\MediaQueue.cs" />
+    <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
+    <Compile Include="Media\Queue\MediaQueueAudio.cs" />
+    <Compile Include="Media\Queue\MediaQueueCommon.cs" />
+    <Compile Include="Media\Queue\MediaQueueSubtitle.cs" />
+    <Compile Include="Media\Queue\MediaQueueVideo.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginAudio.cs" />

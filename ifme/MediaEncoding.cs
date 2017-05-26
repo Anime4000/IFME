@@ -113,7 +113,7 @@ namespace ifme
 				{
 					var ac = codec.Audio;
 
-					var qu = (string.IsNullOrEmpty(ac.Mode[item.EncoderMode].Args) ? string.Empty : $"{ac.Mode[item.EncoderMode].Args} {item.EndoderQuality}");
+					var qu = (string.IsNullOrEmpty(ac.Mode[item.EncoderMode].Args) ? string.Empty : $"{ac.Mode[item.EncoderMode].Args} {item.EncoderQuality}");
 					var hz = (item.EncoderSampleRate == 0 ? string.Empty : $"-ar {item.EncoderSampleRate}");
 					var ch = (item.EncoderChannel == 0 ? string.Empty : $"-ac {item.EncoderChannel}");
 

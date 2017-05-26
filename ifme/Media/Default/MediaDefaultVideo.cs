@@ -7,7 +7,15 @@ namespace ifme
 {
 	class MediaDefaultVideo
 	{
-		public MediaDefaultVideo(MediaTypeVideo type)
+		public Guid Encoder { get; private set; }
+		public string Preset { get; private set; }
+		public string Tune { get; private set; }
+		public int Mode { get; private set; }
+		public int Value { get; private set; }
+		public int Pass { get; private set; }
+		public string Command { get; private set; }
+
+        public MediaDefaultVideo(MediaTypeVideo type)
 		{
 			switch (type)
 			{
@@ -33,13 +41,5 @@ namespace ifme
 					break;
 			}
 		}
-
-		public Guid Encoder { get; private set; }
-		public string Preset { get; private set; }
-		public string Tune { get; private set; }
-		public int Mode { get; private set; }
-		public int Value { get; private set; }
-		public int Pass { get; private set; }
-		public string Command { get; private set; }
 	}
 }

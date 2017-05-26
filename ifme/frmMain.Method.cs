@@ -420,7 +420,7 @@ namespace ifme
 			var queue = new MediaQueue();
 			var media = new FFmpegDotNet.FFmpeg.Stream(file);
 
-			if (media.Video.Count == 0 || media.Audio.Count == 0)
+			if (media.Video.Count > 0 || media.Audio.Count > 0)
 				return;
 
 			queue.Enable = true;
@@ -478,7 +478,7 @@ namespace ifme
 
 					Encoder = adef.Encoder,
 					EncoderMode = adef.Mode,
-					EndoderQuality = adef.Quality,
+					EncoderQuality = adef.Quality,
 					EncoderSampleRate = adef.SampleRate,
 					EncoderChannel = adef.Channel,
 					EncoderCommand = adef.Command
@@ -584,7 +584,7 @@ namespace ifme
 
 					Encoder = adef.Encoder,
 					EncoderMode = adef.Mode,
-					EndoderQuality = adef.Quality,
+					EncoderQuality = adef.Quality,
 					EncoderSampleRate = adef.SampleRate,
 					EncoderChannel = adef.Channel,
 					EncoderCommand = adef.Command
@@ -716,7 +716,7 @@ namespace ifme
 				{
 					a.Encoder = adef.Encoder;
 					a.EncoderMode = adef.Mode;
-					a.EndoderQuality = adef.Quality;
+					a.EncoderQuality = adef.Quality;
 					a.EncoderSampleRate = adef.SampleRate;
 					a.EncoderChannel = adef.Channel;
 				}
@@ -930,7 +930,7 @@ namespace ifme
 			{
 				decimal q = 0;
 				decimal.TryParse(cboAudioQuality.Text, out q);
-				audio.EndoderQuality = q;
+				audio.EncoderQuality = q;
 			}
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioSampleRate.Name))
@@ -1199,7 +1199,7 @@ namespace ifme
 			// when ui is loaded, begin to display
 			BeginInvoke((Action)delegate ()
 			{
-				cboAudioQuality.Text = $"{a.EndoderQuality}";
+				cboAudioQuality.Text = $"{a.EncoderQuality}";
 				cboAudioSampleRate.Text = $"{a.EncoderSampleRate}";
 				cboAudioChannel.Text = $"{a.EncoderChannel}";
 			});
