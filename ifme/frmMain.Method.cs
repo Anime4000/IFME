@@ -420,7 +420,7 @@ namespace ifme
 			var queue = new MediaQueue();
 			var media = new FFmpegDotNet.FFmpeg.Stream(file);
 
-			if (media.Video.Count > 0 || media.Audio.Count > 0)
+			if (media.Video.Count == 0 && media.Audio.Count == 0)
 				return;
 
 			queue.Enable = true;
