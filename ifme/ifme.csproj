@@ -54,6 +54,7 @@
     <Compile Include="BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Branding.cs" />
     <Compile Include="ConsoleEx.cs" />
     <Compile Include="CRC32.cs" />
     <Compile Include="Enum.cs" />
@@ -152,6 +153,11 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="branding\ai\1.jpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="branding\ai\a.jpj" />
+    <None Include="branding\ai\b.jpj" />
     <None Include="format.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -170,9 +176,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BannerA.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
@@ -206,9 +209,6 @@
     <None Include="Resources\icon22_down.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon22_new.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icon22_off-ok.png" />
   </ItemGroup>
   <ItemGroup>
@@ -230,28 +230,16 @@
     <None Include="Resources\app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BannerB.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icon16_document-save.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen1.png" />
+    <None Include="Resources\icon16_document-import.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen2.png" />
+    <None Include="Resources\icon16_bookmark-new.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreen4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SplashScreen5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BannerC.png" />
+    <None Include="Resources\icon22_help-about.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

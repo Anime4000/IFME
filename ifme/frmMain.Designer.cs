@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lstMedia = new System.Windows.Forms.ListView();
             this.colMediaFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colMediaDuration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -152,7 +153,10 @@
             this.btnMediaMoveUp = new System.Windows.Forms.Button();
             this.btnMediaFileDel = new System.Windows.Forms.Button();
             this.btnMediaFileOpen = new System.Windows.Forms.Button();
-            this.btnMediaFileNew = new System.Windows.Forms.Button();
+            this.btnAbout = new System.Windows.Forms.Button();
+            this.cmsNewImport = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -175,6 +179,7 @@
             this.tabAttachment.SuspendLayout();
             this.pnlAttachment.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).BeginInit();
+            this.cmsNewImport.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstMedia
@@ -888,9 +893,12 @@
             "59.94",
             "60",
             "75",
+            "85",
             "100",
             "120",
-            "144"});
+            "144",
+            "200",
+            "240"});
             this.cboVideoFrameRate.Location = new System.Drawing.Point(115, 40);
             this.cboVideoFrameRate.Name = "cboVideoFrameRate";
             this.cboVideoFrameRate.Size = new System.Drawing.Size(100, 21);
@@ -922,6 +930,7 @@
             "1024x576",
             "1280x720",
             "1920x1080",
+            "2560x1440",
             "3840x2160",
             "7680x4320"});
             this.cboVideoResolution.Location = new System.Drawing.Point(9, 40);
@@ -1500,10 +1509,10 @@
             // 
             this.lblSplit1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSplit1.Font = new System.Drawing.Font("Tahoma", 6F);
-            this.lblSplit1.Location = new System.Drawing.Point(126, 76);
+            this.lblSplit1.Location = new System.Drawing.Point(88, 76);
             this.lblSplit1.Name = "lblSplit1";
             this.lblSplit1.Size = new System.Drawing.Size(2, 32);
-            this.lblSplit1.TabIndex = 3;
+            this.lblSplit1.TabIndex = 2;
             // 
             // lblSplit2
             // 
@@ -1543,10 +1552,10 @@
             // btnOption
             // 
             this.btnOption.Image = global::ifme.Properties.Resources.icon22_preferences;
-            this.btnOption.Location = new System.Drawing.Point(134, 76);
+            this.btnOption.Location = new System.Drawing.Point(96, 76);
             this.btnOption.Name = "btnOption";
             this.btnOption.Size = new System.Drawing.Size(32, 32);
-            this.btnOption.TabIndex = 4;
+            this.btnOption.TabIndex = 3;
             this.btnOption.UseVisualStyleBackColor = true;
             this.btnOption.Click += new System.EventHandler(this.btnOption_Click);
             // 
@@ -1610,32 +1619,59 @@
             // btnMediaFileDel
             // 
             this.btnMediaFileDel.Image = global::ifme.Properties.Resources.icon22_del;
-            this.btnMediaFileDel.Location = new System.Drawing.Point(88, 76);
+            this.btnMediaFileDel.Location = new System.Drawing.Point(50, 76);
             this.btnMediaFileDel.Name = "btnMediaFileDel";
             this.btnMediaFileDel.Size = new System.Drawing.Size(32, 32);
-            this.btnMediaFileDel.TabIndex = 2;
+            this.btnMediaFileDel.TabIndex = 1;
             this.btnMediaFileDel.UseVisualStyleBackColor = true;
             this.btnMediaFileDel.Click += new System.EventHandler(this.btnMediaFileDel_Click);
             // 
             // btnMediaFileOpen
             // 
             this.btnMediaFileOpen.Image = global::ifme.Properties.Resources.icon22_add;
-            this.btnMediaFileOpen.Location = new System.Drawing.Point(50, 76);
+            this.btnMediaFileOpen.Location = new System.Drawing.Point(12, 76);
             this.btnMediaFileOpen.Name = "btnMediaFileOpen";
             this.btnMediaFileOpen.Size = new System.Drawing.Size(32, 32);
-            this.btnMediaFileOpen.TabIndex = 1;
+            this.btnMediaFileOpen.TabIndex = 0;
             this.btnMediaFileOpen.UseVisualStyleBackColor = true;
             this.btnMediaFileOpen.Click += new System.EventHandler(this.btnMediaFileOpen_Click);
             // 
-            // btnMediaFileNew
+            // btnAbout
             // 
-            this.btnMediaFileNew.Image = global::ifme.Properties.Resources.icon22_new;
-            this.btnMediaFileNew.Location = new System.Drawing.Point(12, 76);
-            this.btnMediaFileNew.Name = "btnMediaFileNew";
-            this.btnMediaFileNew.Size = new System.Drawing.Size(32, 32);
-            this.btnMediaFileNew.TabIndex = 0;
-            this.btnMediaFileNew.UseVisualStyleBackColor = true;
-            this.btnMediaFileNew.Click += new System.EventHandler(this.btnMediaFileNew_Click);
+            this.btnAbout.Image = global::ifme.Properties.Resources.icon22_help_about;
+            this.btnAbout.Location = new System.Drawing.Point(134, 76);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(32, 32);
+            this.btnAbout.TabIndex = 4;
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
+            // cmsNewImport
+            // 
+            this.cmsNewImport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiNew,
+            this.tsmiImport});
+            this.cmsNewImport.Name = "cmsNewImport";
+            this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.cmsNewImport.Size = new System.Drawing.Size(148, 48);
+            // 
+            // tsmiNew
+            // 
+            this.tsmiNew.Image = global::ifme.Properties.Resources.icon16_bookmark_new;
+            this.tsmiNew.Name = "tsmiNew";
+            this.tsmiNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiNew.Size = new System.Drawing.Size(147, 22);
+            this.tsmiNew.Text = "&New";
+            this.tsmiNew.Click += new System.EventHandler(this.tsmiNew_Click);
+            // 
+            // tsmiImport
+            // 
+            this.tsmiImport.Image = global::ifme.Properties.Resources.icon16_document_import;
+            this.tsmiImport.Name = "tsmiImport";
+            this.tsmiImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.tsmiImport.Size = new System.Drawing.Size(147, 22);
+            this.tsmiImport.Text = "&Import";
+            this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
             // frmMain
             // 
@@ -1662,7 +1698,7 @@
             this.Controls.Add(this.btnMediaMoveUp);
             this.Controls.Add(this.btnMediaFileDel);
             this.Controls.Add(this.btnMediaFileOpen);
-            this.Controls.Add(this.btnMediaFileNew);
+            this.Controls.Add(this.btnAbout);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -1694,6 +1730,7 @@
             this.tabAttachment.ResumeLayout(false);
             this.pnlAttachment.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).EndInit();
+            this.cmsNewImport.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1702,7 +1739,7 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox pbxBanner;
-		private System.Windows.Forms.Button btnMediaFileNew;
+		private System.Windows.Forms.Button btnAbout;
 		private System.Windows.Forms.Button btnMediaFileOpen;
 		private System.Windows.Forms.Button btnMediaFileDel;
 		private System.Windows.Forms.Button btnMediaMoveUp;
@@ -1826,6 +1863,9 @@
 		private System.Windows.Forms.ColumnHeader colAudioFq;
 		private System.Windows.Forms.ColumnHeader colAudioCh;
 		private System.Windows.Forms.Label label1;
-	}
+        private System.Windows.Forms.ContextMenuStrip cmsNewImport;
+        private System.Windows.Forms.ToolStripMenuItem tsmiNew;
+        private System.Windows.Forms.ToolStripMenuItem tsmiImport;
+    }
 }
 

@@ -81,36 +81,6 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BannerA {
-            get {
-                object obj = ResourceManager.GetObject("BannerA", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BannerB {
-            get {
-                object obj = ResourceManager.GetObject("BannerB", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BannerC {
-            get {
-                object obj = ResourceManager.GetObject("BannerC", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icon16_add {
             get {
                 object obj = ResourceManager.GetObject("icon16_add", resourceCulture);
@@ -121,9 +91,29 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon16_bookmark_new {
+            get {
+                object obj = ResourceManager.GetObject("icon16_bookmark_new", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon16_del {
             get {
                 object obj = ResourceManager.GetObject("icon16_del", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon16_document_import {
+            get {
+                object obj = ResourceManager.GetObject("icon16_document_import", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -191,9 +181,9 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon22_new {
+        internal static System.Drawing.Bitmap icon22_help_about {
             get {
-                object obj = ResourceManager.GetObject("icon22_new", resourceCulture);
+                object obj = ResourceManager.GetObject("icon22_help_about", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -277,56 +267,6 @@ namespace ifme.Properties {
         internal static string MkvTags {
             get {
                 return ResourceManager.GetString("MkvTags", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen1 {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen2 {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen3 {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen4 {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen4", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen5 {
-            get {
-                object obj = ResourceManager.GetObject("SplashScreen5", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

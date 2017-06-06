@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace ifme
 {
@@ -31,47 +32,55 @@ namespace ifme
 			DrawBanner();
 		}
 
-		private void btnMediaFileNew_Click(object sender, EventArgs e)
-        {
-			var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts. This way you can add files and convert them or just merge (copy stream) into a new MKV file\n\nEnter a new file name:");
-			
-			if (frm.ShowDialog() == DialogResult.OK)
-			{
-				if (string.IsNullOrEmpty(frm.ReturnValue))
-					return;
-
-				if (string.IsNullOrWhiteSpace(frm.ReturnValue))
-					return;
-
-				var queue = new MediaQueue();
-
-				queue.Enable = true;
-				queue.File = frm.ReturnValue;
-				queue.OutputFormat = TargetFormat.MKV;
-
-				var lst = new ListViewItem(new[]
-				{
-					frm.ReturnValue,
-					"",
-					"New",
-					"MKV",
-					"Ready",
-				});
-
-				lst.Tag = queue;
-				lst.Checked = true;
-
-				lstMedia.Items.Add(lst);
-			}
-        }
-
         private void btnMediaFileOpen_Click(object sender, EventArgs e)
         {
-			foreach (var item in OpenFiles(MediaType.VideoAudio))
-				MediaAdd(item);
-
-			MediaSelect();
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(1, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            cmsNewImport.Show(ptLowerLeft);
 		}
+
+        private void tsmiImport_Click(object sender, EventArgs e)
+        {
+            foreach (var item in OpenFiles(MediaType.VideoAudio))
+                MediaAdd(item);
+
+            MediaSelect();
+        }
+
+        private void tsmiNew_Click(object sender, EventArgs e)
+        {
+            var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts. This way you can add files and convert them or just merge (copy stream) into a new MKV file\n\nEnter a new file name:");
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(frm.ReturnValue))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+                    return;
+
+                var queue = new MediaQueue();
+
+                queue.Enable = true;
+                queue.File = frm.ReturnValue;
+                queue.OutputFormat = TargetFormat.MKV;
+
+                var lst = new ListViewItem(new[]
+                {
+                    frm.ReturnValue,
+                    "",
+                    "New",
+                    "MKV",
+                    "Ready",
+                });
+
+                lst.Tag = queue;
+                lst.Checked = true;
+
+                lstMedia.Items.Add(lst);
+            }
+        }
 
         private void btnMediaFileDel_Click(object sender, EventArgs e)
         {
@@ -83,6 +92,11 @@ namespace ifme
         {
 			new frmOption().ShowDialog();
 		}
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
         {
@@ -782,5 +796,5 @@ namespace ifme
 				}
 			}
 		}
-	}
+    }
 }

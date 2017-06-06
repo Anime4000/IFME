@@ -24,7 +24,13 @@ namespace ifme
 		{
 			get
 			{
-				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mime.json"));
+                var fmime = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mime.json"));
+                var nmime = new Dictionary<string, string>();
+
+                foreach (var item in fmime)
+                    nmime.Add(item.Key, $"[{item.Key}] {item.Value}");
+
+                return nmime;
 			}
 		}
 

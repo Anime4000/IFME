@@ -31,7 +31,10 @@ namespace ifme
 		// refer to BackgroundWorkerEx.cs file
 		private BackgroundWorkerEx bgThread = new BackgroundWorkerEx();
 
-		public void InitializeUX()
+        // Banner
+        private Branding OEM = new Branding();
+
+        public void InitializeUX()
 		{
 			// Load plugin & preset
 			new frmSplashScreen().ShowDialog();
@@ -67,7 +70,7 @@ namespace ifme
 			cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
 			cboAttachMime.DisplayMember = "Value";
 			cboAttachMime.ValueMember = "Key";
-			cboAttachMime.SelectedValue = ".aca";
+			cboAttachMime.SelectedValue = ".ttf";
 
 			var video = new Dictionary<Guid, string>();
 			var audio = new Dictionary<Guid, string>();
@@ -99,25 +102,7 @@ namespace ifme
 
 		private void DrawBanner()
 		{
-			var width = pbxBanner.Width;
-
-			var background = new Bitmap(width, 64);
-			var banner1 = new Bitmap(Properties.Resources.BannerA);
-			var banner2 = new Bitmap(Properties.Resources.BannerB);
-			var banner3 = new Bitmap(Properties.Resources.BannerC);
-
-			using (Graphics g = Graphics.FromImage(background))
-			{
-				g.DrawImage(banner1, new Point(0, 0));
-
-				// random 2nd banner
-				if (Properties.Settings.Default.SplashScreenRand % 2 == 0)
-					g.DrawImage(banner2, new Point(width - 640, 0));
-				else
-					g.DrawImage(banner3, new Point(width - 640, 0));
-			}
-
-			pbxBanner.BackgroundImage = background;
+            pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
 		}
 
 		private void Test()
@@ -427,7 +412,11 @@ namespace ifme
 			queue.File = file;
 			queue.OutputFormat = TargetFormat.MKV;
 
-			queue.MediaInfo = media;
+            // if input only have audio
+            if (media.Video.Count == 0)
+                queue.OutputFormat = TargetFormat.OGG;
+
+            queue.MediaInfo = media;
 
 			var vdef = new MediaDefaultVideo(MediaTypeVideo.MKV);
 			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);

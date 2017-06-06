@@ -40,7 +40,7 @@ namespace ifme
 					}
 				}
 
-				return "Unknown Version";
+				return $"Unknown Version\nCRC: {CRC32.GetFile(AviSynthPath)}";
 			}
 		}
 	}
