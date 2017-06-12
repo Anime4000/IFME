@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppCodeName" xml:space="preserve">
-    <value>Eridanus</value>
+    <value>Free and Independent</value>
   </data>
   <data name="AppTitle" xml:space="preserve">
     <value>Internet Friendly Media Encoder</value>
@@ -163,9 +163,6 @@
   <data name="icon22_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon22_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon16_document_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_document-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="MkvTags" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="UTF8"?&gt;
 &lt;!DOCTYPE Tags SYSTEM "matroskatags.dtd"&gt;
@@ -190,5 +187,17 @@
   </data>
   <data name="icon22_help_about" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon22_help-about.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon16_bookmarks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon16_Bookmarks.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon16_disk_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icon16_disk-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon16_document_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon16_document-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon16_document_save_as" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon16_document-save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

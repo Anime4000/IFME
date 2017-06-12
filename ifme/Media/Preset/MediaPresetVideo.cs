@@ -17,7 +17,7 @@ namespace ifme
 
 		public int Width { get; set; }
 		public int Height { get; set; }
-		public float FrameRate { get; set; }
+		public double FrameRate { get; set; }
 		public int BitDepth { get; set; }
 		public int PixelFormat { get; set; }
 

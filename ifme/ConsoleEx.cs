@@ -42,5 +42,13 @@ namespace ifme
 			Console.ResetColor();
 			Console.Write($"]: {message}\n");
 		}
-	}
+
+        internal static void ClearCurrentLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
+    }
 }

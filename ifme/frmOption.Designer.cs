@@ -236,7 +236,7 @@
             // btnTempPath
             // 
             this.btnTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTempPath.Image = global::ifme.Properties.Resources.icon16_document_save;
+            this.btnTempPath.Image = global::ifme.Properties.Resources.icon16_disk_save;
             this.btnTempPath.Location = new System.Drawing.Point(483, 46);
             this.btnTempPath.Name = "btnTempPath";
             this.btnTempPath.Size = new System.Drawing.Size(24, 24);

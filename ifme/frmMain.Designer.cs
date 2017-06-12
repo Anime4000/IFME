@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.lstMedia = new System.Windows.Forms.ListView();
             this.colMediaFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colMediaDuration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -157,6 +158,9 @@
             this.cmsNewImport = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiNew = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -180,6 +184,7 @@
             this.pnlAttachment.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).BeginInit();
             this.cmsNewImport.SuspendLayout();
+            this.cmsEncodingPreset.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstMedia
@@ -1463,7 +1468,7 @@
             // btnBrowseFolderOutput
             // 
             this.btnBrowseFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseFolderOutput.Image = global::ifme.Properties.Resources.icon16_document_save;
+            this.btnBrowseFolderOutput.Image = global::ifme.Properties.Resources.icon16_disk_save;
             this.btnBrowseFolderOutput.Location = new System.Drawing.Point(764, 564);
             this.btnBrowseFolderOutput.Name = "btnBrowseFolderOutput";
             this.btnBrowseFolderOutput.Size = new System.Drawing.Size(24, 24);
@@ -1497,7 +1502,7 @@
             // btnEncodingPresetSave
             // 
             this.btnEncodingPresetSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncodingPresetSave.Image = global::ifme.Properties.Resources.icon16_add;
+            this.btnEncodingPresetSave.Image = global::ifme.Properties.Resources.icon16_bookmarks;
             this.btnEncodingPresetSave.Location = new System.Drawing.Point(764, 536);
             this.btnEncodingPresetSave.Name = "btnEncodingPresetSave";
             this.btnEncodingPresetSave.Size = new System.Drawing.Size(24, 24);
@@ -1648,19 +1653,20 @@
             // 
             // cmsNewImport
             // 
+            this.cmsNewImport.Font = new System.Drawing.Font("Tahoma", 8F);
             this.cmsNewImport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiNew,
             this.tsmiImport});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(148, 48);
+            this.cmsNewImport.Size = new System.Drawing.Size(143, 48);
             // 
             // tsmiNew
             // 
             this.tsmiNew.Image = global::ifme.Properties.Resources.icon16_bookmark_new;
             this.tsmiNew.Name = "tsmiNew";
             this.tsmiNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmiNew.Size = new System.Drawing.Size(147, 22);
+            this.tsmiNew.Size = new System.Drawing.Size(142, 22);
             this.tsmiNew.Text = "&New";
             this.tsmiNew.Click += new System.EventHandler(this.tsmiNew_Click);
             // 
@@ -1669,9 +1675,34 @@
             this.tsmiImport.Image = global::ifme.Properties.Resources.icon16_document_import;
             this.tsmiImport.Name = "tsmiImport";
             this.tsmiImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.tsmiImport.Size = new System.Drawing.Size(147, 22);
+            this.tsmiImport.Size = new System.Drawing.Size(142, 22);
             this.tsmiImport.Text = "&Import";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
+            // 
+            // cmsEncodingPreset
+            // 
+            this.cmsEncodingPreset.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.cmsEncodingPreset.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiEncodingPresetSave,
+            this.tsmiEncodingPresetSaveAs});
+            this.cmsEncodingPreset.Name = "cmsEncodingPreset";
+            this.cmsEncodingPreset.Size = new System.Drawing.Size(153, 70);
+            // 
+            // tsmiEncodingPresetSave
+            // 
+            this.tsmiEncodingPresetSave.Image = ((System.Drawing.Image)(resources.GetObject("tsmiEncodingPresetSave.Image")));
+            this.tsmiEncodingPresetSave.Name = "tsmiEncodingPresetSave";
+            this.tsmiEncodingPresetSave.Size = new System.Drawing.Size(152, 22);
+            this.tsmiEncodingPresetSave.Text = "Save";
+            this.tsmiEncodingPresetSave.Click += new System.EventHandler(this.tsmiEncodingPresetSave_Click);
+            // 
+            // tsmiEncodingPresetSaveAs
+            // 
+            this.tsmiEncodingPresetSaveAs.Image = global::ifme.Properties.Resources.icon16_document_save_as;
+            this.tsmiEncodingPresetSaveAs.Name = "tsmiEncodingPresetSaveAs";
+            this.tsmiEncodingPresetSaveAs.Size = new System.Drawing.Size(152, 22);
+            this.tsmiEncodingPresetSaveAs.Text = "Save &As";
+            this.tsmiEncodingPresetSaveAs.Click += new System.EventHandler(this.tsmiEncodingPresetSaveAs_Click);
             // 
             // frmMain
             // 
@@ -1731,6 +1762,7 @@
             this.pnlAttachment.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).EndInit();
             this.cmsNewImport.ResumeLayout(false);
+            this.cmsEncodingPreset.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1866,6 +1898,9 @@
         private System.Windows.Forms.ContextMenuStrip cmsNewImport;
         private System.Windows.Forms.ToolStripMenuItem tsmiNew;
         private System.Windows.Forms.ToolStripMenuItem tsmiImport;
+        private System.Windows.Forms.ContextMenuStrip cmsEncodingPreset;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSave;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSaveAs;
     }
 }
 

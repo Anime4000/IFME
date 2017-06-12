@@ -49,7 +49,7 @@ namespace ifme
 
         private void txtInput_TextChanged(object sender, EventArgs e)
         {
-            btnOK.Enabled = (txtInput.Text.Length > 0);
+            btnOK.Enabled = (txtInput.Text.Length > 3);
         }
     }
 }

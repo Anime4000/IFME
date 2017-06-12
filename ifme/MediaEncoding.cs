@@ -121,11 +121,11 @@ namespace ifme
 
 					if (ac.Args.Pipe)
 					{
-						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.Path, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
 					}
 					else
 					{
-						ec = ProcessManager.Start(Path.Combine(codec.Path, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
 					}
 
 					if (ec == 0)
@@ -150,7 +150,7 @@ namespace ifme
 				if (Plugin.Items.TryGetValue(item.Encoder, out codec))
 				{
 					var vc = codec.Video;
-					var en = Path.Combine(codec.Path, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
+					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
 
 					var yuv = $"yuv{item.PixelFormat}p{(item.BitDepth == 8 ? string.Empty : $"{item.BitDepth}le")}";
 					var deinterlace = item.DeInterlace ? $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"" : string.Empty;
@@ -163,26 +163,34 @@ namespace ifme
 
 					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
-						for (int i = 0; i < item.EncoderMultiPass; i++)
-						{
-							var pass = string.Empty;
+                        var p = 1;
+                        var pass = string.Empty;
 
-							if (i == 0)
-								pass = vc.Args.PassFirst;
-							else if (i == (item.EncoderMultiPass - 1))
-								pass = vc.Args.PassLast;
-							else
-								pass = vc.Args.PassNth;
+                        while (true)
+                        {
+                            if (p == 1)
+                                pass = vc.Args.PassFirst;
 
-							if (vc.Args.Pipe)
-							{
-								ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
-							}
-							else
-							{
-								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
-							}
-						}
+                            if (p == item.EncoderMultiPass)
+                                pass = vc.Args.PassLast;
+                            
+                            pass = vc.Args.PassNth;
+
+                            if (vc.Args.Pipe)
+                            {
+                                ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+                            }
+                            else
+                            {
+                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+                            }
+
+                            // exit loop after pass encoding reach max
+                            if (p == item.EncoderMultiPass)
+                                break;
+
+                            p++;
+                        }
 					}
 					else
 					{

@@ -50,7 +50,7 @@ namespace ifme
 
         private void tsmiNew_Click(object sender, EventArgs e)
         {
-            var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts. This way you can add files and convert them or just merge (copy stream) into a new MKV file\n\nEnter a new file name:");
+            var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts.\nThis way you can add files or convert them or just merge (like Mkvtoolnix, MP4Box)\n\nEnter a new file name:");
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -95,7 +95,7 @@ namespace ifme
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-
+            new frmAbout().ShowDialog();
         }
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
@@ -210,12 +210,75 @@ namespace ifme
 
         private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
+            foreach (ListViewItem q in lstMedia.SelectedItems)
+            {
+                var m = q.Tag as MediaQueue;
+                var p = MediaPreset.List[cboEncodingPreset.SelectedValue as string];
 
+                m.OutputFormat = (TargetFormat)p.OutputFormat;
+
+                foreach (var video in m.Video)
+                {
+                    video.Encoder = p.Video.Encoder;
+                    video.EncoderPreset = p.Video.EncoderPreset;
+                    video.EncoderTune = p.Video.EncoderTune;
+                    video.EncoderMode = p.Video.EncoderMode;
+                    video.EncoderValue = p.Video.EncoderValue;
+                    video.EncoderMultiPass = p.Video.EncoderMultiPass;
+                    video.EncoderCommand = p.Video.EncoderCommand;
+
+                    video.Width = p.Video.Width;
+                    video.Height = p.Video.Height;
+                    video.FrameRate = (float)p.Video.FrameRate;
+                    video.BitDepth = p.Video.BitDepth;
+                    video.PixelFormat = p.Video.PixelFormat;
+
+                    video.DeInterlace = p.Video.DeInterlace;
+                    video.DeInterlaceMode = p.Video.DeInterlaceMode;
+                    video.DeInterlaceField = p.Video.DeInterlaceField;
+                }
+
+                foreach (var audio in m.Audio)
+                {
+                    audio.Encoder = p.Audio.Encoder;
+                    audio.EncoderMode = p.Audio.EncoderMode;
+                    audio.EncoderQuality = p.Audio.EncoderQuality;
+                    audio.EncoderSampleRate = p.Audio.EncoderSampleRate;
+                    audio.EncoderChannel = p.Audio.EncoderChannel;
+                    audio.EncoderCommand = p.Audio.EncoderCommand;
+                }
+            }
+
+            UXReloadMedia();
         }
 
         private void btnEncodingPresetSave_Click(object sender, EventArgs e)
         {
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(1, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            cmsEncodingPreset.Show(ptLowerLeft);
+        }
 
+        private void tsmiEncodingPresetSave_Click(object sender, EventArgs e)
+        {
+            EncodingPreset(cboEncodingPreset.SelectedValue as string);
+        }
+
+        private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
+        {
+            var frm = new frmInputBox("Save a new encoding preset", "You about to create a new encoding preset based on current configuration.\nWith this, you can reuse for others.\n\nEnter a new name:");
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(frm.ReturnValue))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+                    return;
+
+                EncodingPreset(frm.ReturnValue);
+            }
         }
 
         private void txtFolderOutput_TextChanged(object sender, EventArgs e)

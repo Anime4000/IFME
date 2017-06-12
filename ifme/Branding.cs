@@ -14,10 +14,12 @@ namespace ifme
         private static string _PathPartnerSplashScreen = Path.Combine("branding", "partner", "1.jpj");
         private static string _PathPartnerBannerLeft = Path.Combine("branding", "partner", "a.jpj");
         private static string _PathPartnerBannerRight = Path.Combine("branding", "partner", "b.jpj");
+        private static string _PathPartnerAbout = Path.Combine("branding", "partner", "z.jpj");
 
         private static string _PathOriginalSplashScreen = Path.Combine("branding", "ai", "1.jpj");
         private static string _PathOriginalBannerLeft = Path.Combine("branding", "ai", "a.jpj");
         private static string _PathOriginalBannerRight = Path.Combine("branding", "ai", "b.jpj");
+        private static string _PathOriginalAbout = Path.Combine("branding", "ai", "z.jpj");
 
         public static Bitmap SplashScreen()
         {
@@ -68,6 +70,24 @@ namespace ifme
             }
 
             return new Bitmap(_Blank, width, height);
+        }
+
+        public static Bitmap About()
+        {
+            // partner
+            if (File.Exists(_PathPartnerAbout))
+            {
+                return new Bitmap(_PathPartnerAbout);
+            }
+
+            // original
+            if (File.Exists(_PathOriginalAbout))
+            {
+                return new Bitmap(_PathOriginalAbout);
+            }
+
+            // fall back
+            return new Bitmap(_Blank, 600, 200);
         }
     }
 }

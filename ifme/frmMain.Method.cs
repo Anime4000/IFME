@@ -31,18 +31,19 @@ namespace ifme
 		// refer to BackgroundWorkerEx.cs file
 		private BackgroundWorkerEx bgThread = new BackgroundWorkerEx();
 
-        // Banner
-        private Branding OEM = new Branding();
+        // Show Splash Screen for loading
+        private Form SplashScreen = new frmSplashScreen();
 
         public void InitializeUX()
 		{
-			// Load plugin & preset
-			new frmSplashScreen().ShowDialog();
+            // Show Splash Screen
+            SplashScreen.Show();
 
-			// Init FFmpeg
+            // Init FFmpeg
+            var arch = Properties.Settings.Default.FFmpegArch;
 			var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", "ffmpeg32", "ffmpeg");
-			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", "ffmpeg32", "ffprobe");
+			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", $"ffmpeg{arch}", "ffmpeg");
+			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", $"ffmpeg{arch}", "ffprobe");
 
 			// Init Folder
 			if (!Directory.Exists(Get.FolderTemp))
@@ -72,32 +73,13 @@ namespace ifme
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
 
-			var video = new Dictionary<Guid, string>();
-			var audio = new Dictionary<Guid, string>();
 
-			foreach (var item in Plugin.Items)
-			{
-				var value = item.Value;
+            LoadPlugins();
+            LoadEncodingPreset();
+            DrawBanner();
 
-				if (!string.IsNullOrEmpty(value.Video.Extension))
-					video.Add(item.Key, value.Name);
-
-				if (!string.IsNullOrEmpty(value.Audio.Extension))
-					audio.Add(item.Key, value.Name);
-			}
-
-			cboVideoEncoder.DataSource = new BindingSource(video, null);
-			cboVideoEncoder.DisplayMember = "Value";
-			cboVideoEncoder.ValueMember = "Key";
-			cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
-
-			cboAudioEncoder.DataSource = new BindingSource(audio, null);
-			cboAudioEncoder.DisplayMember = "Value";
-			cboAudioEncoder.ValueMember = "Key";
-			cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
-
-			DrawBanner();
-			Test();
+            // Close Splash Screen when loading complete
+            SplashScreen.Close();
 		}
 
 		private void DrawBanner()
@@ -105,20 +87,136 @@ namespace ifme
             pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
 		}
 
-		private void Test()
+        private void LoadPlugins()
+        {
+            Plugin.Load();
+
+            var video = new Dictionary<Guid, string>();
+            var audio = new Dictionary<Guid, string>();
+
+            foreach (var item in Plugin.Items)
+            {
+                var value = item.Value;
+
+                if (!string.IsNullOrEmpty(value.Video.Extension))
+                    video.Add(item.Key, value.Name);
+
+                if (!string.IsNullOrEmpty(value.Audio.Extension))
+                    audio.Add(item.Key, value.Name);
+            }
+
+            cboVideoEncoder.DataSource = new BindingSource(video, null);
+            cboVideoEncoder.DisplayMember = "Value";
+            cboVideoEncoder.ValueMember = "Key";
+            cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
+
+            cboAudioEncoder.DataSource = new BindingSource(audio, null);
+            cboAudioEncoder.DisplayMember = "Value";
+            cboAudioEncoder.ValueMember = "Key";
+            cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
+        }
+
+        private void LoadEncodingPreset()
+        {
+            MediaPreset.Load();
+
+            var encpre = new Dictionary<string, string>();
+
+            foreach (var item in MediaPreset.List)
+                encpre.Add(item.Key, item.Value.Name);
+
+            cboEncodingPreset.DataSource = new BindingSource(encpre, null);
+            cboEncodingPreset.DisplayMember = "Value";
+            cboEncodingPreset.ValueMember = "Key";
+        }
+
+        private void EncodingPreset(string name)
 		{
 			var preset = new MediaPreset();
-			var vdef = new MediaDefaultVideo(MediaTypeVideo.MKV);
-			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+            var target = 0;
 
-			preset.Video.Encoder = vdef.Encoder;
-			preset.Video.EncoderPreset = vdef.Preset;
+            if (rdoFormatMp4.Checked)
+                target = (int)TargetFormat.MP4;
+            else if (rdoFormatMkv.Checked)
+                target = (int)TargetFormat.MKV;
+            else if (rdoFormatWebm.Checked)
+                target = (int)TargetFormat.WEBM;
+            else if (rdoFormatAudioMp3.Checked)
+                target = (int)TargetFormat.MP3;
+            else if (rdoFormatAudioMp4.Checked)
+                target = (int)TargetFormat.M4A;
+            else if (rdoFormatAudioOgg.Checked)
+                target = (int)TargetFormat.OGG;
+            else if (rdoFormatAudioOpus.Checked)
+                target = (int)TargetFormat.OPUS;
+            else if (rdoFormatAudioFlac.Checked)
+                target = (int)TargetFormat.FLAC;
 
-			preset.Audio.Encoder = adef.Encoder;
+            preset.OutputFormat = target;
 
-			var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
-			File.WriteAllText("test.json", json);
-		}
+            preset.Video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
+            preset.Video.EncoderPreset = cboVideoPreset.Text;
+            preset.Video.EncoderTune = cboVideoTune.Text;
+            preset.Video.EncoderMode = cboVideoRateControl.SelectedIndex;
+            preset.Video.EncoderValue = nudVideoRateFactor.Value;
+            preset.Video.EncoderMultiPass = (int)nudVideoMultiPass.Value;
+            preset.Video.EncoderCommand = "";
+
+            var width = 1280;
+            var height = 720;
+            var fps = 23.976;
+            var bpc = 8;
+            var pix = 420;
+            int.TryParse(cboVideoResolution.Text.Split('x')[0], out width);
+            int.TryParse(cboVideoResolution.Text.Split('x')[1], out height);
+            double.TryParse(cboVideoFrameRate.Text, out fps);
+            int.TryParse(cboVideoBitDepth.Text, out bpc);
+            int.TryParse(cboVideoPixelFormat.Text, out pix);
+
+            preset.Video.Width = width;
+            preset.Video.Height = height;
+            preset.Video.FrameRate = fps;
+            preset.Video.BitDepth = bpc;
+            preset.Video.PixelFormat = pix;
+
+            preset.Video.DeInterlace = chkVideoDeinterlace.Checked;
+            preset.Video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
+            preset.Video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
+
+            decimal quality = 128000;
+            var samplerate = 44100;
+            var channel = 0;
+            decimal.TryParse(cboAudioQuality.Text, out quality);
+            int.TryParse(cboAudioSampleRate.Text, out samplerate);
+            int.TryParse(cboAudioChannel.Text, out channel);
+
+            preset.Audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
+            preset.Audio.EncoderMode = cboAudioMode.SelectedIndex;
+            preset.Audio.EncoderQuality = quality;
+            preset.Audio.EncoderSampleRate = samplerate;
+            preset.Audio.EncoderChannel = channel;
+            preset.Audio.EncoderCommand = "";
+
+            if (MediaPreset.List.ContainsKey(name))
+            {
+                preset.Name = MediaPreset.List[name].Name;
+                preset.Author = MediaPreset.List[name].Author;
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(Path.Combine("preset", $"{name}.json"), json);
+            }
+            else
+            {
+                preset.Name = name;
+                preset.Author = Environment.MachineName;
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(Path.Combine("preset", $"{DateTime.Now:yyyyMMdd_HHmmss-ffff}_{name.Substring(0, 4)}.json"), json);
+            }
+
+            // reload listing
+            LoadEncodingPreset();
+        }
 
 		private string[] OpenFiles(MediaType type)
 		{
@@ -369,9 +467,13 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
-				var index = lstMedia.SelectedItems[0].Index;
-				lstMedia.SelectedItems[0].Selected = false;
-				lstMedia.Items[index].Selected = true;
+                var selected = lstMedia.SelectedItems;
+
+                foreach (ListViewItem item in selected)
+                {
+                    lstMedia.Items[item.Index].Selected = false;
+                    lstMedia.Items[item.Index].Selected = true;
+                }
 			}
 		}
 
@@ -815,7 +917,10 @@ namespace ifme
 					}
 				}
 			}
-		}
+
+            // refresh
+            UXReloadMedia();
+        }
 
 		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
 		{

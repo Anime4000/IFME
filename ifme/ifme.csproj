@@ -59,6 +59,12 @@
     <Compile Include="CRC32.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,7 +79,6 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -101,7 +106,6 @@
     <Compile Include="MediaEncoding.cs" />
     <Compile Include="Media\Preset\MediaPreset.cs" />
     <Compile Include="Media\Preset\MediaPresetAudio.cs" />
-    <Compile Include="Media\Preset\MediaPresetLoad.cs" />
     <Compile Include="Media\Preset\MediaPresetVideo.cs" />
     <Compile Include="Media\Queue\MediaQueue.cs" />
     <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
@@ -116,7 +120,6 @@
     <Compile Include="Plugin\PluginAudioMode.cs" />
     <Compile Include="Plugin\PluginAuthor.cs" />
     <Compile Include="Plugin\PluginCommon.cs" />
-    <Compile Include="Plugin\PluginLoad.cs" />
     <Compile Include="Plugin\PluginTest.cs" />
     <Compile Include="Plugin\PluginUpdate.cs" />
     <Compile Include="Plugin\PluginVideo.cs" />
@@ -127,6 +130,9 @@
     <Compile Include="ProcessManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmInputBox.resx">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -144,20 +150,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
     <None Include="branding\ai\1.jpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="branding\ai\a.jpj" />
     <None Include="branding\ai\b.jpj" />
+    <None Include="branding\ai\z.jpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="format.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -171,6 +175,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -230,7 +239,7 @@
     <None Include="Resources\app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon16_document-save.png" />
+    <None Include="Resources\icon16_disk-save.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon16_document-import.png" />
@@ -240,6 +249,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon22_help-about.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_bookmarks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_document-save-as.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_document-save.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

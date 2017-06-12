@@ -10,7 +10,9 @@ using System.Windows.Forms;
 
 namespace ifme
 {
-	public partial class frmSplashScreen : Form
+    public delegate void CloseDelagate();
+
+    public partial class frmSplashScreen : Form
 	{
 		public frmSplashScreen()
 		{
@@ -27,10 +29,7 @@ namespace ifme
 
 		private void frmSplashScreen_Shown(object sender, EventArgs e)
 		{
-			new PluginLoad();
-			new MediaPresetLoad();
 
-			Close();
 		}
 
 		protected override void OnPaintBackground(PaintEventArgs e)

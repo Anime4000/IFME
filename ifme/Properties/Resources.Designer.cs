@@ -61,7 +61,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eridanus.
+        ///   Looks up a localized string similar to Free and Independent.
         /// </summary>
         internal static string AppCodeName {
             get {
@@ -101,9 +101,29 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon16_bookmarks {
+            get {
+                object obj = ResourceManager.GetObject("icon16_bookmarks", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon16_del {
             get {
                 object obj = ResourceManager.GetObject("icon16_del", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon16_disk_save {
+            get {
+                object obj = ResourceManager.GetObject("icon16_disk_save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -124,6 +144,16 @@ namespace ifme.Properties {
         internal static System.Drawing.Bitmap icon16_document_save {
             get {
                 object obj = ResourceManager.GetObject("icon16_document_save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon16_document_save_as {
+            get {
+                object obj = ResourceManager.GetObject("icon16_document_save_as", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

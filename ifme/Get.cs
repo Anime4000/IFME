@@ -12,7 +12,7 @@ namespace ifme
 {
 	static class Get
     {
-		public static Dictionary<string, string> LanguageCode
+        public static Dictionary<string, string> LanguageCode
 		{
 			get
 			{
