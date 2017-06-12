@@ -288,6 +288,7 @@
             this.cboLanguage.Name = "cboLanguage";
             this.cboLanguage.Size = new System.Drawing.Size(418, 24);
             this.cboLanguage.TabIndex = 0;
+            this.cboLanguage.SelectedIndexChanged += new System.EventHandler(this.cboLanguage_SelectedIndexChanged);
             // 
             // tabOptionEncoding
             // 
@@ -421,7 +422,7 @@
             this.tabOptionModule.Location = new System.Drawing.Point(4, 22);
             this.tabOptionModule.Name = "tabOptionModule";
             this.tabOptionModule.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOptionModule.Size = new System.Drawing.Size(608, 401);
+            this.tabOptionModule.Size = new System.Drawing.Size(608, 421);
             this.tabOptionModule.TabIndex = 2;
             this.tabOptionModule.Text = "Module";
             this.tabOptionModule.UseVisualStyleBackColor = true;
@@ -436,7 +437,7 @@
             this.lstModule.FullRowSelect = true;
             this.lstModule.Location = new System.Drawing.Point(3, 3);
             this.lstModule.Name = "lstModule";
-            this.lstModule.Size = new System.Drawing.Size(602, 395);
+            this.lstModule.Size = new System.Drawing.Size(602, 415);
             this.lstModule.TabIndex = 0;
             this.lstModule.UseCompatibleStateImageBehavior = false;
             this.lstModule.View = System.Windows.Forms.View.Details;

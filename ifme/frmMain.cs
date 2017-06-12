@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
+using System.IO;
 
 namespace ifme
 {
@@ -50,7 +51,7 @@ namespace ifme
 
         private void tsmiNew_Click(object sender, EventArgs e)
         {
-            var frm = new frmInputBox("New video/audio", "You about to create a blank stream of video, audio, subtitle and fonts.\nThis way you can add files or convert them or just merge (like Mkvtoolnix, MP4Box)\n\nEnter a new file name:");
+            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message);
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -120,7 +121,7 @@ namespace ifme
 
 			if (Properties.Settings.Default.ShutdownType == 1 || Properties.Settings.Default.ShutdownType == 2)
 			{
-				var msg = MessageBox.Show("Shutdown or Restart is set!\nThis computer will do that when encoding completed. Proceed?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				var msg = MessageBox.Show(Language.Lang.MsgBoxShutdown.Message, Language.Lang.MsgBoxShutdown.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (msg == DialogResult.No)
 					return;
 			}
@@ -262,12 +263,12 @@ namespace ifme
 
         private void tsmiEncodingPresetSave_Click(object sender, EventArgs e)
         {
-            EncodingPreset(cboEncodingPreset.SelectedValue as string);
+            EncodingPreset(cboEncodingPreset.SelectedValue as string, string.Empty);
         }
 
         private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
         {
-            var frm = new frmInputBox("Save a new encoding preset", "You about to create a new encoding preset based on current configuration.\nWith this, you can reuse for others.\n\nEnter a new name:");
+            var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text);
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -277,7 +278,7 @@ namespace ifme
                 if (string.IsNullOrWhiteSpace(frm.ReturnValue))
                     return;
 
-                EncodingPreset(frm.ReturnValue);
+                EncodingPreset(frm.ReturnValue, frm.ReturnValue);
             }
         }
 
@@ -291,7 +292,6 @@ namespace ifme
         {
 			var GetDir = new FolderBrowserDialog();
 
-			GetDir.Description = "Choose a folder that IFME can save all encoded files";
 			GetDir.ShowNewFolderButton = true;
 			GetDir.RootFolder = Environment.SpecialFolder.MyComputer;
 
@@ -299,7 +299,7 @@ namespace ifme
 			{
 				if (GetDir.SelectedPath[0] == '\\' && GetDir.SelectedPath[1] == '\\')
 				{
-					MessageBox.Show("Over network not supported, please mount it as drive", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(Language.Lang.MsgBoxSaveFolder.Message, Language.Lang.MsgBoxSaveFolder.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 				}
 
@@ -451,7 +451,7 @@ namespace ifme
 				}
 				else
 				{
-					MessageBox.Show("Output format and codec are not compatible! Choose different one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 					var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
 
@@ -504,7 +504,7 @@ namespace ifme
 				}
 
 
-				var frm = new frmInputBox("Advance Command Line", "Modify encoder command-line arguments", cmd);
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
 				if (frm.ShowDialog() == DialogResult.OK)
 				{
 					cmd = frm.ReturnValue;
@@ -639,9 +639,9 @@ namespace ifme
 				}
 				else
 				{
-					MessageBox.Show("Output format and codec are not compatible! Choose different one.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-					var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+                    var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
 
 					if (rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked)
 						adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
@@ -691,8 +691,8 @@ namespace ifme
 				}
 					
 				
-				var frm = new frmInputBox("Advance Command Line", "Modify encoder command-line arguments", cmd);
-				if (frm.ShowDialog() == DialogResult.OK)
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
+                if (frm.ShowDialog() == DialogResult.OK)
 				{
 					cmd = frm.ReturnValue;
 				}
@@ -859,5 +859,10 @@ namespace ifme
 				}
 			}
 		}
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
     }
 }

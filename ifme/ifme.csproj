@@ -65,6 +65,9 @@
     <Compile Include="frmAbout.Designer.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmAbout.Method.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,10 +89,16 @@
     <Compile Include="frmOption.Designer.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmOption.Method.cs">
+      <DependentUpon>frmOption.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.Designer.cs">
+      <DependentUpon>frmShutdown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
@@ -100,7 +109,7 @@
     </Compile>
     <Compile Include="Get.cs" />
     <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageClass.cs" />
+    <Compile Include="Language\LanguageIO.cs" />
     <Compile Include="Media\Default\MediaDefaultAudio.cs" />
     <Compile Include="Media\Default\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />
@@ -168,7 +177,25 @@
     <None Include="language.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="lang\eng.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="lang\may.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="mime.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="preset\00000000_000000-0000_def1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="preset\00000000_000000-0000_def2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="preset\00000000_000000-0001_YouT.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="preset\00000000_000000-0002_YouT.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

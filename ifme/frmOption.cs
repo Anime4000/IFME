@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ifme
 {
@@ -16,50 +17,23 @@ namespace ifme
 
 		private void frmOption_Load(object sender, EventArgs e)
 		{
-			// General
-			txtTempPath.Text = Properties.Settings.Default.TempDir;
-			txtNamePrefix.Text = Properties.Settings.Default.FileNamePrefix;
-			txtNamePostfix.Text = Properties.Settings.Default.FileNamePostfix;
+            InitializeUX();
+        }
 
-			if (Properties.Settings.Default.FileNamePrefixType == 0)
-				rdoNamePrefixNone.Checked = true;
-			else if (Properties.Settings.Default.FileNamePrefixType == 1)
-				rdoNamePrefixDateTime.Checked = true;
-			else
-				rdoNamePrefixCustom.Checked = true;
+        private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboLanguage.SelectedIndex >= 0)
+            {
+                var id = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
 
-			if (Properties.Settings.Default.FileNamePostfixType == 0)
-				rdoNamePostfixNone.Checked = true;
-			else
-				rdoNamePostfixCustom.Checked = true;
+                if (Language.List.ContainsKey(id))
+                {
+                    var l = Language.List[id];
 
-			// Encoding
-			if (Properties.Settings.Default.FFmpegArch == 32)
-				rdoFFmpeg32.Checked = true;
-			else
-				rdoFFmpeg64.Checked = true;
-
-			if (AviSynth.IsInstalled)
-			{
-				lblAviSynthInstall.Text = "Installed!";
-				lblAviSynthInstall.ForeColor = Color.Green;
-				lblAviSynthVersion.Text = AviSynth.InstalledVersion;
-			}
-
-			nudFrameCountOffset.Value = Properties.Settings.Default.FrameCountOffset;
-
-			// List all plugins
-			foreach (var item in Plugin.Items)
-			{
-				lstModule.Items.Add(new ListViewItem(new[] 
-				{
-					item.Value.Name,
-					(item.Value.X64 ? "64bit" : "32bit"),
-					item.Value.Author.Developer
-
-				}));
-			}
-		}
+                    lblLanguageAuthor.Text = $"{l.AuthorName} ({l.AuthorEmail})\n{l.AuthorProfile}";
+                }
+            }
+        }
 
 		private void btnTempPath_Click(object sender, EventArgs e)
 		{
@@ -86,7 +60,8 @@ namespace ifme
 		{
 			// Save all
 			// General
-			Properties.Settings.Default.TempDir = txtTempPath.Text;
+            Properties.Settings.Default.Language = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
+            Properties.Settings.Default.TempDir = txtTempPath.Text;
 			Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
 			Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
 
@@ -113,5 +88,5 @@ namespace ifme
 			// Final
 			Properties.Settings.Default.Save();
 		}
-	}
+    }
 }

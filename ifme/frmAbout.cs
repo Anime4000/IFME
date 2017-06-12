@@ -22,10 +22,7 @@ namespace ifme
 
         private void frmAbout_Load(object sender, EventArgs e)
         {
-            pbBanner.Image = Branding.About();
-
-            lblMainTitle.Text = Get.AppName;
-            lblMainVersion.Text = $"{Get.AppNameLib} ('{Properties.Resources.AppCodeName}')";
+            InitializeUX();
         }
 
         private void lblDonatePP_Click(object sender, EventArgs e)

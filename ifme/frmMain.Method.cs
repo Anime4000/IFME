@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Threading;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Drawing;
 
 namespace ifme
 {
@@ -38,6 +37,9 @@ namespace ifme
 		{
             // Show Splash Screen
             SplashScreen.Show();
+
+            // Load language
+            LoadLanguage();
 
             // Init FFmpeg
             var arch = Properties.Settings.Default.FFmpegArch;
@@ -73,9 +75,11 @@ namespace ifme
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
 
-
+            // Load everyting
             LoadPlugins();
             LoadEncodingPreset();
+
+            // Draw
             DrawBanner();
 
             // Close Splash Screen when loading complete
@@ -86,6 +90,52 @@ namespace ifme
 		{
             pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
 		}
+
+        private void LoadLanguage()
+        {
+            Language.Load();
+
+            if (OS.IsWindows)
+                Font = Language.Lang.UIFontWindows;
+            else
+                Font = Language.Lang.UIFontLinux;
+
+            cmsNewImport.Font = Font;
+            cmsEncodingPreset.Font = Font;
+
+            var frm = Language.Lang.frmMain;
+            Control ctrl = this;
+
+            do
+            {
+                ctrl = GetNextControl(ctrl, true);
+
+                if (ctrl != null)
+                    if (ctrl is Label ||
+                        ctrl is Button ||
+                        ctrl is TabPage ||
+                        ctrl is CheckBox ||
+                        ctrl is RadioButton ||
+                        ctrl is GroupBox)
+                        if (frm.ContainsKey(ctrl.Name))
+                            ctrl.Text = frm[ctrl.Name];
+
+            } while (ctrl != null);
+
+            foreach (ToolStripMenuItem item in cmsNewImport.Items)
+                if (Language.Lang.cmsNewImport.ContainsKey(item.Name))
+                    item.Text = Language.Lang.cmsNewImport[item.Name];
+
+            foreach (ToolStripMenuItem item in cmsEncodingPreset.Items)
+                if (Language.Lang.cmsEncodingPreset.ContainsKey(item.Name))
+                    item.Text = Language.Lang.cmsEncodingPreset[item.Name];
+
+            cboVideoDeinterlaceMode.Items.Clear();
+            cboVideoDeinterlaceMode.Items.AddRange(Language.Lang.ComboBoxDeInterlaceMode.ToArray());
+
+            cboVideoDeinterlaceField.Items.Clear();
+            cboVideoDeinterlaceField.Items.AddRange(Language.Lang.ComboBoxDeInterlaceField.ToArray());
+        }
 
         private void LoadPlugins()
         {
@@ -130,7 +180,7 @@ namespace ifme
             cboEncodingPreset.ValueMember = "Key";
         }
 
-        private void EncodingPreset(string name)
+        private void EncodingPreset(string id, string name)
 		{
 			var preset = new MediaPreset();
             var target = 0;
@@ -160,7 +210,10 @@ namespace ifme
             preset.Video.EncoderMode = cboVideoRateControl.SelectedIndex;
             preset.Video.EncoderValue = nudVideoRateFactor.Value;
             preset.Video.EncoderMultiPass = (int)nudVideoMultiPass.Value;
-            preset.Video.EncoderCommand = "";
+
+            if (lstMedia.SelectedItems.Count > 0)
+                if (lstVideo.Items.Count > 0)
+                    preset.Video.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].EncoderCommand;
 
             var width = 1280;
             var height = 720;
@@ -195,15 +248,18 @@ namespace ifme
             preset.Audio.EncoderQuality = quality;
             preset.Audio.EncoderSampleRate = samplerate;
             preset.Audio.EncoderChannel = channel;
-            preset.Audio.EncoderCommand = "";
 
-            if (MediaPreset.List.ContainsKey(name))
+            if (lstMedia.SelectedItems.Count > 0)
+                if (lstAudio.Items.Count > 0)
+                        preset.Audio.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[0].EncoderCommand;
+
+            if (MediaPreset.List.ContainsKey(id))
             {
-                preset.Name = MediaPreset.List[name].Name;
-                preset.Author = MediaPreset.List[name].Author;
+                preset.Name = MediaPreset.List[id].Name;
+                preset.Author = MediaPreset.List[id].Author;
 
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(Path.Combine("preset", $"{name}.json"), json);
+                File.WriteAllText(Path.Combine("preset", $"{id}.json"), json);
             }
             else
             {
@@ -211,7 +267,7 @@ namespace ifme
                 preset.Author = Environment.MachineName;
 
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(preset, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(Path.Combine("preset", $"{DateTime.Now:yyyyMMdd_HHmmss-ffff}_{name.Substring(0, 4)}.json"), json);
+                File.WriteAllText(Path.Combine("preset", $"{DateTime.Now:yyyyMMdd_HHmmss-ffff}_{id.Substring(0, 4)}.json"), json);
             }
 
             // reload listing

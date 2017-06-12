@@ -1,0 +1,30 @@
+{
+  "Name": "Internet Sharing, MP4, H.265@CRF 27.0 720p@23.976fps, AAC 128kbps@44.1kHz",
+  "Author": "Anime4000",
+  "OutputFormat": 0,
+  "Video": {
+    "Encoder": "deadbeef-0265-0265-0265-026502650265",
+    "EncoderPreset": "slower",
+    "EncoderTune": "psnr",
+    "EncoderMode": 0,
+    "EncoderValue": 27.0,
+    "EncoderMultiPass": 2,
+    "EncoderCommand": "--pme --pmode",
+    "Width": 1280,
+    "Height": 720,
+    "FrameRate": 23.976,
+    "BitDepth": 8,
+    "PixelFormat": 420,
+    "DeInterlace": false,
+    "DeInterlaceMode": 1,
+    "DeInterlaceField": 0
+  },
+  "Audio": {
+    "Encoder": "deadbeef-ff44-ff44-ff44-ff44ff44ff44",
+    "EncoderMode": 0,
+    "EncoderQuality": 128000,
+    "EncoderSampleRate": 44100,
+    "EncoderChannel": 2,
+    "EncoderCommand": ""
+  }
+}

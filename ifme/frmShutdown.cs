@@ -21,15 +21,8 @@ namespace ifme
 
 		private void frmShutdown_Load(object sender, EventArgs e)
 		{
-			try
-			{
-				cboShutdown.SelectedIndex = Properties.Settings.Default.ShutdownType;
-			}
-			catch
-			{
-				cboShutdown.SelectedIndex = 0;
-			}
-		}
+            InitializeUX();
+        }
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{

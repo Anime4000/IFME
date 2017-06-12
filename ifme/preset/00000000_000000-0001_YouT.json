@@ -1,0 +1,30 @@
+{
+  "Name": "YouTube, Webm, VP9@CQ 32 720p@23.976fps, Opus 128kbps@44.1kHz",
+  "Author": "ANIME4000-PC",
+  "OutputFormat": 2,
+  "Video": {
+    "Encoder": "deadbeef-9999-9999-9999-999999999999",
+    "EncoderPreset": "",
+    "EncoderTune": "",
+    "EncoderMode": 0,
+    "EncoderValue": 32.0,
+    "EncoderMultiPass": 2,
+    "EncoderCommand": "",
+    "Width": 1280,
+    "Height": 720,
+    "FrameRate": 23.976,
+    "BitDepth": 8,
+    "PixelFormat": 420,
+    "DeInterlace": false,
+    "DeInterlaceMode": 1,
+    "DeInterlaceField": 0
+  },
+  "Audio": {
+    "Encoder": "deadface-f00d-f00d-f00d-f00df00df00d",
+    "EncoderMode": 0,
+    "EncoderQuality": 128000,
+    "EncoderSampleRate": 44100,
+    "EncoderChannel": 2,
+    "EncoderCommand": ""
+  }
+}
