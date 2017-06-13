@@ -161,6 +161,7 @@
             this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.ttProInfo = new System.Windows.Forms.ToolTip(this.components);
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -1659,14 +1660,14 @@
             this.tsmiImport});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(153, 70);
+            this.cmsNewImport.Size = new System.Drawing.Size(143, 48);
             // 
             // tsmiNew
             // 
             this.tsmiNew.Image = global::ifme.Properties.Resources.icon16_bookmark_new;
             this.tsmiNew.Name = "tsmiNew";
             this.tsmiNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.tsmiNew.Size = new System.Drawing.Size(152, 22);
+            this.tsmiNew.Size = new System.Drawing.Size(142, 22);
             this.tsmiNew.Text = "&New";
             this.tsmiNew.Click += new System.EventHandler(this.tsmiNew_Click);
             // 
@@ -1675,7 +1676,7 @@
             this.tsmiImport.Image = global::ifme.Properties.Resources.icon16_document_import;
             this.tsmiImport.Name = "tsmiImport";
             this.tsmiImport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.tsmiImport.Size = new System.Drawing.Size(152, 22);
+            this.tsmiImport.Size = new System.Drawing.Size(142, 22);
             this.tsmiImport.Text = "&Import";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
@@ -1703,6 +1704,10 @@
             this.tsmiEncodingPresetSaveAs.Size = new System.Drawing.Size(113, 22);
             this.tsmiEncodingPresetSaveAs.Text = "Save &As";
             this.tsmiEncodingPresetSaveAs.Click += new System.EventHandler(this.tsmiEncodingPresetSaveAs_Click);
+            // 
+            // ttProInfo
+            // 
+            this.ttProInfo.IsBalloon = true;
             // 
             // frmMain
             // 
@@ -1738,6 +1743,7 @@
             this.Text = "Internet Friendly Media Encoder";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.tabMediaConfig.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.pnlGeneral.ResumeLayout(false);
@@ -1902,6 +1908,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsEncodingPreset;
         private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSave;
         private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSaveAs;
+        private System.Windows.Forms.ToolTip ttProInfo;
     }
 }
 

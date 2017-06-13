@@ -18,10 +18,13 @@ namespace ifme
         public Font UIFontWindows { get; set; } = new Font("Tahoma", 8);
         public Font UIFontLinux { get; set; } = new Font("FreeSans", 8);
 
+        public string ToolTipDonate { get; set; } = "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.";
+
         public Dictionary<string, string> frmMain { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, string> frmOption { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, string> frmShutdown { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, string> frmAbout { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> frmCheckUpdate { get; set; } = new Dictionary<string, string>();
 
         public Dictionary<string, string> cmsNewImport { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, string> cmsEncodingPreset { get; set; } = new Dictionary<string, string>();

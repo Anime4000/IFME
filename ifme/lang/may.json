@@ -3,7 +3,8 @@
   "AuthorEmail": "ilham92_sakura@yahoo.com",
   "AuthorProfile": "https://github.com/Anime4000",
   "UIFontWindows": "Tahoma, 8pt",
-  "UIFontLinux": "FreeSans, 8pt",
+	"UIFontLinux": "FreeSans, 8pt",
+	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
   "frmMain": {
     "tabGeneral": "General",
     "grpTargetFormat": "&Target Format",
@@ -79,11 +80,15 @@
     "lblInfo": "What happen if all media done encoding?",
     "btnOK": "&OK"
   },
-  "frmAbout": {
-	"lblDevTtitle": "Dicipta oleh",
-	"lblTechTitle": "Teknologi diguna",
-	"lblArtTitle": "Hasil seni oleh"
-  },
+	"frmAbout": {
+		"lblDevTtitle": "Dicipta oleh",
+		"lblTechTitle": "Teknologi diguna",
+		"lblArtTitle": "Hasil seni oleh"
+	},
+		"frmCheckUpdate": {
+		"btnDownload": "&Download",
+		"btnOK": "&OK"
+	},
   "cmsNewImport": {
 	"tsmiNew": "&New",
 	"tsmiImport": "&Import",

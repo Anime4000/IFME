@@ -67,6 +67,17 @@
     </Compile>
     <Compile Include="frmAbout.Method.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCheckUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCheckUpdate.Designer.cs">
+      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCheckUpdate.Method.cs">
+      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
@@ -82,6 +93,7 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -91,6 +103,7 @@
     </Compile>
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
@@ -100,6 +113,7 @@
     </Compile>
     <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -141,6 +155,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCheckUpdate.resx">
+      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInputBox.resx">
       <DependentUpon>frmInputBox.cs</DependentUpon>

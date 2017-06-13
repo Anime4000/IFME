@@ -117,29 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="cmsNewImport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="cmsEncodingPreset.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>152, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsmiEncodingPresetSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAB
-        uwAAAbsBOuzj4gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAH7SURBVDhPpdPL
-        bhJRHAbwvkZtcXrh3lTbUnoRK7TWJoqtqbcKVeP1EUh4BcuGLYlKdcOOjQ0Dsa+AkCAsbHVhYvFGKXdm
-        YPw8/2NyyiRuqovfnDmT//dlkjnTB+C/8MtVr7e8fHEZb3ZSOjsJ8haJ5C7k1C6STIqhWcqIgiXPIvw+
-        Hyp1FUc9aF9tqKg1O2i0u2gpXSgdDU8fPwFlRIHnghuPHjyEomp4nsjovCByBi/lLKLJLDTtF5+ljChY
-        OL+A+3fvodPV0FY6UBhaSautotFSUW8qqNbbqLKVZikjClznXNj0+XFYa6Hcg/aH1SZKlSZ+HDXwrVxH
-        sVTjs5QRBfOzc9i4dRufv1cQep3U2Xol/7Et49l2AvtfSnyWMqJg1jmDm9dv4P2nr8h+7LFfRIbsFfFu
-        7wDpDwfIMDRLGVHgdDiwvnbtRCgjCqYmJrF6xXsilBEFE+NncPnSCpdOp1EoFFDI55Fn+D2Ty+VgM1tg
-        HjXyOcqIgjGbHUtuDxeLxeBmn4heMR6P69DhsVosWGEnkTKiwGw0wTU3z0UiEUxPTsFqMiMajeosssND
-        s/6NO3wVBcaRkdK43Q4nC4a2Qhiz2jAsDSEcDuvMOKb58/XVNYwODR8XmCTprGQw/Dw9MIhAIIBgMPhX
-        A/2nmH5IgwZWJB3/TP8Ofb8B6hqkyWukitEAAAAASUVORK5CYII=
-</value>
-  </data>
-  <metadata name="ttProInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>309, 17</value>
-  </metadata>
 </root>

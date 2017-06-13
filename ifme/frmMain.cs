@@ -28,7 +28,20 @@ namespace ifme
 			InitializeUX();
         }
 
-		private void pbxBanner_Resize(object sender, EventArgs e)
+        private void frmMain_Shown(object sender, EventArgs e)
+        {
+            ttProInfo.Show(null, btnAbout, 0);
+            ttProInfo.IsBalloon = true;
+
+            ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void pbxBanner_Resize(object sender, EventArgs e)
 		{
 			DrawBanner();
 		}
@@ -859,10 +872,5 @@ namespace ifme
 				}
 			}
 		}
-
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
     }
 }

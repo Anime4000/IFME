@@ -1,6 +1,17 @@
-﻿Version 7 (Eridanus)
---------------------
-Complete re-write new code, all bug has has been fixed!
+﻿Version 7.1 (Free and Independent)
+----------------------------------
+[new] Multiple merge failover
+[new] Sub Menu for New/Import, Save encoding presets
+[fixed] Multi Pass encoding
+
+Version 7.0 (Eridanus)
+----------------------
+[new] Complete re-write new code, all bug has has been fixed!
+[new] Allow audio only encoding
+[remove] CPU Affinity & Priority
+[remove] AviSynth Editor & Extensions
+[change] Using JSON instead of INI
+[change] No longer preserve variable frame rate
 
 Version 6.1 (Pixelaphobia)
 --------------------------
