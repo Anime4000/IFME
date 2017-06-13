@@ -2,14 +2,38 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ifme.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="TempFolder" Type="System.String" Scope="User">
+    <Setting Name="TempDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SaveFolder" Type="System.String" Scope="User">
+    <Setting Name="OutputDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SaveFolderThis" Type="System.Boolean" Scope="User">
+    <Setting Name="FFmpegArch" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">32</Value>
+    </Setting>
+    <Setting Name="FileNamePrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[IFME]</Value>
+    </Setting>
+    <Setting Name="FileNamePrefixType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ShutdownType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="FileNamePostfix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">x265</Value>
+    </Setting>
+    <Setting Name="FileNamePostfixType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="FrameCountOffset" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">eng</Value>
     </Setting>
   </Settings>
 </SettingsFile>

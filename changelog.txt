@@ -1,5 +1,6 @@
-﻿Version 7 (Alternate Reality)
------------------------------
+﻿Version 7 (Eridanus)
+--------------------
+Complete re-write new code, all bug has has been fixed!
 
 Version 6.1 (Pixelaphobia)
 --------------------------

@@ -1,1140 +1,868 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using System.Threading;
+using System.Drawing;
 using System.IO;
-using System.Text.RegularExpressions;
-
-using FFmpegDotNet;
 
 namespace ifme
 {
-    public partial class frmMain : Form
+	public partial class frmMain : Form
     {
         public frmMain()
         {
             InitializeComponent();
-            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); // shirnk exe size
-            FormBorderStyle = FormBorderStyle.Sizable; // do accurate container size excluding window bezel
-        }
 
-        #region Form Action
+			// BackgroundWorkerEx Event
+			bgThread.DoWork += bgThread_DoWork;
+			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
+
+			Icon = Get.AppIcon;
+			Text = Get.AppNameLong;
+			FormBorderStyle = FormBorderStyle.Sizable;
+		}
+
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // Load settings
-            if (string.IsNullOrEmpty(Properties.Settings.Default.TempFolder))
-                Properties.Settings.Default.TempFolder = Path.Combine(Path.GetTempPath(), "ifme");
-
-            if (string.IsNullOrEmpty(Properties.Settings.Default.SaveFolder))
-                Properties.Settings.Default.SaveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
-
-            Properties.Settings.Default.Save();
-
-            // Default
-            FFmpeg.Main = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffmpeg");
-            FFmpeg.Probe = Path.Combine(Environment.CurrentDirectory, "plugin", "ffmpeg32", "ffprobe");
-
-            chkOutput.Checked = Properties.Settings.Default.SaveFolderThis;
-            txtOutputFolder.Text = Properties.Settings.Default.SaveFolder;
-            
-            cboVideoResolution.SelectedIndex = 0;
-            cboVideoFrameRate.SelectedIndex = 0;
-            cboVideoChroma.SelectedIndex = 0;
-
-            cboVideoDiMode.SelectedIndex = 1;
-            cboVideoDiField.SelectedIndex = 0;
-
-            // Load all plugins
-            Plugin.Initialize();
-
-            // Video
-            Dictionary<Guid, string> video = new Dictionary<Guid, string>();
-            foreach (var item in Plugin.Video)
-                video.Add(item.Key, item.Value.Name);
-            
-            cboVideoEncoder.DataSource = new BindingSource(video, null);
-            cboVideoEncoder.DisplayMember = "Value";
-            cboVideoEncoder.ValueMember = "Key";
-
-            // Audio
-            Dictionary<Guid, string> audio = new Dictionary<Guid, string>();
-            foreach (var item in Plugin.Audio)
-                audio.Add(item.Key, item.Value.Name);
-
-            cboAudioEncoder.DataSource = new BindingSource(audio, null);
-            cboAudioEncoder.DisplayMember = "Value";
-            cboAudioEncoder.ValueMember = "Key";
-
-            // Subtitle Language Code
-            Dictionary<string, string> lang = new Dictionary<string, string>();
-            foreach (var item in File.ReadAllLines("language.code"))
-                lang.Add(item.Substring(0, 3), item);
-
-            cboSubLang.DataSource = new BindingSource(lang, null);
-            cboSubLang.DisplayMember = "Value";
-            cboSubLang.ValueMember = "Key";
+			InitializeUX();
         }
 
-        private void frmMain_Shown(object sender, EventArgs e)
+		private void pbxBanner_Resize(object sender, EventArgs e)
+		{
+			DrawBanner();
+		}
+
+        private void btnMediaFileOpen_Click(object sender, EventArgs e)
         {
-            
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(1, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            cmsNewImport.Show(ptLowerLeft);
+		}
+
+        private void tsmiImport_Click(object sender, EventArgs e)
+        {
+            foreach (var item in OpenFiles(MediaType.VideoAudio))
+                MediaAdd(item);
+
+            MediaSelect();
         }
 
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void tsmiNew_Click(object sender, EventArgs e)
         {
+            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message);
 
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(frm.ReturnValue))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+                    return;
+
+                var queue = new MediaQueue();
+
+                queue.Enable = true;
+                queue.File = frm.ReturnValue;
+                queue.OutputFormat = TargetFormat.MKV;
+
+                var lst = new ListViewItem(new[]
+                {
+                    frm.ReturnValue,
+                    "",
+                    "New",
+                    "MKV",
+                    "Ready",
+                });
+
+                lst.Tag = queue;
+                lst.Checked = true;
+
+                lstMedia.Items.Add(lst);
+            }
         }
-        #endregion
 
-        #region Queue Button
-        private void btnQueueAdd_Click(object sender, EventArgs e)
+        private void btnMediaFileDel_Click(object sender, EventArgs e)
         {
-            OpenFileDialog getFiles = new OpenFileDialog();
-            getFiles.Filter = "All Files|*.*";
-            getFiles.FilterIndex = 1;
-            getFiles.Multiselect = true;
-
-            if (getFiles.ShowDialog() == DialogResult.OK)
-                foreach (var item in getFiles.FileNames)
-                    QueueAdd(item);
-        }
-        private void btnQueueRemove_Click(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in lstQueue.SelectedItems)
+            foreach (ListViewItem item in lstMedia.SelectedItems)
                 item.Remove();
         }
 
-        private void btnQueueMoveUp_Click(object sender, EventArgs e)
+        private void btnOption_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (lstQueue.SelectedItems.Count > 0)
-                {
-                    ListViewItem selected = lstQueue.SelectedItems[0];
-                    int indx = selected.Index;
-                    int totl = lstQueue.Items.Count;
+			new frmOption().ShowDialog();
+		}
 
-                    if (indx == 0)
-                    {
-                        lstQueue.Items.Remove(selected);
-                        lstQueue.Items.Insert(totl - 1, selected);
-                    }
-                    else
-                    {
-                        lstQueue.Items.Remove(selected);
-                        lstQueue.Items.Insert(indx - 1, selected);
-                    }
-                }
-                else
-                {
-
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            new frmAbout().ShowDialog();
         }
 
-        private void btnQueueMoveDown_Click(object sender, EventArgs e)
+        private void btnMediaMoveUp_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (lstQueue.SelectedItems.Count > 0)
-                {
-                    ListViewItem selected = lstQueue.SelectedItems[0];
-                    int indx = selected.Index;
-                    int totl = lstQueue.Items.Count;
+			ListViewItemMove(ListViewItemType.Media, Direction.Up);
+		}
 
-                    if (indx == totl - 1)
-                    {
-                        lstQueue.Items.Remove(selected);
-                        lstQueue.Items.Insert(0, selected);
-                    }
-                    else
-                    {
-                        lstQueue.Items.Remove(selected);
-                        lstQueue.Items.Insert(indx + 1, selected);
-                    }
-                }
-                else
-                {
+        private void btnMediaMoveDown_Click(object sender, EventArgs e)
+        {
+			ListViewItemMove(ListViewItemType.Media, Direction.Down);
+		}
 
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        private void btnDonePowerOff_Click(object sender, EventArgs e)
+        {
+			new frmShutdown().ShowDialog();
+		}
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+			if (lstMedia.Items.Count == 0)
+				return;
+
+			if (Properties.Settings.Default.ShutdownType == 1 || Properties.Settings.Default.ShutdownType == 2)
+			{
+				var msg = MessageBox.Show(Language.Lang.MsgBoxShutdown.Message, Language.Lang.MsgBoxShutdown.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				if (msg == DialogResult.No)
+					return;
+			}
+
+			if (bgThread.IsBusy)
+			{
+				if (!btnPause.Enabled)
+				{
+					btnStart.Enabled = false;
+					btnPause.Enabled = true;
+
+					ProcessManager.Resume();
+					return;
+				}
+			}
+			else
+			{
+				// thread safe, make a copy
+				// int = ListView Index
+				// MediaQueue = ListView Tag
+				var dict = new Dictionary<int, MediaQueue>();
+				foreach (ListViewItem item in lstMedia.Items)
+				{
+					dict.Add(item.Index, item.Tag as MediaQueue);
+					item.SubItems[4].Text = "Waiting...";
+				}
+
+				bgThread.RunWorkerAsync(dict);
+
+				btnStart.Enabled = false;
+				btnPause.Enabled = true;
+				btnStop.Enabled = true;
+			}
+		}
+
+		private void btnPause_Click(object sender, EventArgs e)
+        {
+			if (btnPause.Enabled)
+			{
+				btnStart.Enabled = true;
+				btnPause.Enabled = false;
+				ProcessManager.Pause();
+			}
         }
 
-        private void btnQueueStop_Click(object sender, EventArgs e)
+        private void btnStop_Click(object sender, EventArgs e)
         {
-
+			if (bgThread.IsBusy)
+			{
+				bgThread.Abort();
+				bgThread.Dispose();
+			}
         }
 
-        private void btnQueuePause_Click(object sender, EventArgs e)
+        private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstMedia.SelectedItems.Count > 0)
+			{
+				var tf = !(lstMedia.SelectedItems.Count > 1);
+				grpVideoStream.Enabled = tf;
+				grpAudioStream.Enabled = tf;
 
-        }
+				MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
+			}
 
-        private void btnQueueStart_Click(object sender, EventArgs e)
-        {
-            if (!bwEncoding.IsBusy)
-            {
-                List<object> temp = new List<object>();
+			if (lstMedia.SelectedItems.Count == 0)
+			{
+				lstVideo.Items.Clear();
+				lstAudio.Items.Clear();
+				lstSub.Items.Clear();
+				lstAttach.Items.Clear();
+			}
+		}
 
-                foreach (ListViewItem item in lstQueue.Items)
-                    temp.Add(item.Tag);
-
-                bwEncoding.RunWorkerAsync(temp);
-            }
-        }
-        #endregion
-
-        #region Queue List Action
-        private void lstQueue_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-                QueueDisplay(lstQueue.SelectedItems[0].Index);
-        }
-
-        private void lstQueue_DragDrop(object sender, DragEventArgs e)
+        private void lstMedia_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effect = DragDropEffects.Copy;
         }
 
-        private void lstQueue_DragEnter(object sender, DragEventArgs e)
+        private void lstMedia_DragEnter(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach (var file in files)
-                QueueAdd(file);
-        }
-        #endregion
-
-        #region Encoding Profile & Output Folder
-        private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+                MediaAdd(file);
         }
 
-        private void btnProfileSave_Click(object sender, EventArgs e)
+        private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void btnProfileDelete_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtOutputFolder_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnBrowseOutput_Click(object sender, EventArgs e)
-        {
-
-        }
-        #endregion
-
-        #region Tab Properties
-        private void rdoMP4_CheckedChanged(object sender, EventArgs e)
-        {
-            // no need
-        }
-
-        private void rdoMKV_CheckedChanged(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
+            foreach (ListViewItem q in lstMedia.SelectedItems)
             {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
+                var m = q.Tag as MediaQueue;
+                var p = MediaPreset.List[cboEncodingPreset.SelectedValue as string];
+
+                m.OutputFormat = (TargetFormat)p.OutputFormat;
+
+                foreach (var video in m.Video)
                 {
-                    if (rdoMKV.Checked)
-                    {
-                        (item.Tag as Queue).MkvOut = true;
-                    }
-                    else
-                    {
-                        (item.Tag as Queue).MkvOut = false;
-                    }
+                    video.Encoder = p.Video.Encoder;
+                    video.EncoderPreset = p.Video.EncoderPreset;
+                    video.EncoderTune = p.Video.EncoderTune;
+                    video.EncoderMode = p.Video.EncoderMode;
+                    video.EncoderValue = p.Video.EncoderValue;
+                    video.EncoderMultiPass = p.Video.EncoderMultiPass;
+                    video.EncoderCommand = p.Video.EncoderCommand;
+
+                    video.Width = p.Video.Width;
+                    video.Height = p.Video.Height;
+                    video.FrameRate = (float)p.Video.FrameRate;
+                    video.BitDepth = p.Video.BitDepth;
+                    video.PixelFormat = p.Video.PixelFormat;
+
+                    video.DeInterlace = p.Video.DeInterlace;
+                    video.DeInterlaceMode = p.Video.DeInterlaceMode;
+                    video.DeInterlaceField = p.Video.DeInterlaceField;
                 }
-            }
-        }
-        #endregion
 
-        #region Tab Video
-        private void cboVideoResolution_TextChanged(object sender, EventArgs e)
-        {
-            // prevent user enter invalid value
-            Regex regex = new Regex(@"(^\d{3,5}x\d{3,5}$)");
-            MatchCollection matches = regex.Matches(cboVideoResolution.Text);
-
-            if (matches.Count == 0)
-            {
-                if (lstQueue.SelectedItems.Count > 0)
+                foreach (var audio in m.Audio)
                 {
-                    var qi = (lstQueue.SelectedItems[0].Tag as Queue).Properties;
-
-                    if (qi.Video.Count > 0)
-                    {
-                        cboVideoResolution.Text = $"{qi.Video[0].Width}x{qi.Video[0].Height}";
-                    }
+                    audio.Encoder = p.Audio.Encoder;
+                    audio.EncoderMode = p.Audio.EncoderMode;
+                    audio.EncoderQuality = p.Audio.EncoderQuality;
+                    audio.EncoderSampleRate = p.Audio.EncoderSampleRate;
+                    audio.EncoderChannel = p.Audio.EncoderChannel;
+                    audio.EncoderCommand = p.Audio.EncoderCommand;
                 }
             }
 
-            // apply
-            if (lstQueue.SelectedItems.Count > 0)
+            UXReloadMedia();
+        }
+
+        private void btnEncodingPresetSave_Click(object sender, EventArgs e)
+        {
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(1, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            cmsEncodingPreset.Show(ptLowerLeft);
+        }
+
+        private void tsmiEncodingPresetSave_Click(object sender, EventArgs e)
+        {
+            EncodingPreset(cboEncodingPreset.SelectedValue as string, string.Empty);
+        }
+
+        private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
+        {
+            var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text);
+
+            if (frm.ShowDialog() == DialogResult.OK)
             {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+                if (string.IsNullOrEmpty(frm.ReturnValue))
+                    return;
 
-                    foreach (var video in qi.Video)
-                    {
-                        var res = cboVideoResolution.Text.Split('x');
+                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+                    return;
 
-                        if (res.Length > 1)
-                        {
-                            int.TryParse(res[0], out video.Width);
-                            int.TryParse(res[1], out video.Height);
-                        }
-                    }
-                }
+                EncodingPreset(frm.ReturnValue, frm.ReturnValue);
             }
         }
 
-        private void cboVideoResolution_SelectedIndexChanged(object sender, EventArgs e)
+        private void txtFolderOutput_TextChanged(object sender, EventArgs e)
         {
-
+			Properties.Settings.Default.OutputDir = txtFolderOutput.Text;
+			Properties.Settings.Default.Save();
         }
 
-        private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
+        private void btnBrowseFolderOutput_Click(object sender, EventArgs e)
         {
-            // prevent user enter invalid value
-            Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)");
-            MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
+			var GetDir = new FolderBrowserDialog();
 
-            if (matches.Count == 0)
-            {
-                if (lstQueue.SelectedItems.Count > 0)
-                {
-                    var qi = (lstQueue.SelectedItems[0].Tag as Queue).Properties;
+			GetDir.ShowNewFolderButton = true;
+			GetDir.RootFolder = Environment.SpecialFolder.MyComputer;
 
-                    if (qi.Video.Count > 0)
-                    {
-                        cboVideoFrameRate.Text = $"{qi.Video[0].FrameRate:N3}";
-                    }
-                }
-            }
+			if (GetDir.ShowDialog() == DialogResult.OK)
+			{
+				if (GetDir.SelectedPath[0] == '\\' && GetDir.SelectedPath[1] == '\\')
+				{
+					MessageBox.Show(Language.Lang.MsgBoxSaveFolder.Message, Language.Lang.MsgBoxSaveFolder.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
 
-            // apply
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+				txtFolderOutput.Text = GetDir.SelectedPath;
 
-                    foreach (var video in qi.Video)
-                    {
-                        float.TryParse(cboVideoFrameRate.Text, out video.FrameRate);
-                    }
-                }
-            }
-        }
+				Properties.Settings.Default.OutputDir = GetDir.SelectedPath;
+				Properties.Settings.Default.Save();
+			}
+		}
 
-        private void cboVideoFrameRate_SelectedIndexChanged(object sender, EventArgs e)
+		private void tabMediaConfig_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				switch ((sender as TabControl).SelectedIndex)
+				{
+					case 0:
+						break;
+					case 1:
+						if (lstVideo.Items.Count > 0)
+						{
+							lstVideo.SelectedIndices.Clear();
+							lstVideo.Items[0].Selected = true;
+						}
+						break;
+					case 2:
+						if (lstAudio.Items.Count > 0)
+						{
+							lstAudio.SelectedIndices.Clear();
+							lstAudio.Items[0].Selected = true;
+						}
+						break;
+					case 3:
+						if (lstSub.Items.Count > 0)
+						{
+							lstSub.SelectedIndices.Clear();
+							lstSub.Items[0].Selected = true;
+						}
+						break;
+					case 4:
+						if (lstAttach.Items.Count > 0)
+						{
+							lstAttach.SelectedIndices.Clear();
+							lstAttach.Items[0].Selected = true;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		// Video
+		private void btnVideoAdd_Click(object sender, EventArgs e)
         {
-            if (cboVideoFrameRate.SelectedIndex == 0)
-            {
-                cboVideoFrameRate.Text = "a";
-            }
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video))
+					VideoAdd(item);
 
-        private void cboVideoBitDepth_SelectedIndexChanged(object sender, EventArgs e)
+			UXReloadMedia();
+		}
+        private void btnVideoDel_Click(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstVideo.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Video.RemoveAt(id);
+				}
+			}
+		}
 
-                    foreach (var video in qi.Video)
-                    {
-                        int.TryParse(cboVideoBitDepth.Text, out video.BitDepth);
-                    }
-                }
-            }
-        }
-
-        private void cboVideoChroma_SelectedIndexChanged(object sender, EventArgs e)
+        private void lstVideo_DragDrop(object sender, DragEventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
-                    foreach (var video in qi.Video)
-                    {
-                        int.TryParse(cboVideoChroma.Text, out video.Chroma);
-                    }
-                }
-            }
-        }
-
-        private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+        private void lstVideo_DragEnter(object sender, DragEventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				VideoAdd(file);
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.Deinterlace = chkVideoDeinterlace.Checked;
-                    }
-                }
-            }
-        }
+			UXReloadMedia();
+		}
 
-        private void cboVideoDiMode_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnVideoMoveUp_Click(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			ListViewItemMove(ListViewItemType.Video, Direction.Up);
+		}
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.DeinterlaceMode = cboVideoDiMode.SelectedIndex;
-                    }
-                }
-            }
-        }
-
-        private void cboVideoDiField_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnVideoMoveDown_Click(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			ListViewItemMove(ListViewItemType.Video, Direction.Down);
+		}
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.DeinterlaceField = cboVideoDiField.SelectedIndex;
-                    }
+        private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstMedia.SelectedItems.Count > 0)
+            {
+                if (lstVideo.SelectedItems.Count > 0)
+                {
+					var t = new Thread(MediaPopulateVideo);
+					t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index]);
                 }
             }
         }
 
         private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PluginVideo test;
+			if (cboVideoEncoder.SelectedIndex <= -1)
+				return;
+
+            var temp = new Plugin();
             var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 
-            if (Plugin.Video.TryGetValue(key, out test))
+            if (Plugin.Items.TryGetValue(key, out temp))
             {
-                cboVideoBitDepth.Items.Clear();
-                cboVideoBitDepth.Items.AddRange(test.App.BitDepth);
-                cboVideoBitDepth.SelectedIndex = 0;
+				if ((rdoFormatMp4.Checked && temp.Format.Contains("mp4")) ||
+					(rdoFormatMkv.Checked && temp.Format.Contains("mkv")) ||
+					(rdoFormatWebm.Checked && temp.Format.Contains("webm")))
+				{
+					var video = temp.Video;
 
-                cboVideoPreset.Items.Clear();
-                cboVideoPreset.Items.AddRange(test.App.Preset);
-                cboVideoPreset.SelectedItem = test.App.PresetDefault;
+					cboVideoBitDepth.Items.Clear();
+					foreach (var item in video.Encoder)
+						cboVideoBitDepth.Items.Add(item.BitDepth);
+					cboVideoBitDepth.SelectedIndex = 0;
 
-                cboVideoTune.Items.Clear();
-                cboVideoTune.Items.AddRange(test.App.Tune);
-                cboVideoTune.SelectedItem = test.App.TuneDefault;
+					cboVideoPreset.Items.Clear();
+					cboVideoPreset.Items.AddRange(video.Preset);
+					cboVideoPreset.SelectedItem = video.PresetDefault;
 
-                cboVideoEncodingType.Items.Clear();
-                for (int i = 0; i < test.App.Mode; i++)
-                    cboVideoEncodingType.Items.Add(test.Mode[i].Name);
-                cboVideoEncodingType.SelectedIndex = 0; // look on cboVideoEncodingType_SelectedIndexChanged
-            }
+					cboVideoTune.Items.Clear();
+					cboVideoTune.Items.AddRange(video.Tune);
+					cboVideoTune.SelectedItem = video.TuneDefault;
 
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+					cboVideoRateControl.Items.Clear();
+					foreach (var item in video.Mode)
+						cboVideoRateControl.Items.Add(item.Name);
+					cboVideoRateControl.SelectedIndex = 0;
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderArgs = string.Empty;
-                    }
-                }
+					var dei = temp.Video.Args.Pipe;
+					chkVideoDeinterlace.Enabled = dei;
+					grpVideoInterlace.Enabled = dei;
+				}
+				else
+				{
+					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
+
+					if (rdoFormatWebm.Checked)
+						vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
+
+					cboVideoEncoder.SelectedValue = vdef.Encoder;
+				}
             }
         }
 
-        private void cboVideoEncoder_Leave(object sender, EventArgs e)
+        private void cboVideoRateControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            var temp = new Plugin();
             var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+            var id = cboVideoRateControl.SelectedIndex;
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.Encoder = key;
-                    }
+            if (id >= 0)
+            {
+                if (Plugin.Items.TryGetValue(key, out temp))
+                {
+                    var mode = temp.Video.Mode[id];
+
+                    nudVideoRateFactor.DecimalPlaces = mode.Value.DecimalPlace;
+                    nudVideoRateFactor.Minimum = mode.Value.Min;
+                    nudVideoRateFactor.Maximum = mode.Value.Max;
+                    nudVideoRateFactor.Value = mode.Value.Default;
+                    nudVideoRateFactor.Increment = mode.Value.Step;
+                    nudVideoMultiPass.Enabled = mode.MultiPass;
+                    nudVideoMultiPass.Value = 2;
                 }
+
             }
         }
 
-        private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
+		private void btnVideoAdv_Click(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var cmd = string.Empty;
+				try
+				{
+					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
+					var id = lstVideo.SelectedItems[0].Index;
+					cmd = mq.Video[id].EncoderCommand;
+				}
+				catch
+				{
+					cmd = string.Empty;
+				}
+
+
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
+				if (frm.ShowDialog() == DialogResult.OK)
+				{
+					cmd = frm.ReturnValue;
+				}
+
+				// if apply one item in the queue including selected audio
+				if (lstMedia.SelectedItems.Count == 1)
+				{
+					foreach (ListViewItem v in lstVideo.SelectedItems)
+					{
+						(lstMedia.SelectedItems[0].Tag as MediaQueue).Video[v.Index].EncoderCommand = cmd;
+					}
+				}
+
+				// if apply every item in the queue including every audio
+				if (lstMedia.SelectedItems.Count >= 2)
+				{
+					foreach (ListViewItem q in lstMedia.SelectedItems)
+					{
+						foreach (var v in (q.Tag as MediaQueue).Video)
+						{
+							v.EncoderCommand = cmd;
+						}
+					}
+				}
+			}
+		}
+
+		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+		{
+			grpVideoInterlace.Enabled = chkVideoDeinterlace.Checked;
+		}
+
+		// Audio
+		private void btnAudioAdd_Click(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Audio))
+					AudioAdd(item);
 
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderPreset = cboVideoPreset.Text;
-                    }
-                }
-            }
-        }
+			UXReloadMedia();
+		}
 
-        private void cboVideoTune_SelectedIndexChanged(object sender, EventArgs e)
+		private void btnAudioDel_Click(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
-
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderTune = cboVideoTune.Text;
-                    }
-                }
-            }
-        }
-
-        private void cboVideoEncodingType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int m = cboVideoEncodingType.SelectedIndex;
-            if (m >= 0)
-            {
-                PluginVideo test;
-                var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-
-                if (Plugin.Video.TryGetValue(key, out test))
-                {
-                    nudVideoRateFactor.DecimalPlaces = test.Mode[m].DecimalPlaces;
-                    nudVideoRateFactor.Increment = test.Mode[m].Step;
-                    nudVideoRateFactor.Minimum = test.Mode[m].ValueMin;
-                    nudVideoRateFactor.Maximum = test.Mode[m].ValueMax;
-                    nudVideoRateFactor.Value = test.Mode[m].ValueDefault;
-                    nudVideoMultipass.Enabled = test.Mode[m].IsMultipass;
-                    nudVideoMultipass.Value = 1;
-                }
-            }
-        }
-
-        private void cboVideoEncodingType_Leave(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
-
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderMode = cboVideoEncodingType.SelectedIndex;
-                    }
-                }
-            }
-        }
-
-        private void nudVideoRateFactor_ValueChanged(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
-
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderModeValue = nudVideoRateFactor.Value;
-                    }
-                }
-            }
-        }
-
-        private void nudVideoMultipass_ValueChanged(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem item in lstQueue.SelectedItems)
-                {
-                    var qi = item.Tag as Queue;
-
-                    foreach (var video in qi.Video)
-                    {
-                        video.EncoderMultiPass = Convert.ToInt32(nudVideoMultipass.Value);                      
-                    }
-                }
-            }
-        }
-
-        private void btnVideoArgEdit_Click(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                var q = lstQueue.Items[0].Tag as Queue;
-
-                if (q.Video.Count > 0)
-                {
-                    var f = new frmInputBox(btnVideoArgEdit.Text.Replace("&", ""), q.Video[0].EncoderArgs);
-
-                    if (f.ShowDialog() == DialogResult.OK)
-                    {
-                        q.Video[0].EncoderArgs = f.ReturnValue;
-                    }
-                }
-            }
-        }
-        #endregion
-
-        #region Tab Audio
-        private void btnAudioAdd_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAudioRemove_Click(object sender, EventArgs e)
-        {
-
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstAudio.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Audio.RemoveAt(id);
+				}
+			}
+		}
 
         private void btnAudioMoveUp_Click(object sender, EventArgs e)
         {
-
-        }
+			ListViewItemMove(ListViewItemType.Audio, Direction.Up);
+		}
 
         private void btnAudioMoveDown_Click(object sender, EventArgs e)
         {
+			ListViewItemMove(ListViewItemType.Audio, Direction.Down);
+		}
 
-        }
+		private void lstAudio_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
-        private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstAudio_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				AudioAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstQueue.SelectedItems.Count > 0)
+            if (lstMedia.SelectedItems.Count > 0)
             {
                 if (lstAudio.SelectedItems.Count > 0)
                 {
-                    int ai = lstAudio.SelectedItems[0].Index;
-                    var ap = (lstQueue.SelectedItems[0].Tag as Queue).Audio[ai];
-
-                    cboAudioEncoder.SelectedValue = ap.Encoder;
-                    cboAudioMode.SelectedIndex = ap.EncoderMode;
-                    cboAudioQuality.SelectedItem = $"{ap.EncoderValue}";
-                    cboAudioFreq.SelectedItem = $"{ap.EncoderSampleRate}";
-                    cboAudioChannel.SelectedItem = $"{ap.EncoderChannel}";
+                    var t = new Thread(MediaPopulateAudio);
+                    t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index]);
                 }
             }
         }
 
         private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PluginAudio test;
+			if (cboAudioEncoder.SelectedIndex <= -1)
+				return;
+
+            var temp = new Plugin();
             var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
 
-            if (Plugin.Audio.TryGetValue(key, out test))
+            if (Plugin.Items.TryGetValue(key, out temp))
             {
-                cboAudioMode.Items.Clear();
-                for (int i = 0; i < test.App.Mode; i++)
-                    cboAudioMode.Items.Add(test.Mode[i].Name);
-                cboAudioMode.SelectedIndex = 0;
+				if (((rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp3")) ||
+					((rdoFormatAudioMp4.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp4")) ||
+					((rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked) && temp.Format.Contains("ogg")) ||
+					((rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("opus")) ||
+					((rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("flac")) ||
+					(rdoFormatMkv.Checked && (temp.Format.Contains("mkv") || temp.Format.Contains("mka"))))
+				{
+					var audio = temp.Audio;
 
-                cboAudioFreq.Items.Clear();
-                cboAudioFreq.Items.AddRange(test.App.SampleRate);
-                //cboAudioFreq.SelectedItem = $"{test.App.SampleRateDefault}";
+					cboAudioMode.Items.Clear();
+					foreach (var item in audio.Mode)
+						cboAudioMode.Items.Add(item.Name);
+					cboAudioMode.SelectedIndex = 0;
 
-                cboAudioChannel.Items.Clear();
-                cboAudioChannel.Items.AddRange(test.App.Channel);
-                //cboAudioChannel.SelectedItem = $"{test.App.ChannelDefault}";
-            }
+					cboAudioQuality.Items.Clear();
+					foreach (var item in audio.Mode[0].Quality)
+						cboAudioQuality.Items.Add(item);
+					cboAudioQuality.SelectedItem = audio.Mode[0].Default;
 
-            // update
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        var a = (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index];
+					cboAudioSampleRate.Items.Clear();
+					foreach (var item in audio.SampleRate)
+						cboAudioSampleRate.Items.Add(item);
+					cboAudioSampleRate.SelectedItem = audio.SampleRateDefault;
 
-                        if (!Equals(a.Encoder, key))
-                        {
-                            a.Encoder = key;
-                            a.EncoderValue = test.Mode[0].QualityDefault;
-                            a.EncoderSampleRate = test.App.SampleRateDefault;
-                            a.EncoderChannel = test.App.ChannelDefault;
-                        }
+					cboAudioChannel.Items.Clear();
+					foreach (var item in audio.Channel)
+						cboAudioChannel.Items.Add(item);
+					cboAudioChannel.SelectedItem = audio.ChannelDefault;
+				}
+				else
+				{
+                    MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                        cboAudioQuality.SelectedItem = $"{a.EncoderValue}";
-                        cboAudioFreq.SelectedItem = $"{a.EncoderSampleRate}";
-                        cboAudioChannel.SelectedItem = $"{a.EncoderChannel}";
-                    }
-                }
+                    var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+
+					if (rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
+					else if (rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
+					else if (rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
+					else if (rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked)
+						adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
+
+					cboAudioEncoder.SelectedValue = adef.Encoder;
+				}
             }
         }
 
         private void cboAudioMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int m = cboAudioMode.SelectedIndex;
-            if (m >= 0)
+            var temp = new Plugin();
+            var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            var id = cboAudioMode.SelectedIndex;
+
+            if (Plugin.Items.TryGetValue(key, out temp))
             {
-                PluginAudio test;
-                var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                var mode = temp.Audio.Mode[id];
 
-                if (Plugin.Audio.TryGetValue(key, out test))
-                {
-                    lblAudioQuality.Text = $"{test.Mode[m].Name}:";
-
-                    cboAudioQuality.Items.Clear();
-                    cboAudioQuality.Items.AddRange(test.Mode[m].Quality);
-                    cboAudioQuality.SelectedItem = test.Mode[m].QualityDefault;
-                }
+                cboAudioQuality.Items.Clear();
+                foreach (var item in mode.Quality)
+                    cboAudioQuality.Items.Add(item);
+                cboAudioQuality.SelectedItem = mode.Default;
             }
         }
 
-        private void cboAudioMode_Leave(object sender, EventArgs e)
+        private void btnAudioAdv_Click(object sender, EventArgs e)
         {
-            int m = cboAudioMode.SelectedIndex;
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderMode = m;
-                    }
-                }
-            }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				var cmd = string.Empty;
+				try
+				{
+					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
+					var id = lstAudio.SelectedItems[0].Index;
+					cmd = mq.Audio[id].EncoderCommand;
+				}
+				catch
+				{
+					cmd = string.Empty;
+				}
+					
+				
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
+                if (frm.ShowDialog() == DialogResult.OK)
+				{
+					cmd = frm.ReturnValue;
+				}
+
+				// if apply one item in the queue including selected audio
+				if (lstMedia.SelectedItems.Count == 1)
+				{
+					foreach (ListViewItem a in lstAudio.SelectedItems)
+					{
+						(lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[a.Index].EncoderCommand = cmd;
+					}
+				}
+
+				// if apply every item in the queue including every audio
+				if (lstMedia.SelectedItems.Count >= 2)
+				{
+					foreach (ListViewItem q in lstMedia.SelectedItems)
+					{
+						foreach (var a in (q.Tag as MediaQueue).Audio)
+						{
+							a.EncoderCommand = cmd;
+						}
+					}
+				}
+			}
         }
 
-        private void cboAudioQuality_Leave(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        if (cboAudioQuality.SelectedIndex >= 0)
-                            (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderValue = cboAudioQuality.Text;
-                    }
-                }
-            }
-        }
-
-        private void cboAudioFreq_Leave(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        int.TryParse(cboAudioFreq.Text, out (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderSampleRate);
-                    }
-                }
-            }
-        }
-
-        private void cboAudioChannel_Leave(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        int.TryParse(cboAudioChannel.Text, out (lstQueue.SelectedItems[0].Tag as Queue).Audio[item.Index].EncoderChannel);
-                    }
-                }
-            }
-        }
-
-        private void btnAudioEditArg_Click(object sender, EventArgs e)
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                var q = lstQueue.SelectedItems[0].Tag as Queue;
-
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    var i = lstAudio.SelectedItems[0].Index;
-
-                    if (q.Audio.Count > 0)
-                    {
-                        var f = new frmInputBox(btnAudioEditArg.Text.Replace("&", ""), q.Audio[i].EncoderArgs);
-
-                        if (f.ShowDialog() == DialogResult.OK)
-                        {
-                            q.Audio[i].EncoderArgs = f.ReturnValue;
-                        }
-                    }
-                }
-            }
-        }
-        #endregion
-
-        #region Tab Subtitle
-        private void lstSub_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
-
-        private void lstSub_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (var item in files)
-                SubtitleAdd(item);
-
-            QueueRefresh();
-        }
-
+		// Subtitle
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
-            OpenFileDialog getFiles = new OpenFileDialog();
-            getFiles.Filter = "Supported Subtitle|*.ass;*.ssa;*.srt|"
-                + "SubStation Alpha|*.ass;*.ssa|"
-                + "SubRip|*.srt|"
-                + "All Files|*.*";
-            getFiles.FilterIndex = 1;
-            getFiles.Multiselect = true;
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Subtitle))
+					SubtitleAdd(item);
 
-            if (getFiles.ShowDialog() == DialogResult.OK)
-                foreach (var item in getFiles.FileNames)
-                    SubtitleAdd(item);
+			UXReloadMedia();
+		}
 
-            QueueRefresh();
-        }
-
-        private void btnSubRemove_Click(object sender, EventArgs e)
+        private void btnSubDel_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in lstSub.SelectedItems)
-            {
-                (lstQueue.SelectedItems[0].Tag as Queue).Subtitle.RemoveAt(item.Index);
-                item.Remove();
-            }
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstSub.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(id);
+				}
+			}
+		}
 
         private void btnSubMoveUp_Click(object sender, EventArgs e)
         {
-
-        }
+			ListViewItemMove(ListViewItemType.Subtitle, Direction.Up);
+		}
 
         private void btnSubMoveDown_Click(object sender, EventArgs e)
         {
+			ListViewItemMove(ListViewItemType.Subtitle, Direction.Down);
+		}
 
-        }
+		private void lstSub_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
-        private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstSub_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				SubtitleAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstSub.SelectedItems.Count > 0)
-            {
-                cboSubLang.SelectedValue = lstSub.SelectedItems[0].SubItems[1].Text;
-            }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+					var index = lstSub.SelectedItems[0].Index;
+					cboSubLang.SelectedValue = media.Subtitle[index].Lang;
+				}
+			}
         }
 
-        private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
+		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					foreach (ListViewItem item in lstSub.SelectedItems)
+					{
+						item.SubItems[2].Text = cboSubLang.Text;
+					}
+				}
+			}
+		}
+
+		// Attachment
+		private void btnAttachAdd_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in lstSub.SelectedItems)
-            {
-                // modify queue data
-                (lstQueue.SelectedItems[0].Tag as Queue).Subtitle[item.Index].Lang = $"{cboSubLang.SelectedValue}";
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Attachment))
+					AttachmentAdd(item);
 
-                // modify display data
-                item.SubItems[1].Text = $"{cboSubLang.SelectedValue}";
-            }
-        }
-        #endregion
-
-        #region Tab Attchment
-        private void lstAttach_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
-
-        private void lstAttach_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (var item in files)
-                SubtitleAdd(item);
-
-            QueueRefresh();
-        }
-
-        private void btnAttachAdd_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog GetFiles = new OpenFileDialog();
-            GetFiles.Filter = "Known font files|*.ttf;*.otf;*.woff|"
-                + "TrueType Font|*.ttf|"
-                + "OpenType Font|*.otf|"
-                + "Web Open Font Format|*.woff|"
-                + "All Files|*.*";
-            GetFiles.FilterIndex = 1;
-            GetFiles.Multiselect = true;
-
-            if (GetFiles.ShowDialog() == DialogResult.OK)
-                foreach (var item in GetFiles.FileNames)
-                    AttachmentAdd(item);
-
-            QueueRefresh();
-        }
+			UXReloadMedia();
+		}
 
         private void btnAttachDel_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in lstAttach.SelectedItems)
-            {
-                (lstQueue.SelectedItems[0].Tag as Queue).Attachment.RemoveAt(item.Index);
-                item.Remove();
-            }
-        }
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem item in lstAttach.SelectedItems)
+				{
+					var id = item.Index;
+					item.Remove();
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(id);
+				}
+			}
+		}
 
-        private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
+		private void lstAttach_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void lstAttach_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				AttachmentAdd(file);
+
+			UXReloadMedia();
+		}
+
+		private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
+        {
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstAttach.SelectedItems.Count > 0)
+				{
+					var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+					var index = lstAttach.SelectedItems[0].Index;
+					cboAttachMime.Text = media.Attachment[index].Mime;
+				}
+			}
+		}
+
+        private void cboAttachMime_SelectedIndexChanged(object sender, EventArgs e)
+        {
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstSub.SelectedItems.Count > 0)
+				{
+					foreach (ListViewItem item in lstAttach.SelectedItems)
+					{
+						item.SubItems[1].Text = cboAttachMime.Text;
+					}
+				}
+			}
+		}
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
-        #endregion
-
-        #region Background Worker
-        private void bwEncoding_DoWork(object sender, DoWorkEventArgs e)
-        {
-            List<object> qItems = e.Argument as List<object>;
-
-            foreach (Queue item in qItems)
-            {
-                new MediaEncoding(item);
-            }
-        }
-
-        private void bwEncoding_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-
-        }
-        #endregion
-
-        #region Add and Display Video to Queue
-        private void QueueAdd(string filePath)
-        {
-            var qi = new Queue();
-            var mi = new FFmpeg.Stream(filePath);
-
-            qi.Properties = mi;
-
-            if (mi.Video.Count > 0 || mi.Audio.Count > 0)
-            {
-                qi.Enable = true;
-                qi.MkvOut = true;
-
-                foreach (var item in mi.Video)
-                {
-                    qi.Video.Add(new QueueVideo
-                    {
-                        File = filePath,
-                        Id = item.Id,
-                        Lang = item.Language,
-                        Format = Get.CodecFormat(item.Codec),
-                        Width = item.Width,
-                        Height = item.Height,
-                        FrameRate = item.FrameRate,
-                        BitDepth = item.BitDepth,
-                        Chroma = item.Chroma,
-
-                        Deinterlace = false,
-                        DeinterlaceField = 0,
-                        DeinterlaceMode = 0,
-
-                        Encoder = new Guid("deadbeef-0265-0265-0265-026502650265"),
-                        EncoderPreset = "medium",
-                        EncoderTune = "psnr",
-                        EncoderMode = 0,
-                        EncoderModeValue = 26,
-                        EncoderMultiPass = 1,
-                        EncoderArgs = "--pme --pmode",
-                    });
-                }
-
-                foreach (var item in mi.Audio)
-                {
-                    qi.Audio.Add(new QueueAudio
-                    {
-                        File = filePath,
-                        Id = item.Id,
-                        Lang = item.Language,
-                        Format = Get.CodecFormat(item.Codec),
-
-                        BitDepth = item.BitDepth, // use for decoding, hidden from GUI
-
-                        Encoder = new Guid("deadbeef-faac-faac-faac-faacfaacfaac"),
-                        EncoderMode = 0,
-                        EncoderValue = "128",
-                        EncoderSampleRate = item.SampleRate,
-                        EncoderChannel = item.Channel,
-                        EncoderArgs = "",
-                    });
-                }
-
-                foreach (var item in mi.Subtitle)
-                {
-                    qi.Subtitle.Add(new QueueSubtitle
-                    {
-                        File = filePath,
-                        Id = item.Id,
-                        Lang = item.Language,
-                        Format = Get.CodecFormat(item.Codec),
-                    });
-                }
-
-                // add to queue
-                ListViewItem lst = new ListViewItem(new[] {
-                    Path.GetFileName(filePath),
-                    TimeSpan.FromSeconds(mi.Duration).ToString("hh\\:mm\\:ss"),
-                    "MKV",
-                    "Ready",
-                });
-                lst.Tag = qi;
-                lst.Checked = true;
-
-                lstQueue.Items.Add(lst);
-            }
-        }
-
-        private void QueueDisplay(int index)
-        {
-            var qi = (Queue)lstQueue.Items[index].Tag;
-
-            // Properties - Source Info
-            txtSourceInfo.Text = Queue.Info(qi);
-
-            // Properties - Output
-            rdoMKV.Checked = qi.MkvOut;
-            rdoMP4.Checked = !qi.MkvOut;
-
-            // Video
-            if (qi.Video.Count >= 1)
-            {
-                var item = qi.Video[0];
-
-                // Quality
-                cboVideoResolution.Text = $"{item.Width}x{item.Height}";
-                cboVideoFrameRate.Text = $"{item.FrameRate:N3}";
-                cboVideoBitDepth.Text = $"{item.BitDepth}";
-                cboVideoChroma.Text = $"{item.Chroma}";
-
-                // Deinterlace
-                chkVideoDeinterlace.Checked = item.Deinterlace;
-                cboVideoDiMode.SelectedIndex = item.DeinterlaceMode;
-                cboVideoDiField.SelectedIndex = item.DeinterlaceField;
-
-                // Encoder
-                cboVideoEncoder.SelectedValue = item.Encoder; // Guid key
-                cboVideoPreset.SelectedItem = item.EncoderPreset;
-                cboVideoTune.SelectedItem = item.EncoderTune;
-                cboVideoEncodingType.SelectedIndex = item.EncoderMode;
-                nudVideoRateFactor.Value = item.EncoderModeValue;
-                nudVideoMultipass.Value = item.EncoderMultiPass;
-            }
-
-            // Audio
-            lstAudio.Items.Clear();
-            if (qi.Audio.Count >= 1)
-            {
-                foreach (var item in qi.Audio)
-                {
-                    lstAudio.Items.Add(new ListViewItem(new[] {
-                        $"{item.Id:D2}, {item.Lang}, {item.Format} @ {Path.GetFileName(item.File)}",
-                    }));
-                }
-
-                lstAudio.Items[0].Selected = true;
-            }
-
-            // Subtitle
-            lstSub.Items.Clear();
-            if (qi.Subtitle.Count >= 1)
-            {
-                foreach (var item in qi.Subtitle)
-                {
-                    lstSub.Items.Add(new ListViewItem(new[] {
-                        $"{item.Id}",
-                        item.Lang,
-                        Path.GetFileName(item.File),
-                    }));
-                }
-            }
-
-            // Attachment
-            lstAttach.Items.Clear();
-            if (qi.Attachment.Count >= 1)
-            {
-                foreach (var item in qi.Attachment)
-                {
-                    lstAttach.Items.Add(new ListViewItem(new[]
-                    {
-                        Path.GetFileName(item.File),
-                        item.Mime
-                    }));
-                }
-            }
-        }
-
-        private void QueueRefresh()
-        {
-            if (lstQueue.SelectedItems.Count > 0)
-            {
-                QueueDisplay(lstQueue.SelectedItems[0].Index);
-            }
-        }
-
-        private void QueueUnselect()
-        {
-
-        }
-        #endregion
-
-        #region Add Subtitle to Queue
-        private void SubtitleAdd(string filePath)
-        {
-            foreach (ListViewItem item in lstQueue.SelectedItems)
-            {
-                (item.Tag as Queue).Subtitle.Add(new QueueSubtitle() { Id = -1, File = filePath, Lang = "und", Format = Get.FileExtension(filePath) });
-            }
-        }
-        #endregion
-
-        #region Add Attachment to Queue
-        private void AttachmentAdd(string filePath)
-        {
-            foreach (ListViewItem item in lstQueue.SelectedItems)
-            {
-                (item.Tag as Queue).Attachment.Add(new QueueAttachment() { File = filePath, Mime = Get.AttachmentValid(filePath) });
-            }
-        }
-        #endregion
     }
 }

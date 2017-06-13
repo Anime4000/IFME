@@ -1,41 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
 {
-    public partial class frmInputBox : Form
-    {
-        public string ReturnValue { get; private set; }
+	public partial class frmInputBox : Form
+	{
+		public string ReturnValue { get; set; }
 
-        public frmInputBox(string title, string input)
+		public frmInputBox(string Title, string Message)
+		{
+			InitializeComponent();
+
+			Icon = Get.AppIcon;
+			Text = Title;
+			FormBorderStyle = FormBorderStyle.Sizable;
+
+			lblMessage.Text = Message;
+		}
+
+		public frmInputBox(string Title, string Message, string Value)
+		{
+			InitializeComponent();
+
+			Icon = Get.AppIcon;
+			Text = Title;
+			FormBorderStyle = FormBorderStyle.Sizable;
+
+			lblMessage.Text = Message;
+
+			txtInput.Text = Value;
+		}
+
+		private void frmInputBox_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btnOK_Click(object sender, EventArgs e)
+		{
+			ReturnValue = txtInput.Text;
+		}
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
         {
-            InitializeComponent();
-
-            Text = title;
-            txtInput.Text = input;
-        }
-
-        private void frmInputBox_Load(object sender, EventArgs e)
-        {
-            FormBorderStyle = FormBorderStyle.Sizable;
-        }
-
-        private void txtInput_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                btnOK.PerformClick(); // use OK button
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            ReturnValue = txtInput.Text;
-            Close(); // check designer, this button has DialogResult set to OK
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close(); // check designer, this button has DialogResult set to Cancel
+            btnOK.Enabled = (txtInput.Text.Length > 3);
         }
     }
 }

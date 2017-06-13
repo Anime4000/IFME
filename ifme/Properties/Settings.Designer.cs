@@ -26,36 +26,132 @@ namespace ifme.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TempFolder {
+        public string TempDir {
             get {
-                return ((string)(this["TempFolder"]));
+                return ((string)(this["TempDir"]));
             }
             set {
-                this["TempFolder"] = value;
+                this["TempDir"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SaveFolder {
+        public string OutputDir {
             get {
-                return ((string)(this["SaveFolder"]));
+                return ((string)(this["OutputDir"]));
             }
             set {
-                this["SaveFolder"] = value;
+                this["OutputDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32")]
+        public int FFmpegArch {
+            get {
+                return ((int)(this["FFmpegArch"]));
+            }
+            set {
+                this["FFmpegArch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[IFME]")]
+        public string FileNamePrefix {
+            get {
+                return ((string)(this["FileNamePrefix"]));
+            }
+            set {
+                this["FileNamePrefix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FileNamePrefixType {
+            get {
+                return ((int)(this["FileNamePrefixType"]));
+            }
+            set {
+                this["FileNamePrefixType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShutdownType {
+            get {
+                return ((int)(this["ShutdownType"]));
+            }
+            set {
+                this["ShutdownType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("x265")]
+        public string FileNamePostfix {
+            get {
+                return ((string)(this["FileNamePostfix"]));
+            }
+            set {
+                this["FileNamePostfix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FileNamePostfixType {
+            get {
+                return ((int)(this["FileNamePostfixType"]));
+            }
+            set {
+                this["FileNamePostfixType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        public int FrameCountOffset {
+            get {
+                return ((int)(this["FrameCountOffset"]));
+            }
+            set {
+                this["FrameCountOffset"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SaveFolderThis {
+        public bool UpgradeRequired {
             get {
-                return ((bool)(this["SaveFolderThis"]));
+                return ((bool)(this["UpgradeRequired"]));
             }
             set {
-                this["SaveFolderThis"] = value;
+                this["UpgradeRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("eng")]
+        public string Language {
+            get {
+                return ((string)(this["Language"]));
+            }
+            set {
+                this["Language"] = value;
             }
         }
     }
