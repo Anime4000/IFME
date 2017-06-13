@@ -60,8 +60,10 @@
             this.rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbLog.BackColor = System.Drawing.Color.White;
             this.rtbLog.Location = new System.Drawing.Point(12, 12);
             this.rtbLog.Name = "rtbLog";
+            this.rtbLog.ReadOnly = true;
             this.rtbLog.Size = new System.Drawing.Size(576, 538);
             this.rtbLog.TabIndex = 3;
             this.rtbLog.Text = "";

@@ -21,7 +21,7 @@ namespace ifme
             else
                 Font = Language.Lang.UIFontLinux;
 
-            var frm = Language.Lang.frmMain;
+            var frm = Language.Lang.frmCheckUpdate;
             Control ctrl = this;
 
             do

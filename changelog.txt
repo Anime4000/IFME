@@ -1,6 +1,6 @@
 ﻿Version 7.1 (Free and Independent)
 ----------------------------------
-[new] Multiple merge failover
+[new] Merge failover (if merge fails, IFME will copy whole thing to save folder)
 [new] Sub Menu for New/Import, Save encoding presets
 [fixed] Multi Pass encoding
 
