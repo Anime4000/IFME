@@ -57,6 +57,7 @@
     <Compile Include="Branding.cs" />
     <Compile Include="ConsoleEx.cs" />
     <Compile Include="CRC32.cs" />
+    <Compile Include="Download.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="frmAbout.cs">

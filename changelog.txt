@@ -15,14 +15,12 @@ Version 7.0 (Eridanus)
 
 Version 6.1 (Pixelaphobia)
 --------------------------
-
 [fixed] Skip missing plugin executable file
 [fixed] Skip invalid plugin GUID
 [fixed] Only Variable Frame Rate timecode indexing
 
 Version 6.0 (Archangel Descending)
 ----------------------------------
-
 [new] Allow user to save encoded file either same source folder or given path
 [new] Capable to encode audio files, but not fully supported
 [added] Language: Italian
@@ -61,7 +59,6 @@ Version 6.0 (Archangel Descending)
 
 Version 5.1 (FLUORITE DIARY)
 -----------
-
 [new] Adding 12bit encoding support!
 [new] Audio tracks now can drop if not wanted to add final encoded file
 [new] Video now can skip encoding (applicable when source is HEVC)
@@ -84,7 +81,6 @@ Version 5.1 (FLUORITE DIARY)
 
 Version 5.0.9 (Dearness)
 -------------
-
 [fixed] Fix code mistake
 [fixed] Mp4 did not mux audio when do pass-through
 [added] Language: Čeština

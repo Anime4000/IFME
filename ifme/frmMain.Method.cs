@@ -180,6 +180,18 @@ namespace ifme
             cboEncodingPreset.ValueMember = "Key";
         }
 
+        private void CheckVersion()
+        {
+            if (string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
+            {
+                var frm = new frmCheckUpdate();
+                Invoke((MethodInvoker)delegate ()
+                {
+                    frm.Show();
+                });
+            }
+        }
+
         private void EncodingPreset(string id, string name)
 		{
 			var preset = new MediaPreset();

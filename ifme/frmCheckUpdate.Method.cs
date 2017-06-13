@@ -43,7 +43,7 @@ namespace ifme
 
         private void DownloadLog()
         {
-            txtChangeLog.Text = new Download().GetString("");
+            rtbLog.Text = new Download().GetString("https://github.com/Anime4000/IFME/raw/master/changelog.txt");
         }
     }
 }

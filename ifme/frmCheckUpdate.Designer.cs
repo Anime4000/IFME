@@ -28,21 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtChangeLog = new System.Windows.Forms.TextBox();
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            // 
-            // txtChangeLog
-            // 
-            this.txtChangeLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtChangeLog.Location = new System.Drawing.Point(12, 12);
-            this.txtChangeLog.Multiline = true;
-            this.txtChangeLog.Name = "txtChangeLog";
-            this.txtChangeLog.Size = new System.Drawing.Size(576, 538);
-            this.txtChangeLog.TabIndex = 0;
             // 
             // btnDownload
             // 
@@ -53,6 +42,7 @@
             this.btnDownload.TabIndex = 1;
             this.btnDownload.Text = "&Download";
             this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnOK
             // 
@@ -63,15 +53,27 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // rtbLog
+            // 
+            this.rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbLog.Location = new System.Drawing.Point(12, 12);
+            this.rtbLog.Name = "rtbLog";
+            this.rtbLog.Size = new System.Drawing.Size(576, 538);
+            this.rtbLog.TabIndex = 3;
+            this.rtbLog.Text = "";
             // 
             // frmCheckUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 600);
+            this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnDownload);
-            this.Controls.Add(this.txtChangeLog);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmCheckUpdate";
@@ -79,14 +81,12 @@
             this.Text = "Check for Update";
             this.Load += new System.EventHandler(this.frmCheckUpdate_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtChangeLog;
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.RichTextBox rtbLog;
     }
 }

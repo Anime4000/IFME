@@ -118,7 +118,7 @@
 		"Message": "Over network not supported, please mount it as drive."
 	},
 	"MsgBoxCodecIncompatible": {
-		"Title": "Incompatile Codec",
+		"Title": "Incompatible Codec",
 		"Message": "Output format and codec are not compatible! Choose different one."
 	},
 	"ComboBoxDeInterlaceMode": [

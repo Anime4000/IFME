@@ -34,6 +34,8 @@ namespace ifme
             ttProInfo.IsBalloon = true;
 
             ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
+
+            new Thread(CheckVersion).Start();
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
