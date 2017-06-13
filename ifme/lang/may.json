@@ -90,12 +90,12 @@
 		"btnOK": "&OK"
 	},
 	"cmsNewImport": {
-	"tsmiNew": "&New",
-	"tsmiImport": "&Import",
+		"tsmiNew": "&New",
+		"tsmiImport": "&Import",
 	},
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Save",
-	"tsmiEncodingPresetSaveAs": "Save &As",
+		"tsmiEncodingPresetSaveAs": "Save &As",
 	},
 	"InputBoxNewMedia": {
 		"Title": "New video/audio",
