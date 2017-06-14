@@ -47,6 +47,6 @@ GitHub
     |
     |`- IFME
     |
-	 `- Newtonsoft.Json
+     `- Newtonsoft.Json
 ```
 Then you can open `ifme.sln`. Have fun!
