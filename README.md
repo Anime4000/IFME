@@ -3,7 +3,10 @@
 Back on April 2013, there are no **nVidia ShadowPlay** or even **AMD Gaming Evolve**. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
 
 ### Version History
-#### Version 5 - 6
+#### Version 6
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
+
+#### Version 5
 You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
 
 #### Version 4
