@@ -31,3 +31,22 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 
 ### Downloads
 You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Beta)](https://github.com/Anime4000/IFME/releases/latest)
+
+## Developer
+### Do this before opening project
+
+* [Clone](https://github.com/JamesNK/Newtonsoft.Json) Json.NET
+* [Clone](https://github.com/Anime4000/FFmpegDotNet) FFmpegDotNet
+
+Make sure clone these in same folder with `ifme`, so it will look like:
+```
+GitHub
+  `-|
+    |
+    |`- FFmpegDotNet
+    |
+    |`- IFME
+    |
+	 `- Newtonsoft.Json
+```
+Then you can open `ifme.sln`. Have fun!
