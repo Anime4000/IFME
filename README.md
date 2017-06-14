@@ -2,16 +2,6 @@
 ## Introduction
 Back on April 2013, there are no **nVidia ShadowPlay** or even **AMD Gaming Evolve**. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
 
-### Version History
-#### Version 6
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
-
-#### Version 5
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
-
-#### Version 4
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
-
 ## License
 IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allow to sell either in **Source Code** or **Binaries** form.
 
@@ -53,3 +43,13 @@ GitHub
      `- Newtonsoft.Json
 ```
 Then you can open `ifme.sln`. Have fun!
+
+## Version History
+### Version 6
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
+
+### Version 5
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
+
+### Version 4
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
