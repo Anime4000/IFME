@@ -29,7 +29,7 @@ namespace ifme
 			Console.WriteLine();
 
 			Console.ForegroundColor = ConsoleColor.Cyan;
-			Console.WriteLine($"(c) {DateTime.Now.Year} Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\nXiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.");
+			Console.WriteLine($"(c) {DateTime.Now.Year} {Branding.CopyRight()}");
             Console.ResetColor();
             Console.WriteLine();
 

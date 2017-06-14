@@ -11,10 +11,13 @@ namespace ifme
     {
         private static Bitmap _Blank = new Bitmap(1, 1);
 
-        private static string _PathPartnerSplashScreen = Path.Combine("branding", "partner", "1.jpj");
-        private static string _PathPartnerBannerLeft = Path.Combine("branding", "partner", "a.jpj");
-        private static string _PathPartnerBannerRight = Path.Combine("branding", "partner", "b.jpj");
-        private static string _PathPartnerAbout = Path.Combine("branding", "partner", "z.jpj");
+        private static string _PathPartnerSplashScreen = Path.Combine("branding", "partner", "i0.ocx");
+        private static string _PathPartnerBannerLeft = Path.Combine("branding", "partner", "i1.vxd");
+        private static string _PathPartnerBannerRight = Path.Combine("branding", "partner", "i2.vxd");
+        private static string _PathPartnerAbout = Path.Combine("branding", "partner", "ia.vxd");
+        private static string _PathPartnerName = Path.Combine("branding", "partner", "t0.zip");
+        private static string _PathPartnerCode = Path.Combine("branding", "partner", "t1.zip");
+        private static string _PathPartnerCopy = Path.Combine("branding", "partner", "t2.zip");
 
         private static string _PathOriginalSplashScreen = Path.Combine("branding", "ai", "1.jpj");
         private static string _PathOriginalBannerLeft = Path.Combine("branding", "ai", "a.jpj");
@@ -48,8 +51,8 @@ namespace ifme
 
                 using (Graphics g = Graphics.FromImage(banner))
                 {
-                    g.DrawImage(new Bitmap(_PathOriginalBannerLeft), new Point(0, 0));
-                    g.DrawImage(new Bitmap(_PathOriginalBannerRight), new Point(width - 640, 0));
+                    g.DrawImage(new Bitmap(_PathPartnerBannerLeft), new Point(0, 0));
+                    g.DrawImage(new Bitmap(_PathPartnerBannerRight), new Point(width - 640, 0));
                 }
 
                 return banner;
@@ -88,6 +91,43 @@ namespace ifme
 
             // fall back
             return new Bitmap(_Blank, 600, 200);
+        }
+
+        public static string Title()
+        {
+            // partner
+            if (File.Exists(_PathPartnerName))
+            {
+                return File.ReadAllText(_PathPartnerName);
+            }
+            else
+            {
+                return Properties.Resources.AppTitle;
+            }
+        }
+
+        public static string TitleShort()
+        {
+            if (File.Exists(_PathPartnerCode))
+            {
+                return File.ReadAllText(_PathPartnerCode);
+            }
+            else
+            {
+                return "IFME";
+            }
+        }
+
+        public static string CopyRight()
+        {
+            if (File.Exists(_PathPartnerCopy))
+            {
+                return File.ReadAllText(_PathPartnerCopy);
+            }
+            else
+            {
+                return "Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\nXiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.";
+            }
         }
     }
 }

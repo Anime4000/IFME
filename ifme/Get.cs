@@ -62,7 +62,7 @@ namespace ifme
 		{
 			get
 			{
-				return Properties.Resources.AppTitle;
+                return Branding.Title();
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace ifme
 		{
 			get
 			{
-				return $"{Properties.Resources.AppTitle} v{Application.ProductVersion} ('{Properties.Resources.AppCodeName}')";
+				return $"{AppName} v{Application.ProductVersion} ('{Properties.Resources.AppCodeName}')";
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace ifme
 		{
 			get
 			{
-				return $"IFME v{Application.ProductVersion} {(OS.Is64bit ? "amd64" : "i686")} {(OS.IsWindows ? "windows" : "unix-like")}";
+				return $"{Branding.TitleShort()} v{Application.ProductVersion} {(OS.Is64bit ? "amd64" : "i686")} {(OS.IsWindows ? "windows" : "unix-like")}";
 			}
 		}
 

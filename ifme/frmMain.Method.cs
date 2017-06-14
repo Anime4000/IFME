@@ -182,7 +182,7 @@ namespace ifme
 
         private void CheckVersion()
         {
-            if (string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
+            if (!string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
             {
                 var frm = new frmCheckUpdate();
                 Invoke((MethodInvoker)delegate ()
