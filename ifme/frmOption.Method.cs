@@ -48,7 +48,7 @@ namespace ifme
 
             if (AviSynth.IsInstalled)
             {
-                lblAviSynthInstall.Text = "Installed!";
+                lblAviSynthInstall.Text = Language.Lang.frmOption["lblAviSynthInstall"];
                 lblAviSynthInstall.ForeColor = Color.Green;
                 lblAviSynthVersion.Text = AviSynth.InstalledVersion;
             }

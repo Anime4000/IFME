@@ -4,10 +4,10 @@
 	"AuthorProfile": "https://github.com/Anime4000",
 	"UIFontWindows": "Tahoma, 8pt",
 	"UIFontLinux": "FreeSans, 8pt",
-	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
+	"ToolTipDonate": "Terima Kasih kerana mengguna.\nUntuk maklumat lanjut, sila tekan butang ini.",
 	"frmMain": {
-		"tabGeneral": "General",
-		"grpTargetFormat": "&Target Format",
+		"tabGeneral": "Umum",
+		"grpTargetFormat": "Sasaran Forma&t",
 		"rdoFormatMp4": "&MP4",
 		"rdoFormatMkv": "M&KV",
 		"rdoFormatWebm": "&WEBM",
@@ -16,68 +16,68 @@
 		"rdoFormatAudioOgg": "&OGG",
 		"rdoFormatAudioOpus": "O&PUS",
 		"rdoFormatAudioFlac": "&FLAC (lossless)",
-		"grpStreamInfo": "Media Info",
+		"grpStreamInfo": "Info Media",
 		"tabVideo": "Video",
-		"chkVideoDeinterlace": "&Deinterlace?",
-		"grpVideoStream": "&Streams",
-		"grpVideoCodec": "&Codec",
-		"lblVideoEncoder": "&Encoder:",
-		"lblVideoPreset": "Prese&t:",
-		"lblVideoTune": "&Tune:",
-		"lblVideoRateControl": "Rate &control:",
-		"lblVideoRateFactor": "R&ate factor:",
-		"lblVideoMultiPass": "M&ultipass:",
-		"btnVideoAdv": "&Advance e&ncoder options",
-		"grpVideoPicture": "&Picture",
-		"lblVideoResolution": "&Resolution:",
-		"lblVideoFrameRate": "&Frame Rate:",
-		"lblVideoBitDepth": "&Bit depth:",
-		"lblPixelFormat": "&Pixel Format:",
+		"chkVideoDeinterlace": "&Tanpa selang?",
+		"grpVideoStream": "&Saluran",
+		"grpVideoCodec": "&Kodek",
+		"lblVideoEncoder": "P&engekod:",
+		"lblVideoPreset": "Pra-a&tur:",
+		"lblVideoTune": "&Ubahan:",
+		"lblVideoRateControl": "Kadar &Kawalan:",
+		"lblVideoRateFactor": "K&adar Faktor:",
+		"lblVideoMultiPass": "Pe&lbagai:",
+		"btnVideoAdv": "&Majukan pilihan pengekod",
+		"grpVideoPicture": "&Gambar",
+		"lblVideoResolution": "&Resolusi:",
+		"lblVideoFrameRate": "&Kadar bingkai:",
+		"lblVideoBitDepth": "&Kedalaman:",
+		"lblPixelFormat": "Format &Piksel:",
 		"lblVideoDeinterlaceMode": "&Mode:",
-		"lblVideoDeinterlaceField": "Fiel&ds:",
-		"tabAudio": "Audio",
-		"grpAudioStream": "&Streams",
-		"grpAudioCodec": "&Codec",
-		"lblAudioEncoder": "&Encoder:",
-		"lblAudioQuality": "&Quality:",
-		"lblAudioSampleRate": "Sample &Rate:",
-		"lblAudioChannel": "C&hannel:",
-		"btnAudioAdv": "&Advance encoder options",
+		"lblVideoDeinterlaceField": "Pan&dangan:",
+		"tabAudio": "Suara",
+		"grpAudioStream": "&Saluran",
+		"grpAudioCodec": "&Kodek",
+		"lblAudioEncoder": "&Pengekod:",
+		"lblAudioQuality": "&Kualiti:",
+		"lblAudioSampleRate": "Kadar &Sampel:",
+		"lblAudioChannel": "Salura&n:",
+		"btnAudioAdv": "&Majukan pilihan pengekod",
 		"lblAudioMode": "&Mode:",
-		"tabSubtitle": "Subtitle",
-		"lblSubLang": "&Language:",
-		"tabAttachment": "Attachments",
-		"lblAttachMime": "&MIME Type:",
-		"lblEncodingPreset": "Encoding &Preset:",
-		"lblOutputFolder": "&Destination:"
+		"tabSubtitle": "Sarikata",
+		"lblSubLang": "&Bahasa:",
+		"tabAttachment": "Lampiran",
+		"lblAttachMime": "Jenis &MIME:",
+		"lblEncodingPreset": "&Pratetap:",
+		"lblOutputFolder": "&Destinasi:"
 	},
 	"frmOption": {
-		"tabOptionGeneral": "General",
-		"grpLanguage": "&Language",
-		"grpTempFolder": "&Temporary folder",
-		"grpNewFilename": "&New filename",
-		"grpNewFilenamePrefix": "P&refix",
-		"rdoNamePrefixNone": "&None",
-		"rdoNamePrefixDateTime": "&Date Time",
-		"rdoNamePrefixCustom": "&Custom:",
-		"grpNewFilenamePostfix": "P&ostfix",
-		"rdoNamePostfixNone": "Non&e",
-		"rdoNamePostfixCustom": "C&ustom:",
-		"tabOptionEncoding": "Encoding",
+		"tabOptionGeneral": "Umum",
+		"grpLanguage": "&Bahasa",
+		"grpTempFolder": "&Folder sementara",
+		"grpNewFilename": "&Nama baru",
+		"grpNewFilenamePrefix": "&Awalan",
+		"rdoNamePrefixNone": "&Tiada",
+		"rdoNamePrefixDateTime": "&Tarikh Masa",
+		"rdoNamePrefixCustom": "&Lain-lain:",
+		"grpNewFilenamePostfix": "A&khiran",
+		"rdoNamePostfixNone": "Tia&da",
+		"rdoNamePostfixCustom": "La&in-lain:",
+		"tabOptionEncoding": "Pengekodan",
 		"grpAviSynth": "&AviSynth",
-		"lblAviSynthInstall": "Installed!",
+		"lblAviSynthInstall": "Terpasang!",
 		"lblAviSynthVersion": "",
-		"grpFFmpeg": "&Default Decoder",
-		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth)",
-		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
-		"grpFrameCountOffset": "&Frame Count Offset",
-		"lblFrameCountOffset": "Any variable frame rate, video will be converted to a constant frame rate that you set, IFME will calculate frames (duration in sec. * given fps). By adding offset value, IFME will add more frame count to compensate unindexed/broken container data to ensure no missing frame during encoding.",
-		"tabOptionModule": "Module",
-		"btnCancel": "&Cancel",
+		"grpFFmpeg": "&Dekoder asal",
+		"rdoFFmpeg32": "FFmpeg &32bit (Sokong AviSynth)",
+		"rdoFFmpeg64": "FFmpeg &64bit (Sokong resolusi dan kedalaman warna)",
+		"grpFrameCountOffset": "&Imbangi kiraan bingkai",
+		"lblFrameCountOffset": "Mana-mana video yang tidak mempunyai kadar bingkai yang kekal, pengekod akan tukar menjadi tetap dengan cara mengira (masa dalam saat * fps diberi). Dengan tambahan, pengekod akan memastikan tiada yang tercicir.",
+		"tabOptionModule": "Modul",
+		"btnCancel": "&Batal",
 		"btnOk": "&OK"
 	},
 	"frmShutdown": {
-		"lblInfo": "What happen if all media done encoding?",
+		"lblInfo": "Apa akan jadi jika siap?",
 		"btnOK": "&OK"
 	},
 	"frmAbout": {
@@ -90,50 +90,50 @@
 		"btnOK": "&OK"
 	},
 	"cmsNewImport": {
-		"tsmiNew": "&New",
-		"tsmiImport": "&Import",
+		"tsmiNew": "&Baru",
+		"tsmiImport": "&Import"
 	},
 	"cmsEncodingPreset": {
-		"tsmiEncodingPresetSave": "&Save",
-		"tsmiEncodingPresetSaveAs": "Save &As",
+		"tsmiEncodingPresetSave": "&Simpan",
+		"tsmiEncodingPresetSaveAs": "Simp&an sebagai",
 	},
 	"InputBoxNewMedia": {
-		"Title": "New video/audio",
-		"Message": "You about to create a blank stream of video, audio, subtitle and fonts.\nThis way you can add files or convert them or just merge (like Mkvtoolnix, MP4Box)\n\nEnter a new file name:"
+		"Title": "Buat yang baru untuk video atau suara",
+		"Message": "Anda akan membuat satu video, suara, sarikata dan tulisan yang kosong.\nDengan cara ini anda boleh menambah fail atau tukar atau gabung (macam Mkvtoolnix, MP4Box)\n\nMasukan satu nama yang baru:"
 	},
 	"InputBoxEncodingPreset": {
-		"Title": "Save a new encoding preset",
-		"Message": "You about to create a new encoding preset based on current configuration.\nWith this, you can reuse for others.\n\nEnter a new name:"
+		"Title": "Simpan pengekod pratetap",
+		"Message": "Anda akan membuat satu pratetap pengekod yang baru berdasarkan tetapan yang diberi. Dengan ini, anda boleh guna semula untuk yang lain.\n\nMasukan satu nama yang baru:"
 	},
 	"InputBoxCommandLine": {
-		"Title": "Encoder command-line",
-		"Message": "Modify encoder command-line arguments\nExample: --bitdepth 8"
+		"Title": "Baris arahan pengekod",
+		"Message": "Ubah hujah baris-arahan pengekod\nContoh: --bitdepth 8"
 	},
 	"MsgBoxShutdown": {
-		"Title": "Question",
-		"Message": "Shutdown or Restart is set!\nThis computer will do that when encoding completed. Proceed?"
+		"Title": "Soalan",
+		"Message": "Matikan atau Mula-semula komputer telah di pasang!\nKomputer ini akan tutup atau mula-semula setelah siap mengekod. Teruskan?"
 	},
 	"MsgBoxSaveFolder": {
-		"Title": "Invalid Path",
-		"Message": "Over network not supported, please mount it as drive."
+		"Title": "Laluan tidak sah!",
+		"Message": "Laluan rangkaian tidak disokong, sila pasang sebagai drive Z:\\."
 	},
 	"MsgBoxCodecIncompatible": {
-		"Title": "Incompatible Codec",
-		"Message": "Output format and codec are not compatible! Choose different one."
+		"Title": "Kodek tidak serasi",
+		"Message": "Sasaran dan kodek tidak serasi! Sila pilih yang lain."
 	},
 	"ComboBoxDeInterlaceMode": [
-		"Deinterlace only frame",
-		"Deinterlace each field",
-		"Skips spatial interlacing frame check",
-		"Skips spatial interlacing field check"
+		"Buang selang (satu bingkai)",
+		"Buang selang (dua bingkai)",
+		"Langkau periksa ruangan selang (satu)",
+		"Langkau periksa ruangan selang (dua)"
 	],
 	"ComboBoxDeInterlaceField": [
-		"Top Field First",
-		"Bottom Field First"
+		"Mula selang dari atas",
+		"Mula selang dari bawah"
 	],
 	"ComboBoxShutdown": [
-		"Do Noting",
-		"Restart",
-		"Shutdown"
+		"Tidak buat apa-apa",
+		"Mula-semula",
+		"Matikan"
 	]
 }
