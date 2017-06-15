@@ -78,7 +78,6 @@
     </Compile>
     <Compile Include="frmCheckUpdate.Method.cs">
       <DependentUpon>frmCheckUpdate.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
@@ -94,7 +93,6 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -104,7 +102,6 @@
     </Compile>
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
@@ -114,7 +111,6 @@
     </Compile>
     <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -197,6 +193,9 @@
     </None>
     <None Include="lang\eng.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="lang\ita.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\may.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

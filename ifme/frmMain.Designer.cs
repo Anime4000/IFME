@@ -53,7 +53,12 @@
             this.rdoFormatMkv = new System.Windows.Forms.RadioButton();
             this.tabVideo = new System.Windows.Forms.TabPage();
             this.pnlVideo = new System.Windows.Forms.Panel();
+            this.grpVideoInterlace = new System.Windows.Forms.GroupBox();
             this.chkVideoDeinterlace = new System.Windows.Forms.CheckBox();
+            this.cboVideoDeinterlaceField = new System.Windows.Forms.ComboBox();
+            this.lblVideoDeinterlaceField = new System.Windows.Forms.Label();
+            this.cboVideoDeinterlaceMode = new System.Windows.Forms.ComboBox();
+            this.lblVideoDeinterlaceMode = new System.Windows.Forms.Label();
             this.grpVideoStream = new System.Windows.Forms.GroupBox();
             this.btnVideoAdd = new System.Windows.Forms.Button();
             this.btnVideoDel = new System.Windows.Forms.Button();
@@ -78,11 +83,6 @@
             this.lblVideoPreset = new System.Windows.Forms.Label();
             this.cboVideoEncoder = new System.Windows.Forms.ComboBox();
             this.lblVideoEncoder = new System.Windows.Forms.Label();
-            this.grpVideoInterlace = new System.Windows.Forms.GroupBox();
-            this.cboVideoDeinterlaceField = new System.Windows.Forms.ComboBox();
-            this.lblVideoDeinterlaceField = new System.Windows.Forms.Label();
-            this.cboVideoDeinterlaceMode = new System.Windows.Forms.ComboBox();
-            this.lblVideoDeinterlaceMode = new System.Windows.Forms.Label();
             this.grpVideoPicture = new System.Windows.Forms.GroupBox();
             this.cboVideoPixelFormat = new System.Windows.Forms.ComboBox();
             this.lblPixelFormat = new System.Windows.Forms.Label();
@@ -169,11 +169,11 @@
             this.grpTargetFormat.SuspendLayout();
             this.tabVideo.SuspendLayout();
             this.pnlVideo.SuspendLayout();
+            this.grpVideoInterlace.SuspendLayout();
             this.grpVideoStream.SuspendLayout();
             this.grpVideoCodec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoMultiPass)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoRateFactor)).BeginInit();
-            this.grpVideoInterlace.SuspendLayout();
             this.grpVideoPicture.SuspendLayout();
             this.tabAudio.SuspendLayout();
             this.pnlAudio.SuspendLayout();
@@ -452,10 +452,9 @@
             // 
             // pnlVideo
             // 
-            this.pnlVideo.Controls.Add(this.chkVideoDeinterlace);
+            this.pnlVideo.Controls.Add(this.grpVideoInterlace);
             this.pnlVideo.Controls.Add(this.grpVideoStream);
             this.pnlVideo.Controls.Add(this.grpVideoCodec);
-            this.pnlVideo.Controls.Add(this.grpVideoInterlace);
             this.pnlVideo.Controls.Add(this.grpVideoPicture);
             this.pnlVideo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlVideo.Location = new System.Drawing.Point(3, 3);
@@ -463,12 +462,25 @@
             this.pnlVideo.Size = new System.Drawing.Size(762, 268);
             this.pnlVideo.TabIndex = 0;
             // 
+            // grpVideoInterlace
+            // 
+            this.grpVideoInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpVideoInterlace.Controls.Add(this.chkVideoDeinterlace);
+            this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceField);
+            this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceField);
+            this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceMode);
+            this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceMode);
+            this.grpVideoInterlace.Location = new System.Drawing.Point(534, 139);
+            this.grpVideoInterlace.Name = "grpVideoInterlace";
+            this.grpVideoInterlace.Size = new System.Drawing.Size(224, 126);
+            this.grpVideoInterlace.TabIndex = 3;
+            this.grpVideoInterlace.TabStop = false;
+            // 
             // chkVideoDeinterlace
             // 
-            this.chkVideoDeinterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkVideoDeinterlace.AutoSize = true;
             this.chkVideoDeinterlace.BackColor = System.Drawing.SystemColors.Window;
-            this.chkVideoDeinterlace.Location = new System.Drawing.Point(544, 138);
+            this.chkVideoDeinterlace.Location = new System.Drawing.Point(8, -1);
             this.chkVideoDeinterlace.Name = "chkVideoDeinterlace";
             this.chkVideoDeinterlace.Size = new System.Drawing.Size(85, 17);
             this.chkVideoDeinterlace.TabIndex = 0;
@@ -476,6 +488,60 @@
             this.chkVideoDeinterlace.UseVisualStyleBackColor = false;
             this.chkVideoDeinterlace.CheckedChanged += new System.EventHandler(this.chkVideoDeinterlace_CheckedChanged);
             this.chkVideoDeinterlace.Leave += new System.EventHandler(this.MediaApply);
+            // 
+            // cboVideoDeinterlaceField
+            // 
+            this.cboVideoDeinterlaceField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboVideoDeinterlaceField.Enabled = false;
+            this.cboVideoDeinterlaceField.FormattingEnabled = true;
+            this.cboVideoDeinterlaceField.Items.AddRange(new object[] {
+            "Top Field First",
+            "Bottom Field First"});
+            this.cboVideoDeinterlaceField.Location = new System.Drawing.Point(9, 90);
+            this.cboVideoDeinterlaceField.Name = "cboVideoDeinterlaceField";
+            this.cboVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
+            this.cboVideoDeinterlaceField.TabIndex = 3;
+            this.cboVideoDeinterlaceField.Leave += new System.EventHandler(this.MediaApply);
+            // 
+            // lblVideoDeinterlaceField
+            // 
+            this.lblVideoDeinterlaceField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVideoDeinterlaceField.Enabled = false;
+            this.lblVideoDeinterlaceField.Location = new System.Drawing.Point(9, 66);
+            this.lblVideoDeinterlaceField.Name = "lblVideoDeinterlaceField";
+            this.lblVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
+            this.lblVideoDeinterlaceField.TabIndex = 2;
+            this.lblVideoDeinterlaceField.Text = "Fiel&ds:";
+            this.lblVideoDeinterlaceField.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // cboVideoDeinterlaceMode
+            // 
+            this.cboVideoDeinterlaceMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboVideoDeinterlaceMode.Enabled = false;
+            this.cboVideoDeinterlaceMode.FormattingEnabled = true;
+            this.cboVideoDeinterlaceMode.Items.AddRange(new object[] {
+            "Deinterlace only frame",
+            "Deinterlace each field",
+            "Skips spatial interlacing frame check",
+            "Skips spatial interlacing field check"});
+            this.cboVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 42);
+            this.cboVideoDeinterlaceMode.Name = "cboVideoDeinterlaceMode";
+            this.cboVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
+            this.cboVideoDeinterlaceMode.TabIndex = 1;
+            this.cboVideoDeinterlaceMode.Leave += new System.EventHandler(this.MediaApply);
+            // 
+            // lblVideoDeinterlaceMode
+            // 
+            this.lblVideoDeinterlaceMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVideoDeinterlaceMode.Enabled = false;
+            this.lblVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 18);
+            this.lblVideoDeinterlaceMode.Name = "lblVideoDeinterlaceMode";
+            this.lblVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
+            this.lblVideoDeinterlaceMode.TabIndex = 0;
+            this.lblVideoDeinterlaceMode.Text = "&Mode:";
+            this.lblVideoDeinterlaceMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // grpVideoStream
             // 
@@ -750,70 +816,6 @@
             this.lblVideoEncoder.TabIndex = 0;
             this.lblVideoEncoder.Text = "&Encoder:";
             this.lblVideoEncoder.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // grpVideoInterlace
-            // 
-            this.grpVideoInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceField);
-            this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceField);
-            this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceMode);
-            this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceMode);
-            this.grpVideoInterlace.Enabled = false;
-            this.grpVideoInterlace.Location = new System.Drawing.Point(535, 139);
-            this.grpVideoInterlace.Name = "grpVideoInterlace";
-            this.grpVideoInterlace.Size = new System.Drawing.Size(224, 126);
-            this.grpVideoInterlace.TabIndex = 3;
-            this.grpVideoInterlace.TabStop = false;
-            // 
-            // cboVideoDeinterlaceField
-            // 
-            this.cboVideoDeinterlaceField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboVideoDeinterlaceField.FormattingEnabled = true;
-            this.cboVideoDeinterlaceField.Items.AddRange(new object[] {
-            "Top Field First",
-            "Bottom Field First"});
-            this.cboVideoDeinterlaceField.Location = new System.Drawing.Point(9, 90);
-            this.cboVideoDeinterlaceField.Name = "cboVideoDeinterlaceField";
-            this.cboVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
-            this.cboVideoDeinterlaceField.TabIndex = 3;
-            this.cboVideoDeinterlaceField.Leave += new System.EventHandler(this.MediaApply);
-            // 
-            // lblVideoDeinterlaceField
-            // 
-            this.lblVideoDeinterlaceField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVideoDeinterlaceField.Location = new System.Drawing.Point(9, 66);
-            this.lblVideoDeinterlaceField.Name = "lblVideoDeinterlaceField";
-            this.lblVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
-            this.lblVideoDeinterlaceField.TabIndex = 2;
-            this.lblVideoDeinterlaceField.Text = "Fiel&ds:";
-            this.lblVideoDeinterlaceField.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // cboVideoDeinterlaceMode
-            // 
-            this.cboVideoDeinterlaceMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboVideoDeinterlaceMode.FormattingEnabled = true;
-            this.cboVideoDeinterlaceMode.Items.AddRange(new object[] {
-            "Deinterlace only frame",
-            "Deinterlace each field",
-            "Skips spatial interlacing frame check",
-            "Skips spatial interlacing field check"});
-            this.cboVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 42);
-            this.cboVideoDeinterlaceMode.Name = "cboVideoDeinterlaceMode";
-            this.cboVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
-            this.cboVideoDeinterlaceMode.TabIndex = 1;
-            this.cboVideoDeinterlaceMode.Leave += new System.EventHandler(this.MediaApply);
-            // 
-            // lblVideoDeinterlaceMode
-            // 
-            this.lblVideoDeinterlaceMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 18);
-            this.lblVideoDeinterlaceMode.Name = "lblVideoDeinterlaceMode";
-            this.lblVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
-            this.lblVideoDeinterlaceMode.TabIndex = 0;
-            this.lblVideoDeinterlaceMode.Text = "&Mode:";
-            this.lblVideoDeinterlaceMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // grpVideoPicture
             // 
@@ -1752,12 +1754,12 @@
             this.grpTargetFormat.ResumeLayout(false);
             this.tabVideo.ResumeLayout(false);
             this.pnlVideo.ResumeLayout(false);
-            this.pnlVideo.PerformLayout();
+            this.grpVideoInterlace.ResumeLayout(false);
+            this.grpVideoInterlace.PerformLayout();
             this.grpVideoStream.ResumeLayout(false);
             this.grpVideoCodec.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoMultiPass)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoRateFactor)).EndInit();
-            this.grpVideoInterlace.ResumeLayout(false);
             this.grpVideoPicture.ResumeLayout(false);
             this.tabAudio.ResumeLayout(false);
             this.pnlAudio.ResumeLayout(false);

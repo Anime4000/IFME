@@ -550,8 +550,12 @@ namespace ifme
 
 		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
 		{
-			grpVideoInterlace.Enabled = chkVideoDeinterlace.Checked;
-		}
+            var c = chkVideoDeinterlace.Checked;
+            lblVideoDeinterlaceMode.Enabled = c;
+            cboVideoDeinterlaceMode.Enabled = c;
+            lblVideoDeinterlaceField.Enabled = c;
+            cboVideoDeinterlaceField.Enabled = c;
+        }
 
 		// Audio
 		private void btnAudioAdd_Click(object sender, EventArgs e)
