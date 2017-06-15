@@ -197,6 +197,9 @@
     <None Include="lang\ita.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="lang\jpn.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="lang\may.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

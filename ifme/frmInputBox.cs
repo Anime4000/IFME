@@ -39,8 +39,11 @@ namespace ifme
 
 		private void frmInputBox_Load(object sender, EventArgs e)
 		{
-
-		}
+            if (OS.IsWindows)
+                Font = Language.Lang.UIFontWindows;
+            else
+                Font = Language.Lang.UIFontLinux;
+        }
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
