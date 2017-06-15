@@ -52,6 +52,11 @@ namespace ifme
                 lblAviSynthInstall.ForeColor = Color.Green;
                 lblAviSynthVersion.Text = AviSynth.InstalledVersion;
             }
+            else
+            {
+                lblAviSynthInstall.Text = Language.Lang.frmOption["lblAviSynthNoInstall"];
+                lblAviSynthInstall.ForeColor = Color.Red;
+            }
 
             nudFrameCountOffset.Value = Properties.Settings.Default.FrameCountOffset;
 

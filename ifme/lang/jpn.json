@@ -66,7 +66,7 @@
 		"tabOptionEncoding": "エンコーディング",
 		"grpAviSynth": "&AviSynth",
 		"lblAviSynthInstall": "インストール済み!",
-		"lblAviSynthVersion": "",
+		"lblAviSynthNoInstall": "インストールされていない",
 		"grpFFmpeg": "デフォルトのデコーダ(&D)",
 		"rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth)",
 		"rdoFFmpeg64": "FFmpeg &64bit (大解像度と高ビット深度をサポートしています)",

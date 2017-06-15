@@ -3,7 +3,7 @@
 	"AuthorEmail": "ilham92_sakura@yahoo.com",
 	"AuthorProfile": "https://github.com/Anime4000/",
 	"UIFontWindows": "Tahoma, 8pt",
-	"UIFontLinux": "FreeSans, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
 	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
 	"frmMain": {
 		"tabGeneral": "General",
@@ -66,7 +66,7 @@
 		"tabOptionEncoding": "Encoding",
 		"grpAviSynth": "&AviSynth",
 		"lblAviSynthInstall": "Installed!",
-		"lblAviSynthVersion": "",
+		"lblAviSynthNoInstall": "Not Installed!",
 		"grpFFmpeg": "&Default Decoder",
 		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",

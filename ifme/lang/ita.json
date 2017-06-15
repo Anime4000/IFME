@@ -3,7 +3,7 @@
 	"AuthorEmail": "no email",
 	"AuthorProfile": "https://www.facebook.com/profile.php?id=100007591784945",
 	"UIFontWindows": "Tahoma, 8pt",
-	"UIFontLinux": "FreeSans, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
 	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
 	"frmMain": {
 		"tabGeneral": "Generale",
@@ -66,7 +66,7 @@
 		"tabOptionEncoding": "Encoding",
 		"grpAviSynth": "&AviSynth",
 		"lblAviSynthInstall": "Installato!",
-		"lblAviSynthVersion": "",
+		"lblAviSynthNoInstall": "Non installato!",
 		"grpFFmpeg": "&Default Decoder",
 		"rdoFFmpeg32": "FFmpeg &32bit (Supporta AviSynth)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Supporta alte risoluzioni && alta profondità in bit)",

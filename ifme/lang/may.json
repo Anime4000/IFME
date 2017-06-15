@@ -3,7 +3,7 @@
 	"AuthorEmail": "ilham92_sakura@yahoo.com",
 	"AuthorProfile": "https://github.com/Anime4000",
 	"UIFontWindows": "Tahoma, 8pt",
-	"UIFontLinux": "FreeSans, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
 	"ToolTipDonate": "Terima Kasih kerana mengguna.\nUntuk maklumat lanjut, sila tekan butang ini.",
 	"frmMain": {
 		"tabGeneral": "Umum",
@@ -66,7 +66,7 @@
 		"tabOptionEncoding": "Pengekodan",
 		"grpAviSynth": "&AviSynth",
 		"lblAviSynthInstall": "Terpasang!",
-		"lblAviSynthVersion": "",
+		"lblAviSynthNoInstall": "Tidak dipasang!",
 		"grpFFmpeg": "&Dekoder asal",
 		"rdoFFmpeg32": "FFmpeg &32bit (Sokong AviSynth)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Sokong resolusi dan kedalaman warna)",

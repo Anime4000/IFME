@@ -68,7 +68,6 @@
     </Compile>
     <Compile Include="frmAbout.Method.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCheckUpdate.cs">
       <SubType>Form</SubType>
