@@ -1,7 +1,7 @@
 {
 	"AuthorName": "Anime4000",
 	"AuthorEmail": "ilham92_sakura@yahoo.com",
-	"AuthorProfile": "https://github.com/Anime4000",
+	"AuthorProfile": "https://github.com/Anime4000/",
 	"UIFontWindows": "Tahoma, 8pt",
 	"UIFontLinux": "FreeSans, 8pt",
 	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
@@ -132,7 +132,7 @@
 		"Bottom Field First"
 	],
 	"ComboBoxShutdown": [
-		"Do Noting",
+		"Do Nothing",
 		"Restart",
 		"Shutdown"
 	]

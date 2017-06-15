@@ -1,0 +1,139 @@
+{
+	"AuthorName": "Nemu",
+	"AuthorEmail": "no email",
+	"AuthorProfile": "https://nippombashi.net/",
+	"UIFontWindows": "MS PGothic, 8pt",
+	"UIFontLinux": "Noto Sans CJK JP, 8pt",
+	"ToolTipDonate": "ご利用いただきありがとうございます、 あなたはそれを楽しむことを願っています。\nあなたはこのプロジェクトに寄付することができますので、私は改善し続けることができます。\n寄付する方法をこのボタンをクリックしてください。",
+	"frmMain": {
+		"tabGeneral": "一般的に",
+		"grpTargetFormat": "ターゲットフォーマット(&T)",
+		"rdoFormatMp4": "&MP4",
+		"rdoFormatMkv": "M&KV",
+		"rdoFormatWebm": "&WEBM",
+		"rdoFormatAudioMp3": "MP&3",
+		"rdoFormatAudioMp4": "MP&4",
+		"rdoFormatAudioOgg": "&OGG",
+		"rdoFormatAudioOpus": "O&PUS",
+		"rdoFormatAudioFlac": "&FLAC (lossless)",
+		"grpStreamInfo": "メディア情報",
+		"tabVideo": "ビデオ",
+		"chkVideoDeinterlace": "インターレース解除(&D)",
+		"grpVideoStream": "ストリーム(&S)",
+		"grpVideoCodec": "コーデック(&C)",
+		"lblVideoEncoder": "エンコーダ(&E):",
+		"lblVideoPreset": "プリセット(&T):",
+		"lblVideoTune": "曲(&U):",
+		"lblVideoRateControl": "レート制御(&N):",
+		"lblVideoRateFactor": "レート係数(&A):",
+		"lblVideoMultiPass": "マルチパス(&I):",
+		"btnVideoAdv": "エンコーダ設定(&R)",
+		"grpVideoPicture": "画像(&P)",
+		"lblVideoResolution": "解決(&O):",
+		"lblVideoFrameRate": "フレームレート(&F):",
+		"lblVideoBitDepth": "ビット深度(&B):",
+		"lblPixelFormat": "ピクセル形式(&F):",
+		"lblVideoDeinterlaceMode": "モード(&M):",
+		"lblVideoDeinterlaceField": "フィールド(&L):",
+		"tabAudio": "オーディオ",
+		"grpAudioStream": "(&S) ストリーム",
+		"grpAudioCodec": "(&C) コーデック",
+		"lblAudioEncoder": "エンコーダ(&E):",
+		"lblAudioQuality": "品質(&Q):",
+		"lblAudioSampleRate": "サンプルレート(&R):",
+		"lblAudioChannel": "チャネル(&C):",
+		"btnAudioAdv": "エンコーダ設定(&R)",
+		"lblAudioMode": "モード(&M):",
+		"tabSubtitle": "字幕",
+		"lblSubLang": "言語(&L):",
+		"tabAttachment": "添付ファイル",
+		"lblAttachMime": "MIME タイプ(&M):",
+		"lblEncodingPreset": "エンコーディングプリセット(&P):",
+		"lblOutputFolder": "移動先フォルダ(&D):"
+	},
+	"frmOption": {
+		"tabOptionGeneral": "一般的に",
+		"grpLanguage": "言語(&L)",
+		"grpTempFolder": "一時フォルダ(&T)",
+		"grpNewFilename": "新しいファイル名(&N)",
+		"grpNewFilenamePrefix": "接頭辞(&R)",
+		"rdoNamePrefixNone": "なし(&O)",
+		"rdoNamePrefixDateTime": "日付時刻(&D)",
+		"rdoNamePrefixCustom": "カスタム(&C):",
+		"grpNewFilenamePostfix": "後置(&X)",
+		"rdoNamePostfixNone": "なし(&E)",
+		"rdoNamePostfixCustom": "カスタム(&K):",
+		"tabOptionEncoding": "エンコーディング",
+		"grpAviSynth": "&AviSynth",
+		"lblAviSynthInstall": "インストール済み!",
+		"lblAviSynthVersion": "",
+		"grpFFmpeg": "デフォルトのデコーダ(&D)",
+		"rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth)",
+		"rdoFFmpeg64": "FFmpeg &64bit (大解像度と高ビット深度をサポートしています)",
+		"grpFrameCountOffset": "フレームカウントのオフセット(F&)",
+		"lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",
+		"tabOptionModule": "モジュール",
+		"btnCancel": "キャンセル(&C)",
+		"btnOk": "&OK"
+	},
+	"frmShutdown": {
+		"lblInfo": "キューを保存して終了しますか",
+		"btnOK": "&OK"
+	},
+	"frmAbout": {
+		"lblDevTtitle": "開発者",
+		"lblTechTitle": "使用される技術",
+		"lblArtTitle": "アートワーク"
+	},
+	"frmCheckUpdate": {
+		"btnDownload": "ダウンロード(&D)",
+		"btnOK": "&OK"
+	},
+	"cmsNewImport": {
+		"tsmiNew": "新しい(&N)",
+		"tsmiImport": "インポート(&I)"
+	},
+	"cmsEncodingPreset": {
+		"tsmiEncodingPresetSave": "セーブ(&S)",
+		"tsmiEncodingPresetSaveAs": "新規保管(&A)",
+	},
+	"InputBoxNewMedia": {
+		"Title": "新しいビデオやオーディオ",
+		"Message": "ビデオ、オーディオ、字幕、およびフォントの空のストリームを作成します。\n\n\n新しい名前を入力してください:"
+	},
+	"InputBoxEncodingPreset": {
+		"Title": "新しいエンコーディングプリセットを保存する",
+		"Message": "現在の設定に基づいて新しいエンコーディングプリセットを作成します。\n\n\n新しい名前を入力してください:"
+	},
+	"InputBoxCommandLine": {
+		"Title": "エンコーダのコマンドライン",
+		"Message": "エンコーダのコマンドライン引数を変更する\n例: --bitdepth 8"
+	},
+	"MsgBoxShutdown": {
+		"Title": "問題",
+		"Message": "シャットダウンまたは再起動が設定されています！\nこのコンピュータは、完了すると再起動またはシャットダウンします"
+	},
+	"MsgBoxSaveFolder": {
+		"Title": "無効なパス",
+		"Message": "ネットワーク経由ではサポートされていない。"
+	},
+	"MsgBoxCodecIncompatible": {
+		"Title": "互換性のないコーデック",
+		"Message": "出力フォーマットとコーデックは互換性がありません！ 別のものを選んでください。"
+	},
+	"ComboBoxDeInterlaceMode": [
+		"デインタレース専用フレーム",
+		"各フィールドのインターレース解除",
+		"空間インターレースフレームチェックをスキップする",
+		"空間インターレースフィールドチェックをスキップする"
+	],
+	"ComboBoxDeInterlaceField": [
+		"トップフィールドファースト",
+		"ボトムフィールドファースト"
+	],
+	"ComboBoxShutdown": [
+		"何もしない",
+		"再起動",
+		"シャットダウン"
+	]
+}
