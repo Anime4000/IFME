@@ -25,6 +25,10 @@ namespace ifme
             else
                 Font = Language.Lang.UIFontLinux;
 
+            lblDevTtitle.Font = new System.Drawing.Font(Font.Name, 9, System.Drawing.FontStyle.Bold);
+            lblTechTitle.Font = lblDevTtitle.Font;
+            lblArtTitle.Font = lblDevTtitle.Font;
+
             var frm = Language.Lang.frmAbout;
             Control ctrl = this;
 

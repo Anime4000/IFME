@@ -30,31 +30,13 @@ namespace ifme
 		// refer to BackgroundWorkerEx.cs file
 		private BackgroundWorkerEx bgThread = new BackgroundWorkerEx();
 
-        // Show Splash Screen for loading
-        private Form SplashScreen = new frmSplashScreen();
-
         public void InitializeUX()
 		{
-            // Show Splash Screen
-            SplashScreen.Show();
+            // Show Splash Screen (hold) & Loading everyting!
+            var ss = new frmSplashScreen();
+            ss.ShowDialog();
 
-            // Load language
-            LoadLanguage();
-
-            // Init FFmpeg
-            var arch = Properties.Settings.Default.FFmpegArch;
-			var workdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			FFmpegDotNet.FFmpeg.Main = Path.Combine(workdir, "plugin", $"ffmpeg{arch}", "ffmpeg");
-			FFmpegDotNet.FFmpeg.Probe = Path.Combine(workdir, "plugin", $"ffmpeg{arch}", "ffprobe");
-
-			// Init Folder
-			if (!Directory.Exists(Get.FolderTemp))
-				Directory.CreateDirectory(Get.FolderTemp);
-
-			if (!Directory.Exists(Get.FolderSave))
-				Directory.CreateDirectory(Get.FolderSave);
-
-			// Load default
+			// Load user settings
 			txtFolderOutput.Text = Properties.Settings.Default.OutputDir;
 
 			cboVideoResolution.Text = "1920x1080";
@@ -63,42 +45,36 @@ namespace ifme
 			cboVideoDeinterlaceMode.SelectedIndex = 1;
 			cboVideoDeinterlaceField.SelectedIndex = 0;
 
-			// Load Language
+			// Display Language ComboBox
 			cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
 			cboSubLang.DisplayMember = "Value";
 			cboSubLang.ValueMember = "Key";
 			cboSubLang.SelectedValue = "und";
 
-			// Load Mime
+			// Display MIME ComboBox
 			cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
 			cboAttachMime.DisplayMember = "Value";
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
 
             // Load everyting
-            LoadPlugins();
-            LoadEncodingPreset();
+            ApplyLanguage();
+            ApplyPlugins();
+            ApplyEncodingPreset();
 
             // Draw
             DrawBanner();
-
-            // Close Splash Screen when loading complete
-            SplashScreen.Close();
 		}
 
-		private void DrawBanner()
-		{
-            pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
-		}
-
-        private void LoadLanguage()
+        private void ApplyLanguage()
         {
-            Language.Load();
-
             if (OS.IsWindows)
                 Font = Language.Lang.UIFontWindows;
             else
                 Font = Language.Lang.UIFontLinux;
+            
+            cboEncodingPreset.Font = new System.Drawing.Font(Font.Name, 9);
+            txtFolderOutput.Font = new System.Drawing.Font(Font.Name, 9);
 
             cmsNewImport.Font = Font;
             cmsEncodingPreset.Font = Font;
@@ -137,10 +113,8 @@ namespace ifme
             cboVideoDeinterlaceField.Items.AddRange(Language.Lang.ComboBoxDeInterlaceField.ToArray());
         }
 
-        private void LoadPlugins()
+        private void ApplyPlugins()
         {
-            Plugin.Load();
-
             var video = new Dictionary<Guid, string>();
             var audio = new Dictionary<Guid, string>();
 
@@ -166,10 +140,8 @@ namespace ifme
             cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
         }
 
-        private void LoadEncodingPreset()
+        private void ApplyEncodingPreset()
         {
-            MediaPreset.Load();
-
             var encpre = new Dictionary<string, string>();
 
             foreach (var item in MediaPreset.List)
@@ -190,6 +162,11 @@ namespace ifme
                     frm.Show();
                 });
             }
+        }
+
+        private void DrawBanner()
+        {
+            pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
         }
 
         private void EncodingPreset(string id, string name)
@@ -283,7 +260,7 @@ namespace ifme
             }
 
             // reload listing
-            LoadEncodingPreset();
+            ApplyEncodingPreset();
         }
 
 		private string[] OpenFiles(MediaType type)

@@ -179,8 +179,12 @@
     <None Include="branding\ai\1.jpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="branding\ai\a.jpj" />
-    <None Include="branding\ai\b.jpj" />
+    <None Include="branding\ai\a.jpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="branding\ai\b.jpj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="branding\ai\z.jpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

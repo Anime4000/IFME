@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
-using System.IO;
 
 namespace ifme
 {

@@ -80,6 +80,9 @@ namespace ifme
             else
                 Font = Language.Lang.UIFontLinux;
 
+            lblAviSynthInstall.Font = new Font(Font.Name, 14);
+            lblAviSynthVersion.Font = new Font(Font.Name, 10);
+
             var frm = Language.Lang.frmOption;
             Control ctrl = this;
 

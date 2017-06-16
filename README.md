@@ -25,6 +25,10 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 ### Downloads
 You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Beta)](https://github.com/Anime4000/IFME/releases/latest)
 
+### Run
+Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `ifme.sh` via Terminal Emulator
+*IFME require Console or Terminal (tty), please run with it.*
+
 ## Developer
 ### Do this before opening project
 

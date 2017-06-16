@@ -1452,9 +1452,9 @@
             this.txtFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFolderOutput.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.txtFolderOutput.Location = new System.Drawing.Point(134, 565);
+            this.txtFolderOutput.Location = new System.Drawing.Point(158, 565);
             this.txtFolderOutput.Name = "txtFolderOutput";
-            this.txtFolderOutput.Size = new System.Drawing.Size(624, 22);
+            this.txtFolderOutput.Size = new System.Drawing.Size(600, 22);
             this.txtFolderOutput.TabIndex = 18;
             this.txtFolderOutput.TextChanged += new System.EventHandler(this.txtFolderOutput_TextChanged);
             // 
@@ -1463,7 +1463,7 @@
             this.lblOutputFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblOutputFolder.Location = new System.Drawing.Point(12, 564);
             this.lblOutputFolder.Name = "lblOutputFolder";
-            this.lblOutputFolder.Size = new System.Drawing.Size(88, 23);
+            this.lblOutputFolder.Size = new System.Drawing.Size(140, 23);
             this.lblOutputFolder.TabIndex = 17;
             this.lblOutputFolder.Text = "&Destination:";
             this.lblOutputFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1484,7 +1484,7 @@
             this.lblEncodingPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEncodingPreset.Location = new System.Drawing.Point(12, 537);
             this.lblEncodingPreset.Name = "lblEncodingPreset";
-            this.lblEncodingPreset.Size = new System.Drawing.Size(88, 22);
+            this.lblEncodingPreset.Size = new System.Drawing.Size(140, 22);
             this.lblEncodingPreset.TabIndex = 14;
             this.lblEncodingPreset.Text = "Encoding &Preset:";
             this.lblEncodingPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1496,9 +1496,9 @@
             this.cboEncodingPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboEncodingPreset.Font = new System.Drawing.Font("Tahoma", 9F);
             this.cboEncodingPreset.FormattingEnabled = true;
-            this.cboEncodingPreset.Location = new System.Drawing.Point(134, 537);
+            this.cboEncodingPreset.Location = new System.Drawing.Point(158, 537);
             this.cboEncodingPreset.Name = "cboEncodingPreset";
-            this.cboEncodingPreset.Size = new System.Drawing.Size(624, 22);
+            this.cboEncodingPreset.Size = new System.Drawing.Size(600, 22);
             this.cboEncodingPreset.TabIndex = 15;
             this.cboEncodingPreset.SelectedIndexChanged += new System.EventHandler(this.cboEncodingPreset_SelectedIndexChanged);
             // 
