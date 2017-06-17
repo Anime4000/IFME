@@ -69,9 +69,15 @@ namespace ifme
         private void ApplyLanguage()
         {
             if (OS.IsWindows)
+            {
                 Font = Language.Lang.UIFontWindows;
+                txtMediaInfo.Font = new System.Drawing.Font("Consolas", 10F);
+            }
             else
+            {
                 Font = Language.Lang.UIFontLinux;
+                txtMediaInfo.Font = new System.Drawing.Font("FreeMono", 10F);
+            }
             
             cboEncodingPreset.Font = new System.Drawing.Font(Font.Name, 9);
             txtFolderOutput.Font = new System.Drawing.Font(Font.Name, 9);
@@ -137,7 +143,7 @@ namespace ifme
             cboAudioEncoder.DataSource = new BindingSource(audio, null);
             cboAudioEncoder.DisplayMember = "Value";
             cboAudioEncoder.ValueMember = "Key";
-            cboAudioEncoder.SelectedValue = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
+            cboAudioEncoder.SelectedValue = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
         }
 
         private void ApplyEncodingPreset()

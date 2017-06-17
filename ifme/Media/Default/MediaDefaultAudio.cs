@@ -24,11 +24,11 @@ namespace ifme
 					Command = string.Empty;
 					break;
 				case MediaTypeAudio.MP4:
-					Encoder = new Guid("deadbeef-faac-faac-faac-faacfaacfaac");
+					Encoder = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
 					Mode = 0;
-					Quality = 128;
+					Quality = 128000;
 					SampleRate = 44100;
-					Channel = 0;
+					Channel = 2;
 					Command = string.Empty;
 					break;
 				case MediaTypeAudio.OGG:

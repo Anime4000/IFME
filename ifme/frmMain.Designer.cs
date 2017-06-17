@@ -679,6 +679,8 @@
             // 
             // nudVideoMultiPass
             // 
+            this.nudVideoMultiPass.BackColor = System.Drawing.Color.White;
+            this.nudVideoMultiPass.ForeColor = System.Drawing.Color.Black;
             this.nudVideoMultiPass.Location = new System.Drawing.Point(138, 184);
             this.nudVideoMultiPass.Maximum = new decimal(new int[] {
             999,
@@ -713,7 +715,9 @@
             // 
             // nudVideoRateFactor
             // 
+            this.nudVideoRateFactor.BackColor = System.Drawing.Color.White;
             this.nudVideoRateFactor.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.nudVideoRateFactor.ForeColor = System.Drawing.Color.Black;
             this.nudVideoRateFactor.Location = new System.Drawing.Point(11, 184);
             this.nudVideoRateFactor.Name = "nudVideoRateFactor";
             this.nudVideoRateFactor.Size = new System.Drawing.Size(121, 20);
@@ -884,6 +888,8 @@
             // 
             // cboVideoFrameRate
             // 
+            this.cboVideoFrameRate.BackColor = System.Drawing.Color.White;
+            this.cboVideoFrameRate.ForeColor = System.Drawing.Color.Black;
             this.cboVideoFrameRate.FormattingEnabled = true;
             this.cboVideoFrameRate.Items.AddRange(new object[] {
             "auto",
@@ -926,6 +932,8 @@
             // 
             // cboVideoResolution
             // 
+            this.cboVideoResolution.BackColor = System.Drawing.Color.White;
+            this.cboVideoResolution.ForeColor = System.Drawing.Color.Black;
             this.cboVideoResolution.FormattingEnabled = true;
             this.cboVideoResolution.Items.AddRange(new object[] {
             "auto",
@@ -1451,7 +1459,9 @@
             // 
             this.txtFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFolderOutput.BackColor = System.Drawing.Color.White;
             this.txtFolderOutput.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtFolderOutput.ForeColor = System.Drawing.Color.Black;
             this.txtFolderOutput.Location = new System.Drawing.Point(158, 565);
             this.txtFolderOutput.Name = "txtFolderOutput";
             this.txtFolderOutput.Size = new System.Drawing.Size(600, 22);

@@ -48,7 +48,7 @@
 		"lblSubLang": "言語(&L):",
 		"tabAttachment": "添付ファイル",
 		"lblAttachMime": "MIME タイプ(&M):",
-		"lblEncodingPreset": "エンコーディングプリセット(&P):",
+		"lblEncodingPreset": "エンコーダプリセット(&P):",
 		"lblOutputFolder": "移動先フォルダ(&D):"
 	},
 	"frmOption": {

@@ -38,9 +38,9 @@
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Enabled = false;
-            this.btnOK.Location = new System.Drawing.Point(513, 115);
+            this.btnOK.Location = new System.Drawing.Point(488, 115);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 23);
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -50,7 +50,9 @@
             // 
             this.txtInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInput.BackColor = System.Drawing.Color.White;
             this.txtInput.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtInput.ForeColor = System.Drawing.Color.Black;
             this.txtInput.Location = new System.Drawing.Point(12, 85);
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(576, 24);

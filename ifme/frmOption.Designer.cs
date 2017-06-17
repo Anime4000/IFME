@@ -138,7 +138,9 @@
             // 
             this.txtNamePostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNamePostfix.BackColor = System.Drawing.Color.White;
             this.txtNamePostfix.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtNamePostfix.ForeColor = System.Drawing.Color.Black;
             this.txtNamePostfix.Location = new System.Drawing.Point(102, 58);
             this.txtNamePostfix.Name = "txtNamePostfix";
             this.txtNamePostfix.Size = new System.Drawing.Size(181, 24);
@@ -194,7 +196,9 @@
             // 
             this.txtNamePrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNamePrefix.BackColor = System.Drawing.Color.White;
             this.txtNamePrefix.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtNamePrefix.ForeColor = System.Drawing.Color.Black;
             this.txtNamePrefix.Location = new System.Drawing.Point(102, 79);
             this.txtNamePrefix.Name = "txtNamePrefix";
             this.txtNamePrefix.Size = new System.Drawing.Size(181, 24);
@@ -320,7 +324,9 @@
             // 
             this.nudFrameCountOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudFrameCountOffset.BackColor = System.Drawing.Color.White;
             this.nudFrameCountOffset.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.nudFrameCountOffset.ForeColor = System.Drawing.Color.Black;
             this.nudFrameCountOffset.Location = new System.Drawing.Point(238, 85);
             this.nudFrameCountOffset.Maximum = new decimal(new int[] {
             9999999,

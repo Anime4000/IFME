@@ -19,17 +19,17 @@ OKAY_TTY="Terminal attached, IFME will post encoding process here."
 
 function runtty {
 	if hash gnome-terminal 2>/dev/null; then
-		gnome-terminal -e 'bash ifme.sh'
+		gnome-terminal -e 'bash "$DIR/ifme.sh"'
 		exit 0
 	fi
 
 	if hash konsole 2>/dev/null; then
-		konsole -e 'bash ifme.sh'
+		konsole -e 'bash "$DIR/ifme.sh"'
 		exit 0
 	fi
 
 	if hash xfce4-terminal 2>/dev/null; then
-		xfce4-terminal -e 'bash ifme.sh'
+		xfce4-terminal -e 'bash "$DIR/ifme.sh"'
 		exit 0
 	fi
 }
