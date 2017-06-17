@@ -18,18 +18,30 @@ ERROR_MONO="You must have mono-runtime installed to run IFME.\nDownload the appr
 OKAY_TTY="Terminal attached, IFME will post encoding process here."
 
 function runtty {
+	cd "$DIR"
+
+	if hash uxterm 2>/dev/null; then
+		uxterm -geometry 120x30 -e 'bash ifme.sh'
+		exit 0
+	fi
+
 	if hash gnome-terminal 2>/dev/null; then
-		gnome-terminal -e 'bash "$DIR/ifme.sh"'
+		gnome-terminal -e 'bash ifme.sh'
 		exit 0
 	fi
 
 	if hash konsole 2>/dev/null; then
-		konsole -e 'bash "$DIR/ifme.sh"'
+		konsole -e 'bash ifme.sh'
 		exit 0
 	fi
 
 	if hash xfce4-terminal 2>/dev/null; then
-		xfce4-terminal -e 'bash "$DIR/ifme.sh"'
+		xfce4-terminal -e 'bash ifme.sh'
+		exit 0
+	fi
+	
+	if hash xterm 2>/dev/null; then
+		xterm -geometry 120x30 -e 'bash ifme.sh'
 		exit 0
 	fi
 }
