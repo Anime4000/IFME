@@ -1,0 +1,55 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$DIR"
+
+echo "Checking xz utils"
+(xz --version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "xz utils not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Checking zip utils"
+(xz --version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "zip utils not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Checking mono-runtime"
+(mono --version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "mono CLR not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Checking mono compiler (xbuild)"
+(xbuild /version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "mono compiler (xbuild) not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Checking mono compiler (msbuild)"
+(msbuild /version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "mono compiler (msbuild) not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Downloading plugins"
+wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin_2017-06-17.tar.xz -O plugin.tar.xz
+
+echo "Done, now you can make"
+exit 0

@@ -1,6 +1,6 @@
 # IFME make file
 CC=gcc
-MONOCC=xbuild
+MONOCC=msbuild
 MONOMK=mkbundle
 
 MODE=Release
@@ -8,13 +8,10 @@ MODE=Release
 DIR=build
 IFME=ifme7
 
-all: clean compile copy
-	find "./$(DIR)" -type d -exec chmod 755 {} \;
-	find "./$(DIR)" -type f -exec chmod 644 {} \;
-	find "./$(DIR)" -type f -exec /bin/sh -c "file {} | grep -q executable && chmod +x {}" \;
-	find "./$(DIR)" -name "*.sh" -exec chmod +x {} \;
-	find "./$(DIR)" -name "*.exe" -exec chmod -x {} \;
-	find "./$(DIR)" -name "*.dll" -exec chmod -x {} \;
+all: clean compile copy fixmod
+	mv "$(DIR)" "release-ifme7"
+	zip -r "$(IFME).zip" "release-ifme7"
+	mv "release-ifme7" "$(DIR)"
 
 clean:
 	rm -rf "$(DIR)"
@@ -22,11 +19,10 @@ clean:
 
 compile:
 	$(MONOCC) /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=$(MODE)
-	
 
 copy:
 	mkdir "$(DIR)"
-	mkdir "$(DIR)/plugin"
+	tar -xvJf plugin.tar.xz "$(DIR)"
 	cp "sources/ifme.sh" "$(DIR)/ifme"
 	cp "ifme/bin/Release/ifme.exe" "$(DIR)"
 	cp "ifme/bin/Release/FFmpegDotNet.dll" "$(DIR)"
@@ -37,3 +33,11 @@ copy:
 	cp -r "ifme/bin/Release/branding" "$(DIR)"
 	cp -r "ifme/bin/Release/lang" "$(DIR)"
 	cp -r "ifme/bin/Release/preset" "$(DIR)"
+
+fixmod:
+	find "./$(DIR)" -type d -exec chmod 755 {} \;
+	find "./$(DIR)" -type f -exec chmod 644 {} \;
+	find "./$(DIR)" -type f -exec /bin/sh -c "file {} | grep -q executable && chmod +x {}" \;
+	find "./$(DIR)" -name "*.sh" -exec chmod +x {} \;
+	find "./$(DIR)" -name "*.exe" -exec chmod -x {} \;
+	find "./$(DIR)" -name "*.dll" -exec chmod -x {} \;
