@@ -22,7 +22,7 @@ compile:
 
 copy:
 	mkdir "$(DIR)"
-	tar -xvJf plugin.tar.xz "$(DIR)"
+	tar -xvJf plugin.tar.xz -C "$(DIR)"
 	cp "license.txt" "$(DIR)"
 	cp "patents.txt" "$(DIR)"
 	cp "sources/ifme.sh" "$(DIR)"
