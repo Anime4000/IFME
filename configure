@@ -64,6 +64,9 @@ if [ -f "../Newtonsoft.Json/Src/Newtonsoft.Json/Newtonsoft.Json.Net40.csproj" ];
 else
 	echo "    Newtonsoft.Json not found, downloading..."
 	git clone https://github.com/JamesNK/Newtonsoft.Json "../Newtonsoft.Json"
+	cd "../Newtonsoft.Json"
+	git checkout 10.0.2
+	cd "$DIR"
 fi
 
 echo "Checking FFmpegDotNet at ../"
