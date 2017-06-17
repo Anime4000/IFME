@@ -103,7 +103,7 @@
 	},
 	"InputBoxEncodingPreset": {
 		"Title": "Simpan pengekod pratetap",
-		"Message": "Anda akan membuat satu pratetap pengekod yang baru berdasarkan tetapan yang diberi. Dengan ini, anda boleh guna semula untuk yang lain.\n\nMasukan satu nama yang baru:"
+		"Message": "Anda akan membuat satu pengekod pratetap yang baru berdasarkan tetapan yang diberi. Dengan ini, anda boleh guna semula untuk yang lain.\n\nMasukan satu nama yang baru:"
 	},
 	"InputBoxCommandLine": {
 		"Title": "Baris arahan pengekod",

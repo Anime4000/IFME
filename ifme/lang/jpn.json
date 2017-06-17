@@ -6,7 +6,7 @@
 	"UIFontLinux": "Noto Sans CJK JP, 9pt",
 	"ToolTipDonate": "ご利用いただきありがとうございます、 あなたはそれを楽しむことを願っています。\nあなたはこのプロジェクトに寄付することができますので、私は改善し続けることができます。\n寄付する方法をこのボタンをクリックしてください。",
 	"frmMain": {
-		"tabGeneral": "一般的に",
+		"tabGeneral": "基本",
 		"grpTargetFormat": "ターゲットフォーマット(&T)",
 		"rdoFormatMp4": "&MP4",
 		"rdoFormatMkv": "M&KV",
@@ -52,7 +52,7 @@
 		"lblOutputFolder": "移動先フォルダ(&D):"
 	},
 	"frmOption": {
-		"tabOptionGeneral": "一般的に",
+		"tabOptionGeneral": "基本",
 		"grpLanguage": "言語(&L)",
 		"grpTempFolder": "一時フォルダ(&T)",
 		"grpNewFilename": "新しいファイル名(&N)",
@@ -122,10 +122,10 @@
 		"Message": "出力フォーマットとコーデックは互換性がありません！ 別のものを選んでください。"
 	},
 	"ComboBoxDeInterlaceMode": [
-		"デインタレース専用フレーム",
-		"各フィールドのインターレース解除",
-		"空間インターレースフレームチェックをスキップする",
-		"空間インターレースフィールドチェックをスキップする"
+		"フレームのみをデインターレース",
+		"各フィールドをデインターレース",
+		"空間インターレースフレームチェックをスキップします",
+		"空間的なインターレースフィールドチェックをスキップします"
 	],
 	"ComboBoxDeInterlaceField": [
 		"トップフィールドファースト",

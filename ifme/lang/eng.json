@@ -55,7 +55,7 @@
 		"tabOptionGeneral": "General",
 		"grpLanguage": "&Language",
 		"grpTempFolder": "&Temporary folder",
-		"grpNewFilename": "&New filename",
+		"grpNewFilename": "&New file name",
 		"grpNewFilenamePrefix": "P&refix",
 		"rdoNamePrefixNone": "&None",
 		"rdoNamePrefixDateTime": "&Date Time",
@@ -71,7 +71,7 @@
 		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
 		"grpFrameCountOffset": "&Frame Count Offset",
-		"lblFrameCountOffset": "Any variable frame rate, video will be converted to a constant frame rate that you set. Decoder will calculate frames (duration in sec. * given fps). By adding offset value, Decoder will add more frame count to compensate unindexed/broken container data to ensure no missing frame during encoding.",
+		"lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding offset value, decoder will add more frame count to compensate broken container data to ensure no missing frame during encoding.",
 		"tabOptionModule": "Module",
 		"btnCancel": "&Cancel",
 		"btnOk": "&OK"
@@ -98,7 +98,7 @@
 		"tsmiEncodingPresetSaveAs": "Save &As",
 	},
 	"InputBoxNewMedia": {
-		"Title": "New video or audio",
+		"Title": "New media file",
 		"Message": "You about to create a blank stream of video, audio, subtitle and fonts.\nThis way you can add files or convert them or just merge (like Mkvtoolnix, MP4Box)\n\nEnter a new file name:"
 	},
 	"InputBoxEncodingPreset": {
