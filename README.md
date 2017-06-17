@@ -16,9 +16,9 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 ### System Requirement
 
 * OS: 64-bit Windows (7, 8, 8.1, 10) & Linux (Ubuntu, etc...)
-* CPU: Intel Core 2 Duo or AMD AthlonII X2
-* RAM: 2GB (*more resolution or bitdepth require more ram*)
-* HDD: 256MB
+* CPU: Intel Core i3 or AMD FX 4000
+* RAM: 4GB DDR3
+* HDD: 1GB
 * Runtime: .NET Framework 4.0 (Windows) or `mono-complete` (Linux)
 * Internet Connection
 
