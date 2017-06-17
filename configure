@@ -49,7 +49,7 @@ echo "Checking mono compiler (msbuild)"
 }
 
 echo "Checking git"
-(git--version) < /dev/null > /dev/null 2>&1 || {
+(git --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "git not detected!"
 	echo
