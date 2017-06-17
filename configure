@@ -48,6 +48,33 @@ echo "Checking mono compiler (msbuild)"
 	exit 1
 }
 
+echo "Checking git"
+(git--version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "git not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
+echo "Checking Newtonsoft.Json at ../"
+if [ -f "../Newtonsoft.Json/Src/Newtonsoft.Json/Newtonsoft.Json.Net40.csproj" ]; then
+	echo "    Newtonsoft.Json found!"
+	sleep 1
+else
+	echo "    Newtonsoft.Json not found, downloading..."
+	git clone https://github.com/JamesNK/Newtonsoft.Json "../Newtonsoft.Json"
+fi
+
+echo "Checking FFmpegDotNet at ../"
+if [ -f "../FFmpegDotNet/FFmpegDotNet/FFmpegDotNet.csproj" ]; then
+	echo "    FFmpegDotNet found!"
+	sleep 1
+else
+	echo "    FFmpegDotNet not found, downloading..."
+	git clone https://github.com/Anime4000/FFmpegDotNet "../FFmpegDotNet"
+fi
+
 echo "Checking plugin archive"
 if [ -f "plugin.tar.xz" ]; then
 	echo "    Plugins found!"
