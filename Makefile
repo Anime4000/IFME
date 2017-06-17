@@ -23,7 +23,9 @@ compile:
 copy:
 	mkdir "$(DIR)"
 	tar -xvJf plugin.tar.xz "$(DIR)"
-	cp "sources/ifme.sh" "$(DIR)/ifme"
+	cp "license.txt" "$(DIR)"
+	cp "patents.txt" "$(DIR)"
+	cp "sources/ifme.sh" "$(DIR)"
 	cp "ifme/bin/Release/ifme.exe" "$(DIR)"
 	cp "ifme/bin/Release/FFmpegDotNet.dll" "$(DIR)"
 	cp "ifme/bin/Release/Newtonsoft.Json.dll" "$(DIR)"
