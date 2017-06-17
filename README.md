@@ -27,6 +27,7 @@ You can download it via [SourceForge (Release)](https://sourceforge.net/projects
 
 ### Run
 Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `ifme.sh` via Terminal Emulator
+
 *IFME require Console or Terminal (tty), please run with it.*
 
 ## Developer
@@ -34,6 +35,7 @@ Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `i
 
 * [Clone](https://github.com/JamesNK/Newtonsoft.Json) Json.NET
 * [Clone](https://github.com/Anime4000/FFmpegDotNet) FFmpegDotNet
+* [Download](https://sourceforge.net/projects/ifme/files/plugin/) Plugin
 
 Make sure clone these in same folder with `ifme`, so it will look like:
 ```
@@ -47,6 +49,17 @@ GitHub
      `- Newtonsoft.Json
 ```
 Then you can open `ifme.sln`. Have fun!
+
+### Compiling
+```
+mkdir ~/GitHub
+cd ~/GitHub
+git clone https://github.com/Anime4000/IFME
+cd IFME
+./configure
+make
+```
+Simple as that, if show an error, try download and install then run again.
 
 ## Version History
 ### Version 6
