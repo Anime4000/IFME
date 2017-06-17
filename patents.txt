@@ -1,0 +1,10 @@
+Multimedia technologies are often covered by various patents which are most of the time hard to identify. These patents may or may not apply in your local jurisdiction. By installing this software, you acknowledge that you may have to pay royaltee fees in order to legally use this software. 
+
+Do not proceed with this setup if you do not understand or do not agree with these terms. In any case, the authors and/or distributors bears no liability for any infringing usage of this software, which is provided for educational or research purposes.
+
+This encoder using these component, refer to our website for more info:
+01. ffmpeg
+02. mkvmerge
+03. mp4box
+04. x264
+05. x265
