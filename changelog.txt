@@ -1,4 +1,11 @@
-﻿Version 7.1 (Free and Independent)
+﻿Version 7.2 (Enchantress)
+-------------------------
+[new] -r (--reset) will reset IFME settings to default configuration
+[fixed] Live update for Encoding Preset listing
+[fixed] Changing Rate Control cause current value not in range
+[fixed] Remove frame count detection for Multi-pass encoding (avoid inconsistent frame)
+
+Version 7.1 (Free and Independent)
 ----------------------------------
 [new] Merge failover (if merge fails, IFME will copy whole thing to save folder)
 [new] Sub Menu for New/Import, Save encoding presets

@@ -150,12 +150,28 @@ namespace ifme
         {
             var encpre = new Dictionary<string, string>();
 
+            MediaPreset.Load();
+
             foreach (var item in MediaPreset.List)
                 encpre.Add(item.Key, item.Value.Name);
+
+            var ci = cboEncodingPreset.Items.Count;
+            var si = cboEncodingPreset.SelectedIndex;
 
             cboEncodingPreset.DataSource = new BindingSource(encpre, null);
             cboEncodingPreset.DisplayMember = "Value";
             cboEncodingPreset.ValueMember = "Key";
+
+            // If presets same, choose last selected, otherwise, use newer one
+            if (ci == cboEncodingPreset.Items.Count)
+            {
+                if (si < cboEncodingPreset.Items.Count)
+                    cboEncodingPreset.SelectedIndex = si;
+            }
+            else
+            {
+                cboEncodingPreset.SelectedIndex = cboEncodingPreset.Items.Count - 1;
+            }
         }
 
         private void CheckVersion()
@@ -993,7 +1009,8 @@ namespace ifme
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoRateControl.Name))
 			{
 				video.EncoderMode = cboVideoRateControl.SelectedIndex;
-			}
+                video.EncoderValue = nudVideoRateFactor.Value; // changing mode give default value
+            }
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, nudVideoRateFactor.Name))
 			{
@@ -1311,8 +1328,8 @@ namespace ifme
 				cboVideoPreset.SelectedItem = v.EncoderPreset;
 				cboVideoTune.SelectedItem = v.EncoderTune;
 
-				nudVideoRateFactor.Value = v.EncoderValue;
-				nudVideoMultiPass.Value = v.EncoderMultiPass;
+                nudVideoRateFactor.Value = v.EncoderValue;
+                nudVideoMultiPass.Value = v.EncoderMultiPass;
 
 				cboVideoResolution.Text = $"{v.Width}x{v.Height}";
 				cboVideoFrameRate.Text = $"{Math.Round(v.FrameRate, 3)}";

@@ -20,7 +20,7 @@
     "DeInterlaceField": 0
   },
   "Audio": {
-    "Encoder": "deadbeef-ff44-ff44-ff44-ff44ff44ff44",
+    "Encoder": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
     "EncoderMode": 0,
     "EncoderQuality": 128000,
     "EncoderSampleRate": 44100,

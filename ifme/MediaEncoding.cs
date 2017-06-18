@@ -155,55 +155,49 @@ namespace ifme
 					var yuv = $"yuv{item.PixelFormat}p{(item.BitDepth == 8 ? string.Empty : $"{item.BitDepth}le")}";
 					var deinterlace = item.DeInterlace ? $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"" : string.Empty;
 
-					var preset = (string.IsNullOrEmpty(vc.Args.Preset) ? string.Empty : $"{vc.Args.Preset} {item.EncoderPreset}");
-					var quality = (string.IsNullOrEmpty(vc.Mode[item.EncoderMode].Args) ? string.Empty : $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}");
-					var tune = (string.IsNullOrEmpty(vc.Args.Tune) ? string.Empty : $"{vc.Args.Tune} {item.EncoderTune}");
+                    var preset = (string.IsNullOrEmpty(vc.Args.Preset) ? string.Empty : $"{vc.Args.Preset} {item.EncoderPreset}");
+                    var tune = (string.IsNullOrEmpty(vc.Args.Tune) ? string.Empty : $"{vc.Args.Tune} {item.EncoderTune}");
+                    var quality = (string.IsNullOrEmpty(vc.Mode[item.EncoderMode].Args) ? string.Empty : $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}");
 
-					var framecount = item.FrameCount + Properties.Settings.Default.FrameCountOffset;
+                    var framecount = item.FrameCount + Properties.Settings.Default.FrameCountOffset;
+
+                    var outfile = $"video{id++:D4}_{item.Lang}.{vc.Extension}";
 
 					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
                         var p = 1;
                         var pass = string.Empty;
 
-                        while (true)
+                        do
                         {
+                            pass = vc.Args.PassNth;
+
                             if (p == 1)
                                 pass = vc.Args.PassFirst;
 
                             if (p == item.EncoderMultiPass)
                                 pass = vc.Args.PassLast;
-                            
-                            pass = vc.Args.PassNth;
 
                             if (vc.Args.Pipe)
-                            {
-                                ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
-                            }
+                                ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {pass} {vc.Args.Output} {outfile}");
                             else
-                            {
-                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
-                            }
-
-                            // exit loop after pass encoding reach max
-                            if (p == item.EncoderMultiPass)
-                                break;
+                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} {outfile}");
 
                             p++;
-                        }
+
+                        } while (p <= item.EncoderMultiPass);
 					}
 					else
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -strict -1 -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} {outfile}");
 						}
 						else
 						{
-							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {vc.Args.Output} video{id++:D4}_{item.Lang}.{vc.Extension}");
+							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {vc.Args.Output} {outfile}");
 						}
 					}
-
 				}
 			}
 
@@ -320,8 +314,8 @@ namespace ifme
 					}
 					else
 					{
-						// copy whole thing
-						ConsoleEx.Write(LogLevel.Error, "ifme", "MkvToolNix still can't merge on second attempt! BACKUP ALL RAW FILE TO SAVE FOLDER!");
+                        // copy whole thing
+                        ConsoleEx.Write(LogLevel.Error, "ifme", "MkvToolNix still can't merge on second attempt! BACKUP ALL RAW FILE TO SAVE FOLDER!");
 						Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
 					}
 				}

@@ -132,6 +132,7 @@
     <Compile Include="Media\Queue\MediaQueueCommon.cs" />
     <Compile Include="Media\Queue\MediaQueueSubtitle.cs" />
     <Compile Include="Media\Queue\MediaQueueVideo.cs" />
+    <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\PluginAudio.cs" />
