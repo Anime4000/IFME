@@ -1,6 +1,7 @@
 ﻿Version 7.2 (Enchantress)
 -------------------------
-[add] Added new command line -r (--reset) for reset IFME settings to default configuration
+[add] Added new command-line -r (--reset) for reset IFME settings to default configuration
+[add] Print command-line every encoding (like IFME version 3)
 [fixed] Live update for Encoding Preset listing
 [fixed] Changing Rate Control cause current value not in range
 [fixed] Remove frame count detection for Multi-pass encoding (avoid inconsistent frame)

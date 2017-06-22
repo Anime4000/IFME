@@ -71,7 +71,7 @@ namespace ifme
 				arg = "-c 'eval $HITOHA'";
 			}
 
-            ConsoleEx.Write(LogLevel.Normal, "Starting process with this command: ");
+            ConsoleEx.Write(LogLevel.Normal, "Starting command: ");
             ConsoleEx.Write(ConsoleColor.DarkYellow, $"{EnvCmd}\n");
             
 			Process Proc = new Process();

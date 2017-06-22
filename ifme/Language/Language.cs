@@ -79,11 +79,20 @@ namespace ifme
 
             foreach (var item in Directory.EnumerateFiles(folder, "*.json", SearchOption.AllDirectories).OrderBy(file => file))
             {
-                var json = File.ReadAllText(item);
-                var data = JsonConvert.DeserializeObject<Language>(json);
-                var id = Path.GetFileNameWithoutExtension(item);
+                try
+                {
+                    var json = File.ReadAllText(item);
+                    var data = JsonConvert.DeserializeObject<Language>(json);
+                    var id = Path.GetFileNameWithoutExtension(item);
 
-                List.Add(id, data);
+                    List.Add(id, data);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleEx.Write(LogLevel.Error, $"Language JSON file ");
+                    ConsoleEx.Write(ConsoleColor.Red, $"`{Path.GetFileName(item)}'");
+                    ConsoleEx.Write($" appears to be invalid.\nException thrown: {ex.Message}\n");
+                }
             }
 
             if (File.Exists(Path.Combine(folder, $"{Properties.Settings.Default.Language}.json")))
