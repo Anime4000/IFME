@@ -32,10 +32,19 @@ namespace ifme
 
             foreach (var item in Directory.EnumerateFiles(folder, "*.json", SearchOption.AllDirectories).OrderBy(file => file))
             {
-                var json = File.ReadAllText(item);
-                var preset = JsonConvert.DeserializeObject<MediaPreset>(json);
+                try
+                {
+                    var json = File.ReadAllText(item);
+                    var preset = JsonConvert.DeserializeObject<MediaPreset>(json);
 
-                MediaPreset.List.Add(Path.GetFileNameWithoutExtension(item), preset);
+                    List.Add(Path.GetFileNameWithoutExtension(item), preset);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleEx.Write(LogLevel.Error, $"Encoding Preset JSON file ");
+                    ConsoleEx.Write(ConsoleColor.Red, $"`{Path.GetFileName(item)}'");
+                    ConsoleEx.Write($" appears to be invalid.\nException thrown: {ex.Message}\n");
+                }
             }
         }
 	}

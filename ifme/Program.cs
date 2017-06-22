@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading;
+using System.Reflection;
+using System.Globalization;
 using System.Windows.Forms;
 
 using Mono.Options;
@@ -13,11 +11,54 @@ namespace ifme
     static class Program
     {
         /// <summary>
+        /// Change program localisation, allow to cast properly
+        /// </summary>
+        /// <param name="culture">Culture Id, example: en-us</param>
+        static void SetDefaultCulture(CultureInfo culture)
+        {
+            Type type = typeof(CultureInfo);
+
+            try
+            {
+                type.InvokeMember("s_userDefaultCulture",
+                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+                    null,
+                    culture,
+                    new object[] { culture });
+
+                type.InvokeMember("s_userDefaultUICulture",
+                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+                    null,
+                    culture,
+                    new object[] { culture });
+            }
+            catch { }
+
+            try
+            {
+                type.InvokeMember("m_userDefaultCulture",
+                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+                    null,
+                    culture,
+                    new object[] { culture });
+
+                type.InvokeMember("m_userDefaultUICulture",
+                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+                    null,
+                    culture,
+                    new object[] { culture });
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
+            SetDefaultCulture(new CultureInfo("en-us"));
+
             var reset = false;
             var help = false;
             var p = new OptionSet()
@@ -32,14 +73,11 @@ namespace ifme
             }
             catch (OptionException e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Try `ifme --help' for more information.");
+                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine("Try `ifme --help' for more information.");
 
                 return;
             }
-
-            // force to use "." as decimal
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             Console.Title = Get.AppName;
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
@@ -74,7 +112,7 @@ namespace ifme
 
             if (reset)
             {
-                Console.WriteLine("Resetting user settings.");
+                Console.Error.WriteLine("Resetting user settings.");
 
                 Properties.Settings.Default.Reset();
                 Properties.Settings.Default.UpgradeRequired = false;
@@ -83,7 +121,7 @@ namespace ifme
 
             if (Properties.Settings.Default.UpgradeRequired)
             {
-                Console.WriteLine("Updating user settings.");
+                Console.Error.WriteLine("Updating user settings.");
 
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.UpgradeRequired = false;

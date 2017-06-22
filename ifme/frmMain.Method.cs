@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace ifme
 {
-	partial class frmMain
+    partial class frmMain
 	{
 		enum ListViewItemType
 		{
@@ -1408,7 +1407,7 @@ namespace ifme
 				ProcessManager.Stop();
 
 				Console.Write("\n\n");
-				ConsoleEx.Write(LogLevel.Warning, "ifme", "Encoding cancel by user...");
+				ConsoleEx.Write(LogLevel.Warning, "Encoding cancel by user...\n");
 
 				foreach (ListViewItem item in lstMedia.Items)
 					item.SubItems[4].Text = "Abort by user";

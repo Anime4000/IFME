@@ -38,19 +38,19 @@ namespace ifme
 		public static int Start(string ExePath, string Args)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{ExePath}\" {Args}", Properties.Settings.Default.TempDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
 		}
 
 		public static int Start(string ExePath, string Args, string WorkDir)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{ExePath}\" {Args}", WorkDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
 		}
 
 		public static int Start(string ExePath, string Args, string PipeExePath, string PipeArgs)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(PipeExePath);
-			return Run($"\"{ExePath}\" {Args} | \"{PipeExePath}\" {PipeArgs}", Properties.Settings.Default.TempDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
 		}
 
 		private static int Run(string EnvCmd, string workDir)
@@ -71,6 +71,9 @@ namespace ifme
 				arg = "-c 'eval $HITOHA'";
 			}
 
+            ConsoleEx.Write(LogLevel.Normal, "Starting process with this command: ");
+            ConsoleEx.Write(ConsoleColor.DarkYellow, $"{EnvCmd}\n");
+            
 			Process Proc = new Process();
 			Proc.StartInfo = new ProcessStartInfo(cmd, arg)
 			{
@@ -82,6 +85,14 @@ namespace ifme
 			Proc.WaitForExit();
 			return Proc.ExitCode;
 		}
+
+        private static string FixPath(string path)
+        {
+            if (OS.IsWindows)
+                return path.Replace('/', '\\');
+            else
+                return path.Replace('\\', '/');
+        }
 
 		public static void Stop()
 		{

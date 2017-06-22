@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading;
 
@@ -24,16 +23,25 @@ namespace ifme
 
             foreach (var item in Directory.EnumerateFiles(folder, "_plugin*.json", SearchOption.AllDirectories).OrderBy(file => file))
             {
-                var json = File.ReadAllText(item);
-                var plugin = JsonConvert.DeserializeObject<Plugin>(json);
+                try
+                {
+                    var json = File.ReadAllText(item);
+                    var plugin = JsonConvert.DeserializeObject<Plugin>(json);
 
-                plugin.FilePath = Path.GetDirectoryName(item);
+                    plugin.FilePath = Path.GetDirectoryName(item);
 
-                ConsoleEx.ClearCurrentLine();
-                Console.Write($"\rLoading plugin: {plugin.Name}");
-                Thread.Sleep(100);
+                    ConsoleEx.ClearCurrentLine();
+                    Console.Write($"\rLoading plugin: {plugin.Name}");
+                    Thread.Sleep(100);
 
-                Plugin.Items.Add(plugin.GUID, plugin);
+                    Items.Add(plugin.GUID, plugin);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleEx.Write(LogLevel.Error, $"Plugin JSON file ");
+                    ConsoleEx.Write(ConsoleColor.Red, $"`{Path.GetFileName(item)}'");
+                    ConsoleEx.Write($" appears to be invalid.\nException thrown: {ex.Message}\n");
+                }
             }
 
             ConsoleEx.ClearCurrentLine();
