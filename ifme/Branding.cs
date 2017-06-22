@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace ifme
 {
     class Branding
     {
-        private static Bitmap _Blank = new Bitmap(1, 1);
+        private static Bitmap _Blank = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
 
         private static string _PathPartnerSplashScreen = Path.Combine("branding", "partner", "i0.ocx");
         private static string _PathPartnerBannerLeft = Path.Combine("branding", "partner", "i1.vxd");
@@ -44,35 +45,35 @@ namespace ifme
 
         public static Bitmap Banner(int width, int height)
         {
-            // partner
+            var banner1 = string.Empty;
+            var banner2 = string.Empty;
+
             if (File.Exists(_PathPartnerBannerLeft) && File.Exists(_PathPartnerBannerRight))
             {
-                var banner = new Bitmap(width, height);
-
-                using (Graphics g = Graphics.FromImage(banner))
-                {
-                    g.DrawImage(new Bitmap(_PathPartnerBannerLeft), new Point(0, 0));
-                    g.DrawImage(new Bitmap(_PathPartnerBannerRight), new Point(width - 640, 0));
-                }
-
-                return banner;
+                banner1 = _PathPartnerBannerLeft;
+                banner2 = _PathPartnerBannerRight;
             }
-
-            // original
-            if (File.Exists(_PathOriginalBannerLeft) && File.Exists(_PathOriginalBannerRight))
+            else if (File.Exists(_PathOriginalBannerLeft) && File.Exists(_PathOriginalBannerRight))
             {
-                var banner = new Bitmap(width, height);
-
-                using (Graphics g = Graphics.FromImage(banner))
-                {
-                    g.DrawImage(new Bitmap(_PathOriginalBannerLeft), new Point(0, 0));
-                    g.DrawImage(new Bitmap(_PathOriginalBannerRight), new Point(width - 640, 0));
-                }
-
-                return banner;
+                banner1 = _PathOriginalBannerLeft;
+                banner2 = _PathOriginalBannerRight;
             }
 
-            return new Bitmap(_Blank, width, height);
+            try
+            {
+                using (var png = new Bitmap(width, height, PixelFormat.Format32bppArgb))
+                using (var g = Graphics.FromImage(png))
+                {
+                    g.DrawImage(new Bitmap(banner1), 0, 0);
+                    g.DrawImage(new Bitmap(banner2), width - 640, 0);
+
+                    return new Bitmap(png);
+                }
+            }
+            catch (Exception)
+            {
+                return new Bitmap(_Blank, width, height);
+            }
         }
 
         public static Bitmap About()

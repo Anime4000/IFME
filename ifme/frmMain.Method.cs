@@ -175,19 +175,26 @@ namespace ifme
 
         private void CheckVersion()
         {
-            Invoke((MethodInvoker)delegate ()
+            if (!string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
             {
-                if (!string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
+                Invoke((MethodInvoker)delegate ()
                 {
-                    var frm = new frmCheckUpdate();
-                    frm.Show();
-                }
-            });
+                    new frmCheckUpdate().Show();
+                });
+            }
         }
 
         private void DrawBanner()
         {
-            pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
+            try
+            {
+                pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
+            }
+            catch (Exception ex)
+            {
+                pbxBanner.BackgroundImage = Properties.Resources.Banner;
+                ConsoleEx.Write(LogLevel.Error, $"Error to redraw banner, missing/no permission? {ex.Message}");
+            }
         }
 
         private void EncodingPreset(string id, string name)

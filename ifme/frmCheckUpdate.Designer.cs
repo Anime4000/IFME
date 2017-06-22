@@ -70,8 +70,7 @@
             // 
             // frmCheckUpdate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(600, 600);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.btnOK);
@@ -80,7 +79,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmCheckUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Check for Update";
+            this.Text = "New version is available!";
             this.Load += new System.EventHandler(this.frmCheckUpdate_Load);
             this.ResumeLayout(false);
 
