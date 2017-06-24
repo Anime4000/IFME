@@ -49,7 +49,7 @@ namespace ifme
 			else
 			{
 				// Extract
-				VideoExtract(queue);
+				MediaExtract(queue);
 
 				// Audio
 				AudioEncoding(queue, ModeSave.Temp);
@@ -64,7 +64,7 @@ namespace ifme
 			ConsoleEx.Write(LogLevel.Normal, "Yay! All media done encoding...\n");
 		}
 
-		private int VideoExtract(MediaQueue queue)
+		private int MediaExtract(MediaQueue queue)
 		{
 			ConsoleEx.Write(LogLevel.Normal, "Extracting chapters, subtitles and fonts :)\n");
 
@@ -121,7 +121,7 @@ namespace ifme
 
 					if (ac.Args.Pipe)
 					{
-						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
 					}
 					else
 					{
@@ -179,7 +179,7 @@ namespace ifme
                                 pass = vc.Args.PassLast;
 
                             if (vc.Args.Pipe)
-                                ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {pass} {vc.Args.Output} {outfile}");
+                                ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {pass} {vc.Args.Output} {outfile}");
                             else
                                 ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} {outfile}");
 
@@ -191,7 +191,7 @@ namespace ifme
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v panic -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} {outfile}");
 						}
 						else
 						{

@@ -5,6 +5,7 @@
 [fixed] Live update for Encoding Preset listing
 [fixed] Changing Rate Control cause current value not in range
 [fixed] Remove frame count detection for Multi-pass encoding (avoid inconsistent frame)
+[change] FFmpeg verbose "panic" to "error"
 
 Version 7.1 (Free and Independent)
 ----------------------------------
