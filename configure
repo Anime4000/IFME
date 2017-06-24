@@ -84,7 +84,7 @@ if [ -f "plugin.tar.xz" ]; then
 	sleep 1
 else
 	echo "    Plugin not found, downloading..."
-	wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin_2017-06-17.tar.xz -O plugin.tar.xz
+	wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin_2017-06-25.tar.xz -O plugin.tar.xz
 fi
 
 echo "Done, now you can make"
