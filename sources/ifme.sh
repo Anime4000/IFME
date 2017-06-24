@@ -70,6 +70,16 @@ function checkmono {
 	}
 }
 
+function fixperm {
+	cd "$DIR"
+	find "./" -type d -exec chmod 755 {} \;
+	find "./" -type f -exec chmod 644 {} \;
+	find "./" -type f -exec /bin/sh -c "file {} | grep -q executable && chmod +x {}" \;
+	find "./" -name "*.sh" -exec chmod +x {} \;
+	find "./" -name "*.exe" -exec chmod -x {} \;
+	find "./" -name "*.dll" -exec chmod -x {} \;
+}
+
 function ifme {
 	cd "$DIR"
 	mono --jitmap ifme.exe
@@ -78,4 +88,5 @@ function ifme {
 
 checktty
 checkmono
+fixperm
 ifme
