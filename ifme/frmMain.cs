@@ -554,6 +554,12 @@ namespace ifme
             cboVideoDeinterlaceMode.Enabled = c;
             lblVideoDeinterlaceField.Enabled = c;
             cboVideoDeinterlaceField.Enabled = c;
+
+            if (cboVideoDeinterlaceMode.SelectedIndex < 0)
+                cboVideoDeinterlaceMode.SelectedIndex = 1;
+
+            if (cboVideoDeinterlaceField.SelectedIndex < 0)
+                cboVideoDeinterlaceField.SelectedIndex = 0;
         }
 
 		// Audio

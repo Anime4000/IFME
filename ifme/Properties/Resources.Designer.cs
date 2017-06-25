@@ -61,7 +61,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enchantress.
+        ///   Looks up a localized string similar to These Final Words.
         /// </summary>
         internal static string AppCodeName {
             get {

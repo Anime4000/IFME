@@ -1,4 +1,11 @@
-﻿Version 7.2 (Enchantress)
+﻿Version 7.3 (These Final Words)
+-------------------------------
+[add] Multi-pass encoding now display how many pass need to finished
+[fixed] Video plugin definition file, preset and tune now can disable/off
+[change] Banner drawing error tag change to warning tag
+[change] Improve encoding queue code
+
+Version 7.2 (Enchantress)
 -------------------------
 [add] Added new command-line -r (--reset) for reset IFME settings to default configuration
 [add] Print command-line every encoding (like IFME version 3)

@@ -151,22 +151,61 @@ namespace ifme
 				{
 					var vc = codec.Video;
 					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
-
-					var yuv = $"yuv{item.PixelFormat}p{(item.BitDepth == 8 ? string.Empty : $"{item.BitDepth}le")}";
-					var deinterlace = item.DeInterlace ? $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"" : string.Empty;
-
-                    var preset = (string.IsNullOrEmpty(vc.Args.Preset) ? string.Empty : $"{vc.Args.Preset} {item.EncoderPreset}");
-                    var tune = (string.IsNullOrEmpty(vc.Args.Tune) ? string.Empty : $"{vc.Args.Tune} {item.EncoderTune}");
-                    var quality = (string.IsNullOrEmpty(vc.Mode[item.EncoderMode].Args) ? string.Empty : $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}");
-
-                    var framecount = item.FrameCount + Properties.Settings.Default.FrameCountOffset;
-
                     var outfile = $"video{id++:D4}_{item.Lang}.{vc.Extension}";
 
+					var yuv = $"yuv{item.PixelFormat}p";
+                    var deinterlace = string.Empty;
+
+                    var preset = string.Empty;
+                    var tune = string.Empty;
+                    var quality = string.Empty;
+                    var bitdepth = string.Empty;
+                    var framecount = string.Empty;
+
+                    // cmd builder
+                    if (item.BitDepth > 8)
+                    {
+                        yuv += $"{item.BitDepth}le";
+                    }
+
+                    if (item.DeInterlace)
+                    {
+                        deinterlace = $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"";
+                    }
+
+                    if (!vc.Args.Preset.IsDisable() && !item.EncoderPreset.IsDisable())
+                    {
+                        preset = $"{vc.Args.Preset} {item.EncoderPreset}";
+                    }
+
+                    if (!vc.Args.Tune.IsDisable() && !item.EncoderTune.IsDisable())
+                    {
+                        tune = $"{vc.Args.Tune} {item.EncoderTune}";
+                    }
+
+                    if (!vc.Mode[item.EncoderMode].Args.IsDisable())
+                    {
+                        quality = $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}";
+                    }
+
+                    if (!vc.Args.BitDepth.IsDisable() && item.BitDepth >= 8)
+                    {
+                        bitdepth = $"{vc.Args.BitDepth} {item.BitDepth}";
+                    }
+
+                    if (!vc.Args.FrameCount.IsDisable())
+                    {
+                        framecount = $"{vc.Args.FrameCount} {item.FrameCount + Properties.Settings.Default.FrameCountOffset}";
+                    }
+
+                    // begin encoding
 					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
                         var p = 1;
                         var pass = string.Empty;
+
+                        ConsoleEx.Write(LogLevel.Warning, "Frame count is disable for Multi-pass encoding, ");
+                        ConsoleEx.Write(ConsoleColor.Yellow, "Avoid inconsistent across multi-pass.\n");
 
                         do
                         {
@@ -178,8 +217,11 @@ namespace ifme
                             if (p == item.EncoderMultiPass)
                                 pass = vc.Args.PassLast;
 
+                            ConsoleEx.Write(LogLevel.Normal, $"Multi-pass encoding: ");
+                            ConsoleEx.Write(ConsoleColor.Green, $"{p} of {item.EncoderMultiPass}\n");
+
                             if (vc.Args.Pipe)
-                                ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {pass} {vc.Args.Output} {outfile}");
+                                ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {vc.Args.Output} {outfile}");
                             else
                                 ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {vc.Args.Output} {outfile}");
 
@@ -191,7 +233,7 @@ namespace ifme
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {vc.Args.BitDepth} {item.BitDepth} {vc.Args.FrameCount} {framecount} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} -s {item.Width}x{item.Height} -r {item.FrameRate} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {vc.Args.Output} {outfile}");
 						}
 						else
 						{

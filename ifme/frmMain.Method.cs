@@ -188,12 +188,16 @@ namespace ifme
         {
             try
             {
+                if (pbxBanner.Width <= 0 || pbxBanner.Height <= 0)
+                    return;
+
                 pbxBanner.BackgroundImage = Branding.Banner(pbxBanner.Width, pbxBanner.Height);
             }
             catch (Exception ex)
             {
                 pbxBanner.BackgroundImage = Properties.Resources.Banner;
-                ConsoleEx.Write(LogLevel.Error, $"Error to redraw banner, missing/no permission? {ex.Message}");
+                ConsoleEx.Write(LogLevel.Warning, $"Error to re-draw banner, program is minimise? file missing? no permission? ");
+                ConsoleEx.Write(ConsoleColor.DarkRed, $"{ex.Message}\n");
             }
         }
 
