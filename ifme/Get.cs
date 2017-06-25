@@ -12,6 +12,8 @@ namespace ifme
 {
 	static class Get
     {
+        public static bool IsReady { get; set; } = false;
+
         public static Dictionary<string, string> LanguageCode
 		{
 			get

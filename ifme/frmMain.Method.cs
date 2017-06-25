@@ -896,29 +896,6 @@ namespace ifme
 		{
 			var ctrl = (sender as Control).Name;
 
-			// input validation
-			if (string.Equals(ctrl, cboVideoResolution.Name))
-			{
-				Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
-				MatchCollection matches = regex.Matches(cboVideoResolution.Text);
-
-				if (matches.Count == 0)
-				{
-					cboVideoResolution.Text = "1280x720";
-				}
-			}
-
-			if (string.Equals(ctrl, cboVideoFrameRate.Name))
-			{
-				Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
-				MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
-
-				if (matches.Count == 0)
-				{
-					cboVideoFrameRate.Text = "24";
-				}
-			}
-
 			// data update
 			foreach (ListViewItem q in lstMedia.SelectedItems)
 			{
@@ -1244,9 +1221,9 @@ namespace ifme
 					var lst = new ListViewItem(new[]
 					{
 						$"{item.Id}",
-						$"{item.Width}x{item.Height}",
-						$"{item.BitDepth} bpc",
-						$"{item.FrameRate} fps"
+						$"{(item.Width > 0 && item.Height > 0 ? $"{item.Width}x{item.Height}" : "auto")}",
+						$"{item.BitDepth}bpc ({item.BitDepth * 3}bpp)",
+                        $"{(item.FrameRate > 0 ? $"{item.FrameRate}" : "auto")}"
 					});
 					lst.Checked = item.Enable;
 					lst.Tag = item; // allow lstVideo to arrange item UP or DOWN

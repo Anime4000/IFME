@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -35,6 +36,8 @@ namespace ifme
             ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
 
             new Thread(CheckVersion).Start();
+
+            Get.IsReady = true;
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -225,6 +228,15 @@ namespace ifme
 
         private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (Get.IsReady)
+            {
+                if (lstMedia.SelectedItems.Count <= 0)
+                {
+                    ConsoleEx.Write(LogLevel.Error, "Select one or more item before apply custom Encoding Preset.\n");
+                    return;
+                }
+            }
+
             foreach (ListViewItem q in lstMedia.SelectedItems)
             {
                 var m = q.Tag as MediaQueue;
@@ -547,7 +559,29 @@ namespace ifme
 			}
 		}
 
-		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+        private void cboVideoResolution_TextChanged(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
+            MatchCollection matches = regex.Matches(cboVideoResolution.Text);
+
+            if (matches.Count == 0)
+            {
+                cboVideoResolution.Text = "1280x720";
+            }
+        }
+
+        private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
+            MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
+
+            if (matches.Count == 0)
+            {
+                cboVideoFrameRate.Text = "23.976";
+            }
+        }
+
+        private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
 		{
             var c = chkVideoDeinterlace.Checked;
             lblVideoDeinterlaceMode.Enabled = c;

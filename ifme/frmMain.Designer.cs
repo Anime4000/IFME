@@ -917,6 +917,7 @@
             this.cboVideoFrameRate.Name = "cboVideoFrameRate";
             this.cboVideoFrameRate.Size = new System.Drawing.Size(100, 21);
             this.cboVideoFrameRate.TabIndex = 3;
+            this.cboVideoFrameRate.TextChanged += new System.EventHandler(this.cboVideoFrameRate_TextChanged);
             this.cboVideoFrameRate.Leave += new System.EventHandler(this.MediaApply);
             // 
             // lblVideoFrameRate
@@ -953,6 +954,7 @@
             this.cboVideoResolution.Name = "cboVideoResolution";
             this.cboVideoResolution.Size = new System.Drawing.Size(100, 21);
             this.cboVideoResolution.TabIndex = 1;
+            this.cboVideoResolution.TextChanged += new System.EventHandler(this.cboVideoResolution_TextChanged);
             this.cboVideoResolution.Leave += new System.EventHandler(this.MediaApply);
             // 
             // lblVideoResolution

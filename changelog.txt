@@ -2,6 +2,7 @@
 -------------------------------
 [add] Multi-pass encoding now display how many pass need to finished
 [fixed] Video plugin definition file, preset and tune now can disable/off
+[fixed] Custom command-line missing from video encoding
 [change] Banner drawing error tag change to warning tag
 [change] Improve encoding queue code
 
