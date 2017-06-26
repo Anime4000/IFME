@@ -52,7 +52,7 @@
 		"lblOutputFolder": "&Destination:"
 	},
 	"frmOption": {
-		"tabOptionGeneral": "General",
+		"tabOptionGeneral": "Général",
 		"grpLanguage": "&Langue",
 		"grpTempFolder": "&Dossier temporaire",
 		"grpNewFilename": "&Nouveau nom de fichier",
@@ -124,7 +124,7 @@
 	"ComboBoxDeInterlaceMode": [
 		"Désentrelacer trame uniquement",
 		"Désentrelacer chaque champ",
-		"Sauter la vérification contrôle d'entrelacement spatial de trame,
+		"Sauter la vérification contrôle d'entrelacement spatial de trame",
 		"Sauter la vérification contrôle d'entrelacement spatial de champ"
 	],
 	"ComboBoxDeInterlaceField": [
