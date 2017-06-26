@@ -1,5 +1,5 @@
 {
-  "Name": "Internet Sharing, MP4, H.265@CRF 27.0 720p@23.976fps, AAC 128kbps@44.1kHz",
+  "Name": "Internet Sharing, MP4, H.265@CRF25 720p@23.976fps, AAC 128kbps@44.1kHz",
   "Author": "Anime4000",
   "OutputFormat": 0,
   "Video": {
@@ -7,7 +7,7 @@
     "EncoderPreset": "slower",
     "EncoderTune": "psnr",
     "EncoderMode": 0,
-    "EncoderValue": 27.0,
+    "EncoderValue": 25,
     "EncoderMultiPass": 2,
     "EncoderCommand": "--pme --pmode",
     "Width": 1280,
@@ -24,7 +24,7 @@
     "EncoderMode": 0,
     "EncoderQuality": 128000,
     "EncoderSampleRate": 44100,
-    "EncoderChannel": 2,
+    "EncoderChannel": 0,
     "EncoderCommand": ""
   }
 }

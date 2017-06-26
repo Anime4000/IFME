@@ -46,6 +46,9 @@ namespace ifme
             else
                 rdoFFmpeg64.Checked = true;
 
+            // Disable control if OS is 32-bit
+            rdoFFmpeg64.Enabled = OS.Is64bit;
+
             if (AviSynth.IsInstalled)
             {
                 lblAviSynthInstall.Text = Language.Lang.frmOption["lblAviSynthInstall"];

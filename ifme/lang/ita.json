@@ -68,7 +68,7 @@
 		"lblAviSynthInstall": "Installato!",
 		"lblAviSynthNoInstall": "Non installato!",
 		"grpFFmpeg": "&Default Decoder",
-		"rdoFFmpeg32": "FFmpeg &32bit (Supporta AviSynth)",
+		"rdoFFmpeg32": "FFmpeg &32bit (Supporta AviSynth ST)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Supporta alte risoluzioni && alta profondità in bit)",
 		"grpFrameCountOffset": "&Frame Count Offset",
 		"lblFrameCountOffset": "Qualsiasi frame rate variabile verrà convertito in un frame rate constante, in quanto IFME calcolerà il numero di frame con (durata in secondi * frame rate dichiarato). Aggiungendo un valore di offset, IFME aggiungerà dei frame per compensare eventuali dati non-indicizzati/corrotti, e quindi evitare ogni perdita di frame durante l'encoding.",

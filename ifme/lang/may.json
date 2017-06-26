@@ -68,7 +68,7 @@
 		"lblAviSynthInstall": "Terpasang!",
 		"lblAviSynthNoInstall": "Tidak dipasang!",
 		"grpFFmpeg": "&Dekoder asal",
-		"rdoFFmpeg32": "FFmpeg &32bit (Sokong AviSynth)",
+		"rdoFFmpeg32": "FFmpeg &32bit (Sokong AviSynth ST)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Sokong resolusi dan kedalaman warna)",
 		"grpFrameCountOffset": "&Imbangi kiraan bingkai",
 		"lblFrameCountOffset": "Mana-mana video yang tidak mempunyai kadar bingkai yang kekal, pengekod akan tukar menjadi tetap dengan cara mengira (masa dalam saat * fps diberi). Dengan tambahan, pengekod akan memastikan tiada yang tercicir.",

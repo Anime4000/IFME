@@ -68,7 +68,7 @@
 		"lblAviSynthInstall": "Installed!",
 		"lblAviSynthNoInstall": "Not Installed!",
 		"grpFFmpeg": "&Default Decoder",
-		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth)",
+		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth ST)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
 		"grpFrameCountOffset": "&Frame Count Offset",
 		"lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding offset value, decoder will add more frame count to compensate broken container data to ensure no missing frame during encoding.",

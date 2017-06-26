@@ -68,7 +68,7 @@
 		"lblAviSynthInstall": "インストール済み!",
 		"lblAviSynthNoInstall": "インストールされていない",
 		"grpFFmpeg": "デフォルトのデコーダ(&D)",
-		"rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth)",
+		"rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth ST)",
 		"rdoFFmpeg64": "FFmpeg &64bit (大解像度と高ビット深度をサポートしています)",
 		"grpFrameCountOffset": "フレームカウントのオフセット(&F)",
 		"lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",

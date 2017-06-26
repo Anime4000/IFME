@@ -1,6 +1,16 @@
 #!/bin/bash
 
+MAKE32=""
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+for args in "$@"
+do
+	if [ $args == "--make-32bit" ]; then
+		MAKE32="$args"
+	fi
+done
+
 cd "$DIR"
 
 echo "Checking xz utils"
@@ -84,7 +94,13 @@ if [ -f "plugin.tar.xz" ]; then
 	sleep 1
 else
 	echo "    Plugin not found, downloading..."
-	wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin_2017-06-25.tar.xz -O plugin.tar.xz
+	if [ ! -z $MAKE32 ]; then
+		echo "    32-bit builds"
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic-x86_2017-06-25.tar.xz -O plugin.tar.xz
+	else
+		echo "    64-bit builds"
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic-amd64_2017-06-25.tar.xz -O plugin.tar.xz
+	fi
 fi
 
 echo "Done, now you can make"

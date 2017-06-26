@@ -1,5 +1,6 @@
 ﻿Version 7.3 (These Final Words)
 -------------------------------
+[new] Support 32-bit computer for older tech (yet, high bit-depth require 64-bit OS)
 [add] Multi-pass encoding now display how many pass need to finished
 [fixed] Video plugin definition file, preset and tune now can disable/off
 [fixed] Custom command-line missing from video encoding

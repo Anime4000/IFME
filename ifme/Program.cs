@@ -110,6 +110,13 @@ namespace ifme
             Console.ResetColor();
 			Console.WriteLine();
 
+            if (!OS.Is64bit)
+            {
+                Console.Error.WriteLine("Wrong CPU architecture, resetting!");
+                Properties.Settings.Default.FFmpegArch = 32;
+                Properties.Settings.Default.Save();
+            }
+
             if (reset)
             {
                 Console.Error.WriteLine("Resetting user settings.");
