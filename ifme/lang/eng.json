@@ -103,7 +103,7 @@
 	},
 	"InputBoxEncodingPreset": {
 		"Title": "Save a new encoding preset",
-		"Message": "You're about to create a new encoding preset based on the current configuration.\nWith this, you can reuse for others.\n\nEnter a new name:"
+		"Message": "You're about to create a new encoding preset based on the current configuration.\nWith this preset, you can re-use on others video.\n\nEnter a new name:"
 	},
 	"InputBoxCommandLine": {
 		"Title": "Encoder command-line",
