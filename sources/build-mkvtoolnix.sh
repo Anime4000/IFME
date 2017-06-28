@@ -24,10 +24,10 @@ sudo apt install build-essential software-properties-common python2.7 git libssl
 echo "Checking Ogg Dev"
 if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then
 	echo "Ogg Dev not found, building..."
-	git clone https://git.xiph.org/ogg.git
+	git clone https://github.com/xiph/ogg
 	cd ogg
 	./autogen.sh
-	./configure --disable-shared
+	./configure --enable-static --enable-shared
 	make
 	sudo make install
 	cd "$DIR"
@@ -36,10 +36,10 @@ fi
 echo "Checking Vorbis dev"
 if [ ! -f "/usr/local/include/vorbis/codec.h" ]; then
 	echo "Vorbis dev not found, building..."
-	git clone https://git.xiph.org/vorbis.git
+	git clone https://github.com/xiph/vorbis
 	cd vorbis
 	./autogen.sh
-	./configure --disable-shared
+	./configure --enable-static --enable-shared
 	make
 	sudo make install
 	cd "$DIR"
