@@ -225,16 +225,16 @@
     <None Include="mime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="preset\00000000_000000-0000_def1.json">
+    <None Include="preset\00000000_000000-0000_ine3.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="preset\00000000_000000-0000_def2.json">
+    <None Include="preset\00000000_000000-0000_ine4.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="preset\00000000_000000-0001_YouT.json">
+    <None Include="preset\00000000_000000-0000_ine1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="preset\00000000_000000-0002_YouT.json">
+    <None Include="preset\00000000_000000-0000_ine2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

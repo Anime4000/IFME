@@ -1,7 +1,7 @@
 {
-  "Name": "Internet Sharing, MP4, H.265@CRF25 720p@23.976fps, AAC 128kbps@44.1kHz",
+  "Name": "Internet Sharing, MKV, H.265@CRF25 1080p@23.976fps, AAC 128kbps@44.1kHz",
   "Author": "Anime4000",
-  "OutputFormat": 0,
+  "OutputFormat": 1,
   "Video": {
     "Encoder": "deadbeef-0265-0265-0265-026502650265",
     "EncoderPreset": "slower",
@@ -10,8 +10,8 @@
     "EncoderValue": 25,
     "EncoderMultiPass": 2,
     "EncoderCommand": "--pme --pmode",
-    "Width": 1280,
-    "Height": 720,
+    "Width": 1920,
+    "Height": 1080,
     "FrameRate": 23.976,
     "BitDepth": 8,
     "PixelFormat": 420,
