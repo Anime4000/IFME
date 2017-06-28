@@ -2,6 +2,8 @@
 -------------------------------
 [new] Support 32-bit computer for older tech (yet, high bit-depth require 64-bit OS)
 [new] German localisation #126
+[new] Italian localisation
+[new] French localisation #124
 [add] Multi-pass encoding now display how many pass need to finished
 [fixed] English Grammar #128
 [fixed] If import video has 10 bit, but encoder dont have 10 bit, revert to 8 bit
