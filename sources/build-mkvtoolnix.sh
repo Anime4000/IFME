@@ -10,6 +10,12 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+commonflags="-Os -fstack-protector --param=ssp-buffer-size=4 -fno-strict-aliasing -ffunction-sections -fdata-sections -D_FORTIFY_SOURCE=2 -I."
+
+export CXXFLAGS="$commonflags"
+export CFLAGS="$commonflags"
+export LDFLAGS="-s -Wl,-z,relro -Wl,-z,defs -Wl,--gc-sections -Wl,--as-needed"
+
 # https://svn.boost.org/trac10/ticket/12132?replyto=1
 if [ $(uname -m | grep '64') ]; then
 	BIT="x86_64"
@@ -19,7 +25,7 @@ fi
 
 echo "OS is $BIT"
 
-sudo apt-get install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev -y
+sudo apt-get install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev gawk doxygen -y
 
 echo "Checking Ogg Dev"
 if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then
@@ -29,7 +35,7 @@ if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then
 	git checkout v1.3.2
 	./autogen.sh
 	./configure --enable-static=yes --enable-shared=no
-	make
+	make -j4
 	sudo make install
 	cd "$DIR"
 fi
@@ -42,7 +48,7 @@ if [ ! -f "/usr/local/include/vorbis/codec.h" ]; then
 	git checkout v1.3.5
 	./autogen.sh
 	./configure --enable-static=yes --enable-shared=no
-	make
+	make -j4
 	sudo make install
 	cd "$DIR"
 fi
@@ -54,7 +60,7 @@ if [ ! -f "/usr/local/include/FLAC/format.h" ]; then
 	cd flac
 	./autogen.sh
 	./configure --enable-static=yes --enable-shared=no
-	make
+	make -j4
 	sudo make install
 	cd "$DIR"
 fi
