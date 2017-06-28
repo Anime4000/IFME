@@ -19,15 +19,16 @@ fi
 
 echo "OS is $BIT"
 
-sudo apt install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev -y
+sudo apt-get install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev -y
 
 echo "Checking Ogg Dev"
 if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then
 	echo "Ogg Dev not found, building..."
 	git clone https://github.com/xiph/ogg
 	cd ogg
+	git checkout v1.3.2
 	./autogen.sh
-	./configure --enable-static --enable-shared
+	./configure --enable-static=yes --enable-shared=no
 	make
 	sudo make install
 	cd "$DIR"
@@ -38,8 +39,9 @@ if [ ! -f "/usr/local/include/vorbis/codec.h" ]; then
 	echo "Vorbis dev not found, building..."
 	git clone https://github.com/xiph/vorbis
 	cd vorbis
+	git checkout v1.3.5
 	./autogen.sh
-	./configure --enable-static --enable-shared
+	./configure --enable-static=yes --enable-shared=no
 	make
 	sudo make install
 	cd "$DIR"
@@ -48,10 +50,10 @@ fi
 echo "Checking FLAC dev"
 if [ ! -f "/usr/local/include/FLAC/format.h" ]; then
 	echo "FLAC dev not found, building..."
-	git clone https://git.xiph.org/flac.git
+	git clone https://github.com/xiph/flac
 	cd flac
 	./autogen.sh
-	./configure --disable-shared
+	./configure --enable-static=yes --enable-shared=no
 	make
 	sudo make install
 	cd "$DIR"
