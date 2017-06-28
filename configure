@@ -103,5 +103,13 @@ else
 	fi
 fi
 
+if [ $(uname -m | grep '64') ]; then
+	echo "64-bit OS, noting to do..."
+else
+	echo "32-bit OS, do something..."
+	cp "$DIR/sources/ffmpeg64_32layer.cmd" "$DIR/ifme/bin/Release"
+	cp "$DIR/sources/ffmpeg64_32layer.sh" "$DIR/ifme/bin/Release"
+fi
+
 echo "Done, now you can make"
 exit 0

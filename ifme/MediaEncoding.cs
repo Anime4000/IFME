@@ -170,12 +170,12 @@ namespace ifme
                         yuv += $"{item.BitDepth}le";
                     }
 
-                    if (item.FrameRate > 0)
+                    if (item.FrameRate >= 5)
                     {
                         fps = $"-r {item.FrameRate}";
                     }
 
-                    if (item.Width > 0 && item.Height > 0)
+                    if (item.Width >= 128 && item.Height >= 128)
                     {
                         res = $"-s {item.Width}x{item.Height}";
                     }

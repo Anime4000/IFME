@@ -1,11 +1,19 @@
 ﻿Version 7.3 (These Final Words)
 -------------------------------
 [new] Support 32-bit computer for older tech (yet, high bit-depth require 64-bit OS)
+[new] German localisation #126
 [add] Multi-pass encoding now display how many pass need to finished
-[fixed] Video plugin definition file, preset and tune now can disable/off
+[fixed] English Grammar #128
+[fixed] Video plugin definition file, preset and tune now can disable/off #127
 [fixed] Custom command-line missing from video encoding
 [change] Banner drawing error tag change to warning tag
 [change] Improve encoding queue code
+[update] FFmpeg Windows build 2017/06/20
+[update] FFmpeg Linux build 2017/06/19
+[update] MP4Box version 0.7.0
+[update] Mkvtoolnix version 13.0.0
+[update] x264 version r2851
+[update] x265 version 2.4+89
 
 Version 7.2 (Enchantress)
 -------------------------

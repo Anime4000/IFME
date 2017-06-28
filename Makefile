@@ -32,6 +32,8 @@ copy:
 	cp "ifme/bin/Release/format.json" "$(DIR)"
 	cp "ifme/bin/Release/language.json" "$(DIR)"
 	cp "ifme/bin/Release/mime.json" "$(DIR)"
+	cp "ifme/bin/Release/ffmpeg64_32layer.cmd" "$(DIR)"
+	cp "ifme/bin/Release/ffmpeg64_32layer.sh" "$(DIR)"
 	cp -r "ifme/bin/Release/branding" "$(DIR)"
 	cp -r "ifme/bin/Release/lang" "$(DIR)"
 	cp -r "ifme/bin/Release/preset" "$(DIR)"
