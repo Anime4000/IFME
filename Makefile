@@ -46,5 +46,6 @@ fixmod:
 	find "./$(DIR)" -type f -exec chmod 644 {} \;
 	find "./$(DIR)" -type f -exec /bin/sh -c "file {} | grep -q executable && chmod +x {}" \;
 	find "./$(DIR)" -name "*.sh" -exec chmod +x {} \;
+	find "./$(DIR)" -name "*.desktop" -exec chmod +x {} \;
 	find "./$(DIR)" -name "*.exe" -exec chmod -x {} \;
 	find "./$(DIR)" -name "*.dll" -exec chmod -x {} \;
