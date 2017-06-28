@@ -1,4 +1,6 @@
 # IFME make file
+LBITS := $(shell getconf LONG_BIT)
+
 CC=gcc
 MONOCC=msbuild
 MONOMK=mkbundle
@@ -35,11 +37,14 @@ copy:
 	cp "ifme/bin/Release/format.json" "$(DIR)"
 	cp "ifme/bin/Release/language.json" "$(DIR)"
 	cp "ifme/bin/Release/mime.json" "$(DIR)"
-	cp "ifme/bin/Release/ffmpeg64_32layer.cmd" "$(DIR)"
-	cp "ifme/bin/Release/ffmpeg64_32layer.sh" "$(DIR)"
 	cp -r "ifme/bin/Release/branding" "$(DIR)"
 	cp -r "ifme/bin/Release/lang" "$(DIR)"
 	cp -r "ifme/bin/Release/preset" "$(DIR)"
+	
+	ifeq ($(LBITS),32)
+		cp "ifme/bin/Release/ffmpeg64_32layer.sh" "$(DIR)"
+		cp "ifme/bin/Release/ffmpeg64_32layer.cmd" "$(DIR)"
+	endif
 
 fixmod:
 	find "./$(DIR)" -type d -exec chmod 755 {} \;
