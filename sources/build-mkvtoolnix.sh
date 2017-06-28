@@ -19,7 +19,7 @@ fi
 
 echo "OS is $BIT"
 
-sudo apt install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev po4a libicu-dev -y
+sudo apt install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev -y
 
 echo "Checking Ogg Dev"
 if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then
@@ -57,19 +57,15 @@ if [ ! -f "/usr/local/include/FLAC/format.h" ]; then
 	cd "$DIR"
 fi
 
-git clone https://github.com/threatstack/libmagic
-cd libmagic
-./configure --enable-static
-make
-sudo make install
-cd "$DIR"
-
-wget https://dl.bintray.com/boostorg/release/1.63.0/source/boost_1_63_0.tar.gz
-tar -xvf boost_1_63_0.tar.gz
-cd boost_1_63_0
-./bootstrap.sh --with-icu=/usr/include/$BIT-linux-gnu --with-libraries=date_time,regex,filesystem,system,math
-sudo ./bjam toolset=gcc link=static threading=single install
-cd "$DIR"
+echo "Checking libboost"
+if [ ! -d "/usr/local/include/boost" ]; then
+	wget https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz
+	tar -xvf boost_1_64_0.tar.gz
+	cd boost_1_64_0
+	./bootstrap.sh --with-icu=/usr/include/$BIT-linux-gnu --with-libraries=date_time,regex,filesystem,system,math
+	sudo ./bjam toolset=gcc link=static threading=single install
+	cd "$DIR"
+fi
 
 git clone https://github.com/mbunkus/mkvtoolnix
 cd mkvtoolnix
@@ -77,7 +73,9 @@ git checkout $(git describe --abbrev=0 --tags)
 git submodule init
 git submodule update
 ./autogen.sh
-./configure --enable-magic --without-curl --disable-qt
-sed -i 's|, $common_libs|, " -Wl,-Bstatic ", $common_libs, "-Wl,-Bdynamic "|g' Rakefile
-rake
+./configure --enable-static --enable-magic --without-curl --disable-qt
+sleep 3
+sed -i 's|^BOOST_SYSTEM_LIB = -lboost_system|BOOST_SYSTEM_LIB = -lboost_system -lpthread -pthread|g' build-config
+sed -i 's|^MANPAGES_TRANSLATIONS = .*|MANPAGES_TRANSLATIONS =|g' build-config
+rake -j6
 cd "$DIR"
