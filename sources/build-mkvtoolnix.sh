@@ -39,7 +39,7 @@ if [ ! -f "/usr/local/include/vorbis/codec.h" ]; then
 	git clone https://git.xiph.org/vorbis.git
 	cd vorbis
 	./autogen.sh
-	./configure --disable-shared --with-ogg="$LIB"
+	./configure --disable-shared
 	make
 	sudo make install
 	cd "$DIR"
