@@ -76,6 +76,7 @@ function fixperm {
 	find "./" -type f -exec chmod 644 {} \;
 	find "./" -type f -exec /bin/sh -c "file {} | grep -q executable && chmod +x {}" \;
 	find "./" -name "*.sh" -exec chmod +x {} \;
+	find "./" -name "*.desktop" -exec chmod +x {} \;
 	find "./" -name "*.exe" -exec chmod -x {} \;
 	find "./" -name "*.dll" -exec chmod -x {} \;
 }
