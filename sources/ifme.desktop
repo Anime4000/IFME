@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Internet Friendly Media Encoder
+GenericName=IFME
+Comment=Audio Video Encoder
+Icon=application-x-executable
+Exec=bash -c '"$(dirname "$1")"/ifme.sh' dummy %k
+Terminal=false
+Type=Application
