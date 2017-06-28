@@ -94,5 +94,11 @@ else
 	fi
 fi
 
+echo "Do extra work?"
+fi [ $(uname -m | grep '86') ]; then
+	echo "    YES!"
+	sed -i '/mkdir "$(DIR)"/a\\tcp "source/ffmpeg64_32layer.sh" "$(DIR)"\n\tcp "source/ffmpeg64_32layer.cmd" "$(DIR)"' Makefile
+fi
+
 echo "Done, now you can make"
 exit 0

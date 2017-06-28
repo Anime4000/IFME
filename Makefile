@@ -40,11 +40,6 @@ copy:
 	cp -r "ifme/bin/Release/branding" "$(DIR)"
 	cp -r "ifme/bin/Release/lang" "$(DIR)"
 	cp -r "ifme/bin/Release/preset" "$(DIR)"
-	
-	ifeq ($(LBITS),32)
-		cp "ifme/bin/Release/ffmpeg64_32layer.sh" "$(DIR)"
-		cp "ifme/bin/Release/ffmpeg64_32layer.cmd" "$(DIR)"
-	endif
 
 fixmod:
 	find "./$(DIR)" -type d -exec chmod 755 {} \;
