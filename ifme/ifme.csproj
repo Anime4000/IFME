@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="frmAbout.Method.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCheckUpdate.cs">
       <SubType>Form</SubType>
@@ -77,6 +78,7 @@
     </Compile>
     <Compile Include="frmCheckUpdate.Method.cs">
       <DependentUpon>frmCheckUpdate.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
@@ -92,6 +94,7 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -101,6 +104,7 @@
     </Compile>
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
@@ -110,6 +114,7 @@
     </Compile>
     <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -123,6 +128,7 @@
     <Compile Include="Media\Default\MediaDefaultAudio.cs" />
     <Compile Include="Media\Default\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />
+    <Compile Include="Media\MediaImportCheck.cs" />
     <Compile Include="Media\Preset\MediaPreset.cs" />
     <Compile Include="Media\Preset\MediaPresetAudio.cs" />
     <Compile Include="Media\Preset\MediaPresetVideo.cs" />

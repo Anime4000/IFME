@@ -50,8 +50,18 @@ namespace ifme
 			cboSubLang.ValueMember = "Key";
 			cboSubLang.SelectedValue = "und";
 
-			// Display MIME ComboBox
-			cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
+            cboVideoStreamLang.DataSource = new BindingSource(Get.LanguageCode, null);
+            cboVideoStreamLang.DisplayMember = "Value";
+            cboVideoStreamLang.ValueMember = "Key";
+            cboVideoStreamLang.SelectedValue = "und";
+
+            cboAudioStreamLang.DataSource = new BindingSource(Get.LanguageCode, null);
+            cboAudioStreamLang.DisplayMember = "Value";
+            cboAudioStreamLang.ValueMember = "Key";
+            cboAudioStreamLang.SelectedValue = "und";
+
+            // Display MIME ComboBox
+            cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
 			cboAttachMime.DisplayMember = "Value";
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
@@ -621,11 +631,11 @@ namespace ifme
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+					FrameRate = (float)Math.Floor(item.FrameRateAvg),
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = item.BitDepth,
+					BitDepth = MediaImportCheck.BitDepth(vdef.Encoder, item.BitDepth),
 					PixelFormat = item.Chroma,
 
 					DeInterlace = false,
@@ -714,8 +724,9 @@ namespace ifme
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = item.BitDepth,
-					PixelFormat = item.Chroma,
+					BitDepth = MediaImportCheck.BitDepth(vdef.Encoder, item.BitDepth),
+
+                    PixelFormat = item.Chroma,
 
 					DeInterlace = false,
 					DeInterlaceMode = 1,
@@ -978,6 +989,11 @@ namespace ifme
 
 		private void MediaApplyVideo(string ctrl, ref MediaQueueVideo video)
 		{
+            if (string.Equals(ctrl, cboVideoStreamLang.Name))
+            {
+                video.Lang = $"{cboVideoStreamLang.SelectedValue}";
+            }
+
 			if (string.Equals(ctrl, cboVideoEncoder.Name))
 			{
 				video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
@@ -1034,16 +1050,32 @@ namespace ifme
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoBitDepth.Name))
 			{
-				var b = 8;
-				int.TryParse(cboVideoBitDepth.Text, out b);
-				video.BitDepth = b;
+                var b = video.BitDepth;
+
+                if (string.Equals(ctrl, cboVideoEncoder.Name))
+                {
+                    video.BitDepth = MediaImportCheck.BitDepth(video.Encoder, b);
+                }
+                else
+                {
+                    int.TryParse(cboVideoBitDepth.Text, out b);
+                    video.BitDepth = MediaImportCheck.BitDepth(video.Encoder, b);
+                }
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoPixelFormat.Name))
 			{
-				var y = 420;
-				int.TryParse(cboVideoPixelFormat.Text, out y);
-				video.PixelFormat = y;
+				var y = video.PixelFormat;
+				
+                if (string.Equals(ctrl, cboVideoEncoder.Name))
+                {
+                    video.PixelFormat = y;
+                }
+                else
+                {
+                    int.TryParse(cboVideoPixelFormat.Text, out y);
+                    video.PixelFormat = y;
+                }
 			}
 
 			// Video Interlace
@@ -1065,6 +1097,11 @@ namespace ifme
 
 		private void MediaApplyAudio(string ctrl, ref MediaQueueAudio audio)
 		{
+            if (string.Equals(ctrl, cboAudioStreamLang.Name))
+            {
+                audio.Lang = $"{cboAudioStreamLang.SelectedValue}";
+            }
+
 			if (string.Equals(ctrl, cboAudioEncoder.Name))
 			{
 				audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
@@ -1221,10 +1258,9 @@ namespace ifme
 					var lst = new ListViewItem(new[]
 					{
 						$"{item.Id}",
-						$"{(item.Width > 0 && item.Height > 0 ? $"{item.Width}x{item.Height}" : "auto")}",
-						$"{item.BitDepth}bpc ({item.BitDepth * 3}bpp)",
-                        $"{(item.FrameRate > 0 ? $"{item.FrameRate}" : "auto")}"
-					});
+                        $"{item.Lang}",
+						$"{(item.Width > 0 && item.Height > 0 ? $"{item.Width}x{item.Height}" : "auto")} @ {(item.FrameRate > 0 ? $"{item.FrameRate} fps" : "auto")} ({item.BitDepth} bit @ YUV{item.PixelFormat})"
+                    });
 					lst.Checked = item.Enable;
 					lst.Tag = item; // allow lstVideo to arrange item UP or DOWN
 
@@ -1243,8 +1279,8 @@ namespace ifme
 					var lst = new ListViewItem(new[]
 					{
 						$"{item.Id}",
-						$"{item.EncoderSampleRate}Hz",
-						$"{(item.EncoderChannel == 0 ? "auto" : $"{item.EncoderChannel}")}"
+                        $"{item.Lang}",
+						$"{item.EncoderQuality} @ {item.EncoderSampleRate}Hz {(item.EncoderChannel == 0 ? "auto" : $"{item.EncoderChannel} Ch")}"
 					});
 					lst.Checked = item.Enable;
 					lst.Tag = item; // allow lstAudio to arrange item UP or DOWN
@@ -1301,6 +1337,9 @@ namespace ifme
 			// populate
 			var v = video as MediaQueueVideo;
 
+            // not related
+            BeginInvoke((Action)delegate () { cboVideoStreamLang.SelectedValue = v.Lang; });
+
 			// select encoder and wait ui thread to load
 			BeginInvoke((Action)delegate () { cboVideoEncoder.SelectedValue = v.Encoder; });
 			Thread.Sleep(1);
@@ -1336,6 +1375,9 @@ namespace ifme
 
 			// populate
 			var a = audio as MediaQueueAudio;
+
+            // not related
+            BeginInvoke((Action)delegate () { cboAudioStreamLang.SelectedValue = a.Lang; });
 
 			// select encoder and wait ui thread to load
 			BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Encoder; });
