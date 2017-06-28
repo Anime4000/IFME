@@ -82,6 +82,7 @@ function fixperm {
 
 function ifme {
 	cd "$DIR"
+	chmod +x ifme.desktop
 	mono --jitmap ifme.exe
 	exit 0
 }
