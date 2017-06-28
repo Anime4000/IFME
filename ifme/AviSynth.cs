@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+
+using Newtonsoft.Json;
 
 namespace ifme
 {
 	class AviSynth
 	{
+        internal static Dictionary<string, string> Version = new Dictionary<string, string>();
+
 		private static string AviSynthPath
 		{
 			get
@@ -13,7 +18,30 @@ namespace ifme
 			}
 		}
 
-		public static bool IsInstalled
+        private static string AviSynthPath64
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "avisynth.dll");
+            }
+        }
+
+        internal static void Load()
+        {
+            Version.Clear();
+            try
+            {
+                Version = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("avisynth.json"));
+            }
+            catch (Exception ex)
+            {
+                ConsoleEx.Write(LogLevel.Error, "IFME cannot detect which version AviSynth. (");
+                ConsoleEx.Write(ConsoleColor.Red, ex.Message);
+                ConsoleEx.Write(") however, you can ignore this error.\n");
+            }
+        }
+
+        internal static bool IsInstalled
 		{
 			get
 			{
@@ -24,24 +52,45 @@ namespace ifme
 			}
 		}
 
-		public static string InstalledVersion
+        internal static bool IsInstalled64
+        {
+            get
+            {
+                if (File.Exists(AviSynthPath64))
+                    return true;
+
+                return false;
+            }
+        }
+
+        internal static string InstalledVersion
 		{
 			get
 			{
-				if (IsInstalled)
-				{
-					if (string.Equals(CRC32.GetFile(AviSynthPath), "0x073A3318"))
-					{
-						return "2.6 MT 32bit (2015.02.20)";
-					}
-					else if (string.Equals(CRC32.GetFile(AviSynthPath), "0x30E0D263"))
-					{
-						return "2.6 ST 32bit (Original)";
-					}
-				}
+                var temp = string.Empty;
 
-				return $"Unknown Version\nCRC: {CRC32.GetFile(AviSynthPath)}";
+                if (Version.TryGetValue(CRC32.GetFile(AviSynthPath), out temp))
+                {
+                    return temp;
+                }
+
+				return $"[32-bit] Unknown Version (CRC: {CRC32.GetFile(AviSynthPath)})";
 			}
 		}
-	}
+
+        internal static string InstalledVersion64
+        {
+            get
+            {
+                var temp = string.Empty;
+
+                if (Version.TryGetValue(CRC32.GetFile(AviSynthPath64), out temp))
+                {
+                    return temp;
+                }
+
+                return $"[64-bit] Unknown Version (CRC: {CRC32.GetFile(AviSynthPath)})";
+            }
+        }
+    }
 }

@@ -183,6 +183,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="avisynth.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="branding\ai\1.jpj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

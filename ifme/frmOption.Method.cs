@@ -57,6 +57,22 @@ namespace ifme
             }
             else
             {
+                lblAviSynthVersion.Text = $"32-bit {Language.Lang.frmOption["lblAviSynthNoInstall"]}";
+            }
+
+            if (AviSynth.IsInstalled64 && OS.Is64bit)
+            {
+                lblAviSynthInstall.Text = Language.Lang.frmOption["lblAviSynthInstall"];
+                lblAviSynthInstall.ForeColor = Color.Green;
+                lblAviSynthVersion.Text += $"\n{AviSynth.InstalledVersion64}";
+            }
+            else
+            {
+                lblAviSynthVersion.Text += $"64-bit {Language.Lang.frmOption["lblAviSynthNoInstall"]}";
+            }
+
+            if (!AviSynth.IsInstalled && !AviSynth.IsInstalled64)
+            {
                 lblAviSynthInstall.Text = Language.Lang.frmOption["lblAviSynthNoInstall"];
                 lblAviSynthInstall.ForeColor = Color.Red;
             }

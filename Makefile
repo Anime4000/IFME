@@ -31,6 +31,7 @@ copy:
 	cp "ifme/bin/Release/ifme.exe" "$(DIR)"
 	cp "ifme/bin/Release/FFmpegDotNet.dll" "$(DIR)"
 	cp "ifme/bin/Release/Newtonsoft.Json.dll" "$(DIR)"
+	cp "ifme/bin/Release/avisynth.json" "$(DIR)"
 	cp "ifme/bin/Release/format.json" "$(DIR)"
 	cp "ifme/bin/Release/language.json" "$(DIR)"
 	cp "ifme/bin/Release/mime.json" "$(DIR)"

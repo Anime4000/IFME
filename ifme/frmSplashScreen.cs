@@ -43,6 +43,7 @@ namespace ifme
             Language.Load();
             Plugin.Load();
             MediaPreset.Load();
+            AviSynth.Load();
 
             // Init FFmpeg
             var arch = Properties.Settings.Default.FFmpegArch;

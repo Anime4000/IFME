@@ -141,16 +141,16 @@
             this.txtNamePostfix.BackColor = System.Drawing.Color.White;
             this.txtNamePostfix.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtNamePostfix.ForeColor = System.Drawing.Color.Black;
-            this.txtNamePostfix.Location = new System.Drawing.Point(102, 58);
+            this.txtNamePostfix.Location = new System.Drawing.Point(153, 58);
             this.txtNamePostfix.Name = "txtNamePostfix";
-            this.txtNamePostfix.Size = new System.Drawing.Size(181, 24);
+            this.txtNamePostfix.Size = new System.Drawing.Size(130, 24);
             this.txtNamePostfix.TabIndex = 2;
             // 
             // rdoNamePostfixCustom
             // 
             this.rdoNamePostfixCustom.Location = new System.Drawing.Point(6, 58);
             this.rdoNamePostfixCustom.Name = "rdoNamePostfixCustom";
-            this.rdoNamePostfixCustom.Size = new System.Drawing.Size(90, 24);
+            this.rdoNamePostfixCustom.Size = new System.Drawing.Size(141, 24);
             this.rdoNamePostfixCustom.TabIndex = 1;
             this.rdoNamePostfixCustom.TabStop = true;
             this.rdoNamePostfixCustom.Text = "C&ustom:";
@@ -160,7 +160,7 @@
             // 
             this.rdoNamePostfixNone.Location = new System.Drawing.Point(6, 28);
             this.rdoNamePostfixNone.Name = "rdoNamePostfixNone";
-            this.rdoNamePostfixNone.Size = new System.Drawing.Size(90, 24);
+            this.rdoNamePostfixNone.Size = new System.Drawing.Size(141, 24);
             this.rdoNamePostfixNone.TabIndex = 0;
             this.rdoNamePostfixNone.TabStop = true;
             this.rdoNamePostfixNone.Text = "Non&e";
@@ -186,7 +186,7 @@
             // 
             this.rdoNamePrefixNone.Location = new System.Drawing.Point(6, 19);
             this.rdoNamePrefixNone.Name = "rdoNamePrefixNone";
-            this.rdoNamePrefixNone.Size = new System.Drawing.Size(90, 24);
+            this.rdoNamePrefixNone.Size = new System.Drawing.Size(141, 24);
             this.rdoNamePrefixNone.TabIndex = 0;
             this.rdoNamePrefixNone.TabStop = true;
             this.rdoNamePrefixNone.Text = "&None";
@@ -199,16 +199,16 @@
             this.txtNamePrefix.BackColor = System.Drawing.Color.White;
             this.txtNamePrefix.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtNamePrefix.ForeColor = System.Drawing.Color.Black;
-            this.txtNamePrefix.Location = new System.Drawing.Point(102, 79);
+            this.txtNamePrefix.Location = new System.Drawing.Point(153, 79);
             this.txtNamePrefix.Name = "txtNamePrefix";
-            this.txtNamePrefix.Size = new System.Drawing.Size(181, 24);
+            this.txtNamePrefix.Size = new System.Drawing.Size(130, 24);
             this.txtNamePrefix.TabIndex = 3;
             // 
             // rdoNamePrefixDateTime
             // 
             this.rdoNamePrefixDateTime.Location = new System.Drawing.Point(6, 49);
             this.rdoNamePrefixDateTime.Name = "rdoNamePrefixDateTime";
-            this.rdoNamePrefixDateTime.Size = new System.Drawing.Size(90, 24);
+            this.rdoNamePrefixDateTime.Size = new System.Drawing.Size(141, 24);
             this.rdoNamePrefixDateTime.TabIndex = 1;
             this.rdoNamePrefixDateTime.TabStop = true;
             this.rdoNamePrefixDateTime.Text = "&Date Time";
@@ -218,7 +218,7 @@
             // 
             this.rdoNamePrefixCustom.Location = new System.Drawing.Point(6, 79);
             this.rdoNamePrefixCustom.Name = "rdoNamePrefixCustom";
-            this.rdoNamePrefixCustom.Size = new System.Drawing.Size(90, 24);
+            this.rdoNamePrefixCustom.Size = new System.Drawing.Size(141, 24);
             this.rdoNamePrefixCustom.TabIndex = 2;
             this.rdoNamePrefixCustom.TabStop = true;
             this.rdoNamePrefixCustom.Text = "&Custom:";
