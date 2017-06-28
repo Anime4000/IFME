@@ -329,7 +329,7 @@ namespace ifme
 					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(subs)} \"{subs}\" ";
 				
 				foreach (var attach in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
-					cmdattach += $"--attach-file \"{attach}\" ";
+					cmdattach += $"--attachment-mime-type \"{Get.MimeType(attach)}\" --attachment-description no --attachment-name no --attach-file \"{attach}\" ";
 				
 				if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
 				{

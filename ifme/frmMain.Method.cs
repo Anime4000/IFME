@@ -61,7 +61,7 @@ namespace ifme
             cboAudioStreamLang.SelectedValue = "und";
 
             // Display MIME ComboBox
-            cboAttachMime.DataSource = new BindingSource(Get.MimeType, null);
+            cboAttachMime.DataSource = new BindingSource(Get.MimeList, null);
 			cboAttachMime.DisplayMember = "Value";
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
@@ -795,7 +795,7 @@ namespace ifme
 				var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 				var mime = "application/octet-stream";
 
-				Get.MimeType.TryGetValue(Path.GetExtension(file), out mime);
+				Get.MimeList.TryGetValue(Path.GetExtension(file), out mime);
 
 				queue.Attachment.Add(new MediaQueueAttachment
 				{

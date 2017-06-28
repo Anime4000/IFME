@@ -22,7 +22,7 @@ namespace ifme
 			}
 		}
 
-		public static Dictionary<string, string> MimeType
+		public static Dictionary<string, string> MimeList
 		{
 			get
 			{
@@ -30,7 +30,7 @@ namespace ifme
                 var nmime = new Dictionary<string, string>();
 
                 foreach (var item in fmime)
-                    nmime.Add(item.Key, $"[{item.Key}] {item.Value}");
+                    nmime.Add(item.Key, $"[{item.Key.ToLower()}] {item.Value}");
 
                 return nmime;
 			}
@@ -205,5 +205,18 @@ namespace ifme
 				}
 			}
 		}
+
+        internal static string MimeType(string FileName)
+        {
+            var lmime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
+            var tmime = string.Empty;
+
+            if (lmime.TryGetValue(Path.GetExtension(FileName), out tmime))
+            {
+                return tmime;
+            }
+
+            return "application/octet-stream";
+        }
 	}
 }
