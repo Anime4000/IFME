@@ -1,15 +1,6 @@
 #!/bin/bash
 
-MAKE32=""
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-for args in "$@"
-do
-	if [ $args == "--make-32bit" ]; then
-		MAKE32="$args"
-	fi
-done
 
 cd "$DIR"
 
@@ -94,21 +85,15 @@ if [ -f "plugin.tar.xz" ]; then
 	sleep 1
 else
 	echo "    Plugin not found, downloading..."
-	if [ ! -z $MAKE32 ]; then
-		echo "    32-bit builds"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic-x86_2017-06-25.tar.xz -O plugin.tar.xz
+	if [ $(uname -m | grep '64') ]; then
+		echo "    64-bit OS"
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-06-28_amd64.tar.xz -O plugin.tar.xz
 	else
-		echo "    64-bit builds"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic-amd64_2017-06-25.tar.xz -O plugin.tar.xz
+		echo "    32-bit OS"
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic-2017-06-28_x86.tar.xz -O plugin.tar.xz
+		cp "$DIR/sources/ffmpeg64_32layer.cmd" "$DIR/ifme/bin/Release"
+		cp "$DIR/sources/ffmpeg64_32layer.sh" "$DIR/ifme/bin/Release"
 	fi
-fi
-
-if [ $(uname -m | grep '64') ]; then
-	echo "64-bit OS, noting to do..."
-else
-	echo "32-bit OS, do something..."
-	cp "$DIR/sources/ffmpeg64_32layer.cmd" "$DIR/ifme/bin/Release"
-	cp "$DIR/sources/ffmpeg64_32layer.sh" "$DIR/ifme/bin/Release"
 fi
 
 echo "Done, now you can make"
