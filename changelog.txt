@@ -5,11 +5,12 @@
 [add] Multi-pass encoding now display how many pass need to finished
 [fixed] English Grammar #128
 [fixed] If import video has 10 bit, but encoder dont have 10 bit, revert to 8 bit
-[fixed] Video plugin definition file, preset and tune now can disable/off #127
+[fixed] Video plugin definition file, preset and tune now have off/disable entry #127
 [fixed] Custom command-line missing from video encoding
 [change] Default Windows size from 800x600 to 900x650
 [change] Banner drawing error tag change to warning tag
 [change] Improve encoding queue code
+[change] Able to detect 64-bit AviSynth & AviSynth+
 [update] FFmpeg Windows build 2017/06/20
 [update] FFmpeg Linux build 2017/06/19
 [update] MP4Box version 0.7.0
