@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
 {
-	public partial class frmInputBox : Form
+    public partial class frmInputBox : Form
 	{
 		public string ReturnValue { get; set; }
 
-		public frmInputBox(string Title, string Message)
+        private int MinLength = 0;
+
+        /// <summary>
+        /// Show an Input dialog box
+        /// </summary>
+        /// <param name="Title">Window title</param>
+        /// <param name="Message">Message to prompt</param>
+        /// <param name="MinChar">Accept how many character for the input</param>
+		public frmInputBox(string Title, string Message, int MinChar)
 		{
 			InitializeComponent();
 
@@ -22,9 +24,17 @@ namespace ifme
 			FormBorderStyle = FormBorderStyle.Sizable;
 
 			lblMessage.Text = Message;
+            MinLength = MinChar;
 		}
 
-		public frmInputBox(string Title, string Message, string Value)
+        /// <summary>
+        /// Show an Input dialog box
+        /// </summary>
+        /// <param name="Title">Window title</param>
+        /// <param name="Message">Message to prompt</param>
+        /// <param name="Value">Default value to prompt</param>
+        /// <param name="MinChar">Accept how many character for the input</param>
+		public frmInputBox(string Title, string Message, string Value, int MinChar)
 		{
 			InitializeComponent();
 
@@ -35,7 +45,8 @@ namespace ifme
 			lblMessage.Text = Message;
 
 			txtInput.Text = Value;
-		}
+            MinLength = MinChar;
+        }
 
 		private void frmInputBox_Load(object sender, EventArgs e)
 		{
@@ -43,6 +54,8 @@ namespace ifme
                 Font = Language.Lang.UIFontWindows;
             else
                 Font = Language.Lang.UIFontLinux;
+
+            btnOK.Enabled = (txtInput.Text.Length >= MinLength);
         }
 
 		private void btnOK_Click(object sender, EventArgs e)
@@ -52,7 +65,7 @@ namespace ifme
 
         private void txtInput_TextChanged(object sender, EventArgs e)
         {
-            btnOK.Enabled = (txtInput.Text.Length > 3);
+            btnOK.Enabled = (txtInput.Text.Length >= MinLength);
         }
     }
 }

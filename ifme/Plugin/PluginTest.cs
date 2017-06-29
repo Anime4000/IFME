@@ -104,7 +104,7 @@ namespace ifme
         {
             try
             {
-                var Temp = JsonConvert.DeserializeObject<Plugin>(File.ReadAllText("test.json"));
+                var Temp = JsonConvert.DeserializeObject<Plugin>(File.ReadAllText(Path.Combine(Get.AppRootDir, "test.json")));
                 var Load = Temp;
             }
             catch (Exception)

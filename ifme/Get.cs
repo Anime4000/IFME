@@ -18,7 +18,7 @@ namespace ifme
 		{
 			get
 			{
-				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("language.json"));
+				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "language.json")));
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace ifme
 		{
 			get
 			{
-                var fmime = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("mime.json"));
+                var fmime = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
                 var nmime = new Dictionary<string, string>();
 
                 foreach (var item in fmime)
@@ -44,7 +44,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppRootFolder
+		public static string AppRootDir
 		{
 			get
 			{
@@ -102,9 +102,33 @@ namespace ifme
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(Properties.Settings.Default.OutputDir))
+                var outdir = Properties.Settings.Default.OutputDir;
+
+                // make sure path is full
+                if (outdir.Length >= 2)
+                {
+                    if (OS.IsLinux)
+                    {
+                        if (outdir[0] != '/')
+                            outdir = string.Empty;
+                    }
+                    else
+                    {
+                        if (outdir[1] != ':')
+                            outdir = string.Empty;
+                    }
+
+                }
+
+                if (string.IsNullOrEmpty(outdir))
 				{
-					Properties.Settings.Default.OutputDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "IFME");
+                    var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+
+                    // windows xp
+                    if (path.IsDisable())
+                        path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                    Properties.Settings.Default.OutputDir = Path.Combine(path, "IFME");
 					Properties.Settings.Default.Save();
 				}
 
@@ -114,7 +138,7 @@ namespace ifme
 
 		public static string CodecFormat(string codecId)
         {
-            var json = File.ReadAllText("format.json");
+            var json = File.ReadAllText(Path.Combine(AppRootDir, "format.json"));
             var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             var formatId = string.Empty;
 

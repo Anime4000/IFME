@@ -31,7 +31,7 @@ namespace ifme
             Version.Clear();
             try
             {
-                Version = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("avisynth.json"));
+                Version = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(Get.AppRootDir, "avisynth.json")));
             }
             catch (Exception ex)
             {

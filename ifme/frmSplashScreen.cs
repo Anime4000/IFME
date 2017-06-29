@@ -47,8 +47,8 @@ namespace ifme
 
             // Init FFmpeg
             var arch = Properties.Settings.Default.FFmpegArch;
-            FFmpegDotNet.FFmpeg.Main = Path.Combine(Get.AppRootFolder, "plugin", $"ffmpeg{arch}", "ffmpeg");
-            FFmpegDotNet.FFmpeg.Probe = Path.Combine(Get.AppRootFolder, "plugin", $"ffmpeg{arch}", "ffprobe");
+            FFmpegDotNet.FFmpeg.Main = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{arch}", "ffmpeg");
+            FFmpegDotNet.FFmpeg.Probe = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{arch}", "ffprobe");
 
             // Init Folder
             if (!Directory.Exists(Get.FolderTemp))
@@ -56,6 +56,8 @@ namespace ifme
 
             if (!Directory.Exists(Get.FolderSave))
                 Directory.CreateDirectory(Get.FolderSave);
+
+
         }
 
         private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -8,10 +8,10 @@ namespace ifme
 		private readonly string tempDir = Get.FolderTemp;
 		private readonly string saveDir = Get.FolderSave;
 
-		private readonly string FFmpeg = Path.Combine(Get.AppRootFolder, "plugin", $"ffmpeg{Properties.Settings.Default.FFmpegArch}", "ffmpeg");
-		private readonly string MkvExtract = Path.Combine(Get.AppRootFolder, "plugin", $"mkvtoolnix", "mkvextract");
-		private readonly string MkvMerge = Path.Combine(Get.AppRootFolder, "plugin", $"mkvtoolnix", "mkvmerge");
-		private readonly string Mp4Box = Path.Combine(Get.AppRootFolder, "plugin", $"mp4box", "mp4box");
+		private readonly string FFmpeg = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{Properties.Settings.Default.FFmpegArch}", "ffmpeg");
+		private readonly string MkvExtract = Path.Combine(Get.AppRootDir, "plugin", $"mkvtoolnix", "mkvextract");
+		private readonly string MkvMerge = Path.Combine(Get.AppRootDir, "plugin", $"mkvtoolnix", "mkvmerge");
+		private readonly string Mp4Box = Path.Combine(Get.AppRootDir, "plugin", $"mp4box", "mp4box");
 
 		enum ModeSave
 		{
@@ -329,7 +329,7 @@ namespace ifme
 					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(subs)} \"{subs}\" ";
 				
 				foreach (var attach in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
-					cmdattach += $"--attachment-mime-type \"{Get.MimeType(attach)}\" --attachment-description no --attachment-name no --attach-file \"{attach}\" ";
+					cmdattach += $"--attachment-mime-type \"{Get.MimeType(attach)}\" --attachment-description yes --attach-file \"{attach}\" ";
 				
 				if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
 				{

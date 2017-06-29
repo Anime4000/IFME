@@ -5,7 +5,7 @@ Back on April 2013, there are no **nVidia ShadowPlay** or even **AMD Gaming Evol
 ## License
 IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allow to sell either in **Source Code** or **Binaries** form.
 
-Artwork drawn by **Ray-en** aka [53C](http://53c.deviantart.com/) under license [Attribution-NonCommercial 4.0 International](http://creativecommons.org/licenses/by-nc/4.0/)
+Artwork drawn by [53C](http://53c.deviantart.com/) and [adeq](https://www.facebook.com/liyana.0426) are property of IFME Project and under license [Attribution-NonCommercial 4.0 International](http://creativecommons.org/licenses/by-nc/4.0/)
 
 ## Donation
 Support this project! Even with little penny make this project alive and up-to-date!
@@ -14,16 +14,43 @@ You can donate via to [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-x
 
 ## You
 ### System Requirement
+For Windows XP, Vista & 7. You need:
+* Microsoft [Visual C++ 2008 SP1](https://www.microsoft.com/en-us/download/details.aspx?id=5582)
+* Microsoft [Visual C++ 2010 SP1](https://www.microsoft.com/en-us/download/details.aspx?id=8328)
+* Microsoft [.NET Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718)
 
-* OS: 64-bit Windows (7, 8, 8.1, 10) & Linux (Ubuntu, etc...)
-* CPU: Intel Core i3 or AMD FX 4000
+For Ubuntu, Linux, you need:
+* `mono-complete` (Mono Runtime)
+
+#### 32-bit
+* OS: 32-bit Windows (XP to 10) & Linux (Ubuntu, etc...)
+* CPU: Intel Core 2 Duo or AMD AthlonII X2
+* RAM: 1GB DDR2
+* HDD: 1GB
+* Internet Connection
+*WARNING: 32-bit CPU don't have AVX instruction set*
+
+#### 64-bit
+* OS: 64-bit Windows (7 to 10) & Linux (Ubuntu, etc...)
+* CPU: Intel Core i3 4th Gen or AMD FX 4000
 * RAM: 4GB DDR3
 * HDD: 1GB
-* Runtime: .NET Framework 4.0 (Windows) or `mono-complete` (Linux)
+* Internet Connection
+
+#### Recommended
+* OS: 64-bit Windows 10 & Linux (Ubuntu, etc...)
+* CPU: Intel Core i7 7700K or AMD Ryzen 7 1700
+* RAM: 8GB DDR4
+* HDD: 10GB
 * Internet Connection
 
 ### Downloads
-You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Beta)](https://github.com/Anime4000/IFME/releases/latest)
+You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Build from Source)](https://github.com/Anime4000/IFME/releases/latest)
+
+#### Hardware Acceleration
+You can get Hardware Acceleration plugin [here!](https://sourceforge.net/projects/ifme/files/plugin/plugin-hwenc_2017-06-27.7z/download) simply extract to plugin folder.
+
+Using Hardware Acceleration/Fixed Encoder **NEVER** give you better compression quality like x264 & x265 did, they used for Live Streaming or Broadcasting or something need to show Live.
 
 ### Run
 Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `ifme.sh` via Terminal Emulator

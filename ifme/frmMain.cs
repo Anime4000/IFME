@@ -68,7 +68,7 @@ namespace ifme
 
         private void tsmiNew_Click(object sender, EventArgs e)
         {
-            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message);
+            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -294,7 +294,7 @@ namespace ifme
 
         private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
         {
-            var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text);
+            var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text, 4);
 
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -530,7 +530,7 @@ namespace ifme
 				}
 
 
-				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd, 0);
 				if (frm.ShowDialog() == DialogResult.OK)
 				{
 					cmd = frm.ReturnValue;
@@ -749,7 +749,7 @@ namespace ifme
 				}
 					
 				
-				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd);
+				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd, 0);
                 if (frm.ShowDialog() == DialogResult.OK)
 				{
 					cmd = frm.ReturnValue;

@@ -80,7 +80,7 @@ namespace ifme
             if (OS.IsWindows)
             {
                 Font = Language.Lang.UIFontWindows;
-                txtMediaInfo.Font = new System.Drawing.Font("Consolas", 10F);
+                txtMediaInfo.Font = new System.Drawing.Font("Lucida Console", 10F);
             }
             else
             {
@@ -996,6 +996,19 @@ namespace ifme
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name))
 			{
+                var id = new Guid($"{cboVideoEncoder.SelectedValue}");
+
+                // if user change encoder, update command-line as well
+                if (!Guid.Equals(video.Encoder, id))
+                {
+                    Plugin temp;
+
+                    if (Plugin.Items.TryGetValue(id, out temp))
+                    {
+                        video.EncoderCommand = temp.Video.Args.Command;
+                    }
+                }
+
 				video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
 			}
 

@@ -12,18 +12,18 @@ namespace ifme
     {
         private static Bitmap _Blank = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
 
-        private static string _PathPartnerSplashScreen = Path.Combine("branding", "partner", "i0.ocx");
-        private static string _PathPartnerBannerLeft = Path.Combine("branding", "partner", "i1.vxd");
-        private static string _PathPartnerBannerRight = Path.Combine("branding", "partner", "i2.vxd");
-        private static string _PathPartnerAbout = Path.Combine("branding", "partner", "ia.vxd");
-        private static string _PathPartnerName = Path.Combine("branding", "partner", "t0.zip");
-        private static string _PathPartnerCode = Path.Combine("branding", "partner", "t1.zip");
-        private static string _PathPartnerCopy = Path.Combine("branding", "partner", "t2.zip");
+        private static string _PathPartnerSplashScreen = Path.Combine(Get.AppRootDir, "branding", "partner", "i0.ocx");
+        private static string _PathPartnerBannerLeft = Path.Combine(Get.AppRootDir, "branding", "partner", "i1.vxd");
+        private static string _PathPartnerBannerRight = Path.Combine(Get.AppRootDir, "branding", "partner", "i2.vxd");
+        private static string _PathPartnerAbout = Path.Combine(Get.AppRootDir, "branding", "partner", "ia.vxd");
+        private static string _PathPartnerName = Path.Combine(Get.AppRootDir, "branding", "partner", "t0.zip");
+        private static string _PathPartnerCode = Path.Combine(Get.AppRootDir, "branding", "partner", "t1.zip");
+        private static string _PathPartnerCopy = Path.Combine(Get.AppRootDir, "branding", "partner", "t2.zip");
 
-        private static string _PathOriginalSplashScreen = Path.Combine("branding", "ai", "1.jpj");
-        private static string _PathOriginalBannerLeft = Path.Combine("branding", "ai", "a.jpj");
-        private static string _PathOriginalBannerRight = Path.Combine("branding", "ai", "b.jpj");
-        private static string _PathOriginalAbout = Path.Combine("branding", "ai", "z.jpj");
+        private static string _PathOriginalSplashScreen = Path.Combine(Get.AppRootDir, "branding", "ai", "1.jpj");
+        private static string _PathOriginalBannerLeft = Path.Combine(Get.AppRootDir, "branding", "ai", "a.jpj");
+        private static string _PathOriginalBannerRight = Path.Combine(Get.AppRootDir, "branding", "ai", "b.jpj");
+        private static string _PathOriginalAbout = Path.Combine(Get.AppRootDir, "branding", "ai", "z.jpj");
 
         public static Bitmap SplashScreen()
         {
