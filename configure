@@ -94,12 +94,12 @@ else
 	fi
 fi
 
-echo "Do extra work?"
-if [ $(uname -m | grep '86') ]; then
-	echo "    YES!"
-	sed -i '/mkdir "$(DIR)"/a\\tcp "sources/ffmpeg64_32layer.sh" "$(DIR)"\n\tcp "sources/ffmpeg64_32layer.cmd" "$(DIR)"' Makefile
-else
+echo "Patch Makefile?"
+if [ $(uname -m | grep '64') ]; then
 	echo "    NO! 64-BIT AWESOME!"
+else
+	echo "    YES! MAKE 32-BIT COMPATIBLE"
+	sed -i '/mkdir "$(DIR)"/a\\tcp "sources/ffmpeg64_32layer.sh" "$(DIR)"\n\tcp "sources/ffmpeg64_32layer.cmd" "$(DIR)"' Makefile
 fi
 
 echo "Done, now you can make"
