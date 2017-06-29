@@ -119,7 +119,7 @@ namespace ifme
 
         private void btnDonate_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+            Process.Start("https://paypal.me/anime4000/25");
         }
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)

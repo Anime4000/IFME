@@ -23,7 +23,7 @@ namespace ifme
 
         private void lblDonatePP_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+            Process.Start("https://paypal.me/anime4000/10");
             lblDonatePP.ForeColor = Color.Purple;
         }
 
