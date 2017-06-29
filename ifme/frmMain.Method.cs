@@ -1367,7 +1367,17 @@ namespace ifme
 				cboVideoPreset.SelectedItem = v.EncoderPreset;
 				cboVideoTune.SelectedItem = v.EncoderTune;
 
-                nudVideoRateFactor.Value = v.EncoderValue;
+                // this can be buggy
+                try
+                {
+                    nudVideoRateFactor.Value = v.EncoderValue;
+                }
+                catch (Exception e)
+                {
+                    ConsoleEx.Write(LogLevel.Warning, "Slow GUI, trying to display Rate Factor value first before change min/max value, cause current value are not inside min/max range, you can re-select again, noting harm :)");
+                    ConsoleEx.Write(ConsoleColor.DarkYellow, $" ({e.Message})\n");
+                }
+
                 nudVideoMultiPass.Value = v.EncoderMultiPass;
 
 				cboVideoResolution.Text = $"{v.Width}x{v.Height}";
