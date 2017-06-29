@@ -36,7 +36,7 @@ namespace ifme
 			catch (Exception)
 			{
 				str = string.Empty;
-				LogError("Not connected to the internet?");
+				LogError("Not connected to the internet?\n");
 			}
 
 			if (File.Exists(file))
@@ -63,7 +63,7 @@ namespace ifme
 			}
 			catch (Exception)
 			{
-				LogError($"Problem when trying to download: {url}");
+				LogError($"Problem when trying to download: {url}\n");
 			}
 			finally
 			{
@@ -105,11 +105,11 @@ namespace ifme
 				if (File.Exists(tempfile))
 					Extract(tempfile, folder);
 				else
-					LogError($"Oh no! given \"{url}\" was not saved");
+					LogError($"Oh no! given \"{url}\" was not saved\n");
 			}
 			catch (Exception)
 			{
-				LogError("File not found or Offline");
+				LogError("File not found or Offline\n");
 			}
 		}
 

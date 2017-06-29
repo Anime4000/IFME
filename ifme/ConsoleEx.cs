@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 
 enum LogLevel
 {
@@ -45,11 +46,13 @@ namespace ifme
 				case LogLevel.Warning:
 					Console.ForegroundColor = ConsoleColor.Yellow;
 					Console.Error.Write("warn");
+                    try { SystemSounds.Exclamation.Play(); } catch { }
 					break;
 				case LogLevel.Error:
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.Error.Write("erro");
-					break;
+                    try { SystemSounds.Asterisk.Play(); } catch { }
+                    break;
 				default:
 					Console.ForegroundColor = ConsoleColor.White;
 					Console.Error.Write("data");

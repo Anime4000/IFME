@@ -1374,8 +1374,10 @@ namespace ifme
                 }
                 catch (Exception e)
                 {
-                    ConsoleEx.Write(LogLevel.Warning, "Slow GUI, trying to display Rate Factor value first before change min/max value, cause current value are not inside min/max range, you can re-select again, noting harm :)");
+                    ConsoleEx.Write(LogLevel.Warning, "Slow GUI, trying to display Rate Factor value first before change min/max value, cause current value are not inside min/max range, you can re-select again, don't worry :)");
                     ConsoleEx.Write(ConsoleColor.DarkYellow, $" ({e.Message})\n");
+
+                    lstVideo.SelectedItems.Clear();
                 }
 
                 nudVideoMultiPass.Value = v.EncoderMultiPass;
