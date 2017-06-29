@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Internet Friendly Media Encoder")]
 [assembly: AssemblyDescription("Allow user to compress raw media")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anime400, et al.")]
+[assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("Audio & Video")]
-[assembly: AssemblyCopyright("Anime4000, GNU GPL 3")]
+[assembly: AssemblyCopyright("© 2017 Anime4000")]
 [assembly: AssemblyTrademark("Anime4000, MulticoreWare, VideoLAN, FFmpeg, Xiph.Org Foundation, Google Inc., Nero AG, GPAC, Moritz Bunkus, et al.")]
 [assembly: AssemblyCulture("")]
 
