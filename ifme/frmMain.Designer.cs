@@ -163,6 +163,7 @@
             this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.ttProInfo = new System.Windows.Forms.ToolTip(this.components);
+            this.btnDonate = new System.Windows.Forms.Button();
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -207,7 +208,7 @@
             this.lstMedia.Location = new System.Drawing.Point(12, 114);
             this.lstMedia.Name = "lstMedia";
             this.lstMedia.Size = new System.Drawing.Size(876, 161);
-            this.lstMedia.TabIndex = 12;
+            this.lstMedia.TabIndex = 13;
             this.lstMedia.UseCompatibleStateImageBehavior = false;
             this.lstMedia.View = System.Windows.Forms.View.Details;
             this.lstMedia.SelectedIndexChanged += new System.EventHandler(this.lstMedia_SelectedIndexChanged);
@@ -252,7 +253,7 @@
             this.tabMediaConfig.Name = "tabMediaConfig";
             this.tabMediaConfig.SelectedIndex = 0;
             this.tabMediaConfig.Size = new System.Drawing.Size(876, 300);
-            this.tabMediaConfig.TabIndex = 13;
+            this.tabMediaConfig.TabIndex = 14;
             this.tabMediaConfig.SelectedIndexChanged += new System.EventHandler(this.tabMediaConfig_SelectedIndexChanged);
             // 
             // tabGeneral
@@ -261,7 +262,7 @@
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneral.Size = new System.Drawing.Size(768, 274);
+            this.tabGeneral.Size = new System.Drawing.Size(868, 274);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
@@ -273,7 +274,7 @@
             this.pnlGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlGeneral.Location = new System.Drawing.Point(3, 3);
             this.pnlGeneral.Name = "pnlGeneral";
-            this.pnlGeneral.Size = new System.Drawing.Size(762, 268);
+            this.pnlGeneral.Size = new System.Drawing.Size(862, 268);
             this.pnlGeneral.TabIndex = 0;
             // 
             // grpStreamInfo
@@ -284,7 +285,7 @@
             this.grpStreamInfo.Controls.Add(this.txtMediaInfo);
             this.grpStreamInfo.Location = new System.Drawing.Point(169, 3);
             this.grpStreamInfo.Name = "grpStreamInfo";
-            this.grpStreamInfo.Size = new System.Drawing.Size(590, 262);
+            this.grpStreamInfo.Size = new System.Drawing.Size(690, 262);
             this.grpStreamInfo.TabIndex = 1;
             this.grpStreamInfo.TabStop = false;
             this.grpStreamInfo.Text = "Media Info";
@@ -300,7 +301,7 @@
             this.txtMediaInfo.Name = "txtMediaInfo";
             this.txtMediaInfo.ReadOnly = true;
             this.txtMediaInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMediaInfo.Size = new System.Drawing.Size(578, 237);
+            this.txtMediaInfo.Size = new System.Drawing.Size(678, 237);
             this.txtMediaInfo.TabIndex = 0;
             this.txtMediaInfo.WordWrap = false;
             // 
@@ -1387,7 +1388,7 @@
             this.tabAttachment.Location = new System.Drawing.Point(4, 22);
             this.tabAttachment.Name = "tabAttachment";
             this.tabAttachment.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAttachment.Size = new System.Drawing.Size(768, 274);
+            this.tabAttachment.Size = new System.Drawing.Size(868, 274);
             this.tabAttachment.TabIndex = 4;
             this.tabAttachment.Text = "Attachments";
             this.tabAttachment.UseVisualStyleBackColor = true;
@@ -1402,7 +1403,7 @@
             this.pnlAttachment.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlAttachment.Location = new System.Drawing.Point(3, 3);
             this.pnlAttachment.Name = "pnlAttachment";
-            this.pnlAttachment.Size = new System.Drawing.Size(762, 268);
+            this.pnlAttachment.Size = new System.Drawing.Size(862, 268);
             this.pnlAttachment.TabIndex = 0;
             // 
             // cboAttachMime
@@ -1413,7 +1414,7 @@
             this.cboAttachMime.FormattingEnabled = true;
             this.cboAttachMime.Location = new System.Drawing.Point(3, 244);
             this.cboAttachMime.Name = "cboAttachMime";
-            this.cboAttachMime.Size = new System.Drawing.Size(756, 21);
+            this.cboAttachMime.Size = new System.Drawing.Size(856, 21);
             this.cboAttachMime.TabIndex = 6;
             this.cboAttachMime.SelectedIndexChanged += new System.EventHandler(this.cboAttachMime_SelectedIndexChanged);
             this.cboAttachMime.Leave += new System.EventHandler(this.MediaApply);
@@ -1424,7 +1425,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAttachMime.Location = new System.Drawing.Point(3, 220);
             this.lblAttachMime.Name = "lblAttachMime";
-            this.lblAttachMime.Size = new System.Drawing.Size(756, 21);
+            this.lblAttachMime.Size = new System.Drawing.Size(856, 21);
             this.lblAttachMime.TabIndex = 5;
             this.lblAttachMime.Text = "&MIME Type:";
             this.lblAttachMime.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1442,7 +1443,7 @@
             this.lstAttach.HideSelection = false;
             this.lstAttach.Location = new System.Drawing.Point(3, 33);
             this.lstAttach.Name = "lstAttach";
-            this.lstAttach.Size = new System.Drawing.Size(756, 184);
+            this.lstAttach.Size = new System.Drawing.Size(856, 184);
             this.lstAttach.TabIndex = 4;
             this.lstAttach.UseCompatibleStateImageBehavior = false;
             this.lstAttach.View = System.Windows.Forms.View.Details;
@@ -1490,7 +1491,7 @@
             this.txtFolderOutput.Location = new System.Drawing.Point(158, 615);
             this.txtFolderOutput.Name = "txtFolderOutput";
             this.txtFolderOutput.Size = new System.Drawing.Size(700, 22);
-            this.txtFolderOutput.TabIndex = 18;
+            this.txtFolderOutput.TabIndex = 19;
             this.txtFolderOutput.TextChanged += new System.EventHandler(this.txtFolderOutput_TextChanged);
             // 
             // lblOutputFolder
@@ -1499,7 +1500,7 @@
             this.lblOutputFolder.Location = new System.Drawing.Point(12, 614);
             this.lblOutputFolder.Name = "lblOutputFolder";
             this.lblOutputFolder.Size = new System.Drawing.Size(140, 23);
-            this.lblOutputFolder.TabIndex = 17;
+            this.lblOutputFolder.TabIndex = 18;
             this.lblOutputFolder.Text = "&Destination:";
             this.lblOutputFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1510,7 +1511,7 @@
             this.btnBrowseFolderOutput.Location = new System.Drawing.Point(864, 614);
             this.btnBrowseFolderOutput.Name = "btnBrowseFolderOutput";
             this.btnBrowseFolderOutput.Size = new System.Drawing.Size(24, 24);
-            this.btnBrowseFolderOutput.TabIndex = 19;
+            this.btnBrowseFolderOutput.TabIndex = 20;
             this.btnBrowseFolderOutput.UseVisualStyleBackColor = true;
             this.btnBrowseFolderOutput.Click += new System.EventHandler(this.btnBrowseFolderOutput_Click);
             // 
@@ -1520,7 +1521,7 @@
             this.lblEncodingPreset.Location = new System.Drawing.Point(12, 587);
             this.lblEncodingPreset.Name = "lblEncodingPreset";
             this.lblEncodingPreset.Size = new System.Drawing.Size(140, 22);
-            this.lblEncodingPreset.TabIndex = 14;
+            this.lblEncodingPreset.TabIndex = 15;
             this.lblEncodingPreset.Text = "Encoding &Preset:";
             this.lblEncodingPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1534,7 +1535,7 @@
             this.cboEncodingPreset.Location = new System.Drawing.Point(158, 587);
             this.cboEncodingPreset.Name = "cboEncodingPreset";
             this.cboEncodingPreset.Size = new System.Drawing.Size(700, 22);
-            this.cboEncodingPreset.TabIndex = 15;
+            this.cboEncodingPreset.TabIndex = 16;
             this.cboEncodingPreset.SelectedIndexChanged += new System.EventHandler(this.cboEncodingPreset_SelectedIndexChanged);
             // 
             // btnEncodingPresetSave
@@ -1544,7 +1545,7 @@
             this.btnEncodingPresetSave.Location = new System.Drawing.Point(864, 586);
             this.btnEncodingPresetSave.Name = "btnEncodingPresetSave";
             this.btnEncodingPresetSave.Size = new System.Drawing.Size(24, 24);
-            this.btnEncodingPresetSave.TabIndex = 16;
+            this.btnEncodingPresetSave.TabIndex = 17;
             this.btnEncodingPresetSave.UseVisualStyleBackColor = true;
             this.btnEncodingPresetSave.Click += new System.EventHandler(this.btnEncodingPresetSave_Click);
             // 
@@ -1565,7 +1566,7 @@
             this.lblSplit2.Location = new System.Drawing.Point(772, 76);
             this.lblSplit2.Name = "lblSplit2";
             this.lblSplit2.Size = new System.Drawing.Size(2, 32);
-            this.lblSplit2.TabIndex = 8;
+            this.lblSplit2.TabIndex = 9;
             // 
             // pbxBanner
             // 
@@ -1588,7 +1589,7 @@
             this.btnDonePowerOff.Location = new System.Drawing.Point(734, 76);
             this.btnDonePowerOff.Name = "btnDonePowerOff";
             this.btnDonePowerOff.Size = new System.Drawing.Size(32, 32);
-            this.btnDonePowerOff.TabIndex = 7;
+            this.btnDonePowerOff.TabIndex = 8;
             this.btnDonePowerOff.UseVisualStyleBackColor = true;
             this.btnDonePowerOff.Click += new System.EventHandler(this.btnDonePowerOff_Click);
             // 
@@ -1610,7 +1611,7 @@
             this.btnStop.Location = new System.Drawing.Point(856, 76);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(32, 32);
-            this.btnStop.TabIndex = 11;
+            this.btnStop.TabIndex = 12;
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -1622,7 +1623,7 @@
             this.btnPause.Location = new System.Drawing.Point(818, 76);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(32, 32);
-            this.btnPause.TabIndex = 10;
+            this.btnPause.TabIndex = 11;
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
@@ -1633,7 +1634,7 @@
             this.btnStart.Location = new System.Drawing.Point(780, 76);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(32, 32);
-            this.btnStart.TabIndex = 9;
+            this.btnStart.TabIndex = 10;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -1644,7 +1645,7 @@
             this.btnMediaMoveDown.Location = new System.Drawing.Point(453, 76);
             this.btnMediaMoveDown.Name = "btnMediaMoveDown";
             this.btnMediaMoveDown.Size = new System.Drawing.Size(32, 32);
-            this.btnMediaMoveDown.TabIndex = 6;
+            this.btnMediaMoveDown.TabIndex = 7;
             this.btnMediaMoveDown.UseVisualStyleBackColor = true;
             this.btnMediaMoveDown.Click += new System.EventHandler(this.btnMediaMoveDown_Click);
             // 
@@ -1655,7 +1656,7 @@
             this.btnMediaMoveUp.Location = new System.Drawing.Point(415, 76);
             this.btnMediaMoveUp.Name = "btnMediaMoveUp";
             this.btnMediaMoveUp.Size = new System.Drawing.Size(32, 32);
-            this.btnMediaMoveUp.TabIndex = 5;
+            this.btnMediaMoveUp.TabIndex = 6;
             this.btnMediaMoveUp.UseVisualStyleBackColor = true;
             this.btnMediaMoveUp.Click += new System.EventHandler(this.btnMediaMoveUp_Click);
             // 
@@ -1746,11 +1747,22 @@
             // 
             this.ttProInfo.IsBalloon = true;
             // 
+            // btnDonate
+            // 
+            this.btnDonate.Image = global::ifme.Properties.Resources.icon22_donate;
+            this.btnDonate.Location = new System.Drawing.Point(172, 76);
+            this.btnDonate.Name = "btnDonate";
+            this.btnDonate.Size = new System.Drawing.Size(32, 32);
+            this.btnDonate.TabIndex = 5;
+            this.btnDonate.UseVisualStyleBackColor = true;
+            this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(900, 650);
+            this.Controls.Add(this.btnDonate);
             this.Controls.Add(this.pbxBanner);
             this.Controls.Add(this.lblSplit2);
             this.Controls.Add(this.lblSplit1);
@@ -1947,6 +1959,7 @@
         private System.Windows.Forms.ComboBox cboVideoStreamLang;
         private System.Windows.Forms.ComboBox cboAudioStreamLang;
         private System.Windows.Forms.ColumnHeader colVideoLang;
+        private System.Windows.Forms.Button btnDonate;
     }
 }
 

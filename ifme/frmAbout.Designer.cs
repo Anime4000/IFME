@@ -33,16 +33,16 @@
             this.lblMainTitle = new System.Windows.Forms.Label();
             this.lblMainVersion = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.lblDevTtitle = new System.Windows.Forms.Label();
-            this.lblDonateETH = new System.Windows.Forms.Label();
-            this.lblTechInfo = new System.Windows.Forms.Label();
-            this.lblTechTitle = new System.Windows.Forms.Label();
+            this.lblDevInfo = new System.Windows.Forms.Label();
+            this.lblDonatePP = new System.Windows.Forms.Label();
+            this.lblDonateBTC = new System.Windows.Forms.Label();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.lblArtInfo = new System.Windows.Forms.Label();
             this.lblArtTitle = new System.Windows.Forms.Label();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.lblDonateBTC = new System.Windows.Forms.Label();
-            this.lblDonatePP = new System.Windows.Forms.Label();
-            this.lblDevInfo = new System.Windows.Forms.Label();
+            this.lblTechInfo = new System.Windows.Forms.Label();
+            this.lblTechTitle = new System.Windows.Forms.Label();
+            this.lblDonateETH = new System.Windows.Forms.Label();
+            this.lblDevTtitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -100,54 +100,56 @@
             this.panelMain.Size = new System.Drawing.Size(600, 400);
             this.panelMain.TabIndex = 1;
             // 
-            // lblDevTtitle
+            // lblDevInfo
             // 
-            this.lblDevTtitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblDevInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDevTtitle.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-            this.lblDevTtitle.Location = new System.Drawing.Point(1, 80);
-            this.lblDevTtitle.Name = "lblDevTtitle";
-            this.lblDevTtitle.Size = new System.Drawing.Size(598, 20);
-            this.lblDevTtitle.TabIndex = 2;
-            this.lblDevTtitle.Text = "Developed by";
-            this.lblDevTtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lblDevInfo.Location = new System.Drawing.Point(1, 100);
+            this.lblDevInfo.Name = "lblDevInfo";
+            this.lblDevInfo.Size = new System.Drawing.Size(598, 20);
+            this.lblDevInfo.TabIndex = 3;
+            this.lblDevInfo.Text = "Anime4000";
+            this.lblDevInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // lblDonateETH
+            // lblDonatePP
             // 
-            this.lblDonateETH.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblDonatePP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDonateETH.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblDonateETH.ForeColor = System.Drawing.Color.Blue;
-            this.lblDonateETH.Location = new System.Drawing.Point(1, 371);
-            this.lblDonateETH.Name = "lblDonateETH";
-            this.lblDonateETH.Size = new System.Drawing.Size(598, 20);
-            this.lblDonateETH.TabIndex = 11;
-            this.lblDonateETH.Text = "Ethereum: 0xAdd9ba89B601e7CB5B3602643337B9db8c90EFe0";
-            this.lblDonateETH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDonateETH.Click += new System.EventHandler(this.lblDonateETH_Click);
+            this.lblDonatePP.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblDonatePP.ForeColor = System.Drawing.Color.Blue;
+            this.lblDonatePP.Location = new System.Drawing.Point(1, 331);
+            this.lblDonatePP.Name = "lblDonatePP";
+            this.lblDonatePP.Size = new System.Drawing.Size(598, 20);
+            this.lblDonatePP.TabIndex = 9;
+            this.lblDonatePP.Text = "Paypal";
+            this.lblDonatePP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDonatePP.Click += new System.EventHandler(this.lblDonatePP_Click);
             // 
-            // lblTechInfo
+            // lblDonateBTC
             // 
-            this.lblTechInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblDonateBTC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTechInfo.Location = new System.Drawing.Point(1, 140);
-            this.lblTechInfo.Name = "lblTechInfo";
-            this.lblTechInfo.Size = new System.Drawing.Size(598, 20);
-            this.lblTechInfo.TabIndex = 5;
-            this.lblTechInfo.Text = "FFmpeg, MulticoreWare, VideoLAN, Xiph.org, Google, Nero AG, Mkvtoolnix, GPAC";
-            this.lblTechInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblDonateBTC.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblDonateBTC.ForeColor = System.Drawing.Color.Blue;
+            this.lblDonateBTC.Location = new System.Drawing.Point(1, 351);
+            this.lblDonateBTC.Name = "lblDonateBTC";
+            this.lblDonateBTC.Size = new System.Drawing.Size(598, 20);
+            this.lblDonateBTC.TabIndex = 10;
+            this.lblDonateBTC.Text = "Bitcoin: 12LWHDCPShFvYh6vxxeMsntejAUm8y8rFN";
+            this.lblDonateBTC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDonateBTC.Click += new System.EventHandler(this.lblDonateBTC_Click);
             // 
-            // lblTechTitle
+            // lblInfo
             // 
-            this.lblTechTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTechTitle.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-            this.lblTechTitle.Location = new System.Drawing.Point(1, 120);
-            this.lblTechTitle.Name = "lblTechTitle";
-            this.lblTechTitle.Size = new System.Drawing.Size(598, 20);
-            this.lblTechTitle.TabIndex = 4;
-            this.lblTechTitle.Text = "Technologies used";
-            this.lblTechTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lblInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblInfo.Location = new System.Drawing.Point(1, 228);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(598, 103);
+            this.lblInfo.TabIndex = 8;
+            this.lblInfo.Text = resources.GetString("lblInfo.Text");
+            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblArtInfo
             // 
@@ -173,56 +175,54 @@
             this.lblArtTitle.Text = "Artwork by";
             this.lblArtTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // lblInfo
+            // lblTechInfo
             // 
-            this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblTechInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblInfo.Location = new System.Drawing.Point(1, 228);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(598, 103);
-            this.lblInfo.TabIndex = 8;
-            this.lblInfo.Text = resources.GetString("lblInfo.Text");
-            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTechInfo.Location = new System.Drawing.Point(1, 140);
+            this.lblTechInfo.Name = "lblTechInfo";
+            this.lblTechInfo.Size = new System.Drawing.Size(598, 20);
+            this.lblTechInfo.TabIndex = 5;
+            this.lblTechInfo.Text = "FFmpeg, MulticoreWare, VideoLAN, Xiph.org, Google, Nero AG, Mkvtoolnix, GPAC";
+            this.lblTechInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // lblDonateBTC
+            // lblTechTitle
             // 
-            this.lblDonateBTC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblTechTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDonateBTC.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblDonateBTC.ForeColor = System.Drawing.Color.Blue;
-            this.lblDonateBTC.Location = new System.Drawing.Point(1, 351);
-            this.lblDonateBTC.Name = "lblDonateBTC";
-            this.lblDonateBTC.Size = new System.Drawing.Size(598, 20);
-            this.lblDonateBTC.TabIndex = 10;
-            this.lblDonateBTC.Text = "Bitcoin: 12LWHDCPShFvYh6vxxeMsntejAUm8y8rFN";
-            this.lblDonateBTC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDonateBTC.Click += new System.EventHandler(this.lblDonateBTC_Click);
+            this.lblTechTitle.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.lblTechTitle.Location = new System.Drawing.Point(1, 120);
+            this.lblTechTitle.Name = "lblTechTitle";
+            this.lblTechTitle.Size = new System.Drawing.Size(598, 20);
+            this.lblTechTitle.TabIndex = 4;
+            this.lblTechTitle.Text = "Technologies used";
+            this.lblTechTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // lblDonatePP
+            // lblDonateETH
             // 
-            this.lblDonatePP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblDonateETH.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDonatePP.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblDonatePP.ForeColor = System.Drawing.Color.Blue;
-            this.lblDonatePP.Location = new System.Drawing.Point(1, 331);
-            this.lblDonatePP.Name = "lblDonatePP";
-            this.lblDonatePP.Size = new System.Drawing.Size(598, 20);
-            this.lblDonatePP.TabIndex = 9;
-            this.lblDonatePP.Text = "Paypal: ilham92_sakura@yahoo.com";
-            this.lblDonatePP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDonatePP.Click += new System.EventHandler(this.lblDonatePP_Click);
+            this.lblDonateETH.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblDonateETH.ForeColor = System.Drawing.Color.Blue;
+            this.lblDonateETH.Location = new System.Drawing.Point(1, 371);
+            this.lblDonateETH.Name = "lblDonateETH";
+            this.lblDonateETH.Size = new System.Drawing.Size(598, 20);
+            this.lblDonateETH.TabIndex = 11;
+            this.lblDonateETH.Text = "Ethereum: 0xAdd9ba89B601e7CB5B3602643337B9db8c90EFe0";
+            this.lblDonateETH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDonateETH.Click += new System.EventHandler(this.lblDonateETH_Click);
             // 
-            // lblDevInfo
+            // lblDevTtitle
             // 
-            this.lblDevInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblDevTtitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDevInfo.Location = new System.Drawing.Point(1, 100);
-            this.lblDevInfo.Name = "lblDevInfo";
-            this.lblDevInfo.Size = new System.Drawing.Size(598, 20);
-            this.lblDevInfo.TabIndex = 3;
-            this.lblDevInfo.Text = "Anime4000";
-            this.lblDevInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblDevTtitle.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.lblDevTtitle.Location = new System.Drawing.Point(1, 80);
+            this.lblDevTtitle.Name = "lblDevTtitle";
+            this.lblDevTtitle.Size = new System.Drawing.Size(598, 20);
+            this.lblDevTtitle.TabIndex = 2;
+            this.lblDevTtitle.Text = "Developed by";
+            this.lblDevTtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // frmAbout
             // 

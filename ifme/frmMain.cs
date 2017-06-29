@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace ifme
 {
@@ -114,6 +115,11 @@ namespace ifme
         private void btnAbout_Click(object sender, EventArgs e)
         {
             new frmAbout().ShowDialog();
+        }
+
+        private void btnDonate_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
         }
 
         private void btnMediaMoveUp_Click(object sender, EventArgs e)
