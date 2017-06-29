@@ -64,6 +64,7 @@
             this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this.colModVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabOption.SuspendLayout();
             this.tabOptionGeneral.SuspendLayout();
             this.grpNewFilename.SuspendLayout();
@@ -438,6 +439,7 @@
             this.lstModule.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colModName,
             this.colModArch,
+            this.colModVersion,
             this.colModAuthor});
             this.lstModule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstModule.FullRowSelect = true;
@@ -451,11 +453,12 @@
             // colModName
             // 
             this.colModName.Text = "Name";
-            this.colModName.Width = 310;
+            this.colModName.Width = 200;
             // 
             // colModArch
             // 
             this.colModArch.Text = "Arch";
+            this.colModArch.Width = 48;
             // 
             // colModAuthor
             // 
@@ -484,6 +487,11 @@
             this.btnOk.Text = "&OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // colModVersion
+            // 
+            this.colModVersion.Text = "Version";
+            this.colModVersion.Width = 130;
             // 
             // frmOption
             // 
@@ -556,5 +564,6 @@
 		private System.Windows.Forms.GroupBox grpFrameCountOffset;
 		private System.Windows.Forms.Label lblFrameCountOffset;
 		private System.Windows.Forms.NumericUpDown nudFrameCountOffset;
-	}
+        private System.Windows.Forms.ColumnHeader colModVersion;
+    }
 }

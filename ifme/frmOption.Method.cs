@@ -86,6 +86,7 @@ namespace ifme
                 {
                     item.Value.Name,
                     (item.Value.X64 ? "64bit" : "32bit"),
+                    item.Value.Version,
                     item.Value.Author.Developer
 
                 }));
