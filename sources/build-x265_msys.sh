@@ -12,17 +12,16 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$DIR"
 hg clone --insecure http://bitbucket.org/multicoreware/x265
-cd "$DIR/x265/build/msys"
+cp -vrf "$DIR/x265/build/msys" "$DIR/x265/build/msys32"
+cp -vrf "$DIR/x265/build/msys" "$DIR/x265/build/msys64"
 
+cd "$DIR/x265/build/msys32"
 cmake -G "MSYS Makefiles" ../../source -DWINXP_SUPPORT=ON -DENABLE_SHARED=OFF -DSTATIC_LINK_CRT=ON -DENABLE_CLI=ON
 make
 mv x265.exe "$DIR/x265-08_xp86.exe"
 
-cd "$DIR"
-rm -rf "x265"
-hg clone --insecure http://bitbucket.org/multicoreware/x265
-cd "$DIR/x265/build/msys"
 
+cd "$DIR/x265/build/msys64"
 cmake -G "MSYS Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain-x86_64-w64-mingw32.cmake ../../source -DENABLE_SHARED=OFF -DSTATIC_LINK_CRT=ON -DENABLE_CLI=ON
 make
 mv x265.exe "$DIR/x265-08.exe"

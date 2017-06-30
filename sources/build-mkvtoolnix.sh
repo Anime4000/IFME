@@ -8,6 +8,7 @@
 # ensure more portable, originally created by darealshinji
 # modify for latest version
 
+PASSWORD="142536"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 commonflags="-Os -fstack-protector --param=ssp-buffer-size=4 -fno-strict-aliasing -ffunction-sections -fdata-sections -D_FORTIFY_SOURCE=2 -I."
@@ -25,7 +26,7 @@ fi
 
 echo "OS is $BIT"
 
-sudo apt-get install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev gawk doxygen -y
+echo "$PASSWORD" | sudo -S apt-get install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev libmagic-dev po4a libicu-dev gawk doxygen -y
 
 echo "Checking Ogg Dev"
 if [ ! -f "/usr/local/include/ogg/ogg.h" ]; then

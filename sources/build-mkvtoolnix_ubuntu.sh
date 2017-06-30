@@ -1,8 +1,9 @@
 #!/bin/bash
 
+PASSWORD="142536"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo 142536 | sudo -S apt install --no-install-recommends rake libbz2-dev liblzo2-dev \
+echo "$PASSWORD" | sudo -S apt install --no-install-recommends rake libbz2-dev liblzo2-dev \
 zlib1g-dev libmagic-dev libflac-dev libogg-dev libvorbis-dev libboost-dev \
 libboost-filesystem-dev libboost-regex-dev libboost-date-time-dev \
 libboost-system-dev pkg-config po4a docbook-xsl xsltproc -y

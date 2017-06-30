@@ -22,6 +22,15 @@ echo "Checking zip utils"
 	exit 1
 }
 
+echo "Checking 7za utils"
+(7za x) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "7za utils not detected!"
+	echo
+	sleep 3
+	exit 1
+}
+
 echo "Checking mono-runtime"
 (mono --version) < /dev/null > /dev/null 2>&1 || {
 	echo
@@ -87,10 +96,10 @@ else
 	echo "    Plugin not found, downloading..."
 	if [ $(uname -m | grep '64') ]; then
 		echo "    64-bit OS"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-06-30_amd64.tar.xz -O plugin.tar.xz
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-01_amd64.tar.xz -O plugin.tar.xz
 	else
 		echo "    32-bit OS"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-06-30_i686.tar.xz -O plugin.tar.xz
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-01_i686.tar.xz -O plugin.tar.xz
 	fi
 fi
 

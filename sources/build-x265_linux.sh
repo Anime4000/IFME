@@ -8,9 +8,10 @@
 # ensure more portable, originally created by darealshinji
 # modify for latest version
 
+PASSWORD="142536"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sudo apt-get install mercurial cmake cmake-curses-gui build-essential yasm -y
+echo "$PASSWORD" | sudo -S apt-get install mercurial cmake cmake-curses-gui build-essential yasm -y
 
 hg clone https://bitbucket.org/multicoreware/x265
 cd "x265/build/linux"

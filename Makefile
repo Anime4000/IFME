@@ -12,7 +12,7 @@ IFME=ifme7
 
 all: clean compile copy fixmod
 	mv "$(DIR)" "release-ifme7"
-	zip -r "$(IFME).zip" "release-ifme7"
+	7za a -tzip -mm=lzma -mx=9 "$(IFME).zip" "release-ifme7"
 	mv "release-ifme7" "$(DIR)"
 
 clean:

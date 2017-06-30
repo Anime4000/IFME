@@ -8,6 +8,7 @@
 # ensure more portable, originally created by darealshinji
 # modify for latest version
 
+PASSWORD="142536"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # check nasm

@@ -8,9 +8,10 @@
 # ensure more portable, originally created by darealshinji
 # modify for latest version
 
+PASSWORD="142536"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sudo apt install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev po4a libicu-dev -y
+echo "$PASSWORD" | sudo -S apt install build-essential software-properties-common python2.7 git libssl-dev autoconf clang ruby rake libtool libtool-bin zlib1g-dev libxslt-dev xsltproc docbook-xsl liblzo2-dev libbz2-dev po4a libicu-dev -y
 
 wget https://github.com/gpac/gpac/archive/v0.7.0.tar.gz
 tar -xvf v0.7.0.tar.gz
