@@ -208,7 +208,8 @@ namespace ifme
 
                     if (!vc.Args.FrameCount.IsDisable())
                     {
-                        framecount = $"{vc.Args.FrameCount} {item.FrameCount + Properties.Settings.Default.FrameCountOffset}";
+                        if (item.FrameCount > 0)
+                            framecount = $"{vc.Args.FrameCount} {item.FrameCount + Properties.Settings.Default.FrameCountOffset}";
                     }
 
                     // begin encoding
