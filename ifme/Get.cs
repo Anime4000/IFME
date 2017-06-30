@@ -26,15 +26,24 @@ namespace ifme
 		{
 			get
 			{
-                var fmime = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
-                var nmime = new Dictionary<string, string>();
-
-                foreach (var item in fmime)
-                    nmime.Add(item.Key, $"[{item.Key.ToLower()}] {item.Value}");
-
-                return nmime;
-			}
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
+            }
 		}
+
+        public static SortedSet<string> MimeTypeList
+        {
+            get
+            {
+                var temp = new SortedSet<string>();
+
+                foreach (var item in MimeList)
+                {
+                    try { temp.Add(item.Value); } catch { }
+                }
+
+                return temp;
+            }
+        }
 
 		public static string AppPath
 		{
@@ -232,12 +241,12 @@ namespace ifme
 
         internal static string MimeType(string FileName)
         {
-            var lmime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
-            var tmime = string.Empty;
+            var mime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
+            var type = string.Empty;
 
-            if (lmime.TryGetValue(Path.GetExtension(FileName), out tmime))
+            if (mime.TryGetValue(Path.GetExtension(FileName), out type))
             {
-                return tmime;
+                return type;
             }
 
             return "application/octet-stream";

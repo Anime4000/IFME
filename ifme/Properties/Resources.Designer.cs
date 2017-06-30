@@ -201,6 +201,16 @@ namespace ifme.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon22_addred {
+            get {
+                object obj = ResourceManager.GetObject("icon22_addred", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon22_del {
             get {
                 object obj = ResourceManager.GetObject("icon22_del", resourceCulture);

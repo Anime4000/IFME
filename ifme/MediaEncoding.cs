@@ -83,7 +83,8 @@ namespace ifme
 
 			foreach (var item in queue.Attachment)
 			{
-				File.Copy(item.File, Path.Combine(tempDir, "attachments", Path.GetFileName(item.File)));
+                if (string.Equals(Path.GetFileName(item.File), item.Name))
+				    File.Copy(item.File, Path.Combine(tempDir, "attachments", Path.GetFileName(item.File)));
 			}
 
 			if (!string.IsNullOrEmpty(queue.File))
@@ -329,8 +330,17 @@ namespace ifme
 					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(subs)} \"{subs}\" ";
 				
 				foreach (var attach in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
-					cmdattach += $"--attachment-mime-type \"{Get.MimeType(attach)}\" --attachment-description yes --attach-file \"{attach}\" ";
-				
+                {
+                    foreach (var item in queue.Attachment)
+                    {
+                        if (string.Equals(item.Name, Path.GetFileName(attach)))
+                        {
+                            cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{attach}\" ";
+                            break; // save time, leave loop once found
+                        }
+                    }
+                }
+
 				if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
 				{
 					FileInfo ChapLen = new FileInfo(Path.Combine(tempDir, "chapters.xml"));

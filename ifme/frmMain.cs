@@ -869,6 +869,15 @@ namespace ifme
 			UXReloadMedia();
 		}
 
+        private void btnAttchAdd2_Click(object sender, EventArgs e)
+        {
+            if (lstMedia.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Video))
+                    AttachmentAdd2(item);
+
+            UXReloadMedia();
+        }
+
         private void btnAttachDel_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)
@@ -877,7 +886,7 @@ namespace ifme
 				{
 					var id = item.Index;
 					item.Remove();
-					(lstMedia.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(id);
+					(lstMedia.SelectedItems[0].Tag as MediaQueue).Attachment.RemoveAt(id);
 				}
 			}
 		}

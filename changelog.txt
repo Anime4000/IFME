@@ -7,6 +7,7 @@
 [add] Multi-pass encoding now display how many pass need to finished
 [add] New version column for Modules at Option Window
 [add] Non intrusive error message by adding OS default system sounds
+[add] Allow to steal font (attachment) from another video :)
 [fixed] English Grammar #128
 [fixed] If import video has 10 bit, but encoder dont have 10 bit, revert to 8 bit
 [fixed] Video plugin definition file, preset and tune now have off/disable entry #127
@@ -14,6 +15,7 @@
 [fixed] Change different encoder cause wrong "extra command-line"
 [fixed] Relative path for Windows XP
 [fixed] Output folder require full path
+[fixed] Sorted Mime Type, allow user to edit
 [change] Default Windows size from 800x600 to 900x650
 [change] Banner drawing error tag change to warning tag
 [change] Improve encoding queue code

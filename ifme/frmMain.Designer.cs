@@ -130,6 +130,7 @@
             this.btnSubAdd = new System.Windows.Forms.Button();
             this.tabAttachment = new System.Windows.Forms.TabPage();
             this.pnlAttachment = new System.Windows.Forms.Panel();
+            this.btnAttchAdd2 = new System.Windows.Forms.Button();
             this.cboAttachMime = new System.Windows.Forms.ComboBox();
             this.lblAttachMime = new System.Windows.Forms.Label();
             this.lstAttach = new System.Windows.Forms.ListView();
@@ -1333,7 +1334,7 @@
             // colSubFileName
             // 
             this.colSubFileName.Text = "File name";
-            this.colSubFileName.Width = 482;
+            this.colSubFileName.Width = 562;
             // 
             // colSubLang
             // 
@@ -1395,6 +1396,7 @@
             // 
             // pnlAttachment
             // 
+            this.pnlAttachment.Controls.Add(this.btnAttchAdd2);
             this.pnlAttachment.Controls.Add(this.cboAttachMime);
             this.pnlAttachment.Controls.Add(this.lblAttachMime);
             this.pnlAttachment.Controls.Add(this.lstAttach);
@@ -1406,16 +1408,25 @@
             this.pnlAttachment.Size = new System.Drawing.Size(862, 268);
             this.pnlAttachment.TabIndex = 0;
             // 
+            // btnAttchAdd2
+            // 
+            this.btnAttchAdd2.Image = global::ifme.Properties.Resources.icon22_addred;
+            this.btnAttchAdd2.Location = new System.Drawing.Point(33, 3);
+            this.btnAttchAdd2.Name = "btnAttchAdd2";
+            this.btnAttchAdd2.Size = new System.Drawing.Size(24, 24);
+            this.btnAttchAdd2.TabIndex = 1;
+            this.btnAttchAdd2.UseVisualStyleBackColor = true;
+            this.btnAttchAdd2.Click += new System.EventHandler(this.btnAttchAdd2_Click);
+            // 
             // cboAttachMime
             // 
             this.cboAttachMime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboAttachMime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAttachMime.FormattingEnabled = true;
             this.cboAttachMime.Location = new System.Drawing.Point(3, 244);
             this.cboAttachMime.Name = "cboAttachMime";
             this.cboAttachMime.Size = new System.Drawing.Size(856, 21);
-            this.cboAttachMime.TabIndex = 6;
+            this.cboAttachMime.TabIndex = 5;
             this.cboAttachMime.SelectedIndexChanged += new System.EventHandler(this.cboAttachMime_SelectedIndexChanged);
             this.cboAttachMime.Leave += new System.EventHandler(this.MediaApply);
             // 
@@ -1426,7 +1437,7 @@
             this.lblAttachMime.Location = new System.Drawing.Point(3, 220);
             this.lblAttachMime.Name = "lblAttachMime";
             this.lblAttachMime.Size = new System.Drawing.Size(856, 21);
-            this.lblAttachMime.TabIndex = 5;
+            this.lblAttachMime.TabIndex = 4;
             this.lblAttachMime.Text = "&MIME Type:";
             this.lblAttachMime.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -1444,7 +1455,7 @@
             this.lstAttach.Location = new System.Drawing.Point(3, 33);
             this.lstAttach.Name = "lstAttach";
             this.lstAttach.Size = new System.Drawing.Size(856, 184);
-            this.lstAttach.TabIndex = 4;
+            this.lstAttach.TabIndex = 3;
             this.lstAttach.UseCompatibleStateImageBehavior = false;
             this.lstAttach.View = System.Windows.Forms.View.Details;
             this.lstAttach.SelectedIndexChanged += new System.EventHandler(this.lstAttach_SelectedIndexChanged);
@@ -1454,7 +1465,7 @@
             // colAttachFileName
             // 
             this.colAttachFileName.Text = "File name";
-            this.colAttachFileName.Width = 500;
+            this.colAttachFileName.Width = 580;
             // 
             // colAttachMime
             // 
@@ -1464,10 +1475,10 @@
             // btnAttachDel
             // 
             this.btnAttachDel.Image = global::ifme.Properties.Resources.icon16_del;
-            this.btnAttachDel.Location = new System.Drawing.Point(33, 3);
+            this.btnAttachDel.Location = new System.Drawing.Point(63, 3);
             this.btnAttachDel.Name = "btnAttachDel";
             this.btnAttachDel.Size = new System.Drawing.Size(24, 24);
-            this.btnAttachDel.TabIndex = 1;
+            this.btnAttachDel.TabIndex = 2;
             this.btnAttachDel.UseVisualStyleBackColor = true;
             this.btnAttachDel.Click += new System.EventHandler(this.btnAttachDel_Click);
             // 
@@ -1960,6 +1971,7 @@
         private System.Windows.Forms.ComboBox cboAudioStreamLang;
         private System.Windows.Forms.ColumnHeader colVideoLang;
         private System.Windows.Forms.Button btnDonate;
+        private System.Windows.Forms.Button btnAttchAdd2;
     }
 }
 

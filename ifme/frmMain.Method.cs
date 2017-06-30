@@ -61,10 +61,9 @@ namespace ifme
             cboAudioStreamLang.SelectedValue = "und";
 
             // Display MIME ComboBox
-            cboAttachMime.DataSource = new BindingSource(Get.MimeList, null);
-			cboAttachMime.DisplayMember = "Value";
-			cboAttachMime.ValueMember = "Key";
-			cboAttachMime.SelectedValue = ".ttf";
+            foreach (var item in Get.MimeTypeList)
+                cboAttachMime.Items.Add(item);
+            cboAttachMime.Text = "application/octet-stream";
 
             // Load everyting
             ApplyLanguage();
@@ -631,7 +630,7 @@ namespace ifme
 
 					Width = item.Width,
 					Height = item.Height,
-					FrameRate = (float)Math.Floor(item.FrameRateAvg),
+					FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
@@ -674,6 +673,18 @@ namespace ifme
 					Format = Get.CodecFormat(item.Codec),
 				});
 			}
+
+            foreach (var item in media.Attachment)
+            {
+                queue.Attachment.Add(new MediaQueueAttachment
+                {
+                    Enable = true,
+                    File = file,
+                    Id = item.Id,
+                    Name = item.FileName,
+                    Mime = item.MimeType
+                });
+            }
 
 			var lst = new ListViewItem(new[]
 			{
@@ -795,18 +806,43 @@ namespace ifme
 				var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 				var mime = "application/octet-stream";
 
-				Get.MimeList.TryGetValue(Path.GetExtension(file), out mime);
+                mime = Get.MimeType(Path.GetExtension(file));
 
-				queue.Attachment.Add(new MediaQueueAttachment
-				{
-					Enable = true,
-					File = file,
-					Mime = mime
-				});
-			}
+                queue.Attachment.Add(new MediaQueueAttachment
+                {
+                    Enable = true,
+                    File = file,
+                    Name = Path.GetFileName(file),
+                    Mime = mime
+                });
+            }
 		}
 
-		private void MediaFormatDefault(object sender, EventArgs e)
+        private void AttachmentAdd2(string file)
+        {
+            if (lstMedia.SelectedItems.Count > 0)
+            {
+                var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+
+                var stream = new FFmpegDotNet.FFmpeg.Stream(file).Attachment;
+
+                if (stream.Count > 0)
+                {
+                    foreach (var item in stream)
+                    {
+                        queue.Attachment.Add(new MediaQueueAttachment
+                        {
+                            Enable = true,
+                            File = file,
+                            Name = item.FileName,
+                            Mime = item.MimeType
+                        });
+                    }
+                }
+            }
+        }
+
+        private void MediaFormatDefault(object sender, EventArgs e)
 		{
 			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
 			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
@@ -1221,6 +1257,18 @@ namespace ifme
 					}
 				}
 
+                if (mf.Attachment.Count > 0)
+                {
+                    md += "\r\nAttachment\r\n";
+                    foreach (var item in mf.Attachment)
+                    {
+                        md +=
+                            $"ID                 : {item.Id:00}\r\n" +
+                            $"File name          : {item.FileName}\r\n" +
+                            $"Mime               : {item.MimeType}\r\n";
+                    }
+                }
+
 				txtMediaInfo.Text = md;
 			}
 			catch
@@ -1333,10 +1381,12 @@ namespace ifme
 			{
 				foreach (var item in media.Attachment)
 				{
-					lstAttach.Items.Add(new ListViewItem(new[]
+                    var fName = Path.GetFileName(item.File);
+
+                    lstAttach.Items.Add(new ListViewItem(new[]
 					{
-						$"{item.File}",
-						$"{item.Mime}"
+						$"{(string.Equals(fName, item.Name) ? fName : $"{fName} ({item.Name})")}",
+                        $"{item.Mime}"
 					}));
 				}
 			}
