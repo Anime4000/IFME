@@ -4,7 +4,7 @@
 	"AuthorProfile": "https://nippombashi.net/",
 	"UIFontWindows": "MS PGothic, 9pt",
 	"UIFontLinux": "Noto Sans CJK JP, 9pt",
-	"ToolTipDonate": "ご利用いただきありがとうございます、 あなたはそれを楽しむことを願っています。\nあなたはこのプロジェクトに寄付することができますので、私は改善し続けることができます。\n寄付する方法をこのボタンをクリックしてください。",
+	"ToolTipDonate": "ご利用いただきありがとうございます、 楽しんでください。\nあなたの寄付は今後このプロジェクトの改善に繋がります。\n寄付するにはこのボタンをクリックしてください",
 	"frmMain": {
 		"tabGeneral": "基本",
 		"grpTargetFormat": "ターゲットフォーマット(&T)",
@@ -65,11 +65,11 @@
 		"rdoNamePostfixCustom": "カスタム(&K):",
 		"tabOptionEncoding": "エンコーディング",
 		"grpAviSynth": "&AviSynth",
-		"lblAviSynthInstall": "インストール済み!",
-		"lblAviSynthNoInstall": "インストールされていない",
+		"lblAviSynthInstall": "インストール済みです！",
+		"lblAviSynthNoInstall": "インストールされていません",
 		"grpFFmpeg": "デフォルトのデコーダ(&D)",
 		"rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth ST)",
-		"rdoFFmpeg64": "FFmpeg &64bit (大解像度と高ビット深度をサポートしています)",
+		"rdoFFmpeg64": "FFmpeg &64bit (高解像度と高ビット深度をサポートしています)",
 		"grpFrameCountOffset": "フレームカウントのオフセット(&F)",
 		"lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",
 		"tabOptionModule": "モジュール",
@@ -77,7 +77,7 @@
 		"btnOk": "&OK"
 	},
 	"frmShutdown": {
-		"lblInfo": "キューを保存して終了しますか",
+		"lblInfo": "処理終了後どうしますか？",
 		"btnOK": "&OK"
 	},
 	"frmAbout": {
@@ -90,12 +90,12 @@
 		"btnOK": "&OK"
 	},
 	"cmsNewImport": {
-		"tsmiNew": "新しい(&N)",
+		"tsmiNew": "新規(&N)",
 		"tsmiImport": "インポート(&I)"
 	},
 	"cmsEncodingPreset": {
-		"tsmiEncodingPresetSave": "セーブ(&S)",
-		"tsmiEncodingPresetSaveAs": "新規保管(&A)",
+		"tsmiEncodingPresetSave": "保存(&S)",
+		"tsmiEncodingPresetSaveAs": "新規保存(&A)",
 	},
 	"InputBoxNewMedia": {
 		"Title": "新しいビデオやオーディオ",
@@ -110,12 +110,12 @@
 		"Message": "エンコーダのコマンドライン引数を変更する\n例: --bitdepth 8"
 	},
 	"MsgBoxShutdown": {
-		"Title": "問題",
-		"Message": "シャットダウンまたは再起動が設定されています！\nこのコンピュータは、完了すると再起動またはシャットダウンします"
+		"Title": "注意",
+		"Message": "処理終了後シャットダウンまたは再起動が設定されています！\n続行しますか？"
 	},
 	"MsgBoxSaveFolder": {
 		"Title": "無効なパス",
-		"Message": "ネットワーク経由ではサポートされていない。"
+		"Message": "ネットワーク経由ではサポートされていない。ローカルドライブを選択してください。"
 	},
 	"MsgBoxCodecIncompatible": {
 		"Title": "互換性のないコーデック",
