@@ -799,7 +799,29 @@ namespace ifme
 			}
 		}
 
-		private void AttachmentAdd(string file)
+        private void SubtitleAdd2(string file)
+        {
+            if (lstMedia.SelectedItems.Count > 0)
+            {
+                var queue = (MediaQueue)lstMedia.SelectedItems[0].Tag;
+
+                var stream = new FFmpegDotNet.FFmpeg.Stream(file).Subtitle;
+
+                foreach (var item in stream)
+                {
+                    queue.Subtitle.Add(new MediaQueueSubtitle
+                    {
+                        Enable = true,
+                        File = file,
+                        Id = item.Id,
+                        Lang = item.Language,
+                        Format = Get.CodecFormat(item.Codec)
+                    });
+                }
+            }
+        }
+
+        private void AttachmentAdd(string file)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{

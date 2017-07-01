@@ -794,6 +794,15 @@ namespace ifme
 			UXReloadMedia();
 		}
 
+        private void btnSubAdd2_Click(object sender, EventArgs e)
+        {
+            if (lstMedia.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Video))
+                    SubtitleAdd2(item);
+
+            UXReloadMedia();
+        }
+
         private void btnSubDel_Click(object sender, EventArgs e)
         {
 			if (lstMedia.SelectedItems.Count > 0)

@@ -288,8 +288,8 @@ namespace ifme
 
 			if (queue.OutputFormat == TargetFormat.MP4)
 			{
-				string cmdvideo = string.Empty;
-				string cmdaudio = string.Empty;
+				var cmdvideo = string.Empty;
+				var cmdaudio = string.Empty;
 
 				var mp4vid = 0;
 				foreach (var video in Directory.GetFiles(tempDir, "video*"))
@@ -312,23 +312,36 @@ namespace ifme
 			}
 			else if (queue.OutputFormat == TargetFormat.MKV)
 			{
-				string cmdvideo = string.Empty;
-				string cmdaudio = string.Empty;
-				string cmdsubs = string.Empty;
-				string cmdattach = string.Empty;
-				string cmdchapter = string.Empty;
+				var mkvideo = string.Empty;
+				var mkaudio = string.Empty;
+				var mksubs = string.Empty;
+				var mkattach = string.Empty;
+				var mkchapter = string.Empty;
+
+                var ffvideo = string.Empty;
+                var ffaudio = string.Empty;
+                var ffsubs = string.Empty;
 
 				var tags = string.Format(Properties.Resources.MkvTags, Get.AppNameLong, Get.AppNameLib);
 				File.WriteAllText(Path.Combine(tempDir, "tags.xml"), tags);
 
 				foreach (var video in Directory.GetFiles(tempDir, "video*"))
-					cmdvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
+                {
+                    mkvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
+                    ffvideo += $"-i \"{video}\" ";
+                }
 				
 				foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
-					cmdaudio += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
+                {
+                    mkaudio += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
+                    ffaudio += $"-i \"{audio}\" ";
+                }
 				
 				foreach (var subs in Directory.GetFiles(tempDir, "subtitle*"))
-					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(subs)} \"{subs}\" ";
+                {
+                    mksubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(subs)} \"{subs}\" ";
+                    ffsubs += $"-i \"{subs}\" ";
+                }
 				
 				foreach (var attach in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
                 {
@@ -336,7 +349,7 @@ namespace ifme
                     {
                         if (string.Equals(item.Name, Path.GetFileName(attach)))
                         {
-                            cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{attach}\" ";
+                            mkattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{attach}\" ";
                             break; // save time, leave loop once found
                         }
                     }
@@ -346,11 +359,11 @@ namespace ifme
 				{
 					FileInfo ChapLen = new FileInfo(Path.Combine(tempDir, "chapters.xml"));
 					if (ChapLen.Length > 256)
-						cmdchapter = $"--chapters \"{Path.Combine(tempDir, "chapters.xml")}\"";
+						mkchapter = $"--chapters \"{Path.Combine(tempDir, "chapters.xml")}\"";
 				}
 
 				// try
-				var cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}";
+				var cmd = $"{mkvideo} {mkaudio} {mksubs} {mkattach} {mkchapter}";
 				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags -t 0:\"{Path.Combine(tempDir, "tags.xml")}\" {cmd}");
 
 				if (exitcode == 0)
@@ -366,7 +379,7 @@ namespace ifme
 					ConsoleEx.Write(LogLevel.Error, "MkvToolNix can't merge on first attempt, trying to skip adding tags, chapters & fonts!\n");
 
 					// try without chapter and fonts
-					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs}";
+					cmd = $"{mkvideo} {mkaudio} {mksubs}";
 					exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags {cmd}");
 
 					if (exitcode == 0)
@@ -379,16 +392,29 @@ namespace ifme
 					}
 					else
 					{
-                        // copy whole thing
-                        ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! BACKUP ALL RAW FILE TO SAVE FOLDER!\n");
-						Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
+                        // try with FFmpeg
+                        ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge!\n");
+
+                        cmd = $"{ffvideo} {ffaudio} {ffsubs}";
+                        exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"");
+
+                        if (exitcode == 0)
+                        {
+                            ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
+                        }
+                        else
+                        {
+                            // copy whole thing
+                            ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
+                            Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
+                        }
 					}
 				}
 			}
 			else if (queue.OutputFormat == TargetFormat.WEBM)
 			{
-				string cmdvideo = string.Empty;
-				string cmdaudio = string.Empty;
+				var cmdvideo = string.Empty;
+				var cmdaudio = string.Empty;
 
 				foreach (var video in Directory.GetFiles(tempDir, "video*"))
 				{

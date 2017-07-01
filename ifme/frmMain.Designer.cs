@@ -118,6 +118,7 @@
             this.btnAudioAdd = new System.Windows.Forms.Button();
             this.tabSubtitle = new System.Windows.Forms.TabPage();
             this.pnlSubtitle = new System.Windows.Forms.Panel();
+            this.btnSubAdd2 = new System.Windows.Forms.Button();
             this.cboSubLang = new System.Windows.Forms.ComboBox();
             this.lblSubLang = new System.Windows.Forms.Label();
             this.lstSub = new System.Windows.Forms.ListView();
@@ -1267,6 +1268,7 @@
             // 
             // pnlSubtitle
             // 
+            this.pnlSubtitle.Controls.Add(this.btnSubAdd2);
             this.pnlSubtitle.Controls.Add(this.cboSubLang);
             this.pnlSubtitle.Controls.Add(this.lblSubLang);
             this.pnlSubtitle.Controls.Add(this.lstSub);
@@ -1279,6 +1281,16 @@
             this.pnlSubtitle.Name = "pnlSubtitle";
             this.pnlSubtitle.Size = new System.Drawing.Size(862, 268);
             this.pnlSubtitle.TabIndex = 0;
+            // 
+            // btnSubAdd2
+            // 
+            this.btnSubAdd2.Image = global::ifme.Properties.Resources.icon16_add2;
+            this.btnSubAdd2.Location = new System.Drawing.Point(33, 3);
+            this.btnSubAdd2.Name = "btnSubAdd2";
+            this.btnSubAdd2.Size = new System.Drawing.Size(24, 24);
+            this.btnSubAdd2.TabIndex = 7;
+            this.btnSubAdd2.UseVisualStyleBackColor = true;
+            this.btnSubAdd2.Click += new System.EventHandler(this.btnSubAdd2_Click);
             // 
             // cboSubLang
             // 
@@ -1366,7 +1378,7 @@
             // btnSubDel
             // 
             this.btnSubDel.Image = global::ifme.Properties.Resources.icon16_del;
-            this.btnSubDel.Location = new System.Drawing.Point(33, 3);
+            this.btnSubDel.Location = new System.Drawing.Point(63, 3);
             this.btnSubDel.Name = "btnSubDel";
             this.btnSubDel.Size = new System.Drawing.Size(24, 24);
             this.btnSubDel.TabIndex = 1;
@@ -1410,7 +1422,7 @@
             // 
             // btnAttchAdd2
             // 
-            this.btnAttchAdd2.Image = global::ifme.Properties.Resources.icon22_addred;
+            this.btnAttchAdd2.Image = global::ifme.Properties.Resources.icon16_add2;
             this.btnAttchAdd2.Location = new System.Drawing.Point(33, 3);
             this.btnAttchAdd2.Name = "btnAttchAdd2";
             this.btnAttchAdd2.Size = new System.Drawing.Size(24, 24);
@@ -1972,6 +1984,7 @@
         private System.Windows.Forms.ColumnHeader colVideoLang;
         private System.Windows.Forms.Button btnDonate;
         private System.Windows.Forms.Button btnAttchAdd2;
+        private System.Windows.Forms.Button btnSubAdd2;
     }
 }
 
