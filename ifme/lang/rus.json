@@ -1,0 +1,139 @@
+{
+	"AuthorName": "zetcamp",
+	"AuthorEmail": "",
+	"AuthorProfile": "https://github.com/zetcamp/",
+	"UIFontWindows": "Tahoma, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
+	"ToolTipDonate": "Спасибо, что используете IFME! Надеюсь, что Вам понравится!\nВы всегда можете помочь проекту в развитии, материально поддержав его.\nКликните сюда, чтоб узнать, как это можно сделать.",
+	"frmMain": {
+		"tabGeneral": "Общие",
+		"grpTargetFormat": "&Контейнер",
+		"rdoFormatMp4": "&MP4",
+		"rdoFormatMkv": "M&KV",
+		"rdoFormatWebm": "&WEBM",
+		"rdoFormatAudioMp3": "MP&3",
+		"rdoFormatAudioMp4": "MP&4",
+		"rdoFormatAudioOgg": "&OGG",
+		"rdoFormatAudioOpus": "O&PUS",
+		"rdoFormatAudioFlac": "&FLAC (без потерь)",
+		"grpStreamInfo": "Медиа инфо",
+		"tabVideo": "Видео",
+		"chkVideoDeinterlace": "&Деинтерлейс?",
+		"grpVideoStream": "&Потоки",
+		"grpVideoCodec": "&Кодек",
+		"lblVideoEncoder": "&Энкодер:",
+		"lblVideoPreset": "Пресе&т:",
+		"lblVideoTune": "&Тюнинг:",
+		"lblVideoRateControl": "Режим кодировки:",
+		"lblVideoRateFactor": "Битрейт, качество:",
+		"lblVideoMultiPass": "К&ол-во проходов:",
+		"btnVideoAdv": "&Доп.настройки энкдера",
+		"grpVideoPicture": "&Картинка",
+		"lblVideoResolution": "&Разрешение:",
+		"lblVideoFrameRate": "&Частота кадров:",
+		"lblVideoBitDepth": "&Битность:",
+		"lblPixelFormat": "&Формат пикселя:",
+		"lblVideoDeinterlaceMode": "&Режим:",
+		"lblVideoDeinterlaceField": "Пол&я:",
+		"tabAudio": "Звук",
+		"grpAudioStream": "&Потоки",
+		"grpAudioCodec": "&Кодек",
+		"lblAudioEncoder": "&Энкодер:",
+		"lblAudioQuality": "&Качество:",
+		"lblAudioSampleRate": "Частот&а:",
+		"lblAudioChannel": "К&аналы:",
+		"btnAudioAdv": "&Доп.настройки энкдера",
+		"lblAudioMode": "&Режим:",
+		"tabSubtitle": "Субтитры",
+		"lblSubLang": "&Язык:",
+		"tabAttachment": "Вложения",
+		"lblAttachMime": "&MIME тип:",
+		"lblEncodingPreset": "Пресет &энкодера:",
+		"lblOutputFolder": "&Назначение:"
+	},
+	"frmOption": {
+		"tabOptionGeneral": "Общие",
+		"grpLanguage": "&Язык",
+		"grpTempFolder": "&Временная папка",
+		"grpNewFilename": "&Новое имя файла",
+		"grpNewFilenamePrefix": "П&рефикс",
+		"rdoNamePrefixNone": "&Нет",
+		"rdoNamePrefixDateTime": "&Дата Время",
+		"rdoNamePrefixCustom": "&Своё:",
+		"grpNewFilenamePostfix": "О&кончание",
+		"rdoNamePostfixNone": "Не&т",
+		"rdoNamePostfixCustom": "С&воё:",
+		"tabOptionEncoding": "Кодировка",
+		"grpAviSynth": "&AviSynth",
+		"lblAviSynthInstall": "Установлен!",
+		"lblAviSynthNoInstall": "Не установлен!",
+		"grpFFmpeg": "&Декодер по-умолчанию",
+		"rdoFFmpeg32": "FFmpeg &32бит (Поддержка AviSynth ST)",
+		"rdoFFmpeg64": "FFmpeg &64бит (Поддержка UHD && глубины цвета)",
+		"grpFrameCountOffset": "&Примерное число кадров",
+		"lblFrameCountOffset": "Переменное число кадров будет сконвертировано в константу. С указанием данного числа декодер будет пытаться скомпенсировать неправильное число кадров из повреждённого контейнера для того,чтоб при кодировке не потерять выпавшие кадры.",
+		"tabOptionModule": "Модуль",
+		"btnCancel": "&Отмена",
+		"btnOk": "&OK"
+	},
+	"frmShutdown": {
+		"lblInfo": "Что делать по окончании?",
+		"btnOK": "&OK"
+	},
+	"frmAbout": {
+		"lblDevTtitle": "Разработан",
+		"lblTechTitle": "Наработки",
+		"lblArtTitle": "Зарисовки"
+	},
+	"frmCheckUpdate": {
+		"btnDownload": "&Скачать",
+		"btnOK": "&OK"
+	},
+	"cmsNewImport": {
+		"tsmiNew": "&Новый",
+		"tsmiImport": "&Импорт"
+	},
+	"cmsEncodingPreset": {
+		"tsmiEncodingPresetSave": "&Сохранить",
+		"tsmiEncodingPresetSaveAs": "Сохранить &как",
+	},
+	"InputBoxNewMedia": {
+		"Title": "Новый медиафайл",
+		"Message": "Вы создаёте пустой контейнер для видео, аудио, субтитров или шрифтов.\nВы может добавлять файлы, конвертировать или просто соединять их (как в Mkvtoolnix или MP4Box).\n\nВведите имя нового файла:"
+	},
+	"InputBoxEncodingPreset": {
+		"Title": "Сохранить новый пресет",
+		"Message": "Вы сохраняете новый пресет на базе текущей конфигурации.\nЭтот пресет Вы можете применить к текущим файлам.\n\nВведите новое имя:"
+	},
+	"InputBoxCommandLine": {
+		"Title": "Ключи энкодера",
+		"Message": "Измените аргументы энкодера\nНапример: --bitdepth 8"
+	},
+	"MsgBoxShutdown": {
+		"Title": "Вопрос",
+		"Message": "Компьютер будет выключен или перезагрузится по окончании. Продолжить?"
+	},
+	"MsgBoxSaveFolder": {
+		"Title": "Не туда",
+		"Message": "Сохранение на сетевую шару не работает, выберите локальный диск."
+	},
+	"MsgBoxCodecIncompatible": {
+		"Title": "Несовместивый кодек",
+		"Message": "Выходной контейнер и кодек несовместимы! Выберите другой."
+	},
+	"ComboBoxDeInterlaceMode": [
+		"Деинтерлейс только кадров",
+		"Деинтерлейс каждого поля",
+		"Пропустить проверку чересстрочности кадра",
+		"Пропустить проверку чересстрочности полей"
+	],
+	"ComboBoxDeInterlaceField": [
+		"Верхнее поле первое",
+		"Нижнее поле первое"
+	],
+	"ComboBoxShutdown": [
+		"Ничего не делать",
+		"Перезапустить ПК",
+		"Выключить ПК"
+	]
+}
