@@ -163,6 +163,18 @@ namespace ifme
 			return file.Substring(file.Length - 3);
 		}
 
+        public static string LangCheck(string lang)
+        {
+            var temp = string.Empty;
+
+            if (LanguageCode.TryGetValue(lang, out temp))
+            {
+                return lang; // if found
+            }
+
+            return "und";
+        }
+
 		public static string FileSizeIEC(long InBytes)
 		{
 			string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };

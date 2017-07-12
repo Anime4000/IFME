@@ -617,7 +617,7 @@ namespace ifme
 					File = file,
 					Id = item.Id,
 					Duration = item.Duration,
-					Lang = item.Language,
+					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
 					Encoder = vdef.Encoder,
@@ -650,7 +650,7 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = item.Id,
-					Lang = item.Language,
+					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
 					Encoder = adef.Encoder,
@@ -669,7 +669,7 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = item.Id,
-					Lang = item.Language,
+					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 				});
 			}
@@ -718,7 +718,7 @@ namespace ifme
 					File = file,
 					Id = item.Id,
 					Duration = item.Duration,
-					Lang = item.Language,
+					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
 					Encoder = vdef.Encoder,
@@ -769,7 +769,7 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = item.Id,
-					Lang = item.Language,
+					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
 					Encoder = adef.Encoder,
