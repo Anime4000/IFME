@@ -1,0 +1,139 @@
+{
+	"AuthorName": "Zak Alqadi",
+	"AuthorEmail": "no email",
+	"AuthorProfile": "https://www.facebook.com/ZAKRIYA995",
+	"UIFontWindows": "Tahoma, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
+	"ToolTipDonate": "شكرا لاستخدام إفم، وآمل أن تستمتع به.\nيمكنك التبرع لهذا المشروع حتى أتمكن من الحفاظ على تحسينه.\nانقر على هذا الزر لمعرفة كيفية التبرع.",
+	"frmMain": {
+		"tabGeneral": "عام",
+		"grpTargetFormat": "&تنسيق الهدف",
+		"rdoFormatMp4": "&MP4",
+		"rdoFormatMkv": "M&KV",
+		"rdoFormatWebm": "&WEBM",
+		"rdoFormatAudioMp3": "MP&3",
+		"rdoFormatAudioMp4": "MP&4",
+		"rdoFormatAudioOgg": "&OGG",
+		"rdoFormatAudioOpus": "O&PUS",
+		"rdoFormatAudioFlac": "&FLAC (lossless)",
+		"grpStreamInfo": "معلومات الوسائط",
+		"tabVideo": "الفيديو",
+		"chkVideoDeinterlace": "تشابك؟",
+		"grpVideoStream": "&تيارات",
+		"grpVideoCodec": "&الترميز",
+		"lblVideoEncoder": "&التشفير:",
+		"lblVideoPreset": "مسبقا:",
+		"lblVideoTune": "&لحن:",
+		"lblVideoRateControl": "السيطرة على المعدل:",
+		"lblVideoRateFactor": "عامل معدل:",
+		"lblVideoMultiPass": "المتعددة الدخول:",
+		"btnVideoAdv": "&خيارات التشفير المتقدمة",
+		"grpVideoPicture": "&صورة",
+		"lblVideoResolution": "القرار:",
+		"lblVideoFrameRate": "معدل الإطار:",
+		"lblVideoBitDepth": "عمق بت:",
+		"lblPixelFormat": "تنسيق بكسل:",
+		"lblVideoDeinterlaceMode": "الوضع:",
+		"lblVideoDeinterlaceField": "مجالات:",
+		"tabAudio": "صوت",
+		"grpAudioStream": "تيارات",
+		"grpAudioCodec": "الترميز",
+		"lblAudioEncoder": "التشفير:",
+		"lblAudioQuality": "جودة:",
+		"lblAudioSampleRate": "معدل العينة:",
+		"lblAudioChannel": "قناة:",
+		"btnAudioAdv": "خيارات التشفير المتقدمة",
+		"lblAudioMode": "الوضع:",
+		"tabSubtitle": "عنوان فرعي",
+		"lblSubLang": "لغة:",
+		"tabAttachment": "مرفقات",
+		"lblAttachMime": "نوع التمثيل الصامت:",
+		"lblEncodingPreset": "ترميز مسبق:",
+		"lblOutputFolder": "المكان المقصود:"
+	},
+	"frmOption": {
+		"tabOptionGeneral": "عام",
+		"grpLanguage": "لغة",
+		"grpTempFolder": "المجلد المؤقت",
+		"grpNewFilename": "اسم ملف جديد",
+		"grpNewFilenamePrefix": "اختصار",
+		"rdoNamePrefixNone": "لا شيء",
+		"rdoNamePrefixDateTime": "تاريخ الوقت",
+		"rdoNamePrefixCustom": "العادة:",
+		"grpNewFilenamePostfix": "بوستفيكس",
+		"rdoNamePostfixNone": "لا شيء",
+		"rdoNamePostfixCustom": "العادة:",
+		"tabOptionEncoding": "التشفير",
+		"grpAviSynth": "&افيسينث",
+		"lblAviSynthInstall": "المثبتة!",
+		"lblAviSynthNoInstall": "غير مثبت!",
+		"grpFFmpeg": "مفكك التشفير الافتراضي",
+		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth ST)",
+		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
+		"grpFrameCountOffset": "عد إطار الإزاحة",
+		"lblFrameCountOffset": "وسيتم تحويل معدل الرتل المتغير إلى معدل رتل ثابت. وبإضافة قيمة إزاحة، يعوض مفكك الشفرة بيانات الحاوية المكسورة مع عدد إطارات أعلى لضمان عدم وجود إطارات مفقودة أثناء التشفير.",
+		"tabOptionModule": "وحدة",
+		"btnCancel": "إلغاء",
+		"btnOk": "موافق"
+	},
+	"frmShutdown": {
+		"lblInfo": "ماذا أفعل بعد التشفير؟",
+		"btnOK": "موافق"
+	},
+	"frmAbout": {
+		"lblDevTtitle": "طورت بواسطة",
+		"lblTechTitle": "التقنيات المستخدمة",
+		"lblArtTitle": "العمل الفني من قبل"
+	},
+	"frmCheckUpdate": {
+		"btnDownload": "تحميل",
+		"btnOK": "موافق"
+	},
+	"cmsNewImport": {
+		"tsmiNew": "جديد",
+		"tsmiImport": "استيراد"
+	},
+	"cmsEncodingPreset": {
+		"tsmiEncodingPresetSave": "حفظ",
+		"tsmiEncodingPresetSaveAs": "حفظ باسم",
+	},
+	"InputBoxNewMedia": {
+		"Title": "ملف وسائط جديد",
+		"Message": "أنت على وشك إنشاء ساحة تخزين فارغة من الفيديو والصوت والترجمات المصاحبة والخطوط.\nيمكنك استخدامه لإضافة ملفات، وتحويلها أو مجرد دمجها (مثل Mkvtoolnix or MP4Box)\n\nأدخل اسم ملف جديد:"
+	},
+	"InputBoxEncodingPreset": {
+		"Title": "أدخل اسم ملف جديد:",
+		"Message": "أنت على وشك إنشاء إعداد مسبق جديد للترميز استنادا إلى التهيئة الحالية.\nأنت على وشك إنشاء إعداد مسبق جديد للترميز استنادا إلى التهيئة الحالية."
+	},
+	"InputBoxCommandLine": {
+		"Title": "سطر الأوامر التشفير",
+		"Message": "تعديل وسيطات سطر الأوامر التشفير\nمثال: --bitdepth 8"
+	},
+	"MsgBoxShutdown": {
+		"Title": "سؤال",
+		"Message": "سيتم إيقاف تشغيل هذا الكمبيوتر أو إعادة تشغيل بعد الانتهاء من كل شيء. هل تريد المتابعة؟"
+	},
+	"MsgBoxSaveFolder": {
+		"Title": "مسار غير صالح",
+		"Message": "لا يتم توفير الحفظ عبر الشبكة، يرجى اختيار محرك أقراص."
+	},
+	"MsgBoxCodecIncompatible": {
+		"Title": "الترميز غير متوافق",
+		"Message": "تنسيق الإخراج و الترميز غير متوافق! اختيار واحد مختلف."
+	},
+	"ComboBoxDeInterlaceMode": [
+		"تشابك إطارات فقط",
+		"تشابك كل حقل",
+		"تخطي الاختيار إطار تشابك المكاني",
+		"تخطي الاختيار الميداني للتداخل المكاني"
+	],
+	"ComboBoxDeInterlaceField": [
+		"تخطي الاختيار الميداني للتداخل المكاني",
+		"الحقل السفلي أولا"
+	],
+	"ComboBoxShutdown": [
+		"لا تفعل شيئا",
+		"إعادة بدء",
+		"اغلق"
+	]
+}

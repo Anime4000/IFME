@@ -199,6 +199,9 @@
     <None Include="language.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="lang\ara.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="lang\eng.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

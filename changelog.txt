@@ -1,5 +1,6 @@
-﻿Version 7.4
------------
+﻿Version 7.4 Mind Exploration
+----------------------------
+[new] Araabic localistion
 [new] Russian localisation #131
 [fixed] encoded x264 not merge in MP4 files
 [fixed] Invalid FFmpeg Probe ISO639-2 Language Code #132
