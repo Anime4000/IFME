@@ -39,7 +39,7 @@ For Ubuntu, Linux, you need:
 
 #### Recommended
 * OS: 64-bit Windows 10 & Linux (Ubuntu, etc...)
-* CPU: Intel Core i7 7700K or AMD Ryzen 7 1700
+* CPU: Intel Core i7 7700K or AMD Ryzen 5 1400
 * RAM: 8GB DDR4
 * HDD: 10GB
 * Internet Connection
