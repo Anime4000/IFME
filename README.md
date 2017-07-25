@@ -28,7 +28,6 @@ For Ubuntu, Linux, you need:
 * RAM: 1GB DDR2
 * HDD: 1GB
 * Internet Connection
-*WARNING: 32-bit CPU don't have AVX instruction set*
 
 #### 64-bit
 * OS: 64-bit Windows (7 to 10) & Linux (Ubuntu, etc...)
