@@ -160,26 +160,15 @@ namespace ifme
 
             MediaPreset.Load();
 
-            foreach (var item in MediaPreset.List)
+            foreach (var item in MediaPreset.List.AsEnumerable().Reverse())
                 encpre.Add(item.Key, item.Value.Name);
-
-            var ci = cboEncodingPreset.Items.Count;
-            var si = cboEncodingPreset.SelectedIndex;
 
             cboEncodingPreset.DataSource = new BindingSource(encpre, null);
             cboEncodingPreset.DisplayMember = "Value";
             cboEncodingPreset.ValueMember = "Key";
 
-            // If presets same, choose last selected, otherwise, use newer one
-            if (ci == cboEncodingPreset.Items.Count)
-            {
-                if (si < cboEncodingPreset.Items.Count)
-                    cboEncodingPreset.SelectedIndex = si;
-            }
-            else
-            {
-                cboEncodingPreset.SelectedIndex = cboEncodingPreset.Items.Count - 1;
-            }
+            if (cboEncodingPreset.Items.Count > 0)
+                cboEncodingPreset.SelectedIndex = 0; 
         }
 
         private void CheckVersion()
