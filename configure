@@ -96,10 +96,10 @@ else
 	echo "    Plugin not found, downloading..."
 	if [ $(uname -m | grep '64') ]; then
 		echo "    64-bit OS"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-01_amd64.tar.xz -O plugin.tar.xz
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-30_amd64.tar.xz -O plugin.tar.xz
 	else
 		echo "    32-bit OS"
-		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-01_i686.tar.xz -O plugin.tar.xz
+		wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-07-30_i686.tar.xz -O plugin.tar.xz
 	fi
 fi
 
