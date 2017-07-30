@@ -72,7 +72,7 @@ namespace ifme
 			}
 
             ConsoleEx.Write(LogLevel.Normal, "Run command: ");
-            ConsoleEx.Write(ConsoleColor.DarkYellow, $"{EnvCmd}\n");
+            ConsoleEx.Write(ConsoleColor.DarkCyan, $"{EnvCmd}\n");
             
 			Process Proc = new Process();
 			Proc.StartInfo = new ProcessStartInfo(cmd, arg)

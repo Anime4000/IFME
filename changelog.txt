@@ -2,6 +2,7 @@
 ------------------------------
 [new] Arabic localistion
 [new] Russian localisation #131
+[fixed] Redundant chapters on each stream (keep only one)
 [fixed] encoded x264 not merge in MP4 files
 [fixed] Invalid FFmpeg Probe ISO639-2 Language Code #132
 [fixed] (UX) Target Format not updated when change

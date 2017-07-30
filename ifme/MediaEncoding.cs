@@ -77,7 +77,7 @@ namespace ifme
 				}
 				else
 				{
-					ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -i \"{item.File}\" -map 0:{item.Id} -y subtitle{id++:D4}_{item.Lang}.{item.Format}");
+					ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats -i \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{id++:D4}_{item.Lang}.{item.Format}");
 				}
 			}
 
@@ -126,7 +126,7 @@ namespace ifme
 					}
 					else
 					{
-						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
 					}
 
 					if (ec == 0)
@@ -237,7 +237,7 @@ namespace ifme
                             if (vc.Args.Pipe)
                                 ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
                             else
-                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 
                             p++;
 
@@ -251,7 +251,7 @@ namespace ifme
 						}
 						else
 						{
-							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 						}
 					}
 				}
