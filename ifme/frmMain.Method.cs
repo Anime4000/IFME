@@ -855,6 +855,9 @@ namespace ifme
 
         private void MediaFormatDefault(object sender, EventArgs e)
 		{
+            if (lstMedia.SelectedItems.Count < 0)
+                return;
+
 			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
 			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
 
@@ -927,7 +930,7 @@ namespace ifme
 			{
 				var mf = q.Tag as MediaQueue;
 
-				foreach (var v in mf.Video)
+                foreach (var v in mf.Video)
 				{
 					v.Encoder = vdef.Encoder;
 					v.EncoderPreset = vdef.Preset;
@@ -958,23 +961,50 @@ namespace ifme
 			foreach (ListViewItem q in lstMedia.SelectedItems)
 			{
 				var m = q.Tag as MediaQueue;
+                var t = string.Empty;
 
 				if (rdoFormatMp4.Checked)
-					m.OutputFormat = TargetFormat.MP4;
+                {
+                    m.OutputFormat = TargetFormat.MP4;
+                    t = "MP4";
+                }
 				else if (rdoFormatMkv.Checked)
-					m.OutputFormat = TargetFormat.MKV;
+                {
+                    m.OutputFormat = TargetFormat.MKV;
+                    t = "MKV";
+                }
 				else if (rdoFormatWebm.Checked)
-					m.OutputFormat = TargetFormat.WEBM;
+                {
+                    m.OutputFormat = TargetFormat.WEBM;
+                    t = "WEBM";
+                }
 				else if (rdoFormatAudioMp3.Checked)
-					m.OutputFormat = TargetFormat.MP3;
+                {
+                    m.OutputFormat = TargetFormat.MP3;
+                    t = "MP3";
+                }
 				else if (rdoFormatAudioMp4.Checked)
-					m.OutputFormat = TargetFormat.M4A;
+                {
+                    m.OutputFormat = TargetFormat.M4A;
+                    t = "M4A";
+                }
 				else if (rdoFormatAudioOgg.Checked)
-					m.OutputFormat = TargetFormat.OGG;
+                {
+                    m.OutputFormat = TargetFormat.OGG;
+                    t = "OGG";
+                }
 				else if (rdoFormatAudioOpus.Checked)
-					m.OutputFormat = TargetFormat.OPUS;
+                {
+                    m.OutputFormat = TargetFormat.OPUS;
+                    t = "OPUS";
+                }
 				else if (rdoFormatAudioFlac.Checked)
-					m.OutputFormat = TargetFormat.FLAC;
+                {
+                    m.OutputFormat = TargetFormat.FLAC;
+                    t = "FLAC";
+                }
+
+                q.SubItems[3].Text = t;
 
 				if (lstMedia.SelectedItems.Count > 1)
 				{
