@@ -1,6 +1,6 @@
 # Internet Friendly Media Encoder
 ## Introduction
-Back on April 2013, there are no **nVidia ShadowPlay** or even **AMD Gaming Evolve**. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
+Back on 2012 as collage student, there are no **nVidia ShadowPlay** or even **AMD Gaming Evolve**. Originally developed for compressing FRAPS game recording by using x264, often friends showing that IFME simple and lightweight, from that IFME was born.
 
 ## License
 IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allow to sell either in **Source Code** or **Binaries** form.
