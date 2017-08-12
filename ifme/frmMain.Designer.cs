@@ -166,6 +166,8 @@
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.ttProInfo = new System.Windows.Forms.ToolTip(this.components);
             this.btnDonate = new System.Windows.Forms.Button();
+            this.btnBench = new System.Windows.Forms.Button();
+            this.colAttachId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -210,7 +212,7 @@
             this.lstMedia.Location = new System.Drawing.Point(12, 114);
             this.lstMedia.Name = "lstMedia";
             this.lstMedia.Size = new System.Drawing.Size(876, 161);
-            this.lstMedia.TabIndex = 13;
+            this.lstMedia.TabIndex = 14;
             this.lstMedia.UseCompatibleStateImageBehavior = false;
             this.lstMedia.View = System.Windows.Forms.View.Details;
             this.lstMedia.SelectedIndexChanged += new System.EventHandler(this.lstMedia_SelectedIndexChanged);
@@ -255,7 +257,7 @@
             this.tabMediaConfig.Name = "tabMediaConfig";
             this.tabMediaConfig.SelectedIndex = 0;
             this.tabMediaConfig.Size = new System.Drawing.Size(876, 300);
-            this.tabMediaConfig.TabIndex = 14;
+            this.tabMediaConfig.TabIndex = 15;
             this.tabMediaConfig.SelectedIndexChanged += new System.EventHandler(this.tabMediaConfig_SelectedIndexChanged);
             // 
             // tabGeneral
@@ -1460,6 +1462,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstAttach.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colAttachId,
             this.colAttachFileName,
             this.colAttachMime});
             this.lstAttach.FullRowSelect = true;
@@ -1477,12 +1480,12 @@
             // colAttachFileName
             // 
             this.colAttachFileName.Text = "File name";
-            this.colAttachFileName.Width = 580;
+            this.colAttachFileName.Width = 562;
             // 
             // colAttachMime
             // 
             this.colAttachMime.Text = "MIME";
-            this.colAttachMime.Width = 252;
+            this.colAttachMime.Width = 220;
             // 
             // btnAttachDel
             // 
@@ -1514,7 +1517,7 @@
             this.txtFolderOutput.Location = new System.Drawing.Point(158, 615);
             this.txtFolderOutput.Name = "txtFolderOutput";
             this.txtFolderOutput.Size = new System.Drawing.Size(700, 22);
-            this.txtFolderOutput.TabIndex = 19;
+            this.txtFolderOutput.TabIndex = 20;
             this.txtFolderOutput.TextChanged += new System.EventHandler(this.txtFolderOutput_TextChanged);
             // 
             // lblOutputFolder
@@ -1523,7 +1526,7 @@
             this.lblOutputFolder.Location = new System.Drawing.Point(12, 614);
             this.lblOutputFolder.Name = "lblOutputFolder";
             this.lblOutputFolder.Size = new System.Drawing.Size(140, 23);
-            this.lblOutputFolder.TabIndex = 18;
+            this.lblOutputFolder.TabIndex = 19;
             this.lblOutputFolder.Text = "&Destination:";
             this.lblOutputFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1534,7 +1537,7 @@
             this.btnBrowseFolderOutput.Location = new System.Drawing.Point(864, 614);
             this.btnBrowseFolderOutput.Name = "btnBrowseFolderOutput";
             this.btnBrowseFolderOutput.Size = new System.Drawing.Size(24, 24);
-            this.btnBrowseFolderOutput.TabIndex = 20;
+            this.btnBrowseFolderOutput.TabIndex = 21;
             this.btnBrowseFolderOutput.UseVisualStyleBackColor = true;
             this.btnBrowseFolderOutput.Click += new System.EventHandler(this.btnBrowseFolderOutput_Click);
             // 
@@ -1544,7 +1547,7 @@
             this.lblEncodingPreset.Location = new System.Drawing.Point(12, 587);
             this.lblEncodingPreset.Name = "lblEncodingPreset";
             this.lblEncodingPreset.Size = new System.Drawing.Size(140, 22);
-            this.lblEncodingPreset.TabIndex = 15;
+            this.lblEncodingPreset.TabIndex = 16;
             this.lblEncodingPreset.Text = "Encoding &Preset:";
             this.lblEncodingPreset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1558,7 +1561,7 @@
             this.cboEncodingPreset.Location = new System.Drawing.Point(158, 587);
             this.cboEncodingPreset.Name = "cboEncodingPreset";
             this.cboEncodingPreset.Size = new System.Drawing.Size(700, 22);
-            this.cboEncodingPreset.TabIndex = 16;
+            this.cboEncodingPreset.TabIndex = 17;
             this.cboEncodingPreset.SelectedIndexChanged += new System.EventHandler(this.cboEncodingPreset_SelectedIndexChanged);
             // 
             // btnEncodingPresetSave
@@ -1568,7 +1571,7 @@
             this.btnEncodingPresetSave.Location = new System.Drawing.Point(864, 586);
             this.btnEncodingPresetSave.Name = "btnEncodingPresetSave";
             this.btnEncodingPresetSave.Size = new System.Drawing.Size(24, 24);
-            this.btnEncodingPresetSave.TabIndex = 17;
+            this.btnEncodingPresetSave.TabIndex = 18;
             this.btnEncodingPresetSave.UseVisualStyleBackColor = true;
             this.btnEncodingPresetSave.Click += new System.EventHandler(this.btnEncodingPresetSave_Click);
             // 
@@ -1589,7 +1592,7 @@
             this.lblSplit2.Location = new System.Drawing.Point(772, 76);
             this.lblSplit2.Name = "lblSplit2";
             this.lblSplit2.Size = new System.Drawing.Size(2, 32);
-            this.lblSplit2.TabIndex = 9;
+            this.lblSplit2.TabIndex = 10;
             // 
             // pbxBanner
             // 
@@ -1612,7 +1615,7 @@
             this.btnDonePowerOff.Location = new System.Drawing.Point(734, 76);
             this.btnDonePowerOff.Name = "btnDonePowerOff";
             this.btnDonePowerOff.Size = new System.Drawing.Size(32, 32);
-            this.btnDonePowerOff.TabIndex = 8;
+            this.btnDonePowerOff.TabIndex = 9;
             this.btnDonePowerOff.UseVisualStyleBackColor = true;
             this.btnDonePowerOff.Click += new System.EventHandler(this.btnDonePowerOff_Click);
             // 
@@ -1634,7 +1637,7 @@
             this.btnStop.Location = new System.Drawing.Point(856, 76);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(32, 32);
-            this.btnStop.TabIndex = 12;
+            this.btnStop.TabIndex = 13;
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -1646,7 +1649,7 @@
             this.btnPause.Location = new System.Drawing.Point(818, 76);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(32, 32);
-            this.btnPause.TabIndex = 11;
+            this.btnPause.TabIndex = 12;
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
@@ -1657,7 +1660,7 @@
             this.btnStart.Location = new System.Drawing.Point(780, 76);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(32, 32);
-            this.btnStart.TabIndex = 10;
+            this.btnStart.TabIndex = 11;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -1780,11 +1783,27 @@
             this.btnDonate.UseVisualStyleBackColor = true;
             this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
             // 
+            // btnBench
+            // 
+            this.btnBench.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBench.Image = global::ifme.Properties.Resources.icon22_bench;
+            this.btnBench.Location = new System.Drawing.Point(696, 76);
+            this.btnBench.Name = "btnBench";
+            this.btnBench.Size = new System.Drawing.Size(32, 32);
+            this.btnBench.TabIndex = 8;
+            this.btnBench.UseVisualStyleBackColor = true;
+            // 
+            // colAttachId
+            // 
+            this.colAttachId.Text = "Id";
+            this.colAttachId.Width = 50;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(900, 650);
+            this.Controls.Add(this.btnBench);
             this.Controls.Add(this.btnDonate);
             this.Controls.Add(this.pbxBanner);
             this.Controls.Add(this.lblSplit2);
@@ -1985,6 +2004,8 @@
         private System.Windows.Forms.Button btnDonate;
         private System.Windows.Forms.Button btnAttchAdd2;
         private System.Windows.Forms.Button btnSubAdd2;
+        private System.Windows.Forms.Button btnBench;
+        private System.Windows.Forms.ColumnHeader colAttachId;
     }
 }
 

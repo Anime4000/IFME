@@ -824,6 +824,7 @@ namespace ifme
                     Enable = true,
                     File = file,
                     Name = Path.GetFileName(file),
+                    Id = -1,
                     Mime = mime
                 });
             }
@@ -846,6 +847,7 @@ namespace ifme
                             Enable = true,
                             File = file,
                             Name = item.FileName,
+                            Id = item.Id,
                             Mime = item.MimeType
                         });
                     }
@@ -1426,6 +1428,7 @@ namespace ifme
 
                     lstAttach.Items.Add(new ListViewItem(new[]
 					{
+                        $"{item.Id}",
 						$"{(string.Equals(fName, item.Name) ? fName : $"{fName} ({item.Name})")}",
                         $"{item.Mime}"
 					}));

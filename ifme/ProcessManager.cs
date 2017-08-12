@@ -38,22 +38,28 @@ namespace ifme
 		public static int Start(string ExePath, string Args)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
+			return Run(false, $"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
 		}
 
 		public static int Start(string ExePath, string Args, string WorkDir)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
+			return Run(false, $"\"{FixPath(ExePath)}\" {Args}", WorkDir);
 		}
 
 		public static int Start(string ExePath, string Args, string PipeExePath, string PipeArgs)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(PipeExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
+			return Run(false, $"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
 		}
 
-		private static int Run(string EnvCmd, string workDir)
+		public static int Start2(string ExePath, string Args, string WorkDir)
+		{
+			CrProc = Path.GetFileNameWithoutExtension(ExePath);
+			return Run(true, $"\"{FixPath(ExePath)}\" {Args}", WorkDir);
+		}
+
+		private static int Run(bool Silent, string EnvCmd, string workDir)
 		{
 			var cmd = string.Empty;
 			var arg = string.Empty;
@@ -71,9 +77,12 @@ namespace ifme
 				arg = "-c 'eval $HITOHA'";
 			}
 
-            ConsoleEx.Write(LogLevel.Normal, "Run command: ");
-            ConsoleEx.Write(ConsoleColor.DarkCyan, $"{EnvCmd}\n");
-            
+			if (!Silent)
+			{
+				ConsoleEx.Write(LogLevel.Normal, "Run command: ");
+				ConsoleEx.Write(ConsoleColor.DarkCyan, $"{EnvCmd}\n");
+			}
+
 			Process Proc = new Process();
 			Proc.StartInfo = new ProcessStartInfo(cmd, arg)
 			{
@@ -86,13 +95,13 @@ namespace ifme
 			return Proc.ExitCode;
 		}
 
-        private static string FixPath(string path)
-        {
-            if (OS.IsWindows)
-                return path.Replace('/', '\\');
-            else
-                return path.Replace('\\', '/');
-        }
+		private static string FixPath(string path)
+		{
+			if (OS.IsWindows)
+				return path.Replace('/', '\\');
+			else
+				return path.Replace('\\', '/');
+		}
 
 		public static void Stop()
 		{

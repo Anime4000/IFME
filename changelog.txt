@@ -6,6 +6,7 @@
 [fixed] encoded x264 not merge in MP4 files
 [fixed] Invalid FFmpeg Probe ISO639-2 Language Code #132
 [fixed] (UX) Target Format not updated when change
+[fixed] Using FFmpeg to merge files if mkvmerge fails
 [change] Latest encoding preset will be first item
 [update] x265 version 2.5+6
 
