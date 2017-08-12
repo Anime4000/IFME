@@ -10,29 +10,29 @@ using System.Windows.Forms;
 
 namespace ifme
 {
-    public partial class frmCheckUpdate : Form
-    {
-        public frmCheckUpdate()
-        {
-            InitializeComponent();
+	public partial class frmCheckUpdate : Form
+	{
+		public frmCheckUpdate()
+		{
+			InitializeComponent();
 
-            Icon = Get.AppIcon;
-            FormBorderStyle = FormBorderStyle.Sizable;
-        }
+			Icon = Get.AppIcon;
+			FormBorderStyle = FormBorderStyle.Sizable;
+		}
 
-        private void frmCheckUpdate_Load(object sender, EventArgs e)
-        {
-            InitializeUX();
-        }
+		private void frmCheckUpdate_Load(object sender, EventArgs e)
+		{
+			InitializeUX();
+		}
 
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+		private void btnOK_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
 
-        private void btnDownload_Click(object sender, EventArgs e)
-        {
-            Process.Start("http://x265.github.io/download.html");
-        }
-    }
+		private void btnDownload_Click(object sender, EventArgs e)
+		{
+			Process.Start("http://x265.github.io/download.html");
+		}
+	}
 }

@@ -8,79 +8,79 @@ using Mono.Options;
 
 namespace ifme
 {
-    static class Program
-    {
-        /// <summary>
-        /// Change program localisation, allow to cast properly
-        /// </summary>
-        /// <param name="culture">Culture Id, example: en-us</param>
-        static void SetDefaultCulture(CultureInfo culture)
-        {
-            Type type = typeof(CultureInfo);
+	static class Program
+	{
+		/// <summary>
+		/// Change program localisation, allow to cast properly
+		/// </summary>
+		/// <param name="culture">Culture Id, example: en-us</param>
+		static void SetDefaultCulture(CultureInfo culture)
+		{
+			Type type = typeof(CultureInfo);
 
-            try
-            {
-                type.InvokeMember("s_userDefaultCulture",
-                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    culture,
-                    new object[] { culture });
+			try
+			{
+				type.InvokeMember("s_userDefaultCulture",
+					BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+					null,
+					culture,
+					new object[] { culture });
 
-                type.InvokeMember("s_userDefaultUICulture",
-                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    culture,
-                    new object[] { culture });
-            }
-            catch { }
+				type.InvokeMember("s_userDefaultUICulture",
+					BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+					null,
+					culture,
+					new object[] { culture });
+			}
+			catch { }
 
-            try
-            {
-                type.InvokeMember("m_userDefaultCulture",
-                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    culture,
-                    new object[] { culture });
+			try
+			{
+				type.InvokeMember("m_userDefaultCulture",
+					BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+					null,
+					culture,
+					new object[] { culture });
 
-                type.InvokeMember("m_userDefaultUICulture",
-                    BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    culture,
-                    new object[] { culture });
-            }
-            catch { }
-        }
+				type.InvokeMember("m_userDefaultUICulture",
+					BindingFlags.SetField | BindingFlags.NonPublic | BindingFlags.Static,
+					null,
+					culture,
+					new object[] { culture });
+			}
+			catch { }
+		}
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            SetDefaultCulture(new CultureInfo("en-us"));
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
+		static void Main(string[] args)
+		{
+			SetDefaultCulture(new CultureInfo("en-us"));
 
-            var reset = false;
-            var help = false;
-            var p = new OptionSet()
-            {
-                { "r|reset", "Reset IFME to factory default", v => reset = v != null  },
-                { "h|help", "Show this message and exit", v => help = v != null }
-            };
+			var reset = false;
+			var help = false;
+			var p = new OptionSet()
+			{
+				{ "r|reset", "Reset IFME to factory default", v => reset = v != null  },
+				{ "h|help", "Show this message and exit", v => help = v != null }
+			};
 
-            try
-            {
-                p.Parse(args);
-            }
-            catch (OptionException e)
-            {
-                Console.Error.WriteLine(e.Message);
-                Console.Error.WriteLine("Try `ifme --help' for more information.");
+			try
+			{
+				p.Parse(args);
+			}
+			catch (OptionException e)
+			{
+				Console.Error.WriteLine(e.Message);
+				Console.Error.WriteLine("Try `ifme --help' for more information.");
 
-                return;
-            }
+				return;
+			}
 
-            Console.Title = Get.AppName;
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
+			Console.Title = Get.AppName;
+			Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine(Get.AppNameLong);
@@ -88,56 +88,56 @@ namespace ifme
 			Console.ResetColor();
 			Console.WriteLine();
 
-            if (help)
-            {
-                Console.Error.WriteLine("Usage: ifme [OPTION]");
-                Console.Error.WriteLine("Mandatory arguments to long option are mandatory for short options too.");
-                Console.Error.WriteLine("\nOptions:");
-                p.WriteOptionDescriptions(Console.Error);
-                Console.Error.WriteLine("\nProject home page: < https://x265.github.io/>");
-                Console.Error.WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
+			if (help)
+			{
+				Console.Error.WriteLine("Usage: ifme [OPTION]");
+				Console.Error.WriteLine("Mandatory arguments to long option are mandatory for short options too.");
+				Console.Error.WriteLine("\nOptions:");
+				p.WriteOptionDescriptions(Console.Error);
+				Console.Error.WriteLine("\nProject home page: < https://x265.github.io/>");
+				Console.Error.WriteLine("Report bugs to: <https://github.com/Anime4000/IFME/issues>");
 
-                return;
-            }
+				return;
+			}
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+			Console.ForegroundColor = ConsoleColor.Cyan;
 			Console.WriteLine($"(c) {DateTime.Now.Year} {Branding.CopyRight()}");
-            Console.ResetColor();
-            Console.WriteLine();
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Warning, DO NOT close this Terminal/Console, all useful info will be shown here.");
-            Console.ResetColor();
+			Console.ResetColor();
 			Console.WriteLine();
 
-            if (!OS.Is64bit)
-            {
-                Console.Error.WriteLine("Wrong CPU architecture, resetting!");
-                Properties.Settings.Default.FFmpegArch = 32;
-                Properties.Settings.Default.Save();
-            }
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("Warning, DO NOT close this Terminal/Console, all useful info will be shown here.");
+			Console.ResetColor();
+			Console.WriteLine();
 
-            if (reset)
-            {
-                Console.Error.WriteLine("Resetting user settings.");
+			if (!OS.Is64bit)
+			{
+				Console.Error.WriteLine("Wrong CPU architecture, resetting!");
+				Properties.Settings.Default.FFmpegArch = 32;
+				Properties.Settings.Default.Save();
+			}
 
-                Properties.Settings.Default.Reset();
-                Properties.Settings.Default.UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-            }
+			if (reset)
+			{
+				Console.Error.WriteLine("Resetting user settings.");
 
-            if (Properties.Settings.Default.UpgradeRequired)
-            {
-                Console.Error.WriteLine("Updating user settings.");
+				Properties.Settings.Default.Reset();
+				Properties.Settings.Default.UpgradeRequired = false;
+				Properties.Settings.Default.Save();
+			}
 
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-            }
+			if (Properties.Settings.Default.UpgradeRequired)
+			{
+				Console.Error.WriteLine("Updating user settings.");
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
-        }
-    }
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.UpgradeRequired = false;
+				Properties.Settings.Default.Save();
+			}
+
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new frmMain());
+		}
+	}
 }

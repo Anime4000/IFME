@@ -17,23 +17,23 @@ namespace ifme
 
 		private void frmOption_Load(object sender, EventArgs e)
 		{
-            InitializeUX();
-        }
+			InitializeUX();
+		}
 
-        private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cboLanguage.SelectedIndex >= 0)
-            {
-                var id = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
+		private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cboLanguage.SelectedIndex >= 0)
+			{
+				var id = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
 
-                if (Language.List.ContainsKey(id))
-                {
-                    var l = Language.List[id];
+				if (Language.List.ContainsKey(id))
+				{
+					var l = Language.List[id];
 
-                    lblLanguageAuthor.Text = $"{l.AuthorName} ({l.AuthorEmail})\n{l.AuthorProfile}";
-                }
-            }
-        }
+					lblLanguageAuthor.Text = $"{l.AuthorName} ({l.AuthorEmail})\n{l.AuthorProfile}";
+				}
+			}
+		}
 
 		private void btnTempPath_Click(object sender, EventArgs e)
 		{
@@ -60,8 +60,8 @@ namespace ifme
 		{
 			// Save all
 			// General
-            Properties.Settings.Default.Language = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
-            Properties.Settings.Default.TempDir = txtTempPath.Text;
+			Properties.Settings.Default.Language = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
+			Properties.Settings.Default.TempDir = txtTempPath.Text;
 			Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
 			Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
 
@@ -88,5 +88,5 @@ namespace ifme
 			// Final
 			Properties.Settings.Default.Save();
 		}
-    }
+	}
 }

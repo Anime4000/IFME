@@ -82,23 +82,23 @@ namespace ifme
 				}
 			}
 
-            id = 1;
+			id = 1;
 			foreach (var item in queue.Attachment)
 			{
-                if (item.Id == -1)
-				    File.Copy(item.File, Path.Combine(tempDir, "attachments", Path.GetFileName(item.File)));
+				if (item.Id == -1)
+					File.Copy(item.File, Path.Combine(tempDir, "attachments", Path.GetFileName(item.File)));
 
-                if (item.Id > -1)
-                    ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", Path.Combine(tempDir, "attachments"));
+				if (item.Id > -1)
+					ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", Path.Combine(tempDir, "attachments"));
 
-                ConsoleEx.Write(LogLevel.Normal, $"Extracted {id++} attachments.\r");
-            }
+				ConsoleEx.Write(LogLevel.Normal, $"Extracted {id++} attachments.\r");
+			}
 
-            Console.Write('\n');
+			Console.Write('\n');
 
 			if (!string.IsNullOrEmpty(queue.File))
 			{
-                var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.File}\" > chapters.xml");
+				var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.File}\" > chapters.xml");
 				if (ec >= 1)
 					File.Delete(Path.Combine(tempDir, "chapters.xml"));
 			}
@@ -159,96 +159,96 @@ namespace ifme
 				{
 					var vc = codec.Video;
 					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
-                    var outfile = $"video{id++:D4}_{item.Lang}.{vc.Extension}";
+					var outfile = $"video{id++:D4}_{item.Lang}.{vc.Extension}";
 
 					var yuv = $"yuv{item.PixelFormat}p";
-                    var res = string.Empty;
-                    var fps = string.Empty;
-                    var deinterlace = string.Empty;
+					var res = string.Empty;
+					var fps = string.Empty;
+					var deinterlace = string.Empty;
 
-                    var preset = string.Empty;
-                    var tune = string.Empty;
-                    var quality = string.Empty;
-                    var bitdepth = string.Empty;
-                    var framecount = string.Empty;
+					var preset = string.Empty;
+					var tune = string.Empty;
+					var quality = string.Empty;
+					var bitdepth = string.Empty;
+					var framecount = string.Empty;
 
-                    // cmd builder
-                    if (item.BitDepth > 8)
-                    {
-                        yuv += $"{item.BitDepth}le";
-                    }
+					// cmd builder
+					if (item.BitDepth > 8)
+					{
+						yuv += $"{item.BitDepth}le";
+					}
 
-                    if (item.FrameRate >= 5)
-                    {
-                        fps = $"-r {item.FrameRate}";
-                    }
+					if (item.FrameRate >= 5)
+					{
+						fps = $"-r {item.FrameRate}";
+					}
 
-                    if (item.Width >= 128 && item.Height >= 128)
-                    {
-                        res = $"-s {item.Width}x{item.Height}";
-                    }
+					if (item.Width >= 128 && item.Height >= 128)
+					{
+						res = $"-s {item.Width}x{item.Height}";
+					}
 
-                    if (item.DeInterlace)
-                    {
-                        deinterlace = $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"";
-                    }
+					if (item.DeInterlace)
+					{
+						deinterlace = $"-vf \"yadif={item.DeInterlaceMode}:{item.DeInterlaceField}:0\"";
+					}
 
-                    if (!vc.Args.Preset.IsDisable() && !item.EncoderPreset.IsDisable())
-                    {
-                        preset = $"{vc.Args.Preset} {item.EncoderPreset}";
-                    }
+					if (!vc.Args.Preset.IsDisable() && !item.EncoderPreset.IsDisable())
+					{
+						preset = $"{vc.Args.Preset} {item.EncoderPreset}";
+					}
 
-                    if (!vc.Args.Tune.IsDisable() && !item.EncoderTune.IsDisable())
-                    {
-                        tune = $"{vc.Args.Tune} {item.EncoderTune}";
-                    }
+					if (!vc.Args.Tune.IsDisable() && !item.EncoderTune.IsDisable())
+					{
+						tune = $"{vc.Args.Tune} {item.EncoderTune}";
+					}
 
-                    if (!vc.Mode[item.EncoderMode].Args.IsDisable())
-                    {
-                        quality = $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}";
-                    }
+					if (!vc.Mode[item.EncoderMode].Args.IsDisable())
+					{
+						quality = $"{vc.Mode[item.EncoderMode].Args} {item.EncoderValue}";
+					}
 
-                    if (!vc.Args.BitDepth.IsDisable() && item.BitDepth >= 8)
-                    {
-                        bitdepth = $"{vc.Args.BitDepth} {item.BitDepth}";
-                    }
+					if (!vc.Args.BitDepth.IsDisable() && item.BitDepth >= 8)
+					{
+						bitdepth = $"{vc.Args.BitDepth} {item.BitDepth}";
+					}
 
-                    if (!vc.Args.FrameCount.IsDisable())
-                    {
-                        if (item.FrameCount > 0)
-                            framecount = $"{vc.Args.FrameCount} {item.FrameCount + Properties.Settings.Default.FrameCountOffset}";
-                    }
+					if (!vc.Args.FrameCount.IsDisable())
+					{
+						if (item.FrameCount > 0)
+							framecount = $"{vc.Args.FrameCount} {item.FrameCount + Properties.Settings.Default.FrameCountOffset}";
+					}
 
-                    // begin encoding
+					// begin encoding
 					if (vc.Mode[item.EncoderMode].MultiPass)
 					{
-                        var p = 1;
-                        var pass = string.Empty;
+						var p = 1;
+						var pass = string.Empty;
 
-                        ConsoleEx.Write(LogLevel.Warning, "Frame count is disable for Multi-pass encoding, ");
-                        ConsoleEx.Write(ConsoleColor.Yellow, "Avoid inconsistent across multi-pass.\n");
+						ConsoleEx.Write(LogLevel.Warning, "Frame count is disable for Multi-pass encoding, ");
+						ConsoleEx.Write(ConsoleColor.Yellow, "Avoid inconsistent across multi-pass.\n");
 
-                        do
-                        {
-                            pass = vc.Args.PassNth;
+						do
+						{
+							pass = vc.Args.PassNth;
 
-                            if (p == 1)
-                                pass = vc.Args.PassFirst;
+							if (p == 1)
+								pass = vc.Args.PassFirst;
 
-                            if (p == item.EncoderMultiPass)
-                                pass = vc.Args.PassLast;
+							if (p == item.EncoderMultiPass)
+								pass = vc.Args.PassLast;
 
-                            ConsoleEx.Write(LogLevel.Normal, $"Multi-pass encoding: ");
-                            ConsoleEx.Write(ConsoleColor.Green, $"{p} of {item.EncoderMultiPass}\n");
+							ConsoleEx.Write(LogLevel.Normal, $"Multi-pass encoding: ");
+							ConsoleEx.Write(ConsoleColor.Green, $"{p} of {item.EncoderMultiPass}\n");
 
-                            if (vc.Args.Pipe)
-                                ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
-                            else
-                                ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							if (vc.Args.Pipe)
+								ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							else
+								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 
-                            p++;
+							p++;
 
-                        } while (p <= item.EncoderMultiPass);
+						} while (p <= item.EncoderMultiPass);
 					}
 					else
 					{
@@ -293,32 +293,32 @@ namespace ifme
 			if (File.Exists(fileout))
 				fileout = $"{fileout} NEW";
 
-            // get all media
-            var videos = new List<string>();
-            var audios = new List<string>();
-            var subs = new List<string>();
-            var attach = new List<string>();
+			// get all media
+			var videos = new List<string>();
+			var audios = new List<string>();
+			var subs = new List<string>();
+			var attach = new List<string>();
 
-            foreach (var video in Directory.GetFiles(tempDir, "video*"))
-                videos.Add(video);
+			foreach (var video in Directory.GetFiles(tempDir, "video*"))
+				videos.Add(video);
 
-            foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
-                audios.Add(audio);
+			foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
+				audios.Add(audio);
 
-            foreach (var sub in Directory.GetFiles(tempDir, "subtitle*"))
-                subs.Add(sub);
+			foreach (var sub in Directory.GetFiles(tempDir, "subtitle*"))
+				subs.Add(sub);
 
-            foreach (var font in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
-                attach.Add(font);
+			foreach (var font in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
+				attach.Add(font);
 
-            if (queue.OutputFormat == TargetFormat.MP4)
+			if (queue.OutputFormat == TargetFormat.MP4)
 			{
 				var cmdvideo = string.Empty;
 				var cmdaudio = string.Empty;
 
 				var mp4vid = 0;
 				foreach (var video in videos)
-                    cmdvideo += $"-add \"{video}#video:name=Video {mp4vid++}:lang={Get.FileLang(video)}\" ";
+					cmdvideo += $"-add \"{video}#video:name=Video {mp4vid++}:lang={Get.FileLang(video)}\" ";
 
 				var mp4aid = 0;
 				foreach (var audio in audios)
@@ -333,30 +333,30 @@ namespace ifme
 			}
 			else if (queue.OutputFormat == TargetFormat.MKV)
 			{
-                var cmdvideo = string.Empty;
-                var cmdaudio = string.Empty;
-                var cmdsubs = string.Empty;
-                var cmdattach = string.Empty;
-                var cmdchapter = string.Empty;
+				var cmdvideo = string.Empty;
+				var cmdaudio = string.Empty;
+				var cmdsubs = string.Empty;
+				var cmdattach = string.Empty;
+				var cmdchapter = string.Empty;
 
-                var tags = string.Format(Properties.Resources.MkvTags, Get.AppNameLong, Get.AppNameLib);
+				var tags = string.Format(Properties.Resources.MkvTags, Get.AppNameLong, Get.AppNameLib);
 				File.WriteAllText(Path.Combine(tempDir, "tags.xml"), tags);
 
 				foreach (var video in videos)
-                    cmdvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
+					cmdvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
 
 				foreach (var audio in audios)
-                    cmdaudio += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
+					cmdaudio += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
 
 				foreach (var sub in subs)
-                    cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(sub)} \"{sub}\" ";
+					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(sub)} \"{sub}\" ";
 
-                foreach (var font in attach)
-                    foreach (var item in queue.Attachment)
-                        if (string.Equals(item.Name, Path.GetFileName(font)))
-                            cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{font}\" ";
+				foreach (var font in attach)
+					foreach (var item in queue.Attachment)
+						if (string.Equals(item.Name, Path.GetFileName(font)))
+							cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{font}\" ";
 
-                if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
+				if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
 				{
 					FileInfo ChapLen = new FileInfo(Path.Combine(tempDir, "chapters.xml"));
 					if (ChapLen.Length > 256)
@@ -383,7 +383,7 @@ namespace ifme
 					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs}";
 					exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags {cmd}");
 
-                    if (exitcode == 0)
+					if (exitcode == 0)
 					{
 						ConsoleEx.Write(LogLevel.Normal, "MkvToolNix merge perfectly without tags, chapters & fonts on second attempt!\n");
 					}
@@ -393,42 +393,42 @@ namespace ifme
 					}
 					else
 					{
-                        // try with FFmpeg
-                        ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge! (no chapters)\n");
+						// try with FFmpeg
+						ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge! (no chapters)\n");
 
-                        cmdvideo = string.Empty;
-                        cmdaudio = string.Empty;
-                        cmdsubs = string.Empty;
-                        cmdattach = string.Empty;
-                        
-                        foreach (var video in videos)
-                            cmdvideo += $"-i {video} ";
+						cmdvideo = string.Empty;
+						cmdaudio = string.Empty;
+						cmdsubs = string.Empty;
+						cmdattach = string.Empty;
+						
+						foreach (var video in videos)
+							cmdvideo += $"-i {video} ";
 
-                        foreach (var audio in audios)
-                            cmdaudio += $"-i {audio} ";
+						foreach (var audio in audios)
+							cmdaudio += $"-i {audio} ";
 
-                        foreach (var sub in subs)
-                            cmdsubs += $"-i {sub} ";
+						foreach (var sub in subs)
+							cmdsubs += $"-i {sub} ";
 
-                        var id = videos.Count + audios.Count + subs.Count;
-                        foreach (var font in attach)
-                            foreach (var item in queue.Attachment)
-                                if (string.Equals(item.Name, Path.GetFileName(font)))
-                                    cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
+						var id = videos.Count + audios.Count + subs.Count;
+						foreach (var font in attach)
+							foreach (var item in queue.Attachment)
+								if (string.Equals(item.Name, Path.GetFileName(font)))
+									cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
 
-                        cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
-                        exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(tempDir, "attachments"));
+						cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
+						exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(tempDir, "attachments"));
 
-                        if (exitcode == 0)
-                        {
-                            ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
-                        }
-                        else
-                        {
-                            // copy whole thing
-                            ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
-                            Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
-                        }
+						if (exitcode == 0)
+						{
+							ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
+						}
+						else
+						{
+							// copy whole thing
+							ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
+							Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
+						}
 					}
 				}
 			}
@@ -437,13 +437,13 @@ namespace ifme
 				var cmdvideo = string.Empty;
 				var cmdaudio = string.Empty;
 
-                foreach (var video in videos)
-                    cmdvideo += $"-i {video} ";
+				foreach (var video in videos)
+					cmdvideo += $"-i {video} ";
 
-                foreach (var audio in audios)
-                    cmdaudio += $"-i {audio} ";
+				foreach (var audio in audios)
+					cmdaudio += $"-i {audio} ";
 
-                var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -stats {cmdvideo} {cmdaudio} -metadata application='{Get.AppNameLong}' -vcodec copy -acodec copy -y \"{fileout}.webm\"");
+				var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -stats {cmdvideo} {cmdaudio} -metadata application='{Get.AppNameLong}' -vcodec copy -acodec copy -y \"{fileout}.webm\"");
 
 				if (exitcode == 0)
 					ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge WebM media perfectly!\n");

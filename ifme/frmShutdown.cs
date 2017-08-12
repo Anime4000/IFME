@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ifme
@@ -21,8 +15,8 @@ namespace ifme
 
 		private void frmShutdown_Load(object sender, EventArgs e)
 		{
-            InitializeUX();
-        }
+			InitializeUX();
+		}
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{

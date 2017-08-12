@@ -10,10 +10,10 @@ using System.Text.RegularExpressions;
 namespace ifme
 {
 	public partial class frmMain : Form
-    {
-        public frmMain()
-        {
-            InitializeComponent();
+	{
+		public frmMain()
+		{
+			InitializeComponent();
 
 			// BackgroundWorkerEx Event
 			bgThread.DoWork += bgThread_DoWork;
@@ -24,121 +24,121 @@ namespace ifme
 			FormBorderStyle = FormBorderStyle.Sizable;
 		}
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
+		private void frmMain_Load(object sender, EventArgs e)
+		{
 			InitializeUX();
-        }
+		}
 
-        private void frmMain_Shown(object sender, EventArgs e)
-        {
-            ttProInfo.Show(null, btnAbout, 0);
-            ttProInfo.IsBalloon = true;
+		private void frmMain_Shown(object sender, EventArgs e)
+		{
+			ttProInfo.Show(null, btnAbout, 0);
+			ttProInfo.IsBalloon = true;
 
-            ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
+			ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
 
-            new Thread(CheckVersion).Start();
+			new Thread(CheckVersion).Start();
 
-            Get.IsReady = true;
-        }
+			Get.IsReady = true;
+		}
 
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
+		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
 
-        }
+		}
 
-        private void pbxBanner_Resize(object sender, EventArgs e)
+		private void pbxBanner_Resize(object sender, EventArgs e)
 		{
 			DrawBanner();
 		}
 
-        private void btnMediaFileOpen_Click(object sender, EventArgs e)
-        {
-            Button btnSender = (Button)sender;
-            Point ptLowerLeft = new Point(1, btnSender.Height);
-            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
-            cmsNewImport.Show(ptLowerLeft);
+		private void btnMediaFileOpen_Click(object sender, EventArgs e)
+		{
+			Button btnSender = (Button)sender;
+			Point ptLowerLeft = new Point(1, btnSender.Height);
+			ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+			cmsNewImport.Show(ptLowerLeft);
 		}
 
-        private void tsmiImport_Click(object sender, EventArgs e)
-        {
-            foreach (var item in OpenFiles(MediaType.VideoAudio))
-                MediaAdd(item);
+		private void tsmiImport_Click(object sender, EventArgs e)
+		{
+			foreach (var item in OpenFiles(MediaType.VideoAudio))
+				MediaAdd(item);
 
-            MediaSelect();
-        }
+			MediaSelect();
+		}
 
-        private void tsmiNew_Click(object sender, EventArgs e)
-        {
-            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
+		private void tsmiNew_Click(object sender, EventArgs e)
+		{
+			var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
 
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                if (string.IsNullOrEmpty(frm.ReturnValue))
-                    return;
+			if (frm.ShowDialog() == DialogResult.OK)
+			{
+				if (string.IsNullOrEmpty(frm.ReturnValue))
+					return;
 
-                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
-                    return;
+				if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+					return;
 
-                var queue = new MediaQueue();
+				var queue = new MediaQueue();
 
-                queue.Enable = true;
-                queue.File = frm.ReturnValue;
-                queue.OutputFormat = TargetFormat.MKV;
+				queue.Enable = true;
+				queue.File = frm.ReturnValue;
+				queue.OutputFormat = TargetFormat.MKV;
 
-                var lst = new ListViewItem(new[]
-                {
-                    frm.ReturnValue,
-                    "",
-                    "New",
-                    "MKV",
-                    "Ready",
-                });
+				var lst = new ListViewItem(new[]
+				{
+					frm.ReturnValue,
+					"",
+					"New",
+					"MKV",
+					"Ready",
+				});
 
-                lst.Tag = queue;
-                lst.Checked = true;
+				lst.Tag = queue;
+				lst.Checked = true;
 
-                lstMedia.Items.Add(lst);
-            }
-        }
+				lstMedia.Items.Add(lst);
+			}
+		}
 
-        private void btnMediaFileDel_Click(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in lstMedia.SelectedItems)
-                item.Remove();
-        }
+		private void btnMediaFileDel_Click(object sender, EventArgs e)
+		{
+			foreach (ListViewItem item in lstMedia.SelectedItems)
+				item.Remove();
+		}
 
-        private void btnOption_Click(object sender, EventArgs e)
-        {
+		private void btnOption_Click(object sender, EventArgs e)
+		{
 			new frmOption().ShowDialog();
 		}
 
-        private void btnAbout_Click(object sender, EventArgs e)
-        {
-            new frmAbout().ShowDialog();
-        }
+		private void btnAbout_Click(object sender, EventArgs e)
+		{
+			new frmAbout().ShowDialog();
+		}
 
-        private void btnDonate_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://paypal.me/anime4000/25");
-        }
+		private void btnDonate_Click(object sender, EventArgs e)
+		{
+			Process.Start("https://paypal.me/anime4000/25");
+		}
 
-        private void btnMediaMoveUp_Click(object sender, EventArgs e)
-        {
+		private void btnMediaMoveUp_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Media, Direction.Up);
 		}
 
-        private void btnMediaMoveDown_Click(object sender, EventArgs e)
-        {
+		private void btnMediaMoveDown_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Media, Direction.Down);
 		}
 
-        private void btnDonePowerOff_Click(object sender, EventArgs e)
-        {
+		private void btnDonePowerOff_Click(object sender, EventArgs e)
+		{
 			new frmShutdown().ShowDialog();
 		}
 
-        private void btnStart_Click(object sender, EventArgs e)
-        {
+		private void btnStart_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.Items.Count == 0)
 				return;
 
@@ -181,27 +181,27 @@ namespace ifme
 		}
 
 		private void btnPause_Click(object sender, EventArgs e)
-        {
+		{
 			if (btnPause.Enabled)
 			{
 				btnStart.Enabled = true;
 				btnPause.Enabled = false;
 				ProcessManager.Pause();
 			}
-        }
+		}
 
-        private void btnStop_Click(object sender, EventArgs e)
-        {
+		private void btnStop_Click(object sender, EventArgs e)
+		{
 			if (bgThread.IsBusy)
 			{
 				bgThread.Abort();
 				bgThread.Dispose();
 			}
-        }
+		}
 
-        private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstMedia.SelectedItems.Count > 0)
+		private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
 			{
 				var tf = !(lstMedia.SelectedItems.Count > 1);
 				grpVideoStream.Enabled = tf;
@@ -219,109 +219,109 @@ namespace ifme
 			}
 		}
 
-        private void lstMedia_DragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
+		private void lstMedia_DragDrop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
-        private void lstMedia_DragEnter(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (var file in files)
-                MediaAdd(file);
-        }
+		private void lstMedia_DragEnter(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			foreach (var file in files)
+				MediaAdd(file);
+		}
 
-        private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (Get.IsReady)
-            {
-                if (lstMedia.SelectedItems.Count <= 0)
-                {
-                    ConsoleEx.Write(LogLevel.Error, "Select one or more item before apply custom Encoding Preset.\n");
-                    return;
-                }
-            }
+		private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (Get.IsReady)
+			{
+				if (lstMedia.SelectedItems.Count <= 0)
+				{
+					ConsoleEx.Write(LogLevel.Error, "Select one or more item before apply custom Encoding Preset.\n");
+					return;
+				}
+			}
 
-            foreach (ListViewItem q in lstMedia.SelectedItems)
-            {
-                var m = q.Tag as MediaQueue;
-                var p = MediaPreset.List[cboEncodingPreset.SelectedValue as string];
+			foreach (ListViewItem q in lstMedia.SelectedItems)
+			{
+				var m = q.Tag as MediaQueue;
+				var p = MediaPreset.List[cboEncodingPreset.SelectedValue as string];
 
-                m.OutputFormat = (TargetFormat)p.OutputFormat;
+				m.OutputFormat = (TargetFormat)p.OutputFormat;
 
-                foreach (var video in m.Video)
-                {
-                    video.Encoder = p.Video.Encoder;
-                    video.EncoderPreset = p.Video.EncoderPreset;
-                    video.EncoderTune = p.Video.EncoderTune;
-                    video.EncoderMode = p.Video.EncoderMode;
-                    video.EncoderValue = p.Video.EncoderValue;
-                    video.EncoderMultiPass = p.Video.EncoderMultiPass;
-                    video.EncoderCommand = p.Video.EncoderCommand;
+				foreach (var video in m.Video)
+				{
+					video.Encoder = p.Video.Encoder;
+					video.EncoderPreset = p.Video.EncoderPreset;
+					video.EncoderTune = p.Video.EncoderTune;
+					video.EncoderMode = p.Video.EncoderMode;
+					video.EncoderValue = p.Video.EncoderValue;
+					video.EncoderMultiPass = p.Video.EncoderMultiPass;
+					video.EncoderCommand = p.Video.EncoderCommand;
 
-                    video.Width = p.Video.Width;
-                    video.Height = p.Video.Height;
-                    video.FrameRate = (float)p.Video.FrameRate;
-                    video.BitDepth = p.Video.BitDepth;
-                    video.PixelFormat = p.Video.PixelFormat;
+					video.Width = p.Video.Width;
+					video.Height = p.Video.Height;
+					video.FrameRate = (float)p.Video.FrameRate;
+					video.BitDepth = p.Video.BitDepth;
+					video.PixelFormat = p.Video.PixelFormat;
 
-                    video.DeInterlace = p.Video.DeInterlace;
-                    video.DeInterlaceMode = p.Video.DeInterlaceMode;
-                    video.DeInterlaceField = p.Video.DeInterlaceField;
-                }
+					video.DeInterlace = p.Video.DeInterlace;
+					video.DeInterlaceMode = p.Video.DeInterlaceMode;
+					video.DeInterlaceField = p.Video.DeInterlaceField;
+				}
 
-                foreach (var audio in m.Audio)
-                {
-                    audio.Encoder = p.Audio.Encoder;
-                    audio.EncoderMode = p.Audio.EncoderMode;
-                    audio.EncoderQuality = p.Audio.EncoderQuality;
-                    audio.EncoderSampleRate = p.Audio.EncoderSampleRate;
-                    audio.EncoderChannel = p.Audio.EncoderChannel;
-                    audio.EncoderCommand = p.Audio.EncoderCommand;
-                }
-            }
+				foreach (var audio in m.Audio)
+				{
+					audio.Encoder = p.Audio.Encoder;
+					audio.EncoderMode = p.Audio.EncoderMode;
+					audio.EncoderQuality = p.Audio.EncoderQuality;
+					audio.EncoderSampleRate = p.Audio.EncoderSampleRate;
+					audio.EncoderChannel = p.Audio.EncoderChannel;
+					audio.EncoderCommand = p.Audio.EncoderCommand;
+				}
+			}
 
-            UXReloadMedia();
-        }
+			UXReloadMedia();
+		}
 
-        private void btnEncodingPresetSave_Click(object sender, EventArgs e)
-        {
-            Button btnSender = (Button)sender;
-            Point ptLowerLeft = new Point(1, btnSender.Height);
-            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
-            cmsEncodingPreset.Show(ptLowerLeft);
-        }
+		private void btnEncodingPresetSave_Click(object sender, EventArgs e)
+		{
+			Button btnSender = (Button)sender;
+			Point ptLowerLeft = new Point(1, btnSender.Height);
+			ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+			cmsEncodingPreset.Show(ptLowerLeft);
+		}
 
-        private void tsmiEncodingPresetSave_Click(object sender, EventArgs e)
-        {
-            EncodingPreset(cboEncodingPreset.SelectedValue as string, string.Empty);
-        }
+		private void tsmiEncodingPresetSave_Click(object sender, EventArgs e)
+		{
+			EncodingPreset(cboEncodingPreset.SelectedValue as string, string.Empty);
+		}
 
-        private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
-        {
-            var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text, 4);
+		private void tsmiEncodingPresetSaveAs_Click(object sender, EventArgs e)
+		{
+			var frm = new frmInputBox(Language.Lang.InputBoxEncodingPreset.Title, Language.Lang.InputBoxEncodingPreset.Message, cboEncodingPreset.Text, 4);
 
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                if (string.IsNullOrEmpty(frm.ReturnValue))
-                    return;
+			if (frm.ShowDialog() == DialogResult.OK)
+			{
+				if (string.IsNullOrEmpty(frm.ReturnValue))
+					return;
 
-                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
-                    return;
+				if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+					return;
 
-                EncodingPreset(frm.ReturnValue, frm.ReturnValue);
-            }
-        }
+				EncodingPreset(frm.ReturnValue, frm.ReturnValue);
+			}
+		}
 
-        private void txtFolderOutput_TextChanged(object sender, EventArgs e)
-        {
+		private void txtFolderOutput_TextChanged(object sender, EventArgs e)
+		{
 			Properties.Settings.Default.OutputDir = txtFolderOutput.Text;
 			Properties.Settings.Default.Save();
-        }
+		}
 
-        private void btnBrowseFolderOutput_Click(object sender, EventArgs e)
-        {
+		private void btnBrowseFolderOutput_Click(object sender, EventArgs e)
+		{
 			var GetDir = new FolderBrowserDialog();
 
 			GetDir.ShowNewFolderButton = true;
@@ -386,15 +386,15 @@ namespace ifme
 
 		// Video
 		private void btnVideoAdd_Click(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Video))
 					VideoAdd(item);
 
 			UXReloadMedia();
 		}
-        private void btnVideoDel_Click(object sender, EventArgs e)
-        {
+		private void btnVideoDel_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				foreach (ListViewItem item in lstVideo.SelectedItems)
@@ -406,14 +406,14 @@ namespace ifme
 			}
 		}
 
-        private void lstVideo_DragDrop(object sender, DragEventArgs e)
-        {
+		private void lstVideo_DragDrop(object sender, DragEventArgs e)
+		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 				e.Effect = DragDropEffects.Copy;
 		}
 
-        private void lstVideo_DragEnter(object sender, DragEventArgs e)
-        {
+		private void lstVideo_DragEnter(object sender, DragEventArgs e)
+		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
 				VideoAdd(file);
@@ -421,38 +421,38 @@ namespace ifme
 			UXReloadMedia();
 		}
 
-        private void btnVideoMoveUp_Click(object sender, EventArgs e)
-        {
+		private void btnVideoMoveUp_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Video, Direction.Up);
 		}
 
-        private void btnVideoMoveDown_Click(object sender, EventArgs e)
-        {
+		private void btnVideoMoveDown_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Video, Direction.Down);
 		}
 
-        private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstMedia.SelectedItems.Count > 0)
-            {
-                if (lstVideo.SelectedItems.Count > 0)
-                {
+		private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstVideo.SelectedItems.Count > 0)
+				{
 					var t = new Thread(MediaPopulateVideo);
 					t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index]);
-                }
-            }
-        }
+				}
+			}
+		}
 
-        private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
+		{
 			if (cboVideoEncoder.SelectedIndex <= -1)
 				return;
 
-            var temp = new Plugin();
-            var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+			var temp = new Plugin();
+			var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 
-            if (Plugin.Items.TryGetValue(key, out temp))
-            {
+			if (Plugin.Items.TryGetValue(key, out temp))
+			{
 				if ((rdoFormatMp4.Checked && temp.Format.Contains("mp4")) ||
 					(rdoFormatMkv.Checked && temp.Format.Contains("mkv")) ||
 					(rdoFormatWebm.Checked && temp.Format.Contains("webm")))
@@ -492,32 +492,32 @@ namespace ifme
 
 					cboVideoEncoder.SelectedValue = vdef.Encoder;
 				}
-            }
-        }
+			}
+		}
 
-        private void cboVideoRateControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var temp = new Plugin();
-            var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-            var id = cboVideoRateControl.SelectedIndex;
+		private void cboVideoRateControl_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var temp = new Plugin();
+			var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+			var id = cboVideoRateControl.SelectedIndex;
 
-            if (id >= 0)
-            {
-                if (Plugin.Items.TryGetValue(key, out temp))
-                {
-                    var mode = temp.Video.Mode[id];
+			if (id >= 0)
+			{
+				if (Plugin.Items.TryGetValue(key, out temp))
+				{
+					var mode = temp.Video.Mode[id];
 
-                    nudVideoRateFactor.DecimalPlaces = mode.Value.DecimalPlace;
-                    nudVideoRateFactor.Minimum = mode.Value.Min;
-                    nudVideoRateFactor.Maximum = mode.Value.Max;
-                    nudVideoRateFactor.Value = mode.Value.Default;
-                    nudVideoRateFactor.Increment = mode.Value.Step;
-                    nudVideoMultiPass.Enabled = mode.MultiPass;
-                    nudVideoMultiPass.Value = 2;
-                }
+					nudVideoRateFactor.DecimalPlaces = mode.Value.DecimalPlace;
+					nudVideoRateFactor.Minimum = mode.Value.Min;
+					nudVideoRateFactor.Maximum = mode.Value.Max;
+					nudVideoRateFactor.Value = mode.Value.Default;
+					nudVideoRateFactor.Increment = mode.Value.Step;
+					nudVideoMultiPass.Enabled = mode.MultiPass;
+					nudVideoMultiPass.Value = 2;
+				}
 
-            }
-        }
+			}
+		}
 
 		private void btnVideoAdv_Click(object sender, EventArgs e)
 		{
@@ -565,46 +565,46 @@ namespace ifme
 			}
 		}
 
-        private void cboVideoResolution_TextChanged(object sender, EventArgs e)
-        {
-            Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
-            MatchCollection matches = regex.Matches(cboVideoResolution.Text);
-
-            if (matches.Count == 0)
-            {
-                cboVideoResolution.Text = "1280x720";
-            }
-        }
-
-        private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
-        {
-            Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
-            MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
-
-            if (matches.Count == 0)
-            {
-                cboVideoFrameRate.Text = "23.976";
-            }
-        }
-
-        private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+		private void cboVideoResolution_TextChanged(object sender, EventArgs e)
 		{
-            var c = chkVideoDeinterlace.Checked;
-            lblVideoDeinterlaceMode.Enabled = c;
-            cboVideoDeinterlaceMode.Enabled = c;
-            lblVideoDeinterlaceField.Enabled = c;
-            cboVideoDeinterlaceField.Enabled = c;
+			Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
+			MatchCollection matches = regex.Matches(cboVideoResolution.Text);
 
-            if (cboVideoDeinterlaceMode.SelectedIndex < 0)
-                cboVideoDeinterlaceMode.SelectedIndex = 1;
+			if (matches.Count == 0)
+			{
+				cboVideoResolution.Text = "1280x720";
+			}
+		}
 
-            if (cboVideoDeinterlaceField.SelectedIndex < 0)
-                cboVideoDeinterlaceField.SelectedIndex = 0;
-        }
+		private void cboVideoFrameRate_TextChanged(object sender, EventArgs e)
+		{
+			Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
+			MatchCollection matches = regex.Matches(cboVideoFrameRate.Text);
+
+			if (matches.Count == 0)
+			{
+				cboVideoFrameRate.Text = "23.976";
+			}
+		}
+
+		private void chkVideoDeinterlace_CheckedChanged(object sender, EventArgs e)
+		{
+			var c = chkVideoDeinterlace.Checked;
+			lblVideoDeinterlaceMode.Enabled = c;
+			cboVideoDeinterlaceMode.Enabled = c;
+			lblVideoDeinterlaceField.Enabled = c;
+			cboVideoDeinterlaceField.Enabled = c;
+
+			if (cboVideoDeinterlaceMode.SelectedIndex < 0)
+				cboVideoDeinterlaceMode.SelectedIndex = 1;
+
+			if (cboVideoDeinterlaceField.SelectedIndex < 0)
+				cboVideoDeinterlaceField.SelectedIndex = 0;
+		}
 
 		// Audio
 		private void btnAudioAdd_Click(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Audio))
 					AudioAdd(item);
@@ -613,7 +613,7 @@ namespace ifme
 		}
 
 		private void btnAudioDel_Click(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				foreach (ListViewItem item in lstAudio.SelectedItems)
@@ -625,13 +625,13 @@ namespace ifme
 			}
 		}
 
-        private void btnAudioMoveUp_Click(object sender, EventArgs e)
-        {
+		private void btnAudioMoveUp_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Audio, Direction.Up);
 		}
 
-        private void btnAudioMoveDown_Click(object sender, EventArgs e)
-        {
+		private void btnAudioMoveDown_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Audio, Direction.Down);
 		}
 
@@ -651,27 +651,27 @@ namespace ifme
 		}
 
 		private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstMedia.SelectedItems.Count > 0)
-            {
-                if (lstAudio.SelectedItems.Count > 0)
-                {
-                    var t = new Thread(MediaPopulateAudio);
-                    t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index]);
-                }
-            }
-        }
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+			{
+				if (lstAudio.SelectedItems.Count > 0)
+				{
+					var t = new Thread(MediaPopulateAudio);
+					t.Start((lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index]);
+				}
+			}
+		}
 
-        private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
+		{
 			if (cboAudioEncoder.SelectedIndex <= -1)
 				return;
 
-            var temp = new Plugin();
-            var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+			var temp = new Plugin();
+			var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
 
-            if (Plugin.Items.TryGetValue(key, out temp))
-            {
+			if (Plugin.Items.TryGetValue(key, out temp))
+			{
 				if (((rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp3")) ||
 					((rdoFormatAudioMp4.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp4")) ||
 					((rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked) && temp.Format.Contains("ogg")) ||
@@ -703,9 +703,9 @@ namespace ifme
 				}
 				else
 				{
-                    MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+					var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
 
 					if (rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked)
 						adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
@@ -718,28 +718,28 @@ namespace ifme
 
 					cboAudioEncoder.SelectedValue = adef.Encoder;
 				}
-            }
-        }
+			}
+		}
 
-        private void cboAudioMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var temp = new Plugin();
-            var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
-            var id = cboAudioMode.SelectedIndex;
+		private void cboAudioMode_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var temp = new Plugin();
+			var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+			var id = cboAudioMode.SelectedIndex;
 
-            if (Plugin.Items.TryGetValue(key, out temp))
-            {
-                var mode = temp.Audio.Mode[id];
+			if (Plugin.Items.TryGetValue(key, out temp))
+			{
+				var mode = temp.Audio.Mode[id];
 
-                cboAudioQuality.Items.Clear();
-                foreach (var item in mode.Quality)
-                    cboAudioQuality.Items.Add(item);
-                cboAudioQuality.SelectedItem = mode.Default;
-            }
-        }
+				cboAudioQuality.Items.Clear();
+				foreach (var item in mode.Quality)
+					cboAudioQuality.Items.Add(item);
+				cboAudioQuality.SelectedItem = mode.Default;
+			}
+		}
 
-        private void btnAudioAdv_Click(object sender, EventArgs e)
-        {
+		private void btnAudioAdv_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				var cmd = string.Empty;
@@ -756,7 +756,7 @@ namespace ifme
 					
 				
 				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd, 0);
-                if (frm.ShowDialog() == DialogResult.OK)
+				if (frm.ShowDialog() == DialogResult.OK)
 				{
 					cmd = frm.ReturnValue;
 				}
@@ -782,11 +782,11 @@ namespace ifme
 					}
 				}
 			}
-        }
+		}
 
 		// Subtitle
-        private void btnSubAdd_Click(object sender, EventArgs e)
-        {
+		private void btnSubAdd_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Subtitle))
 					SubtitleAdd(item);
@@ -794,17 +794,17 @@ namespace ifme
 			UXReloadMedia();
 		}
 
-        private void btnSubAdd2_Click(object sender, EventArgs e)
-        {
-            if (lstMedia.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video))
-                    SubtitleAdd2(item);
+		private void btnSubAdd2_Click(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video))
+					SubtitleAdd2(item);
 
-            UXReloadMedia();
-        }
+			UXReloadMedia();
+		}
 
-        private void btnSubDel_Click(object sender, EventArgs e)
-        {
+		private void btnSubDel_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				foreach (ListViewItem item in lstSub.SelectedItems)
@@ -816,13 +816,13 @@ namespace ifme
 			}
 		}
 
-        private void btnSubMoveUp_Click(object sender, EventArgs e)
-        {
+		private void btnSubMoveUp_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Subtitle, Direction.Up);
 		}
 
-        private void btnSubMoveDown_Click(object sender, EventArgs e)
-        {
+		private void btnSubMoveDown_Click(object sender, EventArgs e)
+		{
 			ListViewItemMove(ListViewItemType.Subtitle, Direction.Down);
 		}
 
@@ -842,7 +842,7 @@ namespace ifme
 		}
 
 		private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				if (lstSub.SelectedItems.Count > 0)
@@ -852,7 +852,7 @@ namespace ifme
 					cboSubLang.SelectedValue = media.Subtitle[index].Lang;
 				}
 			}
-        }
+		}
 
 		private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -870,7 +870,7 @@ namespace ifme
 
 		// Attachment
 		private void btnAttachAdd_Click(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Attachment))
 					AttachmentAdd(item);
@@ -878,17 +878,17 @@ namespace ifme
 			UXReloadMedia();
 		}
 
-        private void btnAttchAdd2_Click(object sender, EventArgs e)
-        {
-            if (lstMedia.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video))
-                    AttachmentAdd2(item);
+		private void btnAttchAdd2_Click(object sender, EventArgs e)
+		{
+			if (lstMedia.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video))
+					AttachmentAdd2(item);
 
-            UXReloadMedia();
-        }
+			UXReloadMedia();
+		}
 
-        private void btnAttachDel_Click(object sender, EventArgs e)
-        {
+		private void btnAttachDel_Click(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				foreach (ListViewItem item in lstAttach.SelectedItems)
@@ -916,7 +916,7 @@ namespace ifme
 		}
 
 		private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				if (lstAttach.SelectedItems.Count > 0)
@@ -928,8 +928,8 @@ namespace ifme
 			}
 		}
 
-        private void cboAttachMime_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void cboAttachMime_SelectedIndexChanged(object sender, EventArgs e)
+		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
 				if (lstSub.SelectedItems.Count > 0)
@@ -941,5 +941,5 @@ namespace ifme
 				}
 			}
 		}
-    }
+	}
 }

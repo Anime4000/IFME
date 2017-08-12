@@ -11,10 +11,10 @@ using Newtonsoft.Json;
 namespace ifme
 {
 	static class Get
-    {
-        public static bool IsReady { get; set; } = false;
+	{
+		public static bool IsReady { get; set; } = false;
 
-        public static Dictionary<string, string> LanguageCode
+		public static Dictionary<string, string> LanguageCode
 		{
 			get
 			{
@@ -26,24 +26,24 @@ namespace ifme
 		{
 			get
 			{
-                return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
-            }
+				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
+			}
 		}
 
-        public static SortedSet<string> MimeTypeList
-        {
-            get
-            {
-                var temp = new SortedSet<string>();
+		public static SortedSet<string> MimeTypeList
+		{
+			get
+			{
+				var temp = new SortedSet<string>();
 
-                foreach (var item in MimeList)
-                {
-                    try { temp.Add(item.Value); } catch { }
-                }
+				foreach (var item in MimeList)
+				{
+					try { temp.Add(item.Value); } catch { }
+				}
 
-                return temp;
-            }
-        }
+				return temp;
+			}
+		}
 
 		public static string AppPath
 		{
@@ -73,7 +73,7 @@ namespace ifme
 		{
 			get
 			{
-                return Branding.Title();
+				return Branding.Title();
 			}
 		}
 
@@ -111,33 +111,33 @@ namespace ifme
 		{
 			get
 			{
-                var outdir = Properties.Settings.Default.OutputDir;
+				var outdir = Properties.Settings.Default.OutputDir;
 
-                // make sure path is full
-                if (outdir.Length >= 2)
-                {
-                    if (OS.IsLinux)
-                    {
-                        if (outdir[0] != '/')
-                            outdir = string.Empty;
-                    }
-                    else
-                    {
-                        if (outdir[1] != ':')
-                            outdir = string.Empty;
-                    }
-
-                }
-
-                if (string.IsNullOrEmpty(outdir))
+				// make sure path is full
+				if (outdir.Length >= 2)
 				{
-                    var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+					if (OS.IsLinux)
+					{
+						if (outdir[0] != '/')
+							outdir = string.Empty;
+					}
+					else
+					{
+						if (outdir[1] != ':')
+							outdir = string.Empty;
+					}
 
-                    // windows xp
-                    if (path.IsDisable())
-                        path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+				}
 
-                    Properties.Settings.Default.OutputDir = Path.Combine(path, "IFME");
+				if (string.IsNullOrEmpty(outdir))
+				{
+					var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+
+					// windows xp
+					if (path.IsDisable())
+						path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+					Properties.Settings.Default.OutputDir = Path.Combine(path, "IFME");
 					Properties.Settings.Default.Save();
 				}
 
@@ -146,16 +146,16 @@ namespace ifme
 		}
 
 		public static string CodecFormat(string codecId)
-        {
-            var json = File.ReadAllText(Path.Combine(AppRootDir, "format.json"));
-            var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            var formatId = string.Empty;
+		{
+			var json = File.ReadAllText(Path.Combine(AppRootDir, "format.json"));
+			var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+			var formatId = string.Empty;
 
-            if (format.TryGetValue(codecId, out formatId))
-                return formatId;
+			if (format.TryGetValue(codecId, out formatId))
+				return formatId;
 
-            return "mkv";
-        }
+			return "mkv";
+		}
 
 		public static string FileLang(string file)
 		{
@@ -163,17 +163,17 @@ namespace ifme
 			return file.Substring(file.Length - 3);
 		}
 
-        public static string LangCheck(string lang)
-        {
-            var temp = string.Empty;
+		public static string LangCheck(string lang)
+		{
+			var temp = string.Empty;
 
-            if (LanguageCode.TryGetValue(lang, out temp))
-            {
-                return lang; // if found
-            }
+			if (LanguageCode.TryGetValue(lang, out temp))
+			{
+				return lang; // if found
+			}
 
-            return "und";
-        }
+			return "und";
+		}
 
 		public static string FileSizeIEC(long InBytes)
 		{
@@ -251,17 +251,17 @@ namespace ifme
 			}
 		}
 
-        internal static string MimeType(string FileName)
-        {
-            var mime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
-            var type = string.Empty;
+		internal static string MimeType(string FileName)
+		{
+			var mime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
+			var type = string.Empty;
 
-            if (mime.TryGetValue(Path.GetExtension(FileName), out type))
-            {
-                return type;
-            }
+			if (mime.TryGetValue(Path.GetExtension(FileName), out type))
+			{
+				return type;
+			}
 
-            return "application/octet-stream";
-        }
+			return "application/octet-stream";
+		}
 	}
 }
