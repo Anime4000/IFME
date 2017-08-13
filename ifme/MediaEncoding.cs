@@ -377,58 +377,42 @@ namespace ifme
 				}
 				else
 				{
-					ConsoleEx.Write(LogLevel.Error, "MkvToolNix can't merge on first attempt, trying to skip adding tags, chapters & fonts!\n");
+					// try with FFmpeg
+					ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge! (no chapters)\n");
 
-					// try without chapter and fonts
-					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs}";
-					exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags {cmd}");
+					cmdvideo = string.Empty;
+					cmdaudio = string.Empty;
+					cmdsubs = string.Empty;
+					cmdattach = string.Empty;
+
+					var id = videos.Count + audios.Count + subs.Count;
+
+					foreach (var video in videos)
+						cmdvideo += $"-i {video} ";
+
+					foreach (var audio in audios)
+						cmdaudio += $"-i {audio} ";
+
+					foreach (var sub in subs)
+						cmdsubs += $"-i {sub} ";
+
+					foreach (var font in attach)
+						foreach (var item in queue.Attachment)
+							if (string.Equals(item.Name, Path.GetFileName(font)))
+								cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
+
+					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
+					exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(tempDir, "attachments"));
 
 					if (exitcode == 0)
 					{
-						ConsoleEx.Write(LogLevel.Normal, "MkvToolNix merge perfectly without tags, chapters & fonts on second attempt!\n");
-					}
-					else if (exitcode == 1)
-					{
-						ConsoleEx.Write(LogLevel.Warning, "MkvToolNix merge with warning on second attempt even without tags, chapters & fonts, it should work.\n");
+						ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
 					}
 					else
 					{
-						// try with FFmpeg
-						ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge! (no chapters)\n");
-
-						cmdvideo = string.Empty;
-						cmdaudio = string.Empty;
-						cmdsubs = string.Empty;
-						cmdattach = string.Empty;
-						
-						foreach (var video in videos)
-							cmdvideo += $"-i {video} ";
-
-						foreach (var audio in audios)
-							cmdaudio += $"-i {audio} ";
-
-						foreach (var sub in subs)
-							cmdsubs += $"-i {sub} ";
-
-						var id = videos.Count + audios.Count + subs.Count;
-						foreach (var font in attach)
-							foreach (var item in queue.Attachment)
-								if (string.Equals(item.Name, Path.GetFileName(font)))
-									cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
-
-						cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
-						exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(tempDir, "attachments"));
-
-						if (exitcode == 0)
-						{
-							ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
-						}
-						else
-						{
-							// copy whole thing
-							ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
-							Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
-						}
+						// copy whole thing
+						ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
+						Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
 					}
 				}
 			}
