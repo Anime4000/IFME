@@ -143,6 +143,11 @@ namespace ifme
 
 				return Properties.Settings.Default.OutputDir;
 			}
+			set
+			{
+				Properties.Settings.Default.OutputDir = value;
+				Properties.Settings.Default.Save();
+			}
 		}
 
 		public static string CodecFormat(string codecId)
@@ -262,6 +267,54 @@ namespace ifme
 			}
 
 			return "application/octet-stream";
+		}
+
+		internal static bool IsValidPath(string FilePath)
+		{
+			try
+			{
+				Path.GetFileName(FilePath);
+
+				if (!Path.IsPathRooted(FilePath))
+					return false;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		internal static string NewFilePath(string FilePath, string SaveDir)
+		{
+			// base
+			var filename = Path.GetFileNameWithoutExtension(FilePath);
+			var prefix = string.Empty;
+			var postfix = string.Empty;
+
+			// prefix
+			if (Properties.Settings.Default.FileNamePrefixType == 1)
+				prefix = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
+			else if (Properties.Settings.Default.FileNamePrefixType == 2)
+				prefix = Properties.Settings.Default.FileNamePrefix;
+
+			// postfix
+			if (Properties.Settings.Default.FileNamePostfixType == 1)
+				postfix = Properties.Settings.Default.FileNamePostfix;
+
+			// use save folder
+			filename = Path.Combine(SaveDir, $"{prefix}{filename}{postfix}");
+
+			// check SaveDir is valid
+			if (!IsValidPath(filename))
+				filename = Path.Combine(Path.GetDirectoryName(FilePath), $"{prefix}{filename}{postfix}");
+			
+			// check if file already exist
+			if (File.Exists(filename))
+				filename = $"{filename} NEW";
+
+			return filename;
 		}
 	}
 }

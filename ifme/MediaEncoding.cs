@@ -6,8 +6,8 @@ namespace ifme
 {
 	class MediaEncoding
 	{
-		private readonly string tempDir = Get.FolderTemp;
-		private readonly string saveDir = Get.FolderSave;
+		private readonly string TempDir = Get.FolderTemp;
+		private readonly string SaveDir = Get.FolderSave;
 
 		private readonly string FFmpeg = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{Properties.Settings.Default.FFmpegArch}", "ffmpeg");
 		private readonly string MkvExtract = Path.Combine(Get.AppRootDir, "plugin", $"mkvtoolnix", "mkvextract");
@@ -26,20 +26,20 @@ namespace ifme
 			// Clean temp folder
 			try
 			{
-				ConsoleEx.Write(LogLevel.Normal, $"Clearing temp folder: {tempDir}\n");
+				ConsoleEx.Write(LogLevel.Normal, $"Clearing temp folder: {TempDir}\n");
 
-				if (Directory.Exists(tempDir))
-					Directory.Delete(tempDir, true);
+				if (Directory.Exists(TempDir))
+					Directory.Delete(TempDir, true);
 
-				Directory.CreateDirectory(tempDir);
+				Directory.CreateDirectory(TempDir);
 
 				// Prepare temp folder
-				if (!Directory.Exists(Path.Combine(tempDir, "attachments")))
-					Directory.CreateDirectory(Path.Combine(tempDir, "attachments"));
+				if (!Directory.Exists(Path.Combine(TempDir, "attachments")))
+					Directory.CreateDirectory(Path.Combine(TempDir, "attachments"));
 			}
 			catch (Exception)
 			{
-				ConsoleEx.Write(LogLevel.Error, $"ERROR clearing temp folder: {tempDir}\n");
+				ConsoleEx.Write(LogLevel.Error, $"ERROR clearing temp folder: {TempDir}\n");
 				return;
 			}
 
@@ -74,7 +74,7 @@ namespace ifme
 			{
 				if (item.Id < 0)
 				{
-					File.Copy(item.File, Path.Combine(tempDir, $"subtitle{id++:D4}_{item.Lang}{Path.GetExtension(item.File)}"));
+					File.Copy(item.File, Path.Combine(TempDir, $"subtitle{id++:D4}_{item.Lang}{Path.GetExtension(item.File)}"));
 				}
 				else
 				{
@@ -86,10 +86,10 @@ namespace ifme
 			foreach (var item in queue.Attachment)
 			{
 				if (item.Id == -1)
-					File.Copy(item.File, Path.Combine(tempDir, "attachments", Path.GetFileName(item.File)));
+					File.Copy(item.File, Path.Combine(TempDir, "attachments", Path.GetFileName(item.File)));
 
 				if (item.Id > -1)
-					ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", Path.Combine(tempDir, "attachments"));
+					ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", Path.Combine(TempDir, "attachments"));
 
 				ConsoleEx.Write(LogLevel.Normal, $"Extracted {id++} attachments.\r");
 			}
@@ -100,7 +100,7 @@ namespace ifme
 			{
 				var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.File}\" > chapters.xml");
 				if (ec >= 1)
-					File.Delete(Path.Combine(tempDir, "chapters.xml"));
+					File.Delete(Path.Combine(TempDir, "chapters.xml"));
 			}
 
 			return 0;
@@ -125,7 +125,7 @@ namespace ifme
 					var hz = (item.EncoderSampleRate == 0 ? string.Empty : $"-ar {item.EncoderSampleRate}");
 					var ch = (item.EncoderChannel == 0 ? string.Empty : $"-ac {item.EncoderChannel}");
 
-					var newfile = (mode == ModeSave.Temp ? $"audio{id++:D4}_{item.Lang}.{ac.Extension}" : Path.Combine(saveDir, $"{Path.GetFileNameWithoutExtension(queue.File)}_ID{id++:D2}.{ac.Extension}"));
+					var newfile = (mode == ModeSave.Temp ? $"audio{id++:D4}_{item.Lang}.{ac.Extension}" : Path.Combine(SaveDir, $"{Path.GetFileNameWithoutExtension(queue.File)}_ID{id++:D2}.{ac.Extension}"));
 
 					if (ac.Args.Pipe)
 					{
@@ -272,26 +272,7 @@ namespace ifme
 			ConsoleEx.Write(LogLevel.Normal, "Merging RAW files as single media file\n");
 
 			// ready
-			var filename = Path.GetFileNameWithoutExtension(queue.File);
-			var prefix = string.Empty;
-			var postfix = string.Empty;
-
-			// prefix
-			if (Properties.Settings.Default.FileNamePrefixType == 1)
-				prefix = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
-			else if (Properties.Settings.Default.FileNamePrefixType == 2)
-				prefix = Properties.Settings.Default.FileNamePrefix;
-
-			// postfix
-			if (Properties.Settings.Default.FileNamePostfixType == 1)
-				postfix = Properties.Settings.Default.FileNamePostfix;
-
-			// final
-			var fileout = Path.Combine(saveDir, $"{prefix}{filename}{postfix}");
-
-			// check if exist
-			if (File.Exists(fileout))
-				fileout = $"{fileout} NEW";
+			var fileout = Get.NewFilePath(queue.File, SaveDir);
 
 			// get all media
 			var videos = new List<string>();
@@ -299,16 +280,16 @@ namespace ifme
 			var subs = new List<string>();
 			var attach = new List<string>();
 
-			foreach (var video in Directory.GetFiles(tempDir, "video*"))
+			foreach (var video in Directory.GetFiles(TempDir, "video*"))
 				videos.Add(video);
 
-			foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
+			foreach (var audio in Directory.GetFiles(TempDir, "audio*"))
 				audios.Add(audio);
 
-			foreach (var sub in Directory.GetFiles(tempDir, "subtitle*"))
+			foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
 				subs.Add(sub);
 
-			foreach (var font in Directory.GetFiles(Path.Combine(tempDir, "attachments"), "*.*"))
+			foreach (var font in Directory.GetFiles(Path.Combine(TempDir, "attachments"), "*.*"))
 				attach.Add(font);
 
 			if (queue.OutputFormat == TargetFormat.MP4)
@@ -340,7 +321,7 @@ namespace ifme
 				var cmdchapter = string.Empty;
 
 				var tags = string.Format(Properties.Resources.MkvTags, Get.AppNameLong, Get.AppNameLib);
-				File.WriteAllText(Path.Combine(tempDir, "tags.xml"), tags);
+				File.WriteAllText(Path.Combine(TempDir, "tags.xml"), tags);
 
 				foreach (var video in videos)
 					cmdvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
@@ -356,16 +337,16 @@ namespace ifme
 						if (string.Equals(item.Name, Path.GetFileName(font)))
 							cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{font}\" ";
 
-				if (File.Exists(Path.Combine(tempDir, "chapters.xml")))
+				if (File.Exists(Path.Combine(TempDir, "chapters.xml")))
 				{
-					FileInfo ChapLen = new FileInfo(Path.Combine(tempDir, "chapters.xml"));
+					FileInfo ChapLen = new FileInfo(Path.Combine(TempDir, "chapters.xml"));
 					if (ChapLen.Length > 256)
-						cmdchapter = $"--chapters \"{Path.Combine(tempDir, "chapters.xml")}\"";
+						cmdchapter = $"--chapters \"{Path.Combine(TempDir, "chapters.xml")}\"";
 				}
 
 				// try
 				var cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}";
-				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags -t 0:\"{Path.Combine(tempDir, "tags.xml")}\" {cmd}");
+				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {cmd}");
 
 				if (exitcode == 0)
 				{
@@ -402,7 +383,7 @@ namespace ifme
 								cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
 
 					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
-					exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(tempDir, "attachments"));
+					exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(TempDir, "attachments"));
 
 					if (exitcode == 0)
 					{
@@ -412,7 +393,7 @@ namespace ifme
 					{
 						// copy whole thing
 						ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
-						Get.DirectoryCopy(tempDir, Path.Combine(saveDir, fileout), true);
+						Get.DirectoryCopy(TempDir, Path.Combine(SaveDir, fileout), true);
 					}
 				}
 			}
