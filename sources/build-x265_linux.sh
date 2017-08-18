@@ -13,6 +13,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "$PASSWORD" | sudo -S apt-get install mercurial cmake cmake-curses-gui build-essential yasm -y
 
+rm -rf x265
 hg clone https://bitbucket.org/multicoreware/x265
 cd "x265/build/linux"
 
