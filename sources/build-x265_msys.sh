@@ -11,6 +11,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "$DIR"
+rm -rf x265
 hg clone --insecure http://bitbucket.org/multicoreware/x265
 cp -vrf "$DIR/x265/build/msys" "$DIR/x265/build/msys32"
 cp -vrf "$DIR/x265/build/msys" "$DIR/x265/build/msys64"
