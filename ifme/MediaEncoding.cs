@@ -250,6 +250,9 @@ namespace ifme
 							p++;
 
 						} while (p <= item.EncoderMultiPass);
+
+						// add pts for raw
+						VideoUnRaw(outfile);
 					}
 					else
 					{
@@ -261,11 +264,39 @@ namespace ifme
 						{
 							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 						}
+
+						// add pts for raw
+						VideoUnRaw(outfile);
 					}
 				}
 			}
 
 			return 0;
+		}
+
+		private int VideoUnRaw(string FileName)
+		{
+			ConsoleEx.Write(LogLevel.Normal, "Processing RAW video file...\n");
+
+			var newname = Path.GetFileNameWithoutExtension(FileName) + ".mp4";
+			var exitcode = 0;
+
+			exitcode = ProcessManager.Start(Mp4Box, $"-add \"{FileName}#video:lang={Get.FileLang(FileName)}\" -new \"{newname}\"");
+
+			if (exitcode == 0)
+			{
+				ConsoleEx.Write(LogLevel.Normal, "Processing RAW video file OK!\n");
+				if (File.Exists(Path.Combine(TempDir, FileName)))
+					File.Delete(Path.Combine(TempDir, FileName));
+			}
+			else
+			{
+				ConsoleEx.Write(LogLevel.Warning, "Processing RAW video file failed, maybe broken or incompatible codec!\n");
+				if (File.Exists(Path.Combine(TempDir, newname)))
+					File.Delete(Path.Combine(TempDir, newname));
+			}
+
+			return exitcode;
 		}
 
 		private int VideoMuxing(MediaQueue queue)
@@ -297,15 +328,15 @@ namespace ifme
 				metadata += $"-metadata:s:{index++} language={Get.FileLang(audio)} ";
 			}
 
-			foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
-			{
-				subtitles += $"-i \"{Path.Combine("..", Path.GetFileName(sub))}\" ";
-				metadata += $"-metadata:s:{index++} language={Get.FileLang(sub)} ";
-			}
-
 			// build command
 			if (queue.OutputFormat == TargetFormat.MKV)
 			{
+				foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
+				{
+					subtitles += $"-i \"{Path.Combine("..", Path.GetFileName(sub))}\" ";
+					metadata += $"-metadata:s:{index++} language={Get.FileLang(sub)} ";
+				}
+
 				for (int i = 0; i < queue.Attachment.Count; i++)
 				{
 					var file = Path.Combine(FontDir, queue.Attachment[i].Name);
@@ -318,22 +349,22 @@ namespace ifme
 					}
 				}
 
-				command = $"{videos}{audios}{subtitles}{attachments}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mp4")}\"";
+				command = $"{videos}{audios}{subtitles}{attachments}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\"";
 			}
 			else if (queue.OutputFormat == TargetFormat.MP4)
 			{
-				command = $"{videos}{audios}{subtitles}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\"";
+				command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mp4")}\"";
 			}
 			else if (queue.OutputFormat == TargetFormat.WEBM)
 			{
-				command = $"{videos}{audios}{subtitles}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".webm")}\"";
+				command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".webm")}\"";
 			}
 
 			// run command
-			var ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}", FontDir);
+			var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}", FontDir);
 
 			// if failed
-			if (ec > 0)
+			if (exitcode > 0)
 			{
 				ConsoleEx.Write(LogLevel.Error, "Damn! Video encoder make a mistake! Not my fault!\n");
 				Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.File, ".raw"), true);

@@ -12,6 +12,7 @@
 [fixed] Out of Index bug on Attachment lists
 [change] Latest encoding preset will be first item
 [chnage] No longer use MP4Box & Mkvtoolnix for muxing files
+[change] Any raw video file will be processed with MP4Box
 [update] x265 version 2.5+11
 
 Version 7.3 (These Final Words)
