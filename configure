@@ -23,7 +23,7 @@ echo "Checking zip utils"
 }
 
 echo "Checking 7za utils"
-(7za x) < /dev/null > /dev/null 2>&1 || {
+(7za) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "7za utils not detected!"
 	echo
