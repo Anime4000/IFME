@@ -199,6 +199,28 @@ namespace ifme
 			}
 		}
 
+		// this code quite special, multiple controls share one function
+		private void ListViewItem_KeyDown(object sender, KeyEventArgs e)
+		{
+			var ctrl = (sender as ListView);
+
+			if (e.KeyCode == Keys.A && e.Control)
+			{
+				foreach (ListViewItem item in ctrl.Items)
+				{
+					item.Selected = true;
+				}
+			}
+
+			if (e.KeyCode == Keys.Delete)
+			{
+				foreach (ListViewItem item in ctrl.SelectedItems)
+				{
+					item.Remove();
+				}
+			}
+		}
+
 		private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstMedia.SelectedItems.Count > 0)

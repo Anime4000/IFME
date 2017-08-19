@@ -8,6 +8,7 @@
 [fixed] (UX) Target Format not updated when change
 [fixed] Using FFmpeg to merge files if mkvmerge fails
 [fixed] If Destination Path is blank or invalid, all video will be save where source file is #133
+[fixed] Added Keyboard shortcut (CTRL+A) and (DEL) for listing items #134
 [change] Latest encoding preset will be first item
 [chnage] No longer use MP4Box & Mkvtoolnix for muxing files
 [update] x265 version 2.5+11
