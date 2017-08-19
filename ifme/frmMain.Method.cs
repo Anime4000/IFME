@@ -36,7 +36,7 @@ namespace ifme
 			ss.ShowDialog();
 
 			// Load user settings
-			txtFolderOutput.Text = Properties.Settings.Default.OutputDir;
+			txtFolderOutput.Text = Get.FolderSave;
 
 			cboVideoResolution.Text = "1920x1080";
 			cboVideoFrameRate.Text = "23.976";

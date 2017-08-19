@@ -96,14 +96,13 @@ namespace ifme
 		public static string FolderTemp
 		{
 			get
-			{
-				if (string.IsNullOrEmpty(Properties.Settings.Default.TempDir))
-				{
-					Properties.Settings.Default.TempDir = Path.Combine(Path.GetTempPath(), "IFME");
-					Properties.Settings.Default.Save();
-				}
-				
+			{				
 				return Properties.Settings.Default.TempDir;
+			}
+			set
+			{
+				Properties.Settings.Default.TempDir = value;
+				Properties.Settings.Default.Save();
 			}
 		}
 
@@ -111,36 +110,6 @@ namespace ifme
 		{
 			get
 			{
-				var outdir = Properties.Settings.Default.OutputDir;
-
-				// make sure path is full
-				if (outdir.Length >= 2)
-				{
-					if (OS.IsLinux)
-					{
-						if (outdir[0] != '/')
-							outdir = string.Empty;
-					}
-					else
-					{
-						if (outdir[1] != ':')
-							outdir = string.Empty;
-					}
-
-				}
-
-				if (string.IsNullOrEmpty(outdir))
-				{
-					var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-
-					// windows xp
-					if (path.IsDisable())
-						path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-					Properties.Settings.Default.OutputDir = Path.Combine(path, "IFME");
-					Properties.Settings.Default.Save();
-				}
-
 				return Properties.Settings.Default.OutputDir;
 			}
 			set
@@ -275,18 +244,15 @@ namespace ifme
 			{
 				Path.GetFileName(FilePath);
 
-				if (!Path.IsPathRooted(FilePath))
-					return false;
+				return Path.IsPathRooted(FilePath);
 			}
 			catch (Exception)
 			{
 				return false;
 			}
-
-			return true;
 		}
 
-		internal static string NewFilePath(string FilePath, string SaveDir)
+		internal static string NewFilePath(string SaveDir, string FilePath, string Ext)
 		{
 			// base
 			var filename = Path.GetFileNameWithoutExtension(FilePath);
@@ -304,15 +270,15 @@ namespace ifme
 				postfix = Properties.Settings.Default.FileNamePostfix;
 
 			// use save folder
-			filename = Path.Combine(SaveDir, $"{prefix}{filename}{postfix}");
+			filename = Path.Combine(SaveDir, $"{prefix}{filename}{postfix}{Ext}");
 
 			// check SaveDir is valid
 			if (!IsValidPath(filename))
-				filename = Path.Combine(Path.GetDirectoryName(FilePath), $"{prefix}{filename}{postfix}");
-			
-			// check if file already exist
+				filename = Path.Combine(Path.GetDirectoryName(FilePath), $"{prefix}{filename}{postfix}{Ext}");
+
+			// if exist, make a duplicate
 			if (File.Exists(filename))
-				filename = $"{filename} NEW";
+				filename = Path.Combine(Path.GetDirectoryName(filename), $"{prefix}{filename}{postfix} NEW{Ext}");
 
 			return filename;
 		}

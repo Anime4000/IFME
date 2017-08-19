@@ -316,8 +316,7 @@ namespace ifme
 
 		private void txtFolderOutput_TextChanged(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.OutputDir = txtFolderOutput.Text;
-			Properties.Settings.Default.Save();
+			Get.FolderSave = txtFolderOutput.Text;
 		}
 
 		private void btnBrowseFolderOutput_Click(object sender, EventArgs e)

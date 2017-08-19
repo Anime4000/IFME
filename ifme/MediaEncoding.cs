@@ -272,9 +272,6 @@ namespace ifme
 		{
 			ConsoleEx.Write(LogLevel.Normal, "Merging RAW files as single media file\n");
 
-			// ready
-			var fileout = Get.NewFilePath(queue.File, SaveDir);
-
 			// get all media
 			var videos = string.Empty;
 			var audios = string.Empty;
@@ -290,28 +287,24 @@ namespace ifme
 			// find files
 			foreach (var video in Directory.GetFiles(TempDir, "video*"))
 			{
-				videos += $"-i \"{video}\" ";
+				videos += $"-i \"{Path.Combine("..", Path.GetFileName(video))}\" ";
 				metadata += $"-metadata:s:{index++} language={Get.FileLang(video)} ";
 			}
 
 			foreach (var audio in Directory.GetFiles(TempDir, "audio*"))
 			{
-				audios += $"-i \"{audio}\" ";
+				audios += $"-i \"{Path.Combine("..", Path.GetFileName(audio))}\" ";
 				metadata += $"-metadata:s:{index++} language={Get.FileLang(audio)} ";
 			}
 
 			foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
 			{
-				subtitles += $"-i \"{sub}\" ";
+				subtitles += $"-i \"{Path.Combine("..", Path.GetFileName(sub))}\" ";
 				metadata += $"-metadata:s:{index++} language={Get.FileLang(sub)} ";
 			}
 
 			// build command
-			if (queue.OutputFormat == TargetFormat.MP4)
-			{
-				command = $"{videos}{audios}{subtitles}{extra}{metadata} -y \"{fileout}.mp4\"";
-			}
-			else if (queue.OutputFormat == TargetFormat.MKV)
+			if (queue.OutputFormat == TargetFormat.MKV)
 			{
 				for (int i = 0; i < queue.Attachment.Count; i++)
 				{
@@ -325,21 +318,25 @@ namespace ifme
 					}
 				}
 
-				command = $"{videos}{audios}{subtitles}{attachments}{extra}{metadata} -y \"{fileout}.mkv\"";
+				command = $"{videos}{audios}{subtitles}{attachments}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mp4")}\"";
+			}
+			else if (queue.OutputFormat == TargetFormat.MP4)
+			{
+				command = $"{videos}{audios}{subtitles}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\"";
 			}
 			else if (queue.OutputFormat == TargetFormat.WEBM)
 			{
-				command = $"{videos}{audios}{subtitles}{extra}{metadata} -y \"{fileout}.webm\"";
+				command = $"{videos}{audios}{subtitles}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".webm")}\"";
 			}
 
 			// run command
-			var ec = ProcessManager.Start(FFmpeg, command, FontDir);
+			var ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}", FontDir);
 
 			// if failed
 			if (ec > 0)
 			{
 				ConsoleEx.Write(LogLevel.Error, "Damn! Video encoder make a mistake! Not my fault!\n");
-				Get.DirectoryCopy(TempDir, Path.Combine(SaveDir, fileout), true);
+				Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.File, ".raw"), true);
 			}
 
 			return 0;

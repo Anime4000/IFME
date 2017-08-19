@@ -45,13 +45,37 @@ namespace ifme
 			FFmpegDotNet.FFmpeg.Probe = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{arch}", "ffprobe");
 
 			// Init Folder
-			if (!Directory.Exists(Get.FolderTemp))
-				Directory.CreateDirectory(Get.FolderTemp);
+			if (Get.IsValidPath(Get.FolderTemp))
+			{
+				if (!Directory.Exists(Get.FolderTemp))
+					Directory.CreateDirectory(Get.FolderTemp);
+			}
+			else
+			{
+				Get.FolderTemp = Path.Combine(Path.GetTempPath(), "IFME");
 
-			if (!Directory.Exists(Get.FolderSave))
-				Directory.CreateDirectory(Get.FolderSave);
+				if (!Directory.Exists(Get.FolderTemp))
+					Directory.CreateDirectory(Get.FolderTemp);
+			}
+			
+			if (Get.IsValidPath(Get.FolderSave))
+			{
+				if (!Directory.Exists(Get.FolderSave))
+					Directory.CreateDirectory(Get.FolderSave);
+			}
+			else
+			{
+				var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
 
+				// windows xp
+				if (path.IsDisable())
+					path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+				Get.FolderSave = Path.Combine(path, "IFME");
+
+				if (!Directory.Exists(Get.FolderSave))
+					Directory.CreateDirectory(Get.FolderSave);
+			}
 		}
 
 		private void bgwThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
