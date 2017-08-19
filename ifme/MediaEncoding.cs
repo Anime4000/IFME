@@ -6,8 +6,9 @@ namespace ifme
 {
 	class MediaEncoding
 	{
-		private readonly string TempDir = Get.FolderTemp;
 		private readonly string SaveDir = Get.FolderSave;
+		private readonly string TempDir = Get.FolderTemp;
+		private readonly string FontDir = Path.Combine(Get.FolderTemp, "attachments");
 
 		private readonly string FFmpeg = Path.Combine(Get.AppRootDir, "plugin", $"ffmpeg{Properties.Settings.Default.FFmpegArch}", "ffmpeg");
 		private readonly string MkvExtract = Path.Combine(Get.AppRootDir, "plugin", $"mkvtoolnix", "mkvextract");
@@ -34,8 +35,8 @@ namespace ifme
 				Directory.CreateDirectory(TempDir);
 
 				// Prepare temp folder
-				if (!Directory.Exists(Path.Combine(TempDir, "attachments")))
-					Directory.CreateDirectory(Path.Combine(TempDir, "attachments"));
+				if (!Directory.Exists(FontDir))
+					Directory.CreateDirectory(FontDir);
 			}
 			catch (Exception)
 			{
@@ -86,12 +87,12 @@ namespace ifme
 			foreach (var item in queue.Attachment)
 			{
 				if (item.Id == -1)
-					File.Copy(item.File, Path.Combine(TempDir, "attachments", Path.GetFileName(item.File)));
+					File.Copy(item.File, Path.Combine(FontDir, Path.GetFileName(item.File)));
 
-				if (item.Id > -1)
-					ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", Path.Combine(TempDir, "attachments"));
+				if (item.Id >= 0)
+					ProcessManager.Start2(FFmpeg, $"-hide_banner -v panic -dump_attachment:{item.Id} \"{item.Name}\" -i \"{item.File}\" -y", FontDir);
 
-				ConsoleEx.Write(LogLevel.Normal, $"Extracted {id++} attachments.\r");
+				ConsoleEx.Write(LogLevel.Normal, $"Extracted {id++} attachments!\r");
 			}
 
 			Console.Write('\n');
@@ -275,145 +276,70 @@ namespace ifme
 			var fileout = Get.NewFilePath(queue.File, SaveDir);
 
 			// get all media
-			var videos = new List<string>();
-			var audios = new List<string>();
-			var subs = new List<string>();
-			var attach = new List<string>();
+			var videos = string.Empty;
+			var audios = string.Empty;
+			var subtitles = string.Empty;
+			var attachments = string.Empty;
 
+			var index = 0;
+			var metadata = string.Empty;
+			var command = string.Empty;
+
+			var extra = $"-vcodec copy -acodec copy -scodec copy -metadata application=\"{Get.AppNameLong}\" -metadata version=\"{Get.AppNameLib}\" ";
+
+			// find files
 			foreach (var video in Directory.GetFiles(TempDir, "video*"))
-				videos.Add(video);
+			{
+				videos += $"-i \"{video}\" ";
+				metadata += $"-metadata:s:{index++} language={Get.FileLang(video)} ";
+			}
 
 			foreach (var audio in Directory.GetFiles(TempDir, "audio*"))
-				audios.Add(audio);
+			{
+				audios += $"-i \"{audio}\" ";
+				metadata += $"-metadata:s:{index++} language={Get.FileLang(audio)} ";
+			}
 
 			foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
-				subs.Add(sub);
+			{
+				subtitles += $"-i \"{sub}\" ";
+				metadata += $"-metadata:s:{index++} language={Get.FileLang(sub)} ";
+			}
 
-			foreach (var font in Directory.GetFiles(Path.Combine(TempDir, "attachments"), "*.*"))
-				attach.Add(font);
-
+			// build command
 			if (queue.OutputFormat == TargetFormat.MP4)
 			{
-				var cmdvideo = string.Empty;
-				var cmdaudio = string.Empty;
-
-				var mp4vid = 0;
-				foreach (var video in videos)
-					cmdvideo += $"-add \"{video}#video:name=Video {mp4vid++}:lang={Get.FileLang(video)}\" ";
-
-				var mp4aid = 0;
-				foreach (var audio in audios)
-					cmdaudio += $"-add \"{audio}#audio:name=Audio {mp4aid++}:lang={Get.FileLang(audio)}\" ";
-
-				int exitcode = ProcessManager.Start(Mp4Box, $"{cmdvideo} {cmdaudio} -itags tool=\"{Get.AppNameLong}\" -new \"{fileout}.mp4\"");
-
-				if (exitcode == 1)
-					ConsoleEx.Write(LogLevel.Normal, "MP4Box merge perfectly!\n");
-				else
-					ConsoleEx.Write(LogLevel.Warning, "MP4Box merge with warning...\n");
+				command = $"{videos}{audios}{subtitles}{extra}{metadata} -y \"{fileout}.mp4\"";
 			}
 			else if (queue.OutputFormat == TargetFormat.MKV)
 			{
-				var cmdvideo = string.Empty;
-				var cmdaudio = string.Empty;
-				var cmdsubs = string.Empty;
-				var cmdattach = string.Empty;
-				var cmdchapter = string.Empty;
-
-				var tags = string.Format(Properties.Resources.MkvTags, Get.AppNameLong, Get.AppNameLib);
-				File.WriteAllText(Path.Combine(TempDir, "tags.xml"), tags);
-
-				foreach (var video in videos)
-					cmdvideo += $"--language 0:{Get.FileLang(video)} \"{video}\" ";
-
-				foreach (var audio in audios)
-					cmdaudio += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
-
-				foreach (var sub in subs)
-					cmdsubs += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(sub)} \"{sub}\" ";
-
-				foreach (var font in attach)
-					foreach (var item in queue.Attachment)
-						if (string.Equals(item.Name, Path.GetFileName(font)))
-							cmdattach += $"--attachment-mime-type \"{item.Mime}\" --attachment-description yes --attach-file \"{font}\" ";
-
-				if (File.Exists(Path.Combine(TempDir, "chapters.xml")))
+				for (int i = 0; i < queue.Attachment.Count; i++)
 				{
-					FileInfo ChapLen = new FileInfo(Path.Combine(TempDir, "chapters.xml"));
-					if (ChapLen.Length > 256)
-						cmdchapter = $"--chapters \"{Path.Combine(TempDir, "chapters.xml")}\"";
-				}
+					var file = Path.Combine(FontDir, queue.Attachment[i].Name);
+					var mime = queue.Attachment[i].Mime;
 
-				// try
-				var cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} {cmdattach} {cmdchapter}";
-				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{fileout}.mkv\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {cmd}");
-
-				if (exitcode == 0)
-				{
-					ConsoleEx.Write(LogLevel.Normal, "MkvToolNix merge perfectly on first attempt!\n");
-				}
-				else if (exitcode == 1)
-				{
-					ConsoleEx.Write(LogLevel.Warning, "MkvToolNix merge with warning on first attempt, it should work.\n");
-				}
-				else
-				{
-					// try with FFmpeg
-					ConsoleEx.Write(LogLevel.Error, "MkvToolNix still can't merge on second attempt! Using FFmpeg to merge! (no chapters)\n");
-
-					cmdvideo = string.Empty;
-					cmdaudio = string.Empty;
-					cmdsubs = string.Empty;
-					cmdattach = string.Empty;
-
-					var id = videos.Count + audios.Count + subs.Count;
-
-					foreach (var video in videos)
-						cmdvideo += $"-i {video} ";
-
-					foreach (var audio in audios)
-						cmdaudio += $"-i {audio} ";
-
-					foreach (var sub in subs)
-						cmdsubs += $"-i {sub} ";
-
-					foreach (var font in attach)
-						foreach (var item in queue.Attachment)
-							if (string.Equals(item.Name, Path.GetFileName(font)))
-								cmdattach += $"-attach \"{Path.GetFileName(font)}\" -metadata:s:{id++} \"mimetype={item.Mime}\" ";
-
-					cmd = $"{cmdvideo} {cmdaudio} {cmdsubs} -metadata \"encoded={Get.AppNameLong}\" {cmdattach}";
-					exitcode = ProcessManager.Start(FFmpeg, $"{cmd} -vcodec copy -acodec copy -scodec copy -y \"{fileout}.mkv\"", Path.Combine(TempDir, "attachments"));
-
-					if (exitcode == 0)
+					if (File.Exists(file))
 					{
-						ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge perfectly, without attachment.\n");
-					}
-					else
-					{
-						// copy whole thing
-						ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
-						Get.DirectoryCopy(TempDir, Path.Combine(SaveDir, fileout), true);
+						attachments += $"-attach \"{Path.GetFileName(file)}\" ";
+						metadata += $"-metadata:s:{index++} mimetype=\"{mime}\" ";
 					}
 				}
+
+				command = $"{videos}{audios}{subtitles}{attachments}{extra}{metadata} -y \"{fileout}.mkv\"";
 			}
 			else if (queue.OutputFormat == TargetFormat.WEBM)
 			{
-				var cmdvideo = string.Empty;
-				var cmdaudio = string.Empty;
+				command = $"{videos}{audios}{subtitles}{extra}{metadata} -y \"{fileout}.webm\"";
+			}
 
-				foreach (var video in videos)
-					cmdvideo += $"-i {video} ";
+			// run command
+			var ec = ProcessManager.Start(FFmpeg, command, FontDir);
 
-				foreach (var audio in audios)
-					cmdaudio += $"-i {audio} ";
-
-				var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v quiet -stats {cmdvideo} {cmdaudio} -metadata application='{Get.AppNameLong}' -vcodec copy -acodec copy -y \"{fileout}.webm\"");
-
-				if (exitcode == 0)
-					ConsoleEx.Write(LogLevel.Normal, "FFmpeg merge WebM media perfectly!\n");
-				else
-					ConsoleEx.Write(LogLevel.Error, "FFmpeg having issue to merge WebM media.\n");
+			// if failed
+			if (ec > 0)
+			{
+				ConsoleEx.Write(LogLevel.Error, "Damn! Video encoder make a mistake! Not my fault!\n");
+				Get.DirectoryCopy(TempDir, Path.Combine(SaveDir, fileout), true);
 			}
 
 			return 0;
