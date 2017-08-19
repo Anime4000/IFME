@@ -1420,6 +1420,7 @@ namespace ifme
 			}
 
 			// Attachment
+			lstAttach.Items.Clear();
 			if (media.Attachment.Count > 0)
 			{
 				foreach (var item in media.Attachment)

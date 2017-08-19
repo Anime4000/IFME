@@ -228,6 +228,8 @@ namespace ifme
 				var tf = !(lstMedia.SelectedItems.Count > 1);
 				grpVideoStream.Enabled = tf;
 				grpAudioStream.Enabled = tf;
+				pnlSubtitle.Enabled = tf;
+				pnlAttachment.Enabled = tf;
 
 				MediaPopulate(lstMedia.SelectedItems[0].Tag as MediaQueue);
 			}
