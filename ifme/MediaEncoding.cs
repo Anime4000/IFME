@@ -276,22 +276,22 @@ namespace ifme
 
 		private int VideoUnRaw(string FileName)
 		{
-			ConsoleEx.Write(LogLevel.Normal, "Processing RAW video file...\n");
-
 			var newname = Path.GetFileNameWithoutExtension(FileName) + ".mp4";
+			var filetype = Path.GetExtension(FileName).ToLowerInvariant();
 			var exitcode = 0;
 
-			exitcode = ProcessManager.Start(Mp4Box, $"-add \"{FileName}#video:lang={Get.FileLang(FileName)}\" -new \"{newname}\"");
+			if (filetype.IsOneOf(".h265", ".hevc", ".h264", ".avc", ".h263", ".divx", ".xvid"))
+				exitcode = ProcessManager.Start(Mp4Box, $"-add \"{FileName}#video:lang={Get.FileLang(FileName)}\" -new \"{newname}\"");
 
 			if (exitcode == 0)
 			{
-				ConsoleEx.Write(LogLevel.Normal, "Processing RAW video file OK!\n");
+				ConsoleEx.Write(LogLevel.Normal, "Processing RAW MPEG video file OK!\n");
 				if (File.Exists(Path.Combine(TempDir, FileName)))
 					File.Delete(Path.Combine(TempDir, FileName));
 			}
 			else
 			{
-				ConsoleEx.Write(LogLevel.Warning, "Processing RAW video file failed, maybe broken or incompatible codec!\n");
+				ConsoleEx.Write(LogLevel.Warning, "Processing RAW MPEG video file failed, maybe broken or incompatible codec!\n");
 				if (File.Exists(Path.Combine(TempDir, newname)))
 					File.Delete(Path.Combine(TempDir, newname));
 			}
@@ -313,7 +313,7 @@ namespace ifme
 			var metadata = string.Empty;
 			var command = string.Empty;
 
-			var extra = $"-vcodec copy -acodec copy -scodec copy -metadata application=\"{Get.AppNameLong}\" -metadata version=\"{Get.AppNameLib}\" ";
+			var extra = $"-vcodec copy -acodec copy -scodec copy -map_metadata -1 -map_chapters -1 -metadata application=\"{Get.AppNameLong}\" -metadata version=\"{Get.AppNameLib}\" ";
 
 			// find files
 			foreach (var video in Directory.GetFiles(TempDir, "video*"))
