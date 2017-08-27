@@ -67,7 +67,7 @@
 		"grpAviSynth": "&AviSynth",
 		"lblAviSynthInstall": "Instalado!",
 		"lblAviSynthNoInstall": "Não Instalado!",
-		"grpFFmpeg": "&Decoder Padrão",
+		"grpFFmpeg": "&Decodificador Padrão",
 		"rdoFFmpeg32": "FFmpeg &32bit (Suporta o AviSynth ST)",
 		"rdoFFmpeg64": "FFmpeg &64bit (Suporta alta resoluções && grande profundidade de bits)",
 		"grpFrameCountOffset": "&Compensação da Contagem de Quadros",
