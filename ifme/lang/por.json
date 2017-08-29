@@ -1,0 +1,139 @@
+{
+	"AuthorName": "Alex Silva",
+	"AuthorEmail": "contato@ialexsilva.com",
+	"AuthorProfile": "http://ialexsilva.com",
+	"UIFontWindows": "Tahoma, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
+	"ToolTipDonate": "Obrigado por usar o IFME, espero que você goste.\nVocê pode doar para este projeto para que eu possa continuar melhorando.\nClique neste botão para saber como doar.",
+	"frmMain": {
+		"tabGeneral": "Geral",
+		"grpTargetFormat": "&Formato Alvo",
+		"rdoFormatMp4": "&MP4",
+		"rdoFormatMkv": "M&KV",
+		"rdoFormatWebm": "&WEBM",
+		"rdoFormatAudioMp3": "MP&3",
+		"rdoFormatAudioMp4": "MP&4",
+		"rdoFormatAudioOgg": "&OGG",
+		"rdoFormatAudioOpus": "O&PUS",
+		"rdoFormatAudioFlac": "&FLAC (lossless)",
+		"grpStreamInfo": "Info de Mídia",
+		"tabVideo": "Vídeo",
+		"chkVideoDeinterlace": "&Desentrelaçar?",
+		"grpVideoStream": "&Streams",
+		"grpVideoCodec": "&Codec",
+		"lblVideoEncoder": "C&odificador:",
+		"lblVideoPreset": "Prese&t:",
+		"lblVideoTune": "&Tune:",
+		"lblVideoRateControl": "Taxa de &controle:",
+		"lblVideoRateFactor": "Taxa de &fator:",
+		"lblVideoMultiPass": "M&ultipasse:",
+		"btnVideoAdv": "Opções avançadas do cod&ificador",
+		"grpVideoPicture": "&Imagem",
+		"lblVideoResolution": "&Resolução:",
+		"lblVideoFrameRate": "Taxa de &Quadros:",
+		"lblVideoBitDepth": "Profundidade &Bit:",
+		"lblPixelFormat": "Formato de &Pixel:",
+		"lblVideoDeinterlaceMode": "&Modo:",
+		"lblVideoDeinterlaceField": "&Campos:",
+		"tabAudio": "Áudio",
+		"grpAudioStream": "&Streams",
+		"grpAudioCodec": "&Codec",
+		"lblAudioEncoder": "C&odificador:",
+		"lblAudioQuality": "&Qualidade:",
+		"lblAudioSampleRate": "Taxa de Amostra&gem:",
+		"lblAudioChannel": "Ca&nal:",
+		"btnAudioAdv": "Opções avançadas do cod&ificador",
+		"lblAudioMode": "&Modo:",
+		"tabSubtitle": "Legenda",
+		"lblSubLang": "&Idioma:",
+		"tabAttachment": "Anexos",
+		"lblAttachMime": "Tipo do &MIME:",
+		"lblEncodingPreset": "&Preset de Codificação:",
+		"lblOutputFolder": "&Destino:"
+	},
+	"frmOption": {
+		"tabOptionGeneral": "Geral",
+		"grpLanguage": "&Idioma",
+		"grpTempFolder": "&Pasta temporária",
+		"grpNewFilename": "&Novo nome de arquivo",
+		"grpNewFilenamePrefix": "P&refixo",
+		"rdoNamePrefixNone": "&Nenhum",
+		"rdoNamePrefixDateTime": "&Data e Hora",
+		"rdoNamePrefixCustom": "&Personalizada:",
+		"grpNewFilenamePostfix": "P&ostfix",
+		"rdoNamePostfixNone": "Nen&hum",
+		"rdoNamePostfixCustom": "&Personalizada:",
+		"tabOptionEncoding": "Codificação",
+		"grpAviSynth": "&AviSynth",
+		"lblAviSynthInstall": "Instalado!",
+		"lblAviSynthNoInstall": "Não Instalado!",
+		"grpFFmpeg": "&Decodificador Padrão",
+		"rdoFFmpeg32": "FFmpeg &32bit (Suporta o AviSynth ST)",
+		"rdoFFmpeg64": "FFmpeg &64bit (Suporta alta resoluções && grande profundidade de bits)",
+		"grpFrameCountOffset": "&Compensação da Contagem de Quadros",
+		"lblFrameCountOffset": "A taxa de quadros variável será convertida em taxa de quadros constante. Ao adicionar um valor de deslocamento, o decodificador irá compensar dados de contêiner quebrados com uma contagem de quadros mais alta para garantir que não faltem quadros durante a codificação.",
+		"tabOptionModule": "Módulo",
+		"btnCancel": "&Cancelar",
+		"btnOk": "&OK"
+	},
+	"frmShutdown": {
+		"lblInfo": "O que devo fazer depois da conversão?",
+		"btnOK": "&OK"
+	},
+	"frmAbout": {
+		"lblDevTtitle": "Desenvolvido por",
+		"lblTechTitle": "Tecnologias usadas",
+		"lblArtTitle": "Artwork por"
+	},
+	"frmCheckUpdate": {
+		"btnDownload": "&Baixar",
+		"btnOK": "&OK"
+	},
+	"cmsNewImport": {
+		"tsmiNew": "&Novo",
+		"tsmiImport": "&Importar"
+	},
+	"cmsEncodingPreset": {
+		"tsmiEncodingPresetSave": "&Salvar",
+		"tsmiEncodingPresetSaveAs": "Salvar &Como",
+	},
+	"InputBoxNewMedia": {
+		"Title": "Novo arquivo de mídia",
+		"Message": "Você está prestes a criar um fluxo em branco de vídeo, áudio, legendas e fontes.\nVocê poder usar para adicionar arquivos, convertê-los ou simplesmente mesclá-los (como Mkvtoolnix ou MP4Box)\n\nDigite um novo nome de arquivo:"
+	},
+	"InputBoxEncodingPreset": {
+		"Title": "Salvar novo preset de codificação",
+		"Message": "Você está prestes a criar um novo preset de codificação com base na configuração atual.\nCom este preset, você pode reutilizar em outros vídeos.\n\nDigite um novo nome:"
+	},
+	"InputBoxCommandLine": {
+		"Title": "Linha de comando do codificador",
+		"Message": "Modificar argumentos na linha de comando do codificador\nExemplo: --bitdepth 8"
+	},
+	"MsgBoxShutdown": {
+		"Title": "Pergunta",
+		"Message": "Este computador irá desligar ou reiniciar depois que tudo for feito. Você deseja continuar?"
+	},
+	"MsgBoxSaveFolder": {
+		"Title": "Caminho Inválido",
+		"Message": "O salvamento em uma rede não é suportado! Por favor, escolha uma unidade de disco."
+	},
+	"MsgBoxCodecIncompatible": {
+		"Title": "Codec Incompatível",
+		"Message": "O formato de saída e o codec não são compatíveis! Escolha um diferente."
+	},
+	"ComboBoxDeInterlaceMode": [
+		"Desentrelaçar apenas quadros",
+		"Desentrelaçar cada campo",
+		"Pular a verificação de quadros de entrelaçamento",
+		"Pular a verificação de campo de entrelaçamento"
+	],
+	"ComboBoxDeInterlaceField": [
+		"Campo Superior Primeiro",
+		"Campo Inferior Primeiro"
+	],
+	"ComboBoxShutdown": [
+		"Não Fazer Nada",
+		"Reiniciar",
+		"Desligar"
+	]
+}
