@@ -51,7 +51,12 @@
 		"tabAttachment": "مرفقات",
 		"lblAttachMime": "نوع التمثيل الصامت:",
 		"lblEncodingPreset": "ترميز مسبق:",
-		"lblOutputFolder": "المكان المقصود:"
+		"lblOutputFolder": "المكان المقصود:",
+		"tabAdvance": "Advance",
+		"chkAdvTrim": "&Trim Video && Audio",
+		"lblAdvTimeStart": "&Start:",
+		"lblAdvTimeEnd": "&End:",
+		"lblAdvTimeDuration": "&Duration:"
 	},
 	"frmOption": {
 		"tabOptionGeneral": "عام",

@@ -4,6 +4,7 @@
 [new] Support adding FFmpeg command for decoding
 [new] Brazilian Portuguese localisation #138
 [change] Add Mkvtoolnix back (chapter support)
+[change] Default window size change to 900x700 (Monitor 1024x760 minimum)
 
 Version 7.4 (Endless Sky)
 -------------------------

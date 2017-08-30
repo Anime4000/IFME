@@ -51,7 +51,12 @@
 		"tabAttachment": "Lampiran",
 		"lblAttachMime": "Jenis &MIME:",
 		"lblEncodingPreset": "&Pratetap:",
-		"lblOutputFolder": "&Destinasi:"
+		"lblOutputFolder": "&Destinasi:",
+		"tabAdvance": "Maju",
+		"chkAdvTrim": "&Potong Video && Audio",
+		"lblAdvTimeStart": "&Mula:",
+		"lblAdvTimeEnd": "&Tamat:",
+		"lblAdvTimeDuration": "&Durasi:"
 	},
 	"frmOption": {
 		"tabOptionGeneral": "Umum",

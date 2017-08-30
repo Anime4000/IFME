@@ -352,7 +352,7 @@
 			// 
 			this.rdoFormatAudioFlac.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioFlac.Location = new System.Drawing.Point(6, 231);
+			this.rdoFormatAudioFlac.Location = new System.Drawing.Point(6, 240);
 			this.rdoFormatAudioFlac.Name = "rdoFormatAudioFlac";
 			this.rdoFormatAudioFlac.Size = new System.Drawing.Size(136, 24);
 			this.rdoFormatAudioFlac.TabIndex = 7;
@@ -366,7 +366,7 @@
 			this.lblSplit3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSplit3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblSplit3.Location = new System.Drawing.Point(6, 106);
+			this.lblSplit3.Location = new System.Drawing.Point(6, 115);
 			this.lblSplit3.Name = "lblSplit3";
 			this.lblSplit3.Size = new System.Drawing.Size(148, 2);
 			this.lblSplit3.TabIndex = 8;
@@ -375,7 +375,7 @@
 			// 
 			this.rdoFormatAudioOpus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioOpus.Location = new System.Drawing.Point(6, 201);
+			this.rdoFormatAudioOpus.Location = new System.Drawing.Point(6, 210);
 			this.rdoFormatAudioOpus.Name = "rdoFormatAudioOpus";
 			this.rdoFormatAudioOpus.Size = new System.Drawing.Size(65, 24);
 			this.rdoFormatAudioOpus.TabIndex = 6;
@@ -388,7 +388,7 @@
 			// 
 			this.rdoFormatAudioMp3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioMp3.Location = new System.Drawing.Point(6, 111);
+			this.rdoFormatAudioMp3.Location = new System.Drawing.Point(6, 120);
 			this.rdoFormatAudioMp3.Name = "rdoFormatAudioMp3";
 			this.rdoFormatAudioMp3.Size = new System.Drawing.Size(65, 24);
 			this.rdoFormatAudioMp3.TabIndex = 3;
@@ -401,7 +401,7 @@
 			// 
 			this.rdoFormatAudioOgg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioOgg.Location = new System.Drawing.Point(6, 171);
+			this.rdoFormatAudioOgg.Location = new System.Drawing.Point(6, 180);
 			this.rdoFormatAudioOgg.Name = "rdoFormatAudioOgg";
 			this.rdoFormatAudioOgg.Size = new System.Drawing.Size(65, 24);
 			this.rdoFormatAudioOgg.TabIndex = 5;
@@ -414,7 +414,7 @@
 			// 
 			this.rdoFormatAudioMp4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatAudioMp4.Location = new System.Drawing.Point(6, 141);
+			this.rdoFormatAudioMp4.Location = new System.Drawing.Point(6, 150);
 			this.rdoFormatAudioMp4.Name = "rdoFormatAudioMp4";
 			this.rdoFormatAudioMp4.Size = new System.Drawing.Size(65, 24);
 			this.rdoFormatAudioMp4.TabIndex = 4;
@@ -427,7 +427,7 @@
 			// 
 			this.rdoFormatMp4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatMp4.Location = new System.Drawing.Point(6, 19);
+			this.rdoFormatMp4.Location = new System.Drawing.Point(6, 28);
 			this.rdoFormatMp4.Name = "rdoFormatMp4";
 			this.rdoFormatMp4.Size = new System.Drawing.Size(148, 24);
 			this.rdoFormatMp4.TabIndex = 0;
@@ -440,7 +440,7 @@
 			// 
 			this.rdoFormatWebm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.rdoFormatWebm.Location = new System.Drawing.Point(6, 79);
+			this.rdoFormatWebm.Location = new System.Drawing.Point(6, 88);
 			this.rdoFormatWebm.Name = "rdoFormatWebm";
 			this.rdoFormatWebm.Size = new System.Drawing.Size(148, 24);
 			this.rdoFormatWebm.TabIndex = 2;
@@ -454,7 +454,7 @@
 			this.rdoFormatMkv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.rdoFormatMkv.Checked = true;
-			this.rdoFormatMkv.Location = new System.Drawing.Point(6, 49);
+			this.rdoFormatMkv.Location = new System.Drawing.Point(6, 58);
 			this.rdoFormatMkv.Name = "rdoFormatMkv";
 			this.rdoFormatMkv.Size = new System.Drawing.Size(148, 24);
 			this.rdoFormatMkv.TabIndex = 1;
@@ -709,7 +709,7 @@
 			// 
 			this.btnVideoAdvDec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnVideoAdvDec.Location = new System.Drawing.Point(11, 210);
+			this.btnVideoAdvDec.Location = new System.Drawing.Point(11, 222);
 			this.btnVideoAdvDec.Name = "btnVideoAdvDec";
 			this.btnVideoAdvDec.Size = new System.Drawing.Size(248, 28);
 			this.btnVideoAdvDec.TabIndex = 13;
@@ -721,7 +721,7 @@
 			// 
 			this.btnVideoAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnVideoAdv.Location = new System.Drawing.Point(11, 244);
+			this.btnVideoAdv.Location = new System.Drawing.Point(11, 256);
 			this.btnVideoAdv.Name = "btnVideoAdv";
 			this.btnVideoAdv.Size = new System.Drawing.Size(248, 28);
 			this.btnVideoAdv.TabIndex = 12;
@@ -1072,7 +1072,7 @@
 			// 
 			this.btnAudioAdvDec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAudioAdvDec.Location = new System.Drawing.Point(63, 164);
+			this.btnAudioAdvDec.Location = new System.Drawing.Point(63, 181);
 			this.btnAudioAdvDec.Name = "btnAudioAdvDec";
 			this.btnAudioAdvDec.Size = new System.Drawing.Size(375, 28);
 			this.btnAudioAdvDec.TabIndex = 11;
@@ -1085,7 +1085,7 @@
 			this.cboAudioMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioMode.FormattingEnabled = true;
-			this.cboAudioMode.Location = new System.Drawing.Point(317, 89);
+			this.cboAudioMode.Location = new System.Drawing.Point(317, 72);
 			this.cboAudioMode.Name = "cboAudioMode";
 			this.cboAudioMode.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioMode.TabIndex = 10;
@@ -1095,7 +1095,7 @@
 			// lblAudioMode
 			// 
 			this.lblAudioMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioMode.Location = new System.Drawing.Point(317, 65);
+			this.lblAudioMode.Location = new System.Drawing.Point(317, 48);
 			this.lblAudioMode.Name = "lblAudioMode";
 			this.lblAudioMode.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioMode.TabIndex = 9;
@@ -1106,7 +1106,7 @@
 			// 
 			this.btnAudioAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAudioAdv.Location = new System.Drawing.Point(63, 198);
+			this.btnAudioAdv.Location = new System.Drawing.Point(63, 215);
 			this.btnAudioAdv.Name = "btnAudioAdv";
 			this.btnAudioAdv.Size = new System.Drawing.Size(375, 28);
 			this.btnAudioAdv.TabIndex = 8;
@@ -1119,7 +1119,7 @@
 			this.cboAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioChannel.FormattingEnabled = true;
-			this.cboAudioChannel.Location = new System.Drawing.Point(317, 137);
+			this.cboAudioChannel.Location = new System.Drawing.Point(317, 120);
 			this.cboAudioChannel.Name = "cboAudioChannel";
 			this.cboAudioChannel.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioChannel.TabIndex = 7;
@@ -1128,7 +1128,7 @@
 			// lblAudioChannel
 			// 
 			this.lblAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioChannel.Location = new System.Drawing.Point(317, 113);
+			this.lblAudioChannel.Location = new System.Drawing.Point(317, 96);
 			this.lblAudioChannel.Name = "lblAudioChannel";
 			this.lblAudioChannel.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioChannel.TabIndex = 6;
@@ -1140,7 +1140,7 @@
 			this.cboAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioSampleRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioSampleRate.FormattingEnabled = true;
-			this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 137);
+			this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 120);
 			this.cboAudioSampleRate.Name = "cboAudioSampleRate";
 			this.cboAudioSampleRate.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioSampleRate.TabIndex = 5;
@@ -1149,7 +1149,7 @@
 			// lblAudioSampleRate
 			// 
 			this.lblAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 113);
+			this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 96);
 			this.lblAudioSampleRate.Name = "lblAudioSampleRate";
 			this.lblAudioSampleRate.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioSampleRate.TabIndex = 4;
@@ -1161,7 +1161,7 @@
 			this.cboAudioQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioQuality.FormattingEnabled = true;
-			this.cboAudioQuality.Location = new System.Drawing.Point(63, 137);
+			this.cboAudioQuality.Location = new System.Drawing.Point(63, 120);
 			this.cboAudioQuality.Name = "cboAudioQuality";
 			this.cboAudioQuality.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioQuality.TabIndex = 3;
@@ -1170,7 +1170,7 @@
 			// lblAudioQuality
 			// 
 			this.lblAudioQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioQuality.Location = new System.Drawing.Point(63, 113);
+			this.lblAudioQuality.Location = new System.Drawing.Point(63, 96);
 			this.lblAudioQuality.Name = "lblAudioQuality";
 			this.lblAudioQuality.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioQuality.TabIndex = 2;
@@ -1182,7 +1182,7 @@
 			this.cboAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioEncoder.FormattingEnabled = true;
-			this.cboAudioEncoder.Location = new System.Drawing.Point(63, 89);
+			this.cboAudioEncoder.Location = new System.Drawing.Point(63, 72);
 			this.cboAudioEncoder.Name = "cboAudioEncoder";
 			this.cboAudioEncoder.Size = new System.Drawing.Size(248, 21);
 			this.cboAudioEncoder.TabIndex = 1;
@@ -1192,7 +1192,7 @@
 			// lblAudioEncoder
 			// 
 			this.lblAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioEncoder.Location = new System.Drawing.Point(63, 65);
+			this.lblAudioEncoder.Location = new System.Drawing.Point(63, 48);
 			this.lblAudioEncoder.Name = "lblAudioEncoder";
 			this.lblAudioEncoder.Size = new System.Drawing.Size(248, 18);
 			this.lblAudioEncoder.TabIndex = 0;

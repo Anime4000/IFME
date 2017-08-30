@@ -51,7 +51,12 @@
 		"tabAttachment": "添付ファイル",
 		"lblAttachMime": "MIME タイプ(&M):",
 		"lblEncodingPreset": "エンコーダプリセット(&P):",
-		"lblOutputFolder": "移動先フォルダ(&D):"
+		"lblOutputFolder": "移動先フォルダ(&D):",
+		"tabAdvance": "前進",
+		"chkAdvTrim": "トリムビデオとオーディオ(&T)",
+		"lblAdvTimeStart": "スタート(&S):",
+		"lblAdvTimeEnd": "終了(&E):",
+		"lblAdvTimeDuration": "期間(&D):"
 	},
 	"frmOption": {
 		"tabOptionGeneral": "基本",

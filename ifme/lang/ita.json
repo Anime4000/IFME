@@ -51,7 +51,12 @@
 		"tabAttachment": "Allegati",
 		"lblAttachMime": "&MIME Type:",
 		"lblEncodingPreset": "Encoding &Preset:",
-		"lblOutputFolder": "&Destinazione:"
+		"lblOutputFolder": "&Destinazione:",
+		"tabAdvance": "Advance",
+		"chkAdvTrim": "&Trim Video && Audio",
+		"lblAdvTimeStart": "&Start:",
+		"lblAdvTimeEnd": "&End:",
+		"lblAdvTimeDuration": "&Duration:"
 	},
 	"frmOption": {
 		"tabOptionGeneral": "Generale",
