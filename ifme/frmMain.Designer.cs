@@ -43,7 +43,7 @@
 			this.txtMediaInfo = new System.Windows.Forms.TextBox();
 			this.grpTargetFormat = new System.Windows.Forms.GroupBox();
 			this.rdoFormatAudioFlac = new System.Windows.Forms.RadioButton();
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblSplit3 = new System.Windows.Forms.Label();
 			this.rdoFormatAudioOpus = new System.Windows.Forms.RadioButton();
 			this.rdoFormatAudioMp3 = new System.Windows.Forms.RadioButton();
 			this.rdoFormatAudioOgg = new System.Windows.Forms.RadioButton();
@@ -70,6 +70,7 @@
 			this.btnVideoMoveUp = new System.Windows.Forms.Button();
 			this.btnVideoMoveDown = new System.Windows.Forms.Button();
 			this.grpVideoCodec = new System.Windows.Forms.GroupBox();
+			this.btnVideoAdvDec = new System.Windows.Forms.Button();
 			this.btnVideoAdv = new System.Windows.Forms.Button();
 			this.nudVideoMultiPass = new System.Windows.Forms.NumericUpDown();
 			this.lblVideoMultiPass = new System.Windows.Forms.Label();
@@ -95,6 +96,7 @@
 			this.tabAudio = new System.Windows.Forms.TabPage();
 			this.pnlAudio = new System.Windows.Forms.Panel();
 			this.grpAudioCodec = new System.Windows.Forms.GroupBox();
+			this.btnAudioAdvDec = new System.Windows.Forms.Button();
 			this.cboAudioMode = new System.Windows.Forms.ComboBox();
 			this.lblAudioMode = new System.Windows.Forms.Label();
 			this.btnAudioAdv = new System.Windows.Forms.Button();
@@ -140,6 +142,18 @@
 			this.colAttachMime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnAttachDel = new System.Windows.Forms.Button();
 			this.btnAttachAdd = new System.Windows.Forms.Button();
+			this.tabAdvance = new System.Windows.Forms.TabPage();
+			this.pnlDecoder = new System.Windows.Forms.Panel();
+			this.chkAdvTrim = new System.Windows.Forms.CheckBox();
+			this.grpAdvTrim = new System.Windows.Forms.GroupBox();
+			this.mtxAdvTimeDuration = new System.Windows.Forms.MaskedTextBox();
+			this.mtxAdvTimeEnd = new System.Windows.Forms.MaskedTextBox();
+			this.mtxAdvTimeStart = new System.Windows.Forms.MaskedTextBox();
+			this.lblAdvTimeEqual = new System.Windows.Forms.Label();
+			this.lblAdvTimeUntil = new System.Windows.Forms.Label();
+			this.lblAdvTimeEnd = new System.Windows.Forms.Label();
+			this.lblAdvTimeDuration = new System.Windows.Forms.Label();
+			this.lblAdvTimeStart = new System.Windows.Forms.Label();
 			this.txtFolderOutput = new System.Windows.Forms.TextBox();
 			this.lblOutputFolder = new System.Windows.Forms.Label();
 			this.btnBrowseFolderOutput = new System.Windows.Forms.Button();
@@ -189,6 +203,9 @@
 			this.pnlSubtitle.SuspendLayout();
 			this.tabAttachment.SuspendLayout();
 			this.pnlAttachment.SuspendLayout();
+			this.tabAdvance.SuspendLayout();
+			this.pnlDecoder.SuspendLayout();
+			this.grpAdvTrim.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).BeginInit();
 			this.cmsNewImport.SuspendLayout();
 			this.cmsEncodingPreset.SuspendLayout();
@@ -211,7 +228,7 @@
 			this.lstMedia.HideSelection = false;
 			this.lstMedia.Location = new System.Drawing.Point(12, 114);
 			this.lstMedia.Name = "lstMedia";
-			this.lstMedia.Size = new System.Drawing.Size(876, 161);
+			this.lstMedia.Size = new System.Drawing.Size(876, 180);
 			this.lstMedia.TabIndex = 14;
 			this.lstMedia.UseCompatibleStateImageBehavior = false;
 			this.lstMedia.View = System.Windows.Forms.View.Details;
@@ -254,10 +271,11 @@
 			this.tabMediaConfig.Controls.Add(this.tabAudio);
 			this.tabMediaConfig.Controls.Add(this.tabSubtitle);
 			this.tabMediaConfig.Controls.Add(this.tabAttachment);
-			this.tabMediaConfig.Location = new System.Drawing.Point(12, 281);
+			this.tabMediaConfig.Controls.Add(this.tabAdvance);
+			this.tabMediaConfig.Location = new System.Drawing.Point(12, 300);
 			this.tabMediaConfig.Name = "tabMediaConfig";
 			this.tabMediaConfig.SelectedIndex = 0;
-			this.tabMediaConfig.Size = new System.Drawing.Size(876, 300);
+			this.tabMediaConfig.Size = new System.Drawing.Size(876, 331);
 			this.tabMediaConfig.TabIndex = 15;
 			this.tabMediaConfig.SelectedIndexChanged += new System.EventHandler(this.tabMediaConfig_SelectedIndexChanged);
 			// 
@@ -267,7 +285,7 @@
 			this.tabGeneral.Location = new System.Drawing.Point(4, 22);
 			this.tabGeneral.Name = "tabGeneral";
 			this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-			this.tabGeneral.Size = new System.Drawing.Size(868, 274);
+			this.tabGeneral.Size = new System.Drawing.Size(868, 305);
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "General";
 			this.tabGeneral.UseVisualStyleBackColor = true;
@@ -279,7 +297,7 @@
 			this.pnlGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlGeneral.Location = new System.Drawing.Point(3, 3);
 			this.pnlGeneral.Name = "pnlGeneral";
-			this.pnlGeneral.Size = new System.Drawing.Size(862, 268);
+			this.pnlGeneral.Size = new System.Drawing.Size(862, 299);
 			this.pnlGeneral.TabIndex = 0;
 			// 
 			// grpStreamInfo
@@ -290,7 +308,7 @@
 			this.grpStreamInfo.Controls.Add(this.txtMediaInfo);
 			this.grpStreamInfo.Location = new System.Drawing.Point(169, 3);
 			this.grpStreamInfo.Name = "grpStreamInfo";
-			this.grpStreamInfo.Size = new System.Drawing.Size(690, 262);
+			this.grpStreamInfo.Size = new System.Drawing.Size(690, 293);
 			this.grpStreamInfo.TabIndex = 1;
 			this.grpStreamInfo.TabStop = false;
 			this.grpStreamInfo.Text = "Media Info";
@@ -306,7 +324,7 @@
 			this.txtMediaInfo.Name = "txtMediaInfo";
 			this.txtMediaInfo.ReadOnly = true;
 			this.txtMediaInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtMediaInfo.Size = new System.Drawing.Size(678, 237);
+			this.txtMediaInfo.Size = new System.Drawing.Size(678, 268);
 			this.txtMediaInfo.TabIndex = 0;
 			this.txtMediaInfo.WordWrap = false;
 			// 
@@ -315,7 +333,7 @@
 			this.grpTargetFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.grpTargetFormat.Controls.Add(this.rdoFormatAudioFlac);
-			this.grpTargetFormat.Controls.Add(this.label1);
+			this.grpTargetFormat.Controls.Add(this.lblSplit3);
 			this.grpTargetFormat.Controls.Add(this.rdoFormatAudioOpus);
 			this.grpTargetFormat.Controls.Add(this.rdoFormatAudioMp3);
 			this.grpTargetFormat.Controls.Add(this.rdoFormatAudioOgg);
@@ -325,7 +343,7 @@
 			this.grpTargetFormat.Controls.Add(this.rdoFormatMkv);
 			this.grpTargetFormat.Location = new System.Drawing.Point(3, 3);
 			this.grpTargetFormat.Name = "grpTargetFormat";
-			this.grpTargetFormat.Size = new System.Drawing.Size(160, 262);
+			this.grpTargetFormat.Size = new System.Drawing.Size(160, 293);
 			this.grpTargetFormat.TabIndex = 0;
 			this.grpTargetFormat.TabStop = false;
 			this.grpTargetFormat.Text = "&Target Format";
@@ -343,15 +361,15 @@
 			this.rdoFormatAudioFlac.CheckedChanged += new System.EventHandler(this.MediaFormatDefault);
 			this.rdoFormatAudioFlac.Leave += new System.EventHandler(this.MediaApply);
 			// 
-			// label1
+			// lblSplit3
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.lblSplit3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.label1.Location = new System.Drawing.Point(6, 106);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(148, 2);
-			this.label1.TabIndex = 8;
+			this.lblSplit3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.lblSplit3.Location = new System.Drawing.Point(6, 106);
+			this.lblSplit3.Name = "lblSplit3";
+			this.lblSplit3.Size = new System.Drawing.Size(148, 2);
+			this.lblSplit3.TabIndex = 8;
 			// 
 			// rdoFormatAudioOpus
 			// 
@@ -452,7 +470,7 @@
 			this.tabVideo.Location = new System.Drawing.Point(4, 22);
 			this.tabVideo.Name = "tabVideo";
 			this.tabVideo.Padding = new System.Windows.Forms.Padding(3);
-			this.tabVideo.Size = new System.Drawing.Size(868, 274);
+			this.tabVideo.Size = new System.Drawing.Size(868, 305);
 			this.tabVideo.TabIndex = 1;
 			this.tabVideo.Text = "Video";
 			this.tabVideo.UseVisualStyleBackColor = true;
@@ -466,25 +484,27 @@
 			this.pnlVideo.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlVideo.Location = new System.Drawing.Point(3, 3);
 			this.pnlVideo.Name = "pnlVideo";
-			this.pnlVideo.Size = new System.Drawing.Size(862, 268);
+			this.pnlVideo.Size = new System.Drawing.Size(862, 299);
 			this.pnlVideo.TabIndex = 0;
 			// 
 			// grpVideoInterlace
 			// 
-			this.grpVideoInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpVideoInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpVideoInterlace.Controls.Add(this.chkVideoDeinterlace);
 			this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceField);
 			this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceField);
 			this.grpVideoInterlace.Controls.Add(this.cboVideoDeinterlaceMode);
 			this.grpVideoInterlace.Controls.Add(this.lblVideoDeinterlaceMode);
-			this.grpVideoInterlace.Location = new System.Drawing.Point(634, 139);
+			this.grpVideoInterlace.Location = new System.Drawing.Point(634, 142);
 			this.grpVideoInterlace.Name = "grpVideoInterlace";
-			this.grpVideoInterlace.Size = new System.Drawing.Size(224, 126);
+			this.grpVideoInterlace.Size = new System.Drawing.Size(224, 151);
 			this.grpVideoInterlace.TabIndex = 3;
 			this.grpVideoInterlace.TabStop = false;
 			// 
 			// chkVideoDeinterlace
 			// 
+			this.chkVideoDeinterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.chkVideoDeinterlace.AutoSize = true;
 			this.chkVideoDeinterlace.BackColor = System.Drawing.SystemColors.Window;
 			this.chkVideoDeinterlace.Location = new System.Drawing.Point(8, -1);
@@ -498,13 +518,14 @@
 			// 
 			// cboVideoDeinterlaceField
 			// 
+			this.cboVideoDeinterlaceField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoDeinterlaceField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoDeinterlaceField.Enabled = false;
 			this.cboVideoDeinterlaceField.FormattingEnabled = true;
 			this.cboVideoDeinterlaceField.Items.AddRange(new object[] {
             "Top Field First",
             "Bottom Field First"});
-			this.cboVideoDeinterlaceField.Location = new System.Drawing.Point(9, 90);
+			this.cboVideoDeinterlaceField.Location = new System.Drawing.Point(9, 93);
 			this.cboVideoDeinterlaceField.Name = "cboVideoDeinterlaceField";
 			this.cboVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
 			this.cboVideoDeinterlaceField.TabIndex = 3;
@@ -512,10 +533,9 @@
 			// 
 			// lblVideoDeinterlaceField
 			// 
-			this.lblVideoDeinterlaceField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoDeinterlaceField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblVideoDeinterlaceField.Enabled = false;
-			this.lblVideoDeinterlaceField.Location = new System.Drawing.Point(9, 66);
+			this.lblVideoDeinterlaceField.Location = new System.Drawing.Point(9, 69);
 			this.lblVideoDeinterlaceField.Name = "lblVideoDeinterlaceField";
 			this.lblVideoDeinterlaceField.Size = new System.Drawing.Size(206, 21);
 			this.lblVideoDeinterlaceField.TabIndex = 2;
@@ -524,6 +544,7 @@
 			// 
 			// cboVideoDeinterlaceMode
 			// 
+			this.cboVideoDeinterlaceMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoDeinterlaceMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoDeinterlaceMode.Enabled = false;
 			this.cboVideoDeinterlaceMode.FormattingEnabled = true;
@@ -532,7 +553,7 @@
             "Deinterlace each field",
             "Skips spatial interlacing frame check",
             "Skips spatial interlacing field check"});
-			this.cboVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 42);
+			this.cboVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 45);
 			this.cboVideoDeinterlaceMode.Name = "cboVideoDeinterlaceMode";
 			this.cboVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
 			this.cboVideoDeinterlaceMode.TabIndex = 1;
@@ -540,10 +561,9 @@
 			// 
 			// lblVideoDeinterlaceMode
 			// 
-			this.lblVideoDeinterlaceMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoDeinterlaceMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblVideoDeinterlaceMode.Enabled = false;
-			this.lblVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 18);
+			this.lblVideoDeinterlaceMode.Location = new System.Drawing.Point(9, 21);
 			this.lblVideoDeinterlaceMode.Name = "lblVideoDeinterlaceMode";
 			this.lblVideoDeinterlaceMode.Size = new System.Drawing.Size(206, 21);
 			this.lblVideoDeinterlaceMode.TabIndex = 0;
@@ -563,7 +583,7 @@
 			this.grpVideoStream.Controls.Add(this.btnVideoMoveDown);
 			this.grpVideoStream.Location = new System.Drawing.Point(3, 3);
 			this.grpVideoStream.Name = "grpVideoStream";
-			this.grpVideoStream.Size = new System.Drawing.Size(350, 262);
+			this.grpVideoStream.Size = new System.Drawing.Size(350, 290);
 			this.grpVideoStream.TabIndex = 0;
 			this.grpVideoStream.TabStop = false;
 			this.grpVideoStream.Text = "&Streams";
@@ -574,7 +594,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoStreamLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoStreamLang.FormattingEnabled = true;
-			this.cboVideoStreamLang.Location = new System.Drawing.Point(6, 235);
+			this.cboVideoStreamLang.Location = new System.Drawing.Point(6, 263);
 			this.cboVideoStreamLang.Name = "cboVideoStreamLang";
 			this.cboVideoStreamLang.Size = new System.Drawing.Size(338, 21);
 			this.cboVideoStreamLang.TabIndex = 5;
@@ -614,7 +634,7 @@
 			this.lstVideo.HideSelection = false;
 			this.lstVideo.Location = new System.Drawing.Point(6, 49);
 			this.lstVideo.Name = "lstVideo";
-			this.lstVideo.Size = new System.Drawing.Size(338, 180);
+			this.lstVideo.Size = new System.Drawing.Size(338, 208);
 			this.lstVideo.TabIndex = 4;
 			this.lstVideo.UseCompatibleStateImageBehavior = false;
 			this.lstVideo.View = System.Windows.Forms.View.Details;
@@ -664,6 +684,7 @@
 			// 
 			this.grpVideoCodec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpVideoCodec.Controls.Add(this.btnVideoAdvDec);
 			this.grpVideoCodec.Controls.Add(this.btnVideoAdv);
 			this.grpVideoCodec.Controls.Add(this.nudVideoMultiPass);
 			this.grpVideoCodec.Controls.Add(this.lblVideoMultiPass);
@@ -679,23 +700,38 @@
 			this.grpVideoCodec.Controls.Add(this.lblVideoEncoder);
 			this.grpVideoCodec.Location = new System.Drawing.Point(359, 3);
 			this.grpVideoCodec.Name = "grpVideoCodec";
-			this.grpVideoCodec.Size = new System.Drawing.Size(270, 262);
+			this.grpVideoCodec.Size = new System.Drawing.Size(270, 290);
 			this.grpVideoCodec.TabIndex = 1;
 			this.grpVideoCodec.TabStop = false;
 			this.grpVideoCodec.Text = "&Codec";
 			// 
+			// btnVideoAdvDec
+			// 
+			this.btnVideoAdvDec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnVideoAdvDec.Location = new System.Drawing.Point(11, 210);
+			this.btnVideoAdvDec.Name = "btnVideoAdvDec";
+			this.btnVideoAdvDec.Size = new System.Drawing.Size(248, 28);
+			this.btnVideoAdvDec.TabIndex = 13;
+			this.btnVideoAdvDec.Text = "&Decoder options";
+			this.btnVideoAdvDec.UseVisualStyleBackColor = true;
+			this.btnVideoAdvDec.Click += new System.EventHandler(this.btnAdvanceCommand_Click);
+			// 
 			// btnVideoAdv
 			// 
-			this.btnVideoAdv.Location = new System.Drawing.Point(11, 221);
+			this.btnVideoAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnVideoAdv.Location = new System.Drawing.Point(11, 244);
 			this.btnVideoAdv.Name = "btnVideoAdv";
 			this.btnVideoAdv.Size = new System.Drawing.Size(248, 28);
 			this.btnVideoAdv.TabIndex = 12;
-			this.btnVideoAdv.Text = "&Advance e&ncoder options";
+			this.btnVideoAdv.Text = "E&ncoder options";
 			this.btnVideoAdv.UseVisualStyleBackColor = true;
-			this.btnVideoAdv.Click += new System.EventHandler(this.btnVideoAdv_Click);
+			this.btnVideoAdv.Click += new System.EventHandler(this.btnAdvanceCommand_Click);
 			// 
 			// nudVideoMultiPass
 			// 
+			this.nudVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.nudVideoMultiPass.BackColor = System.Drawing.Color.White;
 			this.nudVideoMultiPass.ForeColor = System.Drawing.Color.Black;
 			this.nudVideoMultiPass.Location = new System.Drawing.Point(138, 184);
@@ -721,17 +757,17 @@
 			// 
 			// lblVideoMultiPass
 			// 
-			this.lblVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoMultiPass.Location = new System.Drawing.Point(138, 160);
+			this.lblVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoMultiPass.Location = new System.Drawing.Point(138, 163);
 			this.lblVideoMultiPass.Name = "lblVideoMultiPass";
-			this.lblVideoMultiPass.Size = new System.Drawing.Size(121, 21);
+			this.lblVideoMultiPass.Size = new System.Drawing.Size(121, 18);
 			this.lblVideoMultiPass.TabIndex = 10;
 			this.lblVideoMultiPass.Text = "M&ultipass:";
 			this.lblVideoMultiPass.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// nudVideoRateFactor
 			// 
+			this.nudVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.nudVideoRateFactor.BackColor = System.Drawing.Color.White;
 			this.nudVideoRateFactor.Font = new System.Drawing.Font("Tahoma", 8F);
 			this.nudVideoRateFactor.ForeColor = System.Drawing.Color.Black;
@@ -743,20 +779,20 @@
 			// 
 			// lblVideoRateFactor
 			// 
-			this.lblVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoRateFactor.Location = new System.Drawing.Point(11, 160);
+			this.lblVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoRateFactor.Location = new System.Drawing.Point(11, 163);
 			this.lblVideoRateFactor.Name = "lblVideoRateFactor";
-			this.lblVideoRateFactor.Size = new System.Drawing.Size(121, 21);
+			this.lblVideoRateFactor.Size = new System.Drawing.Size(121, 18);
 			this.lblVideoRateFactor.TabIndex = 8;
 			this.lblVideoRateFactor.Text = "R&ate factor:";
 			this.lblVideoRateFactor.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboVideoRateControl
 			// 
+			this.cboVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoRateControl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoRateControl.FormattingEnabled = true;
-			this.cboVideoRateControl.Location = new System.Drawing.Point(11, 136);
+			this.cboVideoRateControl.Location = new System.Drawing.Point(11, 139);
 			this.cboVideoRateControl.Name = "cboVideoRateControl";
 			this.cboVideoRateControl.Size = new System.Drawing.Size(248, 21);
 			this.cboVideoRateControl.TabIndex = 7;
@@ -765,11 +801,10 @@
 			// 
 			// lblVideoRateControl
 			// 
-			this.lblVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoRateControl.Location = new System.Drawing.Point(11, 112);
+			this.lblVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoRateControl.Location = new System.Drawing.Point(11, 115);
 			this.lblVideoRateControl.Name = "lblVideoRateControl";
-			this.lblVideoRateControl.Size = new System.Drawing.Size(248, 21);
+			this.lblVideoRateControl.Size = new System.Drawing.Size(248, 18);
 			this.lblVideoRateControl.TabIndex = 6;
 			this.lblVideoRateControl.Text = "Rate &control:";
 			this.lblVideoRateControl.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -778,7 +813,7 @@
 			// 
 			this.cboVideoTune.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoTune.FormattingEnabled = true;
-			this.cboVideoTune.Location = new System.Drawing.Point(138, 88);
+			this.cboVideoTune.Location = new System.Drawing.Point(138, 91);
 			this.cboVideoTune.Name = "cboVideoTune";
 			this.cboVideoTune.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoTune.TabIndex = 5;
@@ -786,11 +821,10 @@
 			// 
 			// lblVideoTune
 			// 
-			this.lblVideoTune.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoTune.Location = new System.Drawing.Point(138, 64);
+			this.lblVideoTune.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoTune.Location = new System.Drawing.Point(138, 67);
 			this.lblVideoTune.Name = "lblVideoTune";
-			this.lblVideoTune.Size = new System.Drawing.Size(121, 21);
+			this.lblVideoTune.Size = new System.Drawing.Size(121, 18);
 			this.lblVideoTune.TabIndex = 4;
 			this.lblVideoTune.Text = "&Tune:";
 			this.lblVideoTune.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -799,7 +833,7 @@
 			// 
 			this.cboVideoPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoPreset.FormattingEnabled = true;
-			this.cboVideoPreset.Location = new System.Drawing.Point(11, 88);
+			this.cboVideoPreset.Location = new System.Drawing.Point(11, 91);
 			this.cboVideoPreset.Name = "cboVideoPreset";
 			this.cboVideoPreset.Size = new System.Drawing.Size(121, 21);
 			this.cboVideoPreset.TabIndex = 3;
@@ -807,11 +841,10 @@
 			// 
 			// lblVideoPreset
 			// 
-			this.lblVideoPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoPreset.Location = new System.Drawing.Point(11, 64);
+			this.lblVideoPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoPreset.Location = new System.Drawing.Point(11, 67);
 			this.lblVideoPreset.Name = "lblVideoPreset";
-			this.lblVideoPreset.Size = new System.Drawing.Size(121, 21);
+			this.lblVideoPreset.Size = new System.Drawing.Size(121, 18);
 			this.lblVideoPreset.TabIndex = 2;
 			this.lblVideoPreset.Text = "Prese&t:";
 			this.lblVideoPreset.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -820,7 +853,7 @@
 			// 
 			this.cboVideoEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoEncoder.FormattingEnabled = true;
-			this.cboVideoEncoder.Location = new System.Drawing.Point(11, 40);
+			this.cboVideoEncoder.Location = new System.Drawing.Point(11, 43);
 			this.cboVideoEncoder.Name = "cboVideoEncoder";
 			this.cboVideoEncoder.Size = new System.Drawing.Size(248, 21);
 			this.cboVideoEncoder.TabIndex = 1;
@@ -829,19 +862,17 @@
 			// 
 			// lblVideoEncoder
 			// 
-			this.lblVideoEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoEncoder.Location = new System.Drawing.Point(11, 16);
+			this.lblVideoEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblVideoEncoder.Location = new System.Drawing.Point(11, 19);
 			this.lblVideoEncoder.Name = "lblVideoEncoder";
-			this.lblVideoEncoder.Size = new System.Drawing.Size(248, 21);
+			this.lblVideoEncoder.Size = new System.Drawing.Size(248, 18);
 			this.lblVideoEncoder.TabIndex = 0;
 			this.lblVideoEncoder.Text = "&Encoder:";
 			this.lblVideoEncoder.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// grpVideoPicture
 			// 
-			this.grpVideoPicture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpVideoPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpVideoPicture.Controls.Add(this.cboVideoPixelFormat);
 			this.grpVideoPicture.Controls.Add(this.lblPixelFormat);
 			this.grpVideoPicture.Controls.Add(this.cboVideoBitDepth);
@@ -852,20 +883,22 @@
 			this.grpVideoPicture.Controls.Add(this.lblVideoResolution);
 			this.grpVideoPicture.Location = new System.Drawing.Point(634, 3);
 			this.grpVideoPicture.Name = "grpVideoPicture";
-			this.grpVideoPicture.Size = new System.Drawing.Size(224, 130);
+			this.grpVideoPicture.Size = new System.Drawing.Size(224, 133);
 			this.grpVideoPicture.TabIndex = 2;
 			this.grpVideoPicture.TabStop = false;
 			this.grpVideoPicture.Text = "&Picture";
 			// 
 			// cboVideoPixelFormat
 			// 
+			this.cboVideoPixelFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoPixelFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoPixelFormat.FormattingEnabled = true;
 			this.cboVideoPixelFormat.Items.AddRange(new object[] {
             "420",
             "422",
             "444"});
-			this.cboVideoPixelFormat.Location = new System.Drawing.Point(115, 88);
+			this.cboVideoPixelFormat.Location = new System.Drawing.Point(115, 91);
 			this.cboVideoPixelFormat.Name = "cboVideoPixelFormat";
 			this.cboVideoPixelFormat.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoPixelFormat.TabIndex = 7;
@@ -873,20 +906,22 @@
 			// 
 			// lblPixelFormat
 			// 
-			this.lblPixelFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lblPixelFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblPixelFormat.Location = new System.Drawing.Point(115, 64);
+			this.lblPixelFormat.Location = new System.Drawing.Point(115, 67);
 			this.lblPixelFormat.Name = "lblPixelFormat";
-			this.lblPixelFormat.Size = new System.Drawing.Size(100, 21);
+			this.lblPixelFormat.Size = new System.Drawing.Size(100, 18);
 			this.lblPixelFormat.TabIndex = 6;
 			this.lblPixelFormat.Text = "&Pixel Format:";
 			this.lblPixelFormat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboVideoBitDepth
 			// 
+			this.cboVideoBitDepth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoBitDepth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboVideoBitDepth.FormattingEnabled = true;
-			this.cboVideoBitDepth.Location = new System.Drawing.Point(9, 88);
+			this.cboVideoBitDepth.Location = new System.Drawing.Point(9, 91);
 			this.cboVideoBitDepth.Name = "cboVideoBitDepth";
 			this.cboVideoBitDepth.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoBitDepth.TabIndex = 5;
@@ -894,17 +929,19 @@
 			// 
 			// lblVideoBitDepth
 			// 
-			this.lblVideoBitDepth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lblVideoBitDepth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoBitDepth.Location = new System.Drawing.Point(9, 64);
+			this.lblVideoBitDepth.Location = new System.Drawing.Point(9, 67);
 			this.lblVideoBitDepth.Name = "lblVideoBitDepth";
-			this.lblVideoBitDepth.Size = new System.Drawing.Size(100, 21);
+			this.lblVideoBitDepth.Size = new System.Drawing.Size(100, 18);
 			this.lblVideoBitDepth.TabIndex = 4;
 			this.lblVideoBitDepth.Text = "&Bit depth:";
 			this.lblVideoBitDepth.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboVideoFrameRate
 			// 
+			this.cboVideoFrameRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoFrameRate.BackColor = System.Drawing.Color.White;
 			this.cboVideoFrameRate.ForeColor = System.Drawing.Color.Black;
 			this.cboVideoFrameRate.FormattingEnabled = true;
@@ -930,7 +967,7 @@
             "144",
             "200",
             "240"});
-			this.cboVideoFrameRate.Location = new System.Drawing.Point(115, 40);
+			this.cboVideoFrameRate.Location = new System.Drawing.Point(115, 43);
 			this.cboVideoFrameRate.Name = "cboVideoFrameRate";
 			this.cboVideoFrameRate.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoFrameRate.TabIndex = 3;
@@ -939,17 +976,19 @@
 			// 
 			// lblVideoFrameRate
 			// 
-			this.lblVideoFrameRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lblVideoFrameRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoFrameRate.Location = new System.Drawing.Point(115, 16);
+			this.lblVideoFrameRate.Location = new System.Drawing.Point(115, 19);
 			this.lblVideoFrameRate.Name = "lblVideoFrameRate";
-			this.lblVideoFrameRate.Size = new System.Drawing.Size(100, 21);
+			this.lblVideoFrameRate.Size = new System.Drawing.Size(100, 18);
 			this.lblVideoFrameRate.TabIndex = 2;
 			this.lblVideoFrameRate.Text = "&Frame Rate:";
 			this.lblVideoFrameRate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboVideoResolution
 			// 
+			this.cboVideoResolution.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboVideoResolution.BackColor = System.Drawing.Color.White;
 			this.cboVideoResolution.ForeColor = System.Drawing.Color.Black;
 			this.cboVideoResolution.FormattingEnabled = true;
@@ -967,7 +1006,7 @@
             "2560x1440",
             "3840x2160",
             "7680x4320"});
-			this.cboVideoResolution.Location = new System.Drawing.Point(9, 40);
+			this.cboVideoResolution.Location = new System.Drawing.Point(9, 43);
 			this.cboVideoResolution.Name = "cboVideoResolution";
 			this.cboVideoResolution.Size = new System.Drawing.Size(100, 21);
 			this.cboVideoResolution.TabIndex = 1;
@@ -976,11 +1015,11 @@
 			// 
 			// lblVideoResolution
 			// 
-			this.lblVideoResolution.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lblVideoResolution.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblVideoResolution.Location = new System.Drawing.Point(9, 16);
+			this.lblVideoResolution.Location = new System.Drawing.Point(9, 21);
 			this.lblVideoResolution.Name = "lblVideoResolution";
-			this.lblVideoResolution.Size = new System.Drawing.Size(100, 21);
+			this.lblVideoResolution.Size = new System.Drawing.Size(100, 18);
 			this.lblVideoResolution.TabIndex = 0;
 			this.lblVideoResolution.Text = "&Resolution:";
 			this.lblVideoResolution.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -991,7 +1030,7 @@
 			this.tabAudio.Location = new System.Drawing.Point(4, 22);
 			this.tabAudio.Name = "tabAudio";
 			this.tabAudio.Padding = new System.Windows.Forms.Padding(3);
-			this.tabAudio.Size = new System.Drawing.Size(868, 274);
+			this.tabAudio.Size = new System.Drawing.Size(868, 305);
 			this.tabAudio.TabIndex = 2;
 			this.tabAudio.Text = "Audio";
 			this.tabAudio.UseVisualStyleBackColor = true;
@@ -1003,13 +1042,14 @@
 			this.pnlAudio.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlAudio.Location = new System.Drawing.Point(3, 3);
 			this.pnlAudio.Name = "pnlAudio";
-			this.pnlAudio.Size = new System.Drawing.Size(862, 268);
+			this.pnlAudio.Size = new System.Drawing.Size(862, 299);
 			this.pnlAudio.TabIndex = 0;
 			// 
 			// grpAudioCodec
 			// 
 			this.grpAudioCodec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpAudioCodec.Controls.Add(this.btnAudioAdvDec);
 			this.grpAudioCodec.Controls.Add(this.cboAudioMode);
 			this.grpAudioCodec.Controls.Add(this.lblAudioMode);
 			this.grpAudioCodec.Controls.Add(this.btnAudioAdv);
@@ -1023,16 +1063,29 @@
 			this.grpAudioCodec.Controls.Add(this.lblAudioEncoder);
 			this.grpAudioCodec.Location = new System.Drawing.Point(359, 3);
 			this.grpAudioCodec.Name = "grpAudioCodec";
-			this.grpAudioCodec.Size = new System.Drawing.Size(500, 262);
+			this.grpAudioCodec.Size = new System.Drawing.Size(500, 290);
 			this.grpAudioCodec.TabIndex = 1;
 			this.grpAudioCodec.TabStop = false;
 			this.grpAudioCodec.Text = "&Codec";
 			// 
+			// btnAudioAdvDec
+			// 
+			this.btnAudioAdvDec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnAudioAdvDec.Location = new System.Drawing.Point(63, 164);
+			this.btnAudioAdvDec.Name = "btnAudioAdvDec";
+			this.btnAudioAdvDec.Size = new System.Drawing.Size(375, 28);
+			this.btnAudioAdvDec.TabIndex = 11;
+			this.btnAudioAdvDec.Text = "&Decoder options";
+			this.btnAudioAdvDec.UseVisualStyleBackColor = true;
+			this.btnAudioAdvDec.Click += new System.EventHandler(this.btnAdvanceCommand_Click);
+			// 
 			// cboAudioMode
 			// 
+			this.cboAudioMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioMode.FormattingEnabled = true;
-			this.cboAudioMode.Location = new System.Drawing.Point(317, 81);
+			this.cboAudioMode.Location = new System.Drawing.Point(317, 89);
 			this.cboAudioMode.Name = "cboAudioMode";
 			this.cboAudioMode.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioMode.TabIndex = 10;
@@ -1041,11 +1094,10 @@
 			// 
 			// lblAudioMode
 			// 
-			this.lblAudioMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioMode.Location = new System.Drawing.Point(317, 57);
+			this.lblAudioMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAudioMode.Location = new System.Drawing.Point(317, 65);
 			this.lblAudioMode.Name = "lblAudioMode";
-			this.lblAudioMode.Size = new System.Drawing.Size(121, 21);
+			this.lblAudioMode.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioMode.TabIndex = 9;
 			this.lblAudioMode.Text = "&Mode:";
 			this.lblAudioMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1054,20 +1106,20 @@
 			// 
 			this.btnAudioAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAudioAdv.Location = new System.Drawing.Point(63, 177);
+			this.btnAudioAdv.Location = new System.Drawing.Point(63, 198);
 			this.btnAudioAdv.Name = "btnAudioAdv";
 			this.btnAudioAdv.Size = new System.Drawing.Size(375, 28);
 			this.btnAudioAdv.TabIndex = 8;
-			this.btnAudioAdv.Text = "&Advance encoder options";
+			this.btnAudioAdv.Text = "E&ncoder options";
 			this.btnAudioAdv.UseVisualStyleBackColor = true;
-			this.btnAudioAdv.Click += new System.EventHandler(this.btnAudioAdv_Click);
+			this.btnAudioAdv.Click += new System.EventHandler(this.btnAdvanceCommand_Click);
 			// 
 			// cboAudioChannel
 			// 
 			this.cboAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioChannel.FormattingEnabled = true;
-			this.cboAudioChannel.Location = new System.Drawing.Point(317, 129);
+			this.cboAudioChannel.Location = new System.Drawing.Point(317, 137);
 			this.cboAudioChannel.Name = "cboAudioChannel";
 			this.cboAudioChannel.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioChannel.TabIndex = 7;
@@ -1075,22 +1127,20 @@
 			// 
 			// lblAudioChannel
 			// 
-			this.lblAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioChannel.Location = new System.Drawing.Point(317, 105);
+			this.lblAudioChannel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAudioChannel.Location = new System.Drawing.Point(317, 113);
 			this.lblAudioChannel.Name = "lblAudioChannel";
-			this.lblAudioChannel.Size = new System.Drawing.Size(121, 21);
+			this.lblAudioChannel.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioChannel.TabIndex = 6;
 			this.lblAudioChannel.Text = "C&hannel:";
 			this.lblAudioChannel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboAudioSampleRate
 			// 
-			this.cboAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cboAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioSampleRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioSampleRate.FormattingEnabled = true;
-			this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 129);
+			this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 137);
 			this.cboAudioSampleRate.Name = "cboAudioSampleRate";
 			this.cboAudioSampleRate.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioSampleRate.TabIndex = 5;
@@ -1098,20 +1148,20 @@
 			// 
 			// lblAudioSampleRate
 			// 
-			this.lblAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 105);
+			this.lblAudioSampleRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 113);
 			this.lblAudioSampleRate.Name = "lblAudioSampleRate";
-			this.lblAudioSampleRate.Size = new System.Drawing.Size(121, 21);
+			this.lblAudioSampleRate.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioSampleRate.TabIndex = 4;
 			this.lblAudioSampleRate.Text = "Sample &Rate:";
 			this.lblAudioSampleRate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboAudioQuality
 			// 
+			this.cboAudioQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioQuality.FormattingEnabled = true;
-			this.cboAudioQuality.Location = new System.Drawing.Point(63, 129);
+			this.cboAudioQuality.Location = new System.Drawing.Point(63, 137);
 			this.cboAudioQuality.Name = "cboAudioQuality";
 			this.cboAudioQuality.Size = new System.Drawing.Size(121, 21);
 			this.cboAudioQuality.TabIndex = 3;
@@ -1119,20 +1169,20 @@
 			// 
 			// lblAudioQuality
 			// 
-			this.lblAudioQuality.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioQuality.Location = new System.Drawing.Point(63, 105);
+			this.lblAudioQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAudioQuality.Location = new System.Drawing.Point(63, 113);
 			this.lblAudioQuality.Name = "lblAudioQuality";
-			this.lblAudioQuality.Size = new System.Drawing.Size(121, 21);
+			this.lblAudioQuality.Size = new System.Drawing.Size(121, 18);
 			this.lblAudioQuality.TabIndex = 2;
 			this.lblAudioQuality.Text = "&Quality:";
 			this.lblAudioQuality.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// cboAudioEncoder
 			// 
+			this.cboAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioEncoder.FormattingEnabled = true;
-			this.cboAudioEncoder.Location = new System.Drawing.Point(63, 81);
+			this.cboAudioEncoder.Location = new System.Drawing.Point(63, 89);
 			this.cboAudioEncoder.Name = "cboAudioEncoder";
 			this.cboAudioEncoder.Size = new System.Drawing.Size(248, 21);
 			this.cboAudioEncoder.TabIndex = 1;
@@ -1141,11 +1191,10 @@
 			// 
 			// lblAudioEncoder
 			// 
-			this.lblAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAudioEncoder.Location = new System.Drawing.Point(63, 57);
+			this.lblAudioEncoder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblAudioEncoder.Location = new System.Drawing.Point(63, 65);
 			this.lblAudioEncoder.Name = "lblAudioEncoder";
-			this.lblAudioEncoder.Size = new System.Drawing.Size(248, 21);
+			this.lblAudioEncoder.Size = new System.Drawing.Size(248, 18);
 			this.lblAudioEncoder.TabIndex = 0;
 			this.lblAudioEncoder.Text = "&Encoder:";
 			this.lblAudioEncoder.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1163,7 +1212,7 @@
 			this.grpAudioStream.Controls.Add(this.btnAudioAdd);
 			this.grpAudioStream.Location = new System.Drawing.Point(3, 3);
 			this.grpAudioStream.Name = "grpAudioStream";
-			this.grpAudioStream.Size = new System.Drawing.Size(350, 262);
+			this.grpAudioStream.Size = new System.Drawing.Size(350, 290);
 			this.grpAudioStream.TabIndex = 0;
 			this.grpAudioStream.TabStop = false;
 			this.grpAudioStream.Text = "&Streams";
@@ -1174,7 +1223,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAudioStreamLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboAudioStreamLang.FormattingEnabled = true;
-			this.cboAudioStreamLang.Location = new System.Drawing.Point(6, 235);
+			this.cboAudioStreamLang.Location = new System.Drawing.Point(6, 263);
 			this.cboAudioStreamLang.Name = "cboAudioStreamLang";
 			this.cboAudioStreamLang.Size = new System.Drawing.Size(338, 21);
 			this.cboAudioStreamLang.TabIndex = 5;
@@ -1194,7 +1243,7 @@
 			this.lstAudio.HideSelection = false;
 			this.lstAudio.Location = new System.Drawing.Point(6, 49);
 			this.lstAudio.Name = "lstAudio";
-			this.lstAudio.Size = new System.Drawing.Size(338, 180);
+			this.lstAudio.Size = new System.Drawing.Size(338, 208);
 			this.lstAudio.TabIndex = 4;
 			this.lstAudio.UseCompatibleStateImageBehavior = false;
 			this.lstAudio.View = System.Windows.Forms.View.Details;
@@ -1266,7 +1315,7 @@
 			this.tabSubtitle.Location = new System.Drawing.Point(4, 22);
 			this.tabSubtitle.Name = "tabSubtitle";
 			this.tabSubtitle.Padding = new System.Windows.Forms.Padding(3);
-			this.tabSubtitle.Size = new System.Drawing.Size(868, 274);
+			this.tabSubtitle.Size = new System.Drawing.Size(868, 305);
 			this.tabSubtitle.TabIndex = 3;
 			this.tabSubtitle.Text = "Subtitle";
 			this.tabSubtitle.UseVisualStyleBackColor = true;
@@ -1284,7 +1333,7 @@
 			this.pnlSubtitle.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlSubtitle.Location = new System.Drawing.Point(3, 3);
 			this.pnlSubtitle.Name = "pnlSubtitle";
-			this.pnlSubtitle.Size = new System.Drawing.Size(862, 268);
+			this.pnlSubtitle.Size = new System.Drawing.Size(862, 299);
 			this.pnlSubtitle.TabIndex = 0;
 			// 
 			// btnSubAdd2
@@ -1303,7 +1352,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboSubLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboSubLang.FormattingEnabled = true;
-			this.cboSubLang.Location = new System.Drawing.Point(3, 244);
+			this.cboSubLang.Location = new System.Drawing.Point(3, 272);
 			this.cboSubLang.Name = "cboSubLang";
 			this.cboSubLang.Size = new System.Drawing.Size(856, 21);
 			this.cboSubLang.TabIndex = 6;
@@ -1314,7 +1363,7 @@
 			// 
 			this.lblSubLang.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblSubLang.Location = new System.Drawing.Point(3, 220);
+			this.lblSubLang.Location = new System.Drawing.Point(3, 248);
 			this.lblSubLang.Name = "lblSubLang";
 			this.lblSubLang.Size = new System.Drawing.Size(856, 21);
 			this.lblSubLang.TabIndex = 5;
@@ -1335,7 +1384,7 @@
 			this.lstSub.HideSelection = false;
 			this.lstSub.Location = new System.Drawing.Point(3, 33);
 			this.lstSub.Name = "lstSub";
-			this.lstSub.Size = new System.Drawing.Size(856, 184);
+			this.lstSub.Size = new System.Drawing.Size(856, 212);
 			this.lstSub.TabIndex = 4;
 			this.lstSub.UseCompatibleStateImageBehavior = false;
 			this.lstSub.View = System.Windows.Forms.View.Details;
@@ -1407,7 +1456,7 @@
 			this.tabAttachment.Location = new System.Drawing.Point(4, 22);
 			this.tabAttachment.Name = "tabAttachment";
 			this.tabAttachment.Padding = new System.Windows.Forms.Padding(3);
-			this.tabAttachment.Size = new System.Drawing.Size(868, 274);
+			this.tabAttachment.Size = new System.Drawing.Size(868, 305);
 			this.tabAttachment.TabIndex = 4;
 			this.tabAttachment.Text = "Attachments";
 			this.tabAttachment.UseVisualStyleBackColor = true;
@@ -1423,7 +1472,7 @@
 			this.pnlAttachment.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlAttachment.Location = new System.Drawing.Point(3, 3);
 			this.pnlAttachment.Name = "pnlAttachment";
-			this.pnlAttachment.Size = new System.Drawing.Size(862, 268);
+			this.pnlAttachment.Size = new System.Drawing.Size(862, 299);
 			this.pnlAttachment.TabIndex = 0;
 			// 
 			// btnAttchAdd2
@@ -1441,7 +1490,7 @@
 			this.cboAttachMime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cboAttachMime.FormattingEnabled = true;
-			this.cboAttachMime.Location = new System.Drawing.Point(3, 244);
+			this.cboAttachMime.Location = new System.Drawing.Point(3, 272);
 			this.cboAttachMime.Name = "cboAttachMime";
 			this.cboAttachMime.Size = new System.Drawing.Size(856, 21);
 			this.cboAttachMime.TabIndex = 5;
@@ -1452,7 +1501,7 @@
 			// 
 			this.lblAttachMime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.lblAttachMime.Location = new System.Drawing.Point(3, 220);
+			this.lblAttachMime.Location = new System.Drawing.Point(3, 248);
 			this.lblAttachMime.Name = "lblAttachMime";
 			this.lblAttachMime.Size = new System.Drawing.Size(856, 21);
 			this.lblAttachMime.TabIndex = 4;
@@ -1473,7 +1522,7 @@
 			this.lstAttach.HideSelection = false;
 			this.lstAttach.Location = new System.Drawing.Point(3, 33);
 			this.lstAttach.Name = "lstAttach";
-			this.lstAttach.Size = new System.Drawing.Size(856, 184);
+			this.lstAttach.Size = new System.Drawing.Size(856, 212);
 			this.lstAttach.TabIndex = 3;
 			this.lstAttach.UseCompatibleStateImageBehavior = false;
 			this.lstAttach.View = System.Windows.Forms.View.Details;
@@ -1517,6 +1566,147 @@
 			this.btnAttachAdd.UseVisualStyleBackColor = true;
 			this.btnAttachAdd.Click += new System.EventHandler(this.btnAttachAdd_Click);
 			// 
+			// tabAdvance
+			// 
+			this.tabAdvance.Controls.Add(this.pnlDecoder);
+			this.tabAdvance.Location = new System.Drawing.Point(4, 22);
+			this.tabAdvance.Name = "tabAdvance";
+			this.tabAdvance.Padding = new System.Windows.Forms.Padding(3);
+			this.tabAdvance.Size = new System.Drawing.Size(868, 305);
+			this.tabAdvance.TabIndex = 5;
+			this.tabAdvance.Text = "Advance";
+			this.tabAdvance.UseVisualStyleBackColor = true;
+			// 
+			// pnlDecoder
+			// 
+			this.pnlDecoder.Controls.Add(this.chkAdvTrim);
+			this.pnlDecoder.Controls.Add(this.grpAdvTrim);
+			this.pnlDecoder.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlDecoder.Location = new System.Drawing.Point(3, 3);
+			this.pnlDecoder.Name = "pnlDecoder";
+			this.pnlDecoder.Size = new System.Drawing.Size(862, 299);
+			this.pnlDecoder.TabIndex = 0;
+			// 
+			// chkAdvTrim
+			// 
+			this.chkAdvTrim.AutoSize = true;
+			this.chkAdvTrim.Location = new System.Drawing.Point(12, 3);
+			this.chkAdvTrim.Name = "chkAdvTrim";
+			this.chkAdvTrim.Size = new System.Drawing.Size(115, 17);
+			this.chkAdvTrim.TabIndex = 0;
+			this.chkAdvTrim.Text = "&Trim Video && Audio";
+			this.chkAdvTrim.UseVisualStyleBackColor = true;
+			this.chkAdvTrim.CheckedChanged += new System.EventHandler(this.chkAdvTrim_CheckedChanged);
+			this.chkAdvTrim.Leave += new System.EventHandler(this.MediaApply);
+			// 
+			// grpAdvTrim
+			// 
+			this.grpAdvTrim.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpAdvTrim.Controls.Add(this.mtxAdvTimeDuration);
+			this.grpAdvTrim.Controls.Add(this.mtxAdvTimeEnd);
+			this.grpAdvTrim.Controls.Add(this.mtxAdvTimeStart);
+			this.grpAdvTrim.Controls.Add(this.lblAdvTimeEqual);
+			this.grpAdvTrim.Controls.Add(this.lblAdvTimeUntil);
+			this.grpAdvTrim.Controls.Add(this.lblAdvTimeEnd);
+			this.grpAdvTrim.Controls.Add(this.lblAdvTimeDuration);
+			this.grpAdvTrim.Controls.Add(this.lblAdvTimeStart);
+			this.grpAdvTrim.Enabled = false;
+			this.grpAdvTrim.Location = new System.Drawing.Point(3, 3);
+			this.grpAdvTrim.Name = "grpAdvTrim";
+			this.grpAdvTrim.Size = new System.Drawing.Size(856, 100);
+			this.grpAdvTrim.TabIndex = 1;
+			this.grpAdvTrim.TabStop = false;
+			// 
+			// mtxAdvTimeDuration
+			// 
+			this.mtxAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.mtxAdvTimeDuration.Culture = new System.Globalization.CultureInfo("");
+			this.mtxAdvTimeDuration.Font = new System.Drawing.Font("Tahoma", 9F);
+			this.mtxAdvTimeDuration.Location = new System.Drawing.Point(512, 51);
+			this.mtxAdvTimeDuration.Mask = "00:00:00";
+			this.mtxAdvTimeDuration.Name = "mtxAdvTimeDuration";
+			this.mtxAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
+			this.mtxAdvTimeDuration.TabIndex = 7;
+			this.mtxAdvTimeDuration.Text = "000000";
+			this.mtxAdvTimeDuration.Leave += new System.EventHandler(this.txtAdvTrim_Leave);
+			// 
+			// mtxAdvTimeEnd
+			// 
+			this.mtxAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.mtxAdvTimeEnd.Culture = new System.Globalization.CultureInfo("");
+			this.mtxAdvTimeEnd.Font = new System.Drawing.Font("Tahoma", 9F);
+			this.mtxAdvTimeEnd.Location = new System.Drawing.Point(378, 51);
+			this.mtxAdvTimeEnd.Mask = "00:00:00";
+			this.mtxAdvTimeEnd.Name = "mtxAdvTimeEnd";
+			this.mtxAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
+			this.mtxAdvTimeEnd.TabIndex = 4;
+			this.mtxAdvTimeEnd.Text = "000000";
+			this.mtxAdvTimeEnd.Leave += new System.EventHandler(this.txtAdvTrim_Leave);
+			// 
+			// mtxAdvTimeStart
+			// 
+			this.mtxAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.mtxAdvTimeStart.Culture = new System.Globalization.CultureInfo("");
+			this.mtxAdvTimeStart.Font = new System.Drawing.Font("Tahoma", 9F);
+			this.mtxAdvTimeStart.Location = new System.Drawing.Point(244, 51);
+			this.mtxAdvTimeStart.Mask = "90:00:00";
+			this.mtxAdvTimeStart.Name = "mtxAdvTimeStart";
+			this.mtxAdvTimeStart.Size = new System.Drawing.Size(100, 22);
+			this.mtxAdvTimeStart.TabIndex = 1;
+			this.mtxAdvTimeStart.Text = "000000";
+			this.mtxAdvTimeStart.Leave += new System.EventHandler(this.txtAdvTrim_Leave);
+			// 
+			// lblAdvTimeEqual
+			// 
+			this.lblAdvTimeEqual.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAdvTimeEqual.Location = new System.Drawing.Point(484, 51);
+			this.lblAdvTimeEqual.Name = "lblAdvTimeEqual";
+			this.lblAdvTimeEqual.Size = new System.Drawing.Size(22, 22);
+			this.lblAdvTimeEqual.TabIndex = 5;
+			this.lblAdvTimeEqual.Text = "=";
+			this.lblAdvTimeEqual.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblAdvTimeUntil
+			// 
+			this.lblAdvTimeUntil.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAdvTimeUntil.Location = new System.Drawing.Point(350, 51);
+			this.lblAdvTimeUntil.Name = "lblAdvTimeUntil";
+			this.lblAdvTimeUntil.Size = new System.Drawing.Size(22, 22);
+			this.lblAdvTimeUntil.TabIndex = 2;
+			this.lblAdvTimeUntil.Text = ">";
+			this.lblAdvTimeUntil.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// lblAdvTimeEnd
+			// 
+			this.lblAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAdvTimeEnd.Location = new System.Drawing.Point(378, 26);
+			this.lblAdvTimeEnd.Name = "lblAdvTimeEnd";
+			this.lblAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
+			this.lblAdvTimeEnd.TabIndex = 3;
+			this.lblAdvTimeEnd.Text = "&End:";
+			this.lblAdvTimeEnd.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
+			// lblAdvTimeDuration
+			// 
+			this.lblAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAdvTimeDuration.Location = new System.Drawing.Point(512, 26);
+			this.lblAdvTimeDuration.Name = "lblAdvTimeDuration";
+			this.lblAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
+			this.lblAdvTimeDuration.TabIndex = 6;
+			this.lblAdvTimeDuration.Text = "&Duration:";
+			this.lblAdvTimeDuration.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
+			// lblAdvTimeStart
+			// 
+			this.lblAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblAdvTimeStart.Location = new System.Drawing.Point(244, 26);
+			this.lblAdvTimeStart.Name = "lblAdvTimeStart";
+			this.lblAdvTimeStart.Size = new System.Drawing.Size(100, 22);
+			this.lblAdvTimeStart.TabIndex = 0;
+			this.lblAdvTimeStart.Text = "&Start:";
+			this.lblAdvTimeStart.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
 			// txtFolderOutput
 			// 
 			this.txtFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -1524,7 +1714,7 @@
 			this.txtFolderOutput.BackColor = System.Drawing.Color.White;
 			this.txtFolderOutput.Font = new System.Drawing.Font("Tahoma", 9F);
 			this.txtFolderOutput.ForeColor = System.Drawing.Color.Black;
-			this.txtFolderOutput.Location = new System.Drawing.Point(158, 615);
+			this.txtFolderOutput.Location = new System.Drawing.Point(158, 665);
 			this.txtFolderOutput.Name = "txtFolderOutput";
 			this.txtFolderOutput.Size = new System.Drawing.Size(700, 22);
 			this.txtFolderOutput.TabIndex = 20;
@@ -1533,7 +1723,7 @@
 			// lblOutputFolder
 			// 
 			this.lblOutputFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblOutputFolder.Location = new System.Drawing.Point(12, 614);
+			this.lblOutputFolder.Location = new System.Drawing.Point(12, 664);
 			this.lblOutputFolder.Name = "lblOutputFolder";
 			this.lblOutputFolder.Size = new System.Drawing.Size(140, 23);
 			this.lblOutputFolder.TabIndex = 19;
@@ -1544,7 +1734,7 @@
 			// 
 			this.btnBrowseFolderOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseFolderOutput.Image = global::ifme.Properties.Resources.icon16_disk_save;
-			this.btnBrowseFolderOutput.Location = new System.Drawing.Point(864, 614);
+			this.btnBrowseFolderOutput.Location = new System.Drawing.Point(864, 664);
 			this.btnBrowseFolderOutput.Name = "btnBrowseFolderOutput";
 			this.btnBrowseFolderOutput.Size = new System.Drawing.Size(24, 24);
 			this.btnBrowseFolderOutput.TabIndex = 21;
@@ -1554,7 +1744,7 @@
 			// lblEncodingPreset
 			// 
 			this.lblEncodingPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblEncodingPreset.Location = new System.Drawing.Point(12, 587);
+			this.lblEncodingPreset.Location = new System.Drawing.Point(12, 637);
 			this.lblEncodingPreset.Name = "lblEncodingPreset";
 			this.lblEncodingPreset.Size = new System.Drawing.Size(140, 22);
 			this.lblEncodingPreset.TabIndex = 16;
@@ -1568,7 +1758,7 @@
 			this.cboEncodingPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboEncodingPreset.Font = new System.Drawing.Font("Tahoma", 9F);
 			this.cboEncodingPreset.FormattingEnabled = true;
-			this.cboEncodingPreset.Location = new System.Drawing.Point(158, 587);
+			this.cboEncodingPreset.Location = new System.Drawing.Point(158, 637);
 			this.cboEncodingPreset.Name = "cboEncodingPreset";
 			this.cboEncodingPreset.Size = new System.Drawing.Size(700, 22);
 			this.cboEncodingPreset.TabIndex = 17;
@@ -1578,7 +1768,7 @@
 			// 
 			this.btnEncodingPresetSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnEncodingPresetSave.Image = global::ifme.Properties.Resources.icon16_bookmarks;
-			this.btnEncodingPresetSave.Location = new System.Drawing.Point(864, 586);
+			this.btnEncodingPresetSave.Location = new System.Drawing.Point(864, 636);
 			this.btnEncodingPresetSave.Name = "btnEncodingPresetSave";
 			this.btnEncodingPresetSave.Size = new System.Drawing.Size(24, 24);
 			this.btnEncodingPresetSave.TabIndex = 18;
@@ -1807,7 +1997,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.ClientSize = new System.Drawing.Size(900, 650);
+			this.ClientSize = new System.Drawing.Size(900, 700);
 			this.Controls.Add(this.btnBench);
 			this.Controls.Add(this.btnDonate);
 			this.Controls.Add(this.pbxBanner);
@@ -1863,6 +2053,11 @@
 			this.pnlSubtitle.ResumeLayout(false);
 			this.tabAttachment.ResumeLayout(false);
 			this.pnlAttachment.ResumeLayout(false);
+			this.tabAdvance.ResumeLayout(false);
+			this.pnlDecoder.ResumeLayout(false);
+			this.pnlDecoder.PerformLayout();
+			this.grpAdvTrim.ResumeLayout(false);
+			this.grpAdvTrim.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbxBanner)).EndInit();
 			this.cmsNewImport.ResumeLayout(false);
 			this.cmsEncodingPreset.ResumeLayout(false);
@@ -1995,7 +2190,7 @@
 		private System.Windows.Forms.TextBox txtMediaInfo;
 		private System.Windows.Forms.ColumnHeader colAudioLang;
 		private System.Windows.Forms.ColumnHeader colAudioInfo;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblSplit3;
         private System.Windows.Forms.ContextMenuStrip cmsNewImport;
         private System.Windows.Forms.ToolStripMenuItem tsmiNew;
         private System.Windows.Forms.ToolStripMenuItem tsmiImport;
@@ -2011,6 +2206,20 @@
         private System.Windows.Forms.Button btnSubAdd2;
         private System.Windows.Forms.Button btnBench;
         private System.Windows.Forms.ColumnHeader colAttachId;
-    }
+		private System.Windows.Forms.TabPage tabAdvance;
+		private System.Windows.Forms.Panel pnlDecoder;
+		private System.Windows.Forms.CheckBox chkAdvTrim;
+		private System.Windows.Forms.GroupBox grpAdvTrim;
+		private System.Windows.Forms.Label lblAdvTimeStart;
+		private System.Windows.Forms.Label lblAdvTimeEqual;
+		private System.Windows.Forms.Label lblAdvTimeUntil;
+		private System.Windows.Forms.Label lblAdvTimeEnd;
+		private System.Windows.Forms.Label lblAdvTimeDuration;
+		private System.Windows.Forms.MaskedTextBox mtxAdvTimeStart;
+		private System.Windows.Forms.MaskedTextBox mtxAdvTimeDuration;
+		private System.Windows.Forms.MaskedTextBox mtxAdvTimeEnd;
+		private System.Windows.Forms.Button btnVideoAdvDec;
+		private System.Windows.Forms.Button btnAudioAdvDec;
+	}
 }
 

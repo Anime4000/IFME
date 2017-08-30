@@ -27,6 +27,7 @@
 		"lblVideoRateControl": "&Ratensteuerung:",
 		"lblVideoRateFactor": "R&atenfaktor:",
 		"lblVideoMultiPass": "&Durchgänge:",
+		"btnVideoAdvDec":  "Advance &Decoder options",
 		"btnVideoAdv": "Erweiterte &Optionen",
 		"grpVideoPicture": "&Bild",
 		"lblVideoResolution": "&Auflösung:",
@@ -42,6 +43,7 @@
 		"lblAudioQuality": "&Qualität:",
 		"lblAudioSampleRate": "Sample&rate:",
 		"lblAudioChannel": "&Kanäle:",
+		"btnAudioAdvDec": "Advance &Decoder options",
 		"btnAudioAdv": "Erweiterte &Optionen",
 		"lblAudioMode": "&Modus:",
 		"tabSubtitle": "Untertitel",
@@ -108,6 +110,10 @@
 	"InputBoxCommandLine": {
 		"Title": "Kommandozeile",
 		"Message": "Optionen zur Kommandozeile des Encoders hinzufügen.\nBeispiel: --bitdepth 8"
+	},
+	"InputBoxCommandLineFFmpeg": {
+		"Title": "Decoder command-line",
+		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "Frage",

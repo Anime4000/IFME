@@ -542,52 +542,6 @@ namespace ifme
 			}
 		}
 
-		private void btnVideoAdv_Click(object sender, EventArgs e)
-		{
-			if (lstMedia.SelectedItems.Count > 0)
-			{
-				var cmd = string.Empty;
-				try
-				{
-					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
-					var id = lstVideo.SelectedItems[0].Index;
-					cmd = mq.Video[id].EncoderCommand;
-				}
-				catch
-				{
-					cmd = string.Empty;
-				}
-
-
-				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd, 0);
-				if (frm.ShowDialog() == DialogResult.OK)
-				{
-					cmd = frm.ReturnValue;
-				}
-
-				// if apply one item in the queue including selected audio
-				if (lstMedia.SelectedItems.Count == 1)
-				{
-					foreach (ListViewItem v in lstVideo.SelectedItems)
-					{
-						(lstMedia.SelectedItems[0].Tag as MediaQueue).Video[v.Index].EncoderCommand = cmd;
-					}
-				}
-
-				// if apply every item in the queue including every audio
-				if (lstMedia.SelectedItems.Count >= 2)
-				{
-					foreach (ListViewItem q in lstMedia.SelectedItems)
-					{
-						foreach (var v in (q.Tag as MediaQueue).Video)
-						{
-							v.EncoderCommand = cmd;
-						}
-					}
-				}
-			}
-		}
-
 		private void cboVideoResolution_TextChanged(object sender, EventArgs e)
 		{
 			Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
@@ -761,52 +715,6 @@ namespace ifme
 			}
 		}
 
-		private void btnAudioAdv_Click(object sender, EventArgs e)
-		{
-			if (lstMedia.SelectedItems.Count > 0)
-			{
-				var cmd = string.Empty;
-				try
-				{
-					var mq = lstMedia.SelectedItems[0].Tag as MediaQueue;
-					var id = lstAudio.SelectedItems[0].Index;
-					cmd = mq.Audio[id].EncoderCommand;
-				}
-				catch
-				{
-					cmd = string.Empty;
-				}
-					
-				
-				var frm = new frmInputBox(Language.Lang.InputBoxCommandLine.Title, Language.Lang.InputBoxCommandLine.Message, cmd, 0);
-				if (frm.ShowDialog() == DialogResult.OK)
-				{
-					cmd = frm.ReturnValue;
-				}
-
-				// if apply one item in the queue including selected audio
-				if (lstMedia.SelectedItems.Count == 1)
-				{
-					foreach (ListViewItem a in lstAudio.SelectedItems)
-					{
-						(lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[a.Index].EncoderCommand = cmd;
-					}
-				}
-
-				// if apply every item in the queue including every audio
-				if (lstMedia.SelectedItems.Count >= 2)
-				{
-					foreach (ListViewItem q in lstMedia.SelectedItems)
-					{
-						foreach (var a in (q.Tag as MediaQueue).Audio)
-						{
-							a.EncoderCommand = cmd;
-						}
-					}
-				}
-			}
-		}
-
 		// Subtitle
 		private void btnSubAdd_Click(object sender, EventArgs e)
 		{
@@ -962,6 +870,94 @@ namespace ifme
 						item.SubItems[1].Text = cboAttachMime.Text;
 					}
 				}
+			}
+		}
+
+		private void chkAdvTrim_CheckedChanged(object sender, EventArgs e)
+		{
+			grpAdvTrim.Enabled = chkAdvTrim.Checked;
+		}
+
+		private void txtAdvTrim_Leave(object sender, EventArgs e)
+		{
+			var ctrl = sender as MaskedTextBox;
+			var time = ctrl.Text.Split(':');
+
+			if (time.Length != 3)
+				return;
+
+			var hour = 0;
+			var min = 0;
+			var sec = 0;
+
+			int.TryParse(time[0], out hour);
+			int.TryParse(time[1], out min);
+			int.TryParse(time[2], out sec);
+
+			if (min >= 60)
+				min = 59;
+
+			if (sec >= 60)
+				sec = 59;
+
+			ctrl.Text = $"{hour:00}:{min:00}:{sec:00}";
+
+			var start = new TimeSpan(0, 0, 0);
+			var end = new TimeSpan(0, 0, 0);
+			var du = new TimeSpan(0, 0, 0);
+
+			try
+			{
+				var st = mtxAdvTimeStart.Text.Split(':');
+				var et = mtxAdvTimeEnd.Text.Split(':');
+				var dt = mtxAdvTimeDuration.Text.Split(':');
+
+				int sth = 0, stm = 0, sts = 0;
+				int eth = 0, etm = 0, ets = 0;
+				int dth = 0, dtm = 0, dts = 0;
+
+				int.TryParse(st[0], out sth);
+				int.TryParse(st[1], out stm);
+				int.TryParse(st[2], out sts);
+
+				int.TryParse(et[0], out eth);
+				int.TryParse(et[1], out etm);
+				int.TryParse(et[2], out ets);
+
+				int.TryParse(dt[0], out dth);
+				int.TryParse(dt[1], out dtm);
+				int.TryParse(dt[2], out dts);
+
+				start = new TimeSpan(sth, stm, sts);
+				end = new TimeSpan(eth, etm, ets);
+				du = new TimeSpan(dth, dtm, dts);
+
+				if (string.Equals(ctrl.Name, mtxAdvTimeEnd.Name) || 
+					string.Equals(ctrl.Name, mtxAdvTimeStart.Name))
+				{
+					du = end.Subtract(start);
+					mtxAdvTimeDuration.Text = $"{du.Hours:00}:{du.Minutes:00}:{du.Seconds:00}";
+				}
+
+				if (string.Equals(ctrl.Name, mtxAdvTimeDuration.Name))
+				{
+					end = start.Add(du);
+					mtxAdvTimeEnd.Text = $"{end.Hours:00}:{end.Minutes:00}:{end.Seconds:00}";
+				}
+			}
+			catch
+			{
+
+			}
+
+			foreach (ListViewItem q in lstMedia.SelectedItems)
+			{
+				var m = q.Tag as MediaQueue;
+
+				m.Trim.Enable = chkAdvTrim.Checked;
+				m.Trim.Start = $"{start.Hours:00}:{start.Minutes:00}:{start.Seconds:00}";
+				m.Trim.End = $"{end.Hours:00}:{end.Minutes:00}:{end.Seconds:00}";
+				m.Trim.Duration = $"{du.Hours:00}:{du.Minutes:00}:{du.Seconds:00}";
 			}
 		}
 	}

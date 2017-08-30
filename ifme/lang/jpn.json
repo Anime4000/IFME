@@ -18,7 +18,7 @@
 		"rdoFormatAudioFlac": "&FLAC (lossless)",
 		"grpStreamInfo": "メディア情報",
 		"tabVideo": "ビデオ",
-		"chkVideoDeinterlace": "インターレース解除(&D)",
+		"chkVideoDeinterlace": "インターレース解除(&Q)",
 		"grpVideoStream": "ストリーム(&S)",
 		"grpVideoCodec": "コーデック(&C)",
 		"lblVideoEncoder": "エンコーダ(&E):",
@@ -27,6 +27,7 @@
 		"lblVideoRateControl": "レート制御(&N):",
 		"lblVideoRateFactor": "レート係数(&A):",
 		"lblVideoMultiPass": "マルチパス(&I):",
+		"btnVideoAdvDec":  "デコーダ設定(&D)",
 		"btnVideoAdv": "エンコーダ設定(&R)",
 		"grpVideoPicture": "画像(&P)",
 		"lblVideoResolution": "解決(&O):",
@@ -42,6 +43,7 @@
 		"lblAudioQuality": "品質(&Q):",
 		"lblAudioSampleRate": "サンプルレート(&R):",
 		"lblAudioChannel": "チャネル(&C):",
+		"btnAudioAdvDec": "デコーダ設定(&D)",
 		"btnAudioAdv": "エンコーダ設定(&R)",
 		"lblAudioMode": "モード(&M):",
 		"tabSubtitle": "字幕",
@@ -108,6 +110,10 @@
 	"InputBoxCommandLine": {
 		"Title": "エンコーダのコマンドライン",
 		"Message": "エンコーダのコマンドライン引数を変更する\n例: --bitdepth 8"
+	},
+	"InputBoxCommandLineFFmpeg": {
+		"Title": "デコーダのコマンドライン",
+		"Message": "デコーダのコマンドライン引数を変更する (FFmpeg)\nExample: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "注意",

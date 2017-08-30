@@ -577,6 +577,99 @@ namespace ifme
 			lstSub.Items[id].Selected = true;
 		}
 
+		private void btnAdvanceCommand_Click(object sender, EventArgs e)
+		{
+			foreach (ListViewItem queue in lstMedia.SelectedItems)
+			{
+				var media = queue.Tag as MediaQueue;
+				
+				var command = string.Empty;
+
+				var ibtitle = string.Empty;
+				var ibmsg = string.Empty;
+
+				var type = 0; // 0 = decoder video, 1 = encoder video, 2 = decoder audio, 3 = encoder video
+				var ctrl = sender as Button;
+
+				if (string.Equals(ctrl.Name, btnVideoAdvDec.Name))
+				{
+					if (media.Video.Count > 0)
+						command = media.Video[0].Command;
+
+					type = 0;
+					ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
+					ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
+				}
+				else if (string.Equals(ctrl.Name, btnVideoAdv.Name))
+				{
+					if (media.Video.Count > 0)
+						command = media.Video[0].EncoderCommand;
+
+					type = 1;
+					ibtitle = Language.Lang.InputBoxCommandLine.Title;
+					ibmsg = Language.Lang.InputBoxCommandLine.Message;
+				}
+				else if (string.Equals(ctrl.Name, btnAudioAdvDec.Name))
+				{
+					if (media.Audio.Count > 0)
+						command = media.Audio[0].Command;
+
+					type = 2;
+					ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
+					ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
+				}
+				else if (string.Equals(ctrl.Name, btnAudioAdv.Name))
+				{
+					if (media.Audio.Count > 0)
+						command = media.Audio[0].EncoderCommand;
+
+					type = 3;
+					ibtitle = Language.Lang.InputBoxCommandLine.Title;
+					ibmsg = Language.Lang.InputBoxCommandLine.Message;
+				}
+				else
+				{
+					type = 0;
+				}
+
+				// display
+				var frm = new frmInputBox(ibtitle, ibmsg, command, 0);
+				if (frm.ShowDialog() == DialogResult.OK)
+					command = frm.ReturnValue;
+				
+				// apply
+				foreach (var video in media.Video)
+				{
+					switch (type)
+					{
+						case 0:
+							video.Command = command;
+							break;
+						case 1:
+							video.EncoderCommand = command;
+							break;
+						default:
+							break;
+					}
+				}
+
+				foreach (var audio in media.Audio)
+				{
+					switch (type)
+					{
+						case 2:
+							audio.Command = command;
+							break;
+						case 3:
+							audio.EncoderCommand = command;
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+
 		private void MediaAdd(string file)
 		{
 			var queue = new MediaQueue();
@@ -1060,6 +1153,11 @@ namespace ifme
 						MediaApplyAttachment(ctrl, ref temp);
 					}
 				}
+
+				if (string.Equals(ctrl, chkAdvTrim.Name))
+				{
+					m.Trim.Enable = chkAdvTrim.Checked;
+				}
 			}
 
 			// refresh
@@ -1260,11 +1358,13 @@ namespace ifme
 
 				if (mf.Video.Count > 0)
 				{
-					md += "\r\nVideo\r\n";
+
 					foreach (var item in mf.Video)
 					{
 						md +=
+							"\r\n" +
 							$"ID                 : {item.Id:00}\r\n" +
+							$"Type:              : Video\r\n" +
 							$"Codec              : {item.Codec}\r\n" +
 							$"Width              : {item.Width}\r\n" +
 							$"Height             : {item.Height}\r\n" +
@@ -1277,11 +1377,12 @@ namespace ifme
 
 				if (mf.Audio.Count > 0)
 				{
-					md += "\r\nAudio\r\n";
 					foreach (var item in mf.Audio)
 					{
 						md +=
+							"\r\n" +
 							$"ID                 : {item.Id:00}\r\n" +
+							$"Type               : Audio\r\n" +
 							$"Codec              : {item.Codec}\r\n" +
 							$"Sample rate        : {item.SampleRate}Hz\r\n" +
 							$"Channel            : {item.Channel}Ch\r\n";
@@ -1290,11 +1391,12 @@ namespace ifme
 
 				if (mf.Subtitle.Count > 0)
 				{
-					md += "\r\nSubtitle\r\n";
 					foreach (var item in mf.Subtitle)
 					{
 						md +=
+							"\r\n" +
 							$"ID                 : {item.Id:00}\r\n" +
+							$"Type               : Subtitle\r\n" +
 							$"Codec              : {item.Codec}\r\n" +
 							$"Language           : {item.Language}\r\n";
 					}
@@ -1302,11 +1404,12 @@ namespace ifme
 
 				if (mf.Attachment.Count > 0)
 				{
-					md += "\r\nAttachment\r\n";
 					foreach (var item in mf.Attachment)
 					{
 						md +=
+							"\r\n" +
 							$"ID                 : {item.Id:00}\r\n" +
+							$"Type               : Attachment\r\n" +
 							$"File name          : {item.FileName}\r\n" +
 							$"Mime               : {item.MimeType}\r\n";
 					}
@@ -1435,6 +1538,12 @@ namespace ifme
 					}));
 				}
 			}
+
+			// Advance
+			chkAdvTrim.Checked = media.Trim.Enable;
+			mtxAdvTimeStart.Text = media.Trim.Start;
+			mtxAdvTimeEnd.Text = media.Trim.End;
+			mtxAdvTimeDuration.Text = media.Trim.Duration;
 		}
 
 		private void MediaPopulateVideo(object video)

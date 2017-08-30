@@ -27,6 +27,7 @@
 		"lblVideoRateControl": "Режим кодировки:",
 		"lblVideoRateFactor": "Битрейт, качество:",
 		"lblVideoMultiPass": "К&ол-во проходов:",
+		"btnVideoAdvDec":  "Advance &Decoder options",
 		"btnVideoAdv": "&Доп.настройки энкдера",
 		"grpVideoPicture": "&Картинка",
 		"lblVideoResolution": "&Разрешение:",
@@ -42,6 +43,7 @@
 		"lblAudioQuality": "&Качество:",
 		"lblAudioSampleRate": "Частот&а:",
 		"lblAudioChannel": "К&аналы:",
+		"btnAudioAdvDec": "Advance &Decoder options",
 		"btnAudioAdv": "&Доп.настройки энкдера",
 		"lblAudioMode": "&Режим:",
 		"tabSubtitle": "Субтитры",
@@ -108,6 +110,10 @@
 	"InputBoxCommandLine": {
 		"Title": "Ключи энкодера",
 		"Message": "Измените аргументы энкодера\nНапример: --bitdepth 8"
+	},
+	"InputBoxCommandLineFFmpeg": {
+		"Title": "Decoder command-line",
+		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "Вопрос",

@@ -27,6 +27,7 @@
 		"lblVideoRateControl": "Kadar &Kawalan:",
 		"lblVideoRateFactor": "K&adar Faktor:",
 		"lblVideoMultiPass": "Pe&lbagai:",
+		"btnVideoAdvDec":  "Majukan pilihan peng&dekod",
 		"btnVideoAdv": "&Majukan pilihan pengekod",
 		"grpVideoPicture": "&Gambar",
 		"lblVideoResolution": "&Resolusi:",
@@ -42,6 +43,7 @@
 		"lblAudioQuality": "&Kualiti:",
 		"lblAudioSampleRate": "Kadar &Sampel:",
 		"lblAudioChannel": "Salura&n:",
+		"btnAudioAdvDec": "Majukan pilihan peng&dekod",
 		"btnAudioAdv": "&Majukan pilihan pengekod",
 		"lblAudioMode": "&Mode:",
 		"tabSubtitle": "Sarikata",
@@ -108,6 +110,10 @@
 	"InputBoxCommandLine": {
 		"Title": "Baris arahan pengekod",
 		"Message": "Ubah hujah baris-arahan pengekod\nContoh: --bitdepth 8"
+	},
+	"InputBoxCommandLineFFmpeg": {
+		"Title": "Baris arahan pengdekod",
+		"Message": "Ubah hujah baris-arahan pengdekod dalam bentuk FFmpeg\nContoh: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "Soalan",

@@ -27,6 +27,7 @@
 		"lblVideoRateControl": "السيطرة على المعدل:",
 		"lblVideoRateFactor": "عامل معدل:",
 		"lblVideoMultiPass": "المتعددة الدخول:",
+		"btnVideoAdvDec":  "Advance &Decoder options",
 		"btnVideoAdv": "&خيارات التشفير المتقدمة",
 		"grpVideoPicture": "&صورة",
 		"lblVideoResolution": "القرار:",
@@ -42,6 +43,7 @@
 		"lblAudioQuality": "جودة:",
 		"lblAudioSampleRate": "معدل العينة:",
 		"lblAudioChannel": "قناة:",
+		"btnAudioAdvDec": "Advance &Decoder options",
 		"btnAudioAdv": "خيارات التشفير المتقدمة",
 		"lblAudioMode": "الوضع:",
 		"tabSubtitle": "عنوان فرعي",
@@ -108,6 +110,10 @@
 	"InputBoxCommandLine": {
 		"Title": "سطر الأوامر التشفير",
 		"Message": "تعديل وسيطات سطر الأوامر التشفير\nمثال: --bitdepth 8"
+	},
+	"InputBoxCommandLineFFmpeg": {
+		"Title": "Decoder command-line",
+		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "سؤال",

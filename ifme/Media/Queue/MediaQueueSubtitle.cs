@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ifme
+﻿namespace ifme
 {
-    public class MediaQueueSubtitle : MediaQueueCommon
-    {
+	public class MediaQueueSubtitle : MediaQueueCommon
+	{
 
-    }
+	}
 }

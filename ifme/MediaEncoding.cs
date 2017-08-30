@@ -354,7 +354,7 @@ namespace ifme
 						command = $"{videos}{audios}";
 
 					exitcode = ProcessManager.Start(MkvMerge, $"-o \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {command}");
-				} while (exitcode >= 2);
+				} while (exitcode < 2);
 
 				// if mux fail, copy raw to destination
 				if (exitcode == 2)
