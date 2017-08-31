@@ -27,8 +27,8 @@
 		"lblVideoRateControl": "Taxa de &controle:",
 		"lblVideoRateFactor": "Taxa de &fator:",
 		"lblVideoMultiPass": "M&ultipasse:",
-		"btnVideoAdvDec":  "Advance &Decoder options",
-		"btnVideoAdv": "Opções avançadas do cod&ificador",
+		"btnVideoAdvDec":  "Opções avançadas do &Decodificador",
+		"btnVideoAdv": "Opções avançadas do Cod&ificador",
 		"grpVideoPicture": "&Imagem",
 		"lblVideoResolution": "&Resolução:",
 		"lblVideoFrameRate": "Taxa de &Quadros:",
@@ -43,8 +43,8 @@
 		"lblAudioQuality": "&Qualidade:",
 		"lblAudioSampleRate": "Taxa de Amostra&gem:",
 		"lblAudioChannel": "Ca&nal:",
-		"btnAudioAdvDec": "Advance &Decoder options",
-		"btnAudioAdv": "Opções avançadas do cod&ificador",
+		"btnAudioAdvDec": "Opções avançadas do &Decodificador",
+		"btnAudioAdv": "Opções avançadas do Cod&ificador",
 		"lblAudioMode": "&Modo:",
 		"tabSubtitle": "Legenda",
 		"lblSubLang": "&Idioma:",
@@ -52,11 +52,11 @@
 		"lblAttachMime": "Tipo do &MIME:",
 		"lblEncodingPreset": "&Preset de Codificação:",
 		"lblOutputFolder": "&Destino:",
-		"tabAdvance": "Advance",
-		"chkAdvTrim": "&Trim Video && Audio",
-		"lblAdvTimeStart": "&Start:",
-		"lblAdvTimeEnd": "&End:",
-		"lblAdvTimeDuration": "&Duration:"
+		"tabAdvance": "Avançado",
+		"chkAdvTrim": "&Cortar Vídeo && Áudio",
+		"lblAdvTimeStart": "&Iniciar:",
+		"lblAdvTimeEnd": "&Parar:",
+		"lblAdvTimeDuration": "&Duração:"
 	},
 	"frmOption": {
 		"tabOptionGeneral": "Geral",
@@ -117,8 +117,8 @@
 		"Message": "Modificar argumentos na linha de comando do codificador\nExemplo: --bitdepth 8"
 	},
 	"InputBoxCommandLineFFmpeg": {
-		"Title": "Decoder command-line",
-		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
+		"Title": "Linha de comando do decodificador",
+		"Message": "Modificar argumentos na linha de comando do decodificador FFmpeg\nExample: -vf scale=640:480"
 	},
 	"MsgBoxShutdown": {
 		"Title": "Pergunta",
