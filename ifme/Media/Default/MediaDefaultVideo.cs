@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ifme
 {
@@ -15,7 +12,7 @@ namespace ifme
 		public int Pass { get; private set; }
 		public string Command { get; private set; }
 
-        public MediaDefaultVideo(MediaTypeVideo type)
+		public MediaDefaultVideo(MediaTypeVideo type)
 		{
 			switch (type)
 			{
@@ -37,7 +34,7 @@ namespace ifme
 					Mode = 0;
 					Value = 26;
 					Pass = 2;
-					Command = "--pme --pmode";
+					Command = string.Empty;
 					break;
 			}
 		}

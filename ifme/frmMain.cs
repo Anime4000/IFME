@@ -515,6 +515,8 @@ namespace ifme
 
 					cboVideoEncoder.SelectedValue = vdef.Encoder;
 				}
+
+				btnVideoAdvDec.Enabled = temp.Video.Args.Pipe;
 			}
 		}
 
@@ -695,6 +697,8 @@ namespace ifme
 
 					cboAudioEncoder.SelectedValue = adef.Encoder;
 				}
+
+				btnAudioAdvDec.Enabled = temp.Audio.Args.Pipe;
 			}
 		}
 

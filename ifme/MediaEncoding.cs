@@ -130,11 +130,11 @@ namespace ifme
 
 					if (ac.Args.Pipe)
 					{
-						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav {item.Command} -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
 					}
 					else
 					{
-						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 {ac.Args.Command} {qu} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
 					}
 
 					if (ec == 0)
@@ -243,9 +243,9 @@ namespace ifme
 							ConsoleEx.Write(ConsoleColor.Green, $"{p} of {item.EncoderMultiPass}\n");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+								ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 							else
-								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Command} {vc.Args.Output} {outfile}");
 
 							p++;
 
@@ -258,7 +258,7 @@ namespace ifme
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 						}
 						else
 						{
@@ -282,6 +282,8 @@ namespace ifme
 
 			if (filetype.IsOneOf(".h265", ".hevc", ".h264", ".avc", ".h263", ".divx", ".xvid"))
 				exitcode = ProcessManager.Start(Mp4Box, $"-add \"{FileName}#video:lang={Get.FileLang(FileName)}\" -new \"{newname}\"");
+			else
+				return 0;
 
 			if (exitcode == 0)
 			{
@@ -341,20 +343,8 @@ namespace ifme
 						chapter = $"--chapters \"{Path.Combine(TempDir, "chapters.xml")}\"";
 				}
 
-				var exitcode = 0;
-				var command = string.Empty;
-
-				// try muxing
-				do
-				{
-					if (exitcode == 0)
-						command = $"{videos}{audios}{subtitles}{attachments}{chapter}";
-
-					if (exitcode == 1)
-						command = $"{videos}{audios}";
-
-					exitcode = ProcessManager.Start(MkvMerge, $"-o \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {command}");
-				} while (exitcode < 2);
+				var command = $"{videos}{audios}{subtitles}{attachments}{chapter}";
+				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {command}");
 
 				// if mux fail, copy raw to destination
 				if (exitcode == 2)
