@@ -122,6 +122,8 @@ namespace ifme
 				{
 					var ac = codec.Audio;
 
+					var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
+
 					var qu = (string.IsNullOrEmpty(ac.Mode[item.EncoderMode].Args) ? string.Empty : $"{ac.Mode[item.EncoderMode].Args} {item.EncoderQuality}");
 					var hz = (item.EncoderSampleRate == 0 ? string.Empty : $"-ar {item.EncoderSampleRate}");
 					var ch = (item.EncoderChannel == 0 ? string.Empty : $"-ac {item.EncoderChannel}");
@@ -130,11 +132,11 @@ namespace ifme
 
 					if (ac.Args.Pipe)
 					{
-						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav {item.Command} -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav {item.Command} -", Path.Combine(codec.FilePath, ac.Encoder), $"{qu} {ac.Args.Command} {ac.Args.Input} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
 					}
 					else
 					{
-						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
+						ec = ProcessManager.Start(Path.Combine(codec.FilePath, ac.Encoder), $"{ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {item.EncoderCommand} {ac.Args.Output} \"{newfile}\"");
 					}
 
 					if (ec == 0)
@@ -162,6 +164,8 @@ namespace ifme
 					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.BitDepth).Binary);
 					var outfile = $"video{id++:D4}_{item.Lang}.{vc.Extension}";
 
+					var trim = string.Empty;
+
 					var yuv = $"yuv{item.PixelFormat}p";
 					var res = string.Empty;
 					var fps = string.Empty;
@@ -174,6 +178,11 @@ namespace ifme
 					var framecount = string.Empty;
 
 					// cmd builder
+					if (queue.Trim.Enable)
+					{
+						trim += $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}";
+					}
+
 					if (item.BitDepth > 8)
 					{
 						yuv += $"{item.BitDepth}le";
@@ -243,9 +252,9 @@ namespace ifme
 							ConsoleEx.Write(ConsoleColor.Green, $"{p} of {item.EncoderMultiPass}\n");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+								ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 							else
-								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Command} {vc.Args.Output} {outfile}");
+								ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.EncoderCommand} {vc.Args.Command} {vc.Args.Output} {outfile}");
 
 							p++;
 
@@ -258,11 +267,11 @@ namespace ifme
 					{
 						if (vc.Args.Pipe)
 						{
-							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(FFmpeg, $"-hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {deinterlace} {item.Command} -", en, $"{vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 						}
 						else
 						{
-							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" -map 0:{item.Id} -map_metadata -1 -map_chapters -1 -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {item.EncoderCommand} {vc.Args.Output} {outfile}");
+							ProcessManager.Start(en, $"{vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {deinterlace} {vc.Args.UnPipe} {preset} {quality} {tune} {item.EncoderCommand} {vc.Args.Output} {outfile}");
 						}
 
 						// add pts for raw
