@@ -102,7 +102,7 @@
 	},
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Сохранить",
-		"tsmiEncodingPresetSaveAs": "Сохранить &как",
+		"tsmiEncodingPresetSaveAs": "Сохранить &как"
 	},
 	"InputBoxNewMedia": {
 		"Title": "Новый медиафайл",

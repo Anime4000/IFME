@@ -16,6 +16,7 @@ namespace ifme
 		private static string _PathPartnerName = Path.Combine(Get.AppRootDir, "branding", "partner", "t0.zip");
 		private static string _PathPartnerCode = Path.Combine(Get.AppRootDir, "branding", "partner", "t1.zip");
 		private static string _PathPartnerCopy = Path.Combine(Get.AppRootDir, "branding", "partner", "t2.zip");
+		private static string _PathPartnerAuthor = Path.Combine(Get.AppRootDir, "branding", "partner", "t3.zip");
 
 		private static string _PathOriginalSplashScreen = Path.Combine(Get.AppRootDir, "branding", "ai", "1.jpj");
 		private static string _PathOriginalBannerLeft = Path.Combine(Get.AppRootDir, "branding", "ai", "a.jpj");
@@ -125,6 +126,18 @@ namespace ifme
 			else
 			{
 				return "Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\nXiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.";
+			}
+		}
+
+		public static string Author()
+		{
+			if (File.Exists(_PathPartnerAuthor))
+			{
+				return File.ReadAllText(_PathPartnerAuthor);
+			}
+			else
+			{
+				return "";
 			}
 		}
 	}

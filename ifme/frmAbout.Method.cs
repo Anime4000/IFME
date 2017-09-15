@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace ifme
 {
@@ -14,6 +10,9 @@ namespace ifme
 
 			lblMainTitle.Text = Get.AppName;
 			lblMainVersion.Text = $"{Get.AppNameLib} ('{Properties.Resources.AppCodeName}')";
+
+			if (!string.IsNullOrEmpty(Branding.Author()))
+				lblInfo.Text = Branding.Author();
 
 			LoadLanguage();
 		}

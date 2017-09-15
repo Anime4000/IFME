@@ -1,0 +1,30 @@
+﻿{
+	"Name": "Smart TV, Android, iPhone (HD)",
+	"Author": "Anime4000",
+	"OutputFormat": 0,
+	"Video": {
+		"Encoder": "deadbeef-0264-0264-0264-026402640264",
+		"EncoderPreset": "faster",
+		"EncoderTune": "off",
+		"EncoderMode": 0,
+		"EncoderValue": 23.0,
+		"EncoderMultiPass": 2,
+		"EncoderCommand": null,
+		"Width": 1280,
+		"Height": 720,
+		"FrameRate": 23.976,
+		"BitDepth": 8,
+		"PixelFormat": 420,
+		"DeInterlace": false,
+		"DeInterlaceMode": 1,
+		"DeInterlaceField": 0
+	},
+	"Audio": {
+		"Encoder": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
+		"EncoderMode": 0,
+		"EncoderQuality": 128000,
+		"EncoderSampleRate": 44100,
+		"EncoderChannel": 2,
+		"EncoderCommand": null
+	}
+}

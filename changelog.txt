@@ -1,4 +1,9 @@
-﻿Version 7.5 (Cosmic Housekeeping)
+﻿Version 7.6
+-----------
+[change] Rename included preset to friendly name :)
+[chnage] More branding support
+
+Version 7.5 (Cosmic Housekeeping)
 ---------------------------------
 [new] Support Trim Video & Audio
 [new] Support adding FFmpeg command for decoding

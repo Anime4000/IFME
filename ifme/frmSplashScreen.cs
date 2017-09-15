@@ -71,7 +71,7 @@ namespace ifme
 				if (path.IsDisable())
 					path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-				Get.FolderSave = Path.Combine(path, "IFME");
+				Get.FolderSave = Path.Combine(path, "Encoded");
 
 				if (!Directory.Exists(Get.FolderSave))
 					Directory.CreateDirectory(Get.FolderSave);

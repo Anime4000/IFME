@@ -1,15 +1,15 @@
 {
-  "Name": "Internet Sharing, MKV, H.265@CRF25 720p@23.976fps, AAC 128kbps@44.1kHz",
+  "Name": "High Quality & Compression (HD)",
   "Author": "Anime4000",
-  "OutputFormat": 1,
+  "OutputFormat": 0,
   "Video": {
     "Encoder": "deadbeef-0265-0265-0265-026502650265",
     "EncoderPreset": "slower",
     "EncoderTune": "psnr",
     "EncoderMode": 0,
-    "EncoderValue": 25,
+    "EncoderValue": 24,
     "EncoderMultiPass": 2,
-    "EncoderCommand": "--pme --pmode",
+    "EncoderCommand": "",
     "Width": 1280,
     "Height": 720,
     "FrameRate": 23.976,
@@ -24,7 +24,7 @@
     "EncoderMode": 0,
     "EncoderQuality": 128000,
     "EncoderSampleRate": 44100,
-    "EncoderChannel": 0,
+    "EncoderChannel": 2,
     "EncoderCommand": ""
   }
 }

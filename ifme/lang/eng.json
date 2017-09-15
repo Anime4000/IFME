@@ -4,7 +4,7 @@
 	"AuthorProfile": "https://github.com/Anime4000/",
 	"UIFontWindows": "Tahoma, 8pt",
 	"UIFontLinux": "Nimbus Sans L, 8pt",
-	"ToolTipDonate": "Thanks for using IFME, I hope you enjoy it.\nYou can donate to this project so I can keep improving it.\nClick this button to find out how to donate.",
+	"ToolTipDonate": "Thanks for using this program, I hope you enjoy it.\nYou can donate to this project so I can keep improving it.\nClick this button to find out how to donate.",
 	"frmMain": {
 		"tabGeneral": "General",
 		"grpTargetFormat": "&Target Format",
@@ -102,7 +102,7 @@
 	},
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Save",
-		"tsmiEncodingPresetSaveAs": "Save &As",
+		"tsmiEncodingPresetSaveAs": "Save &As"
 	},
 	"InputBoxNewMedia": {
 		"Title": "New media file",
