@@ -1,0 +1,139 @@
+{
+	"AuthorName": "Rav",
+	"AuthorEmail": "ravj82@gmail.com",
+	"AuthorProfile": "",
+	"UIFontWindows": "Tahoma, 8pt",
+	"UIFontLinux": "Nimbus Sans L, 8pt",
+	"ToolTipDonate": "Dziękuję za używanie IFME. Mam nadzieje że jest pomocny.\nMożesz wspomóc ten projekt, aby móc go poprawić.\nKliknij ten przycisk, aby dowiedzieć się jak dotować.",
+	"frmMain": {
+		"tabGeneral": "Ogólne",
+		"grpTargetFormat": "&Format docelowy",
+		"rdoFormatMp4": "&MP4",
+		"rdoFormatMkv": "M&KV",
+		"rdoFormatWebm": "&WEBM",
+		"rdoFormatAudioMp3": "MP&3",
+		"rdoFormatAudioMp4": "MP&4",
+		"rdoFormatAudioOgg": "&OGG",
+		"rdoFormatAudioOpus": "O&PUS",
+		"rdoFormatAudioFlac": "&FLAC (lossless)",
+		"grpStreamInfo": "Informacje",
+		"tabVideo": "Wideo",
+		"chkVideoDeinterlace": "&Przeplot?",
+		"grpVideoStream": "&Strumienie",
+		"grpVideoCodec": "&Kodek",
+		"lblVideoEncoder": "&Kodek:",
+		"lblVideoPreset": "J&akość:",
+		"lblVideoTune": "&Tune:",
+		"lblVideoRateControl": "&Kontrola szybkości:",
+		"lblVideoRateFactor": "&Szybkość:",
+		"lblVideoMultiPass": "&Ilość przebiegów:",
+		"btnVideoAdv": "&Zaawansowane opcje& kodeka",
+		"grpVideoPicture": "&Obraz",
+		"lblVideoResolution": "&Rozdzielczość:",
+		"lblVideoFrameRate": "&Ilość klatek:",
+		"lblVideoBitDepth": "Głę&bia kolorów:",
+		"lblPixelFormat": "Format &pikseli:",
+		"lblVideoDeinterlaceMode": "&Tryb:",
+		"lblVideoDeinterlaceField": "Pol&a:",
+		"tabAudio": "Dźwięk",
+		"grpAudioStream": "&Strumienie",
+		"grpAudioCodec": "&Kodek",
+		"lblAudioEncoder": "&Kodek:",
+		"lblAudioQuality": "&Jakość:",
+		"lblAudioSampleRate": "&Częstotliwość:",
+		"lblAudioChannel": "K&anał:",
+		"btnAudioAdv": "&Zaawansowane opcje kodeka",
+		"lblAudioMode": "&Tryb:",
+		"tabSubtitle": "Napisy",
+		"lblSubLang": "&Język:",
+		"tabAttachment": "Dodatki",
+		"lblAttachMime": "Typ &MIME:",
+		"lblEncodingPreset": "Ustawienia wstę&pne kodowania:",
+		"lblOutputFolder": "&Miejsce docelowe:"
+	},
+	"frmOption": {
+		"tabOptionGeneral": "Ogólne",
+		"grpLanguage": "&Język",
+		"grpTempFolder": "Katalog &tymczasowy",
+		"grpNewFilename": "&Nowa nazwa pliku",
+		"grpNewFilenamePrefix": "P&refix",
+		"rdoNamePrefixNone": "Brak",
+		"rdoNamePrefixDateTime": "&Data i godzina",
+		"rdoNamePrefixCustom": "&Własny:",
+		"grpNewFilenamePostfix": "P&ostfix",
+		"rdoNamePostfixNone": "Brak",
+		"rdoNamePostfixCustom": "W&łasny:",
+		"tabOptionEncoding": "Kodowanie",
+		"grpAviSynth": "&AviSynth",
+		"lblAviSynthInstall": "Zainstalowany!",
+		"lblAviSynthNoInstall": "Nie zainstalowany!",
+		"grpFFmpeg": "&Domyślny dekodek",
+		"rdoFFmpeg32": "FFmpeg &32bit (Wsparcie AviSynth ST)",
+		"rdoFFmpeg64": "FFmpeg &64bit (Wsparcie dla dużych rozdzielczości i dużej głębi kolorów)",
+		"grpFrameCountOffset": "&Przesunięcie o ilość klatek",
+		"lblFrameCountOffset": "Zmienna częstotliwość klatek zostanie przeliczona na stałą częstotliwość. Dodając wartość przesunięcia dekodeka zrekompensuje uszkodzone dane w kontenerze z większą liczbą ramek, aby zagwarantować, że w trakcie kodowania nie zabraknie żadnych ramek.",
+		"tabOptionModule": "Moduł",
+		"btnCancel": "&Anuluj",
+		"btnOk": "&OK"
+	},
+	"frmShutdown": {
+		"lblInfo": "Co zrobić po zakończeniu kodowania?",
+		"btnOK": "&OK"
+	},
+	"frmAbout": {
+		"lblDevTtitle": "Opracowany przez",
+		"lblTechTitle": "Zastosowane technologie",
+		"lblArtTitle": "Grafika od"
+	},
+	"frmCheckUpdate": {
+		"btnDownload": "&Pobierz",
+		"btnOK": "&OK"
+	},
+	"cmsNewImport": {
+		"tsmiNew": "&Nowy",
+		"tsmiImport": "&Importuj"
+	},
+	"cmsEncodingPreset": {
+		"tsmiEncodingPresetSave": "Zapi&sz",
+		"tsmiEncodingPresetSaveAs": "Zapisz J&ako",
+	},
+	"InputBoxNewMedia": {
+		"Title": "Nowy plik multimedialny",
+		"Message": "Zamierzasz utworzyć pusty strumień wideo, audio, napisów i czcionek.\nMożesz go używać, aby dodać pliki, konwertować je lub po prostu scalić je (np. Mkvtoolnix or MP4Box)\n\nWpisz nową nazwę pliku:"
+	},
+	"InputBoxEncodingPreset": {
+		"Title": "Zapisz nowe ustawienia kodeka",
+		"Message": "Utwórz nowe ustawienia wstępne kodowania w oparciu o bieżącą konfigurację.\nDzięki temu presetowi możesz ponownie używać go na innych filmach.\n\nWpisz nową nazwę:"
+	},
+	"InputBoxCommandLine": {
+		"Title": "Wiersz poleceń kodeka",
+		"Message": "Modyfikuj argumenty wiersza polecenia kodeka\nPrzykład: --bitdepth 8"
+	},
+	"MsgBoxShutdown": {
+		"Title": "Pytanie",
+		"Message": "Ten komputer zostanie zamknięty lub uruchomiony ponownie po wykonaniu wszystkich czynności. Czy chcesz kontynuować?"
+	},
+	"MsgBoxSaveFolder": {
+		"Title": "Błędna ścieżka",
+		"Message": "Zapisywanie przez sieć nie jest obsługiwane, wybierz dysk."
+	},
+	"MsgBoxCodecIncompatible": {
+		"Title": "Niezgodny kodek",
+		"Message": "Format wyjściowy kodeka nie są zgodne! Wybierz inny."
+	},
+	"ComboBoxDeInterlaceMode": [
+		"Wymień tylko klatki",
+		"Wymień wszystkie pola",
+		"Pomiń kontrolę przestrzennego przeplotu",
+		"Pomiń przeszukiwanie pola przestrzennego"
+	],
+	"ComboBoxDeInterlaceField": [
+		"Pierwsze pole na początku",
+		"Dolne pole jako pierwsze"
+	],
+	"ComboBoxShutdown": [
+		"Nie rób nic",
+		"Restart komputera",
+		"Wyłącz komputer"
+	]
+}
