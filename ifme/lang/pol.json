@@ -89,13 +89,14 @@
 		"btnDownload": "&Pobierz",
 		"btnOK": "&OK"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "&Nowy",
-		"tsmiImport": "&Importuj"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "&Nowy",
+    "tsmiImport": "&Importuj",
+    "tsmiImportFolder": "Import Fol&der"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "Zapi&sz",
-		"tsmiEncodingPresetSaveAs": "Zapisz J&ako",
+		"tsmiEncodingPresetSaveAs": "Zapisz J&ako"
 	},
 	"InputBoxNewMedia": {
 		"Title": "Nowy plik multimedialny",

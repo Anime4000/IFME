@@ -96,13 +96,14 @@
 		"btnDownload": "ダウンロード(&D)",
 		"btnOK": "&OK"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "新規(&N)",
-		"tsmiImport": "インポート(&I)"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "新規(&N)",
+    "tsmiImport": "インポートファイル(&F)",
+    "tsmiImportFolder": "インポートフォルダ(&D)"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "保存(&S)",
-		"tsmiEncodingPresetSaveAs": "新規保存(&A)",
+		"tsmiEncodingPresetSaveAs": "新規保存(&A)"
 	},
 	"InputBoxNewMedia": {
 		"Title": "新しいビデオやオーディオ",

@@ -96,13 +96,14 @@
 		"btnDownload": "&Télécharger",
 		"btnOK": "&OK"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "&Nouveau",
-		"tsmiImport": "&Importer"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "&Nouveau",
+    "tsmiImport": "&Importer",
+    "tsmiImportFolder": "Import Fol&der"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Enregistrer",
-		"tsmiEncodingPresetSaveAs": "Enregistrer sous",
+		"tsmiEncodingPresetSaveAs": "Enregistrer sous"
 	},
 	"InputBoxNewMedia": {
 		"Title": "Nouveau fichier média",

@@ -1926,7 +1926,7 @@
             this.tsmiImportFolder});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(179, 70);
+            this.cmsNewImport.Size = new System.Drawing.Size(179, 92);
             // 
             // tsmiNew
             // 
@@ -1953,6 +1953,7 @@
             this.tsmiImportFolder.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.tsmiImportFolder.Size = new System.Drawing.Size(178, 22);
             this.tsmiImportFolder.Text = "Import Fol&der";
+            this.tsmiImportFolder.Click += new System.EventHandler(this.tsmiImportFolder_Click);
             // 
             // cmsEncodingPreset
             // 

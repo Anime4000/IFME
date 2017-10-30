@@ -96,13 +96,14 @@
 		"btnDownload": "تحميل",
 		"btnOK": "موافق"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "جديد",
-		"tsmiImport": "استيراد"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "جديد",
+    "tsmiImport": "استيراد",
+    "tsmiImportFolder": "Import Fol&der"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "حفظ",
-		"tsmiEncodingPresetSaveAs": "حفظ باسم",
+		"tsmiEncodingPresetSaveAs": "حفظ باسم"
 	},
 	"InputBoxNewMedia": {
 		"Title": "ملف وسائط جديد",

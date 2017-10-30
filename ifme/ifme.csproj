@@ -102,6 +102,15 @@
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProgressBar.Designer.cs">
+      <DependentUpon>frmProgressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProgressBar.Method.cs">
+      <DependentUpon>frmProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +119,7 @@
     </Compile>
     <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -167,6 +177,9 @@
     <EmbeddedResource Include="frmOption.resx">
       <DependentUpon>frmOption.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmProgressBar.resx">
+      <DependentUpon>frmProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmShutdown.resx">
       <DependentUpon>frmShutdown.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,6 +232,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\may.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="lang\pol.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\por.json">

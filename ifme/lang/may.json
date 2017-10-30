@@ -96,13 +96,14 @@
 		"btnDownload": "&Muat Turn",
 		"btnOK": "&OK"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "&Baru",
-		"tsmiImport": "&Import"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "&Baru",
+    "tsmiImport": "Import &Fail",
+    "tsmiImportFolder": "Import Fol&der"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Simpan",
-		"tsmiEncodingPresetSaveAs": "Simp&an sebagai",
+		"tsmiEncodingPresetSaveAs": "Simp&an sebagai"
 	},
 	"InputBoxNewMedia": {
 		"Title": "Buat yang baru untuk video atau suara",

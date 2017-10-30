@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Drawing;
 using System.Threading;
@@ -67,7 +68,44 @@ namespace ifme
 			MediaSelect();
 		}
 
-		private void tsmiNew_Click(object sender, EventArgs e)
+        private void tsmiImportFolder_Click(object sender, EventArgs e)
+        {
+            var path = OpenFolder();
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                var frm = new frmProgressBar();
+                frm.Show();
+
+                var files = new List<string>();
+                var count = 1;
+
+                foreach (var d in Directory.GetDirectories(path))
+                {
+                    foreach (var f in Directory.GetFiles(d))
+                    {
+                        files.Add(f);
+                        frm.Status = $"Indexing... {count++} files!";
+                        Application.DoEvents();
+                    }
+                }
+
+                for (int i = 0; i < files.Count; i++)
+                {
+                    MediaAdd(files[i]);
+                    frm.Status = $"Importing... {i + 1} of {files.Count} files\nAdding to queue: {files[i]}";
+                    frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
+                    Application.DoEvents();
+                }
+
+                // Pause
+                Thread.Sleep(1000);
+
+                frm.Close();
+            }
+        }
+
+        private void tsmiNew_Click(object sender, EventArgs e)
 		{
 			var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
 
@@ -964,5 +1002,5 @@ namespace ifme
 				m.Trim.Duration = $"{du.Hours:00}:{du.Minutes:00}:{du.Seconds:00}";
 			}
 		}
-	}
+    }
 }

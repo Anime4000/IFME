@@ -334,6 +334,18 @@ namespace ifme
 			return new string[0];
 		}
 
+        private string OpenFolder()
+        {
+            var fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                return fbd.SelectedPath;
+            }
+
+            return string.Empty;
+        }
+
 		private void ListViewItemMove(ListViewItemType type, Direction direction)
 		{
 			try

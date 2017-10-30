@@ -96,10 +96,11 @@
 		"btnDownload": "&Скачать",
 		"btnOK": "&OK"
 	},
-	"cmsNewImport": {
-		"tsmiNew": "&Новый",
-		"tsmiImport": "&Импорт"
-	},
+  "cmsNewImport": {
+    "tsmiNew": "&Новый",
+    "tsmiImport": "&Импорт файл",
+    "tsmiImportFolder": "Импорт папку"
+  },
 	"cmsEncodingPreset": {
 		"tsmiEncodingPresetSave": "&Сохранить",
 		"tsmiEncodingPresetSaveAs": "Сохранить &как"
