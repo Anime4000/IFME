@@ -97,11 +97,6 @@ namespace ifme
                     frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
                     Application.DoEvents();
                 }
-
-                // Pause
-                Thread.Sleep(1000);
-
-                frm.Close();
             }
         }
 

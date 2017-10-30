@@ -60,10 +60,13 @@
             this.Controls.Add(this.pbLoading);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmProgressBar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmProgressBar";
             this.Load += new System.EventHandler(this.frmProgressBar_Load);
+            this.Shown += new System.EventHandler(this.frmProgressBar_Shown);
             this.ResumeLayout(false);
 
         }

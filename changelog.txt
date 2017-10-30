@@ -1,6 +1,6 @@
 ﻿Version 7.6
 -----------
-[new] Support import a folder (recursive)
+[new] Add folder import (recursively find media file)
 [change] Rename included preset to friendly name :)
 [chnage] More branding support
 
