@@ -173,7 +173,12 @@ namespace ifme
 
 		private void CheckVersion()
 		{
-			if (!string.Equals(Application.ProductVersion, new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt")))
+            var version = new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt");
+
+            if (string.IsNullOrEmpty(version))
+                return;
+
+            if (!string.Equals(Application.ProductVersion, version))
 			{
 				Invoke((MethodInvoker)delegate ()
 				{
