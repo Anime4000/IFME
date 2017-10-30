@@ -214,7 +214,7 @@ $RECYCLE.BIN/
 *.msp
 
 # IFME build files.
-.vs/config/applicationhost.config
+.vs/
 *.exe
 *.zip
 *.tar
