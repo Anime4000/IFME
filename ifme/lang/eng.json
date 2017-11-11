@@ -1,151 +1,154 @@
 {
-	"AuthorName": "Anime4000",
-	"AuthorEmail": "ilham92_sakura@yahoo.com",
-	"AuthorProfile": "https://github.com/Anime4000/",
-	"UIFontWindows": "Tahoma, 8pt",
-	"UIFontLinux": "Nimbus Sans L, 8pt",
-	"ToolTipDonate": "Thanks for using this program, I hope you enjoy it.\nYou can donate to this project so I can keep improving it.\nClick this button to find out how to donate.",
-	"frmMain": {
-		"tabGeneral": "General",
-		"grpTargetFormat": "&Target Format",
-		"rdoFormatMp4": "&MP4",
-		"rdoFormatMkv": "M&KV",
-		"rdoFormatWebm": "&WEBM",
-		"rdoFormatAudioMp3": "MP&3",
-		"rdoFormatAudioMp4": "MP&4",
-		"rdoFormatAudioOgg": "&OGG",
-		"rdoFormatAudioOpus": "O&PUS",
-		"rdoFormatAudioFlac": "&FLAC (lossless)",
-		"grpStreamInfo": "Media Info",
-		"tabVideo": "Video",
-		"chkVideoDeinterlace": "&Deinterlace?",
-		"grpVideoStream": "&Streams",
-		"grpVideoCodec": "&Codec",
-		"lblVideoEncoder": "&Encoder:",
-		"lblVideoPreset": "Prese&t:",
-		"lblVideoTune": "&Tune:",
-		"lblVideoRateControl": "Rate &control:",
-		"lblVideoRateFactor": "R&ate factor:",
-		"lblVideoMultiPass": "M&ultipass:",
-		"btnVideoAdvDec":  "Advance &Decoder options",
-		"btnVideoAdv": "Advance E&ncoder options",
-		"grpVideoPicture": "&Picture",
-		"lblVideoResolution": "&Resolution:",
-		"lblVideoFrameRate": "&Frame Rate:",
-		"lblVideoBitDepth": "&Bit depth:",
-		"lblPixelFormat": "&Pixel Format:",
-		"lblVideoDeinterlaceMode": "&Mode:",
-		"lblVideoDeinterlaceField": "Fiel&ds:",
-		"tabAudio": "Audio",
-		"grpAudioStream": "&Streams",
-		"grpAudioCodec": "&Codec",
-		"lblAudioEncoder": "&Encoder:",
-		"lblAudioQuality": "&Quality:",
-		"lblAudioSampleRate": "Sample &Rate:",
-		"lblAudioChannel": "C&hannel:",
-		"btnAudioAdvDec": "Advance &Decoder options",
-		"btnAudioAdv": "Advance &Encoder options",
-		"lblAudioMode": "&Mode:",
-		"tabSubtitle": "Subtitle",
-		"lblSubLang": "&Language:",
-		"tabAttachment": "Attachments",
-		"lblAttachMime": "&MIME Type:",
-		"lblEncodingPreset": "Encoding &Preset:",
-		"lblOutputFolder": "&Destination:",
-		"tabAdvance": "Advance",
-		"chkAdvTrim": "&Trim Video && Audio",
-		"lblAdvTimeStart": "&Start:",
-		"lblAdvTimeEnd": "&End:",
-		"lblAdvTimeDuration": "&Duration:"
-	},
-	"frmOption": {
-		"tabOptionGeneral": "General",
-		"grpLanguage": "&Language",
-		"grpTempFolder": "&Temporary folder",
-		"grpNewFilename": "&New file name",
-		"grpNewFilenamePrefix": "P&refix",
-		"rdoNamePrefixNone": "&None",
-		"rdoNamePrefixDateTime": "&Date Time",
-		"rdoNamePrefixCustom": "&Custom:",
-		"grpNewFilenamePostfix": "P&ostfix",
-		"rdoNamePostfixNone": "Non&e",
-		"rdoNamePostfixCustom": "C&ustom:",
-		"tabOptionEncoding": "Encoding",
-		"grpAviSynth": "&AviSynth",
-		"lblAviSynthInstall": "Installed!",
-		"lblAviSynthNoInstall": "Not Installed!",
-		"grpFFmpeg": "&Default Decoder",
-		"rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth ST)",
-		"rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
-		"grpFrameCountOffset": "&Frame Count Offset",
-		"lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding an offset value, the decoder will compensate broken container data with a higher frame count to ensure no frames are missing during encoding.",
-		"tabOptionModule": "Module",
-		"btnCancel": "&Cancel",
-		"btnOk": "&OK"
-	},
-	"frmShutdown": {
-		"lblInfo": "What should I do after encoding?",
-		"btnOK": "&OK"
-	},
-	"frmAbout": {
-		"lblDevTtitle": "Developed by",
-		"lblTechTitle": "Technologies used",
-		"lblArtTitle": "Artwork by"
-	},
-	"frmCheckUpdate": {
-		"btnDownload": "&Download",
-		"btnOK": "&OK"
-	},
+  "AuthorName": "Anime4000",
+  "AuthorEmail": "ilham92_sakura@yahoo.com",
+  "AuthorProfile": "https://github.com/Anime4000/",
+  "UIFontWindows": "Tahoma, 8pt",
+  "UIFontLinux": "Nimbus Sans L, 8pt",
+  "ToolTipDonate": "Thanks for using this program, I hope you enjoy it.\nYou can donate to this project so I can keep improving it.\nClick this button to find out how to donate.",
+  "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
+  "Warning": "WARNING!",
+  "frmMain": {
+    "tabGeneral": "General",
+    "grpTargetFormat": "&Target Format",
+    "rdoFormatMp4": "&MP4",
+    "rdoFormatMkv": "M&KV",
+    "rdoFormatWebm": "&WEBM",
+    "rdoFormatAudioMp3": "MP&3",
+    "rdoFormatAudioMp4": "MP&4",
+    "rdoFormatAudioOgg": "&OGG",
+    "rdoFormatAudioOpus": "O&PUS",
+    "rdoFormatAudioFlac": "&FLAC (lossless)",
+    "grpStreamInfo": "Media Info",
+    "tabVideo": "Video",
+    "chkVideoDeinterlace": "&Deinterlace?",
+    "grpVideoStream": "&Streams",
+    "grpVideoCodec": "&Codec",
+    "lblVideoEncoder": "&Encoder:",
+    "lblVideoPreset": "Prese&t:",
+    "lblVideoTune": "&Tune:",
+    "lblVideoRateControl": "Rate &control:",
+    "lblVideoRateFactor": "R&ate factor:",
+    "lblVideoMultiPass": "M&ultipass:",
+    "btnVideoAdvDec": "Advance &Decoder options",
+    "btnVideoAdv": "Advance E&ncoder options",
+    "grpVideoPicture": "&Picture",
+    "lblVideoResolution": "&Resolution:",
+    "lblVideoFrameRate": "&Frame Rate:",
+    "lblVideoBitDepth": "&Bit depth:",
+    "lblPixelFormat": "&Pixel Format:",
+    "lblVideoDeinterlaceMode": "&Mode:",
+    "lblVideoDeinterlaceField": "Fiel&ds:",
+    "tabAudio": "Audio",
+    "grpAudioStream": "&Streams",
+    "grpAudioCodec": "&Codec",
+    "lblAudioEncoder": "&Encoder:",
+    "lblAudioQuality": "&Quality:",
+    "lblAudioSampleRate": "Sample &Rate:",
+    "lblAudioChannel": "C&hannel:",
+    "btnAudioAdvDec": "Advance &Decoder options",
+    "btnAudioAdv": "Advance &Encoder options",
+    "lblAudioMode": "&Mode:",
+    "tabSubtitle": "Subtitle",
+    "chkSubHard": "&Burn Subtitle (Hard Sub)",
+    "lblSubLang": "&Language:",
+    "tabAttachment": "Attachments",
+    "lblAttachMime": "&MIME Type:",
+    "lblEncodingPreset": "Encoding &Preset:",
+    "lblOutputFolder": "&Destination:",
+    "tabAdvance": "Advance",
+    "chkAdvTrim": "&Trim Video && Audio",
+    "lblAdvTimeStart": "&Start:",
+    "lblAdvTimeEnd": "&End:",
+    "lblAdvTimeDuration": "&Duration:"
+  },
+  "frmOption": {
+    "tabOptionGeneral": "General",
+    "grpLanguage": "&Language",
+    "grpTempFolder": "&Temporary folder",
+    "grpNewFilename": "&New file name",
+    "grpNewFilenamePrefix": "P&refix",
+    "rdoNamePrefixNone": "&None",
+    "rdoNamePrefixDateTime": "&Date Time",
+    "rdoNamePrefixCustom": "&Custom:",
+    "grpNewFilenamePostfix": "P&ostfix",
+    "rdoNamePostfixNone": "Non&e",
+    "rdoNamePostfixCustom": "C&ustom:",
+    "tabOptionEncoding": "Encoding",
+    "grpAviSynth": "&AviSynth",
+    "lblAviSynthInstall": "Installed!",
+    "lblAviSynthNoInstall": "Not Installed!",
+    "grpFFmpeg": "&Default Decoder",
+    "rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth ST)",
+    "rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
+    "grpFrameCountOffset": "&Frame Count Offset",
+    "lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding an offset value, the decoder will compensate broken container data with a higher frame count to ensure no frames are missing during encoding.",
+    "tabOptionModule": "Module",
+    "btnCancel": "&Cancel",
+    "btnOk": "&OK"
+  },
+  "frmShutdown": {
+    "lblInfo": "What should I do after encoding?",
+    "btnOK": "&OK"
+  },
+  "frmAbout": {
+    "lblDevTtitle": "Developed by",
+    "lblTechTitle": "Technologies used",
+    "lblArtTitle": "Artwork by"
+  },
+  "frmCheckUpdate": {
+    "btnDownload": "&Download",
+    "btnOK": "&OK"
+  },
   "cmsNewImport": {
     "tsmiNew": "&New",
     "tsmiImport": "Import &Files",
     "tsmiImportFolder": "Import Fol&der"
   },
-	"cmsEncodingPreset": {
-		"tsmiEncodingPresetSave": "&Save",
-		"tsmiEncodingPresetSaveAs": "Save &As"
-	},
-	"InputBoxNewMedia": {
-		"Title": "New media file",
-		"Message": "You're about to create a blank stream of video, audio, subtitles and fonts.\nYou can use it to add files, convert them or just merge them (like Mkvtoolnix or MP4Box)\n\nEnter a new file name:"
-	},
-	"InputBoxEncodingPreset": {
-		"Title": "Save a new encoding preset",
-		"Message": "You're about to create a new encoding preset based on the current configuration.\nWith this preset, you can re-use on others video.\n\nEnter a new name:"
-	},
-	"InputBoxCommandLine": {
-		"Title": "Encoder command-line",
-		"Message": "Modify encoder command-line arguments\nExample: --bitdepth 8"
-	},
-	"InputBoxCommandLineFFmpeg": {
-		"Title": "Decoder command-line",
-		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
-	},
-	"MsgBoxShutdown": {
-		"Title": "Question",
-		"Message": "This computer will shutdown or restart after everything is done. Do you want to proceed?"
-	},
-	"MsgBoxSaveFolder": {
-		"Title": "Invalid Path",
-		"Message": "Saving over network is not supported, please pick a drive."
-	},
-	"MsgBoxCodecIncompatible": {
-		"Title": "Incompatible Codec",
-		"Message": "Output format and codec are not compatible! Choose different one."
-	},
-	"ComboBoxDeInterlaceMode": [
-		"Deinterlace only frames",
-		"Deinterlace each field",
-		"Skip spatial interlacing frame check",
-		"Skip spatial interlacing field check"
-	],
-	"ComboBoxDeInterlaceField": [
-		"Top Field First",
-		"Bottom Field First"
-	],
-	"ComboBoxShutdown": [
-		"Do Nothing",
-		"Restart",
-		"Shutdown"
-	]
+  "cmsEncodingPreset": {
+    "tsmiEncodingPresetSave": "&Save",
+    "tsmiEncodingPresetSaveAs": "Save &As"
+  },
+  "InputBoxNewMedia": {
+    "Title": "New media file",
+    "Message": "You're about to create a blank stream of video, audio, subtitles and fonts.\nYou can use it to add files, convert them or just merge them (like Mkvtoolnix or MP4Box)\n\nEnter a new file name:"
+  },
+  "InputBoxEncodingPreset": {
+    "Title": "Save a new encoding preset",
+    "Message": "You're about to create a new encoding preset based on the current configuration.\nWith this preset, you can re-use on others video.\n\nEnter a new name:"
+  },
+  "InputBoxCommandLine": {
+    "Title": "Encoder command-line",
+    "Message": "Modify encoder command-line arguments\nExample: --bitdepth 8"
+  },
+  "InputBoxCommandLineFFmpeg": {
+    "Title": "Decoder command-line",
+    "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
+  },
+  "MsgBoxShutdown": {
+    "Title": "Question",
+    "Message": "This computer will shutdown or restart after everything is done. Do you want to proceed?"
+  },
+  "MsgBoxSaveFolder": {
+    "Title": "Invalid Path",
+    "Message": "Saving over network is not supported, please pick a drive."
+  },
+  "MsgBoxCodecIncompatible": {
+    "Title": "Incompatible Codec",
+    "Message": "Output format and codec are not compatible! Choose different one."
+  },
+  "ComboBoxDeInterlaceMode": [
+    "Deinterlace only frames",
+    "Deinterlace each field",
+    "Skip spatial interlacing frame check",
+    "Skip spatial interlacing field check"
+  ],
+  "ComboBoxDeInterlaceField": [
+    "Top Field First",
+    "Bottom Field First"
+  ],
+  "ComboBoxShutdown": [
+    "Do Nothing",
+    "Restart",
+    "Shutdown"
+  ]
 }

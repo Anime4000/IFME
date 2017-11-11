@@ -32,10 +32,13 @@ namespace ifme
 
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
-			ttProInfo.Show(null, btnAbout, 0);
-			ttProInfo.IsBalloon = true;
-
-			ttProInfo.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
+            var tt = new ToolTip();
+            tt.Show(null, btnAbout, 0);
+            tt.IsBalloon = false;
+            tt.ToolTipIcon = ToolTipIcon.Info;
+            tt.ToolTipTitle = "Hello!";
+            tt.SetToolTip(btnAbout, "");
+			tt.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
 
 			new Thread(CheckVersion).Start();
 
@@ -708,10 +711,39 @@ namespace ifme
 						cboAudioSampleRate.Items.Add(item);
 					cboAudioSampleRate.SelectedItem = audio.SampleRateDefault;
 
-					cboAudioChannel.Items.Clear();
-					foreach (var item in audio.Channel)
-						cboAudioChannel.Items.Add(item);
-					cboAudioChannel.SelectedItem = audio.ChannelDefault;
+                    // Channel
+                    cboAudioChannel.DataSource = null;
+                    cboAudioChannel.Items.Clear();
+
+                    var ch = new Dictionary<int, string>();
+                    foreach (var item in audio.Channel)
+                    {
+                        switch (item)
+                        {
+                            case 0:
+                                ch.Add(0, "Auto");
+                                break;
+                            case 1:
+                                ch.Add(1, "Mono");
+                                break;
+                            case 2:
+                                ch.Add(2, "Stereo");
+                                break;
+                            case 6:
+                                ch.Add(6, "5.1 Surround");
+                                break;
+                            case 8:
+                                ch.Add(8, "7.1 Surround");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    cboAudioChannel.DisplayMember = "Value";
+                    cboAudioChannel.ValueMember = "Key";
+                    cboAudioChannel.DataSource = new BindingSource(ch, null);
+
+                    cboAudioChannel.SelectedValue = audio.ChannelDefault;
 				}
 				else
 				{
@@ -794,7 +826,24 @@ namespace ifme
 			ListViewItemMove(ListViewItemType.Subtitle, Direction.Down);
 		}
 
-		private void lstSub_DragDrop(object sender, DragEventArgs e)
+        private void chkSubHard_CheckedChanged(object sender, EventArgs e)
+        {
+            var ctrl = sender as CheckBox;
+
+            if (ctrl.Checked)
+            {
+                var tt = new ToolTip();
+
+                tt.Show(null, ctrl, 0);
+                tt.IsBalloon = true;
+                tt.ToolTipIcon = ToolTipIcon.Warning;
+                tt.ToolTipTitle = "WARNING!";
+                tt.SetToolTip(ctrl, ctrl.Text);
+                tt.Show("You cannot remove subtitle once encoded!\n\n1. Only first subtitle will be selected!\n2. Only support SRT and SubStation Alpha", ctrl, ctrl.Width - 10, ctrl.Height - 10, 10000);
+            }
+        }
+
+        private void lstSub_DragDrop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 				e.Effect = DragDropEffects.Copy;

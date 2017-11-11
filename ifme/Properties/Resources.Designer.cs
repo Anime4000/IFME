@@ -61,7 +61,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cosmic Housekeeping.
+        ///   Looks up a localized string similar to Infinity Space.
         /// </summary>
         internal static string AppCodeName {
             get {

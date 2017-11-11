@@ -131,6 +131,11 @@ namespace ifme
 			return "mkv";
 		}
 
+        public static string FileExtension(string file)
+        {
+            return Path.GetExtension(file).ToLowerInvariant();
+        }
+
 		public static string FileLang(string file)
 		{
 			file = Path.GetFileNameWithoutExtension(file);

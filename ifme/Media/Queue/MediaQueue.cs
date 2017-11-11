@@ -6,6 +6,7 @@ namespace ifme
 	{
 		public bool Enable { get; set; }
 		public string File { get; set; }
+        public bool HardSub { get; set; }
 		public TargetFormat OutputFormat { get; set; }
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();
 		public List<MediaQueueAudio> Audio { get; set; } = new List<MediaQueueAudio>();

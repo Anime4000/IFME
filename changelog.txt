@@ -1,5 +1,6 @@
-﻿Version 7.6
------------
+﻿Version 7.6 (Infinity Space)
+----------------------------
+[new] Support Burn subtitle into video (Hard Sub) [Windows/with --libass]
 [new] Add folder import (recursively find media file)
 [change] Rename included preset to friendly name :)
 [chnage] More branding support

@@ -1,151 +1,154 @@
 {
-	"AuthorName": "Marco Manieri",
-	"AuthorEmail": "no email",
-	"AuthorProfile": "https://www.facebook.com/profile.php?id=100007591784945",
-	"UIFontWindows": "Tahoma, 8pt",
-	"UIFontLinux": "Nimbus Sans L, 8pt",
-	"ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
-	"frmMain": {
-		"tabGeneral": "Generale",
-		"grpTargetFormat": "&Formato di destinazione",
-		"rdoFormatMp4": "&MP4",
-		"rdoFormatMkv": "M&KV",
-		"rdoFormatWebm": "&WEBM",
-		"rdoFormatAudioMp3": "MP&3",
-		"rdoFormatAudioMp4": "MP&4",
-		"rdoFormatAudioOgg": "&OGG",
-		"rdoFormatAudioOpus": "O&PUS",
-		"rdoFormatAudioFlac": "&FLAC (lossless)",
-		"grpStreamInfo": "Media Info",
-		"tabVideo": "Video",
-		"chkVideoDeinterlace": "&Deinterlacciare?",
-		"grpVideoStream": "&Flussi",
-		"grpVideoCodec": "&Codec",
-		"lblVideoEncoder": "&Encoder:",
-		"lblVideoPreset": "Prese&t:",
-		"lblVideoTune": "&Regolazione:",
-		"lblVideoRateControl": "Bilanciamento &Qualità:",
-		"lblVideoRateFactor": "Fattore qualità:",
-		"lblVideoMultiPass": "M&ultipass:",
-		"btnVideoAdvDec":  "Opzioni avanzate &dencoder",
-		"btnVideoAdv": "&Opzioni avanzate encoder",
-		"grpVideoPicture": "&Immagine",
-		"lblVideoResolution": "&Risoluzione:",
-		"lblVideoFrameRate": "&Frame Rate:",
-		"lblVideoBitDepth": "&Profondità in Bit:",
-		"lblPixelFormat": "&Formato Pixel:",
-		"lblVideoDeinterlaceMode": "&Modalità:",
-		"lblVideoDeinterlaceField": "Campi:",
-		"tabAudio": "Audio",
-		"grpAudioStream": "&Flussi",
-		"grpAudioCodec": "&Codec",
-		"lblAudioEncoder": "&Encoder:",
-		"lblAudioQuality": "&Qualità:",
-		"lblAudioSampleRate": "Sample &Rate:",
-		"lblAudioChannel": "C&anale:",
-		"btnAudioAdvDec": "Opzioni avanzate &dencoder",
-		"btnAudioAdv": "&Opzioni avanzate encoder",
-		"lblAudioMode": "&Modalità:",
-		"tabSubtitle": "Sottotitoli",
-		"lblSubLang": "&Lingua:",
-		"tabAttachment": "Allegati",
-		"lblAttachMime": "&MIME Type:",
-		"lblEncodingPreset": "Encoding &Preset:",
-		"lblOutputFolder": "&Destinazione:",
-		"tabAdvance": "Avanzare",
-		"chkAdvTrim": "&Trim video e audio",
-		"lblAdvTimeStart": "&Inizio:",
-		"lblAdvTimeEnd": "&Fine:",
-		"lblAdvTimeDuration": "&Durata:"
-	},
-	"frmOption": {
-		"tabOptionGeneral": "Generale",
-		"grpLanguage": "&Lingua",
-		"grpTempFolder": "&Cartella temporanea",
-		"grpNewFilename": "&Denominazione file",
-		"grpNewFilenamePrefix": "Prefisso",
-		"rdoNamePrefixNone": "&Nessinp",
-		"rdoNamePrefixDateTime": "&Data Ora",
-		"rdoNamePrefixCustom": "&Personalizzato:",
-		"grpNewFilenamePostfix": "Suffisso",
-		"rdoNamePostfixNone": "Nessuno",
-		"rdoNamePostfixCustom": "Personalizzato:",
-		"tabOptionEncoding": "Encoding",
-		"grpAviSynth": "&AviSynth",
-		"lblAviSynthInstall": "Installato!",
-		"lblAviSynthNoInstall": "Non installato!",
-		"grpFFmpeg": "&Default Decoder",
-		"rdoFFmpeg32": "FFmpeg &32bit (Supporta AviSynth ST)",
-		"rdoFFmpeg64": "FFmpeg &64bit (Supporta alte risoluzioni && alta profondità in bit)",
-		"grpFrameCountOffset": "&Frame Count Offset",
-		"lblFrameCountOffset": "Qualsiasi frame rate variabile verrà convertito in un frame rate constante, in quanto IFME calcolerà il numero di frame con (durata in secondi * frame rate dichiarato). Aggiungendo un valore di offset, IFME aggiungerà dei frame per compensare eventuali dati non-indicizzati/corrotti, e quindi evitare ogni perdita di frame durante l'encoding.",
-		"tabOptionModule": "Modulo",
-		"btnCancel": "&Cancella",
-		"btnOk": "&OK"
-	},
-	"frmShutdown": {
-		"lblInfo": "Cosa accade a conversione completata?",
-		"btnOK": "&OK"
-	},
-	"frmAbout": {
-		"lblDevTtitle": "Sviluppato da",
-		"lblTechTitle": "Tecnologie utilizzate",
-		"lblArtTitle": "Artwork di"
-	},
-	"frmCheckUpdate": {
-		"btnDownload": "&Scaricare",
-		"btnOK": "&OK"
-	},
+  "AuthorName": "Marco Manieri",
+  "AuthorEmail": "no email",
+  "AuthorProfile": "https://www.facebook.com/profile.php?id=100007591784945",
+  "UIFontWindows": "Tahoma, 8pt",
+  "UIFontLinux": "Nimbus Sans L, 8pt",
+  "ToolTipDonate": "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.",
+  "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
+  "Warning": "AVVERTIMENTO!",
+  "frmMain": {
+    "tabGeneral": "Generale",
+    "grpTargetFormat": "&Formato di destinazione",
+    "rdoFormatMp4": "&MP4",
+    "rdoFormatMkv": "M&KV",
+    "rdoFormatWebm": "&WEBM",
+    "rdoFormatAudioMp3": "MP&3",
+    "rdoFormatAudioMp4": "MP&4",
+    "rdoFormatAudioOgg": "&OGG",
+    "rdoFormatAudioOpus": "O&PUS",
+    "rdoFormatAudioFlac": "&FLAC (lossless)",
+    "grpStreamInfo": "Media Info",
+    "tabVideo": "Video",
+    "chkVideoDeinterlace": "&Deinterlacciare?",
+    "grpVideoStream": "&Flussi",
+    "grpVideoCodec": "&Codec",
+    "lblVideoEncoder": "&Encoder:",
+    "lblVideoPreset": "Prese&t:",
+    "lblVideoTune": "&Regolazione:",
+    "lblVideoRateControl": "Bilanciamento &Qualità:",
+    "lblVideoRateFactor": "Fattore qualità:",
+    "lblVideoMultiPass": "M&ultipass:",
+    "btnVideoAdvDec": "Opzioni avanzate &dencoder",
+    "btnVideoAdv": "&Opzioni avanzate encoder",
+    "grpVideoPicture": "&Immagine",
+    "lblVideoResolution": "&Risoluzione:",
+    "lblVideoFrameRate": "&Frame Rate:",
+    "lblVideoBitDepth": "&Profondità in Bit:",
+    "lblPixelFormat": "&Formato Pixel:",
+    "lblVideoDeinterlaceMode": "&Modalità:",
+    "lblVideoDeinterlaceField": "Campi:",
+    "tabAudio": "Audio",
+    "grpAudioStream": "&Flussi",
+    "grpAudioCodec": "&Codec",
+    "lblAudioEncoder": "&Encoder:",
+    "lblAudioQuality": "&Qualità:",
+    "lblAudioSampleRate": "Sample &Rate:",
+    "lblAudioChannel": "C&anale:",
+    "btnAudioAdvDec": "Opzioni avanzate &dencoder",
+    "btnAudioAdv": "&Opzioni avanzate encoder",
+    "lblAudioMode": "&Modalità:",
+    "tabSubtitle": "Sottotitoli",
+    "chkSubHard": "&Bruciare il sottotitolo",
+    "lblSubLang": "&Lingua:",
+    "tabAttachment": "Allegati",
+    "lblAttachMime": "&MIME Type:",
+    "lblEncodingPreset": "Encoding &Preset:",
+    "lblOutputFolder": "&Destinazione:",
+    "tabAdvance": "Avanzare",
+    "chkAdvTrim": "&Trim video e audio",
+    "lblAdvTimeStart": "&Inizio:",
+    "lblAdvTimeEnd": "&Fine:",
+    "lblAdvTimeDuration": "&Durata:"
+  },
+  "frmOption": {
+    "tabOptionGeneral": "Generale",
+    "grpLanguage": "&Lingua",
+    "grpTempFolder": "&Cartella temporanea",
+    "grpNewFilename": "&Denominazione file",
+    "grpNewFilenamePrefix": "Prefisso",
+    "rdoNamePrefixNone": "&Nessinp",
+    "rdoNamePrefixDateTime": "&Data Ora",
+    "rdoNamePrefixCustom": "&Personalizzato:",
+    "grpNewFilenamePostfix": "Suffisso",
+    "rdoNamePostfixNone": "Nessuno",
+    "rdoNamePostfixCustom": "Personalizzato:",
+    "tabOptionEncoding": "Encoding",
+    "grpAviSynth": "&AviSynth",
+    "lblAviSynthInstall": "Installato!",
+    "lblAviSynthNoInstall": "Non installato!",
+    "grpFFmpeg": "&Default Decoder",
+    "rdoFFmpeg32": "FFmpeg &32bit (Supporta AviSynth ST)",
+    "rdoFFmpeg64": "FFmpeg &64bit (Supporta alte risoluzioni && alta profondità in bit)",
+    "grpFrameCountOffset": "&Frame Count Offset",
+    "lblFrameCountOffset": "Qualsiasi frame rate variabile verrà convertito in un frame rate constante, in quanto IFME calcolerà il numero di frame con (durata in secondi * frame rate dichiarato). Aggiungendo un valore di offset, IFME aggiungerà dei frame per compensare eventuali dati non-indicizzati/corrotti, e quindi evitare ogni perdita di frame durante l'encoding.",
+    "tabOptionModule": "Modulo",
+    "btnCancel": "&Cancella",
+    "btnOk": "&OK"
+  },
+  "frmShutdown": {
+    "lblInfo": "Cosa accade a conversione completata?",
+    "btnOK": "&OK"
+  },
+  "frmAbout": {
+    "lblDevTtitle": "Sviluppato da",
+    "lblTechTitle": "Tecnologie utilizzate",
+    "lblArtTitle": "Artwork di"
+  },
+  "frmCheckUpdate": {
+    "btnDownload": "&Scaricare",
+    "btnOK": "&OK"
+  },
   "cmsNewImport": {
     "tsmiNew": "&Nuovo",
     "tsmiImport": "&Importa",
     "tsmiImportFolder": "Import Fol&der"
   },
-	"cmsEncodingPreset": {
-		"tsmiEncodingPresetSave": "&Salva",
-		"tsmiEncodingPresetSaveAs": "Salva &Come"
-	},
-	"InputBoxNewMedia": {
-		"Title": "Nuovo video/audio",
-		"Message": "Stai per creare un flusso vuoto di video, audio, sottotitoli e font.\nIn questo modo puoi aggiungere file, convertirli o unificarli (come con Mkvtoolnix o MP4Box)\n\nInserire un nuovo nome file: "
-	},
-	"InputBoxEncodingPreset": {
-		"Title": "Salva un nuovo preset di encoding",
-		"Message": "Stai per creare un nuovo preset di encoding basato sulla tua configurazione corrente.\nIn questo modo potrai riutilizzarla in futuro.\n\nInserisci il nome:"
-	},
-	"InputBoxCommandLine": {
-		"Title": "Encoder command-line",
-		"Message": "Modifica argomenti per l'encoder command-line\nEsempio: --bitdepth 8"
-	},
-	"InputBoxCommandLineFFmpeg": {
-		"Title": "Decoder command-line",
-		"Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
-	},
-	"MsgBoxShutdown": {
-		"Title": "Selezionare",
-		"Message": "È stato programmato uno spegnimento o un riavvio!\nVerrà eseguito a conversione completata. Procedere?"
-	},
-	"MsgBoxSaveFolder": {
-		"Title": "Percorso non valido",
-		"Message": "Percorso di rete non supportato, montarlo come disco."
-	},
-	"MsgBoxCodecIncompatible": {
-		"Title": "Codec Incompatibile",
-		"Message": "Formato di Output e codec non sono compatibili! Scegline di differenti."
-	},
-	"ComboBoxDeInterlaceMode": [
-		"Deinterlacciare solo i frame",
-		"Deinterlacciare ogni campo",
-		"Salta il spatial interlacing frame check",
-		"Salta il spatial interlacing field check"
-	],
-	"ComboBoxDeInterlaceField": [
-		"Campo Superiore Prima",
-		"Campo Inferiore Prima"
-	],
-	"ComboBoxShutdown": [
-		"Non fare nulla",
-		"Riavvio",
-		"Spegnimento"
-	]
+  "cmsEncodingPreset": {
+    "tsmiEncodingPresetSave": "&Salva",
+    "tsmiEncodingPresetSaveAs": "Salva &Come"
+  },
+  "InputBoxNewMedia": {
+    "Title": "Nuovo video/audio",
+    "Message": "Stai per creare un flusso vuoto di video, audio, sottotitoli e font.\nIn questo modo puoi aggiungere file, convertirli o unificarli (come con Mkvtoolnix o MP4Box)\n\nInserire un nuovo nome file: "
+  },
+  "InputBoxEncodingPreset": {
+    "Title": "Salva un nuovo preset di encoding",
+    "Message": "Stai per creare un nuovo preset di encoding basato sulla tua configurazione corrente.\nIn questo modo potrai riutilizzarla in futuro.\n\nInserisci il nome:"
+  },
+  "InputBoxCommandLine": {
+    "Title": "Encoder command-line",
+    "Message": "Modifica argomenti per l'encoder command-line\nEsempio: --bitdepth 8"
+  },
+  "InputBoxCommandLineFFmpeg": {
+    "Title": "Decoder command-line",
+    "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
+  },
+  "MsgBoxShutdown": {
+    "Title": "Selezionare",
+    "Message": "È stato programmato uno spegnimento o un riavvio!\nVerrà eseguito a conversione completata. Procedere?"
+  },
+  "MsgBoxSaveFolder": {
+    "Title": "Percorso non valido",
+    "Message": "Percorso di rete non supportato, montarlo come disco."
+  },
+  "MsgBoxCodecIncompatible": {
+    "Title": "Codec Incompatibile",
+    "Message": "Formato di Output e codec non sono compatibili! Scegline di differenti."
+  },
+  "ComboBoxDeInterlaceMode": [
+    "Deinterlacciare solo i frame",
+    "Deinterlacciare ogni campo",
+    "Salta il spatial interlacing frame check",
+    "Salta il spatial interlacing field check"
+  ],
+  "ComboBoxDeInterlaceField": [
+    "Campo Superiore Prima",
+    "Campo Inferiore Prima"
+  ],
+  "ComboBoxShutdown": [
+    "Non fare nulla",
+    "Riavvio",
+    "Spegnimento"
+  ]
 }

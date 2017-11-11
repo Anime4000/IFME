@@ -1171,6 +1171,11 @@ namespace ifme
 					}
 				}
 
+                if (string.Equals(ctrl, chkSubHard.Name))
+                {
+                    m.HardSub = chkSubHard.Checked;
+                }
+
 				if (string.Equals(ctrl, chkAdvTrim.Name))
 				{
 					m.Trim.Enable = chkAdvTrim.Checked;
@@ -1638,7 +1643,7 @@ namespace ifme
 			{
 				cboAudioQuality.Text = $"{a.EncoderQuality}";
 				cboAudioSampleRate.Text = $"{a.EncoderSampleRate}";
-				cboAudioChannel.Text = $"{a.EncoderChannel}";
+				cboAudioChannel.SelectedValue = a.EncoderChannel;
 			});
 		}
 

@@ -120,6 +120,7 @@
             this.btnAudioAdd = new System.Windows.Forms.Button();
             this.tabSubtitle = new System.Windows.Forms.TabPage();
             this.pnlSubtitle = new System.Windows.Forms.Panel();
+            this.chkSubHard = new System.Windows.Forms.CheckBox();
             this.btnSubAdd2 = new System.Windows.Forms.Button();
             this.cboSubLang = new System.Windows.Forms.ComboBox();
             this.lblSubLang = new System.Windows.Forms.Label();
@@ -180,7 +181,6 @@
             this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.ttProInfo = new System.Windows.Forms.ToolTip(this.components);
             this.btnDonate = new System.Windows.Forms.Button();
             this.btnBench = new System.Windows.Forms.Button();
             this.tabMediaConfig.SuspendLayout();
@@ -1323,6 +1323,7 @@
             // 
             // pnlSubtitle
             // 
+            this.pnlSubtitle.Controls.Add(this.chkSubHard);
             this.pnlSubtitle.Controls.Add(this.btnSubAdd2);
             this.pnlSubtitle.Controls.Add(this.cboSubLang);
             this.pnlSubtitle.Controls.Add(this.lblSubLang);
@@ -1336,6 +1337,20 @@
             this.pnlSubtitle.Name = "pnlSubtitle";
             this.pnlSubtitle.Size = new System.Drawing.Size(862, 299);
             this.pnlSubtitle.TabIndex = 0;
+            // 
+            // chkSubHard
+            // 
+            this.chkSubHard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkSubHard.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkSubHard.Location = new System.Drawing.Point(609, 3);
+            this.chkSubHard.Name = "chkSubHard";
+            this.chkSubHard.Size = new System.Drawing.Size(250, 24);
+            this.chkSubHard.TabIndex = 8;
+            this.chkSubHard.Text = "&Burn Subtitle (Hard Sub)";
+            this.chkSubHard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkSubHard.UseVisualStyleBackColor = true;
+            this.chkSubHard.CheckedChanged += new System.EventHandler(this.chkSubHard_CheckedChanged);
+            this.chkSubHard.Leave += new System.EventHandler(this.MediaApply);
             // 
             // btnSubAdd2
             // 
@@ -1926,7 +1941,7 @@
             this.tsmiImportFolder});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(179, 92);
+            this.cmsNewImport.Size = new System.Drawing.Size(179, 70);
             // 
             // tsmiNew
             // 
@@ -1979,10 +1994,6 @@
             this.tsmiEncodingPresetSaveAs.Size = new System.Drawing.Size(113, 22);
             this.tsmiEncodingPresetSaveAs.Text = "Save &As";
             this.tsmiEncodingPresetSaveAs.Click += new System.EventHandler(this.tsmiEncodingPresetSaveAs_Click);
-            // 
-            // ttProInfo
-            // 
-            this.ttProInfo.IsBalloon = true;
             // 
             // btnDonate
             // 
@@ -2208,7 +2219,6 @@
         private System.Windows.Forms.ContextMenuStrip cmsEncodingPreset;
         private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSave;
         private System.Windows.Forms.ToolStripMenuItem tsmiEncodingPresetSaveAs;
-        private System.Windows.Forms.ToolTip ttProInfo;
         private System.Windows.Forms.ComboBox cboVideoStreamLang;
         private System.Windows.Forms.ComboBox cboAudioStreamLang;
         private System.Windows.Forms.ColumnHeader colVideoLang;
@@ -2232,6 +2242,7 @@
 		private System.Windows.Forms.Button btnVideoAdvDec;
 		private System.Windows.Forms.Button btnAudioAdvDec;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportFolder;
+        private System.Windows.Forms.CheckBox chkSubHard;
     }
 }
 
