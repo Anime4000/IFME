@@ -88,7 +88,7 @@ namespace ifme
                     foreach (var f in Directory.GetFiles(d))
                     {
                         files.Add(f);
-                        frm.Status = $"Indexing... {count++} files!";
+                        frm.Status = $"{count++}";
                         Application.DoEvents();
                     }
                 }
@@ -96,7 +96,8 @@ namespace ifme
                 for (int i = 0; i < files.Count; i++)
                 {
                     MediaAdd(files[i]);
-                    frm.Status = $"Importing... {i + 1} of {files.Count} files\nAdding to queue: {files[i]}";
+                    frm.Text = Language.Lang.ProgressBarImport.Title;
+                    frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, files.Count, files[i]);
                     frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
                     Application.DoEvents();
                 }
@@ -837,9 +838,9 @@ namespace ifme
                 tt.Show(null, ctrl, 0);
                 tt.IsBalloon = true;
                 tt.ToolTipIcon = ToolTipIcon.Warning;
-                tt.ToolTipTitle = "WARNING!";
+                tt.ToolTipTitle = Language.Lang.Warning;
                 tt.SetToolTip(ctrl, ctrl.Text);
-                tt.Show("You cannot remove subtitle once encoded!\n\n1. Only first subtitle will be selected!\n2. Only support SRT and SubStation Alpha", ctrl, ctrl.Width - 10, ctrl.Height - 10, 10000);
+                tt.Show(Language.Lang.ToolTipHardSub, ctrl, ctrl.Width - 10, ctrl.Height - 10, 10000);
             }
         }
 

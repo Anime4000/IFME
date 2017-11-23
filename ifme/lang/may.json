@@ -124,6 +124,10 @@
     "Title": "Baris arahan pengdekod",
     "Message": "Ubah hujah baris-arahan pengdekod dalam bentuk FFmpeg\nContoh: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "mengimport Media",
+    "Message": "Analisa fail {0} daripada {1}\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "Soalan",
     "Message": "Matikan atau Mula-semula komputer telah di pasang!\nKomputer ini akan tutup atau mula-semula setelah siap mengekod. Teruskan?"

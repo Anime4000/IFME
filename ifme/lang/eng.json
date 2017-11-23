@@ -124,6 +124,10 @@
     "Title": "Decoder command-line",
     "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "Importing Media",
+    "Message": "Reading {0} of {1} file\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "Question",
     "Message": "This computer will shutdown or restart after everything is done. Do you want to proceed?"

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+
 using Newtonsoft.Json;
 
 namespace ifme
@@ -20,7 +18,7 @@ namespace ifme
             Temp.Author.Developer = "Jebon Inc.";
             Temp.Author.URL = new Uri("http://test.com/");
             Temp.Audio.Extension = "mp4";
-            Temp.Audio.Encoder = "faac.exe";
+            Temp.Audio.Encoder = "faac";
             Temp.Audio.SampleRate = new int[] { 8000, 12000, 16000, 22050, 24000, 32000, 44100, 48000 };
             Temp.Audio.SampleRateDefault = 44100;
             Temp.Audio.Channel = new int[] { 0, 1, 2 };
@@ -34,6 +32,8 @@ namespace ifme
                 Name = "Bit Rate",
                 Args = "-b",
                 Quality = new decimal[] { 24, 32, 48, 64, 96, 112, 128, 160, 192, 256, 384, 512 },
+                QualityPrefix = string.Empty,
+                QualityPostfix = string.Empty,
                 Default = 128
             });
             Temp.Audio.Mode.Add(new PluginAudioMode
@@ -41,23 +41,25 @@ namespace ifme
                 Name = "Quality",
                 Args = "-q",
                 Quality = new decimal[] { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480, 490, 500 },
+                QualityPrefix = string.Empty,
+                QualityPostfix = string.Empty,
                 Default = 120
             });
             Temp.Video.Extension = "hevc";
             Temp.Video.Encoder.Add(new PluginVideoEncoder
             {
                 BitDepth = 8,
-                Binary = "x265-08.exe"
+                Binary = "x265-08"
             });
             Temp.Video.Encoder.Add(new PluginVideoEncoder
             {
                 BitDepth = 10,
-                Binary = "x265-10.exe"
+                Binary = "x265-10"
             });
             Temp.Video.Encoder.Add(new PluginVideoEncoder
             {
                 BitDepth = 12,
-                Binary = "x265-12.exe"
+                Binary = "x265-12"
             });
             Temp.Video.Preset = new string[] { "ultrafast", "superfast", "veryfast", "faster", "fast", "medium", "slow", "slower", "veryslow", "placebo" };
             Temp.Video.PresetDefault = "medium";
@@ -79,13 +81,17 @@ namespace ifme
                 Name = "Single pass, Quality-based",
                 Args = "--crf",
                 MultiPass = false,
-                Value = new PluginVideoModeValue { DecimalPlace = 1, Step = 0.1m, Min = 0, Max = 51, Default = 28}
+                Prefix = string.Empty,
+                Postfix = string.Empty,
+                Value = new PluginVideoModeValue { DecimalPlace = 1, Step = 0.1m, Min = 0, Max = 51, Default = 28 }
             });
             Temp.Video.Mode.Add(new PluginVideoMode
             {
                 Name = "Single pass, Target bitrate (kbps)",
                 Args = "--bitrate",
                 MultiPass = false,
+                Prefix = string.Empty,
+                Postfix = string.Empty,
                 Value = new PluginVideoModeValue { DecimalPlace = 0, Step = 1024, Min = 512, Max = 10485760, Default = 1024 }
             });
             Temp.Video.Mode.Add(new PluginVideoMode
@@ -93,6 +99,8 @@ namespace ifme
                 Name = "Multi pass, Target bitrate (kbps)",
                 Args = "--bitrate",
                 MultiPass = true,
+                Prefix = string.Empty,
+                Postfix = string.Empty,
                 Value = new PluginVideoModeValue { DecimalPlace = 0, Step = 1024, Min = 512, Max = 10485760, Default = 1024 }
             });
 

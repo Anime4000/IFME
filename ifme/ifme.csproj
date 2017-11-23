@@ -58,6 +58,7 @@
     <Compile Include="ConsoleEx.cs" />
     <Compile Include="CRC32.cs" />
     <Compile Include="Download.cs" />
+    <Compile Include="Elevated.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="frmAbout.cs">
@@ -68,6 +69,7 @@
     </Compile>
     <Compile Include="frmAbout.Method.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCheckUpdate.cs">
       <SubType>Form</SubType>
@@ -77,6 +79,7 @@
     </Compile>
     <Compile Include="frmCheckUpdate.Method.cs">
       <DependentUpon>frmCheckUpdate.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
@@ -92,6 +95,7 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -101,6 +105,7 @@
     </Compile>
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmProgressBar.cs">
       <SubType>Form</SubType>
@@ -110,6 +115,7 @@
     </Compile>
     <Compile Include="frmProgressBar.Method.cs">
       <DependentUpon>frmProgressBar.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>

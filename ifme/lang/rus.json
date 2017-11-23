@@ -121,8 +121,12 @@
     "Message": "Измените аргументы энкодера\nНапример: --bitdepth 8"
   },
   "InputBoxCommandLineFFmpeg": {
-    "Title": "Decoder command-line",
-    "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
+    "Title": "Ключи дешифратор",
+    "Message": "Изменение аргументов командной строки декодера (FFmpeg)\nпример: -vf scale=640:480"
+  },
+  "ProgressBarImport": {
+    "Title": "Импорт",
+    "Message": "анализировать файл {0} из {1}\n{2}"
   },
   "MsgBoxShutdown": {
     "Title": "Вопрос",

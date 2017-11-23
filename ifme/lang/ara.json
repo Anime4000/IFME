@@ -124,6 +124,10 @@
     "Title": "Decoder command-line",
     "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "استيراد",
+    "Message": "{0}/{1} تحليل الملف\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "سؤال",
     "Message": "سيتم إيقاف تشغيل هذا الكمبيوتر أو إعادة تشغيل بعد الانتهاء من كل شيء. هل تريد المتابعة؟"

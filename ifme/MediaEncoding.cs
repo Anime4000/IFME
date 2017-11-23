@@ -104,6 +104,18 @@ namespace ifme
 					File.Delete(Path.Combine(TempDir, "chapters.xml"));
 			}
 
+            if (queue.HardSub)
+            {
+                try
+                {
+
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
 			return 0;
 		}
 

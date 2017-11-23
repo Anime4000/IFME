@@ -124,6 +124,10 @@
     "Title": "Linha de comando do decodificador",
     "Message": "Modificar argumentos na linha de comando do decodificador FFmpeg\nExample: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "Importação",
+    "Message": "arquivo de análise {0}/{1} file\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "Pergunta",
     "Message": "Este computador irá desligar ou reiniciar depois que tudo for feito. Você deseja continuar?"

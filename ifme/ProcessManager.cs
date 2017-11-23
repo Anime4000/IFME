@@ -70,7 +70,7 @@ namespace ifme
 			{
 				cmd = "cmd";
 				arg = "/c %HITOHA%";
-			}
+            }
 			else
 			{
 				cmd = "bash";

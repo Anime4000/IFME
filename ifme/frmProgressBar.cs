@@ -11,7 +11,7 @@ namespace ifme
             InitializeComponent();
 
             Icon = Get.AppIcon;
-            Text = "";
+            Text = string.Empty;
             FormBorderStyle = FormBorderStyle.Sizable;
         }
 

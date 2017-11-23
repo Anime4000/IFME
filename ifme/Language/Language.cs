@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using Newtonsoft.Json;
 
@@ -19,8 +18,11 @@ namespace ifme
 		public Font UIFontLinux { get; set; } = new Font("FreeSans", 8);
 
 		public string ToolTipDonate { get; set; } = "Thank you for using, I hope you enjoy using it.\nYou can donate to this project so I can keep improving.\nClick this button how to donate.";
+        public string ToolTipHardSub { get; set; } = "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha";
 
-		public Dictionary<string, string> frmMain { get; set; } = new Dictionary<string, string>();
+        public string Warning { get; set; } = "WARNING!";
+
+        public Dictionary<string, string> frmMain { get; set; } = new Dictionary<string, string>();
 		public Dictionary<string, string> frmOption { get; set; } = new Dictionary<string, string>();
 		public Dictionary<string, string> frmShutdown { get; set; } = new Dictionary<string, string>();
 		public Dictionary<string, string> frmAbout { get; set; } = new Dictionary<string, string>();
@@ -51,7 +53,13 @@ namespace ifme
 			Message = "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
 		};
 
-		public LanguageIO MsgBoxShutdown { get; set; } = new LanguageIO()
+        public LanguageIO ProgressBarImport { get; set; } = new LanguageIO()
+        {
+            Title = "Importing Media",
+            Message = "Reading {0} of {1}\n{2}",
+        };
+
+        public LanguageIO MsgBoxShutdown { get; set; } = new LanguageIO()
 		{
 			Title = "Question",
 			Message = "Shutdown or Restart is set!\nThis computer will do that when encoding completed. Proceed?"

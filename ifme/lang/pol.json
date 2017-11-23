@@ -54,7 +54,12 @@
     "tabAttachment": "Dodatki",
     "lblAttachMime": "Typ &MIME:",
     "lblEncodingPreset": "Ustawienia wstę&pne kodowania:",
-    "lblOutputFolder": "&Miejsce docelowe:"
+    "lblOutputFolder": "&Miejsce docelowe:",
+    "tabAdvance": "Postęp",
+    "chkAdvTrim": "&Trym Video && Audio",
+    "lblAdvTimeStart": "&Początek:",
+    "lblAdvTimeEnd": "&Koniec:",
+    "lblAdvTimeDuration": "&Trwanie:"
   },
   "frmOption": {
     "tabOptionGeneral": "Ogólne",
@@ -114,6 +119,14 @@
   "InputBoxCommandLine": {
     "Title": "Wiersz poleceń kodeka",
     "Message": "Modyfikuj argumenty wiersza polecenia kodeka\nPrzykład: --bitdepth 8"
+  },
+  "InputBoxCommandLineFFmpeg": {
+    "Title": "Decoder command-line",
+    "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
+  },
+  "ProgressBarImport": {
+    "Title": "Importowanie",
+    "Message": "przeanalizuj plik {0} z {1}\n{2}"
   },
   "MsgBoxShutdown": {
     "Title": "Pytanie",

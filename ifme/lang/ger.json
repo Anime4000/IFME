@@ -124,6 +124,10 @@
     "Title": "Decoder command-line",
     "Message": "Modify decoder command-line arguments in FFmpeg\nExample: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "Einführen",
+    "Message": "Datei analysieren {0} von {1}\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "Frage",
     "Message": "Der Computer wird nach Beenden herunterfahren oder neustarten. Fortfahren?"

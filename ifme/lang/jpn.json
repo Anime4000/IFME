@@ -124,6 +124,10 @@
     "Title": "デコーダのコマンドライン",
     "Message": "デコーダのコマンドライン引数を変更する (FFmpeg)\nExample: -vf scale=640:480"
   },
+  "ProgressBarImport": {
+    "Title": "インポート",
+    "Message": "ファイルを分析する {0} of {1}\n{2}"
+  },
   "MsgBoxShutdown": {
     "Title": "注意",
     "Message": "処理終了後シャットダウンまたは再起動が設定されています！\n続行しますか？"
