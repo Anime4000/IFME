@@ -36,7 +36,7 @@
             // btnDownload
             // 
             this.btnDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDownload.Location = new System.Drawing.Point(332, 556);
+            this.btnDownload.Location = new System.Drawing.Point(432, 556);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(150, 32);
             this.btnDownload.TabIndex = 1;
@@ -47,7 +47,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(488, 556);
+            this.btnOK.Location = new System.Drawing.Point(588, 556);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 32);
             this.btnOK.TabIndex = 2;
@@ -64,14 +64,14 @@
             this.rtbLog.Location = new System.Drawing.Point(12, 12);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(576, 538);
+            this.rtbLog.Size = new System.Drawing.Size(676, 538);
             this.rtbLog.TabIndex = 3;
             this.rtbLog.Text = "";
             // 
             // frmCheckUpdate
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(600, 600);
+            this.ClientSize = new System.Drawing.Size(700, 600);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnDownload);

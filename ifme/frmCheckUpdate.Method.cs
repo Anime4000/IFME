@@ -14,12 +14,12 @@ namespace ifme
 			if (OS.IsWindows)
             {
                 Font = Language.Lang.UIFontWindows;
-                rtbLog.Font = new System.Drawing.Font("Lucida Console", 10F);
+                rtbLog.Font = new System.Drawing.Font("Lucida Console", 8F);
             }
 			else
             {
                 Font = Language.Lang.UIFontLinux;
-                rtbLog.Font = new System.Drawing.Font("FreeMono", 10F);
+                rtbLog.Font = new System.Drawing.Font("FreeMono", 8F);
             }
 
 			var frm = Language.Lang.frmCheckUpdate;

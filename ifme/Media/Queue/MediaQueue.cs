@@ -13,6 +13,6 @@ namespace ifme
 		public List<MediaQueueVideo> Video { get; set; } = new List<MediaQueueVideo>();
 		public List<MediaQueueSubtitle> Subtitle { get; set; } = new List<MediaQueueSubtitle>();
 		public List<MediaQueueAttachment> Attachment { get; set; } = new List<MediaQueueAttachment>();
-		public FFmpegDotNet.FFmpeg.Stream MediaInfo { get; set; }
+        public FFmpegDotNet.FFmpeg.Stream MediaInfo { get; set; } = new FFmpegDotNet.FFmpeg.Stream();
 	}
 }

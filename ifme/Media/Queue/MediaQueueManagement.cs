@@ -39,7 +39,7 @@ namespace ifme
         {
             try
             {
-                var json = JsonConvert.SerializeObject(Data);
+                var json = JsonConvert.SerializeObject(Data, Formatting.Indented);
 
                 File.WriteAllText(FileSave, json, Encoding.UTF8);
 

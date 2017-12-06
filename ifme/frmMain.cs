@@ -79,8 +79,8 @@ namespace ifme
                 var queue = new MediaQueue
                 {
                     Enable = true,
-                    FilePath = frm.ReturnValue,
-                    OutputFormat = TargetFormat.MKV
+                    FilePath = frm.ReturnValue + ".new",
+                    OutputFormat = TargetFormat.MKV,
                 };
 
                 MediaQueueAdd(queue);
@@ -104,18 +104,37 @@ namespace ifme
                 return;
 
             frm.Show();
-            Application.DoEvents();
+            frm.Text = Language.Lang.PleaseWait;
+            frm.Status = Language.Lang.ReadProjectFile;
 
-            for (int i = 0; i < files.Count; i++)
+            var thread = new BackgroundWorker();
+
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
             {
-                AddMedia(files[i]);
+                for (int i = 0; i < files.Count; i++)
+                {
+                    AddMedia(files[i]);
 
-                frm.Text = Language.Lang.ProgressBarImport.Title;
-                frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, files.Count, files[i]);
-                frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
+                    if (InvokeRequired)
+                    {
+                        Invoke(new MethodInvoker(delegate
+                        {
+                            frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
+                            frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, files.Count, files[i]);
+                            frm.Text = Language.Lang.ProgressBarImport.Title + $": {frm.Progress}%";
 
-                Application.DoEvents();
-            }
+                            //Application.DoEvents();
+                        }));
+                    }
+                }
+            };
+
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                frm.Close();
+            };
+
+            thread.RunWorkerAsync();
         }
 
         private void tsmiProjectOpen_Click(object sender, EventArgs e)
@@ -136,57 +155,62 @@ namespace ifme
             {
                 if (!string.IsNullOrEmpty(file))
                 {
-                    r.Result = MediaQueueManagement.ProjectLoad(file);
+                    var queue = MediaQueueManagement.ProjectLoad(file);
+
+                    for (int i = 0; i < queue.Count; i++)
+                    {
+                        if (File.Exists(queue[i].FilePath))
+                        {
+                            queue[i].MediaInfo = new FFmpegDotNet.FFmpeg.Stream(queue[i].FilePath);
+                        }
+
+                        for (int v = 0; v < queue[i].Video.Count; v++)
+                        {
+                            if (!File.Exists(queue[i].Video[v].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Video stream not found, skipping...\n");
+                                queue[i].Video.RemoveAt(v);
+                            }
+                        }
+
+                        for (int a = 0; a < queue[i].Audio.Count; a++)
+                        {
+                            if (!File.Exists(queue[i].Audio[a].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Audio stream not found, removing stream.\n");
+                                queue[i].Audio.RemoveAt(a);
+                            }
+                        }
+
+                        for (int s = 0; s < queue[i].Subtitle.Count; s++)
+                        {
+                            if (!File.Exists(queue[i].Subtitle[s].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Subtitle stream not found, removing stream.\n");
+                                queue[i].Subtitle.RemoveAt(s);
+                            }
+                        }
+
+                        MediaQueueAdd(queue[i]);
+
+                        if (InvokeRequired)
+                        {
+                            Invoke(new MethodInvoker(delegate
+                            {
+                                frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, queue.Count, queue[i].FilePath);
+                                frm.Progress = (int)(((float)(i + 1) / queue.Count) * 100.0);
+                                frm.Text = Language.Lang.ProgressBarImport.Title + $": {frm.Progress}%";
+
+                                //Application.DoEvents();
+                            }));
+                        }
+                    }
                 }
             };
 
             thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
             {
-                var queue = r.Result as List<MediaQueue>;
-
-                for (int i = 0; i < queue.Count; i++)
-                {
-                    if (!File.Exists(queue[i].FilePath))
-                    {
-                        ConsoleEx.Write(LogLevel.Error, "IFME", $"File not found: {queue[i].FilePath}\n");
-                        continue;
-                    }
-
-                    for (int v = 0; v < queue[i].Video.Count; v++)
-                    {
-                        if (!File.Exists(queue[i].Video[v].File))
-                        {
-                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Video stream not found, skipping...\n");
-                            queue[i].Video.RemoveAt(v);
-                        }
-                    }
-
-                    for (int a = 0; a < queue[i].Audio.Count; a++)
-                    {
-                        if (!File.Exists(queue[i].Audio[a].File))
-                        {
-                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Audio stream not found, removing stream.\n");
-                            queue[i].Audio.RemoveAt(a);
-                        }
-                    }
-
-                    for (int s = 0; s < queue[i].Subtitle.Count; s++)
-                    {
-                        if (!File.Exists(queue[i].Subtitle[s].File))
-                        {
-                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Subtitle stream not found, removing stream.\n");
-                            queue[i].Subtitle.RemoveAt(s);
-                        }
-                    }
-
-                    MediaQueueAdd(queue[i]);
-
-                    frm.Text = Language.Lang.ProgressBarImport.Title;
-                    frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, queue.Count, queue[i].FilePath);
-                    frm.Progress = (int)(((float)(i + 1) / queue.Count) * 100.0);
-
-                    Application.DoEvents();
-                }
+                frm.Close();
             };
 
             thread.RunWorkerAsync();

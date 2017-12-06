@@ -56,6 +56,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(640, 100);
+            this.ControlBox = false;
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pbLoading);
             this.Font = new System.Drawing.Font("Tahoma", 8F);

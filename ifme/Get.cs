@@ -296,11 +296,15 @@ namespace ifme
         internal static List<string> FilesRecursive()
         {
             var files = new List<string>();
-            var fbd = new FolderBrowserDialog();
+            var fbd = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = false,
+                SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)
+            };
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                var dirs = new List<string>(Directory.GetDirectories(fbd.SelectedPath, "", SearchOption.AllDirectories));
+                var dirs = new List<string>(Directory.GetDirectories(fbd.SelectedPath));
 
                 if (dirs.Count == 0)
                     dirs.Add(fbd.SelectedPath);

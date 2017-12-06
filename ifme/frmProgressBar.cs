@@ -37,12 +37,12 @@ namespace ifme
 
                 } while (pbLoading.Value < 99);
 
-                Thread.Sleep(3000);
+                /*Thread.Sleep(3000);
 
                 Invoke((MethodInvoker)delegate ()
                 {
                     Close();
-                });
+                });*/
 
             }).Start();
         }

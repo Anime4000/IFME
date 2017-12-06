@@ -78,12 +78,12 @@ namespace ifme
 			if (OS.IsWindows)
 			{
 				Font = Language.Lang.UIFontWindows;
-				txtMediaInfo.Font = new System.Drawing.Font("Lucida Console", 8F);
+				txtMediaInfo.Font = new System.Drawing.Font("Lucida Console", 10F);
 			}
 			else
 			{
 				Font = Language.Lang.UIFontLinux;
-				txtMediaInfo.Font = new System.Drawing.Font("FreeMono", 8F);
+				txtMediaInfo.Font = new System.Drawing.Font("FreeMono", 10F);
 			}
 			
 			cboEncodingPreset.Font = new System.Drawing.Font(Font.Name, 9);
@@ -601,9 +601,9 @@ namespace ifme
 		private void AddMedia(string file)
 		{
 			var queue = new MediaQueue();
-			var media = new FFmpegDotNet.FFmpeg.Stream(file);
+            var media = new FFmpegDotNet.FFmpeg.Stream(file);
 
-			if (media.Video.Count == 0 && media.Audio.Count == 0)
+            if (media.Video.Count == 0 && media.Audio.Count == 0)
 				return;
 
 			queue.Enable = true;
@@ -879,7 +879,14 @@ namespace ifme
                 Checked = queue.Enable
             };
 
-            lstMedia.Items.Add(lst);
+            if(InvokeRequired)
+            {
+                Invoke(new MethodInvoker(delegate { lstMedia.Items.Add(lst); }));
+            }
+            else
+            {
+                lstMedia.Items.Add(lst);
+            }
         }
 
 		private void MediaFormatDefault(object sender, EventArgs e)
