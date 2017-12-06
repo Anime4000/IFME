@@ -2,20 +2,25 @@
 
 namespace ifme
 {
-	public partial class frmCheckUpdate
-	{
+    public partial class frmCheckUpdate
+    {
 		public void InitializeUX()
 		{
 			LoadLanguage();
-			DownloadLog();
 		}
 
 		private void LoadLanguage()
 		{
 			if (OS.IsWindows)
-				Font = Language.Lang.UIFontWindows;
+            {
+                Font = Language.Lang.UIFontWindows;
+                rtbLog.Font = new System.Drawing.Font("Lucida Console", 10F);
+            }
 			else
-				Font = Language.Lang.UIFontLinux;
+            {
+                Font = Language.Lang.UIFontLinux;
+                rtbLog.Font = new System.Drawing.Font("FreeMono", 10F);
+            }
 
 			var frm = Language.Lang.frmCheckUpdate;
 			Control ctrl = this;
@@ -35,11 +40,6 @@ namespace ifme
 							ctrl.Text = frm[ctrl.Name];
 
 			} while (ctrl != null);
-		}
-
-		private void DownloadLog()
-		{
-			rtbLog.Text = new Download().GetString("https://github.com/Anime4000/IFME/raw/master/changelog.txt");
 		}
 	}
 }

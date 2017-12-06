@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,7 +60,6 @@
     <Compile Include="CRC32.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Elevated.cs" />
-    <Compile Include="Enum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
@@ -69,7 +69,6 @@
     </Compile>
     <Compile Include="frmAbout.Method.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCheckUpdate.cs">
       <SubType>Form</SubType>
@@ -79,7 +78,6 @@
     </Compile>
     <Compile Include="frmCheckUpdate.Method.cs">
       <DependentUpon>frmCheckUpdate.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmInputBox.cs">
       <SubType>Form</SubType>
@@ -95,7 +93,6 @@
     </Compile>
     <Compile Include="frmMain.Method.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmOption.cs">
       <SubType>Form</SubType>
@@ -105,7 +102,6 @@
     </Compile>
     <Compile Include="frmOption.Method.cs">
       <DependentUpon>frmOption.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmProgressBar.cs">
       <SubType>Form</SubType>
@@ -115,7 +111,6 @@
     </Compile>
     <Compile Include="frmProgressBar.Method.cs">
       <DependentUpon>frmProgressBar.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmShutdown.cs">
       <SubType>Form</SubType>
@@ -125,7 +120,6 @@
     </Compile>
     <Compile Include="frmShutdown.Method.cs">
       <DependentUpon>frmShutdown.cs</DependentUpon>
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
@@ -139,7 +133,6 @@
     <Compile Include="Media\Default\MediaDefaultAudio.cs" />
     <Compile Include="Media\Default\MediaDefaultVideo.cs" />
     <Compile Include="MediaEncoding.cs" />
-    <Compile Include="Media\MediaImportCheck.cs" />
     <Compile Include="Media\Preset\MediaPreset.cs" />
     <Compile Include="Media\Preset\MediaPresetAudio.cs" />
     <Compile Include="Media\Preset\MediaPresetVideo.cs" />
@@ -147,6 +140,7 @@
     <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
     <Compile Include="Media\Queue\MediaQueueAudio.cs" />
     <Compile Include="Media\Queue\MediaQueueCommon.cs" />
+    <Compile Include="Media\Queue\MediaQueueManagement.cs" />
     <Compile Include="Media\Queue\MediaQueueSubtitle.cs" />
     <Compile Include="Media\Queue\MediaQueueTrim.cs" />
     <Compile Include="Media\Queue\MediaQueueVideo.cs" />
@@ -375,6 +369,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon16_folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon16_folder_explore.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

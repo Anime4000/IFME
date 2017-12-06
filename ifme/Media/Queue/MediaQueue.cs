@@ -5,7 +5,7 @@ namespace ifme
 	public class MediaQueue
 	{
 		public bool Enable { get; set; }
-		public string File { get; set; }
+		public string FilePath { get; set; }
         public bool HardSub { get; set; }
 		public TargetFormat OutputFormat { get; set; }
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();

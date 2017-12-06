@@ -17,7 +17,8 @@ namespace ifme
 
         private void frmProgressBar_Load(object sender, EventArgs e)
         {
-
+            pbLoading.Style = ProgressBarStyle.Marquee;
+            pbLoading.MarqueeAnimationSpeed = 25;
         }
 
         private void frmProgressBar_Shown(object sender, EventArgs e)
@@ -28,16 +29,21 @@ namespace ifme
 
                 do
                 {
+                    if (pbLoading.Value == 1)
+                        Invoke((MethodInvoker)delegate ()
+                        {
+                            pbLoading.Style = ProgressBarStyle.Continuous;
+                        });
 
-                } while (pbLoading.Value < 98);
+                } while (pbLoading.Value < 99);
 
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
                 Invoke((MethodInvoker)delegate ()
                 {
                     Close();
                 });
-           
+
             }).Start();
         }
     }

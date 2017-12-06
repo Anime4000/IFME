@@ -61,10 +61,12 @@ namespace ifme
 
 			var reset = false;
 			var help = false;
+            var input = string.Empty;
 			var p = new OptionSet()
 			{
 				{ "r|reset", "Reset IFME to factory default", v => reset = v != null  },
-				{ "h|help", "Show this message and exit", v => help = v != null }
+				{ "h|help", "Show this message and exit", v => help = v != null },
+                { "i|input=", "Load a project file", (string i) => input = i }
 			};
 
 			try
@@ -134,6 +136,11 @@ namespace ifme
 				Properties.Settings.Default.UpgradeRequired = false;
 				Properties.Settings.Default.Save();
 			}
+
+            if (!string.IsNullOrEmpty(input))
+            {
+                MediaQueueManagement.ProjectFile = input;
+            }
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);

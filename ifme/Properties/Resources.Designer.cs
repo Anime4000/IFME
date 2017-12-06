@@ -61,7 +61,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scarlet Network.
+        ///   Looks up a localized string similar to Soul Heart.
         /// </summary>
         internal static string AppCodeName {
             get {
@@ -194,6 +194,16 @@ namespace ifme.Properties {
         internal static System.Drawing.Bitmap icon16_folder {
             get {
                 object obj = ResourceManager.GetObject("icon16_folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon16_folder_explore {
+            get {
+                object obj = ResourceManager.GetObject("icon16_folder_explore", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

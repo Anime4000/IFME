@@ -7,6 +7,8 @@
   "ToolTipDonate": "Thanks for using this program, I hope you enjoy it.\nYou can donate to this project so I can keep improving it.\nClick this button to find out how to donate.",
   "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
   "Warning": "WARNING!",
+  "PleaseWait": "Please Wait...",
+  "ReadProjectFile": "Reading project file, this may take awhile.",
   "frmMain": {
     "tabGeneral": "General",
     "grpTargetFormat": "&Target Format",
@@ -78,8 +80,8 @@
     "lblAviSynthInstall": "Installed!",
     "lblAviSynthNoInstall": "Not Installed!",
     "grpFFmpeg": "&Default Decoder",
-    "rdoFFmpeg32": "FFmpeg &32bit (Support AviSynth ST)",
-    "rdoFFmpeg64": "FFmpeg &64bit (Support large resolution && high bit depth)",
+    "rdoFFmpeg32": "FFmpeg &32bit (AviSynth ST/MT/+ 32-bit)",
+    "rdoFFmpeg64": "FFmpeg &64bit (AviSynth+ 64-bit, 4K UHD && High Bit Depth/Deep Colour)",
     "grpFrameCountOffset": "&Frame Count Offset",
     "lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding an offset value, the decoder will compensate broken container data with a higher frame count to ensure no frames are missing during encoding.",
     "tabOptionModule": "Module",
@@ -102,7 +104,9 @@
   "cmsNewImport": {
     "tsmiNew": "&New",
     "tsmiImport": "Import &Files",
-    "tsmiImportFolder": "Import Fol&der"
+    "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectOpen": "&Open Project",
+    "tsmiProjectSave": "&Save Project"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Save",

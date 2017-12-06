@@ -7,6 +7,8 @@
   "ToolTipDonate": "شكرا لاستخدام إفم، وآمل أن تستمتع به.\nيمكنك التبرع لهذا المشروع حتى أتمكن من الحفاظ على تحسينه.\nانقر على هذا الزر لمعرفة كيفية التبرع.",
   "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
   "Warning": "تحذير",
+  "PleaseWait": "Please Wait...",
+  "ReadProjectFile": "Reading project file, this may take a while.",
   "frmMain": {
     "tabGeneral": "عام",
     "grpTargetFormat": "&تنسيق الهدف",
@@ -102,7 +104,9 @@
   "cmsNewImport": {
     "tsmiNew": "جديد",
     "tsmiImport": "استيراد",
-    "tsmiImportFolder": "Import Fol&der"
+    "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectOpen": "&Open Project",
+    "tsmiProjectSave": "&Save Project"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "حفظ",

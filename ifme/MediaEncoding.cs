@@ -97,9 +97,9 @@ namespace ifme
 
 			Console.Write('\n');
 
-			if (!string.IsNullOrEmpty(queue.File))
+			if (!string.IsNullOrEmpty(queue.FilePath))
 			{
-				var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.File}\" > chapters.xml");
+				var ec = ProcessManager.Start(MkvExtract, $"chapters \"{queue.FilePath}\" > chapters.xml");
 				if (ec >= 1)
 					File.Delete(Path.Combine(TempDir, "chapters.xml"));
 			}
@@ -140,7 +140,7 @@ namespace ifme
 					var hz = (item.EncoderSampleRate == 0 ? string.Empty : $"-ar {item.EncoderSampleRate}");
 					var ch = (item.EncoderChannel == 0 ? string.Empty : $"-ac {item.EncoderChannel}");
 
-					var newfile = (mode == ModeSave.Temp ? $"audio{id++:D4}_{item.Lang}.{ac.Extension}" : Path.Combine(SaveDir, $"{Path.GetFileNameWithoutExtension(queue.File)}_ID{id++:D2}.{ac.Extension}"));
+					var newfile = (mode == ModeSave.Temp ? $"audio{id++:D4}_{item.Lang}.{ac.Extension}" : Path.Combine(SaveDir, $"{Path.GetFileNameWithoutExtension(queue.FilePath)}_ID{id++:D2}.{ac.Extension}"));
 
 					if (ac.Args.Pipe)
 					{
@@ -387,13 +387,13 @@ namespace ifme
 				}
 
 				var command = $"{videos}{audios}{subtitles}{attachments}{chapter}";
-				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{Get.NewFilePath(SaveDir, queue.File, ".mkv")}\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {command}");
+				var exitcode = ProcessManager.Start(MkvMerge, $"-o \"{Get.NewFilePath(SaveDir, queue.FilePath, ".mkv")}\" --disable-track-statistics-tags -t 0:\"{Path.Combine(TempDir, "tags.xml")}\" {command}");
 
 				// if mux fail, copy raw to destination
 				if (exitcode == 2)
 				{
 					ConsoleEx.Write(LogLevel.Error, "Fuck! Video encoder make a mistake! Not my fault!\n");
-					Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.File, ".raw"), true);
+					Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.FilePath, ".raw"), true);
 				}
 
 				return exitcode;
@@ -425,9 +425,9 @@ namespace ifme
 
 				// build command
 				if (queue.OutputFormat == TargetFormat.MP4)
-					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".mp4")}\"";
+					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.FilePath, ".mp4")}\"";
 				else if (queue.OutputFormat == TargetFormat.WEBM)
-					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.File, ".webm")}\"";
+					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.FilePath, ".webm")}\"";
 
 				// run command
 				var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}", FontDir);
@@ -436,7 +436,7 @@ namespace ifme
 				if (exitcode > 0)
 				{
 					ConsoleEx.Write(LogLevel.Error, "Damn! Video encoder make a mistake! Not my fault!\n");
-					Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.File, ".raw"), true);
+					Get.DirectoryCopy(TempDir, Get.NewFilePath(SaveDir, queue.FilePath, ".raw"), true);
 				}
 
 				return exitcode;

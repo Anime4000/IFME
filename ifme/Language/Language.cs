@@ -21,6 +21,8 @@ namespace ifme
         public string ToolTipHardSub { get; set; } = "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha";
 
         public string Warning { get; set; } = "WARNING!";
+        public string PleaseWait { get; set; } = "Please Wait...";
+        public string ReadProjectFile { get; set; } = "Reading project file, this may take a while";
 
         public Dictionary<string, string> frmMain { get; set; } = new Dictionary<string, string>();
 		public Dictionary<string, string> frmOption { get; set; } = new Dictionary<string, string>();

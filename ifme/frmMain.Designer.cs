@@ -176,8 +176,12 @@
             this.btnAbout = new System.Windows.Forms.Button();
             this.cmsNewImport = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiProjectOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProjectSave = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
@@ -1937,11 +1941,15 @@
             this.cmsNewImport.Font = new System.Drawing.Font("Tahoma", 8F);
             this.cmsNewImport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiNew,
+            this.tsmiSeparator1,
             this.tsmiImport,
-            this.tsmiImportFolder});
+            this.tsmiImportFolder,
+            this.tsmiSeparator2,
+            this.tsmiProjectOpen,
+            this.tsmiProjectSave});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(179, 70);
+            this.cmsNewImport.Size = new System.Drawing.Size(179, 148);
             // 
             // tsmiNew
             // 
@@ -1951,6 +1959,11 @@
             this.tsmiNew.Size = new System.Drawing.Size(178, 22);
             this.tsmiNew.Text = "&New";
             this.tsmiNew.Click += new System.EventHandler(this.tsmiNew_Click);
+            // 
+            // tsmiSeparator1
+            // 
+            this.tsmiSeparator1.Name = "tsmiSeparator1";
+            this.tsmiSeparator1.Size = new System.Drawing.Size(175, 6);
             // 
             // tsmiImport
             // 
@@ -1969,6 +1982,29 @@
             this.tsmiImportFolder.Size = new System.Drawing.Size(178, 22);
             this.tsmiImportFolder.Text = "Import Fol&der";
             this.tsmiImportFolder.Click += new System.EventHandler(this.tsmiImportFolder_Click);
+            // 
+            // tsmiSeparator2
+            // 
+            this.tsmiSeparator2.Name = "tsmiSeparator2";
+            this.tsmiSeparator2.Size = new System.Drawing.Size(175, 6);
+            // 
+            // tsmiProjectOpen
+            // 
+            this.tsmiProjectOpen.Image = global::ifme.Properties.Resources.icon16_folder_explore;
+            this.tsmiProjectOpen.Name = "tsmiProjectOpen";
+            this.tsmiProjectOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.tsmiProjectOpen.Size = new System.Drawing.Size(178, 22);
+            this.tsmiProjectOpen.Text = "&Open Project";
+            this.tsmiProjectOpen.Click += new System.EventHandler(this.tsmiProjectOpen_Click);
+            // 
+            // tsmiProjectSave
+            // 
+            this.tsmiProjectSave.Image = global::ifme.Properties.Resources.icon16_document_save;
+            this.tsmiProjectSave.Name = "tsmiProjectSave";
+            this.tsmiProjectSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.tsmiProjectSave.Size = new System.Drawing.Size(178, 22);
+            this.tsmiProjectSave.Text = "&Save Project";
+            this.tsmiProjectSave.Click += new System.EventHandler(this.tsmiProjectSave_Click);
             // 
             // cmsEncodingPreset
             // 
@@ -2243,6 +2279,10 @@
 		private System.Windows.Forms.Button btnAudioAdvDec;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportFolder;
         private System.Windows.Forms.CheckBox chkSubHard;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProjectOpen;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProjectSave;
+        private System.Windows.Forms.ToolStripSeparator tsmiSeparator1;
+        private System.Windows.Forms.ToolStripSeparator tsmiSeparator2;
     }
 }
 

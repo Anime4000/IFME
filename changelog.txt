@@ -1,8 +1,9 @@
-﻿Version 7.6 (Scarlet Network)
------------------------------
+﻿Version 7.6 (Soul Heart)
+------------------------
 [new] Support Burn subtitle into video (Hard Sub) [FFmpeg with --libass enable]
 [new] Add folder import (recursively find media file)
-[fixed] Plugins script: value now can have prefix & postfix
+[new] Queue/List now can save just like previous version
+[fixed] Plugins script: value now can have prefix & postfix (eg: 128k instead of 128000)
 [fixed] Audio channel now give meaningful text instead of numbers
 [change] Rename included preset to friendly name :)
 [chnage] More branding support

@@ -1,20 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Drawing;
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
+enum MediaType
+{
+    Video,
+    Audio,
+    Subtitle,
+    Attachment,
+    VideoAudio
+}
+
+enum MediaTypeVideo
+{
+    MP4,
+    MKV,
+    WEBM
+}
+
+enum MediaTypeAudio
+{
+    MP3,
+    MP4,
+    OGG,
+    OPUS,
+    FLAC
+}
+
+public enum TargetFormat
+{
+    MP4,
+    MKV,
+    WEBM,
+    MP3,
+    M4A,
+    OGG,
+    OPUS,
+    FLAC
+}
 
 namespace ifme
 {
-	static class Get
+    internal static class Get
 	{
-		public static bool IsReady { get; set; } = false;
+		internal static bool IsReady { get; set; } = false;
 
-		public static Dictionary<string, string> LanguageCode
+		internal static Dictionary<string, string> LanguageCode
 		{
 			get
 			{
@@ -22,7 +58,7 @@ namespace ifme
 			}
 		}
 
-		public static Dictionary<string, string> MimeList
+		internal static Dictionary<string, string> MimeList
 		{
 			get
 			{
@@ -30,7 +66,7 @@ namespace ifme
 			}
 		}
 
-		public static SortedSet<string> MimeTypeList
+		internal static SortedSet<string> MimeTypeList
 		{
 			get
 			{
@@ -45,7 +81,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppPath
+		internal static string AppPath
 		{
 			get
 			{
@@ -53,7 +89,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppRootDir
+		internal static string AppRootDir
 		{
 			get
 			{
@@ -61,7 +97,7 @@ namespace ifme
 			}
 		}
 
-		public static Icon AppIcon
+		internal static Icon AppIcon
 		{
 			get
 			{
@@ -69,7 +105,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppName
+		internal static string AppName
 		{
 			get
 			{
@@ -77,7 +113,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppNameLong
+		internal static string AppNameLong
 		{
 			get
 			{
@@ -85,7 +121,7 @@ namespace ifme
 			}
 		}
 
-		public static string AppNameLib
+		internal static string AppNameLib
 		{
 			get
 			{
@@ -93,7 +129,7 @@ namespace ifme
 			}
 		}
 
-		public static string FolderTemp
+		internal static string FolderTemp
 		{
 			get
 			{				
@@ -106,7 +142,7 @@ namespace ifme
 			}
 		}
 
-		public static string FolderSave
+		internal static string FolderSave
 		{
 			get
 			{
@@ -119,7 +155,45 @@ namespace ifme
 			}
 		}
 
-		public static string CodecFormat(string codecId)
+        internal static string TargetFormat(TargetFormat Format)
+        {
+            var fmt = string.Empty;
+
+            switch (Format)
+            {
+                case global::TargetFormat.MP4:
+                    fmt = "MP4";
+                    break;
+                case global::TargetFormat.MKV:
+                    fmt = "MKV";
+                    break;
+                case global::TargetFormat.WEBM:
+                    fmt = "WEBM";
+                    break;
+                case global::TargetFormat.MP3:
+                    fmt = "MP3";
+                    break;
+                case global::TargetFormat.M4A:
+                    fmt = "M4A";
+                    break;
+                case global::TargetFormat.OGG:
+                    fmt = "OGG";
+                    break;
+                case global::TargetFormat.OPUS:
+                    fmt = "OPUS";
+                    break;
+                case global::TargetFormat.FLAC:
+                    fmt = "FLAC";
+                    break;
+                default:
+                    fmt = "Unknown";
+                    break;
+            }
+
+            return fmt;
+        }
+
+        internal static string CodecFormat(string codecId)
 		{
 			var json = File.ReadAllText(Path.Combine(AppRootDir, "format.json"));
 			var format = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
@@ -131,31 +205,19 @@ namespace ifme
 			return "mkv";
 		}
 
-        public static string FileExtension(string file)
+        internal static string FileExtension(string file)
         {
             return Path.GetExtension(file).ToLowerInvariant();
         }
 
-		public static string FileLang(string file)
+		internal static string FileLang(string file)
 		{
 			file = Path.GetFileNameWithoutExtension(file);
 
 			return file.Substring(file.Length - 3);
 		}
 
-		public static string LangCheck(string lang)
-		{
-			var temp = string.Empty;
-
-			if (LanguageCode.TryGetValue(lang, out temp))
-			{
-				return lang; // if found
-			}
-
-			return "und";
-		}
-
-		public static string FileSizeIEC(long InBytes)
+		internal static string FileSizeIEC(long InBytes)
 		{
 			string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
 
@@ -168,7 +230,7 @@ namespace ifme
 			return $"{(Math.Sign(InBytes) * num)}{IEC[place]}";
 		}
 
-		public static string FileSizeDEC(long InBytes)
+		internal static string FileSizeDEC(long InBytes)
 		{
 			string[] DEC = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
 
@@ -181,7 +243,7 @@ namespace ifme
 			return $"{(Math.Sign(InBytes) * num)}{DEC[place]}";
 		}
 
-		public static string Duration(DateTime past)
+		internal static string Duration(DateTime past)
 		{
 			var span = DateTime.Now.Subtract(past);
 
@@ -231,7 +293,32 @@ namespace ifme
 			}
 		}
 
-		internal static string MimeType(string FileName)
+        internal static List<string> FilesRecursive()
+        {
+            var files = new List<string>();
+            var fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                var dirs = new List<string>(Directory.GetDirectories(fbd.SelectedPath, "", SearchOption.AllDirectories));
+
+                if (dirs.Count == 0)
+                    dirs.Add(fbd.SelectedPath);
+
+                foreach (var d in dirs)
+                {
+                    foreach (var f in Directory.GetFiles(d))
+                    {
+                        files.Add(f);
+                    }
+                }
+            }
+
+            return files;
+        }
+
+
+        internal static string MimeType(string FileName)
 		{
 			var mime = new Dictionary<string, string>(MimeList, StringComparer.InvariantCultureIgnoreCase);
 			var type = string.Empty;
@@ -244,7 +331,19 @@ namespace ifme
 			return "application/octet-stream";
 		}
 
-		internal static bool IsValidPath(string FilePath)
+        internal static string LangCheck(string lang)
+        {
+            var temp = string.Empty;
+
+            if (LanguageCode.TryGetValue(lang, out temp))
+            {
+                return lang; // if found
+            }
+
+            return "und";
+        }
+
+        internal static bool IsValidPath(string FilePath)
 		{
 			try
 			{

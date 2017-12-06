@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace ifme
 {
@@ -44,8 +43,8 @@ namespace ifme
 			cboVideoDeinterlaceMode.SelectedIndex = 1;
 			cboVideoDeinterlaceField.SelectedIndex = 0;
 
-			// Display Language ComboBox
-			cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
+            // Display Language ComboBox
+            cboSubLang.DataSource = new BindingSource(Get.LanguageCode, null);
 			cboSubLang.DisplayMember = "Value";
 			cboSubLang.ValueMember = "Key";
 			cboSubLang.SelectedValue = "und";
@@ -79,12 +78,12 @@ namespace ifme
 			if (OS.IsWindows)
 			{
 				Font = Language.Lang.UIFontWindows;
-				txtMediaInfo.Font = new System.Drawing.Font("Lucida Console", 10F);
+				txtMediaInfo.Font = new System.Drawing.Font("Lucida Console", 8F);
 			}
 			else
 			{
 				Font = Language.Lang.UIFontLinux;
-				txtMediaInfo.Font = new System.Drawing.Font("FreeMono", 10F);
+				txtMediaInfo.Font = new System.Drawing.Font("FreeMono", 8F);
 			}
 			
 			cboEncodingPreset.Font = new System.Drawing.Font(Font.Name, 9);
@@ -112,11 +111,11 @@ namespace ifme
 
 			} while (ctrl != null);
 
-			foreach (ToolStripMenuItem item in cmsNewImport.Items)
+			foreach (ToolStripMenuItem item in cmsNewImport.Items.OfType<ToolStripMenuItem>())
 				if (Language.Lang.cmsNewImport.ContainsKey(item.Name))
 					item.Text = Language.Lang.cmsNewImport[item.Name];
 
-			foreach (ToolStripMenuItem item in cmsEncodingPreset.Items)
+			foreach (ToolStripMenuItem item in cmsEncodingPreset.Items.OfType<ToolStripMenuItem>())
 				if (Language.Lang.cmsEncodingPreset.ContainsKey(item.Name))
 					item.Text = Language.Lang.cmsEncodingPreset[item.Name];
 
@@ -173,18 +172,29 @@ namespace ifme
 
 		private void CheckVersion()
 		{
-            var version = new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt");
+            var thread = new BackgroundWorker();
 
-            if (string.IsNullOrEmpty(version))
-                return;
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
+            {
+                var data = new string[2];
 
-            if (!string.Equals(Application.ProductVersion, version))
-			{
-				Invoke((MethodInvoker)delegate ()
-				{
-					new frmCheckUpdate().Show();
-				});
-			}
+                data[0] = new Download().GetString("https://raw.githubusercontent.com/Anime4000/IFME/master/version.txt");
+                data[1] = new Download().GetString("https://github.com/Anime4000/IFME/raw/master/changelog.txt");
+
+                r.Result = data;
+            };
+
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                var data = r.Result as string[];
+
+                if (string.IsNullOrEmpty(data[0]))
+                    return;
+
+                new frmCheckUpdate(data[1]).ShowDialog();
+            };
+
+            thread.RunWorkerAsync();
 		}
 
 		private void DrawBanner()
@@ -239,16 +249,11 @@ namespace ifme
 				if (lstVideo.Items.Count > 0)
 					preset.Video.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].EncoderCommand;
 
-			var width = 1280;
-			var height = 720;
-			var fps = 23.976;
-			var bpc = 8;
-			var pix = 420;
-			int.TryParse(cboVideoResolution.Text.Split('x')[0], out width);
-			int.TryParse(cboVideoResolution.Text.Split('x')[1], out height);
-			double.TryParse(cboVideoFrameRate.Text, out fps);
-			int.TryParse(cboVideoBitDepth.Text, out bpc);
-			int.TryParse(cboVideoPixelFormat.Text, out pix);
+            int.TryParse(cboVideoResolution.Text.Split('x')[0], out int width);
+            int.TryParse(cboVideoResolution.Text.Split('x')[1], out int height);
+			double.TryParse(cboVideoFrameRate.Text, out double fps);
+			int.TryParse(cboVideoBitDepth.Text, out int bpc);
+			int.TryParse(cboVideoPixelFormat.Text, out int pix);
 
 			preset.Video.Width = width;
 			preset.Video.Height = height;
@@ -260,12 +265,9 @@ namespace ifme
 			preset.Video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
 			preset.Video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
 
-			decimal quality = 128000;
-			var samplerate = 44100;
-			var channel = 0;
-			decimal.TryParse(cboAudioQuality.Text, out quality);
-			int.TryParse(cboAudioSampleRate.Text, out samplerate);
-			int.TryParse(cboAudioChannel.Text, out channel);
+            decimal.TryParse(cboAudioQuality.Text, out decimal quality);
+            int.TryParse(cboAudioSampleRate.Text, out int samplerate);
+			int.TryParse(cboAudioChannel.Text, out int channel);
 
 			preset.Audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
 			preset.Audio.EncoderMode = cboAudioMode.SelectedIndex;
@@ -300,8 +302,6 @@ namespace ifme
 
 		private string[] OpenFiles(MediaType type)
 		{
-			var ofd = new OpenFileDialog();
-
 			var exts = string.Empty;
 			var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";
 			var extsAudio = "All audio types|*.mp2;*.mp3;*.mp4;*.m4a;*.aac;*.ogg;*.opus;*.flac;*.wav|";
@@ -327,28 +327,32 @@ namespace ifme
 					break;
 			}
 
-			exts += "All types|*.*";
+            var ofd = new OpenFileDialog
+            {
+                Filter = exts += "All types|*.*",
+                FilterIndex = 1,
+                Multiselect = true
+            };
 
-			ofd.Filter = exts;
-			ofd.FilterIndex = 1;
-			ofd.Multiselect = true;
-
-			if (ofd.ShowDialog() == DialogResult.OK)
+            if (ofd.ShowDialog() == DialogResult.OK)
 				return ofd.FileNames;
 
 			return new string[0];
 		}
 
-        private string OpenFolder()
+        private string OpenFileProject()
         {
-            var fbd = new FolderBrowserDialog();
-
-            if (fbd.ShowDialog() == DialogResult.OK)
+            var ofd = new OpenFileDialog
             {
-                return fbd.SelectedPath;
-            }
+                Filter = "IFME project file|*.ifp",
+                FilterIndex = 1,
+                Multiselect = false
+            };
 
-            return string.Empty;
+            if (ofd.ShowDialog() == DialogResult.OK)
+                return ofd.FileNames[0];
+
+            return string.Empty; ;
         }
 
 		private void ListViewItemMove(ListViewItemType type, Direction direction)
@@ -594,100 +598,7 @@ namespace ifme
 			lstSub.Items[id].Selected = true;
 		}
 
-		private void btnAdvanceCommand_Click(object sender, EventArgs e)
-		{
-			foreach (ListViewItem queue in lstMedia.SelectedItems)
-			{
-				var media = queue.Tag as MediaQueue;
-				
-				var command = string.Empty;
-
-				var ibtitle = string.Empty;
-				var ibmsg = string.Empty;
-
-				var type = 0; // 0 = decoder video, 1 = encoder video, 2 = decoder audio, 3 = encoder video
-				var ctrl = sender as Button;
-
-				if (string.Equals(ctrl.Name, btnVideoAdvDec.Name))
-				{
-					if (media.Video.Count > 0)
-						command = media.Video[0].Command;
-
-					type = 0;
-					ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
-					ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
-				}
-				else if (string.Equals(ctrl.Name, btnVideoAdv.Name))
-				{
-					if (media.Video.Count > 0)
-						command = media.Video[0].EncoderCommand;
-
-					type = 1;
-					ibtitle = Language.Lang.InputBoxCommandLine.Title;
-					ibmsg = Language.Lang.InputBoxCommandLine.Message;
-				}
-				else if (string.Equals(ctrl.Name, btnAudioAdvDec.Name))
-				{
-					if (media.Audio.Count > 0)
-						command = media.Audio[0].Command;
-
-					type = 2;
-					ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
-					ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
-				}
-				else if (string.Equals(ctrl.Name, btnAudioAdv.Name))
-				{
-					if (media.Audio.Count > 0)
-						command = media.Audio[0].EncoderCommand;
-
-					type = 3;
-					ibtitle = Language.Lang.InputBoxCommandLine.Title;
-					ibmsg = Language.Lang.InputBoxCommandLine.Message;
-				}
-				else
-				{
-					type = 0;
-				}
-
-				// display
-				var frm = new frmInputBox(ibtitle, ibmsg, command, 0);
-				if (frm.ShowDialog() == DialogResult.OK)
-					command = frm.ReturnValue;
-				
-				// apply
-				foreach (var video in media.Video)
-				{
-					switch (type)
-					{
-						case 0:
-							video.Command = command;
-							break;
-						case 1:
-							video.EncoderCommand = command;
-							break;
-						default:
-							break;
-					}
-				}
-
-				foreach (var audio in media.Audio)
-				{
-					switch (type)
-					{
-						case 2:
-							audio.Command = command;
-							break;
-						case 3:
-							audio.EncoderCommand = command;
-							break;
-						default:
-							break;
-					}
-				}
-			}
-		}
-
-		private void MediaAdd(string file)
+		private void AddMedia(string file)
 		{
 			var queue = new MediaQueue();
 			var media = new FFmpegDotNet.FFmpeg.Stream(file);
@@ -696,7 +607,7 @@ namespace ifme
 				return;
 
 			queue.Enable = true;
-			queue.File = file;
+			queue.FilePath = file;
 			queue.OutputFormat = TargetFormat.MKV;
 
 			// if input only have audio
@@ -733,7 +644,7 @@ namespace ifme
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaImportCheck.BitDepth(vdef.Encoder, item.BitDepth),
+					BitDepth = MediaQueueManagement.IsValidBitDepth(vdef.Encoder, item.BitDepth),
 					PixelFormat = item.Chroma,
 
 					DeInterlace = false,
@@ -785,22 +696,10 @@ namespace ifme
 				});
 			}
 
-			var lst = new ListViewItem(new[]
-			{
-					Path.GetFileName(file),
-					TimeSpan.FromSeconds(media.Duration).ToString("hh\\:mm\\:ss"),
-					Path.GetExtension(file).Substring(1).ToUpperInvariant(),
-					"MKV",
-					"Ready",
-			});
-
-			lst.Tag = queue;
-			lst.Checked = true;
-
-			lstMedia.Items.Add(lst);
+            MediaQueueAdd(queue);
 		}
 
-		private void VideoAdd(string file)
+		private void AddVideo(string file)
 		{
 			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
 
@@ -834,7 +733,7 @@ namespace ifme
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaImportCheck.BitDepth(vdef.Encoder, item.BitDepth),
+					BitDepth = MediaQueueManagement.IsValidBitDepth(vdef.Encoder, item.BitDepth),
 
 					PixelFormat = item.Chroma,
 
@@ -846,7 +745,7 @@ namespace ifme
 			}
 		}
 
-		private void AudioAdd(string file)
+		private void AddAudio(string file)
 		{
 			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
 
@@ -881,7 +780,7 @@ namespace ifme
 			}
 		}
 
-		private void SubtitleAdd(string file)
+		private void AddSubtitle(string file)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -898,7 +797,7 @@ namespace ifme
 			}
 		}
 
-		private void SubtitleAdd2(string file)
+		private void AddSubtitle2(string file)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -920,7 +819,7 @@ namespace ifme
 			}
 		}
 
-		private void AttachmentAdd(string file)
+		private void AddAttachment(string file)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -940,7 +839,7 @@ namespace ifme
 			}
 		}
 
-		private void AttachmentAdd2(string file)
+		private void AddAttachment2(string file)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
@@ -964,6 +863,24 @@ namespace ifme
 				}
 			}
 		}
+
+        private void MediaQueueAdd(MediaQueue queue)
+        {
+            var lst = new ListViewItem(new[]
+            {
+                Path.GetFileName(queue.FilePath),
+                TimeSpan.FromSeconds(queue.MediaInfo.Duration).ToString("hh\\:mm\\:ss"),
+                Path.GetExtension(queue.FilePath).Substring(1).ToUpperInvariant(),
+                Get.TargetFormat(queue.OutputFormat),
+                queue.Enable ? "Ready" : "Done"
+            })
+            {
+                Tag = queue,
+                Checked = queue.Enable
+            };
+
+            lstMedia.Items.Add(lst);
+        }
 
 		private void MediaFormatDefault(object sender, EventArgs e)
 		{
@@ -1266,12 +1183,12 @@ namespace ifme
 
 				if (string.Equals(ctrl, cboVideoEncoder.Name))
 				{
-					video.BitDepth = MediaImportCheck.BitDepth(video.Encoder, b);
+					video.BitDepth = MediaQueueManagement.IsValidBitDepth(video.Encoder, b);
 				}
 				else
 				{
 					int.TryParse(cboVideoBitDepth.Text, out b);
-					video.BitDepth = MediaImportCheck.BitDepth(video.Encoder, b);
+					video.BitDepth = MediaQueueManagement.IsValidBitDepth(video.Encoder, b);
 				}
 			}
 

@@ -7,6 +7,8 @@
   "ToolTipDonate": "ご利用いただきありがとうございます、 楽しんでください。\nあなたの寄付は今後このプロジェクトの改善に繋がります。\n寄付するにはこのボタンをクリックしてください",
   "ToolTipHardSub": "ビデオ内の永久字幕!\n\n1. 字幕の最初のストリームのみを読み込む!\n2. 読み込みのみ SubRip と SubStation Alpha",
   "Warning": "警告!",
+  "PleaseWait": "ちょっと待って下さい。。。",
+  "ReadProjectFile": "プロジェクトファイルを読み込んでいますが、これはしばらく時間がかかります。",
   "frmMain": {
     "tabGeneral": "基本",
     "grpTargetFormat": "ターゲットフォーマット(&T)",
@@ -78,8 +80,8 @@
     "lblAviSynthInstall": "インストール済みです！",
     "lblAviSynthNoInstall": "インストールされていません",
     "grpFFmpeg": "デフォルトのデコーダ(&D)",
-    "rdoFFmpeg32": "FFmpeg &32bit (サポート AviSynth ST)",
-    "rdoFFmpeg64": "FFmpeg &64bit (高解像度と高ビット深度をサポートしています)",
+    "rdoFFmpeg32": "FFmpeg &32bit (AviSynth ST/MT/+ 32-bit)",
+    "rdoFFmpeg64": "FFmpeg &64bit (AviSynth+ 64-bit、4K UHDと高解像度と高ビット深度をサポートしています)",
     "grpFrameCountOffset": "フレームカウントのオフセット(&F)",
     "lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",
     "tabOptionModule": "モジュール",
@@ -102,7 +104,9 @@
   "cmsNewImport": {
     "tsmiNew": "新規(&N)",
     "tsmiImport": "インポートファイル(&F)",
-    "tsmiImportFolder": "インポートフォルダ(&D)"
+    "tsmiImportFolder": "インポートフォルダ(&D)",
+    "tsmiProjectOpen": "オープンプロジェクト(&O)",
+    "tsmiProjectSave": "プロジェクトの保存(&S)"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "保存(&S)",
@@ -126,7 +130,7 @@
   },
   "ProgressBarImport": {
     "Title": "インポート",
-    "Message": "ファイルを分析する {0} of {1}\n{2}"
+    "Message": "ファイルを分析する {0}/{1}\n{2}"
   },
   "MsgBoxShutdown": {
     "Title": "注意",

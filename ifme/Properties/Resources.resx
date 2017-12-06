@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppCodeName" xml:space="preserve">
-    <value>Scarlet Network</value>
+    <value>Soul Heart</value>
   </data>
   <data name="AppTitle" xml:space="preserve">
     <value>Internet Friendly Media Encoder</value>
@@ -217,5 +217,8 @@
   </data>
   <data name="icon16_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon16_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon16_folder_explore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon16_folder_explore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

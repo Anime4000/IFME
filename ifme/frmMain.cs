@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -63,80 +64,152 @@ namespace ifme
 			cmsNewImport.Show(ptLowerLeft);
 		}
 
-		private void tsmiImport_Click(object sender, EventArgs e)
+        private void tsmiNew_Click(object sender, EventArgs e)
+        {
+            var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(frm.ReturnValue))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(frm.ReturnValue))
+                    return;
+
+                var queue = new MediaQueue
+                {
+                    Enable = true,
+                    FilePath = frm.ReturnValue,
+                    OutputFormat = TargetFormat.MKV
+                };
+
+                MediaQueueAdd(queue);
+            }
+        }
+
+        private void tsmiImport_Click(object sender, EventArgs e)
 		{
 			foreach (var item in OpenFiles(MediaType.VideoAudio))
-				MediaAdd(item);
+				AddMedia(item);
 
 			MediaSelect();
 		}
 
         private void tsmiImportFolder_Click(object sender, EventArgs e)
         {
-            var path = OpenFolder();
+            var files = Get.FilesRecursive();
+            var frm = new frmProgressBar();
 
-            if (!string.IsNullOrEmpty(path))
+            if (files.Count == 0)
+                return;
+
+            frm.Show();
+            Application.DoEvents();
+
+            for (int i = 0; i < files.Count; i++)
             {
-                var frm = new frmProgressBar();
-                frm.Show();
+                AddMedia(files[i]);
 
-                var files = new List<string>();
-                var count = 1;
+                frm.Text = Language.Lang.ProgressBarImport.Title;
+                frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, files.Count, files[i]);
+                frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
 
-                foreach (var d in Directory.GetDirectories(path))
-                {
-                    foreach (var f in Directory.GetFiles(d))
-                    {
-                        files.Add(f);
-                        frm.Status = $"{count++}";
-                        Application.DoEvents();
-                    }
-                }
-
-                for (int i = 0; i < files.Count; i++)
-                {
-                    MediaAdd(files[i]);
-                    frm.Text = Language.Lang.ProgressBarImport.Title;
-                    frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, files.Count, files[i]);
-                    frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
-                    Application.DoEvents();
-                }
+                Application.DoEvents();
             }
         }
 
-        private void tsmiNew_Click(object sender, EventArgs e)
-		{
-			var frm = new frmInputBox(Language.Lang.InputBoxNewMedia.Title, Language.Lang.InputBoxNewMedia.Message, 1);
+        private void tsmiProjectOpen_Click(object sender, EventArgs e)
+        {
+            var file = OpenFileProject();
+            var frm = new frmProgressBar();
 
-			if (frm.ShowDialog() == DialogResult.OK)
-			{
-				if (string.IsNullOrEmpty(frm.ReturnValue))
-					return;
+            if (string.IsNullOrEmpty(file))
+                return;
 
-				if (string.IsNullOrWhiteSpace(frm.ReturnValue))
-					return;
+            frm.Show();
+            frm.Text = Language.Lang.PleaseWait;
+            frm.Status = Language.Lang.ReadProjectFile;
 
-				var queue = new MediaQueue();
+            var thread = new BackgroundWorker();
 
-				queue.Enable = true;
-				queue.File = frm.ReturnValue;
-				queue.OutputFormat = TargetFormat.MKV;
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
+            {
+                if (!string.IsNullOrEmpty(file))
+                {
+                    r.Result = MediaQueueManagement.ProjectLoad(file);
+                }
+            };
 
-				var lst = new ListViewItem(new[]
-				{
-					frm.ReturnValue,
-					"",
-					"New",
-					"MKV",
-					"Ready",
-				});
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                var queue = r.Result as List<MediaQueue>;
 
-				lst.Tag = queue;
-				lst.Checked = true;
+                for (int i = 0; i < queue.Count; i++)
+                {
+                    if (!File.Exists(queue[i].FilePath))
+                    {
+                        ConsoleEx.Write(LogLevel.Error, "IFME", $"File not found: {queue[i].FilePath}\n");
+                        continue;
+                    }
 
-				lstMedia.Items.Add(lst);
-			}
-		}
+                    for (int v = 0; v < queue[i].Video.Count; v++)
+                    {
+                        if (!File.Exists(queue[i].Video[v].File))
+                        {
+                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Video stream not found, skipping...\n");
+                            queue[i].Video.RemoveAt(v);
+                        }
+                    }
+
+                    for (int a = 0; a < queue[i].Audio.Count; a++)
+                    {
+                        if (!File.Exists(queue[i].Audio[a].File))
+                        {
+                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Audio stream not found, removing stream.\n");
+                            queue[i].Audio.RemoveAt(a);
+                        }
+                    }
+
+                    for (int s = 0; s < queue[i].Subtitle.Count; s++)
+                    {
+                        if (!File.Exists(queue[i].Subtitle[s].File))
+                        {
+                            ConsoleEx.Write(LogLevel.Error, "IFME", $"Subtitle stream not found, removing stream.\n");
+                            queue[i].Subtitle.RemoveAt(s);
+                        }
+                    }
+
+                    MediaQueueAdd(queue[i]);
+
+                    frm.Text = Language.Lang.ProgressBarImport.Title;
+                    frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, queue.Count, queue[i].FilePath);
+                    frm.Progress = (int)(((float)(i + 1) / queue.Count) * 100.0);
+
+                    Application.DoEvents();
+                }
+            };
+
+            thread.RunWorkerAsync();
+        }
+
+        private void tsmiProjectSave_Click(object sender, EventArgs e)
+        {
+            var queue = new List<MediaQueue>();
+
+            foreach (ListViewItem item in lstMedia.Items)
+                queue.Add(item.Tag as MediaQueue);
+
+            var sdf = new SaveFileDialog
+            {
+                Filter = "IFME project file|*.ifp",
+                FilterIndex = 1,
+            };
+
+            if (sdf.ShowDialog() == DialogResult.OK)
+            {
+                MediaQueueManagement.ProjectSave(sdf.FileName, queue);
+            }
+        }
 
 		private void btnMediaFileDel_Click(object sender, EventArgs e)
 		{
@@ -290,10 +363,103 @@ namespace ifme
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
-				MediaAdd(file);
+				AddMedia(file);
 		}
 
-		private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnAdvanceCommand_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem queue in lstMedia.SelectedItems)
+            {
+                var media = queue.Tag as MediaQueue;
+
+                var command = string.Empty;
+
+                var ibtitle = string.Empty;
+                var ibmsg = string.Empty;
+
+                var type = 0; // 0 = decoder video, 1 = encoder video, 2 = decoder audio, 3 = encoder video
+                var ctrl = sender as Button;
+
+                if (string.Equals(ctrl.Name, btnVideoAdvDec.Name))
+                {
+                    if (media.Video.Count > 0)
+                        command = media.Video[0].Command;
+
+                    type = 0;
+                    ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
+                    ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
+                }
+                else if (string.Equals(ctrl.Name, btnVideoAdv.Name))
+                {
+                    if (media.Video.Count > 0)
+                        command = media.Video[0].EncoderCommand;
+
+                    type = 1;
+                    ibtitle = Language.Lang.InputBoxCommandLine.Title;
+                    ibmsg = Language.Lang.InputBoxCommandLine.Message;
+                }
+                else if (string.Equals(ctrl.Name, btnAudioAdvDec.Name))
+                {
+                    if (media.Audio.Count > 0)
+                        command = media.Audio[0].Command;
+
+                    type = 2;
+                    ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
+                    ibmsg = Language.Lang.InputBoxCommandLineFFmpeg.Message;
+                }
+                else if (string.Equals(ctrl.Name, btnAudioAdv.Name))
+                {
+                    if (media.Audio.Count > 0)
+                        command = media.Audio[0].EncoderCommand;
+
+                    type = 3;
+                    ibtitle = Language.Lang.InputBoxCommandLine.Title;
+                    ibmsg = Language.Lang.InputBoxCommandLine.Message;
+                }
+                else
+                {
+                    type = 0;
+                }
+
+                // display
+                var frm = new frmInputBox(ibtitle, ibmsg, command, 0);
+                if (frm.ShowDialog() == DialogResult.OK)
+                    command = frm.ReturnValue;
+
+                // apply
+                foreach (var video in media.Video)
+                {
+                    switch (type)
+                    {
+                        case 0:
+                            video.Command = command;
+                            break;
+                        case 1:
+                            video.EncoderCommand = command;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                foreach (var audio in media.Audio)
+                {
+                    switch (type)
+                    {
+                        case 2:
+                            audio.Command = command;
+                            break;
+                        case 3:
+                            audio.EncoderCommand = command;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (Get.IsReady)
 			{
@@ -449,7 +615,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Video))
-					VideoAdd(item);
+					AddVideo(item);
 
 			UXReloadMedia();
 		}
@@ -476,7 +642,7 @@ namespace ifme
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
-				VideoAdd(file);
+				AddVideo(file);
 
 			UXReloadMedia();
 		}
@@ -623,7 +789,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Audio))
-					AudioAdd(item);
+					AddAudio(item);
 
 			UXReloadMedia();
 		}
@@ -661,7 +827,7 @@ namespace ifme
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
-				AudioAdd(file);
+				AddAudio(file);
 
 			UXReloadMedia();
 		}
@@ -790,7 +956,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Subtitle))
-					SubtitleAdd(item);
+					AddSubtitle(item);
 
 			UXReloadMedia();
 		}
@@ -799,7 +965,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Video))
-					SubtitleAdd2(item);
+					AddSubtitle2(item);
 
 			UXReloadMedia();
 		}
@@ -854,7 +1020,7 @@ namespace ifme
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
-				SubtitleAdd(file);
+				AddSubtitle(file);
 
 			UXReloadMedia();
 		}
@@ -891,7 +1057,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Attachment))
-					AttachmentAdd(item);
+					AddAttachment(item);
 
 			UXReloadMedia();
 		}
@@ -900,7 +1066,7 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Video))
-					AttachmentAdd2(item);
+					AddAttachment2(item);
 
 			UXReloadMedia();
 		}
@@ -928,7 +1094,7 @@ namespace ifme
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			foreach (var file in files)
-				AttachmentAdd(file);
+				AddAttachment(file);
 
 			UXReloadMedia();
 		}

@@ -7,6 +7,8 @@
   "ToolTipDonate": "Merci de votre utilisation, j'espère que vous avez aimé l'utiliser.\nVous pouvez faire un don à ce projet afin que je puisse continuer à l'améliorer.\nCluiquez sur ce bouton pour faire un don.",
   "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
   "Warning": "ATTENTION!",
+  "PleaseWait": "Please Wait...",
+  "ReadProjectFile": "Reading project file, this may take awhile.",
   "frmMain": {
     "tabGeneral": "Général",
     "grpTargetFormat": "&Format Cible",
@@ -102,7 +104,9 @@
   "cmsNewImport": {
     "tsmiNew": "&Nouveau",
     "tsmiImport": "&Importer",
-    "tsmiImportFolder": "Import Fol&der"
+    "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectOpen": "&Open Project",
+    "tsmiProjectSave": "&Save Project"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Enregistrer",

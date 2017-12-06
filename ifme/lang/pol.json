@@ -7,6 +7,8 @@
   "ToolTipDonate": "Dziękuję za używanie IFME. Mam nadzieje że jest pomocny.\nMożesz wspomóc ten projekt, aby móc go poprawić.\nKliknij ten przycisk, aby dowiedzieć się jak dotować.",
   "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
   "Warning": "OSTRZEŻENIE!",
+  "PleaseWait": "Please Wait...",
+  "ReadProjectFile": "Reading project file, this may take awhile.",
   "frmMain": {
     "tabGeneral": "Ogólne",
     "grpTargetFormat": "&Format docelowy",
@@ -102,7 +104,9 @@
   "cmsNewImport": {
     "tsmiNew": "&Nowy",
     "tsmiImport": "&Importuj",
-    "tsmiImportFolder": "Import Fol&der"
+    "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectOpen": "&Open Project",
+    "tsmiProjectSave": "&Save Project"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "Zapi&sz",
