@@ -29,11 +29,10 @@ namespace ifme
 
                 do
                 {
-                    if (pbLoading.Value == 1)
-                        Invoke((MethodInvoker)delegate ()
-                        {
-                            pbLoading.Style = ProgressBarStyle.Continuous;
-                        });
+                    if (pbLoading.Style == ProgressBarStyle.Marquee)
+                        if (pbLoading.Value > 0)
+                            Invoke((MethodInvoker)delegate ()
+                            { pbLoading.Style = ProgressBarStyle.Continuous; });
 
                 } while (pbLoading.Value < 99);
 

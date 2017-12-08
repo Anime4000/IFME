@@ -9,6 +9,7 @@
   "Warning": "警告!",
   "PleaseWait": "ちょっと待って下さい。。。",
   "ReadProjectFile": "プロジェクトファイルを読み込んでいますが、これはしばらく時間がかかります。",
+  "NewProject": "新しプロジェクト",
   "frmMain": {
     "tabGeneral": "基本",
     "grpTargetFormat": "ターゲットフォーマット(&T)",
@@ -81,7 +82,7 @@
     "lblAviSynthNoInstall": "インストールされていません",
     "grpFFmpeg": "デフォルトのデコーダ(&D)",
     "rdoFFmpeg32": "FFmpeg &32bit (AviSynth ST/MT/+ 32-bit)",
-    "rdoFFmpeg64": "FFmpeg &64bit (AviSynth+ 64-bit、4K UHDと高解像度と高ビット深度をサポートしています)",
+    "rdoFFmpeg64": "FFmpeg &64bit (AviSynth+ 64-bit、4K UHD、高解像度と高ビット深度をサポートしています)",
     "grpFrameCountOffset": "フレームカウントのオフセット(&F)",
     "lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",
     "tabOptionModule": "モジュール",
@@ -102,11 +103,12 @@
     "btnOK": "&OK"
   },
   "cmsNewImport": {
-    "tsmiNew": "新規(&N)",
+    "tsmiNew": "新規(&E)",
     "tsmiImport": "インポートファイル(&F)",
     "tsmiImportFolder": "インポートフォルダ(&D)",
+    "tsmiProjectNew": "新しプロジェクト(&N)",
     "tsmiProjectOpen": "オープンプロジェクト(&O)",
-    "tsmiProjectSave": "プロジェクトの保存(&S)"
+    "tsmiProjectSave": "セーブプロジェクト(&S)"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "保存(&S)",
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "互換性のないコーデック",
     "Message": "出力フォーマットとコーデックは互換性がありません！ 別のものを選んでください。"
+  },
+  "MsgNewProject": {
+    "Title": "新しプロジェクト",
+    "Message": "新しいプロジェクトを作成する前にこのプロジェクトを保存しますか？"
+  },
+  "MsgHardSub": {
+    "Title": "カスタムフォント (Hard Sub)",
+    "Message": "IFMEは管理者として実行をフォントをインストールする。"
   },
   "ComboBoxDeInterlaceMode": [
     "フレームのみをデインターレース",

@@ -9,6 +9,7 @@
   "Warning": "WARNUNG!",
   "PleaseWait": "Warten Sie mal...",
   "ReadProjectFile": "Das Lesen der Projektdatei kann eine Weile dauern.",
+  "NewProject": "New Project",
   "frmMain": {
     "tabGeneral": "Allgemein",
     "grpTargetFormat": "&Zielformat",
@@ -105,6 +106,7 @@
     "tsmiNew": "&Neu",
     "tsmiImport": "&Importieren",
     "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectNew": "&New Project",
     "tsmiProjectOpen": "&Open Project",
     "tsmiProjectSave": "&Save Project"
   },
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "Codec inkompatibel",
     "Message": "Zielformat und -codec sind nicht kompatibel zueinander! Bitte neu auswählen."
+  },
+  "MsgNewProject": {
+    "Title": "Neues Projekt",
+    "Message": "Möchten Sie dieses Projekt speichern, bevor Sie ein neues erstellen?"
+  },
+  "MsgHardSub": {
+    "Title": "Render custom fonts (Hard Sub)",
+    "Message": "Please allow IFME run as Administrator to install embedded font, this way Hard Sub able to render custom font."
   },
   "ComboBoxDeInterlaceMode": [
     "Deinterlace nur volle Bilder",

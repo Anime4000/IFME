@@ -61,10 +61,10 @@
             this.lstModule = new System.Windows.Forms.ListView();
             this.colModName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colModArch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colModVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.colModVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabOption.SuspendLayout();
             this.tabOptionGeneral.SuspendLayout();
             this.grpNewFilename.SuspendLayout();
@@ -403,9 +403,9 @@
             // 
             this.rdoFFmpeg64.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rdoFFmpeg64.Location = new System.Drawing.Point(98, 53);
+            this.rdoFFmpeg64.Location = new System.Drawing.Point(88, 53);
             this.rdoFFmpeg64.Name = "rdoFFmpeg64";
-            this.rdoFFmpeg64.Size = new System.Drawing.Size(400, 24);
+            this.rdoFFmpeg64.Size = new System.Drawing.Size(420, 24);
             this.rdoFFmpeg64.TabIndex = 1;
             this.rdoFFmpeg64.TabStop = true;
             this.rdoFFmpeg64.Text = "FFmpeg &64bit (Support large resolution && high bit depth)";
@@ -415,9 +415,9 @@
             // 
             this.rdoFFmpeg32.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rdoFFmpeg32.Location = new System.Drawing.Point(98, 23);
+            this.rdoFFmpeg32.Location = new System.Drawing.Point(88, 23);
             this.rdoFFmpeg32.Name = "rdoFFmpeg32";
-            this.rdoFFmpeg32.Size = new System.Drawing.Size(400, 24);
+            this.rdoFFmpeg32.Size = new System.Drawing.Size(420, 24);
             this.rdoFFmpeg32.TabIndex = 0;
             this.rdoFFmpeg32.TabStop = true;
             this.rdoFFmpeg32.Text = "FFmpeg &32bit (Support AviSynth)";
@@ -460,6 +460,11 @@
             this.colModArch.Text = "Arch";
             this.colModArch.Width = 48;
             // 
+            // colModVersion
+            // 
+            this.colModVersion.Text = "Version";
+            this.colModVersion.Width = 130;
+            // 
             // colModAuthor
             // 
             this.colModAuthor.Text = "Developer";
@@ -487,11 +492,6 @@
             this.btnOk.Text = "&OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // colModVersion
-            // 
-            this.colModVersion.Text = "Version";
-            this.colModVersion.Width = 130;
             // 
             // frmOption
             // 

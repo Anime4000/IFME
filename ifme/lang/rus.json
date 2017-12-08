@@ -9,6 +9,7 @@
   "Warning": "ПРЕДУПРЕЖДЕНИЕ!",
   "PleaseWait": "Пожалуйста, подождите",
   "ReadProjectFile": "Чтение файла проекта, это может занять некоторое время.",
+  "NewProject": "Новый проект",
   "frmMain": {
     "tabGeneral": "Общие",
     "grpTargetFormat": "&Контейнер",
@@ -102,9 +103,10 @@
     "btnOK": "&OK"
   },
   "cmsNewImport": {
-    "tsmiNew": "&Новый",
+    "tsmiNew": "Новый",
     "tsmiImport": "&Импорт файл",
-    "tsmiImportFolder": "Импорт папку",
+    "tsmiImportFolder": "Импорт &папку",
+    "tsmiProjectNew": "&Новый проект",
     "tsmiProjectOpen": "&Открытый проект",
     "tsmiProjectSave": "&Сохранить проект"
   },
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "Несовместивый кодек",
     "Message": "Выходной контейнер и кодек несовместимы! Выберите другой."
+  },
+  "MsgNewProject": {
+    "Title": "Новый проект",
+    "Message": "Вы хотите сохранить этот проект до создания нового?"
+  },
+  "MsgHardSub": {
+    "Title": "Render custom fonts (Hard Sub)",
+    "Message": "Please allow IFME run as Administrator to install embedded font, this way Hard Sub able to render custom font."
   },
   "ComboBoxDeInterlaceMode": [
     "Деинтерлейс только кадров",

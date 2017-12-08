@@ -9,6 +9,7 @@
   "Warning": "AMARAN!",
   "PleaseWait": "Sila Tunggu...",
   "ReadProjectFile": "Sedang membaca fail projek, mungkin mengambil masa yang lama.",
+  "NewProject": "Projek Baharu",
   "frmMain": {
     "tabGeneral": "Umum",
     "grpTargetFormat": "Sasaran Forma&t",
@@ -105,6 +106,7 @@
     "tsmiNew": "&Baru",
     "tsmiImport": "Import &Fail",
     "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectNew": "Proje&ct Baru",
     "tsmiProjectOpen": "Buka Pr&ojek",
     "tsmiProjectSave": "&Simpan Projek"
   },
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "Kodek tidak serasi",
     "Message": "Sasaran dan kodek tidak serasi! Sila pilih yang lain."
+  },
+  "MsgNewProject": {
+    "Title": "Projek Baharu",
+    "Message": "Adakah anda ingin simpan projek sebelum membuat yang baru?"
+  },
+  "MsgHardSub": {
+    "Title": "Hard Sub",
+    "Message": "Berikan IFME sebagai Administrator untuk pasang font, dengan cara ini 'Hard Sub' boleh guna font tersebut."
   },
   "ComboBoxDeInterlaceMode": [
     "Buang selang (satu bingkai)",

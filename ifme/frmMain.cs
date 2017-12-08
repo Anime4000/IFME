@@ -22,8 +22,8 @@ namespace ifme
 			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
 			Icon = Get.AppIcon;
-			Text = Get.AppNameLong;
-			FormBorderStyle = FormBorderStyle.Sizable;
+            Text = Get.AppNameLongAdmin;
+            FormBorderStyle = FormBorderStyle.Sizable;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -40,8 +40,6 @@ namespace ifme
             tt.ToolTipTitle = "Hello!";
             tt.SetToolTip(btnAbout, "");
 			tt.Show(Language.Lang.ToolTipDonate, btnAbout, btnAbout.Width / 2, btnAbout.Height / 2, 30000);
-
-			new Thread(CheckVersion).Start();
 
 			Get.IsReady = true;
 		}
@@ -137,92 +135,36 @@ namespace ifme
             thread.RunWorkerAsync();
         }
 
+        private void tsmiProjectNew_Click(object sender, EventArgs e)
+        {
+            if (lstMedia.Items.Count > 0)
+            {
+                var msg = MessageBox.Show(Language.Lang.MsgNewProject.Message, Language.Lang.MsgNewProject.Title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+
+                switch (msg)
+                {
+                    case DialogResult.Yes:
+                        tsmiProjectSave.PerformClick();
+                        goto case DialogResult.No;
+
+                    case DialogResult.No:
+                        lstMedia.Items.Clear();
+                        Text = Get.AppNameProject("New Project");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void tsmiProjectOpen_Click(object sender, EventArgs e)
         {
-            var file = OpenFileProject();
-            var frm = new frmProgressBar();
-
-            if (string.IsNullOrEmpty(file))
-                return;
-
-            frm.Show();
-            frm.Text = Language.Lang.PleaseWait;
-            frm.Status = Language.Lang.ReadProjectFile;
-
-            var thread = new BackgroundWorker();
-
-            thread.DoWork += delegate (object o, DoWorkEventArgs r)
-            {
-                if (!string.IsNullOrEmpty(file))
-                {
-                    var queue = MediaQueueManagement.ProjectLoad(file);
-
-                    for (int i = 0; i < queue.Count; i++)
-                    {
-                        if (File.Exists(queue[i].FilePath))
-                        {
-                            queue[i].MediaInfo = new FFmpegDotNet.FFmpeg.Stream(queue[i].FilePath);
-                        }
-
-                        for (int v = 0; v < queue[i].Video.Count; v++)
-                        {
-                            if (!File.Exists(queue[i].Video[v].File))
-                            {
-                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Video stream not found, skipping...\n");
-                                queue[i].Video.RemoveAt(v);
-                            }
-                        }
-
-                        for (int a = 0; a < queue[i].Audio.Count; a++)
-                        {
-                            if (!File.Exists(queue[i].Audio[a].File))
-                            {
-                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Audio stream not found, removing stream.\n");
-                                queue[i].Audio.RemoveAt(a);
-                            }
-                        }
-
-                        for (int s = 0; s < queue[i].Subtitle.Count; s++)
-                        {
-                            if (!File.Exists(queue[i].Subtitle[s].File))
-                            {
-                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Subtitle stream not found, removing stream.\n");
-                                queue[i].Subtitle.RemoveAt(s);
-                            }
-                        }
-
-                        MediaQueueAdd(queue[i]);
-
-                        if (InvokeRequired)
-                        {
-                            Invoke(new MethodInvoker(delegate
-                            {
-                                frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, queue.Count, queue[i].FilePath);
-                                frm.Progress = (int)(((float)(i + 1) / queue.Count) * 100.0);
-                                frm.Text = Language.Lang.ProgressBarImport.Title + $": {frm.Progress}%";
-
-                                //Application.DoEvents();
-                            }));
-                        }
-                    }
-                }
-            };
-
-            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
-            {
-                frm.Close();
-            };
-
-            thread.RunWorkerAsync();
+            ProjectOpen(OpenFileProject());
         }
 
         private void tsmiProjectSave_Click(object sender, EventArgs e)
         {
-            var queue = new List<MediaQueue>();
-
-            foreach (ListViewItem item in lstMedia.Items)
-                queue.Add(item.Tag as MediaQueue);
-
             var sdf = new SaveFileDialog
             {
                 Filter = "IFME project file|*.ifp",
@@ -231,7 +173,7 @@ namespace ifme
 
             if (sdf.ShowDialog() == DialogResult.OK)
             {
-                MediaQueueManagement.ProjectSave(sdf.FileName, queue);
+                ProjectSave(sdf.FileName);
             }
         }
 
@@ -273,10 +215,10 @@ namespace ifme
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
-			if (lstMedia.Items.Count == 0)
-				return;
+            if (lstMedia.Items.Count == 0)
+                return;
 
-			if (Properties.Settings.Default.ShutdownType == 1 || Properties.Settings.Default.ShutdownType == 2)
+            if (Properties.Settings.Default.ShutdownType == 1 || Properties.Settings.Default.ShutdownType == 2)
 			{
 				var msg = MessageBox.Show(Language.Lang.MsgBoxShutdown.Message, Language.Lang.MsgBoxShutdown.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (msg == DialogResult.No)
@@ -305,6 +247,26 @@ namespace ifme
 					dict.Add(item.Index, item.Tag as MediaQueue);
 					item.SubItems[4].Text = "Waiting...";
 				}
+
+                // check if all queue has enable hardsub
+                if (!dict.All(x => !x.Value.HardSub))
+                {
+                    if (!Elevated.IsAdmin)
+                    {
+                        var msg = MessageBox.Show(Language.Lang.MsgHardSub.Message, Language.Lang.MsgHardSub.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                        if (msg == DialogResult.Yes)
+                        {
+                            var tempFile = Path.Combine(Path.GetTempPath(), $"ifme_elevated_{DateTime.Now:yyyy-MM-dd_hh-mm-ss}.pis");
+
+                            ProjectSave(tempFile);
+
+                            Elevated.RunAsAdmin(tempFile);
+
+                            return;
+                        }
+                    }
+                }
 
 				bgThread.RunWorkerAsync(dict);
 
@@ -1020,6 +982,12 @@ namespace ifme
         private void chkSubHard_CheckedChanged(object sender, EventArgs e)
         {
             var ctrl = sender as CheckBox;
+
+            if (lstSub.Items.Count == 0)
+            {
+                ctrl.Checked = false;
+                return;
+            }
 
             if (ctrl.Checked)
             {

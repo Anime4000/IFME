@@ -62,11 +62,14 @@ namespace ifme
 			var reset = false;
 			var help = false;
             var input = string.Empty;
+            var start = false;
+
 			var p = new OptionSet()
 			{
 				{ "r|reset", "Reset IFME to factory default", v => reset = v != null  },
 				{ "h|help", "Show this message and exit", v => help = v != null },
-                { "i|input=", "Load a project file", (string i) => input = i }
+                { "i|input=", "Load a project file", (string i) => input = i },
+                { "s", "Start encoding immediately (require input)", s => start = s != null }
 			};
 
 			try
@@ -81,7 +84,7 @@ namespace ifme
 				return;
 			}
 
-			Console.Title = Get.AppName;
+			Console.Title = Get.AppNameLongAdmin;
 			Directory.SetCurrentDirectory(Path.GetDirectoryName(Application.ExecutablePath));
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
@@ -139,7 +142,8 @@ namespace ifme
 
             if (!string.IsNullOrEmpty(input))
             {
-                MediaQueueManagement.ProjectFile = input;
+                MediaProject.ProjectFile = input;
+                MediaProject.StartEncode = start;
             }
 
 			Application.EnableVisualStyles();

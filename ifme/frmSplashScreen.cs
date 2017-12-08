@@ -13,7 +13,7 @@ namespace ifme
 			InitializeComponent();
 
 			Icon = Get.AppIcon;
-			Text = Get.AppNameLong;
+			Text = Get.AppName;
 		}
 
 		private void frmSplashScreen_Load(object sender, EventArgs e)

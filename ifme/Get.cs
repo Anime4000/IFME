@@ -47,81 +47,94 @@ public enum TargetFormat
 namespace ifme
 {
     internal static class Get
-	{
-		internal static bool IsReady { get; set; } = false;
+    {
+        internal static bool IsReady { get; set; } = false;
 
-		internal static Dictionary<string, string> LanguageCode
-		{
-			get
-			{
-				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "language.json")));
-			}
-		}
+        internal static Dictionary<string, string> LanguageCode
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "language.json")));
+            }
+        }
 
-		internal static Dictionary<string, string> MimeList
-		{
-			get
-			{
-				return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
-			}
-		}
+        internal static Dictionary<string, string> MimeList
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
+            }
+        }
 
-		internal static SortedSet<string> MimeTypeList
-		{
-			get
-			{
-				var temp = new SortedSet<string>();
+        internal static SortedSet<string> MimeTypeList
+        {
+            get
+            {
+                var temp = new SortedSet<string>();
 
-				foreach (var item in MimeList)
-				{
-					try { temp.Add(item.Value); } catch { }
-				}
+                foreach (var item in MimeList)
+                {
+                    try { temp.Add(item.Value); } catch { }
+                }
 
-				return temp;
-			}
-		}
+                return temp;
+            }
+        }
 
-		internal static string AppPath
-		{
-			get
-			{
-				return Assembly.GetExecutingAssembly().Location;
-			}
-		}
+        internal static string AppPath
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().Location;
+            }
+        }
 
-		internal static string AppRootDir
-		{
-			get
-			{
-				return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			}
-		}
+        internal static string AppRootDir
+        {
+            get
+            {
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            }
+        }
 
-		internal static Icon AppIcon
-		{
-			get
-			{
-				return Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-			}
-		}
+        internal static Icon AppIcon
+        {
+            get
+            {
+                return Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+            }
+        }
 
-		internal static string AppName
-		{
-			get
-			{
-				return Branding.Title();
-			}
-		}
+        internal static string AppName
+        {
+            get
+            {
+                return Branding.Title();
+            }
+        }
 
-		internal static string AppNameLong
-		{
-			get
-			{
-				return $"{AppName} v{Application.ProductVersion} ('{Properties.Resources.AppCodeName}')";
-			}
-		}
+        internal static string AppNameLong
+        {
+            get
+            {
+                return $"{AppName} v{Application.ProductVersion} ('{Properties.Resources.AppCodeName}')";
+            }
+        }
 
-		internal static string AppNameLib
+        internal static string AppNameLongAdmin
+        {
+            get
+            {
+                return $"{AppNameLong} {(Elevated.IsAdmin ? "[Administrator]" : "")}";
+            }
+        }
+
+        internal static string AppNameProject(string filePath)
+        {
+            return $"{Path.GetFileName(filePath)} - {AppNameLongAdmin}";
+        }
+
+        internal static string AppNameLib
 		{
 			get
 			{

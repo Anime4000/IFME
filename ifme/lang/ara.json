@@ -9,6 +9,7 @@
   "Warning": "تحذير",
   "PleaseWait": "Please Wait...",
   "ReadProjectFile": "Reading project file, this may take a while.",
+  "NewProject": "New Project",
   "frmMain": {
     "tabGeneral": "عام",
     "grpTargetFormat": "&تنسيق الهدف",
@@ -105,6 +106,7 @@
     "tsmiNew": "جديد",
     "tsmiImport": "استيراد",
     "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectNew": "&New Project",
     "tsmiProjectOpen": "&Open Project",
     "tsmiProjectSave": "&Save Project"
   },
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "الترميز غير متوافق",
     "Message": "تنسيق الإخراج و الترميز غير متوافق! اختيار واحد مختلف."
+  },
+  "MsgNewProject": {
+    "Title": "New Project",
+    "Message": "Do you want to save this project before create new one?"
+  },
+  "MsgHardSub": {
+    "Title": "Render custom fonts (Hard Sub)",
+    "Message": "Please allow IFME run as Administrator to install embedded font, this way Hard Sub able to render custom font."
   },
   "ComboBoxDeInterlaceMode": [
     "تشابك إطارات فقط",

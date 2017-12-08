@@ -180,6 +180,7 @@
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiProjectNew = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProjectOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProjectSave = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -1003,7 +1004,7 @@
             "640x360",
             "720x404",
             "800x600",
-            "853x480",
+            "854x480",
             "1024x768",
             "1024x576",
             "1280x720",
@@ -1945,6 +1946,7 @@
             this.tsmiImport,
             this.tsmiImportFolder,
             this.tsmiSeparator2,
+            this.tsmiProjectNew,
             this.tsmiProjectOpen,
             this.tsmiProjectSave});
             this.cmsNewImport.Name = "cmsNewImport";
@@ -1955,9 +1957,9 @@
             // 
             this.tsmiNew.Image = global::ifme.Properties.Resources.icon16_bookmark_new;
             this.tsmiNew.Name = "tsmiNew";
-            this.tsmiNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.tsmiNew.Size = new System.Drawing.Size(178, 22);
-            this.tsmiNew.Text = "&New";
+            this.tsmiNew.Text = "N&ew";
             this.tsmiNew.Click += new System.EventHandler(this.tsmiNew_Click);
             // 
             // tsmiSeparator1
@@ -1987,6 +1989,15 @@
             // 
             this.tsmiSeparator2.Name = "tsmiSeparator2";
             this.tsmiSeparator2.Size = new System.Drawing.Size(175, 6);
+            // 
+            // tsmiProjectNew
+            // 
+            this.tsmiProjectNew.Image = global::ifme.Properties.Resources.icon16_add2;
+            this.tsmiProjectNew.Name = "tsmiProjectNew";
+            this.tsmiProjectNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.tsmiProjectNew.Size = new System.Drawing.Size(178, 22);
+            this.tsmiProjectNew.Text = "New &Project";
+            this.tsmiProjectNew.Click += new System.EventHandler(this.tsmiProjectNew_Click);
             // 
             // tsmiProjectOpen
             // 
@@ -2283,6 +2294,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiProjectSave;
         private System.Windows.Forms.ToolStripSeparator tsmiSeparator1;
         private System.Windows.Forms.ToolStripSeparator tsmiSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProjectNew;
     }
 }
 

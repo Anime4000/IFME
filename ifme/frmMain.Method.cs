@@ -69,9 +69,26 @@ namespace ifme
 			ApplyPlugins();
 			ApplyEncodingPreset();
 
+            // OS feature stuff
+            if (OS.IsLinux)
+            {
+                chkSubHard.Enabled = false;
+            }
+
 			// Draw
 			DrawBanner();
-		}
+
+            // Open project
+            if (!string.IsNullOrEmpty(MediaProject.ProjectFile))
+            {
+                ProjectOpen(MediaProject.ProjectFile);
+            }
+            else
+            {
+                Text = Get.AppNameProject(Language.Lang.NewProject);
+                CheckVersion();
+            }                
+        }
 
 		private void ApplyLanguage()
 		{
@@ -598,6 +615,101 @@ namespace ifme
 			lstSub.Items[id].Selected = true;
 		}
 
+        private void ProjectSave(string fileName)
+        {
+            var queue = new List<MediaQueue>();
+
+            foreach (ListViewItem item in lstMedia.Items)
+                queue.Add(item.Tag as MediaQueue);
+
+            MediaProject.Save(fileName, queue);
+
+            Text = Get.AppNameProject(fileName);
+        }
+
+        private void ProjectOpen(string fileName)
+        {
+            var frm = new frmProgressBar();
+
+            frm.Show();
+            frm.Text = Language.Lang.PleaseWait;
+            frm.Status = Language.Lang.ReadProjectFile;
+
+            var thread = new BackgroundWorker();
+
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
+            {
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    var queue = MediaProject.Load(fileName);
+
+                    for (int i = 0; i < queue.Count; i++)
+                    {
+                        if (File.Exists(queue[i].FilePath))
+                        {
+                            queue[i].MediaInfo = new FFmpegDotNet.FFmpeg.Stream(queue[i].FilePath);
+                        }
+
+                        for (int v = 0; v < queue[i].Video.Count; v++)
+                        {
+                            if (!File.Exists(queue[i].Video[v].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Video stream not found, skipping...\n");
+                                queue[i].Video.RemoveAt(v);
+                            }
+                        }
+
+                        for (int a = 0; a < queue[i].Audio.Count; a++)
+                        {
+                            if (!File.Exists(queue[i].Audio[a].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Audio stream not found, removing stream.\n");
+                                queue[i].Audio.RemoveAt(a);
+                            }
+                        }
+
+                        for (int s = 0; s < queue[i].Subtitle.Count; s++)
+                        {
+                            if (!File.Exists(queue[i].Subtitle[s].File))
+                            {
+                                ConsoleEx.Write(LogLevel.Error, "IFME", $"Subtitle stream not found, removing stream.\n");
+                                queue[i].Subtitle.RemoveAt(s);
+                            }
+                        }
+
+                        MediaQueueAdd(queue[i]);
+
+                        if (InvokeRequired)
+                        {
+                            Invoke(new MethodInvoker(delegate
+                            {
+                                frm.Status = string.Format(Language.Lang.ProgressBarImport.Message, i + 1, queue.Count, queue[i].FilePath);
+                                frm.Progress = (int)(((float)(i + 1) / queue.Count) * 100.0);
+                                frm.Text = Language.Lang.ProgressBarImport.Title + $": {frm.Progress}%";
+
+                                //Application.DoEvents();
+                            }));
+                        }
+                    }
+                }
+            };
+
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                frm.Close();
+
+                if (MediaProject.StartEncode)
+                {
+                    MediaProject.StartEncode = false;
+                    btnStart.PerformClick();
+                }
+            };
+
+            thread.RunWorkerAsync();
+
+            Text = Get.AppNameProject(fileName);
+        }
+
 		private void AddMedia(string file)
 		{
 			var queue = new MediaQueue();
@@ -644,7 +756,7 @@ namespace ifme
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaQueueManagement.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+					BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
 					PixelFormat = item.Chroma,
 
 					DeInterlace = false,
@@ -733,7 +845,7 @@ namespace ifme
 					FrameRateAvg = item.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
 					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaQueueManagement.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+					BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
 
 					PixelFormat = item.Chroma,
 
@@ -1190,12 +1302,12 @@ namespace ifme
 
 				if (string.Equals(ctrl, cboVideoEncoder.Name))
 				{
-					video.BitDepth = MediaQueueManagement.IsValidBitDepth(video.Encoder, b);
+					video.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder, b);
 				}
 				else
 				{
 					int.TryParse(cboVideoBitDepth.Text, out b);
-					video.BitDepth = MediaQueueManagement.IsValidBitDepth(video.Encoder, b);
+					video.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder, b);
 				}
 			}
 
@@ -1467,9 +1579,10 @@ namespace ifme
 
 				lstSub.Items[0].Selected = true;
 			}
+            chkSubHard.Checked = media.HardSub;
 
-			// Attachment
-			lstAttach.Items.Clear();
+            // Attachment
+            lstAttach.Items.Clear();
 			if (media.Attachment.Count > 0)
 			{
 				foreach (var item in media.Attachment)

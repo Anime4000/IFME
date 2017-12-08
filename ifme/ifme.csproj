@@ -140,9 +140,10 @@
     <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
     <Compile Include="Media\Queue\MediaQueueAudio.cs" />
     <Compile Include="Media\Queue\MediaQueueCommon.cs" />
-    <Compile Include="Media\Queue\MediaQueueManagement.cs" />
+    <Compile Include="Media\MediaProject.cs" />
     <Compile Include="Media\Queue\MediaQueueSubtitle.cs" />
     <Compile Include="Media\Queue\MediaQueueTrim.cs" />
+    <Compile Include="Media\MediaValidator.cs" />
     <Compile Include="Media\Queue\MediaQueueVideo.cs" />
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="OS.cs" />

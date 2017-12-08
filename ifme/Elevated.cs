@@ -38,5 +38,23 @@ namespace ifme
                 return;
             }
         }
+
+        internal static void RunAsAdmin(string projectFile)
+        {
+            if (IsAdmin == false)
+            {
+                var startInfo = new ProcessStartInfo(Get.AppPath)
+                {
+                    Verb = "runas",
+                    Arguments = $"-s -i \"{projectFile}\""
+                };
+
+                Process.Start(startInfo);
+
+                Application.Exit();
+
+                return;
+            }
+        }
     }
 }

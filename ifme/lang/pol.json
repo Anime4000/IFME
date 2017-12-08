@@ -9,6 +9,7 @@
   "Warning": "OSTRZEŻENIE!",
   "PleaseWait": "Please Wait...",
   "ReadProjectFile": "Reading project file, this may take awhile.",
+  "NewProject": "New Project",
   "frmMain": {
     "tabGeneral": "Ogólne",
     "grpTargetFormat": "&Format docelowy",
@@ -105,6 +106,7 @@
     "tsmiNew": "&Nowy",
     "tsmiImport": "&Importuj",
     "tsmiImportFolder": "Import Fol&der",
+    "tsmiProjectNew": "&New Project",
     "tsmiProjectOpen": "&Open Project",
     "tsmiProjectSave": "&Save Project"
   },
@@ -143,6 +145,14 @@
   "MsgBoxCodecIncompatible": {
     "Title": "Niezgodny kodek",
     "Message": "Format wyjściowy kodeka nie są zgodne! Wybierz inny."
+  },
+  "MsgNewProject": {
+    "Title": "New Project",
+    "Message": "Do you want to save this project before create new one?"
+  },
+  "MsgHardSub": {
+    "Title": "Render custom fonts (Hard Sub)",
+    "Message": "Please allow IFME run as Administrator to install embedded font, this way Hard Sub able to render custom font."
   },
   "ComboBoxDeInterlaceMode": [
     "Wymień tylko klatki",
