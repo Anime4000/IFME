@@ -264,7 +264,7 @@ namespace ifme
 
 			if (lstMedia.SelectedItems.Count > 0)
 				if (lstVideo.Items.Count > 0)
-					preset.Video.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].EncoderCommand;
+					preset.Video.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
 
             int.TryParse(cboVideoResolution.Text.Split('x')[0], out int width);
             int.TryParse(cboVideoResolution.Text.Split('x')[1], out int height);
@@ -294,7 +294,7 @@ namespace ifme
 
 			if (lstMedia.SelectedItems.Count > 0)
 				if (lstAudio.Items.Count > 0)
-						preset.Audio.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[0].EncoderCommand;
+						preset.Audio.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
 
 			if (MediaPreset.List.ContainsKey(id))
 			{
@@ -625,6 +625,8 @@ namespace ifme
             MediaProject.Save(fileName, queue);
 
             Text = Get.AppNameProject(fileName);
+
+            MediaProject.ProjectFile = fileName; // reference, allow to save existing
         }
 
         private void ProjectOpen(string fileName)
@@ -708,6 +710,8 @@ namespace ifme
             thread.RunWorkerAsync();
 
             Text = Get.AppNameProject(fileName);
+
+            MediaProject.ProjectFile = fileName; // reference, allow to save existing
         }
 
 		private void AddMedia(string file)
@@ -742,26 +746,35 @@ namespace ifme
 					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = vdef.Encoder,
-					EncoderPreset = vdef.Preset,
-					EncoderTune = vdef.Tune,
-					EncoderMode = vdef.Mode,
-					EncoderValue = vdef.Value,
-					EncoderMultiPass = vdef.Pass,
-					EncoderCommand = vdef.Command,
+					Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = vdef.Encoder,
+                        Preset = vdef.Preset,
+                        Tune = vdef.Tune,
+                        Mode = vdef.Mode,
+                        Value = vdef.Value,
+                        MultiPass = vdef.Pass,
+                        Command = vdef.Command,
+                    },
 
-					Width = item.Width,
-					Height = item.Height,
-					FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
-					FrameRateAvg = item.FrameRateAvg,
-					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
-					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
-					PixelFormat = item.Chroma,
+                    Quality = new MediaQueueVideoQuality
+                    {
+                        Width = item.Width,
+                        Height = item.Height,
+                        FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+                        FrameRateAvg = item.FrameRateAvg,
+                        FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
+                        IsVFR = !item.FrameRateConstant,
+                        BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+                        PixelFormat = item.Chroma,
+                    },
 
-					DeInterlace = false,
-					DeInterlaceMode = 1,
-					DeInterlaceField = 0
+                    DeInterlace = new MediaQueueVideoDeInterlace
+                    {
+                        Enable = false,
+                        Mode = 1,
+                        Field = 0
+                    }
 				});
 			}
 
@@ -775,12 +788,15 @@ namespace ifme
 					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = adef.Encoder,
-					EncoderMode = adef.Mode,
-					EncoderQuality = adef.Quality,
-					EncoderSampleRate = adef.SampleRate,
-					EncoderChannel = adef.Channel,
-					EncoderCommand = adef.Command
+					Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = adef.Encoder,
+                        Mode = adef.Mode,
+                        Quality = adef.Quality,
+                        SampleRate = adef.SampleRate,
+                        Channel = adef.Channel,
+                        Command = adef.Command
+                    }
 				});
 			}
 
@@ -831,28 +847,35 @@ namespace ifme
 					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = vdef.Encoder,
-					EncoderPreset = vdef.Preset,
-					EncoderTune = vdef.Tune,
-					EncoderMode = vdef.Mode,
-					EncoderValue = vdef.Value,
-					EncoderMultiPass = vdef.Pass,
-					EncoderCommand = vdef.Command,
+					Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = vdef.Encoder,
+                        Preset = vdef.Preset,
+                        Tune = vdef.Tune,
+                        Mode = vdef.Mode,
+                        Value = vdef.Value,
+                        MultiPass = vdef.Pass,
+                        Command = vdef.Command,
+                    },
 
-					Width = item.Width,
-					Height = item.Height,
-					FrameRate = (float)Math.Round(item.FrameRate, 3),
-					FrameRateAvg = item.FrameRateAvg,
-					FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
-					IsVFR = !item.FrameRateConstant,
-					BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+					Quality = new MediaQueueVideoQuality
+                    {
+                        Width = item.Width,
+                        Height = item.Height,
+                        FrameRate = (float)Math.Round(item.FrameRate, 3),
+                        FrameRateAvg = item.FrameRateAvg,
+                        FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
+                        IsVFR = !item.FrameRateConstant,
+                        BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+                        PixelFormat = item.Chroma,
+                    },
 
-					PixelFormat = item.Chroma,
-
-					DeInterlace = false,
-					DeInterlaceMode = 1,
-					DeInterlaceField = 0
-
+					DeInterlace = new MediaQueueVideoDeInterlace
+                    {
+                        Enable = false,
+                        Mode = 1,
+                        Field = 0
+                    }
 				});
 			}
 		}
@@ -882,12 +905,15 @@ namespace ifme
 					Lang = Get.LangCheck(item.Language),
 					Format = Get.CodecFormat(item.Codec),
 
-					Encoder = adef.Encoder,
-					EncoderMode = adef.Mode,
-					EncoderQuality = adef.Quality,
-					EncoderSampleRate = adef.SampleRate,
-					EncoderChannel = adef.Channel,
-					EncoderCommand = adef.Command
+					Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = adef.Encoder,
+                        Mode = adef.Mode,
+                        Quality = adef.Quality,
+                        SampleRate = adef.SampleRate,
+                        Channel = adef.Channel,
+                        Command = adef.Command
+                    }
 				});
 			}
 		}
@@ -1074,31 +1100,32 @@ namespace ifme
 				}
 			}
 
-			foreach (ListViewItem q in lstMedia.SelectedItems)
-			{
-				var mf = q.Tag as MediaQueue;
+            // to do fix
+            foreach (ListViewItem q in lstMedia.SelectedItems)
+            {
+                var mf = q.Tag as MediaQueue;
 
-				foreach (var v in mf.Video)
-				{
-					v.Encoder = vdef.Encoder;
-					v.EncoderPreset = vdef.Preset;
-					v.EncoderTune = vdef.Tune;
-					v.EncoderMode = vdef.Mode;
-					v.EncoderValue = vdef.Value;
-					v.EncoderMultiPass = vdef.Pass;
-					v.EncoderCommand = vdef.Command;
-				}
+                foreach (var v in mf.Video)
+                {
+                    v.Encoder.Id = vdef.Encoder;
+                    v.Encoder.Preset = vdef.Preset;
+                    v.Encoder.Tune = vdef.Tune;
+                    v.Encoder.Mode = vdef.Mode;
+                    v.Encoder.Value = vdef.Value;
+                    v.Encoder.MultiPass = vdef.Pass;
+                    v.Encoder.Command = vdef.Command;
+                }
 
-				foreach (var a in mf.Audio)
-				{
-					a.Encoder = adef.Encoder;
-					a.EncoderMode = adef.Mode;
-					a.EncoderQuality = adef.Quality;
-					a.EncoderSampleRate = adef.SampleRate;
-					a.EncoderChannel = adef.Channel;
-				}
-			}
-		}
+                foreach (var a in mf.Audio)
+                {
+                    a.Encoder.Id = adef.Encoder;
+                    a.Encoder.Mode = adef.Mode;
+                    a.Encoder.Quality = adef.Quality;
+                    a.Encoder.SampleRate = adef.SampleRate;
+                    a.Encoder.Channel = adef.Channel;
+                }
+            }
+        }
 
 		// Minimise code, all controls subscribe one function :)
 		private void MediaApply(object sender, EventArgs e)
@@ -1240,37 +1267,37 @@ namespace ifme
 
 					if (Plugin.Items.TryGetValue(id, out temp))
 					{
-						video.EncoderCommand = temp.Video.Args.Command;
+						video.Encoder.Command = temp.Video.Args.Command;
 					}
 				}
 
-				video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
+				video.Encoder.Id = new Guid($"{cboVideoEncoder.SelectedValue}");
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoPreset.Name))
 			{
-				video.EncoderPreset = cboVideoPreset.Text;
+				video.Encoder.Preset = cboVideoPreset.Text;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoTune.Name))
 			{
-				video.EncoderTune = cboVideoTune.Text;
+				video.Encoder.Tune = cboVideoTune.Text;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoRateControl.Name))
 			{
-				video.EncoderMode = cboVideoRateControl.SelectedIndex;
-				video.EncoderValue = nudVideoRateFactor.Value; // changing mode give default value
+				video.Encoder.Mode = cboVideoRateControl.SelectedIndex;
+				video.Encoder.Value = nudVideoRateFactor.Value; // changing mode give default value
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, nudVideoRateFactor.Name))
 			{
-				video.EncoderValue = nudVideoRateFactor.Value;
+				video.Encoder.Value = nudVideoRateFactor.Value;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, nudVideoMultiPass.Name))
 			{
-				video.EncoderMultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
+				video.Encoder.MultiPass = Convert.ToInt32(nudVideoMultiPass.Value);
 			}
 
 			// Video pixel
@@ -1284,62 +1311,62 @@ namespace ifme
 					int.TryParse(x.Split('x')[0], out w);
 					int.TryParse(x.Split('x')[1], out h);
 				}
-				video.Width = w;
-				video.Height = h;
+				video.Quality.Width = w;
+				video.Quality.Height = h;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoFrameRate.Name))
 			{
 				float f = 0;
 				float.TryParse(cboVideoFrameRate.Text, out f);
-				video.FrameRate = f;
-				video.FrameCount = (int)Math.Ceiling(video.Duration * f);
+				video.Quality.FrameRate = f;
+				video.Quality.FrameCount = (int)Math.Ceiling(video.Duration * f);
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoBitDepth.Name))
 			{
-				var b = video.BitDepth;
+				var b = video.Quality.BitDepth;
 
 				if (string.Equals(ctrl, cboVideoEncoder.Name))
 				{
-					video.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder, b);
+					video.Quality.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder.Id, b);
 				}
 				else
 				{
 					int.TryParse(cboVideoBitDepth.Text, out b);
-					video.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder, b);
+					video.Quality.BitDepth = MediaValidator.IsValidBitDepth(video.Encoder.Id, b);
 				}
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoPixelFormat.Name))
 			{
-				var y = video.PixelFormat;
+				var y = video.Quality.PixelFormat;
 				
 				if (string.Equals(ctrl, cboVideoEncoder.Name))
 				{
-					video.PixelFormat = y;
+					video.Quality.PixelFormat = y;
 				}
 				else
 				{
 					int.TryParse(cboVideoPixelFormat.Text, out y);
-					video.PixelFormat = y;
+					video.Quality.PixelFormat = y;
 				}
 			}
 
 			// Video Interlace
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, chkVideoDeinterlace.Name))
 			{
-				video.DeInterlace = chkVideoDeinterlace.Checked;
+				video.DeInterlace.Enable = chkVideoDeinterlace.Checked;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoDeinterlaceMode.Name))
 			{
-				video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
+				video.DeInterlace.Mode = cboVideoDeinterlaceMode.SelectedIndex;
 			}
 
 			if (string.Equals(ctrl, cboVideoEncoder.Name) || string.Equals(ctrl, cboVideoDeinterlaceField.Name))
 			{
-				video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
+				video.DeInterlace.Field = cboVideoDeinterlaceField.SelectedIndex;
 			}
 		}
 
@@ -1352,33 +1379,33 @@ namespace ifme
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name))
 			{
-				audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
+				audio.Encoder.Id = new Guid($"{cboAudioEncoder.SelectedValue}");
 			}
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioMode.Name))
 			{
-				audio.EncoderMode = cboAudioMode.SelectedIndex;
+				audio.Encoder.Mode = cboAudioMode.SelectedIndex;
 			}
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioQuality.Name))
 			{
 				decimal q = 0;
 				decimal.TryParse(cboAudioQuality.Text, out q);
-				audio.EncoderQuality = q;
+				audio.Encoder.Quality = q;
 			}
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioSampleRate.Name))
 			{
 				var hz = 0;
 				int.TryParse(cboAudioSampleRate.Text, out hz);
-				audio.EncoderSampleRate = hz;
+				audio.Encoder.SampleRate = hz;
 			}
 
 			if (string.Equals(ctrl, cboAudioEncoder.Name) || string.Equals(ctrl, cboAudioChannel.Name))
 			{
 				double ch = 0;
 				double.TryParse(cboAudioChannel.Text, out ch);
-				audio.EncoderChannel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
+				audio.Encoder.Channel = (int)Math.Ceiling(ch); // when value 5.1 become 6, 7.1 become 8
 			}
 		}
 
@@ -1514,17 +1541,18 @@ namespace ifme
 					break;
 			}
 
-			// Video
-			lstVideo.Items.Clear();
+            // Video
+            lstVideo.SelectedItems.Clear();
+            lstVideo.Items.Clear();
 			if (media.Video.Count > 0)
 			{
-				foreach (var item in media.Video)
+                foreach (var item in media.Video)
 				{
 					var lst = new ListViewItem(new[]
 					{
 						$"{item.Id}",
 						$"{item.Lang}",
-						$"{(item.Width > 0 && item.Height > 0 ? $"{item.Width}x{item.Height}" : "auto")} @ {(item.FrameRate > 0 ? $"{item.FrameRate} fps" : "auto")} ({item.BitDepth} bit @ YUV{item.PixelFormat})"
+						$"{(item.Quality.Width > 0 && item.Quality.Height > 0 ? $"{item.Quality.Width}x{item.Quality.Height}" : "auto")} @ {(item.Quality.FrameRate > 0 ? $"{item.Quality.FrameRate} fps" : "auto")} ({item.Quality.BitDepth} bit @ YUV{item.Quality.PixelFormat})"
 					});
 					lst.Checked = item.Enable;
 					lst.Tag = item; // allow lstVideo to arrange item UP or DOWN
@@ -1545,7 +1573,7 @@ namespace ifme
 					{
 						$"{item.Id}",
 						$"{item.Lang}",
-						$"{item.EncoderQuality} @ {item.EncoderSampleRate}Hz {(item.EncoderChannel == 0 ? "auto" : $"{item.EncoderChannel} Ch")}"
+						$"{item.Encoder.Quality} @ {item.Encoder.SampleRate}Hz {(item.Encoder.Channel == 0 ? "auto" : $"{item.Encoder.Channel} Ch")}"
 					});
 					lst.Checked = item.Enable;
 					lst.Tag = item; // allow lstAudio to arrange item UP or DOWN
@@ -1621,19 +1649,19 @@ namespace ifme
 			Thread.Sleep(1);
 
 			// select mode and wait ui thread to load
-			BeginInvoke((Action)delegate () { cboVideoRateControl.SelectedIndex = v.EncoderMode; });
+			BeginInvoke((Action)delegate () { cboVideoRateControl.SelectedIndex = v.Encoder.Mode; });
 			Thread.Sleep(1);
 
 			// when control is loaded, begin to display
 			BeginInvoke((Action)delegate ()
 			{
-				cboVideoPreset.SelectedItem = v.EncoderPreset;
-				cboVideoTune.SelectedItem = v.EncoderTune;
+				cboVideoPreset.SelectedItem = v.Encoder.Preset;
+				cboVideoTune.SelectedItem = v.Encoder.Tune;
 
 				// this can be buggy
 				try
 				{
-					nudVideoRateFactor.Value = v.EncoderValue;
+					nudVideoRateFactor.Value = v.Encoder.Value;
 				}
 				catch (Exception e)
 				{
@@ -1643,16 +1671,16 @@ namespace ifme
 					lstVideo.SelectedItems.Clear();
 				}
 
-				nudVideoMultiPass.Value = v.EncoderMultiPass;
+				nudVideoMultiPass.Value = v.Encoder.MultiPass;
 
-				cboVideoResolution.Text = $"{v.Width}x{v.Height}";
-				cboVideoFrameRate.Text = $"{Math.Round(v.FrameRate, 3)}";
-				cboVideoBitDepth.Text = $"{v.BitDepth}";
-				cboVideoPixelFormat.Text = $"{v.PixelFormat}";
+				cboVideoResolution.Text = $"{v.Quality.Width}x{v.Quality.Height}";
+				cboVideoFrameRate.Text = $"{Math.Round(v.Quality.FrameRate, 3)}";
+				cboVideoBitDepth.Text = $"{v.Quality.BitDepth}";
+				cboVideoPixelFormat.Text = $"{v.Quality.PixelFormat}";
 
-				chkVideoDeinterlace.Checked = v.DeInterlace;
-				cboVideoDeinterlaceMode.SelectedIndex = v.DeInterlaceMode;
-				cboVideoDeinterlaceField.SelectedIndex = v.DeInterlaceField;
+				chkVideoDeinterlace.Checked = v.DeInterlace.Enable;
+				cboVideoDeinterlaceMode.SelectedIndex = v.DeInterlace.Mode;
+				cboVideoDeinterlaceField.SelectedIndex = v.DeInterlace.Field;
 			});
 		}
 
@@ -1668,19 +1696,19 @@ namespace ifme
 			BeginInvoke((Action)delegate () { cboAudioStreamLang.SelectedValue = a.Lang; });
 
 			// select encoder and wait ui thread to load
-			BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Encoder; });
+			BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Id; });
 			Thread.Sleep(1);
 
 			// select mode and wait ui thread to load
-			BeginInvoke((Action)delegate () { cboAudioMode.SelectedIndex = a.EncoderMode; });
+			BeginInvoke((Action)delegate () { cboAudioMode.SelectedIndex = a.Encoder.Mode; });
 			Thread.Sleep(1);
 
 			// when ui is loaded, begin to display
 			BeginInvoke((Action)delegate ()
 			{
-				cboAudioQuality.Text = $"{a.EncoderQuality}";
-				cboAudioSampleRate.Text = $"{a.EncoderSampleRate}";
-				cboAudioChannel.SelectedValue = a.EncoderChannel;
+				cboAudioQuality.Text = $"{a.Encoder.Quality}";
+				cboAudioSampleRate.Text = $"{a.Encoder.SampleRate}";
+				cboAudioChannel.SelectedValue = a.Encoder.Channel;
 			});
 		}
 

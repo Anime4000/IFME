@@ -183,11 +183,13 @@
             this.tsmiProjectNew = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProjectOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProjectSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProjectSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEncodingPreset = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiEncodingPresetSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEncodingPresetSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDonate = new System.Windows.Forms.Button();
             this.btnBench = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabMediaConfig.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.pnlGeneral.SuspendLayout();
@@ -234,7 +236,7 @@
             this.lstMedia.HideSelection = false;
             this.lstMedia.Location = new System.Drawing.Point(12, 114);
             this.lstMedia.Name = "lstMedia";
-            this.lstMedia.Size = new System.Drawing.Size(876, 180);
+            this.lstMedia.Size = new System.Drawing.Size(876, 152);
             this.lstMedia.TabIndex = 14;
             this.lstMedia.UseCompatibleStateImageBehavior = false;
             this.lstMedia.View = System.Windows.Forms.View.Details;
@@ -278,7 +280,7 @@
             this.tabMediaConfig.Controls.Add(this.tabSubtitle);
             this.tabMediaConfig.Controls.Add(this.tabAttachment);
             this.tabMediaConfig.Controls.Add(this.tabAdvance);
-            this.tabMediaConfig.Location = new System.Drawing.Point(12, 300);
+            this.tabMediaConfig.Location = new System.Drawing.Point(12, 272);
             this.tabMediaConfig.Name = "tabMediaConfig";
             this.tabMediaConfig.SelectedIndex = 0;
             this.tabMediaConfig.Size = new System.Drawing.Size(876, 331);
@@ -298,6 +300,7 @@
             // 
             // pnlGeneral
             // 
+            this.pnlGeneral.Controls.Add(this.comboBox1);
             this.pnlGeneral.Controls.Add(this.grpStreamInfo);
             this.pnlGeneral.Controls.Add(this.grpTargetFormat);
             this.pnlGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -314,7 +317,7 @@
             this.grpStreamInfo.Controls.Add(this.txtMediaInfo);
             this.grpStreamInfo.Location = new System.Drawing.Point(169, 3);
             this.grpStreamInfo.Name = "grpStreamInfo";
-            this.grpStreamInfo.Size = new System.Drawing.Size(690, 293);
+            this.grpStreamInfo.Size = new System.Drawing.Size(690, 194);
             this.grpStreamInfo.TabIndex = 1;
             this.grpStreamInfo.TabStop = false;
             this.grpStreamInfo.Text = "Media Info";
@@ -330,7 +333,7 @@
             this.txtMediaInfo.Name = "txtMediaInfo";
             this.txtMediaInfo.ReadOnly = true;
             this.txtMediaInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMediaInfo.Size = new System.Drawing.Size(678, 268);
+            this.txtMediaInfo.Size = new System.Drawing.Size(678, 169);
             this.txtMediaInfo.TabIndex = 0;
             this.txtMediaInfo.WordWrap = false;
             // 
@@ -1948,10 +1951,11 @@
             this.tsmiSeparator2,
             this.tsmiProjectNew,
             this.tsmiProjectOpen,
-            this.tsmiProjectSave});
+            this.tsmiProjectSave,
+            this.tsmiProjectSaveAs});
             this.cmsNewImport.Name = "cmsNewImport";
             this.cmsNewImport.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.cmsNewImport.Size = new System.Drawing.Size(179, 148);
+            this.cmsNewImport.Size = new System.Drawing.Size(179, 170);
             // 
             // tsmiNew
             // 
@@ -2017,6 +2021,13 @@
             this.tsmiProjectSave.Text = "&Save Project";
             this.tsmiProjectSave.Click += new System.EventHandler(this.tsmiProjectSave_Click);
             // 
+            // tsmiProjectSaveAs
+            // 
+            this.tsmiProjectSaveAs.Name = "tsmiProjectSaveAs";
+            this.tsmiProjectSaveAs.Size = new System.Drawing.Size(178, 22);
+            this.tsmiProjectSaveAs.Text = "Save Project &As";
+            this.tsmiProjectSaveAs.Click += new System.EventHandler(this.tsmiProjectSaveAs_Click);
+            // 
             // cmsEncodingPreset
             // 
             this.cmsEncodingPreset.Font = new System.Drawing.Font("Tahoma", 8F);
@@ -2061,6 +2072,26 @@
             this.btnBench.Size = new System.Drawing.Size(32, 32);
             this.btnBench.TabIndex = 8;
             this.btnBench.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Video: AVI (Audio Video Interleave Container) [Microsoft, 1992, OLD!]",
+            "Video: MP4 (MPEG-4 Part 14 Container)",
+            "Video: MKV (Matroska Multimedia Container)",
+            "Video: WEBM (HTML5 WebM Container)",
+            "Audio: MP3 (MPEG-2 Audio Layer III)",
+            "Audio: MP4 (Advanced Audio Coding)",
+            "Audio: OGG (Xiph.Org Foundation Ogg Vorbis)",
+            "Audio: OPUS (Xiph.Org Foundation Opus Vorbis)",
+            "Audio: FLAC (Xiph.Org Foundation Free Lossless Audio Codec)"});
+            this.comboBox1.Location = new System.Drawing.Point(219, 230);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(626, 22);
+            this.comboBox1.TabIndex = 22;
             // 
             // frmMain
             // 
@@ -2295,6 +2326,8 @@
         private System.Windows.Forms.ToolStripSeparator tsmiSeparator1;
         private System.Windows.Forms.ToolStripSeparator tsmiSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tsmiProjectNew;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProjectSaveAs;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

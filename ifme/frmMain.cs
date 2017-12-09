@@ -165,6 +165,17 @@ namespace ifme
 
         private void tsmiProjectSave_Click(object sender, EventArgs e)
         {
+            if (File.Exists(MediaProject.ProjectFile))
+            {
+                ProjectSave(MediaProject.ProjectFile);
+                return;
+            }
+
+            tsmiProjectSaveAs.PerformClick(); // reuse code
+        }
+
+        private void tsmiProjectSaveAs_Click(object sender, EventArgs e)
+        {
             var sdf = new SaveFileDialog
             {
                 Filter = "IFME project file|*.ifp",
@@ -177,7 +188,7 @@ namespace ifme
             }
         }
 
-		private void btnMediaFileDel_Click(object sender, EventArgs e)
+        private void btnMediaFileDel_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstMedia.SelectedItems)
 				item.Remove();
@@ -369,7 +380,7 @@ namespace ifme
                 if (string.Equals(ctrl.Name, btnVideoAdvDec.Name))
                 {
                     if (media.Video.Count > 0)
-                        command = media.Video[0].Command;
+                        command = media.Video[0].Quality.Command;
 
                     type = 0;
                     ibtitle = Language.Lang.InputBoxCommandLineFFmpeg.Title;
@@ -378,7 +389,7 @@ namespace ifme
                 else if (string.Equals(ctrl.Name, btnVideoAdv.Name))
                 {
                     if (media.Video.Count > 0)
-                        command = media.Video[0].EncoderCommand;
+                        command = media.Video[0].Encoder.Command;
 
                     type = 1;
                     ibtitle = Language.Lang.InputBoxCommandLine.Title;
@@ -396,7 +407,7 @@ namespace ifme
                 else if (string.Equals(ctrl.Name, btnAudioAdv.Name))
                 {
                     if (media.Audio.Count > 0)
-                        command = media.Audio[0].EncoderCommand;
+                        command = media.Audio[0].Encoder.Command;
 
                     type = 3;
                     ibtitle = Language.Lang.InputBoxCommandLine.Title;
@@ -418,10 +429,10 @@ namespace ifme
                     switch (type)
                     {
                         case 0:
-                            video.Command = command;
+                            video.Quality.Command = command;
                             break;
                         case 1:
-                            video.EncoderCommand = command;
+                            video.Encoder.Command = command;
                             break;
                         default:
                             break;
@@ -436,7 +447,7 @@ namespace ifme
                             audio.Command = command;
                             break;
                         case 3:
-                            audio.EncoderCommand = command;
+                            audio.Encoder.Command = command;
                             break;
                         default:
                             break;
@@ -465,33 +476,33 @@ namespace ifme
 
 				foreach (var video in m.Video)
 				{
-					video.Encoder = p.Video.Encoder;
-					video.EncoderPreset = p.Video.EncoderPreset;
-					video.EncoderTune = p.Video.EncoderTune;
-					video.EncoderMode = p.Video.EncoderMode;
-					video.EncoderValue = p.Video.EncoderValue;
-					video.EncoderMultiPass = p.Video.EncoderMultiPass;
-					video.EncoderCommand = p.Video.EncoderCommand;
+					video.Encoder.Id = p.Video.Encoder;
+					video.Encoder.Preset = p.Video.EncoderPreset;
+					video.Encoder.Tune = p.Video.EncoderTune;
+					video.Encoder.Mode = p.Video.EncoderMode;
+					video.Encoder.Value = p.Video.EncoderValue;
+					video.Encoder.MultiPass = p.Video.EncoderMultiPass;
+					video.Encoder.Command = p.Video.EncoderCommand;
 
-					video.Width = p.Video.Width;
-					video.Height = p.Video.Height;
-					video.FrameRate = (float)p.Video.FrameRate;
-					video.BitDepth = p.Video.BitDepth;
-					video.PixelFormat = p.Video.PixelFormat;
+					video.Quality.Width = p.Video.Width;
+					video.Quality.Height = p.Video.Height;
+					video.Quality.FrameRate = (float)p.Video.FrameRate;
+					video.Quality.BitDepth = p.Video.BitDepth;
+					video.Quality.PixelFormat = p.Video.PixelFormat;
 
-					video.DeInterlace = p.Video.DeInterlace;
-					video.DeInterlaceMode = p.Video.DeInterlaceMode;
-					video.DeInterlaceField = p.Video.DeInterlaceField;
+					video.DeInterlace.Enable = p.Video.DeInterlace;
+					video.DeInterlace.Mode = p.Video.DeInterlaceMode;
+					video.DeInterlace.Field = p.Video.DeInterlaceField;
 				}
 
 				foreach (var audio in m.Audio)
 				{
-					audio.Encoder = p.Audio.Encoder;
-					audio.EncoderMode = p.Audio.EncoderMode;
-					audio.EncoderQuality = p.Audio.EncoderQuality;
-					audio.EncoderSampleRate = p.Audio.EncoderSampleRate;
-					audio.EncoderChannel = p.Audio.EncoderChannel;
-					audio.EncoderCommand = p.Audio.EncoderCommand;
+					audio.Encoder.Id = p.Audio.Encoder;
+					audio.Encoder.Mode = p.Audio.EncoderMode;
+					audio.Encoder.Quality = p.Audio.EncoderQuality;
+					audio.Encoder.SampleRate = p.Audio.EncoderSampleRate;
+					audio.Encoder.Channel = p.Audio.EncoderChannel;
+					audio.Encoder.Command = p.Audio.EncoderCommand;
 				}
 			}
 

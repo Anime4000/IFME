@@ -108,7 +108,8 @@
     "tsmiImportFolder": "Import Fol&der",
     "tsmiProjectNew": "Proje&ct Baru",
     "tsmiProjectOpen": "Buka Pr&ojek",
-    "tsmiProjectSave": "&Simpan Projek"
+    "tsmiProjectSave": "&Simpan Projek",
+    "tsmiProjectSaveAs": "Simpan &Projek Sebagai"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Simpan",

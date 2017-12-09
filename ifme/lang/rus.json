@@ -108,7 +108,8 @@
     "tsmiImportFolder": "Импорт &папку",
     "tsmiProjectNew": "&Новый проект",
     "tsmiProjectOpen": "&Открытый проект",
-    "tsmiProjectSave": "&Сохранить проект"
+    "tsmiProjectSave": "&Сохранить проект",
+    "tsmiProjectSaveAs": "Save Project &As"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Сохранить",

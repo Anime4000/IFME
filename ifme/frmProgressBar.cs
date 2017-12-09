@@ -18,7 +18,7 @@ namespace ifme
         private void frmProgressBar_Load(object sender, EventArgs e)
         {
             pbLoading.Style = ProgressBarStyle.Marquee;
-            pbLoading.MarqueeAnimationSpeed = 25;
+            pbLoading.MarqueeAnimationSpeed = 20;
         }
 
         private void frmProgressBar_Shown(object sender, EventArgs e)

@@ -108,7 +108,8 @@
     "tsmiImportFolder": "Import Fol&der",
     "tsmiProjectNew": "&New Project",
     "tsmiProjectOpen": "&Open Project",
-    "tsmiProjectSave": "&Save Project"
+    "tsmiProjectSave": "&Save Project",
+    "tsmiProjectSaveAs": "Save Project &As"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Speichern",
