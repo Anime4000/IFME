@@ -16,34 +16,6 @@ enum MediaType
     VideoAudio
 }
 
-enum MediaTypeVideo
-{
-    MP4,
-    MKV,
-    WEBM
-}
-
-enum MediaTypeAudio
-{
-    MP3,
-    MP4,
-    OGG,
-    OPUS,
-    FLAC
-}
-
-public enum TargetFormat
-{
-    MP4,
-    MKV,
-    WEBM,
-    MP3,
-    M4A,
-    OGG,
-    OPUS,
-    FLAC
-}
-
 namespace ifme
 {
     internal static class Get
@@ -63,6 +35,14 @@ namespace ifme
             get
             {
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "mime.json")));
+            }
+        }
+
+        internal static Dictionary<string, string> TargetFormat
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(AppRootDir, "targetfmt.json")));
             }
         }
 
@@ -167,44 +147,6 @@ namespace ifme
 				Properties.Settings.Default.Save();
 			}
 		}
-
-        internal static string TargetFormat(TargetFormat Format)
-        {
-            var fmt = string.Empty;
-
-            switch (Format)
-            {
-                case global::TargetFormat.MP4:
-                    fmt = "MP4";
-                    break;
-                case global::TargetFormat.MKV:
-                    fmt = "MKV";
-                    break;
-                case global::TargetFormat.WEBM:
-                    fmt = "WEBM";
-                    break;
-                case global::TargetFormat.MP3:
-                    fmt = "MP3";
-                    break;
-                case global::TargetFormat.M4A:
-                    fmt = "M4A";
-                    break;
-                case global::TargetFormat.OGG:
-                    fmt = "OGG";
-                    break;
-                case global::TargetFormat.OPUS:
-                    fmt = "OPUS";
-                    break;
-                case global::TargetFormat.FLAC:
-                    fmt = "FLAC";
-                    break;
-                default:
-                    fmt = "Unknown";
-                    break;
-            }
-
-            return fmt;
-        }
 
         internal static string CodecFormat(string codecId)
 		{

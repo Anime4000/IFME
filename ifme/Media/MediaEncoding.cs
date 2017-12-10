@@ -46,26 +46,19 @@ namespace ifme
 				return;
 			}
 
-			if (queue.OutputFormat.IsOneOf(TargetFormat.MP3, TargetFormat.M4A, TargetFormat.OGG, TargetFormat.OPUS, TargetFormat.FLAC))
-			{
-				AudioEncoding(queue, ModeSave.Direct);
-			}
-			else
-			{
-				// Extract
-				MediaExtract(queue);
+            // Extract
+            MediaExtract(queue);
 
-				// Audio
-				AudioEncoding(queue, ModeSave.Temp);
+            // Audio
+            AudioEncoding(queue, ModeSave.Temp);
 
-				// Video
-				VideoEncoding(queue);
+            // Video
+            VideoEncoding(queue);
 
-				// Mux
-				VideoMuxing(queue);
-			}
+            // Mux
+            VideoMuxing(queue);
 
-			ConsoleEx.Write(LogLevel.Normal, "Yay! All media done encoding...\n");
+            ConsoleEx.Write(LogLevel.Normal, "Yay! All media done encoding...\n");
 		}
 
 		private int MediaExtract(MediaQueue queue)
@@ -362,7 +355,7 @@ namespace ifme
 		{
 			ConsoleEx.Write(LogLevel.Normal, "Merging RAW files as single media file\n");
 
-			if (queue.OutputFormat == TargetFormat.MKV)
+			if (string.Equals("mkv", queue.OutputFormat, StringComparison.InvariantCultureIgnoreCase))
 			{
 				// get all media
 				var videos = string.Empty;
@@ -381,17 +374,20 @@ namespace ifme
 				foreach (var audio in Directory.GetFiles(TempDir, "audio*"))
 					audios += $"--language 0:{Get.FileLang(audio)} \"{audio}\" ";
 
-				foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
-					subtitles += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(sub)} \"{sub}\" ";
+                if (!queue.HardSub)
+                {
+                    foreach (var sub in Directory.GetFiles(TempDir, "subtitle*"))
+                        subtitles += $"--sub-charset 0:UTF-8 --language 0:{Get.FileLang(sub)} \"{sub}\" ";
 
-				for (int i = 0; i < queue.Attachment.Count; i++)
-				{
-					var file = Path.Combine(FontDir, queue.Attachment[i].Name);
-					var mime = queue.Attachment[i].Mime;
+                    for (int i = 0; i < queue.Attachment.Count; i++)
+                    {
+                        var file = Path.Combine(FontDir, queue.Attachment[i].Name);
+                        var mime = queue.Attachment[i].Mime;
 
-					if (File.Exists(file))
-						attachments += $"--attachment-mime-type \"{mime}\" --attachment-description yes --attach-file \"{file}\" ";
-				}
+                        if (File.Exists(file))
+                            attachments += $"--attachment-mime-type \"{mime}\" --attachment-description yes --attach-file \"{file}\" ";
+                    }
+                }
 
 				if (File.Exists(Path.Combine(TempDir, "chapters.xml")))
 				{
@@ -422,7 +418,7 @@ namespace ifme
 				var metadata = string.Empty;
 				var command = string.Empty;
 
-				var extra = $"-vcodec copy -acodec copy -scodec copy -map_metadata -1 -map_chapters -1 -metadata APP=\"{Get.AppNameLong}\" -metadata VER=\"{Get.AppNameLib}\" ";
+				var extra = $"-vcodec copy -acodec copy -scodec copy -map_metadata -1 -map_chapters -1 -metadata author=\"{Get.AppNameLong}\" -metadata comment=\"{Get.AppNameLib} encoder\" ";
 
 				// find files
 				foreach (var video in Directory.GetFiles(TempDir, "video*"))
@@ -437,14 +433,11 @@ namespace ifme
 					metadata += $"-metadata:s:{index++} language={Get.FileLang(audio)} ";
 				}
 
-				// build command
-				if (queue.OutputFormat == TargetFormat.MP4)
-					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.FilePath, ".mp4")}\"";
-				else if (queue.OutputFormat == TargetFormat.WEBM)
-					command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.FilePath, ".webm")}\"";
+                // build command
+                command = $"{videos}{audios}{extra}{metadata}-y \"{Get.NewFilePath(SaveDir, queue.FilePath, $".{queue.OutputFormat}")}\"";
 
-				// run command
-				var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}");
+                // run command
+                var exitcode = ProcessManager.Start(FFmpeg, $"-hide_banner -v error -stats {command}");
 
 				// if failed
 				if (exitcode > 0)

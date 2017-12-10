@@ -130,9 +130,7 @@
     <Compile Include="Get.cs" />
     <Compile Include="Language\Language.cs" />
     <Compile Include="Language\LanguageIO.cs" />
-    <Compile Include="Media\Default\MediaDefaultAudio.cs" />
-    <Compile Include="Media\Default\MediaDefaultVideo.cs" />
-    <Compile Include="MediaEncoding.cs" />
+    <Compile Include="Media\MediaEncoding.cs" />
     <Compile Include="Media\Preset\MediaPreset.cs" />
     <Compile Include="Media\Preset\MediaPresetAudio.cs" />
     <Compile Include="Media\Preset\MediaPresetVideo.cs" />
@@ -283,6 +281,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="targetfmt.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">

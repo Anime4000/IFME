@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ifme
+﻿namespace ifme
 {
-	class MediaPresetAudio
+	public class MediaPresetAudio
 	{
-		public Guid Encoder { get; set; }
-		public int EncoderMode { get; set; }
-		public decimal EncoderQuality { get; set; }
-		public int EncoderSampleRate { get; set; }
-		public int EncoderChannel { get; set; }
-		public string EncoderCommand { get; set; }
-	}
+        public MediaQueueAudioEncoder Encoder { get; set; } = new MediaQueueAudioEncoder();
+        public string Command { get; set; }
+    }
 }

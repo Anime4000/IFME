@@ -30,8 +30,8 @@ namespace ifme
 
 		public void InitializeUX()
 		{
-			// Show Splash Screen (hold) & Loading everyting!
-			var ss = new frmSplashScreen();
+            // Show Splash Screen (hold) & Loading everyting!
+            var ss = new frmSplashScreen();
 			ss.ShowDialog();
 
 			// Load user settings
@@ -63,6 +63,12 @@ namespace ifme
 			foreach (var item in Get.MimeTypeList)
 				cboAttachMime.Items.Add(item);
 			cboAttachMime.Text = "application/octet-stream";
+
+            // Load Target Format
+            cboTargetFormat.DataSource = new BindingSource(Get.TargetFormat, null);
+            cboTargetFormat.DisplayMember = "Value";
+            cboTargetFormat.ValueMember = "Key";
+            cboTargetFormat.SelectedValue = "mkv";
 
 			// Load everyting
 			ApplyLanguage();
@@ -233,68 +239,75 @@ namespace ifme
 
 		private void EncodingPreset(string id, string name)
 		{
-			var preset = new MediaPreset();
-			var target = 0;
+            var videoCmd = string.Empty;
+            var audioCmd = string.Empty;
 
-			if (rdoFormatMp4.Checked)
-				target = (int)TargetFormat.MP4;
-			else if (rdoFormatMkv.Checked)
-				target = (int)TargetFormat.MKV;
-			else if (rdoFormatWebm.Checked)
-				target = (int)TargetFormat.WEBM;
-			else if (rdoFormatAudioMp3.Checked)
-				target = (int)TargetFormat.MP3;
-			else if (rdoFormatAudioMp4.Checked)
-				target = (int)TargetFormat.M4A;
-			else if (rdoFormatAudioOgg.Checked)
-				target = (int)TargetFormat.OGG;
-			else if (rdoFormatAudioOpus.Checked)
-				target = (int)TargetFormat.OPUS;
-			else if (rdoFormatAudioFlac.Checked)
-				target = (int)TargetFormat.FLAC;
+            if (lstMedia.SelectedItems.Count > 0)
+                if (lstVideo.Items.Count > 0)
+                    videoCmd = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
 
-			preset.OutputFormat = target;
-
-			preset.Video.Encoder = new Guid($"{cboVideoEncoder.SelectedValue}");
-			preset.Video.EncoderPreset = cboVideoPreset.Text;
-			preset.Video.EncoderTune = cboVideoTune.Text;
-			preset.Video.EncoderMode = cboVideoRateControl.SelectedIndex;
-			preset.Video.EncoderValue = nudVideoRateFactor.Value;
-			preset.Video.EncoderMultiPass = (int)nudVideoMultiPass.Value;
-
-			if (lstMedia.SelectedItems.Count > 0)
-				if (lstVideo.Items.Count > 0)
-					preset.Video.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
+            if (lstMedia.SelectedItems.Count > 0)
+                if (lstAudio.Items.Count > 0)
+                    audioCmd = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
 
             int.TryParse(cboVideoResolution.Text.Split('x')[0], out int width);
             int.TryParse(cboVideoResolution.Text.Split('x')[1], out int height);
-			double.TryParse(cboVideoFrameRate.Text, out double fps);
-			int.TryParse(cboVideoBitDepth.Text, out int bpc);
-			int.TryParse(cboVideoPixelFormat.Text, out int pix);
-
-			preset.Video.Width = width;
-			preset.Video.Height = height;
-			preset.Video.FrameRate = fps;
-			preset.Video.BitDepth = bpc;
-			preset.Video.PixelFormat = pix;
-
-			preset.Video.DeInterlace = chkVideoDeinterlace.Checked;
-			preset.Video.DeInterlaceMode = cboVideoDeinterlaceMode.SelectedIndex;
-			preset.Video.DeInterlaceField = cboVideoDeinterlaceField.SelectedIndex;
+            double.TryParse(cboVideoFrameRate.Text, out double fps);
+            int.TryParse(cboVideoBitDepth.Text, out int bpc);
+            int.TryParse(cboVideoPixelFormat.Text, out int pix);
 
             decimal.TryParse(cboAudioQuality.Text, out decimal quality);
             int.TryParse(cboAudioSampleRate.Text, out int samplerate);
-			int.TryParse(cboAudioChannel.Text, out int channel);
+            int.TryParse(cboAudioChannel.Text, out int channel);
 
-			preset.Audio.Encoder = new Guid($"{cboAudioEncoder.SelectedValue}");
-			preset.Audio.EncoderMode = cboAudioMode.SelectedIndex;
-			preset.Audio.EncoderQuality = quality;
-			preset.Audio.EncoderSampleRate = samplerate;
-			preset.Audio.EncoderChannel = channel;
+            var preset = new MediaPreset
+            {
+                OutputFormat = (string)cboTargetFormat.SelectedValue,
 
-			if (lstMedia.SelectedItems.Count > 0)
-				if (lstAudio.Items.Count > 0)
-						preset.Audio.EncoderCommand = (lstMedia.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
+                Video = new MediaPresetVideo
+                {
+                    Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = new Guid($"{cboVideoEncoder.SelectedValue}"),
+                        Preset = cboVideoPreset.Text,
+                        Tune = cboVideoTune.Text,
+                        Mode = cboVideoRateControl.SelectedIndex,
+                        Value = nudVideoRateFactor.Value,
+                        MultiPass = (int)nudVideoMultiPass.Value,
+                        Command = videoCmd
+                    },
+
+                    Quality = new MediaQueueVideoQuality
+                    {
+                        Width = width,
+                        Height = height,
+                        FrameRate = (float)fps,
+                        BitDepth = bpc,
+                        PixelFormat = pix
+                    },
+
+                    DeInterlace = new MediaQueueVideoDeInterlace
+                    {
+                        Enable = chkVideoDeinterlace.Checked,
+                        Mode = cboVideoDeinterlaceMode.SelectedIndex,
+                        Field = cboVideoDeinterlaceField.SelectedIndex
+                    }
+                },
+
+                Audio = new MediaPresetAudio
+                {
+                    Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = new Guid($"{cboAudioEncoder.SelectedValue}"),
+                        Mode = cboAudioMode.SelectedIndex,
+                        Quality = quality,
+                        SampleRate = samplerate,
+                        Channel = channel,
+                    },
+
+                    Command = audioCmd
+                }
+            };
 
 			if (MediaPreset.List.ContainsKey(id))
 			{
@@ -580,14 +593,8 @@ namespace ifme
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{
-				var selected = lstMedia.SelectedItems;
-
-				foreach (ListViewItem item in selected)
-				{
-					lstMedia.Items[item.Index].Selected = false;
-					lstMedia.Items[item.Index].Selected = true;
-				}
-			}
+                lstMedia_SelectedIndexChanged(null, null);
+            }
 		}
 
 		private void UXReloadVideo()
@@ -724,38 +731,29 @@ namespace ifme
 
 			queue.Enable = true;
 			queue.FilePath = file;
-			queue.OutputFormat = TargetFormat.MKV;
+			queue.OutputFormat = "mkv";
 
 			// if input only have audio
 			if (media.Video.Count == 0)
-				queue.OutputFormat = TargetFormat.OGG;
+				queue.OutputFormat = "ogg";
 
 			queue.MediaInfo = media;
 
-			var vdef = new MediaDefaultVideo(MediaTypeVideo.MKV);
-			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+            MediaValidator.GetCodecVideo("mkv", out var vid);
+            MediaValidator.GetCodecAudio("m4a", out var aid);
 
 			foreach (var item in media.Video)
 			{
-				queue.Video.Add(new MediaQueueVideo
-				{
-					Enable = true,
-					File = file,
-					Id = item.Id,
-					Duration = item.Duration,
-					Lang = Get.LangCheck(item.Language),
-					Format = Get.CodecFormat(item.Codec),
+                queue.Video.Add(new MediaQueueVideo
+                {
+                    Enable = true,
+                    File = file,
+                    Id = item.Id,
+                    Duration = item.Duration,
+                    Lang = Get.LangCheck(item.Language),
+                    Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new MediaQueueVideoEncoder
-                    {
-                        Id = vdef.Encoder,
-                        Preset = vdef.Preset,
-                        Tune = vdef.Tune,
-                        Mode = vdef.Mode,
-                        Value = vdef.Value,
-                        MultiPass = vdef.Pass,
-                        Command = vdef.Command,
-                    },
+                    Encoder = vid.Encoder,
 
                     Quality = new MediaQueueVideoQuality
                     {
@@ -765,7 +763,7 @@ namespace ifme
                         FrameRateAvg = item.FrameRateAvg,
                         FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
                         IsVFR = !item.FrameRateConstant,
-                        BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
+                        BitDepth = MediaValidator.IsValidBitDepth(vid.Encoder.Id, item.BitDepth),
                         PixelFormat = item.Chroma,
                     },
 
@@ -780,23 +778,15 @@ namespace ifme
 
 			foreach (var item in media.Audio)
 			{
-				queue.Audio.Add(new MediaQueueAudio
-				{
-					Enable = true,
-					File = file,
-					Id = item.Id,
-					Lang = Get.LangCheck(item.Language),
-					Format = Get.CodecFormat(item.Codec),
+                queue.Audio.Add(new MediaQueueAudio
+                {
+                    Enable = true,
+                    File = file,
+                    Id = item.Id,
+                    Lang = Get.LangCheck(item.Language),
+                    Format = Get.CodecFormat(item.Codec),
 
-					Encoder = new MediaQueueAudioEncoder
-                    {
-                        Id = adef.Encoder,
-                        Mode = adef.Mode,
-                        Quality = adef.Quality,
-                        SampleRate = adef.SampleRate,
-                        Channel = adef.Channel,
-                        Command = adef.Command
-                    }
+                    Encoder = aid.Encoder
 				});
 			}
 
@@ -829,93 +819,68 @@ namespace ifme
 
 		private void AddVideo(string file)
 		{
-			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
+            if (MediaValidator.GetCodecVideo((string)cboTargetFormat.SelectedValue, out var video))
+            {
+                var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
-			if (rdoFormatWebm.Checked)
-				vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
-
-			var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
-
-			foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Video)
-			{
-				media.Video.Add(new MediaQueueVideo
-				{
-					Enable = true,
-					File = file,
-					Id = item.Id,
-					Duration = item.Duration,
-					Lang = Get.LangCheck(item.Language),
-					Format = Get.CodecFormat(item.Codec),
-
-					Encoder = new MediaQueueVideoEncoder
+                foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Video)
+                {
+                    media.Video.Add(new MediaQueueVideo
                     {
-                        Id = vdef.Encoder,
-                        Preset = vdef.Preset,
-                        Tune = vdef.Tune,
-                        Mode = vdef.Mode,
-                        Value = vdef.Value,
-                        MultiPass = vdef.Pass,
-                        Command = vdef.Command,
-                    },
+                        Enable = true,
+                        File = file,
+                        Id = item.Id,
+                        Duration = item.Duration,
+                        Lang = Get.LangCheck(item.Language),
+                        Format = Get.CodecFormat(item.Codec),
 
-					Quality = new MediaQueueVideoQuality
-                    {
-                        Width = item.Width,
-                        Height = item.Height,
-                        FrameRate = (float)Math.Round(item.FrameRate, 3),
-                        FrameRateAvg = item.FrameRateAvg,
-                        FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
-                        IsVFR = !item.FrameRateConstant,
-                        BitDepth = MediaValidator.IsValidBitDepth(vdef.Encoder, item.BitDepth),
-                        PixelFormat = item.Chroma,
-                    },
+                        Encoder = video.Encoder,
 
-					DeInterlace = new MediaQueueVideoDeInterlace
-                    {
-                        Enable = false,
-                        Mode = 1,
-                        Field = 0
-                    }
-				});
-			}
+                        Quality = new MediaQueueVideoQuality
+                        {
+                            Width = item.Width,
+                            Height = item.Height,
+                            IsVFR = (item.FrameRate != item.FrameRateAvg),
+                            FrameRate = item.FrameRate,
+                            FrameRateAvg = item.FrameRateAvg,
+                            FrameCount = item.FrameCount,
+                            BitDepth = item.BitDepth,
+                            PixelFormat = item.Chroma,
+                            Command = string.Empty
+                        }
+                    });
+                }
+            }
 		}
 
 		private void AddAudio(string file)
 		{
-			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
+            if (MediaValidator.GetCodecAudio((string)cboTargetFormat.SelectedValue, out var audio))
+            {
+                var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
 
-			if (rdoFormatAudioMp3.Checked)
-				adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
-			else if (rdoFormatAudioOgg.Checked || rdoFormatWebm.Checked)
-				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
-			else if (rdoFormatAudioOpus.Checked)
-				adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
-			else if (rdoFormatAudioFlac.Checked)
-				adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
-
-			var media = (MediaQueue)lstMedia.SelectedItems[0].Tag;
-
-			foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Audio)
-			{
-				media.Audio.Add(new MediaQueueAudio
-				{
-					Enable = true,
-					File = file,
-					Id = item.Id,
-					Lang = Get.LangCheck(item.Language),
-					Format = Get.CodecFormat(item.Codec),
-
-					Encoder = new MediaQueueAudioEncoder
+                foreach (var item in new FFmpegDotNet.FFmpeg.Stream(file).Audio)
+                {
+                    media.Audio.Add(new MediaQueueAudio
                     {
-                        Id = adef.Encoder,
-                        Mode = adef.Mode,
-                        Quality = adef.Quality,
-                        SampleRate = adef.SampleRate,
-                        Channel = adef.Channel,
-                        Command = adef.Command
-                    }
-				});
-			}
+                        Enable = true,
+                        File = file,
+                        Id = item.Id,
+                        Lang = Get.LangCheck(item.Language),
+                        Format = Get.CodecFormat(item.Codec),
+
+                        Encoder = new MediaQueueAudioEncoder
+                        {
+                            Id = audio.Encoder.Id,
+                            Mode = audio.Encoder.Mode,
+                            Quality = audio.Encoder.Quality,
+                            SampleRate = audio.Encoder.SampleRate,
+                            Channel = audio.Encoder.Channel,
+                            Command = audio.Encoder.Command
+                        }
+                    });
+                }
+            }
 		}
 
 		private void AddSubtitle(string file)
@@ -1009,7 +974,7 @@ namespace ifme
                 Path.GetFileName(queue.FilePath),
                 TimeSpan.FromSeconds(queue.MediaInfo.Duration).ToString("hh\\:mm\\:ss"),
                 Path.GetExtension(queue.FilePath).Substring(1).ToUpperInvariant(),
-                Get.TargetFormat(queue.OutputFormat),
+                queue.OutputFormat.ToUpperInvariant(),
                 queue.Enable ? "Ready" : "Done"
             })
             {
@@ -1027,106 +992,6 @@ namespace ifme
             }
         }
 
-		private void MediaFormatDefault(object sender, EventArgs e)
-		{
-			if (lstMedia.SelectedItems.Count < 0)
-				return;
-
-			var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
-			var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
-
-			if (rdoFormatWebm.Checked)
-			{
-				vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
-				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
-
-				pnlVideo.Enabled = true;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else if (rdoFormatAudioMp3.Checked)
-			{
-				adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
-
-				pnlVideo.Enabled = false;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else if (rdoFormatAudioMp4.Checked)
-			{
-				adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
-
-				pnlVideo.Enabled = false;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else if (rdoFormatAudioOgg.Checked)
-			{
-				adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
-
-				pnlVideo.Enabled = false;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else if (rdoFormatAudioOpus.Checked)
-			{
-				adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
-
-				pnlVideo.Enabled = false;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else if (rdoFormatAudioFlac.Checked)
-			{
-				adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
-
-				pnlVideo.Enabled = false;
-				pnlSubtitle.Enabled = false;
-				pnlAttachment.Enabled = false;
-			}
-			else
-			{
-				if (rdoFormatMp4.Checked)
-				{
-					pnlVideo.Enabled = true;
-					pnlSubtitle.Enabled = false;
-					pnlAttachment.Enabled = false;
-				}
-				else
-				{
-					pnlVideo.Enabled = true;
-					pnlSubtitle.Enabled = true;
-					pnlAttachment.Enabled = true;
-				}
-			}
-
-            // to do fix
-            foreach (ListViewItem q in lstMedia.SelectedItems)
-            {
-                var mf = q.Tag as MediaQueue;
-
-                foreach (var v in mf.Video)
-                {
-                    v.Encoder.Id = vdef.Encoder;
-                    v.Encoder.Preset = vdef.Preset;
-                    v.Encoder.Tune = vdef.Tune;
-                    v.Encoder.Mode = vdef.Mode;
-                    v.Encoder.Value = vdef.Value;
-                    v.Encoder.MultiPass = vdef.Pass;
-                    v.Encoder.Command = vdef.Command;
-                }
-
-                foreach (var a in mf.Audio)
-                {
-                    a.Encoder.Id = adef.Encoder;
-                    a.Encoder.Mode = adef.Mode;
-                    a.Encoder.Quality = adef.Quality;
-                    a.Encoder.SampleRate = adef.SampleRate;
-                    a.Encoder.Channel = adef.Channel;
-                }
-            }
-        }
-
 		// Minimise code, all controls subscribe one function :)
 		private void MediaApply(object sender, EventArgs e)
 		{
@@ -1136,52 +1001,11 @@ namespace ifme
 			foreach (ListViewItem q in lstMedia.SelectedItems)
 			{
 				var m = q.Tag as MediaQueue;
-				var t = string.Empty;
 
-				if (rdoFormatMp4.Checked)
-				{
-					m.OutputFormat = TargetFormat.MP4;
-					t = "MP4";
-				}
-				else if (rdoFormatMkv.Checked)
-				{
-					m.OutputFormat = TargetFormat.MKV;
-					t = "MKV";
-				}
-				else if (rdoFormatWebm.Checked)
-				{
-					m.OutputFormat = TargetFormat.WEBM;
-					t = "WEBM";
-				}
-				else if (rdoFormatAudioMp3.Checked)
-				{
-					m.OutputFormat = TargetFormat.MP3;
-					t = "MP3";
-				}
-				else if (rdoFormatAudioMp4.Checked)
-				{
-					m.OutputFormat = TargetFormat.M4A;
-					t = "M4A";
-				}
-				else if (rdoFormatAudioOgg.Checked)
-				{
-					m.OutputFormat = TargetFormat.OGG;
-					t = "OGG";
-				}
-				else if (rdoFormatAudioOpus.Checked)
-				{
-					m.OutputFormat = TargetFormat.OPUS;
-					t = "OPUS";
-				}
-				else if (rdoFormatAudioFlac.Checked)
-				{
-					m.OutputFormat = TargetFormat.FLAC;
-					t = "FLAC";
-				}
+                m.OutputFormat = (string)cboTargetFormat.SelectedValue;
+				q.SubItems[3].Text = m.OutputFormat.ToUpperInvariant();
 
-				q.SubItems[3].Text = t;
-
-				if (lstMedia.SelectedItems.Count > 1)
+                if (lstMedia.SelectedItems.Count > 1)
 				{
 					for (int i = 0; i < m.Video.Count; i++)
 					{
@@ -1263,13 +1087,11 @@ namespace ifme
 				// if user change encoder, update command-line as well
 				if (!Guid.Equals(video.Encoder, id))
 				{
-					Plugin temp;
-
-					if (Plugin.Items.TryGetValue(id, out temp))
-					{
-						video.Encoder.Command = temp.Video.Args.Command;
-					}
-				}
+                    if (Plugin.Items.TryGetValue(id, out Plugin temp))
+                    {
+                        video.Encoder.Command = temp.Video.Args.Command;
+                    }
+                }
 
 				video.Encoder.Id = new Guid($"{cboVideoEncoder.SelectedValue}");
 			}
@@ -1508,38 +1330,7 @@ namespace ifme
 			}
 
 			// Format choice
-			var format = media.OutputFormat;
-
-			switch (format)
-			{
-				case TargetFormat.MP4:
-					rdoFormatMp4.Checked = true;
-					break;
-				case TargetFormat.MKV:
-					rdoFormatMkv.Checked = true;
-					break;
-				case TargetFormat.WEBM:
-					rdoFormatWebm.Checked = true;
-					break;
-				case TargetFormat.MP3:
-					rdoFormatAudioMp3.Checked = true;
-					break;
-				case TargetFormat.M4A:
-					rdoFormatAudioMp4.Checked = true;
-					break;
-				case TargetFormat.OGG:
-					rdoFormatAudioOgg.Checked = true;
-					break;
-				case TargetFormat.OPUS:
-					rdoFormatAudioOpus.Checked = true;
-					break;
-				case TargetFormat.FLAC:
-					rdoFormatAudioFlac.Checked = true;
-					break;
-				default:
-					rdoFormatMkv.Checked = true;
-					break;
-			}
+            cboTargetFormat.SelectedValue = media.OutputFormat;
 
             // Video
             lstVideo.SelectedItems.Clear();
@@ -1645,7 +1436,7 @@ namespace ifme
 			BeginInvoke((Action)delegate () { cboVideoStreamLang.SelectedValue = v.Lang; });
 
 			// select encoder and wait ui thread to load
-			BeginInvoke((Action)delegate () { cboVideoEncoder.SelectedValue = v.Encoder; });
+			BeginInvoke((Action)delegate () { cboVideoEncoder.SelectedValue = v.Encoder.Id; });
 			Thread.Sleep(1);
 
 			// select mode and wait ui thread to load
@@ -1696,7 +1487,7 @@ namespace ifme
 			BeginInvoke((Action)delegate () { cboAudioStreamLang.SelectedValue = a.Lang; });
 
 			// select encoder and wait ui thread to load
-			BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Id; });
+			BeginInvoke((Action)delegate () { cboAudioEncoder.SelectedValue = a.Encoder.Id; });
 			Thread.Sleep(1);
 
 			// select mode and wait ui thread to load

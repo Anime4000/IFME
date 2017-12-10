@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace ifme
 {
-	class MediaPreset
+	public class MediaPreset
 	{
 		public string Name { get; set; }
 		public string Author { get; set; }
-		public int OutputFormat { get; set; }
+		public string OutputFormat { get; set; }
 		public MediaPresetVideo Video { get; set; } = new MediaPresetVideo();
 		public MediaPresetAudio Audio { get; set; } = new MediaPresetAudio();
 
@@ -46,6 +46,16 @@ namespace ifme
                     ConsoleEx.Write($" appears to be invalid.\nException thrown: {ex.Message}\n");
                 }
             }
+        }
+
+        public static void Test()
+        {
+            var temp = new MediaPreset
+            {
+
+            };
+
+            File.WriteAllText("preset.example", JsonConvert.SerializeObject(temp, Formatting.Indented));
         }
 	}
 }

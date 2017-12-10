@@ -78,7 +78,7 @@ namespace ifme
                 {
                     Enable = true,
                     FilePath = frm.ReturnValue + ".new",
-                    OutputFormat = TargetFormat.MKV,
+                    OutputFormat = "mkv",
                 };
 
                 MediaQueueAdd(queue);
@@ -456,6 +456,53 @@ namespace ifme
             }
         }
 
+        private void cboTargetFormat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstMedia.SelectedItems.Count < 1)
+                return;
+
+            var format = ((KeyValuePair<string,string>)cboTargetFormat.SelectedItem).Key;
+
+            foreach (ListViewItem q in lstMedia.SelectedItems)
+            {
+                var mf = q.Tag as MediaQueue;
+
+                for (int i = 0; i < mf.Video.Count; i++)
+                {
+                    if (MediaValidator.IsOutFormatValid(format, mf.Video[i].Encoder.Id, true))
+                    {
+
+                    }
+                    else
+                    {
+                        if (MediaValidator.GetCodecVideo(format, out var video))
+                        {
+                            mf.OutputFormat = format;
+                            mf.Video[i].Encoder = video.Encoder;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < mf.Audio.Count; i++)
+                {
+                    if (MediaValidator.IsOutFormatValid(format, mf.Audio[i].Encoder.Id, false))
+                    {
+
+                    }
+                    else
+                    {
+                        if (MediaValidator.GetCodecAudio(format, out var audio))
+                        {
+                            mf.OutputFormat = format;
+                            mf.Audio[i].Encoder = audio.Encoder;
+                        }
+                    }
+                }
+
+                MediaApply(sender, e);
+            }
+        }
+
         private void cboEncodingPreset_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (Get.IsReady)
@@ -472,37 +519,19 @@ namespace ifme
 				var m = q.Tag as MediaQueue;
 				var p = MediaPreset.List[cboEncodingPreset.SelectedValue as string];
 
-				m.OutputFormat = (TargetFormat)p.OutputFormat;
+				m.OutputFormat = p.OutputFormat;
 
 				foreach (var video in m.Video)
 				{
-					video.Encoder.Id = p.Video.Encoder;
-					video.Encoder.Preset = p.Video.EncoderPreset;
-					video.Encoder.Tune = p.Video.EncoderTune;
-					video.Encoder.Mode = p.Video.EncoderMode;
-					video.Encoder.Value = p.Video.EncoderValue;
-					video.Encoder.MultiPass = p.Video.EncoderMultiPass;
-					video.Encoder.Command = p.Video.EncoderCommand;
-
-					video.Quality.Width = p.Video.Width;
-					video.Quality.Height = p.Video.Height;
-					video.Quality.FrameRate = (float)p.Video.FrameRate;
-					video.Quality.BitDepth = p.Video.BitDepth;
-					video.Quality.PixelFormat = p.Video.PixelFormat;
-
-					video.DeInterlace.Enable = p.Video.DeInterlace;
-					video.DeInterlace.Mode = p.Video.DeInterlaceMode;
-					video.DeInterlace.Field = p.Video.DeInterlaceField;
+                    video.Encoder = p.Video.Encoder;
+					video.Quality = p.Video.Quality;
+					video.DeInterlace = p.Video.DeInterlace;
 				}
 
 				foreach (var audio in m.Audio)
 				{
-					audio.Encoder.Id = p.Audio.Encoder;
-					audio.Encoder.Mode = p.Audio.EncoderMode;
-					audio.Encoder.Quality = p.Audio.EncoderQuality;
-					audio.Encoder.SampleRate = p.Audio.EncoderSampleRate;
-					audio.Encoder.Channel = p.Audio.EncoderChannel;
-					audio.Encoder.Command = p.Audio.EncoderCommand;
+					audio.Encoder = p.Audio.Encoder;
+                    audio.Command = p.Audio.Command;
 				}
 			}
 
@@ -671,14 +700,11 @@ namespace ifme
 			if (cboVideoEncoder.SelectedIndex <= -1)
 				return;
 
-			var temp = new Plugin();
 			var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 
-			if (Plugin.Items.TryGetValue(key, out temp))
+			if (Plugin.Items.TryGetValue(key, out var temp))
 			{
-				if ((rdoFormatMp4.Checked && temp.Format.Contains("mp4")) ||
-					(rdoFormatMkv.Checked && temp.Format.Contains("mkv")) ||
-					(rdoFormatWebm.Checked && temp.Format.Contains("webm")))
+                if (MediaValidator.IsOutFormatValid((string)cboTargetFormat.SelectedValue, temp.GUID, true))
 				{
 					var video = temp.Video;
 
@@ -708,12 +734,8 @@ namespace ifme
 				{
 					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-					var vdef = new MediaDefaultVideo(MediaTypeVideo.MP4);
-
-					if (rdoFormatWebm.Checked)
-						vdef = new MediaDefaultVideo(MediaTypeVideo.WEBM);
-
-					cboVideoEncoder.SelectedValue = vdef.Encoder;
+                    if (MediaValidator.GetCodecVideo((string)cboTargetFormat.SelectedValue, out var video))
+                        cboVideoEncoder.SelectedValue = video.Encoder.Id;
 				}
 
 				btnVideoAdvDec.Enabled = temp.Video.Args.Pipe;
@@ -851,12 +873,7 @@ namespace ifme
 
 			if (Plugin.Items.TryGetValue(key, out temp))
 			{
-				if (((rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp3")) ||
-					((rdoFormatAudioMp4.Checked || rdoFormatMkv.Checked || rdoFormatMp4.Checked) && temp.Format.Contains("mp4")) ||
-					((rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked) && temp.Format.Contains("ogg")) ||
-					((rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("opus")) ||
-					((rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked) && temp.Format.Contains("flac")) ||
-					(rdoFormatMkv.Checked && (temp.Format.Contains("mkv") || temp.Format.Contains("mka"))))
+				if (MediaValidator.IsOutFormatValid((string)cboTargetFormat.SelectedValue, temp.GUID, false))
 				{
 					var audio = temp.Audio;
 
@@ -913,18 +930,8 @@ namespace ifme
 				{
 					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-					var adef = new MediaDefaultAudio(MediaTypeAudio.MP4);
-
-					if (rdoFormatAudioMp3.Checked || rdoFormatMkv.Checked)
-						adef = new MediaDefaultAudio(MediaTypeAudio.MP3);
-					else if (rdoFormatAudioOgg.Checked || rdoFormatMkv.Checked || rdoFormatWebm.Checked)
-						adef = new MediaDefaultAudio(MediaTypeAudio.OGG);
-					else if (rdoFormatAudioOpus.Checked || rdoFormatMkv.Checked)
-						adef = new MediaDefaultAudio(MediaTypeAudio.OPUS);
-					else if (rdoFormatAudioFlac.Checked || rdoFormatMkv.Checked)
-						adef = new MediaDefaultAudio(MediaTypeAudio.FLAC);
-
-					cboAudioEncoder.SelectedValue = adef.Encoder;
+                    if (MediaValidator.GetCodecAudio((string)cboTargetFormat.SelectedValue, out var audio))
+					    cboAudioEncoder.SelectedValue = audio.Encoder.Id;
 				}
 
 				btnAudioAdvDec.Enabled = temp.Audio.Args.Pipe;

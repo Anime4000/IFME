@@ -1,30 +1,43 @@
 {
   "Name": "High Quality & Compression (Full HD)",
   "Author": "Anime4000",
-  "OutputFormat": 0,
+  "OutputFormat": "mkv",
   "Video": {
-    "Encoder": "deadbeef-0265-0265-0265-026502650265",
-    "EncoderPreset": "slower",
-    "EncoderTune": "psnr",
-    "EncoderMode": 0,
-    "EncoderValue": 24,
-    "EncoderMultiPass": 2,
-    "EncoderCommand": "",
-    "Width": 1920,
-    "Height": 1080,
-    "FrameRate": 23.976,
-    "BitDepth": 8,
-    "PixelFormat": 420,
-    "DeInterlace": false,
-    "DeInterlaceMode": 1,
-    "DeInterlaceField": 0
+    "Encoder": {
+      "Id": "deadbeef-0265-0265-0265-026502650265",
+      "Preset": "slower",
+      "Tune": "psnr",
+      "Mode": 0,
+      "Value": 24,
+      "MultiPass": 2,
+      "Command": ""
+    },
+    "Quality": {
+      "Width": 1920,
+      "Height": 1080,
+      "IsVFR": false,
+      "FrameRate": 23.976,
+      "FrameRateAvg": 0,
+      "FrameCount": 0,
+      "BitDepth": 8,
+      "PixelFormat": 420,
+      "Command": ""
+    },
+    "DeInterlace": {
+      "Enable": false,
+      "Field": 1,
+      "Mode": 0
+    }
   },
   "Audio": {
-    "Encoder": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
-    "EncoderMode": 0,
-    "EncoderQuality": 128000,
-    "EncoderSampleRate": 44100,
-    "EncoderChannel": 2,
-    "EncoderCommand": ""
+    "Encoder": {
+      "Id": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
+      "Mode": 0,
+      "Quality": 128000,
+      "SampleRate": 44100,
+      "Channel": 2,
+      "Command": ""
+    },
+    "Command": ""
   }
 }
