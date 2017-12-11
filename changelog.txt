@@ -3,10 +3,15 @@
 [new] Support Burn subtitle into video (Hard Sub) [FFmpeg with --libass enable]
 [new] Add folder import (recursively find media file)
 [new] Queue/List now can save just like previous version
+[new] Added legacy codec for older device support
 [fixed] Plugins script: value now can have prefix & postfix (eg: 128k instead of 128000)
 [fixed] Audio channel now give meaningful text instead of numbers
+[fixed] Media settings cannot save (revert to default) when select different target format item
 [change] Rename included preset to friendly name :)
 [chnage] More branding support
+[change] Target Format now using "DropDown" selection
+
+NOTE: Previous version Encoding Preset script cannot work in this new version, please edit before use.
 
 Version 7.5 (Cosmic Housekeeping)
 ---------------------------------

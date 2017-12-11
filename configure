@@ -118,3 +118,5 @@ fi
 
 echo "Done, now you can make"
 exit 0
+
+exit 1
