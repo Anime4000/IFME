@@ -103,6 +103,11 @@ else
 	fi
 fi
 
+echo "Download necessary stuff"
+mkdir bin
+wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg32.exe -O ./bin/FontReg32.exe
+wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg64.exe -O ./bin/FontReg64.exe
+
 echo "Patch Makefile?"
 if [ $(uname -m | grep '64') ]; then
 	echo "    NO! 64-BIT AWESOME!"
