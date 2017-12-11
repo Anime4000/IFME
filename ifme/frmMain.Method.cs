@@ -264,49 +264,43 @@ namespace ifme
             {
                 OutputFormat = (string)cboTargetFormat.SelectedValue,
 
-                Video = new MediaPresetVideo
+                VideoEncoder = new MediaQueueVideoEncoder
                 {
-                    Encoder = new MediaQueueVideoEncoder
-                    {
-                        Id = new Guid($"{cboVideoEncoder.SelectedValue}"),
-                        Preset = cboVideoPreset.Text,
-                        Tune = cboVideoTune.Text,
-                        Mode = cboVideoRateControl.SelectedIndex,
-                        Value = nudVideoRateFactor.Value,
-                        MultiPass = (int)nudVideoMultiPass.Value,
-                        Command = videoCmd
-                    },
-
-                    Quality = new MediaQueueVideoQuality
-                    {
-                        Width = width,
-                        Height = height,
-                        FrameRate = (float)fps,
-                        BitDepth = bpc,
-                        PixelFormat = pix
-                    },
-
-                    DeInterlace = new MediaQueueVideoDeInterlace
-                    {
-                        Enable = chkVideoDeinterlace.Checked,
-                        Mode = cboVideoDeinterlaceMode.SelectedIndex,
-                        Field = cboVideoDeinterlaceField.SelectedIndex
-                    }
+                    Id = new Guid($"{cboVideoEncoder.SelectedValue}"),
+                    Preset = cboVideoPreset.Text,
+                    Tune = cboVideoTune.Text,
+                    Mode = cboVideoRateControl.SelectedIndex,
+                    Value = nudVideoRateFactor.Value,
+                    MultiPass = (int)nudVideoMultiPass.Value,
+                    Command = videoCmd
                 },
 
-                Audio = new MediaPresetAudio
+                VideoQuality = new MediaQueueVideoQuality
                 {
-                    Encoder = new MediaQueueAudioEncoder
-                    {
-                        Id = new Guid($"{cboAudioEncoder.SelectedValue}"),
-                        Mode = cboAudioMode.SelectedIndex,
-                        Quality = quality,
-                        SampleRate = samplerate,
-                        Channel = channel,
-                    },
+                    Width = width,
+                    Height = height,
+                    FrameRate = (float)fps,
+                    BitDepth = bpc,
+                    PixelFormat = pix
+                },
 
-                    Command = audioCmd
-                }
+                VideoDeInterlace = new MediaQueueVideoDeInterlace
+                {
+                    Enable = chkVideoDeinterlace.Checked,
+                    Mode = cboVideoDeinterlaceMode.SelectedIndex,
+                    Field = cboVideoDeinterlaceField.SelectedIndex
+                },
+
+                AudioEncoder = new MediaQueueAudioEncoder
+                {
+                    Id = new Guid($"{cboAudioEncoder.SelectedValue}"),
+                    Mode = cboAudioMode.SelectedIndex,
+                    Quality = quality,
+                    SampleRate = samplerate,
+                    Channel = channel,
+                },
+
+                AudioCommand = audioCmd
             };
 
 			if (MediaPreset.List.ContainsKey(id))
@@ -753,7 +747,16 @@ namespace ifme
                     Lang = Get.LangCheck(item.Language),
                     Format = Get.CodecFormat(item.Codec),
 
-                    Encoder = vid.Encoder,
+                    Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = Properties.Settings.Default.EncoderIdVideo,
+                        Preset = "medium",
+                        Tune = "ssim",
+                        Mode = 0,
+                        Value = 24,
+                        MultiPass = 2,
+                        Command = string.Empty
+                    },
 
                     Quality = new MediaQueueVideoQuality
                     {
@@ -786,7 +789,15 @@ namespace ifme
                     Lang = Get.LangCheck(item.Language),
                     Format = Get.CodecFormat(item.Codec),
 
-                    Encoder = aid.Encoder
+                    Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = Properties.Settings.Default.EncoderIdAudio,
+                        Mode = 0,
+                        Quality = 192000,
+                        SampleRate = 44100,
+                        Channel = 2,
+                        Command = string.Empty
+                    }
 				});
 			}
 

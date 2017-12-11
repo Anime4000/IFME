@@ -523,15 +523,15 @@ namespace ifme
 
 				foreach (var video in m.Video)
 				{
-                    video.Encoder = p.Video.Encoder;
-					video.Quality = p.Video.Quality;
-					video.DeInterlace = p.Video.DeInterlace;
+                    video.Encoder = p.VideoEncoder;
+					video.Quality = p.VideoQuality;
+					video.DeInterlace = p.VideoDeInterlace;
 				}
 
 				foreach (var audio in m.Audio)
 				{
-					audio.Encoder = p.Audio.Encoder;
-                    audio.Command = p.Audio.Command;
+					audio.Encoder = p.AudioEncoder;
+                    audio.Command = p.AudioCommand;
 				}
 			}
 
@@ -729,7 +729,10 @@ namespace ifme
 					var dei = temp.Video.Args.Pipe;
 					chkVideoDeinterlace.Enabled = dei;
 					grpVideoInterlace.Enabled = dei;
-				}
+
+                    cboVideoPreset.Enabled = cboVideoPreset.Items.Count > 0;
+                    cboVideoTune.Enabled = cboVideoTune.Items.Count > 0;
+                }
 				else
 				{
 					MessageBox.Show(Language.Lang.MsgBoxCodecIncompatible.Message, Language.Lang.MsgBoxCodecIncompatible.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);

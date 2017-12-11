@@ -2,42 +2,38 @@
   "Name": "Internet, HTML5 (Full HD)",
   "Author": "Anime4000",
   "OutputFormat": "webm",
-  "Video": {
-    "Encoder": {
-      "Id": "deadbeef-9999-9999-9999-999999999999",
-      "Preset": "",
-      "Tune": "",
-      "Mode": 0,
-      "Value": 32,
-      "MultiPass": 2,
-      "Command": ""
-    },
-    "Quality": {
-      "Width": 1920,
-      "Height": 1080,
-      "IsVFR": false,
-      "FrameRate": 23.976,
-      "FrameRateAvg": 0,
-      "FrameCount": 0,
-      "BitDepth": 8,
-      "PixelFormat": 420,
-      "Command": ""
-    },
-    "DeInterlace": {
-      "Enable": false,
-      "Field": 1,
-      "Mode": 0
-    }
-  },
-  "Audio": {
-    "Encoder": {
-      "Id": "deadface-f00d-f00d-f00d-f00df00df00d",
-      "Mode": 0,
-      "Quality": 128000,
-      "SampleRate": 44100,
-      "Channel": 2,
-      "Command": ""
-    },
+  "VideoEncoder": {
+    "Id": "deadbeef-9999-9999-9999-999999999999",
+    "Preset": "",
+    "Tune": "",
+    "Mode": 0,
+    "Value": 32,
+    "MultiPass": 2,
     "Command": ""
-  }
+  },
+  "VideoQuality": {
+    "Width": 1920,
+    "Height": 1080,
+    "IsVFR": false,
+    "FrameRate": 23.976,
+    "FrameRateAvg": 0,
+    "FrameCount": 0,
+    "BitDepth": 8,
+    "PixelFormat": 420,
+    "Command": ""
+  },
+  "VideoDeInterlace": {
+    "Enable": false,
+    "Field": 1,
+    "Mode": 0
+  },
+  "AudioEncoder": {
+    "Id": "deadface-f00d-f00d-f00d-f00df00df00d",
+    "Mode": 0,
+    "Quality": 128000,
+    "SampleRate": 44100,
+    "Channel": 2,
+    "Command": ""
+  },
+  "AudioCommand": ""
 }

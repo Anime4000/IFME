@@ -35,5 +35,14 @@
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">eng</Value>
     </Setting>
+    <Setting Name="EncoderIdVideo" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">deadbeef-0265-0265-0265-026502650265</Value>
+    </Setting>
+    <Setting Name="EncoderIdAudio" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">deadbeef-0aac-0aac-0aac-0aac0aac0aac</Value>
+    </Setting>
+    <Setting Name="EncoderFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">mkv</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

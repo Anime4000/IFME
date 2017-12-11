@@ -12,7 +12,7 @@ namespace ifme.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -152,6 +152,42 @@ namespace ifme.Properties {
             }
             set {
                 this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("deadbeef-0265-0265-0265-026502650265")]
+        public global::System.Guid EncoderIdVideo {
+            get {
+                return ((global::System.Guid)(this["EncoderIdVideo"]));
+            }
+            set {
+                this["EncoderIdVideo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("deadbeef-0aac-0aac-0aac-0aac0aac0aac")]
+        public global::System.Guid EncoderIdAudio {
+            get {
+                return ((global::System.Guid)(this["EncoderIdAudio"]));
+            }
+            set {
+                this["EncoderIdAudio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mkv")]
+        public string EncoderFormat {
+            get {
+                return ((string)(this["EncoderFormat"]));
+            }
+            set {
+                this["EncoderFormat"] = value;
             }
         }
     }

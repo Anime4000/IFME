@@ -131,9 +131,7 @@
     <Compile Include="Language\Language.cs" />
     <Compile Include="Language\LanguageIO.cs" />
     <Compile Include="Media\MediaEncoding.cs" />
-    <Compile Include="Media\Preset\MediaPreset.cs" />
-    <Compile Include="Media\Preset\MediaPresetAudio.cs" />
-    <Compile Include="Media\Preset\MediaPresetVideo.cs" />
+    <Compile Include="Media\MediaPreset.cs" />
     <Compile Include="Media\Queue\MediaQueue.cs" />
     <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
     <Compile Include="Media\Queue\MediaQueueAudio.cs" />
