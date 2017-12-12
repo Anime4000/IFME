@@ -55,6 +55,7 @@ copy:
 	cp "ifme/bin/Release/avisynth.json" "$(DIR)"
 	cp "ifme/bin/Release/format.json" "$(DIR)"
 	cp "ifme/bin/Release/language.json" "$(DIR)"
+	cp "ifme/bin/Release/targetfmt.json" "$(DIR)"
 	cp "ifme/bin/Release/mime.json" "$(DIR)"
 	cp -r "ifme/bin/Release/branding" "$(DIR)"
 	cp -r "ifme/bin/Release/lang" "$(DIR)"
