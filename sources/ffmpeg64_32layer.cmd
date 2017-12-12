@@ -4,6 +4,12 @@
 @echo off
 @title Fake FFmpeg 64-bit (32-bit Compatiblity Layer)
 
+reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
+
+if %OS%==32BIT goto 32BIT
+if %OS%==64BIT goto 64BIT
+
+:32BIT
 echo.
 echo =================================================
 echo ^| This script will make fake 64-bit of FFmpeg   ^|
@@ -42,3 +48,12 @@ exit 0
 :FAIL1
 pause
 exit 1
+
+:64BIT
+echo This script only for 32-bit OS,
+echo You have 64-bit OS, which is awesome :)
+echo.
+echo Poor 32-bit users, they should use 64-bit
+echo.
+pause
+exit 99

@@ -18,7 +18,7 @@ ARC32=ifme7_i686
 ARC64=ifme7_amd64
 
 all: clean compile copy fixmod
-	cp "$(DIR)" "$(REL32)"
+	cp -r "$(DIR)" "$(REL32)"
 	mv "$(DIR)" "$(REL64)"
 	tar -xvJf plugin32.tar.xz -C "$(REL32)"
 	tar -xvJf plugin64.tar.xz -C "$(REL64)"
@@ -28,6 +28,7 @@ all: clean compile copy fixmod
 	mv "$(REL64)" "$(DIR64)"
 
 clean:
+	rm -rf "$(DIR)"
 	rm -rf "$(DIR32)"
 	rm -rf "$(DIR64)"
 	rm -f "$(ARC32).7z"
@@ -46,6 +47,8 @@ copy:
 	cp "bin/FontReg64.exe" "$(DIR)"
 	cp "sources/ifme.sh" "$(DIR)"
 	cp "sources/ifme.desktop" "$(DIR)"
+	cp "sources/ffmpeg64_32layer.cmd" "$(DIR)"
+	cp "sources/ffmpeg64_32layer.sh" "$(DIR)"
 	cp "ifme/bin/Release/ifme.exe" "$(DIR)"
 	cp "ifme/bin/Release/FFmpegDotNet.dll" "$(DIR)"
 	cp "ifme/bin/Release/Newtonsoft.Json.dll" "$(DIR)"
