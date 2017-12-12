@@ -8,6 +8,7 @@
 [fixed] Plugins script: value now can have prefix & postfix (eg: 128k instead of 128000)
 [fixed] Audio channel now give meaningful text instead of numbers
 [fixed] Media settings cannot save (revert to default) when select different target format item
+[change] Update x265 version 2.6+13 (64-bit only)
 [change] Rename included preset to friendly name :)
 [chnage] More branding support
 [change] Target Format now using "DropDown" selection

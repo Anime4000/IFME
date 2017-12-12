@@ -8,25 +8,39 @@ MONOMK=mkbundle
 MODE=Release
 
 DIR=build
-IFME=ifme7
+DIR32=build32
+DIR64=build64
+
+REL32=release-ifme7_i686
+REL64=release-ifme7_amd64
+
+ARC32=ifme7_i686
+ARC64=ifme7_amd64
 
 all: clean compile copy fixmod
-	mv "$(DIR)" "release-ifme7"
-	7za a -tzip -mm=lzma -mx=9 "$(IFME).zip" "release-ifme7"
-	mv "release-ifme7" "$(DIR)"
+	cp "$(DIR)" "$(REL32)"
+	mv "$(DIR)" "$(REL64)"
+	tar -xvJf plugin32.tar.xz -C "$(REL32)"
+	tar -xvJf plugin64.tar.xz -C "$(REL64)"
+	7za a -tzip -mm=Deflate -mfb=258 -mpass=15 "$(ARC32).zip" "$(REL32)"
+	7za a -tzip -mm=Deflate -mfb=258 -mpass=15 "$(ARC64).zip" "$(REL64)"
+	mv "$(REL32)" "$(DIR32)"
+	mv "$(REL64)" "$(DIR64)"
 
 clean:
-	rm -rf "$(DIR)"
-	rm -f "$(IFME).zip"
+	rm -rf "$(DIR32)"
+	rm -rf "$(DIR64)"
+	rm -f "$(ARC32).7z"
+	rm -f "$(ARC64).7z"
 
 compile:
 	$(MONOCC) /nologo /verbosity:normal ifme.sln /target:Build /property:Configuration=$(MODE)
 
 copy:
 	mkdir "$(DIR)"
-	tar -xvJf plugin.tar.xz -C "$(DIR)"
 	cp "license.txt" "$(DIR)"
 	cp "patents.txt" "$(DIR)"
+	cp "changelog.txt" "$(DIR)"
 	cp "doc/readme.txt" "$(DIR)"
 	cp "bin/FontReg32.exe" "$(DIR)"
 	cp "bin/FontReg64.exe" "$(DIR)"
@@ -51,3 +65,4 @@ fixmod:
 	find "./$(DIR)" -name "*.desktop" -exec chmod +x {} \;
 	find "./$(DIR)" -name "*.exe" -exec chmod -x {} \;
 	find "./$(DIR)" -name "*.dll" -exec chmod -x {} \;
+	
