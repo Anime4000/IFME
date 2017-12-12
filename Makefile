@@ -28,6 +28,8 @@ copy:
 	cp "license.txt" "$(DIR)"
 	cp "patents.txt" "$(DIR)"
 	cp "doc/readme.txt" "$(DIR)"
+	cp "bin/FontReg32.exe" "$(DIR)"
+	cp "bin/FontReg64.exe" "$(DIR)"
 	cp "sources/ifme.sh" "$(DIR)"
 	cp "sources/ifme.desktop" "$(DIR)"
 	cp "ifme/bin/Release/ifme.exe" "$(DIR)"

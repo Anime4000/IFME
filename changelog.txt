@@ -4,6 +4,7 @@
 [new] Add folder import (recursively find media file)
 [new] Queue/List now can save just like previous version
 [new] Added legacy codec for older device support
+[new] Added M2TS output support
 [fixed] Plugins script: value now can have prefix & postfix (eg: 128k instead of 128000)
 [fixed] Audio channel now give meaningful text instead of numbers
 [fixed] Media settings cannot save (revert to default) when select different target format item
