@@ -8,8 +8,8 @@ set SEVENZIP="%PROGRAMFILES%\7-Zip\7z.exe"
 set PLUGIN32=https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_i686.tar.xz
 set PLUGIN64=https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_amd64.tar.xz
 
-set UNZIP1=do not edit
-set UNZIP2=do not edit
+set UNZIPCMD1=do not edit
+set UNZIPCMD2=do not edit
 
 echo Checking archive utility 7-zip or WinRAR
 IF EXIST %SEVENZIP% goto USE7ZIP
@@ -20,20 +20,19 @@ goto FAIL
 
 :USE7ZIP
 echo %SEVENZIP% found!
-set UNZIP1=%SEVENZIP% x
-set UNZIP2=-y -o
+set UNZIPCMD1=%SEVENZIP% x
+set UNZIPCMD2=-y -o
 goto STAGE1
 
 :USEWINRAR
 echo %WINRAR% found!
-set UNZIP1=%WINRAR% x -ibck
-set UNZIP2=
+set UNZIPCMD1=%WINRAR% x -ibck
+set UNZIPCMD2=
 goto STAGE1
 
 :STAGE1
 echo Creating folders
-mkdir prerequisite\32bit\
-mkdir prerequisite\64bit\
+mkdir prerequisite
 
 echo Download prerequisite files
 IF NOT EXIST "%~dp0\prerequisite\FontReg32.exe" (
@@ -52,10 +51,6 @@ IF NOT EXIST "%~dp0\prerequisite\plugin32.tar.xz" (
 IF NOT EXIST "%~dp0\prerequisite\plugin64.tar.xz" (
 	powershell -command "& { (new-object System.Net.WebClient).DownloadFile('%PLUGIN32%','prerequisite\plugin64.tar.xz') }"
 )
-
-echo Unpacking prerequisite files
-%UNZIP1% prerequisite\plugin32.tar.xz %UNZIP2%"prerequisite\32bit"
-%UNZIP1% prerequisite\plugin64.tar.xz %UNZIP2%"prerequisite\64bit"
 
 echo Complete, now you can make
 goto DONE

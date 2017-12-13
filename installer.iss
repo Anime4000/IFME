@@ -22,6 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
+DisableWelcomePage=no
 ArchitecturesInstallIn64BitMode=x64  
 
 SourceDir=build
@@ -33,7 +34,7 @@ Compression=lzma2/ultra64
 SolidCompression=yes
 
 SetupIconFile=..\installer\image_unboxing.ico
-WizardImageFile=..\installer\image_banner2.bmp
+WizardImageFile=..\installer\image_banner1.bmp
 WizardSmallImageFile=..\installer\image_small.bmp
 
 OutputDir=..\
