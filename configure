@@ -3,6 +3,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BIT="$(uname -m | grep '64')"
 
+PLUGIN32="https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_i686.tar.xz"
+PLUGIN64="https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_amd64.tar.xz"
+
 cd "$DIR"
 
 echo "Checking xz utils"
@@ -90,23 +93,23 @@ else
 fi
 
 echo "Download necessary stuff"
-mkdir bin
-wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg32.exe -O ./bin/FontReg32.exe
-wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg64.exe -O ./bin/FontReg64.exe
+mkdir prerequisite
+wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg32.exe -O ./prerequisite/FontReg32.exe
+wget --no-check-certificate https://sourceforge.net/projects/ifme/files/stuff/FontReg64.exe -O ./prerequisite/FontReg64.exe
 
 echo "Checking plugin archive"
-if [ -f "plugin32.tar.xz" ]; then
+if [ -f "./prerequisite/plugin32.tar.xz" ]; then
 	echo "    32-bit Plugins found!"
 	sleep 1
 else
-	wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_i686.tar.xz -O plugin32.tar.xz
+	wget --no-check-certificate $PLUGIN32 -O ./prerequisite/plugin32.tar.xz
 fi
 
-if [ -f "plugin64.tar.xz" ]; then
+if [ -f "./prerequisite/plugin64.tar.xz" ]; then
 	echo "    64-bit Plugins found!"
 	sleep 1
 else
-	wget --no-check-certificate https://sourceforge.net/projects/ifme/files/plugin/plugin-basic_2017-12-12_amd64.tar.xz -O plugin64.tar.xz
+	wget --no-check-certificate $PLUGIN64 -O ./prerequisite/plugin64.tar.xz
 fi
 
 

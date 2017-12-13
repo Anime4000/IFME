@@ -214,6 +214,10 @@ $RECYCLE.BIN/
 *.msp
 
 # IFME build files.
+installer/
+prerequisite/
+bin/
+build/
 .vs/
 *.exe
 *.zip
