@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Imbangi kiraan bingkai",
     "lblFrameCountOffset": "Mana-mana video yang tidak mempunyai kadar bingkai yang kekal, pengekod akan tukar menjadi tetap dengan cara mengira (masa dalam saat * fps diberi). Dengan tambahan, pengekod akan memastikan tiada yang tercicir.",
     "tabOptionModule": "Modul",
+    "chkVerbose": "&Report lebih lanjut",
     "btnCancel": "&Batal",
     "btnOk": "&OK"
   },

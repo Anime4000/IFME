@@ -190,5 +190,17 @@ namespace ifme.Properties {
                 this["EncoderFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Verbose {
+            get {
+                return ((bool)(this["Verbose"]));
+            }
+            set {
+                this["Verbose"] = value;
+            }
+        }
     }
 }

@@ -160,31 +160,40 @@ namespace ifme
 
         private void tsmiProjectOpen_Click(object sender, EventArgs e)
         {
-            ProjectOpen(OpenFileProject());
+            var file = OpenFileProject();
+
+            if (!string.IsNullOrEmpty(file))
+                ProjectOpen(file);
         }
 
         private void tsmiProjectSave_Click(object sender, EventArgs e)
         {
-            if (File.Exists(MediaProject.ProjectFile))
+            if (lstMedia.Items.Count > 0)
             {
-                ProjectSave(MediaProject.ProjectFile);
-                return;
-            }
+                if (File.Exists(MediaProject.ProjectFile))
+                {
+                    ProjectSave(MediaProject.ProjectFile);
+                    return;
+                }
 
-            tsmiProjectSaveAs.PerformClick(); // reuse code
+                tsmiProjectSaveAs.PerformClick(); // reuse code
+            }
         }
 
         private void tsmiProjectSaveAs_Click(object sender, EventArgs e)
         {
-            var sdf = new SaveFileDialog
+            if (lstMedia.Items.Count > 0)
             {
-                Filter = "IFME project file|*.ifp",
-                FilterIndex = 1,
-            };
+                var sdf = new SaveFileDialog
+                {
+                    Filter = "IFME project file|*.ifp",
+                    FilterIndex = 1,
+                };
 
-            if (sdf.ShowDialog() == DialogResult.OK)
-            {
-                ProjectSave(sdf.FileName);
+                if (sdf.ShowDialog() == DialogResult.OK)
+                {
+                    ProjectSave(sdf.FileName);
+                }
             }
         }
 

@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Frame Count Offset",
     "lblFrameCountOffset": "Variable frame rate will be converted to constant frame rate. By adding an offset value, the decoder will compensate broken container data with a higher frame count to ensure no frames are missing during encoding.",
     "tabOptionModule": "Module",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Cancel",
     "btnOk": "&OK"
   },

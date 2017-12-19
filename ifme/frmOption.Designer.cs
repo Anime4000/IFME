@@ -65,6 +65,7 @@
             this.colModAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this.chkVerbose = new System.Windows.Forms.CheckBox();
             this.tabOption.SuspendLayout();
             this.tabOptionGeneral.SuspendLayout();
             this.grpNewFilename.SuspendLayout();
@@ -493,11 +494,22 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
+            // chkVerbose
+            // 
+            this.chkVerbose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkVerbose.Location = new System.Drawing.Point(12, 465);
+            this.chkVerbose.Name = "chkVerbose";
+            this.chkVerbose.Size = new System.Drawing.Size(305, 23);
+            this.chkVerbose.TabIndex = 3;
+            this.chkVerbose.Text = "&Verbose Output Log";
+            this.chkVerbose.UseVisualStyleBackColor = true;
+            // 
             // frmOption
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(640, 500);
+            this.Controls.Add(this.chkVerbose);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.tabOption);
@@ -565,5 +577,6 @@
 		private System.Windows.Forms.Label lblFrameCountOffset;
 		private System.Windows.Forms.NumericUpDown nudFrameCountOffset;
         private System.Windows.Forms.ColumnHeader colModVersion;
+        private System.Windows.Forms.CheckBox chkVerbose;
     }
 }

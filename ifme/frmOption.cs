@@ -65,7 +65,9 @@ namespace ifme
 			Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
 			Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
 
-			if (rdoNamePrefixCustom.Checked)
+            Properties.Settings.Default.Verbose = chkVerbose.Checked;
+
+            if (rdoNamePrefixCustom.Checked)
 				Properties.Settings.Default.FileNamePrefixType = 2;
 			else if (rdoNamePrefixDateTime.Checked)
 				Properties.Settings.Default.FileNamePrefixType = 1;

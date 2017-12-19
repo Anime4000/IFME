@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Frame Count Offset",
     "lblFrameCountOffset": "Qualsiasi frame rate variabile verrà convertito in un frame rate constante, in quanto IFME calcolerà il numero di frame con (durata in secondi * frame rate dichiarato). Aggiungendo un valore di offset, IFME aggiungerà dei frame per compensare eventuali dati non-indicizzati/corrotti, e quindi evitare ogni perdita di frame durante l'encoding.",
     "tabOptionModule": "Modulo",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Cancella",
     "btnOk": "&OK"
   },

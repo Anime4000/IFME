@@ -26,6 +26,8 @@ namespace ifme
 			txtNamePrefix.Text = Properties.Settings.Default.FileNamePrefix;
 			txtNamePostfix.Text = Properties.Settings.Default.FileNamePostfix;
 
+            chkVerbose.Checked = Properties.Settings.Default.Verbose;
+
 			if (Properties.Settings.Default.FileNamePrefixType == 0)
 				rdoNamePrefixNone.Checked = true;
 			else if (Properties.Settings.Default.FileNamePrefixType == 1)

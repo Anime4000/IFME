@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Przesunięcie o ilość klatek",
     "lblFrameCountOffset": "Zmienna częstotliwość klatek zostanie przeliczona na stałą częstotliwość. Dodając wartość przesunięcia dekodeka zrekompensuje uszkodzone dane w kontenerze z większą liczbą ramek, aby zagwarantować, że w trakcie kodowania nie zabraknie żadnych ramek.",
     "tabOptionModule": "Moduł",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Anuluj",
     "btnOk": "&OK"
   },

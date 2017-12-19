@@ -38,28 +38,28 @@ namespace ifme
 		public static int Start(string ExePath, string Args)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run(false, $"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
 		}
 
 		public static int Start(string ExePath, string Args, string WorkDir)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run(false, $"\"{FixPath(ExePath)}\" {Args}", WorkDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
 		}
 
 		public static int Start(string ExePath, string Args, string PipeExePath, string PipeArgs)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(PipeExePath);
-			return Run(false, $"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
 		}
 
 		public static int Start2(string ExePath, string Args, string WorkDir)
 		{
 			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run(true, $"\"{FixPath(ExePath)}\" {Args}", WorkDir);
+			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
 		}
 
-		private static int Run(bool Silent, string EnvCmd, string workDir)
+		private static int Run(string EnvCmd, string workDir)
 		{
 			var cmd = string.Empty;
 			var arg = string.Empty;
@@ -77,22 +77,25 @@ namespace ifme
 				arg = "-c 'eval $HITOHA'";
 			}
 
-			if (!Silent)
+			if (Properties.Settings.Default.Verbose)
 			{
 				ConsoleEx.Write(LogLevel.Normal, "Run command: ");
 				ConsoleEx.Write(ConsoleColor.DarkCyan, $"{EnvCmd}\n");
 			}
 
-			Process Proc = new Process();
-			Proc.StartInfo = new ProcessStartInfo(cmd, arg)
-			{
-				UseShellExecute = false,
-				WorkingDirectory = workDir
-			};
+            Process proc = new Process
+            {
+                StartInfo = new ProcessStartInfo(cmd, arg)
+                {
+                    UseShellExecute = false,
+                    WorkingDirectory = workDir
+                }
+            };
 
-			Proc.Start();
-			Proc.WaitForExit();
-			return Proc.ExitCode;
+            proc.Start();
+			proc.WaitForExit();
+
+			return proc.ExitCode;
 		}
 
 		private static string FixPath(string path)

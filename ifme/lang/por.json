@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Compensação da Contagem de Quadros",
     "lblFrameCountOffset": "A taxa de quadros variável será convertida em taxa de quadros constante. Ao adicionar um valor de deslocamento, o decodificador irá compensar dados de contêiner quebrados com uma contagem de quadros mais alta para garantir que não faltem quadros durante a codificação.",
     "tabOptionModule": "Módulo",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Cancelar",
     "btnOk": "&OK"
   },

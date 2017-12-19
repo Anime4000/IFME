@@ -1,4 +1,10 @@
-﻿Version 7.6 (Soul Heart)
+﻿Version 7.7 (Prism Ark)
+-----------------------
+[new] Enable/Disable verbose log
+[fixed] Version detection always return true
+[fixed] Block save blank project
+
+Version 7.6 (Soul Heart)
 ------------------------
 [new] Support Burn subtitle into video (Hard Sub) [FFmpeg with --libass enable]
 [new] Add folder import (recursively find media file)

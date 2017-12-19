@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "O&ffset für Bildzähler",
     "lblFrameCountOffset": "Ändere variable in konstante Bildrate. Ein Offset-Wert sorgt für eine höhere Bildanzahl beim Decoden zum Ausgleich fehlerhafter Containerdaten, so dass beim Encoden keine Bilder verloren gehen.",
     "tabOptionModule": "Modul",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Abbrechen",
     "btnOk": "&OK"
   },

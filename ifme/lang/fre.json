@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "&Décallage de comptetrame",
     "lblFrameCountOffset": "La fréquence d'images variables sera convertie en fréquence d'images constante. En ajoutant une valeur de décalage, le décodeur ajoutera plus de comptage de trames pour compenser les données de conteneur cassées afin de garantir aucune trame manquante pendant l'encodage.",
     "tabOptionModule": "Module",
+    "chkVerbose": "&Verbose Log Output",
     "btnCancel": "&Annuler",
     "btnOk": "&OK"
   },

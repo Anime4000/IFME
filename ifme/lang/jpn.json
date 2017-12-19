@@ -78,6 +78,7 @@
     "grpFrameCountOffset": "フレームカウントのオフセット(&F)",
     "lblFrameCountOffset": "固定フレームレートに変換する変数. フレームを追加して、欠落しているフレームを許可しない",
     "tabOptionModule": "モジュール",
+    "chkVerbose": "詳細ログ (&V)",
     "btnCancel": "キャンセル(&C)",
     "btnOk": "&OK"
   },
