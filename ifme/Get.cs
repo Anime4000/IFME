@@ -307,44 +307,72 @@ namespace ifme
 			try
 			{
 				Path.GetFileName(FilePath);
-
+                Path.GetPathRoot(FilePath);
+                Path.Combine(FilePath);
 				return Path.IsPathRooted(FilePath);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+                ConsoleEx.Write(LogLevel.Error, $"Given path is wrong: {ex.Message}\n");
+
 				return false;
 			}
 		}
 
-		internal static string NewFilePath(string SaveDir, string FilePath, string Ext)
+		internal static string NewFilePath(string SaveFolder, string FilePath, string FileExt)
 		{
 			// base
-			var filename = Path.GetFileNameWithoutExtension(FilePath);
+			var name = Path.GetFileNameWithoutExtension(FilePath);
+            var ext = FileExt.Contains(".") ? FileExt : "." + FileExt;
 			var prefix = string.Empty;
 			var postfix = string.Empty;
 
+            var time = $"{DateTime.Now:yyyyMMdd_HHmmss}";
+
 			// prefix
-			if (Properties.Settings.Default.FileNamePrefixType == 1)
-				prefix = $"[{DateTime.Now:yyyyMMdd_HHmmss}] ";
-			else if (Properties.Settings.Default.FileNamePrefixType == 2)
-				prefix = Properties.Settings.Default.FileNamePrefix;
+            switch (Properties.Settings.Default.FileNamePrefixType)
+            {
+                case 1:
+                    prefix = $"[{time}] ";
+                    break;
+                case 2:
+                    prefix = Properties.Settings.Default.FileNamePrefix;
+                    break;
+                default:
+                    break;
+            }
 
-			// postfix
-			if (Properties.Settings.Default.FileNamePostfixType == 1)
-				postfix = Properties.Settings.Default.FileNamePostfix;
+            // postfix
+            switch (Properties.Settings.Default.FileNamePostfixType)
+            {
+                case 1:
+                    postfix = Properties.Settings.Default.FileNamePostfix;
+                    break;
+                default:
+                    break;
+            }
 
-			// use save folder
-			filename = Path.Combine(SaveDir, $"{prefix}{filename}{postfix}{Ext}");
+            // Check path is valid and not UNC
+            if (IsValidPath(SaveFolder))
+            {
+                var count = 0;
+                var filename = string.Empty;
 
-			// check SaveDir is valid
-			if (!IsValidPath(filename))
-				filename = Path.Combine(Path.GetDirectoryName(FilePath), $"{prefix}{filename}{postfix}{Ext}");
+                do
+                {
+                    if (count == 0)
+                        filename = $"{prefix}{name}{postfix}{ext}";
+                    else
+                        filename = $"{prefix}{name}{postfix} ({count}){ext}";
 
-			// if exist, make a duplicate
-			if (File.Exists(filename))
-				filename = Path.Combine(Path.GetDirectoryName(filename), $"{prefix}{filename}{postfix} NEW{Ext}");
+                    count++;
 
-			return filename;
+                } while (File.Exists(Path.Combine(SaveFolder, filename)));
+
+                return Path.Combine(SaveFolder, filename);
+            }
+
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), $"{prefix}{name}{postfix} [{time}]{ext}");
 		}
 	}
 }

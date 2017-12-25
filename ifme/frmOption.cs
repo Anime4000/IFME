@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Collections.Generic;
 
 namespace ifme
@@ -30,7 +29,11 @@ namespace ifme
 				{
 					var l = Language.List[id];
 
-					lblLanguageAuthor.Text = $"{l.AuthorName} ({l.AuthorEmail})\n{l.AuthorProfile}";
+                    var name = l.AuthorName;
+                    var email = (string.IsNullOrEmpty(l.AuthorEmail) ? "" : $"({l.AuthorEmail})");
+                    var profile = l.AuthorProfile;
+
+                    lblLanguageAuthor.Text = $"{name} {email}\n{profile}";
 				}
 			}
 		}
@@ -58,37 +61,45 @@ namespace ifme
 
 		private void btnOk_Click(object sender, EventArgs e)
 		{
-			// Save all
-			// General
-			Properties.Settings.Default.Language = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
-			Properties.Settings.Default.TempDir = txtTempPath.Text;
-			Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
-			Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
+            try
+            {
+                // Save all
+                // General
+                Properties.Settings.Default.Language = ((KeyValuePair<string, string>)cboLanguage.SelectedItem).Key;
+                Properties.Settings.Default.TempDir = txtTempPath.Text;
+                Properties.Settings.Default.FileNamePrefix = txtNamePrefix.Text;
+                Properties.Settings.Default.FileNamePostfix = txtNamePostfix.Text;
 
-            Properties.Settings.Default.Verbose = chkVerbose.Checked;
+                Properties.Settings.Default.Verbose = chkVerbose.Checked;
 
-            if (rdoNamePrefixCustom.Checked)
-				Properties.Settings.Default.FileNamePrefixType = 2;
-			else if (rdoNamePrefixDateTime.Checked)
-				Properties.Settings.Default.FileNamePrefixType = 1;
-			else
-				Properties.Settings.Default.FileNamePrefixType = 0;
+                if (rdoNamePrefixCustom.Checked)
+                    Properties.Settings.Default.FileNamePrefixType = 2;
+                else if (rdoNamePrefixDateTime.Checked)
+                    Properties.Settings.Default.FileNamePrefixType = 1;
+                else
+                    Properties.Settings.Default.FileNamePrefixType = 0;
 
-			if (rdoNamePostfixNone.Checked)
-				Properties.Settings.Default.FileNamePostfixType = 0;
-			else
-				Properties.Settings.Default.FileNamePostfixType = 1;
+                if (rdoNamePostfixNone.Checked)
+                    Properties.Settings.Default.FileNamePostfixType = 0;
+                else
+                    Properties.Settings.Default.FileNamePostfixType = 1;
 
-			// Encoding
-			if (rdoFFmpeg32.Checked)
-				Properties.Settings.Default.FFmpegArch = 32;
-			else
-				Properties.Settings.Default.FFmpegArch = 64;
+                // Encoding
+                if (rdoFFmpeg32.Checked)
+                    Properties.Settings.Default.FFmpegArch = 32;
+                else
+                    Properties.Settings.Default.FFmpegArch = 64;
 
-			Properties.Settings.Default.FrameCountOffset = (int)nudFrameCountOffset.Value;
+                Properties.Settings.Default.FrameCountOffset = (int)nudFrameCountOffset.Value;
 
-			// Final
-			Properties.Settings.Default.Save();
+                // Final
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                ConsoleEx.Write(LogLevel.Error, $"Configuration broken, resetting... [ {ex.Message} ]");
+                Properties.Settings.Default.Reset();
+            }
 		}
 	}
 }

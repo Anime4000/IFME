@@ -578,7 +578,10 @@ namespace ifme
 
 		private void txtFolderOutput_TextChanged(object sender, EventArgs e)
 		{
-			Get.FolderSave = txtFolderOutput.Text;
+            if (Get.IsValidPath(txtFolderOutput.Text))
+                Get.FolderSave = txtFolderOutput.Text;
+            else
+                txtFolderOutput.Text = Get.FolderSave;
 		}
 
 		private void btnBrowseFolderOutput_Click(object sender, EventArgs e)

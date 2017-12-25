@@ -214,7 +214,7 @@ namespace ifme
                 if (string.IsNullOrEmpty(data[0]))
                     return;
 
-                if (string.Equals(Application.ProductVersion, data[0]))
+                if (Version.IsLatest(data[0]))
                     return; // simple version check
 
                 new frmCheckUpdate(data[1]).ShowDialog();

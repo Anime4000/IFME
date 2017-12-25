@@ -21,7 +21,14 @@ namespace ifme
 			InitializeUX();
 		}
 
-		private void lblDonatePP_Click(object sender, EventArgs e)
+        private void frmAbout_Shown(object sender, EventArgs e)
+        {
+            // Lock size
+            MinimumSize = new Size(Width, Height);
+            MaximumSize = new Size(Width, Height);
+        }
+
+        private void lblDonatePP_Click(object sender, EventArgs e)
 		{
 			Process.Start("https://paypal.me/anime4000/10");
 			lblDonatePP.ForeColor = Color.Purple;
@@ -38,5 +45,5 @@ namespace ifme
 			Clipboard.SetText("0xAdd9ba89B601e7CB5B3602643337B9db8c90EFe0");
 			lblDonateETH.ForeColor = Color.Purple;
 		}
-	}
+    }
 }

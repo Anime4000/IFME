@@ -1,8 +1,9 @@
 ﻿Version 7.7 (Prism Ark)
 -----------------------
 [new] Enable/Disable verbose log
-[fixed] Version detection always return true
-[fixed] Block save blank project
+[fixed] Broken version detection that always return true.
+[fixed] Prevent save a blank project.
+[fixed] Make a duplicate file if exist. example: File Name (1).mkv
 
 Version 7.6 (Soul Heart)
 ------------------------

@@ -238,6 +238,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
             this.Load += new System.EventHandler(this.frmAbout_Load);
+            this.Shown += new System.EventHandler(this.frmAbout_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.ResumeLayout(false);
