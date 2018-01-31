@@ -302,6 +302,17 @@ namespace ifme
             return "und";
         }
 
+        internal static string LangFile(string file)
+        {
+            var temp = Path.GetFileNameWithoutExtension(file);
+            var lang = temp.Substring(temp.Length - 3, 3);
+
+            if (LanguageCode.TryGetValue(lang, out string code))
+                return lang;
+
+            return "und";
+        }
+
         internal static bool IsValidPath(string FilePath)
 		{
 			try

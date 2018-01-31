@@ -264,9 +264,9 @@ namespace ifme
 				var dict = new Dictionary<int, MediaQueue>();
 				foreach (ListViewItem item in lstMedia.Items)
 				{
-					dict.Add(item.Index, item.Tag as MediaQueue);
-					item.SubItems[4].Text = "Waiting...";
-				}
+                    dict.Add(item.Index, item.Tag as MediaQueue);
+                    item.SubItems[4].Text = "Waiting...";
+                }
 
                 // check if all queue has enable hardsub
                 if (!dict.All(x => !x.Value.HardSub))
@@ -337,7 +337,12 @@ namespace ifme
 			}
 		}
 
-		private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
+        private void lstMedia_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            (lstMedia.Items[e.Item.Index].Tag as MediaQueue).Enable = e.Item.Checked;
+        }
+
+        private void lstMedia_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstMedia.SelectedItems.Count > 0)
 			{

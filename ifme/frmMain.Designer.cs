@@ -230,6 +230,7 @@
             this.lstMedia.TabIndex = 14;
             this.lstMedia.UseCompatibleStateImageBehavior = false;
             this.lstMedia.View = System.Windows.Forms.View.Details;
+            this.lstMedia.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lstMedia_ItemChecked);
             this.lstMedia.SelectedIndexChanged += new System.EventHandler(this.lstMedia_SelectedIndexChanged);
             this.lstMedia.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstMedia_DragDrop);
             this.lstMedia.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstMedia_DragEnter);

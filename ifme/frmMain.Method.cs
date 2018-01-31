@@ -739,7 +739,18 @@ namespace ifme
             MediaValidator.GetCodecVideo("mkv", out var vid);
             MediaValidator.GetCodecAudio("m4a", out var aid);
 
-			foreach (var item in media.Video)
+            // get default encoder of choice
+            if (!Plugin.Items.TryGetValue(Properties.Settings.Default.EncoderIdVideo, out Plugin defVideo))
+            {
+                // something default if plugin of choice not found
+            }
+
+            if (!Plugin.Items.TryGetValue(Properties.Settings.Default.EncoderIdAudio, out Plugin defAudio))
+            {
+                // something default if plugin of choice not found
+            }
+
+            foreach (var item in media.Video)
 			{
                 queue.Video.Add(new MediaQueueVideo
                 {
@@ -752,11 +763,11 @@ namespace ifme
 
                     Encoder = new MediaQueueVideoEncoder
                     {
-                        Id = Properties.Settings.Default.EncoderIdVideo,
-                        Preset = "medium",
-                        Tune = "ssim",
+                        Id = defVideo.GUID,
+                        Preset = defVideo.Video.PresetDefault,
+                        Tune = defVideo.Video.TuneDefault,
                         Mode = 0,
-                        Value = 24,
+                        Value = defVideo.Video.Mode[0].Value.Default,
                         MultiPass = 2,
                         Command = string.Empty
                     },
@@ -794,11 +805,11 @@ namespace ifme
 
                     Encoder = new MediaQueueAudioEncoder
                     {
-                        Id = Properties.Settings.Default.EncoderIdAudio,
+                        Id = defAudio.GUID,
                         Mode = 0,
-                        Quality = 192000,
-                        SampleRate = 44100,
-                        Channel = 2,
+                        Quality = defAudio.Audio.Mode[0].Default,
+                        SampleRate = defAudio.Audio.SampleRateDefault,
+                        Channel = defAudio.Audio.ChannelDefault,
                         Command = string.Empty
                     }
 				});
@@ -908,7 +919,7 @@ namespace ifme
 					Enable = true,
 					File = file,
 					Id = -1,
-					Lang = "und",
+					Lang = Get.LangFile(file),
 					Format = Path.GetExtension(file).Remove(1)
 				});
 			}
@@ -1548,6 +1559,13 @@ namespace ifme
 						lstMedia.Items[id].SubItems[4].Text = $"Done! ({Get.Duration(tt)})";
 					});
 				}
+                else
+                {
+                    lstMedia.Invoke((MethodInvoker)delegate
+                    {
+                        lstMedia.Items[id].SubItems[4].Text = "Skip...";
+                    });
+                }
 			}
 		}
 

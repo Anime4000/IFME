@@ -1,4 +1,10 @@
-﻿Version 7.7 (Prism Ark)
+﻿Version 7.8 (Opera Fantasia)
+----------------------------
+[new] Able to capture language code from file name (Subtitle)
+[fixed] Encoding did not honor "Main List Check State" (able to skip item)
+[fixed] Default codecs for new import media
+
+Version 7.7 (Prism Ark)
 -----------------------
 [new] Enable/Disable verbose log
 [fixed] Broken version detection that always return true.

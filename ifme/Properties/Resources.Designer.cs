@@ -61,7 +61,7 @@ namespace ifme.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prism Ark.
+        ///   Looks up a localized string similar to Opera Fantasia.
         /// </summary>
         internal static string AppCodeName {
             get {
