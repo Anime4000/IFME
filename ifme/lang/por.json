@@ -1,15 +1,15 @@
 {
   "AuthorName": "Alex Silva",
   "AuthorEmail": "contato@ialexsilva.com",
-  "AuthorProfile": "http://ialexsilva.com",
+  "AuthorProfile": "https://ialexsilva.com",
   "UIFontWindows": "Tahoma, 8pt",
   "UIFontLinux": "Nimbus Sans L, 8pt",
   "ToolTipDonate": "Obrigado por usar o IFME, espero que você goste.\nVocê pode doar para este projeto para que eu possa continuar melhorando.\nClique neste botão para saber como doar.",
-  "ToolTipHardSub": "Permanent Subtitle inside video!\n\n1. Only read first stream subtitle!\n2. Only read SubRip and SubStation Alpha",
+  "ToolTipHardSub": "Legenda permanente dentro vídeo!\n\n1. Ler apenas o primeiro fluxo da legenda!\n2. Ler apenas o SubRip e SubStation Alpha",
   "Warning": "ATENÇÃO!",
-  "PleaseWait": "Please Wait...",
-  "ReadProjectFile": "Reading project file, this may take awhile.",
-  "NewProject": "New Project",
+  "PleaseWait": "Por favor, aguarde...",
+  "ReadProjectFile": "Lendo arquivo do projeto, isso pode demorar um pouco.",
+  "NewProject": "Novo Projeto",
   "frmMain": {
     "tabGeneral": "Geral",
     "lblTargetFormat": "&Formato Alvo:",
@@ -88,7 +88,7 @@
   },
   "frmAbout": {
     "lblDevTtitle": "Desenvolvido por",
-    "lblTechTitle": "Tecnologias usadas",
+    "lblTechTitle": "Tecnologias utilizadas",
     "lblArtTitle": "Artwork por"
   },
   "frmCheckUpdate": {
@@ -98,15 +98,15 @@
   "cmsNewImport": {
     "tsmiNew": "&Novo",
     "tsmiImport": "&Importar",
-    "tsmiImportFolder": "Import Fol&der",
-    "tsmiProjectNew": "&New Project",
-    "tsmiProjectOpen": "&Open Project",
-    "tsmiProjectSave": "&Save Project",
-    "tsmiProjectSaveAs": "Save Project &As"
+    "tsmiImportFolder": "Importar &Pasta",
+    "tsmiProjectNew": "&Novo Projeto",
+    "tsmiProjectOpen": "&Abrir Projeto",
+    "tsmiProjectSave": "&Salvar Projeto",
+    "tsmiProjectSaveAs": "Salvar Projeto Co&mo"
   },
   "cmsEncodingPreset": {
     "tsmiEncodingPresetSave": "&Salvar",
-    "tsmiEncodingPresetSaveAs": "Salvar &Como"
+    "tsmiEncodingPresetSaveAs": "Salvar Co&mo"
   },
   "InputBoxNewMedia": {
     "Title": "Novo arquivo de mídia",
@@ -126,27 +126,27 @@
   },
   "ProgressBarImport": {
     "Title": "Importação",
-    "Message": "arquivo de análise {0}/{1} file\n{2}"
+    "Message": "analizando arquivo {0}/{1} arquivo\n{2}"
   },
   "MsgBoxShutdown": {
     "Title": "Pergunta",
-    "Message": "Este computador irá desligar ou reiniciar depois que tudo for feito. Você deseja continuar?"
+    "Message": "Seu computador irá desligar ou reiniciar depois que tudo for concluído. Você deseja continuar?"
   },
   "MsgBoxSaveFolder": {
     "Title": "Caminho Inválido",
-    "Message": "O salvamento em uma rede não é suportado! Por favor, escolha uma unidade de disco."
+    "Message": "O salvamento em rede não é suportado! Por favor, escolha uma unidade de disco físico."
   },
   "MsgBoxCodecIncompatible": {
     "Title": "Codec Incompatível",
     "Message": "O formato de saída e o codec não são compatíveis! Escolha um diferente."
   },
   "MsgNewProject": {
-    "Title": "New Project",
-    "Message": "Do you want to save this project before create new one?"
+    "Title": "Novo Projeto",
+    "Message": "Deseja salvar este projeto antes de criar um novo?"
   },
   "MsgHardSub": {
-    "Title": "Render custom fonts (Hard Sub)",
-    "Message": "Please allow IFME run as Administrator to install embedded font, this way Hard Sub able to render custom font."
+    "Title": "Renderizar fontes personalizadas (Hard Sub)",
+    "Message": "Permita que o IFME seja executado como Administrador para instalar a fonte embutida. Desta forma o Hard Sub será capaz de renderizar a fonte personalizada."
   },
   "ComboBoxDeInterlaceMode": [
     "Desentrelaçar apenas quadros",
