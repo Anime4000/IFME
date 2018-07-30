@@ -4,11 +4,11 @@
   "AuthorProfile": "https://ialexsilva.com",
   "UIFontWindows": "Tahoma, 8pt",
   "UIFontLinux": "Nimbus Sans L, 8pt",
-  "ToolTipDonate": "Obrigado por usar o IFME, espero que você goste.\nVocê pode doar para este projeto para que eu possa continuar melhorando.\nClique neste botão para saber como doar.",
-  "ToolTipHardSub": "Legenda permanente dentro vídeo!\n\n1. Ler apenas o primeiro fluxo da legenda!\n2. Ler apenas o SubRip e SubStation Alpha",
+  "ToolTipDonate": "Obrigado por usar o IFME! Espero que você goste.\nVocê pode doar para este projeto para que eu possa continuar desenvolvendo novos recursos e melhorias.\nClique neste botão para saber como doar.",
+  "ToolTipHardSub": "Legenda permanente embutida no vídeo!\n\n1. Ler apenas o primeiro fluxo da legenda!\n2. Ler apenas o SubRip e SubStation Alpha",
   "Warning": "ATENÇÃO!",
   "PleaseWait": "Por favor, aguarde...",
-  "ReadProjectFile": "Lendo arquivo do projeto, isso pode demorar um pouco.",
+  "ReadProjectFile": "Carregando arquivo do projeto, isso pode demorar um pouco.",
   "NewProject": "Novo Projeto",
   "frmMain": {
     "tabGeneral": "Geral",
@@ -110,7 +110,7 @@
   },
   "InputBoxNewMedia": {
     "Title": "Novo arquivo de mídia",
-    "Message": "Você está prestes a criar um fluxo em branco de vídeo, áudio, legendas e fontes.\nVocê poder usar para adicionar arquivos, convertê-los ou simplesmente mesclá-los (como Mkvtoolnix ou MP4Box)\n\nDigite um novo nome de arquivo:"
+    "Message": "Você está prestes a criar um fluxo branco de vídeo, áudio, legendas e fontes.\nVocê poder usar para adicionar arquivos, convertê-los ou simplesmente mesclá-los (como Mkvtoolnix ou MP4Box)\n\nDigite um novo nome de arquivo:"
   },
   "InputBoxEncodingPreset": {
     "Title": "Salvar novo preset de codificação",
