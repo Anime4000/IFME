@@ -5,7 +5,7 @@
   "UIFontWindows": "Tahoma, 8pt",
   "UIFontLinux": "Nimbus Sans L, 8pt",
   "ToolTipDonate": "Obrigado por usar o IFME, espero que você goste.\nVocê pode doar para este projeto para que eu possa continuar melhorando.\nClique neste botão para saber como doar.",
-  "ToolTipHardSub": "Legenda permanente dentro vídeo!\n\n1. Ler apenas o primeiro fluxo da legenda!\n2. Ler apenas o SubRip e SubStation Alpha",
+  "ToolTipHardSub": "Legenda permanente dentro do vídeo!\n\n1. Ler apenas o primeiro fluxo da legenda!\n2. Ler apenas o SubRip e SubStation Alpha",
   "Warning": "ATENÇÃO!",
   "PleaseWait": "Por favor, aguarde...",
   "ReadProjectFile": "Lendo arquivo do projeto, isso pode demorar um pouco.",
@@ -73,7 +73,7 @@
     "lblAviSynthInstall": "Instalado!",
     "lblAviSynthNoInstall": "Não Instalado!",
     "grpFFmpeg": "&Decodificador Padrão",
-    "rdoFFmpeg32": "FFmpeg &32bit (Suporta o AviSynth ST)",
+    "rdoFFmpeg32": "FFmpeg &32bit (Suporta AviSynth ST)",
     "rdoFFmpeg64": "FFmpeg &64bit (Suporta alta resoluções && grande profundidade de bits)",
     "grpFrameCountOffset": "&Compensação da Contagem de Quadros",
     "lblFrameCountOffset": "A taxa de quadros variável será convertida em taxa de quadros constante. Ao adicionar um valor de deslocamento, o decodificador irá compensar dados de contêiner quebrados com uma contagem de quadros mais alta para garantir que não faltem quadros durante a codificação.",
@@ -126,7 +126,7 @@
   },
   "ProgressBarImport": {
     "Title": "Importação",
-    "Message": "analizando arquivo {0}/{1} arquivo\n{2}"
+    "Message": "analisando arquivo {0}/{1} arquivo\n{2}"
   },
   "MsgBoxShutdown": {
     "Title": "Pergunta",
