@@ -5,7 +5,7 @@
   "UIFontWindows": "Tahoma, 8pt",
   "UIFontLinux": "Nimbus Sans L, 8pt",
   "ToolTipDonate": "Terima Kasih kerana mengguna.\nUntuk maklumat lanjut, sila tekan butang ini.",
-  "ToolTipHardSub": "Sarikata kekal dalam video!\n\n1. Hanya baca satu subtitle!\n2. Hanya menerima SubRip dan SubStation Alpha",
+  "ToolTipHardSub": "Sarikata kekal di dalam video!\n\n1. Hanya baca satu terjemahan!\n2. Hanya menerima SubRip dan SubStation Alpha",
   "Warning": "AMARAN!",
   "PleaseWait": "Sila Tunggu...",
   "ReadProjectFile": "Sedang membaca fail projek, mungkin mengambil masa yang lama.",
@@ -13,14 +13,14 @@
   "frmMain": {
     "tabGeneral": "Umum",
     "lblTargetFormat": "Sasaran Forma&t:",
-    "grpStreamInfo": "Info Media",
+    "grpStreamInfo": "Maklumat Media",
     "tabVideo": "Video",
     "chkVideoDeinterlace": "&Tanpa selang?",
     "grpVideoStream": "&Saluran",
     "grpVideoCodec": "&Kodek",
     "lblVideoEncoder": "P&engekod:",
     "lblVideoPreset": "Pra-a&tur:",
-    "lblVideoTune": "&Ubahan:",
+    "lblVideoTune": "&Ubah:",
     "lblVideoRateControl": "Kadar &Kawalan:",
     "lblVideoRateFactor": "K&adar Faktor:",
     "lblVideoMultiPass": "Pe&lbagai:",
@@ -31,9 +31,9 @@
     "lblVideoFrameRate": "&Kadar bingkai:",
     "lblVideoBitDepth": "&Kedalaman:",
     "lblPixelFormat": "Format &Piksel:",
-    "lblVideoDeinterlaceMode": "&Mode:",
+    "lblVideoDeinterlaceMode": "&Mod:",
     "lblVideoDeinterlaceField": "Pan&dangan:",
-    "tabAudio": "Suara",
+    "tabAudio": "Bunyi",
     "grpAudioStream": "&Saluran",
     "grpAudioCodec": "&Kodek",
     "lblAudioEncoder": "&Pengekod:",
@@ -42,9 +42,9 @@
     "lblAudioChannel": "Salura&n:",
     "btnAudioAdvDec": "Majukan pilihan peng&dekod",
     "btnAudioAdv": "&Majukan pilihan pengekod",
-    "lblAudioMode": "&Mode:",
+    "lblAudioMode": "&Mod:",
     "tabSubtitle": "Sarikata",
-    "chkSubHard": "&Bakar Sarikata dalam video (Hard Sub)",
+    "chkSubHard": "&Tanam Sarikata di dalam video (Hard Sub)",
     "lblSubLang": "&Bahasa:",
     "tabAttachment": "Lampiran",
     "lblAttachMime": "Jenis &MIME:",
@@ -76,9 +76,9 @@
     "rdoFFmpeg32": "FFmpeg &32bit (AviSynth ST/MT/+ 32-bit)",
     "rdoFFmpeg64": "FFmpeg &64bit (AviSynth+ 64-bit, 4K UHD dan Kedalaman Warna)",
     "grpFrameCountOffset": "&Imbangi kiraan bingkai",
-    "lblFrameCountOffset": "Mana-mana video yang tidak mempunyai kadar bingkai yang kekal, pengekod akan tukar menjadi tetap dengan cara mengira (masa dalam saat * fps diberi). Dengan tambahan, pengekod akan memastikan tiada yang tercicir.",
+    "lblFrameCountOffset": "Mana-mana video yang tidak mempunyai kadar bingkai yang kekal, pengekod akan menukar menjadi tetap dengan cara mengira (masa dalam saat * fps diberi). Dengan tambahan, pengekod akan memastikan tiada yang tercicir.",
     "tabOptionModule": "Modul",
-    "chkVerbose": "&Report lebih lanjut",
+    "chkVerbose": "&Laporan penuh",
     "btnCancel": "&Batal",
     "btnOk": "&OK"
   },
@@ -92,7 +92,7 @@
     "lblArtTitle": "Hasil seni oleh"
   },
   "frmCheckUpdate": {
-    "btnDownload": "&Muat Turn",
+    "btnDownload": "&Muat Turun",
     "btnOK": "&OK"
   },
   "cmsNewImport": {
@@ -109,12 +109,12 @@
     "tsmiEncodingPresetSaveAs": "Simp&an sebagai"
   },
   "InputBoxNewMedia": {
-    "Title": "Buat yang baru untuk video atau suara",
-    "Message": "Anda akan membuat satu video, suara, sarikata dan tulisan yang kosong.\nDengan cara ini anda boleh menambah fail atau tukar atau gabung (macam Mkvtoolnix, MP4Box)\n\nMasukan satu nama yang baru:"
+    "Title": "Buat yang baharu untuk video atau bunyi",
+    "Message": "Anda akan membuat satu video, bunyi, sarikata dan tulisan yang kosong.\nDengan cara ini anda boleh menambah fail atau tukar atau gabung (seperti Mkvtoolnix, MP4Box)\n\nMasukan satu nama yang baharu:"
   },
   "InputBoxEncodingPreset": {
     "Title": "Simpan pengekod pratetap",
-    "Message": "Anda akan membuat satu pengekod pratetap yang baru berdasarkan tetapan yang diberi. Dengan ini, anda boleh guna semula untuk yang lain.\n\nMasukan satu nama yang baru:"
+    "Message": "Anda akan membuat satu pengekod pratetap yang baharu berdasarkan tetapan yang diberikan. Dengan ini, anda boleh menggunakan semula untuk yang lain.\n\nMasukan satu nama yang baharu:"
   },
   "InputBoxCommandLine": {
     "Title": "Baris arahan pengekod",
@@ -130,7 +130,7 @@
   },
   "MsgBoxShutdown": {
     "Title": "Soalan",
-    "Message": "Matikan atau Mula-semula komputer telah di pasang!\nKomputer ini akan tutup atau mula-semula setelah siap mengekod. Teruskan?"
+    "Message": "Matikan atau Mula-semula komputer setelah di pasang!\nKomputer ini akan tutup atau mula-semula setelah siap mengekod. Teruskan?"
   },
   "MsgBoxSaveFolder": {
     "Title": "Laluan tidak sah!",
@@ -142,11 +142,11 @@
   },
   "MsgNewProject": {
     "Title": "Projek Baharu",
-    "Message": "Adakah anda ingin simpan projek sebelum membuat yang baru?"
+    "Message": "Adakah anda ingin simpan projek sebelum membuat yang baharu?"
   },
   "MsgHardSub": {
     "Title": "Hard Sub",
-    "Message": "Berikan IFME sebagai Administrator untuk pasang font, dengan cara ini 'Hard Sub' boleh guna font tersebut."
+    "Message": "Berikan kebenaran IFME sebagai Administrator untuk memasang font, dengan cara ini 'Terjemahan Kekal' boleh menggunakan font tersebut."
   },
   "ComboBoxDeInterlaceMode": [
     "Buang selang (satu bingkai)",
