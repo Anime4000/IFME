@@ -38,7 +38,7 @@ For Ubuntu, Linux, you need:
 
 #### Recommended
 * OS: 64-bit Windows 10 & Linux (Ubuntu, etc...)
-* CPU: Intel Core i7 7700K or AMD Ryzen 5 1400
+* CPU: Intel Core i9 10th Gen or AMD Ryzen 7 3700X
 * RAM: 8GB DDR4
 * HDD: 10GB
 * Internet Connection
@@ -68,7 +68,6 @@ Make sure clone these in same folder with `ifme`, so it will look like:
 GitHub
   `-|
     |
-    |`- FFmpegDotNet
     |
     |`- IFME
     |
@@ -88,11 +87,14 @@ make
 Simple as that, if show an error, try download and install then run again.
 
 ## Version History
+### Version 7
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme7.7) or change `master` to `ifme7.7`.
+
 ### Version 6
 You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
 
 ### Version 5
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
+You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme5`.
 
 ### Version 4
 You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.

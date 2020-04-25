@@ -1,4 +1,12 @@
-﻿Version 7.8 (Opera Fantasia)
+﻿Version 20.04 Alpha (The Quintessence Inside You)
+-------------------------------------------------
+This whole new version which is rebuild from scratch.
+Fix most problematic since release 7.7!
+[new] Using latest .NET 4.8
+[issue] Windows run fine, Linux not test yet.
+[change] Console now inside interface, no longer produce two window
+
+Version 7.8 (Opera Fantasia)
 ----------------------------
 [new] Able to capture language code from file name (Subtitle)
 [fixed] Encoding did not honor "Main List Check State" (able to skip item)
