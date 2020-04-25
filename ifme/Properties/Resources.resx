@@ -117,108 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppCodeName" xml:space="preserve">
-    <value>Opera Fantasia</value>
-  </data>
-  <data name="AppTitle" xml:space="preserve">
-    <value>Internet Friendly Media Encoder</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="icon16_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Banner_2a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Banner_2a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon16_del" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_del.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_del" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_del.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_off_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_off-ok.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_preferences" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_preferences.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MkvTags" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="UTF8"?&gt;
-&lt;!DOCTYPE Tags SYSTEM "matroskatags.dtd"&gt;
-&lt;Tags&gt;
-	&lt;Tag&gt;
-		&lt;Simple&gt;
-			&lt;Name&gt;Writing application&lt;/Name&gt;
-			&lt;String&gt;{0}&lt;/String&gt;
-		&lt;/Simple&gt;
-		&lt;Simple&gt;
-			&lt;Name&gt;Writing library&lt;/Name&gt;
-			&lt;String&gt;{1}&lt;/String&gt;
-		&lt;/Simple&gt;
-	&lt;/Tag&gt;
-&lt;/Tags&gt;</value>
-  </data>
-  <data name="icon16_bookmark_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_bookmark-new.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_document_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_document-import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_help_about" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_help-about.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_bookmarks" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icon16_Bookmarks.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_disk_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_disk-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_document_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_document-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_document_save_as" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_document-save-as.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Banner" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Banner.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_donate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_donate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_addred" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_addred.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_add2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_add2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon22_bench" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon22_bench.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon16_folder_explore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon16_folder_explore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Banner_2b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Banner_2b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

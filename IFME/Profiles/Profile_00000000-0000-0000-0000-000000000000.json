@@ -1,0 +1,41 @@
+﻿{
+	"ProfileName": "x265 High Compression & Quality",
+	"ProfileAuthor": "Anime4000",
+	"Container": 3,
+	"Video": {
+		"Encoder": {
+			"Id": "deadbeef-0265-0265-0265-026502650265",
+			"Preset": "veryslow",
+			"Tune": "psnr",
+			"Mode": 0,
+			"Value": 24.0,
+			"MultiPass": 2,
+			"Command": "--pme --pmode"
+		},
+		"Quality": {
+			"Width": 0,
+			"Height": 0,
+			"FrameRate": 0,
+			"BitDepth": 8,
+			"PixelFormat": 420,
+			"Command": ""
+		},
+		"DeInterlace": {
+			"Enable": false,
+			"Field": 0,
+			"Mode": 1
+		}
+	},
+	"Audio": {
+		"Encoder": {
+			"Id": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
+			"Mode": 0,
+			"Quality": 128,
+			"SampleRate": 44100,
+			"Channel": 2,
+			"Command": ""
+		},
+		"Copy": false,
+		"Command": ""
+	}
+}

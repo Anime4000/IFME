@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ifme.Properties {
+namespace IFME.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,180 +26,12 @@ namespace ifme.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TempDir {
+        public string OutputFolder {
             get {
-                return ((string)(this["TempDir"]));
+                return ((string)(this["OutputFolder"]));
             }
             set {
-                this["TempDir"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string OutputDir {
-            get {
-                return ((string)(this["OutputDir"]));
-            }
-            set {
-                this["OutputDir"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("32")]
-        public int FFmpegArch {
-            get {
-                return ((int)(this["FFmpegArch"]));
-            }
-            set {
-                this["FFmpegArch"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[IFME]")]
-        public string FileNamePrefix {
-            get {
-                return ((string)(this["FileNamePrefix"]));
-            }
-            set {
-                this["FileNamePrefix"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int FileNamePrefixType {
-            get {
-                return ((int)(this["FileNamePrefixType"]));
-            }
-            set {
-                this["FileNamePrefixType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ShutdownType {
-            get {
-                return ((int)(this["ShutdownType"]));
-            }
-            set {
-                this["ShutdownType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("x265")]
-        public string FileNamePostfix {
-            get {
-                return ((string)(this["FileNamePostfix"]));
-            }
-            set {
-                this["FileNamePostfix"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int FileNamePostfixType {
-            get {
-                return ((int)(this["FileNamePostfixType"]));
-            }
-            set {
-                this["FileNamePostfixType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("240")]
-        public int FrameCountOffset {
-            get {
-                return ((int)(this["FrameCountOffset"]));
-            }
-            set {
-                this["FrameCountOffset"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpgradeRequired {
-            get {
-                return ((bool)(this["UpgradeRequired"]));
-            }
-            set {
-                this["UpgradeRequired"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("eng")]
-        public string Language {
-            get {
-                return ((string)(this["Language"]));
-            }
-            set {
-                this["Language"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("deadbeef-0265-0265-0265-026502650265")]
-        public global::System.Guid EncoderIdVideo {
-            get {
-                return ((global::System.Guid)(this["EncoderIdVideo"]));
-            }
-            set {
-                this["EncoderIdVideo"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("deadbeef-0aac-0aac-0aac-0aac0aac0aac")]
-        public global::System.Guid EncoderIdAudio {
-            get {
-                return ((global::System.Guid)(this["EncoderIdAudio"]));
-            }
-            set {
-                this["EncoderIdAudio"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mkv")]
-        public string EncoderFormat {
-            get {
-                return ((string)(this["EncoderFormat"]));
-            }
-            set {
-                this["EncoderFormat"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Verbose {
-            get {
-                return ((bool)(this["Verbose"]));
-            }
-            set {
-                this["Verbose"] = value;
+                this["OutputFolder"] = value;
             }
         }
     }

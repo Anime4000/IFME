@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BF85867-A4B7-4D52-98A2-01DEEDC701EF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ifme</RootNamespace>
-    <AssemblyName>ifme</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectGuid>{DEB81CED-49B4-4DD9-9D7B-F41073504352}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>IFME</RootNamespace>
+    <AssemblyName>IFME</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,358 +33,132 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\ifme-zenui.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AviSynth.cs" />
-    <Compile Include="BackgroundWorkerEx.cs">
+    <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Branding.cs" />
-    <Compile Include="ConsoleEx.cs" />
-    <Compile Include="CRC32.cs" />
-    <Compile Include="Download.cs" />
-    <Compile Include="Elevated.cs" />
+    <Compile Include="Console2.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="frmAbout.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAbout.Designer.cs">
-      <DependentUpon>frmAbout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmAbout.Method.cs">
-      <DependentUpon>frmAbout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCheckUpdate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCheckUpdate.Designer.cs">
-      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCheckUpdate.Method.cs">
-      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmInputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmInputBox.Designer.cs">
-      <DependentUpon>frmInputBox.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Fonts\FontAwesome.cs" />
+    <Compile Include="Fonts\Fonts.cs" />
+    <Compile Include="frmMain.Function.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.Method.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmOption.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmOption.Designer.cs">
-      <DependentUpon>frmOption.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmOption.Method.cs">
-      <DependentUpon>frmOption.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmProgressBar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmProgressBar.Designer.cs">
-      <DependentUpon>frmProgressBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmProgressBar.Method.cs">
-      <DependentUpon>frmProgressBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmShutdown.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmShutdown.Designer.cs">
-      <DependentUpon>frmShutdown.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmShutdown.Method.cs">
-      <DependentUpon>frmShutdown.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSplashScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSplashScreen.Designer.cs">
-      <DependentUpon>frmSplashScreen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Get.cs" />
-    <Compile Include="Language\Language.cs" />
-    <Compile Include="Language\LanguageIO.cs" />
-    <Compile Include="Media\MediaEncoding.cs" />
-    <Compile Include="Media\MediaPreset.cs" />
-    <Compile Include="Media\Queue\MediaQueue.cs" />
-    <Compile Include="Media\Queue\MediaQueueAttachment.cs" />
-    <Compile Include="Media\Queue\MediaQueueAudio.cs" />
-    <Compile Include="Media\Queue\MediaQueueAudioEncoder.cs" />
-    <Compile Include="Media\Queue\MediaQueueCommon.cs" />
-    <Compile Include="Media\MediaProject.cs" />
-    <Compile Include="Media\Queue\MediaQueueVideoEncoder.cs" />
-    <Compile Include="Media\Queue\MediaQueueSubtitle.cs" />
-    <Compile Include="Media\Queue\MediaQueueTrim.cs" />
-    <Compile Include="Media\MediaValidator.cs" />
-    <Compile Include="Media\Queue\MediaQueueVideo.cs" />
-    <Compile Include="Media\Queue\MediaQueueVideoDeInterlace.cs" />
-    <Compile Include="Media\Queue\MediaQueueVideoQuality.cs" />
-    <Compile Include="Mono.Options\Options.cs" />
-    <Compile Include="OS.cs" />
-    <Compile Include="Plugin\Plugin.cs" />
-    <Compile Include="Plugin\PluginAudio.cs" />
-    <Compile Include="Plugin\PluginAudioArgs.cs" />
-    <Compile Include="Plugin\PluginAudioMode.cs" />
-    <Compile Include="Plugin\PluginAuthor.cs" />
-    <Compile Include="Plugin\PluginCommon.cs" />
-    <Compile Include="Plugin\PluginTest.cs" />
-    <Compile Include="Plugin\PluginUpdate.cs" />
-    <Compile Include="Plugin\PluginVideo.cs" />
-    <Compile Include="Plugin\PluginVideoArgs.cs" />
-    <Compile Include="Plugin\PluginVideoEncoder.cs" />
-    <Compile Include="Plugin\PluginVideoMode.cs" />
-    <Compile Include="Plugin\PluginVideoModeValue.cs" />
+    <Compile Include="Images.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="MediaEncoding.cs" />
+    <Compile Include="MediaQueue\MediaQueue.cs" />
+    <Compile Include="MediaQueue\MediaQueueAttachment.cs" />
+    <Compile Include="MediaQueue\MediaQueueAudio.cs" />
+    <Compile Include="MediaQueue\MediaQueueParse.cs" />
+    <Compile Include="MediaQueue\MediaQueueSubtitle.cs" />
+    <Compile Include="MediaQueue\MediaQueueVideo.cs" />
+    <Compile Include="Mime.cs" />
+    <Compile Include="Plugins\Plugins.cs" />
+    <Compile Include="Plugins\PluginsAudio.cs" />
+    <Compile Include="Plugins\PluginsLoad.cs" />
+    <Compile Include="Plugins\PluginsVideo.cs" />
     <Compile Include="ProcessManager.cs" />
+    <Compile Include="Profiles\Profiles.cs" />
+    <Compile Include="Profiles\ProfilesAudio.cs" />
+    <Compile Include="Profiles\ProfilesManager.cs" />
+    <Compile Include="Profiles\ProfilesVideo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Version.cs" />
-    <EmbeddedResource Include="frmAbout.resx">
-      <DependentUpon>frmAbout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmCheckUpdate.resx">
-      <DependentUpon>frmCheckUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmInputBox.resx">
-      <DependentUpon>frmInputBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmOption.resx">
-      <DependentUpon>frmOption.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmProgressBar.resx">
-      <DependentUpon>frmProgressBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmShutdown.resx">
-      <DependentUpon>frmShutdown.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSplashScreen.resx">
-      <DependentUpon>frmSplashScreen.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="avisynth.json">
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.manifest" />
+    <None Include="Fonts\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="branding\ai\1.jpj">
+    <None Include="Fonts\unifont-12.1.04.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="branding\ai\a.jpj">
+    <None Include="Language.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="branding\ai\b.jpj">
+    <None Include="Mime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="branding\ai\z.jpj">
+    <None Include="Profiles\Profile_00000000-0000-0000-0000-000000000000.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="format.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="language.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\ara.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\eng.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\fre.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\ger.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\ita.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\jpn.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\may.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\pol.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\por.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\rus.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="mime.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine5.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine6.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine3.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine4.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="preset\00000000_000000-0000_ine2.json">
+    <None Include="Profiles\Profile_00000000-0000-0000-0000-000000000002.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="targetfmt.json">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{71c4e9db-8418-4615-a6f6-83adde5979b3}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IFME.FFmpeg\IFME.FFmpeg.csproj">
+      <Project>{d31b6614-24c4-4b23-9690-4111706ce61b}</Project>
+      <Name>IFME.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IFME.OSManager\IFME.OSManager.csproj">
+      <Project>{3c1ea604-dede-42c2-b0d4-a07dfb0a14b1}</Project>
+      <Name>IFME.OSManager</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Banner_2a.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Banner_2b.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ifme-zenui.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Profiles\Profile_00000000-0000-0000-0000-000000000001.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\FFmpegDotNet\FFmpegDotNet\FFmpegDotNet.csproj">
-      <Project>{e496ad81-7f30-492a-9e00-0eabf86f708a}</Project>
-      <Name>FFmpegDotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
-      <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
-      <Name>Newtonsoft.Json.Net40</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_del.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_del.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_off-ok.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_pause.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_preferences.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\app.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_disk-save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_document-import.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_bookmark-new.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_help-about.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_bookmarks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_document-save-as.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_document-save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Banner.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_donate.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_addred.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_add2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon22_bench.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon16_folder_explore.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

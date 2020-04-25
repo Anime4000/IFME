@@ -1,182 +1,113 @@
-﻿using System;
+﻿using IFME.OSManager;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace ifme
+namespace IFME
 {
-	public class ProcessManager
+	internal class ProcessManager
 	{
-		[Flags()]
-		enum ThreadAccess : int
+		private static List<int> ProcessId = new List<int>();
+
+		internal static bool IsPause = false;
+
+		internal static int Start(string Command)
 		{
-			TERMINATE = 1,
-			SUSPEND_RESUME = 2,
-			GET_CONTEXT = 8,
-			SET_CONTEXT = 16,
-			SET_INFORMATION = 32,
-			QUERY_INFORMATION = 64,
-			SET_THREAD_TOKEN = 128,
-			IMPERSONATE = 256,
-			DIRECT_IMPERSONATION = 512,
+			return new ProcessManager().Run(Command, string.Empty);
 		}
 
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
-		[DllImport("kernel32.dll")]
-		private static extern uint SuspendThread(IntPtr hThread);
-		[DllImport("kernel32.dll")]
-		private static extern uint ResumeThread(IntPtr hThread);
-		[DllImport("kernel32.dll")]
-		private static extern bool CloseHandle(IntPtr hHandle);
-
-		static string CrProc = string.Empty;
-
-		public static int Start(string ExePath, string Args)
+		internal static int Start(string WorkingDirectory, string Command)
 		{
-			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args}", Properties.Settings.Default.TempDir);
+			return new ProcessManager().Run(Command, WorkingDirectory);
 		}
 
-		public static int Start(string ExePath, string Args, string WorkDir)
+		private int Run(string Command, string WorkingDirectory)
 		{
-			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
-		}
+			var EnvId = RandomGen.String(7);
 
-		public static int Start(string ExePath, string Args, string PipeExePath, string PipeArgs)
-		{
-			CrProc = Path.GetFileNameWithoutExtension(PipeExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args} | \"{FixPath(PipeExePath)}\" {PipeArgs}", Properties.Settings.Default.TempDir);
-		}
+			Environment.SetEnvironmentVariable(EnvId, Command, EnvironmentVariableTarget.Process);
 
-		public static int Start2(string ExePath, string Args, string WorkDir)
-		{
-			CrProc = Path.GetFileNameWithoutExtension(ExePath);
-			return Run($"\"{FixPath(ExePath)}\" {Args}", WorkDir);
-		}
+			var cmd = OS.IsWindows ? "cmd" : "bash";
+			var arg = OS.IsWindows ? $"/c %{EnvId}%" : $"-c 'eval ${EnvId}'";
 
-		private static int Run(string EnvCmd, string workDir)
-		{
-			var cmd = string.Empty;
-			var arg = string.Empty;
-
-			Environment.SetEnvironmentVariable("HITOHA", EnvCmd, EnvironmentVariableTarget.Process);
-
-			if (OS.IsWindows)
+			Process proc = new Process
 			{
-				cmd = "cmd";
-				arg = "/c %HITOHA%";
-            }
-			else
-			{
-				cmd = "bash";
-				arg = "-c 'eval $HITOHA'";
-			}
+				StartInfo = new ProcessStartInfo(cmd, arg)
+				{
+					CreateNoWindow = true,
+					UseShellExecute = false,
+					WorkingDirectory = WorkingDirectory,
+					RedirectStandardError = true,
+					RedirectStandardOutput = true
+				}
+			};
 
-			if (Properties.Settings.Default.Verbose)
-			{
-				ConsoleEx.Write(LogLevel.Normal, "Run command: ");
-				ConsoleEx.Write(ConsoleColor.DarkCyan, $"{EnvCmd}\n");
-			}
+			proc.OutputDataReceived += Proc_OutputDataReceived;
+			proc.ErrorDataReceived += Proc_ErrorDataReceived;
 
-            Process proc = new Process
-            {
-                StartInfo = new ProcessStartInfo(cmd, arg)
-                {
-                    UseShellExecute = false,
-                    WorkingDirectory = workDir
-                }
-            };
+			proc.Start();
 
-            proc.Start();
+			ProcessId.Add(proc.Id);
+
+			proc.BeginOutputReadLine();
+			proc.BeginErrorReadLine();
+
 			proc.WaitForExit();
 
+			ProcessId.Remove(proc.Id);
+			
 			return proc.ExitCode;
 		}
 
-		private static string FixPath(string path)
+		private void Proc_ErrorDataReceived(object sender, DataReceivedEventArgs e)
 		{
-			if (OS.IsWindows)
-				return path.Replace('/', '\\');
-			else
-				return path.Replace('\\', '/');
-		}
-
-		public static void Stop()
-		{
-			Process[] Task = Process.GetProcessesByName(CrProc);
-			foreach (Process p in Task)
+			if (!string.IsNullOrEmpty(e.Data))
 			{
-				p.Kill();
+
+				Console2.WriteLine(e.Data);
 			}
 		}
 
-		public static void Pause()
+		private void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
 		{
-			foreach (var item in Process.GetProcessesByName(CrProc))
+			if (!string.IsNullOrEmpty(e.Data))
 			{
-				if (OS.IsWindows)
-				{
-					foreach (ProcessThread t in item.Threads)
-					{
-						IntPtr th;
-						th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-						if ((th != IntPtr.Zero))
-						{
-							SuspendThread(th);
-							CloseHandle(th);
-						}
-					}
-				}
-				else
-				{
-					Process.Start("kill", $"-STOP {item.Id} > /dev/null 2>&1");
-				}
+				Console2.WriteLine(e.Data);
 			}
 		}
 
-		public static void Resume()
+		internal static void Clear()
 		{
-			foreach (var item in Process.GetProcessesByName(CrProc))
+			ProcessId.Clear();
+		}
+
+		internal static void Stop()
+		{
+			foreach (var pid in ProcessId)
 			{
-				if (OS.IsWindows)
-				{
-					foreach (ProcessThread t in item.Threads)
-					{
-						IntPtr th;
-						th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-						if ((th != IntPtr.Zero))
-						{
-							ResumeThread(th);
-							CloseHandle(th);
-						}
-					}
-				}
-				else
-				{
-					Process.Start("kill", $"-CONT {item.Id} > /dev/null 2>&1");
-				}
+				ProcessEx.Terminate(pid);
 			}
 		}
 
-		public static void ComputerReboot()
+		internal static void Pause()
 		{
-			if (OS.IsWindows)
-				Process.Start("shutdown.exe", "-r -f -t 0");
-			else if (OS.IsLinux)
-				Process.Start("bash", "-c 'reboot'");
+			foreach (var pid in ProcessId)
+			{
+				ProcessEx.Pause(pid);
+			}
+
+			IsPause = true;
 		}
 
-		public static void ComputerShutdown()
+		internal static void Resume()
 		{
-			if (OS.IsWindows)
-				Process.Start("shutdown.exe", "-s -f -t 0");
-			else if (OS.IsLinux)
-				Process.Start("bash", "-c 'poweroff'");
+			foreach (var pid in ProcessId)
+			{
+				ProcessEx.Resume(pid);
+			}
+
+			IsPause = false;
 		}
 	}
 }

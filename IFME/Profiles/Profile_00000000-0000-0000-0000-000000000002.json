@@ -1,0 +1,41 @@
+﻿{
+	"ProfileName": "AV1 High Compression & Quality",
+	"ProfileAuthor": "Anime4000",
+	"Container": 3,
+	"Video": {
+		"Encoder": {
+			"Id": "deadbeef-0011-0011-0011-001100110011",
+			"Preset": "veryslow",
+			"Tune": "psnr",
+			"Mode": 0,
+			"Value": 23.5,
+			"MultiPass": 2,
+			"Command": ""
+		},
+		"Quality": {
+			"Width": 0,
+			"Height": 0,
+			"FrameRate": 0,
+			"BitDepth": 8,
+			"PixelFormat": 420,
+			"Command": ""
+		},
+		"DeInterlace": {
+			"Enable": false,
+			"Field": 0,
+			"Mode": 1
+		}
+	},
+	"Audio": {
+		"Encoder": {
+			"Id": "deadface-f154-f154-f154-f154f154f154",
+			"Mode": 0,
+			"Quality": 128,
+			"SampleRate": 44100,
+			"Channel": 2,
+			"Command": ""
+		},
+		"Copy": false,
+		"Command": ""
+	}
+}
