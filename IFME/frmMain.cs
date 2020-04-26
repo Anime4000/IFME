@@ -15,14 +15,20 @@ namespace IFME
 	public partial class frmMain : Form
 	{
 		private BackgroundWorker2 bgThread = new BackgroundWorker2();
+		private Array Format = Enum.GetValues(typeof(MediaContainer));
 
 		public frmMain()
 		{
+			new frmSplashScreen().Show();
+			new PluginsLoad();
+			new ProfilesManager();
+
 			InitializeComponent();
 			InitializeFonts();
 			InitializeLog();
+
 			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-			Text = "Internet Friendly Media Encoder 20.02";
+			Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )";
 			FormBorderStyle = FormBorderStyle.Sizable;
 
 			bgThread.DoWork += bgThread_DoWork;
@@ -32,9 +38,6 @@ namespace IFME
 
 		private void frmMain_Load(object sender, EventArgs e)
 		{
-			new PluginsLoad();
-			new ProfilesManager();
-
 			cboVideoRes.SelectedIndex = 9;
 			cboVideoFps.SelectedIndex = 5;
 			cboVideoPixFmt.SelectedIndex = 0;
@@ -71,7 +74,11 @@ namespace IFME
 			cboAttachMime.ValueMember = "Key";
 			cboAttachMime.SelectedValue = ".ttf";
 
-			cboFormat.SelectedIndex = 3;
+			foreach (var item in Format)
+			{
+				cboFormat.Items.Add(item.ToString());
+			}
+			cboFormat.SelectedIndex = 1;
 
 			cboProfile.Items.Clear();
 			foreach (var item in Profiles.Items)

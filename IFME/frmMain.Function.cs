@@ -90,10 +90,10 @@ namespace IFME
 
 		private void InitializeLog()
 		{
-			rtfConsole.Text = "Internet Friendly Media Encoder v20.02 ('HI YO KO KAN')\n" +
-				"Release: IFME v20.02 amd64 windows\r\n" +
+			rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
+				$"Release: {Version.Name} v{Version.Release} {Version.OSArch} {Version.OSPlatform}\r\n" +
 				"\n" +
-				"(c) 2020 Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\n" +
+				$"(c) {DateTime.Now.Year} Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\n" +
 				"Xiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.\n" +
 				"\n" +
 				"Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\n" +

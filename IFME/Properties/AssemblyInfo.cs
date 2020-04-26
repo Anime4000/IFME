@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Allow user to compress raw media")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
-[assembly: AssemblyProduct("Internet Friendly Media Encoder")]
+[assembly: AssemblyProduct("The Quintessence Inside You")]
 [assembly: AssemblyCopyright("© 2017 Anime4000")]
 [assembly: AssemblyTrademark("Anime4000, MulticoreWare, VideoLAN, FFmpeg, Xiph.Org Foundation, Google Inc., Nero AG, GPAC, Moritz Bunkus, et al.")]
 [assembly: AssemblyCulture("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("20.02")]
-[assembly: AssemblyFileVersion("20.02")]
+[assembly: AssemblyVersion("8.4")]
+[assembly: AssemblyFileVersion("8.4")]

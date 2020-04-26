@@ -252,6 +252,13 @@ namespace IFME
 							File.Delete(Path.Combine(tempDir, outrawfile));
 						}
 					}
+					else
+					{
+						if (File.Exists(Path.Combine(tempDir, outrawfile)))
+						{
+							File.Move(Path.Combine(tempDir, outrawfile), Path.Combine(tempDir, outfmtfile));
+						}
+					}
 				}
 			}
 		}
@@ -293,6 +300,10 @@ namespace IFME
 				x++;
 			}
 
+			if (queue.OutputFormat == MediaContainer.MKV)
+			{
+
+			}
 			var d = 0;
 			foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
 			{
@@ -314,8 +325,8 @@ namespace IFME
 				}
 			}
 
-			var author = "IFME 2020.04 (The Quintessence Inside You)";
-			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argEmbed}{metafile}{map}{metadata}-metadata author=\"{author}\" -c copy -y \"{outFile}\"";
+			var author = $"{Version.Name} v{Version.Release} ( '{Version.CodeName}' ) {Version.OSArch} {Version.OSPlatform}";
+			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argEmbed}{metafile}{map}{metadata}-metadata \"encoded_by={author}\" -c copy -y \"{outFile}\"";
 			ProcessManager.Start(tempDir, command);
 		}
 	}

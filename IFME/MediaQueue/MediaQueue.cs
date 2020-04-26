@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 public enum MediaContainer
 {
-	AVI,
-	MPEG,
 	MP4,
 	MKV,
-	WEBM,
 	IVF,
+	WEBM,
+	TS,
+	M2TS,
+
 	MP2,
 	MP3,
 	M4A,

@@ -791,17 +791,6 @@
             this.cboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFormat.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cboFormat.FormattingEnabled = true;
-            this.cboFormat.Items.AddRange(new object[] {
-            "AVI",
-            "MPEG",
-            "MP4",
-            "MKV",
-            "WEBM",
-            "MP3",
-            "M4A",
-            "OGG",
-            "OPUS",
-            "FLAC"});
             this.cboFormat.Location = new System.Drawing.Point(148, 534);
             this.cboFormat.Name = "cboFormat";
             this.cboFormat.Size = new System.Drawing.Size(120, 24);
