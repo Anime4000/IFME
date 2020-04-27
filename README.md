@@ -1,3 +1,6 @@
+<p align="center"> 
+	<img src="https://raw.githubusercontent.com/Anime4000/IFME/master/IFME.png">
+</p>
 # Internet Friendly Media Encoder
 ## Introduction
 Back on 2012 as college student, I originally developed IFME for compressing FRAPS game recordings by using x264 for archiving, my friends showing that IFME simple and lightweight, from that IFME was born.
@@ -14,10 +17,9 @@ You can donate via [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xcli
 
 ## You
 ### System Requirement
-For Windows XP, Vista & 7. You need:
-* Microsoft [Visual C++ 2008 SP1](https://www.microsoft.com/en-us/download/details.aspx?id=5582)
-* Microsoft [Visual C++ 2010 SP1](https://www.microsoft.com/en-us/download/details.aspx?id=8328)
-* Microsoft [.NET Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718)
+For Windows 7, you need:
+* Microsoft Visual C++ (ALL)
+* Microsoft .NET Framework 4.8
 
 For Ubuntu, Linux, you need:
 * `mono-complete` (Mono Runtime)
@@ -60,14 +62,12 @@ Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `i
 ### Do this before opening project
 
 * [Clone](https://github.com/JamesNK/Newtonsoft.Json) Json.NET
-* [Clone](https://github.com/Anime4000/FFmpegDotNet) FFmpegDotNet
 * [Download](https://sourceforge.net/projects/ifme/files/plugin/) Plugin
 
 Make sure clone these in same folder with `ifme`, so it will look like:
 ```
 GitHub
   `-|
-    |
     |
     |`- IFME
     |
