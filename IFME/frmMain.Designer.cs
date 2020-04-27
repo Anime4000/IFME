@@ -164,6 +164,8 @@
             this.tsmiImportFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportYouTube = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiImportImgSeq = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -772,6 +774,7 @@
             this.btnProfileSaveLoad.Size = new System.Drawing.Size(24, 24);
             this.btnProfileSaveLoad.TabIndex = 15;
             this.btnProfileSaveLoad.UseVisualStyleBackColor = true;
+            this.btnProfileSaveLoad.Click += new System.EventHandler(this.btnProfileSaveLoad_Click);
             // 
             // cboProfile
             // 
@@ -807,6 +810,7 @@
             this.txtOutputPath.Name = "txtOutputPath";
             this.txtOutputPath.Size = new System.Drawing.Size(610, 24);
             this.txtOutputPath.TabIndex = 17;
+            this.txtOutputPath.TextChanged += new System.EventHandler(this.txtOutputPath_TextChanged);
             // 
             // lblOutputPath
             // 
@@ -1665,30 +1669,43 @@
             this.cmsFileAdd.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiImportFiles,
             this.tsmiImportFolder,
+            this.tsmiImportImgSeq,
+            this.toolStripSeparator1,
             this.tsmiImportYouTube});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(152, 70);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 120);
             // 
             // tsmiImportFiles
             // 
             this.tsmiImportFiles.Name = "tsmiImportFiles";
-            this.tsmiImportFiles.Size = new System.Drawing.Size(151, 22);
+            this.tsmiImportFiles.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportFiles.Text = "Import &Files";
             this.tsmiImportFiles.Click += new System.EventHandler(this.tsmiImportFiles_Click);
             // 
             // tsmiImportFolder
             // 
             this.tsmiImportFolder.Name = "tsmiImportFolder";
-            this.tsmiImportFolder.Size = new System.Drawing.Size(151, 22);
+            this.tsmiImportFolder.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportFolder.Text = "Import Fol&der";
             this.tsmiImportFolder.Click += new System.EventHandler(this.tsmiImportFolder_Click);
             // 
             // tsmiImportYouTube
             // 
             this.tsmiImportYouTube.Name = "tsmiImportYouTube";
-            this.tsmiImportYouTube.Size = new System.Drawing.Size(151, 22);
+            this.tsmiImportYouTube.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportYouTube.Text = "Import &YouTube";
             this.tsmiImportYouTube.Click += new System.EventHandler(this.tsmiImportYouTube_Click);
+            // 
+            // tsmiImportImgSeq
+            // 
+            this.tsmiImportImgSeq.Name = "tsmiImportImgSeq";
+            this.tsmiImportImgSeq.Size = new System.Drawing.Size(189, 22);
+            this.tsmiImportImgSeq.Text = "Import &Image Sequence";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
             // 
             // frmMain
             // 
@@ -1883,5 +1900,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiImportYouTube;
         internal System.Windows.Forms.RichTextBox rtfConsole;
         private System.Windows.Forms.ListView lstFile;
+        private System.Windows.Forms.ToolStripMenuItem tsmiImportImgSeq;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

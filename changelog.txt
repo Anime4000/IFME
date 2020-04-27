@@ -1,4 +1,10 @@
-﻿Version 20.04 Alpha (The Quintessence Inside You)
+﻿Version 20.04.2 Alpha (The Quintessence Inside You)
+---------------------------------------------------
+[new] Advance Decoding/Encoding CLI button is functional
+[new] Profile is functional as well
+[mistake] x265 in previous version was 3.2, now with 3.3 stable
+
+Version 20.04.1 Alpha (The Quintessence Inside You)
 -------------------------------------------------
 This whole new version which is rebuild from scratch.
 Fix most problematic since release 7.7!

@@ -35,6 +35,21 @@ namespace IFME
 			}
 		}
 
+		public static void Save(string name, MediaContainer container, ProfilesVideo video, ProfilesAudio audio)
+		{
+			var data = new Profiles
+			{
+				ProfileName = name,
+				ProfileAuthor = Properties.Settings.Default.Username,
+				Container = container,
+				Video = video,
+				Audio = audio
+			};
+
+			string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+			File.WriteAllText(Path.Combine("Profiles", $"Profile_{Guid.NewGuid()}.json"), json);
+		}
+
 		public static void Test()
 		{
 			var temp = new Profiles
@@ -64,6 +79,7 @@ namespace IFME
 						PixelFormat = 420,
 						IsVFR = false,
 						Command = "",
+						CommandFilter = ""
 					},
 
 					DeInterlace = new MediaQueueVideoDeInterlace
@@ -85,7 +101,8 @@ namespace IFME
 						Command = "",
 					},
 					Copy = false,
-					Command = ""
+					Command = "",
+					CommandFilter = "",
 				}
 			};
 

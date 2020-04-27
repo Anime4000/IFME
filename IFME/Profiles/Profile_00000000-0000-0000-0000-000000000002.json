@@ -18,7 +18,8 @@
 			"FrameRate": 0,
 			"BitDepth": 8,
 			"PixelFormat": 420,
-			"Command": ""
+			"Command": "",
+			"CommandFilter": ""
 		},
 		"DeInterlace": {
 			"Enable": false,
@@ -36,6 +37,7 @@
 			"Command": ""
 		},
 		"Copy": false,
-		"Command": ""
+		"Command": "",
+		"CommandFilter": ""
 	}
 }

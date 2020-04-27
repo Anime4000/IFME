@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IFME.OSManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -100,7 +101,7 @@ namespace IFME
 
 		private void frmMain_Shown(object sender, EventArgs e)
 		{
-
+			//ProfilesManager.Test();
 		}
 
 		private void frmMain_SizeChanged(object sender, EventArgs e)
@@ -248,11 +249,21 @@ namespace IFME
 					var data = new Dictionary<int, MediaQueue>();
 					foreach (ListViewItem item in lstFile.Items)
 					{
+						if (!item.Checked)
+							continue;
+
 						data.Add(item.Index, item.Tag as MediaQueue);
 						item.SubItems[4].Text = "Waiting . . .";
 					}
 
-					bgThread.RunWorkerAsync(data);
+					if (data.Count > 0)
+					{
+						bgThread.RunWorkerAsync(data);
+					}
+					else
+					{
+						Console2.WriteLine("[WARN] Noting to encode...");
+					}
 				}
 			}
 		}
@@ -770,12 +781,79 @@ namespace IFME
 
 		private void btnVideoDec_Click(object sender, EventArgs e)
 		{
+			var cmd = string.Empty;
+			var vf = string.Empty;
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				if (lstVideo.SelectedItems.Count > 0)
+				{
+					var defaultValueCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.Command;
+					var defaultValueFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.CommandFilter;
 
+					var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-vf) command with comma separated.\nExample: yadif=0:-1:0, scale=iw/2:-1", defaultValueCmd, defaultValueFil);
+					if (ib2.ShowDialog() == DialogResult.OK)
+					{
+						cmd = ib2.ReturnValue1;
+						vf = ib2.ReturnValue2;
+					}
+				}
+			}
+
+			if (lstFile.SelectedItems.Count == 1)
+			{
+				foreach (ListViewItem item in lstVideo.SelectedItems)
+				{
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Command = cmd;
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.CommandFilter = vf;
+				}
+			}
+			else if (lstFile.SelectedItems.Count > 1)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					foreach (var item in (queue.Tag as MediaQueue).Video)
+					{
+						item.Quality.Command = cmd;
+						item.Quality.CommandFilter = vf;
+					}
+				}
+			}
 		}
 
 		private void btnVideoEnc_Click(object sender, EventArgs e)
 		{
+			var returnValue = string.Empty;
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				if (lstVideo.SelectedItems.Count > 0)
+				{
+					var defaultValue = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
 
+					var ib = new InputBox($"{cboVideoEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", defaultValue);
+					if (ib.ShowDialog() == DialogResult.OK)
+					{
+						returnValue = ib.ReturnValue;
+					}
+				}
+			}
+
+			if (lstFile.SelectedItems.Count == 1)
+			{
+				foreach (ListViewItem item in lstVideo.SelectedItems)
+				{
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Command = returnValue;
+				}
+			}
+			else if (lstFile.SelectedItems.Count > 1)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					foreach (var item in (queue.Tag as MediaQueue).Video)
+					{
+						item.Encoder.Command = returnValue;
+					}
+				}
+			}
 		}
 
 		private void cboVideoRes_TextChanged(object sender, EventArgs e)
@@ -1358,12 +1436,79 @@ namespace IFME
 
 		private void btnAudioDec_Click(object sender, EventArgs e)
 		{
+			var cmd = string.Empty;
+			var af = string.Empty;
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				if (lstAudio.SelectedItems.Count > 0)
+				{
+					var defaultValueCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
+					var defaultValueFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
 
+					var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-af) command with comma separated.\nExample: highpass=f=200, lowpass=f=3000", defaultValueCmd, defaultValueFil);
+					if (ib2.ShowDialog() == DialogResult.OK)
+					{
+						cmd = ib2.ReturnValue1;
+						af = ib2.ReturnValue2;
+					}
+				}
+			}
+
+			if (lstFile.SelectedItems.Count == 1)
+			{
+				foreach (ListViewItem item in lstAudio.SelectedItems)
+				{
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Command = cmd;
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].CommandFilter = af;
+				}
+			}
+			else if (lstFile.SelectedItems.Count > 1)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					foreach (var item in (queue.Tag as MediaQueue).Audio)
+					{
+						item.Command = cmd;
+						item.CommandFilter = af;
+					}
+				}
+			}
 		}
 
 		private void btnAudioEnc_Click(object sender, EventArgs e)
 		{
+			var returnValue = string.Empty;
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				if (lstAudio.SelectedItems.Count > 0)
+				{
+					var defaultValue = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
 
+					var ib = new InputBox($"{cboAudioEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", defaultValue);
+					if (ib.ShowDialog() == DialogResult.OK)
+					{
+						returnValue = ib.ReturnValue;
+					}
+				}
+			}
+
+			if (lstFile.SelectedItems.Count == 1)
+			{
+				foreach (ListViewItem item in lstAudio.SelectedItems)
+				{
+					(lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Command = returnValue;
+				}
+			}
+			else if (lstFile.SelectedItems.Count > 1)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					foreach (var item in (queue.Tag as MediaQueue).Audio)
+					{
+						item.Encoder.Command = returnValue;
+					}
+				}
+			}
 		}
 
 		private void btnSubAdd_Click(object sender, EventArgs e)
@@ -1569,6 +1714,55 @@ namespace IFME
 				SetProfileData(Profiles.Items[cboProfile.SelectedIndex]);
 		}
 
+		private void btnProfileSaveLoad_Click(object sender, EventArgs e)
+		{
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				var videoEnc = new MediaQueueVideoEncoder();
+				var videoPix = new MediaQueueVideoQuality();
+				var videoDei = new MediaQueueVideoDeInterlace();
+				if ((lstFile.SelectedItems[0].Tag as MediaQueue).Video.Count > 0)
+				{
+					videoEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder;
+					videoPix = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality;
+					videoDei = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].DeInterlace;
+				}
+
+				var audioCps = false;
+				var audioEnc = new MediaQueueAudioEncoder();
+				var audioCmd = string.Empty;
+				var audioFil = string.Empty;
+				if ((lstFile.SelectedItems[0].Tag as MediaQueue).Audio.Count > 0)
+				{
+					audioCps = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Copy;
+					audioEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder;
+					audioCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
+					audioFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
+				}
+
+				var ib = new InputBox("Save encoding configuration profile", "Enter new profile name:", 4);
+				if (ib.ShowDialog() == DialogResult.OK)
+				{
+					var proVideo = new ProfilesVideo
+					{
+						Encoder = videoEnc,
+						Quality = videoPix,
+						DeInterlace = videoDei
+					};
+
+					var proAudio = new ProfilesAudio
+					{
+						Copy = audioCps,
+						Encoder = audioEnc,
+						Command = audioCmd,
+						CommandFilter = audioFil
+					};
+
+					ProfilesManager.Save(ib.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, proVideo, proAudio);
+				}
+			}
+		}
+
 		private void btnOutputBrowse_Click(object sender, EventArgs e)
 		{
 			var fbd = new OpenFileDialog
@@ -1584,6 +1778,26 @@ namespace IFME
 			{
 				var fPath = Path.GetDirectoryName(fbd.FileName);
 				txtOutputPath.Text = fPath;
+			}
+		}
+
+		private void txtOutputPath_TextChanged(object sender, EventArgs e)
+		{
+			var savePath = (sender as Control).Text;
+
+			try
+			{
+				var fPath = Path.GetFullPath(savePath);
+				
+				if (Path.IsPathRooted(fPath))
+				{
+					Properties.Settings.Default.OutputFolder = fPath;
+					Properties.Settings.Default.Save();
+				}
+			}
+			catch (Exception ex)
+			{
+				Console2.WriteLine(ex.Message);
 			}
 		}
 

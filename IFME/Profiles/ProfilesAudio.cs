@@ -11,5 +11,6 @@ namespace IFME
         public MediaQueueAudioEncoder Encoder { get; set; } = new MediaQueueAudioEncoder();
         public bool Copy { get; set; } = false;
         public string Command { get; set; }
+        public string CommandFilter { get; set; }
     }
 }

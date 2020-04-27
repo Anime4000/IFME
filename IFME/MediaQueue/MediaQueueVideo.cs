@@ -35,6 +35,7 @@ namespace IFME
         public int BitDepth { get; set; }
         public int PixelFormat { get; set; }
         public string Command { get; set; }
+        public string CommandFilter { get; set; }
     }
 
     public class MediaQueueVideoDeInterlace
