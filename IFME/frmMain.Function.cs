@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IFME.OSManager;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -91,18 +92,17 @@ namespace IFME
 		private void InitializeLog()
 		{
 			rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
-				$"Release: {Version.Name} v{Version.Release} {Version.OSArch} {Version.OSPlatform}\r\n" +
-				"\n" +
-				$"(c) {DateTime.Now.Year} Anime4000, FFmpeg, MulticoreWare, VideoLAN, GPAC\n" +
-				"Xiph.Org Foundation, Google Inc., Nero AG, Moritz Bunkus, et al.\n" +
-				"\n" +
-				"Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\n" +
-				"\n";
+				$"Build: {Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
+				"\r\n" +
+				$"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n" +
+				"\r\n" +
+				"Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\r\n" +
+				"\r\n";
 		}
 
 		private string[] OpenFiles(MediaType type)
 		{
-			var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";
+			var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.ts;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";
 			var extsAudio = "All audio types|*.mp2;*.mp3;*.mp4;*.m4a;*.aac;*.ogg;*.opus;*.flac;*.wav|";
 			var extsSub = "All subtitle types|*.ssa;*.ass;*.srt|";
 			var extsAtt = "All font types|*.ttf;*.otf;*.woff;*.woff2;*.eot|";
@@ -341,6 +341,137 @@ namespace IFME
 					item.Selected = false;
 					item.Selected = true;
 				}
+			}
+		}
+
+		private void ShowSupportedCodec(string value)
+		{
+			var videoCodec = new Dictionary<Guid, PluginsVideo>();
+			var audioCodec = new Dictionary<Guid, PluginsAudio>();
+
+			var videoId = new Guid();
+			var audioId = new Guid();
+
+			foreach (var item in Plugins.Items.Video)
+			{
+				if (item.Value.Format.Contains(value))
+				{
+					videoCodec.Add(item.Key, item.Value);
+					videoId = item.Key;
+				}
+			}
+
+			foreach (var item in Plugins.Items.Audio)
+			{
+				if (item.Value.Format.Contains(value))
+				{
+					audioCodec.Add(item.Key, item.Value);
+					audioId = item.Key;
+				}
+			}
+
+			cboVideoEncoder.DataSource = new BindingSource(videoCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
+			cboVideoEncoder.DisplayMember = "Value";
+			cboVideoEncoder.ValueMember = "Key";
+
+			cboAudioEncoder.DataSource = new BindingSource(audioCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
+			cboAudioEncoder.DisplayMember = "Value";
+			cboAudioEncoder.ValueMember = "Key";
+
+			SetDefinedData(videoId, audioId);
+		}
+
+		private void SetDefinedData(Guid videoId, Guid audioId)
+		{
+			if (lstFile.Focused)
+				return;
+
+			if (cboProfile.Focused)
+				return;
+
+			if (Plugins.Items.Video.TryGetValue(videoId, out PluginsVideo vData))
+			{
+
+			}
+
+			if (Plugins.Items.Audio.TryGetValue(audioId, out PluginsAudio aData))
+			{
+
+			}
+
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					foreach (var item in (queue.Tag as MediaQueue).Video)
+					{
+						item.Encoder = new MediaQueueVideoEncoder
+						{
+							Id = vData.GUID,
+							Preset = vData.Video.PresetDefault,
+							Tune = vData.Video.TuneDefault,
+							Mode = 0,
+							Value = vData.Video.Mode[0].Value.Default,
+							MultiPass = 2,
+							Command = string.Empty
+						};
+						item.Quality.Command = string.Empty;
+					}
+
+					foreach (var item in (queue.Tag as MediaQueue).Audio)
+					{
+						item.Encoder = new MediaQueueAudioEncoder
+						{
+							Id = aData.GUID,
+							Mode = 0,
+							Quality = aData.Audio.Mode[0].Default,
+							SampleRate = aData.Audio.SampleRateDefault,
+							Channel = aData.Audio.ChannelDefault,
+							Command = string.Empty,
+						};
+						item.Command = string.Empty;
+					}
+				}
+			}
+
+			MediaShowReList(); // redisplay data
+		}
+
+		private void SetProfileData(Profiles value)
+		{
+			if (lstFile.SelectedItems.Count > 0)
+			{
+				foreach (ListViewItem queue in lstFile.SelectedItems)
+				{
+					(queue.Tag as MediaQueue).OutputFormat = value.Container;
+					(queue.Tag as MediaQueue).ProfileId = cboProfile.SelectedIndex;
+
+					foreach (var item in (queue.Tag as MediaQueue).Video)
+					{
+						item.Encoder = value.Video.Encoder;
+
+						if (value.Video.Quality.Width > 0) { item.Quality.Width = value.Video.Quality.Width; }
+						if (value.Video.Quality.Height > 0) { item.Quality.Height = value.Video.Quality.Height; }
+						if (value.Video.Quality.FrameRate > 0) { item.Quality.FrameRate = value.Video.Quality.FrameRate; }
+						//item.Quality.FrameRateAvg = value.Video.Quality.FrameRateAvg;
+						//item.Quality.FrameCount = value.Video.Quality.FrameCount;
+						//item.Quality.IsVFR = value.Video.Quality.IsVFR;
+						item.Quality.BitDepth = value.Video.Quality.BitDepth;
+						item.Quality.PixelFormat = value.Video.Quality.PixelFormat;
+						item.Quality.Command = value.Video.Quality.Command;
+
+						item.DeInterlace = value.Video.DeInterlace;
+					}
+
+					foreach (var item in (queue.Tag as MediaQueue).Audio)
+					{
+						item.Encoder = value.Audio.Encoder;
+						item.Command = value.Audio.Command;
+						item.Copy = value.Audio.Copy;
+					}
+				}
+
+				MediaShowReList();
 			}
 		}
 	}

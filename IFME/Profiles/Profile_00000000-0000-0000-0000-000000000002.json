@@ -1,7 +1,7 @@
 ﻿{
 	"ProfileName": "AV1 High Compression & Quality",
 	"ProfileAuthor": "Anime4000",
-	"Container": 3,
+	"Container": "webm",
 	"Video": {
 		"Encoder": {
 			"Id": "deadbeef-0011-0011-0011-001100110011",

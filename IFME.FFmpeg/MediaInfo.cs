@@ -9,146 +9,213 @@ using Newtonsoft.Json;
 
 namespace IFME.FFmpeg
 {
-    public class MediaInfo
-    {
-        private static StringComparison IgnoreCase { get { return StringComparison.InvariantCultureIgnoreCase; } }
+	public class MediaInfo
+	{
+		private static StringComparison IgnoreCase { get { return StringComparison.InvariantCultureIgnoreCase; } }
 
-        public static string FFmpegProbe { get; set; } = Path.Combine("Plugins", "ffmpeg64", "ffprobe");
+		public static string FFmpegProbe { get; set; } = Path.Combine("Plugins", "ffmpeg64", "ffprobe");
 
-        public string FilePath { get; internal set; } = string.Empty;
-        public ulong FileSize { get; internal set; } = 0;
-        public ulong BitRate { get; internal set; } = 0;
-        public float Duration { get; internal set; } = 0;
-        public string FormatName { get; internal set; } = "NEW";
-        public string FormatNameFull { get; internal set; } = "Blank media";
+		public string FilePath { get; internal set; } = string.Empty;
+		public ulong FileSize { get; internal set; } = 0;
+		public ulong BitRate { get; internal set; } = 0;
+		public float Duration { get; internal set; } = 0;
+		public string FormatName { get; internal set; } = "NEW";
+		public string FormatNameFull { get; internal set; } = "Blank media";
 
-        public List<StreamVideo> Video { get; internal set; } = new List<StreamVideo>();
-        public List<StreamAudio> Audio { get; internal set; } = new List<StreamAudio>();
-        public List<StreamSubtitle> Subtitle { get; internal set; } = new List<StreamSubtitle>();
-        public List<StreamAttachment> Attachment { get; internal set; } = new List<StreamAttachment>();
+		public List<StreamVideo> Video { get; internal set; } = new List<StreamVideo>();
+		public List<StreamAudio> Audio { get; internal set; } = new List<StreamAudio>();
+		public List<StreamSubtitle> Subtitle { get; internal set; } = new List<StreamSubtitle>();
+		public List<StreamAttachment> Attachment { get; internal set; } = new List<StreamAttachment>();
 
-        public MediaInfo(string path)
-        {
-            dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(path));
+		public MediaInfo(string path)
+		{
+			dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(path));
 
-            // General info
-            FilePath = json.format.filename;
-            FileSize = json.format.size;
-            BitRate = json.format.bit_rate;
-            Duration = json.format.duration;
-            FormatName = json.format.format_name;
-            FormatNameFull = json.format.format_long_name;
+			// General info
+			FilePath = (string)json.format.filename;
+			FileSize = ulong.TryParse((string)json.format.size, out ulong fs) ? fs : 0;
+			BitRate = ulong.TryParse((string)json.format.bit_rate, out ulong br) ? br : 0;
+			Duration = float.TryParse((string)json.format.duration, out float d) ? d : 0;
+			FormatName = (string)json.format.format_name;
+			FormatNameFull = (string)json.format.format_long_name;
 
-            // Capture stream type
-            foreach (var stream in json.streams)
-            {
-                string type = stream.codec_type;
+			// Capture stream type
+			foreach (var stream in json.streams)
+			{
+				string type = stream.codec_type;
 
-                if (string.Equals(type, "video", IgnoreCase))
-                {
-                    string r = stream.r_frame_rate;
-                    float.TryParse(r.Split('/')[0], out float rn);
-                    float.TryParse(r.Split('/')[1], out float rd);
-                    float rfps = rn / rd;
+				if (string.Equals(type, "video", IgnoreCase))
+				{
+					int id = 0;
+					try { id = int.Parse((string)stream.index); }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    string a = stream.avg_frame_rate;
-                    float.TryParse(a.Split('/')[0], out float an);
-                    float.TryParse(a.Split('/')[1], out float ad);
-                    float afps = an / ad;
+					string lang = "und";
+					try { lang = stream.tags.language; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    int pix = 420;
-                    if (!string.IsNullOrEmpty((string)stream.pix_fmt))
-                    {
-                        var mpix = Regex.Match((string)stream.pix_fmt, @"yuv(\d+)");
+					string codec = "unknown";
+					try { codec = stream.codec_name; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                        if (mpix.Success)
-                            int.TryParse(mpix.Groups[1].Value, out pix);
-                        else
-                            pix = 420;
-                    }
+					int width = 0;
+					try { width = int.Parse((string)stream.width); }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    int bpc;
-                    if (int.TryParse((string)stream.bits_per_raw_sample, out int x))
-                    {
-                        bpc = x;
-                    }
-                    else
-                    {
-                        var mbpc = Regex.Match((string)stream.pix_fmt, @"yuv\d+p(\d+)");
+					int height = 0;
+					try { height = int.Parse((string)stream.height); }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                        if (mbpc.Success)
-                            int.TryParse(mbpc.Groups[1].Value, out bpc);
-                        else
-                            bpc = 8;
-                    }
+					string r = "0/0";
+					try { r = stream.r_frame_rate; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+					float.TryParse(r.Split('/')[0], out float rn);
+					float.TryParse(r.Split('/')[1], out float rd);
+					float rfps = rn / rd;
 
-                    string lang = stream.tags.language;
-                    if (string.IsNullOrEmpty(lang)) lang = "und";
+					string a = "0/0";
+					try { a = stream.avg_frame_rate; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+					float.TryParse(a.Split('/')[0], out float an);
+					float.TryParse(a.Split('/')[1], out float ad);
+					float afps = an / ad;
 
-                    Video.Add(new StreamVideo
-                    {
-                        Id = stream.index,
-                        Language = lang,
-                        Codec = stream.codec_name,
-                        Chroma = pix,
-                        BitDepth = bpc,
-                        Width = stream.width,
-                        Height = stream.height,
-                        FrameRateConstant = rfps == afps,
-                        FrameRate = rfps,
-                        FrameRateAvg = afps,
-                        FrameCount = (int)(Duration * afps),
-                        Duration = Duration,
-                    });
-                }
+					int pix = 420;
+					try
+					{
+						if (!string.IsNullOrEmpty((string)stream.pix_fmt))
+						{
+							var mpix = Regex.Match((string)stream.pix_fmt, @"yuv(\d+)");
 
-                if (string.Equals(type, "audio", IgnoreCase))
-                {
-                    int.TryParse((string)stream.sample_rate, out int sample);
-                    int.TryParse((string)stream.sample_fmt, out int bitdepth);
-                    int.TryParse((string)stream.channels, out int channel);
+							if (mpix.Success)
+								int.TryParse(mpix.Groups[1].Value, out pix);
+							else
+								pix = 420;
+						}
+					}
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    if (bitdepth == 0) bitdepth = 16;
-                    else if (bitdepth >= 32) bitdepth = 24;
+					int bpc = 8;
+					try
+					{
+						if (int.TryParse((string)stream.bits_per_raw_sample, out int x))
+						{
+							bpc = x;
+						}
+						else
+						{
+							var mbpc = Regex.Match((string)stream.pix_fmt, @"yuv\d+p(\d+)");
 
-                    string lang = stream.tags.language;
-                    if (string.IsNullOrEmpty(lang)) lang = "und";
+							if (mbpc.Success)
+								int.TryParse(mbpc.Groups[1].Value, out bpc);
+							else
+								bpc = 8;
+						}
+					}
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    Audio.Add(new StreamAudio
-                    {
-                        Id = stream.index,
-                        Language = lang,
-                        Codec = stream.codec_name,
-                        SampleRate = sample,
-                        BitDepth = bitdepth,
-                        Channel = channel,
-                        Duration = Duration,
-                    });
-                }
+					Video.Add(new StreamVideo
+					{
+						Id = id,
+						Language = lang,
+						Codec = codec,
+						Chroma = pix,
+						BitDepth = bpc,
+						Width = width,
+						Height = height,
+						FrameRateConstant = rfps == afps,
+						FrameRate = rfps,
+						FrameRateAvg = afps,
+						FrameCount = (int)(Duration * afps),
+						Duration = Duration,
+					});
+				}
 
-                if (string.Equals(type, "subtitle", IgnoreCase))
-                {
-                    string lang = stream.tags.language;
-                    if (string.IsNullOrEmpty(lang)) lang = "und";
+				if (string.Equals(type, "audio", IgnoreCase))
+				{
+					int id = 1;
+					try { id = stream.index; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                    Subtitle.Add(new StreamSubtitle
-                    {
-                        Id = stream.index,
-                        Language = lang,
-                        Codec = stream.codec_name,
-                    });
-                }
+					string codec = "unknown";
+					try { codec = stream.codec_name; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                if (string.Equals(type, "attachment", IgnoreCase))
-                {
-                    Attachment.Add(new StreamAttachment
-                    {
-                        Id = stream.index,
-                        FileName = stream.tags.filename,
-                        MimeType = stream.tags.mimetype
-                    });
-                }
-            }
-        }
-    }
+					int sample = 44100;
+					try { sample = stream.sample_rate; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					int bitdepth = 16;
+					try { bitdepth = stream.sample_fmt; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					int channel = 2;
+					try { channel = stream.channels; }
+					catch(Exception ex) { Console.WriteLine(ex.Message); }
+
+					string lang = "und";
+					try { lang = stream.tags.language; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					if (bitdepth == 0) bitdepth = 16;
+					else if (bitdepth >= 32) bitdepth = 24;
+
+					Audio.Add(new StreamAudio
+					{
+						Id = id,
+						Language = lang,
+						Codec = codec,
+						SampleRate = sample,
+						BitDepth = bitdepth,
+						Channel = channel,
+						Duration = Duration,
+					});
+				}
+
+				if (string.Equals(type, "subtitle", IgnoreCase))
+				{
+					int id = 2;
+					try { id = stream.index; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					string codec = "unknown";
+					try { codec = stream.codec_name; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					string lang = "und";
+					try { lang = stream.tags.language; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					Subtitle.Add(new StreamSubtitle
+					{
+						Id = id,
+						Language = lang,
+						Codec = codec,
+					});
+				}
+
+				if (string.Equals(type, "attachment", IgnoreCase))
+				{
+					int id = 3;
+					try { id = stream.index; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					string fname = "unknown";
+					try { fname = stream.tags.filename; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					string mtype = "application/octet-stream";
+					try { mtype = stream.tags.mimetype; }
+					catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+					Attachment.Add(new StreamAttachment
+					{
+						Id = id,
+						FileName = fname,
+						MimeType = mtype
+					});
+				}
+			}
+		}
+	}
 }

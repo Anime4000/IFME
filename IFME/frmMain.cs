@@ -34,6 +34,8 @@ namespace IFME
 			bgThread.DoWork += bgThread_DoWork;
 			bgThread.ProgressChanged += bgThread_ProgressChanged;
 			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
+
+			try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME")); } catch { }
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -165,7 +167,7 @@ namespace IFME
 
 		private void btnOptions_Click(object sender, EventArgs e)
 		{
-
+			MessageBox.Show("Option not yet implement in this alpha build release!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 		}
 
 		private void btnFileUp_Click(object sender, EventArgs e)
@@ -217,6 +219,12 @@ namespace IFME
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
+			if (cboFormat.SelectedIndex == -1)
+			{
+				MessageBox.Show("Encoding cannot continue unless Output Format is set!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
 			if (lstFile.Items.Count > 0)
 			{
 				if (bgThread.IsBusy)
@@ -272,6 +280,9 @@ namespace IFME
 
 				// Format
 				cboFormat.SelectedIndex = (int)data.OutputFormat;
+
+				// Profile
+				cboProfile.SelectedIndex = data.ProfileId;
 
 				// Video
 				lstVideo.SelectedItems.Clear();
@@ -359,6 +370,51 @@ namespace IFME
 				if (data.Attachment.Count > 0)
 					lstAttach.Items[0].Selected = true;
 			}
+			else if (lstFile.SelectedItems.Count == 0)
+			{
+				lstVideo.Items.Clear();
+				lstAudio.Items.Clear();
+				lstSub.Items.Clear();
+				lstAttach.Items.Clear();
+			}
+
+			// Check queue consistency
+			if (lstFile.SelectedItems.Count > 1)
+			{
+				var fmt = (lstFile.SelectedItems[0].Tag as MediaQueue).OutputFormat;
+				var pro = (lstFile.SelectedItems[0].Tag as MediaQueue).ProfileId;
+
+				var fmtFail = false;
+				var proFail = false;
+
+				foreach (ListViewItem item in lstFile.SelectedItems)
+				{
+					var of = (item.Tag as MediaQueue).OutputFormat;
+					var pi = (item.Tag as MediaQueue).ProfileId;
+
+					if (Equals(fmt, of))
+					{
+						if (!fmtFail)
+							fmt = of;
+					}
+					else
+					{
+						cboFormat.SelectedIndex = -1;
+						fmtFail = true;
+					}
+
+					if (Equals(pro, pi))
+					{
+						if (!proFail)
+							pro = pi;
+					}
+					else
+					{
+						cboProfile.SelectedIndex = -1;
+						proFail = true;
+					}
+				}
+			}
 		}
 
 		private void lstFile_DragDrop(object sender, DragEventArgs e)
@@ -383,7 +439,10 @@ namespace IFME
 		private void btnVideoDel_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstVideo.SelectedItems)
+			{
+				(lstFile.SelectedItems[0].Tag as MediaQueue).Video.RemoveAt(item.Index);
 				item.Remove();
+			}
 		}
 
 		private void btnVideoMoveUp_Click(object sender, EventArgs e)
@@ -496,7 +555,7 @@ namespace IFME
 
 		private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (cboVideoEncoder.SelectedIndex <= -1)
+			if (cboVideoEncoder.SelectedIndex < 0)
 				return;
 
 			var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
@@ -537,16 +596,21 @@ namespace IFME
 
 				if ((sender as Control).Focused)
 				{
+					var enc = new MediaQueueVideoEncoder
+					{
+						Id = new Guid(cboVideoEncoder.SelectedValue.ToString()),
+						Preset = cboVideoPreset.Text,
+						Tune = cboVideoTune.Text,
+						Mode = cboVideoRateControl.SelectedIndex,
+						Value = nudVideoRateFactor.Value,
+						MultiPass = (int)nudVideoMultiPass.Value
+					};
+
 					if (lstFile.SelectedItems.Count == 1)
 					{
 						foreach (ListViewItem item in lstVideo.SelectedItems)
 						{
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Id = new Guid(cboVideoEncoder.SelectedValue.ToString());
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Preset = cboVideoPreset.Text;
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Tune = cboVideoTune.Text;
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Mode = cboVideoRateControl.SelectedIndex;
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Value = nudVideoRateFactor.Value;
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.MultiPass = (int)nudVideoMultiPass.Value;
+							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder = enc;
 						}
 					}
 					else if (lstFile.SelectedItems.Count > 1)
@@ -555,12 +619,7 @@ namespace IFME
 						{
 							foreach (var d in (queue.Tag as MediaQueue).Video)
 							{
-								d.Encoder.Id = new Guid(cboVideoEncoder.SelectedValue.ToString());
-								d.Encoder.Preset = cboVideoPreset.Text;
-								d.Encoder.Tune = cboVideoTune.Text;
-								d.Encoder.Mode = cboVideoRateControl.SelectedIndex;
-								d.Encoder.Value = nudVideoRateFactor.Value;
-								d.Encoder.MultiPass = (int)nudVideoMultiPass.Value;
+								d.Encoder = enc;
 							}
 						}
 					}
@@ -949,7 +1008,10 @@ namespace IFME
 		private void btnAudioDel_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstAudio.SelectedItems)
+			{
+				(lstFile.SelectedItems[0].Tag as MediaQueue).Audio.RemoveAt(item.Index);
 				item.Remove();
+			}
 		}
 
 		private void btnAudioMoveUp_Click(object sender, EventArgs e)
@@ -1086,7 +1148,7 @@ namespace IFME
 
 		private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (cboAudioEncoder.SelectedIndex <= -1)
+			if (cboAudioEncoder.SelectedIndex < 0)
 				return;
 
 			var key = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
@@ -1147,11 +1209,21 @@ namespace IFME
 
 			if ((sender as Control).Focused)
 			{
+				var enc = new MediaQueueAudioEncoder
+				{
+					Id = new Guid($"{cboAudioEncoder.SelectedValue}"),
+					Mode = 0,
+					Quality = temp.Audio.Mode[0].Default,
+					SampleRate = temp.Audio.SampleRateDefault,
+					Channel = temp.Audio.ChannelDefault,
+					Command = string.Empty
+				};
+
 				if (lstFile.SelectedItems.Count == 1)
 				{
 					foreach (ListViewItem item in lstAudio.SelectedItems)
 					{
-						(lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Id = new Guid($"{cboAudioEncoder.SelectedValue}");
+						(lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder = enc;
 					}
 				}
 				else if (lstFile.SelectedItems.Count > 1)
@@ -1160,7 +1232,7 @@ namespace IFME
 					{
 						foreach (var item in (queue.Tag as MediaQueue).Audio)
 						{
-							item.Encoder.Id = new Guid($"{cboAudioEncoder.SelectedValue}");
+							item.Encoder = enc;
 						}
 					}
 				}
@@ -1304,7 +1376,10 @@ namespace IFME
 		private void btnSubDel_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstSub.SelectedItems)
+			{
+				(lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(item.Index);
 				item.Remove();
+			}
 		}
 
 		private void btnSubMoveUp_Click(object sender, EventArgs e)
@@ -1435,7 +1510,10 @@ namespace IFME
 		private void btnAttachDel_Click(object sender, EventArgs e)
 		{
 			foreach (ListViewItem item in lstAttach.SelectedItems)
+			{
+				(lstFile.SelectedItems[0].Tag as MediaQueue).Attachment.RemoveAt(item.Index);
 				item.Remove();
+			}
 		}
 
 		private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
@@ -1470,6 +1548,8 @@ namespace IFME
 		{
 			if ((sender as Control).Focused)
 			{
+				cboProfile.SelectedIndex = -1;
+
 				if (lstFile.SelectedItems.Count > 0)
 				{
 					foreach (ListViewItem queue in lstFile.SelectedItems)
@@ -1478,38 +1558,15 @@ namespace IFME
 					}
 				}
 			}
+
+			if (cboFormat.SelectedIndex > -1)
+				ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
 		}
 
 		private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if ((sender as Control).Focused)
-			{
-				if (lstFile.SelectedItems.Count > 0)
-				{
-					foreach (ListViewItem queue in lstFile.SelectedItems)
-					{
-						var profile = Profiles.Items[cboProfile.SelectedIndex];
-
-						(queue.Tag as MediaQueue).OutputFormat = profile.Container;
-
-						foreach (var item in (queue.Tag as MediaQueue).Video)
-						{
-							item.Encoder = profile.Video.Encoder;
-							item.Quality = profile.Video.Quality;
-							item.DeInterlace = profile.Video.DeInterlace;
-						}
-
-						foreach (var item in (queue.Tag as MediaQueue).Audio)
-						{
-							item.Encoder = profile.Audio.Encoder;
-							item.Command = profile.Audio.Command;
-							item.Copy = profile.Audio.Copy;
-						}
-					}
-
-					MediaShowReList();
-				}
-			}
+				SetProfileData(Profiles.Items[cboProfile.SelectedIndex]);
 		}
 
 		private void btnOutputBrowse_Click(object sender, EventArgs e)
@@ -1580,6 +1637,8 @@ namespace IFME
 					MediaEncoding.Muxing(mq, tses, txtOutputPath.Text);
 
 					// Delete Temporary Session Folder
+					try { Directory.Delete(tses); }
+					catch (Exception ex) { Console2.WriteLine($"[ERR ] {ex.Message}"); }
 
 					lstFile.Invoke((MethodInvoker)delegate
 					{

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="API\Linux.cs" />
     <Compile Include="API\Windows.cs" />
+    <Compile Include="MArch.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="ProcessEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

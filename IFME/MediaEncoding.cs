@@ -98,6 +98,8 @@ namespace IFME
 
 		internal static void Video(MediaQueue queue, string tempDir)
 		{
+			var original_data = new FFmpeg.MediaInfo(queue.FilePath);
+
 			for (int i = 0; i < queue.Video.Count; i++)
 			{
 				var item = queue.Video[i];
@@ -115,7 +117,7 @@ namespace IFME
 
 					var yuv = $"yuv{item.Quality.PixelFormat}p";
 					var res = string.Empty;
-					var fps = string.Empty;
+					var fps = $"-r 23.976";
 
 					var preset = string.Empty;
 					var tune = string.Empty;
@@ -145,6 +147,10 @@ namespace IFME
 					if (item.Quality.Width >= 128 && item.Quality.Height >= 128)
 					{
 						res = $"-s {item.Quality.Width}x{item.Quality.Height}";
+					}
+					else
+					{
+						res = $"-s {original_data.Video[i].Width}x{original_data.Video[i].Height}";
 					}
 
 					if (!vc.Args.Preset.IsDisable() && !item.Encoder.Preset.IsDisable())
@@ -302,30 +308,29 @@ namespace IFME
 
 			if (queue.OutputFormat == MediaContainer.MKV)
 			{
-
-			}
-			var d = 0;
-			foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
-			{
-				argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-				metadata += $"-metadata:s:{x} language={subtitle.GetLanguageCodeFromFileName()} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
-				map += $"-map {x} ";
-				x++;
-				d++;
-			}
-
-			var tempDirFont = Path.Combine(tempDir, "attachment");
-			if (Directory.Exists(tempDirFont))
-			{
-				var files = Directory.GetFiles(tempDirFont, "*");
-				for (int i = 0; i < files.Length; i++)
+				var d = 0;
+				foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
 				{
-					argEmbed += $"-attach \"{Path.GetFileName(files[i])}\" ";
-					metadata += $"-metadata:s:{x++} \"mimetype={queue.Attachment[i].Mime}\" ";
+					argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
+					metadata += $"-metadata:s:{x} language={subtitle.GetLanguageCodeFromFileName()} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+					map += $"-map {x} ";
+					x++;
+					d++;
+				}
+
+				var tempDirFont = Path.Combine(tempDir, "attachment");
+				if (Directory.Exists(tempDirFont))
+				{
+					var files = Directory.GetFiles(tempDirFont, "*");
+					for (int i = 0; i < files.Length; i++)
+					{
+						argEmbed += $"-attach \"{Path.GetFileName(files[i])}\" ";
+						metadata += $"-metadata:s:{x++} \"mimetype={queue.Attachment[i].Mime}\" ";
+					}
 				}
 			}
 
-			var author = $"{Version.Name} v{Version.Release} ( '{Version.CodeName}' ) {Version.OSArch} {Version.OSPlatform}";
+			var author = $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} @ {Version.CodeName}";
 			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argEmbed}{metafile}{map}{metadata}-metadata \"encoded_by={author}\" -c copy -y \"{outFile}\"";
 			ProcessManager.Start(tempDir, command);
 		}

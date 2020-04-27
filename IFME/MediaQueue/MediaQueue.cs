@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Collections.Generic;
+using System;
 
 public enum MediaContainer
 {
 	MP4,
 	MKV,
-	IVF,
 	WEBM,
 	TS,
 	M2TS,
@@ -25,7 +25,9 @@ namespace IFME
 		public bool Enable { get; set; }
 		public string FilePath { get; set; }
 		public bool HardSub { get; set; }
+		public bool AudioOnly { get; set; } = false;
 		public MediaContainer OutputFormat { get; set; }
+		public int ProfileId { get; set; } = -1;
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();
 		public List<MediaQueueAudio> Audio { get; set; } = new List<MediaQueueAudio>();
 		public List<MediaQueueVideo> Video { get; set; } = new List<MediaQueueVideo>();

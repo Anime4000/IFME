@@ -1,7 +1,7 @@
 ﻿{
 	"ProfileName": "x264 High Compression & Quality",
 	"ProfileAuthor": "Anime4000",
-	"Container": 3,
+	"Container": "mp4",
 	"Video": {
 		"Encoder": {
 			"Id": "deadbeef-0264-0264-0264-026402640264",
