@@ -269,7 +269,7 @@ namespace IFME
 
 		private void lstFile_ItemChecked(object sender, ItemCheckedEventArgs e)
 		{
-
+			(lstFile.Items[e.Item.Index].Tag as MediaQueue).Enable = e.Item.Checked;
 		}
 
 		private void lstFile_SelectedIndexChanged(object sender, EventArgs e)
