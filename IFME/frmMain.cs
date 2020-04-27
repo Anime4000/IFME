@@ -28,14 +28,14 @@ namespace IFME
 			InitializeLog();
 
 			Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-			Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )";
+			Text = $"{Version.Title} {Version.Release}-alpha ( '{Version.CodeName}' )";
 			FormBorderStyle = FormBorderStyle.Sizable;
 
 			bgThread.DoWork += bgThread_DoWork;
 			bgThread.ProgressChanged += bgThread_ProgressChanged;
 			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
-			try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME")); } catch { }
+			try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME"), true); } catch { }
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)
@@ -1637,7 +1637,7 @@ namespace IFME
 					MediaEncoding.Muxing(mq, tses, txtOutputPath.Text);
 
 					// Delete Temporary Session Folder
-					try { Directory.Delete(tses); }
+					try { Directory.Delete(tses, true); }
 					catch (Exception ex) { Console2.WriteLine($"[ERR ] {ex.Message}"); }
 
 					lstFile.Invoke((MethodInvoker)delegate
