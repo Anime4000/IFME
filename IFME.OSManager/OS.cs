@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,6 +88,14 @@ namespace IFME.OSManager
                 return $"/c %{EnvironmentVariable}%";
 
             return $"-c 'eval ${EnvironmentVariable}'";
+        }
+
+        public static void PowerOff(int delay = 0)
+        {
+            if (IsWindows)
+                Process.Start("shutdown.exe", $"-s -f -t {delay}");
+            else if (IsLinux)
+                Process.Start("bash", "-c 'poweroff'");
         }
     }
 }

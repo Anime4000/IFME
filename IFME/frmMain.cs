@@ -213,6 +213,13 @@ namespace IFME
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
+			if (tsmiPowerOff.Checked)
+			{
+				var msgBox = MessageBox.Show("This computer will shutdown after encoding is complete even with fail!", "Proceed?", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+				if (msgBox == DialogResult.Cancel)
+					return;
+			}
+
 			if (cboFormat.SelectedIndex == -1)
 			{
 				MessageBox.Show("Encoding cannot continue unless Output Format is set!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -258,6 +265,17 @@ namespace IFME
 						Console2.WriteLine("[WARN] Noting to encode...");
 					}
 				}
+			}
+		}
+
+		private void btnStart_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var btnSender = (Button)sender;
+				var ptLowerLeft = new Point(1, btnSender.Height);
+				ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+				cmsPower.Show(ptLowerLeft);
 			}
 		}
 
@@ -1818,9 +1836,19 @@ namespace IFME
 
 		}
 
-		private void tsmiImportYouTube_Click(object sender, EventArgs e)
+		private void tsmiImportImgSeq_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void tsmiImportYouTube_Click(object sender, EventArgs e)
+		{
+			
+		}
+
+		private void tsmiPowerOff_Click(object sender, EventArgs e)
+		{
+			(sender as ToolStripMenuItem).Checked = !(sender as ToolStripMenuItem).Checked;
 		}
 
 		private void tsmiProfilesSave_Click(object sender, EventArgs e)
@@ -1947,6 +1975,13 @@ namespace IFME
 				{
 					item.SubItems[4].Text = "Aborted!";
 				}
+			}
+
+			if (!e.Cancelled && tsmiPowerOff.Checked)
+			{
+				Console2.WriteLine($"[WARN] Encoding complete, shutdown in few seconds...");
+				OS.PowerOff(3);
+				return;
 			}
 		}
 	}

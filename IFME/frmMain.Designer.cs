@@ -167,9 +167,11 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiImportYouTube = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsProfiles = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiProfilesSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProfilesRename = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProfilesDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiProfilesSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsPower = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiPowerOff = new System.Windows.Forms.ToolStripMenuItem();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -187,6 +189,7 @@
             this.tabConfig.SuspendLayout();
             this.cmsFileAdd.SuspendLayout();
             this.cmsProfiles.SuspendLayout();
+            this.cmsPower.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -1600,6 +1603,7 @@
             this.btnStart.TabIndex = 8;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
             // 
             // btnStop
             // 
@@ -1679,7 +1683,7 @@
             this.toolStripSeparator1,
             this.tsmiImportYouTube});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(190, 98);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 120);
             // 
             // tsmiImportFiles
             // 
@@ -1700,6 +1704,7 @@
             this.tsmiImportImgSeq.Name = "tsmiImportImgSeq";
             this.tsmiImportImgSeq.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportImgSeq.Text = "Import &Image Sequence";
+            this.tsmiImportImgSeq.Click += new System.EventHandler(this.tsmiImportImgSeq_Click);
             // 
             // toolStripSeparator1
             // 
@@ -1721,28 +1726,43 @@
             this.tsmiProfilesRename,
             this.tsmiProfilesDelete});
             this.cmsProfiles.Name = "cmsProfiles";
-            this.cmsProfiles.Size = new System.Drawing.Size(181, 92);
+            this.cmsProfiles.Size = new System.Drawing.Size(114, 70);
+            // 
+            // tsmiProfilesSave
+            // 
+            this.tsmiProfilesSave.Name = "tsmiProfilesSave";
+            this.tsmiProfilesSave.Size = new System.Drawing.Size(113, 22);
+            this.tsmiProfilesSave.Text = "&Save As";
+            this.tsmiProfilesSave.Click += new System.EventHandler(this.tsmiProfilesSave_Click);
             // 
             // tsmiProfilesRename
             // 
             this.tsmiProfilesRename.Name = "tsmiProfilesRename";
-            this.tsmiProfilesRename.Size = new System.Drawing.Size(180, 22);
+            this.tsmiProfilesRename.Size = new System.Drawing.Size(113, 22);
             this.tsmiProfilesRename.Text = "&Rename";
             this.tsmiProfilesRename.Click += new System.EventHandler(this.tsmiProfilesRename_Click);
             // 
             // tsmiProfilesDelete
             // 
             this.tsmiProfilesDelete.Name = "tsmiProfilesDelete";
-            this.tsmiProfilesDelete.Size = new System.Drawing.Size(180, 22);
+            this.tsmiProfilesDelete.Size = new System.Drawing.Size(113, 22);
             this.tsmiProfilesDelete.Text = "&Delete";
             this.tsmiProfilesDelete.Click += new System.EventHandler(this.tsmiProfilesDelete_Click);
             // 
-            // tsmiProfilesSave
+            // cmsPower
             // 
-            this.tsmiProfilesSave.Name = "tsmiProfilesSave";
-            this.tsmiProfilesSave.Size = new System.Drawing.Size(180, 22);
-            this.tsmiProfilesSave.Text = "&Save As";
-            this.tsmiProfilesSave.Click += new System.EventHandler(this.tsmiProfilesSave_Click);
+            this.cmsPower.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.cmsPower.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPowerOff});
+            this.cmsPower.Name = "cmsPower";
+            this.cmsPower.Size = new System.Drawing.Size(198, 26);
+            // 
+            // tsmiPowerOff
+            // 
+            this.tsmiPowerOff.Name = "tsmiPowerOff";
+            this.tsmiPowerOff.Size = new System.Drawing.Size(197, 22);
+            this.tsmiPowerOff.Text = "Shutdown when complete";
+            this.tsmiPowerOff.Click += new System.EventHandler(this.tsmiPowerOff_Click);
             // 
             // frmMain
             // 
@@ -1796,6 +1816,7 @@
             this.tabConfig.ResumeLayout(false);
             this.cmsFileAdd.ResumeLayout(false);
             this.cmsProfiles.ResumeLayout(false);
+            this.cmsPower.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1944,5 +1965,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiProfilesSave;
         private System.Windows.Forms.ToolStripMenuItem tsmiProfilesRename;
         private System.Windows.Forms.ToolStripMenuItem tsmiProfilesDelete;
+        private System.Windows.Forms.ContextMenuStrip cmsPower;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPowerOff;
     }
 }

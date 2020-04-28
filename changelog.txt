@@ -2,6 +2,7 @@
 ---------------------------------------------------
 [new] Advance Decoding/Encoding CLI button is functional
 [new] Profile is functional as well
+[new] New check box for Shutdown
 [mistake] x265 in previous version was 3.2, now with 3.3 stable
 
 Version 20.04.1 Alpha (The Quintessence Inside You)
