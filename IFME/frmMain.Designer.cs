@@ -163,9 +163,13 @@
             this.cmsFileAdd = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiImportFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiImportYouTube = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportImgSeq = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiImportYouTube = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsProfiles = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiProfilesRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProfilesDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProfilesSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -182,6 +186,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoRateFactor)).BeginInit();
             this.tabConfig.SuspendLayout();
             this.cmsFileAdd.SuspendLayout();
+            this.cmsProfiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -775,6 +780,7 @@
             this.btnProfileSaveLoad.TabIndex = 15;
             this.btnProfileSaveLoad.UseVisualStyleBackColor = true;
             this.btnProfileSaveLoad.Click += new System.EventHandler(this.btnProfileSaveLoad_Click);
+            this.btnProfileSaveLoad.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnProfileSaveLoad_MouseUp);
             // 
             // cboProfile
             // 
@@ -1673,7 +1679,7 @@
             this.toolStripSeparator1,
             this.tsmiImportYouTube});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(190, 120);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 98);
             // 
             // tsmiImportFiles
             // 
@@ -1689,13 +1695,6 @@
             this.tsmiImportFolder.Text = "Import Fol&der";
             this.tsmiImportFolder.Click += new System.EventHandler(this.tsmiImportFolder_Click);
             // 
-            // tsmiImportYouTube
-            // 
-            this.tsmiImportYouTube.Name = "tsmiImportYouTube";
-            this.tsmiImportYouTube.Size = new System.Drawing.Size(189, 22);
-            this.tsmiImportYouTube.Text = "Import &YouTube";
-            this.tsmiImportYouTube.Click += new System.EventHandler(this.tsmiImportYouTube_Click);
-            // 
             // tsmiImportImgSeq
             // 
             this.tsmiImportImgSeq.Name = "tsmiImportImgSeq";
@@ -1706,6 +1705,44 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
+            // 
+            // tsmiImportYouTube
+            // 
+            this.tsmiImportYouTube.Name = "tsmiImportYouTube";
+            this.tsmiImportYouTube.Size = new System.Drawing.Size(189, 22);
+            this.tsmiImportYouTube.Text = "Import &YouTube";
+            this.tsmiImportYouTube.Click += new System.EventHandler(this.tsmiImportYouTube_Click);
+            // 
+            // cmsProfiles
+            // 
+            this.cmsProfiles.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.cmsProfiles.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiProfilesSave,
+            this.tsmiProfilesRename,
+            this.tsmiProfilesDelete});
+            this.cmsProfiles.Name = "cmsProfiles";
+            this.cmsProfiles.Size = new System.Drawing.Size(181, 92);
+            // 
+            // tsmiProfilesRename
+            // 
+            this.tsmiProfilesRename.Name = "tsmiProfilesRename";
+            this.tsmiProfilesRename.Size = new System.Drawing.Size(180, 22);
+            this.tsmiProfilesRename.Text = "&Rename";
+            this.tsmiProfilesRename.Click += new System.EventHandler(this.tsmiProfilesRename_Click);
+            // 
+            // tsmiProfilesDelete
+            // 
+            this.tsmiProfilesDelete.Name = "tsmiProfilesDelete";
+            this.tsmiProfilesDelete.Size = new System.Drawing.Size(180, 22);
+            this.tsmiProfilesDelete.Text = "&Delete";
+            this.tsmiProfilesDelete.Click += new System.EventHandler(this.tsmiProfilesDelete_Click);
+            // 
+            // tsmiProfilesSave
+            // 
+            this.tsmiProfilesSave.Name = "tsmiProfilesSave";
+            this.tsmiProfilesSave.Size = new System.Drawing.Size(180, 22);
+            this.tsmiProfilesSave.Text = "&Save As";
+            this.tsmiProfilesSave.Click += new System.EventHandler(this.tsmiProfilesSave_Click);
             // 
             // frmMain
             // 
@@ -1758,6 +1795,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudVideoRateFactor)).EndInit();
             this.tabConfig.ResumeLayout(false);
             this.cmsFileAdd.ResumeLayout(false);
+            this.cmsProfiles.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1817,7 +1855,6 @@
         private System.Windows.Forms.Button btnAttachDel;
         private System.Windows.Forms.Button btnAttachAdd;
         private System.Windows.Forms.Button btnProfileSaveLoad;
-        private System.Windows.Forms.ComboBox cboProfile;
         private System.Windows.Forms.ComboBox cboFormat;
         private System.Windows.Forms.TextBox txtOutputPath;
         private System.Windows.Forms.Label lblOutputPath;
@@ -1902,5 +1939,10 @@
         private System.Windows.Forms.ListView lstFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportImgSeq;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        internal System.Windows.Forms.ComboBox cboProfile;
+        private System.Windows.Forms.ContextMenuStrip cmsProfiles;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProfilesSave;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProfilesRename;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProfilesDelete;
     }
 }

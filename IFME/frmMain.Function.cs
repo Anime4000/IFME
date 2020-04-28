@@ -100,6 +100,17 @@ namespace IFME
 				"\r\n";
 		}
 
+		private void InitializeProfiles()
+		{
+			new ProfilesManager();
+
+			cboProfile.Items.Clear();
+			foreach (var item in Profiles.Items)
+				cboProfile.Items.Add(item.ProfileName);
+
+			cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
+		}
+
 		private string[] OpenFiles(MediaType type)
 		{
 			var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.ts;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";

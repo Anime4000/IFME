@@ -58,6 +58,7 @@
             this.txtInputBox2.Size = new System.Drawing.Size(576, 24);
             this.txtInputBox2.TabIndex = 3;
             this.txtInputBox2.TextChanged += new System.EventHandler(this.txtInputBox2_TextChanged);
+            this.txtInputBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInputBox2_KeyDown);
             // 
             // lblMessage2
             // 
@@ -80,6 +81,7 @@
             this.txtInputBox1.Size = new System.Drawing.Size(576, 24);
             this.txtInputBox1.TabIndex = 1;
             this.txtInputBox1.TextChanged += new System.EventHandler(this.txtInputBox1_TextChanged);
+            this.txtInputBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInputBox1_KeyDown);
             // 
             // lblMessage1
             // 

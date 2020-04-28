@@ -22,9 +22,9 @@ namespace IFME
 		{
 			new frmSplashScreen().Show();
 			new PluginsLoad();
-			new ProfilesManager();
 
 			InitializeComponent();
+			InitializeProfiles();
 			InitializeFonts();
 			InitializeLog();
 
@@ -82,13 +82,6 @@ namespace IFME
 				cboFormat.Items.Add(item.ToString());
 			}
 			cboFormat.SelectedIndex = 1;
-
-			cboProfile.Items.Clear();
-			foreach (var item in Profiles.Items)
-			{
-				cboProfile.Items.Add(item.ProfileName);
-			}
-			cboProfile.SelectedIndex = 0;
 
 			if (Properties.Settings.Default.OutputFolder.IsDisable())
 			{
@@ -1759,7 +1752,21 @@ namespace IFME
 					};
 
 					ProfilesManager.Save(ib.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, proVideo, proAudio);
+
+					// Reload new listing
+					InitializeProfiles();
 				}
+			}
+		}
+
+		private void btnProfileSaveLoad_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				var btnSender = (Button)sender;
+				var ptLowerLeft = new Point(1, btnSender.Height);
+				ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+				cmsProfiles.Show(ptLowerLeft);
 			}
 		}
 
@@ -1814,6 +1821,57 @@ namespace IFME
 		private void tsmiImportYouTube_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void tsmiProfilesSave_Click(object sender, EventArgs e)
+		{
+			btnProfileSaveLoad.PerformClick(); // using same function
+		}
+
+		private void tsmiProfilesRename_Click(object sender, EventArgs e)
+		{
+			if (cboProfile.SelectedIndex > -1)
+			{
+				if (cboProfile.Items.Count == Profiles.Items.Count)
+				{
+					var index = cboProfile.SelectedIndex;
+					var oldName = Profiles.Items[index].ProfileName;
+
+					var ib = new InputBox("Rename profile", "Please enter new profile name and press OK.", oldName, 4);
+					if (ib.ShowDialog() == DialogResult.OK)
+					{
+						Profiles.Items[index].ProfileName = ib.ReturnValue;
+						ProfilesManager.Rename(index);
+						InitializeProfiles();
+						cboProfile.SelectedIndex = index;
+					}
+				}
+				else
+				{
+					InitializeProfiles();
+				}
+			}
+		}
+
+		private void tsmiProfilesDelete_Click(object sender, EventArgs e)
+		{
+			if (cboProfile.SelectedIndex > -1)
+			{
+				if (cboProfile.Items.Count == Profiles.Items.Count)
+				{
+					var msgBox = MessageBox.Show("Are you sure want to delete this profile?", "Delete profile", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+					if (msgBox == DialogResult.Yes)
+					{
+						var index = cboProfile.SelectedIndex;
+						ProfilesManager.Delete(index);
+						InitializeProfiles();
+					}
+				}
+				else
+				{
+					InitializeProfiles();
+				}
+			}
 		}
 
 		private void bgThread_DoWork(object sender, DoWorkEventArgs e)

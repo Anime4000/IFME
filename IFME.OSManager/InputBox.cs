@@ -57,6 +57,14 @@ namespace IFME.OSManager
 			btnOK.Enabled = (txtInputBox.Text.Length >= MinChar);
 		}
 
+		private void txtInputBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				btnOK.PerformClick();
+			}
+		}
+
 		private void btnOK_Click(object sender, EventArgs e)
 		{
 			ReturnValue = txtInputBox.Text;
