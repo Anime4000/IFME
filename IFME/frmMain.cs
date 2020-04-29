@@ -1702,6 +1702,8 @@ namespace IFME
 
 		private void cboFormat_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			chkAudioCopy.Enabled = string.Equals(cboFormat.Text.ToLowerInvariant(), "mkv");
+
 			if ((sender as Control).Focused)
 			{
 				cboProfile.SelectedIndex = -1;
@@ -1727,6 +1729,9 @@ namespace IFME
 
 		private void btnProfileSaveLoad_Click(object sender, EventArgs e)
 		{
+			var message = "Please choose item that has both video and audio in order to save profile preset";
+			var title = "Unable to save profile preset";
+
 			if (lstFile.SelectedItems.Count > 0)
 			{
 				var videoEnc = new MediaQueueVideoEncoder();
@@ -1737,6 +1742,11 @@ namespace IFME
 					videoEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder;
 					videoPix = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality;
 					videoDei = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].DeInterlace;
+				}
+				else
+				{
+					MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return;
 				}
 
 				var audioCps = false;
@@ -1749,6 +1759,11 @@ namespace IFME
 					audioEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder;
 					audioCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
 					audioFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
+				}
+				else
+				{
+					MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return;
 				}
 
 				var ib = new InputBox("Save encoding configuration profile", "Enter new profile name:", 4);
@@ -1774,6 +1789,10 @@ namespace IFME
 					// Reload new listing
 					InitializeProfiles();
 				}
+			}
+			else
+			{
+				MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 

@@ -64,25 +64,33 @@ namespace IFME
 
 		internal static void Audio(MediaQueue queue, string tempDir)
 		{
-			var i = 0;
-			foreach (var item in queue.Audio)
+			for (int i = 0; i < queue.Audio.Count; i++)
 			{
+				var item = queue.Audio[i];
+
+				Console2.WriteLine("[INFO] Extract audio file...");
+				if (item.Copy && queue.OutputFormat == MediaContainer.MKV)
+				{
+					ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y \"audio{i:D4}_{item.Lang}.mka\"");
+					continue;
+				}
+
 				Console2.WriteLine("[INFO] Encoding audio file...");
 				if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
 				{
 					var ac = codec.Audio;
+					var md = item.Encoder.Mode;
 					var en = Path.Combine(codec.FilePath, ac.Encoder);
-					var m = item.Encoder.Mode;
 
 					var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
 
-					var qfix = $"{ac.Mode[m].QualityPrefix}{item.Encoder.Quality}{ac.Mode[m].QualityPostfix}";
+					var qfix = $"{ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
 
-					var qu = (string.IsNullOrEmpty(ac.Mode[m].Args) ? string.Empty : $"{ac.Mode[m].Args} {qfix}");
+					var qu = (string.IsNullOrEmpty(ac.Mode[md].Args) ? string.Empty : $"{ac.Mode[md].Args} {qfix}");
 					var hz = (item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}");
 					var ch = (item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}");
 
-					var outfile = $"audio{i++:D4}_{item.Lang}.{ac.Extension}";
+					var outfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
 
 					if (ac.Args.Pipe)
 					{

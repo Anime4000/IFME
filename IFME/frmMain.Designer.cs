@@ -916,9 +916,9 @@
             this.chkAdvTrim.AutoSize = true;
             this.chkAdvTrim.Location = new System.Drawing.Point(15, 6);
             this.chkAdvTrim.Name = "chkAdvTrim";
-            this.chkAdvTrim.Size = new System.Drawing.Size(115, 17);
+            this.chkAdvTrim.Size = new System.Drawing.Size(266, 17);
             this.chkAdvTrim.TabIndex = 0;
-            this.chkAdvTrim.Text = "&Trim Video && Audio";
+            this.chkAdvTrim.Text = "&Trim Video && Audio (Copy stream wont effect this)";
             this.chkAdvTrim.UseVisualStyleBackColor = true;
             this.chkAdvTrim.CheckedChanged += new System.EventHandler(this.chkAdvTrim_CheckedChanged);
             // 
@@ -1683,7 +1683,7 @@
             this.toolStripSeparator1,
             this.tsmiImportYouTube});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(190, 120);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 98);
             // 
             // tsmiImportFiles
             // 
