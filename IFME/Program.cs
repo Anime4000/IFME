@@ -15,6 +15,13 @@ namespace IFME
         [STAThread]
         static void Main()
         {
+            if (Properties.Settings.Default.UpgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+
             Environment.CurrentDirectory = Path.GetDirectoryName(Application.ExecutablePath);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -27,6 +27,11 @@ namespace IFME.FFmpeg
 		public List<StreamSubtitle> Subtitle { get; internal set; } = new List<StreamSubtitle>();
 		public List<StreamAttachment> Attachment { get; internal set; } = new List<StreamAttachment>();
 
+		public MediaInfo()
+		{
+
+		}
+
 		public MediaInfo(string path)
 		{
 			dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(path));
@@ -216,6 +221,59 @@ namespace IFME.FFmpeg
 					});
 				}
 			}
+		}
+
+		public static string Print(MediaInfo value)
+		{
+			var info = $"General{Environment.NewLine}" +
+				$"Complete name               : {value.FilePath}{Environment.NewLine}" +
+				$"Format                      : {value.FormatName} ({value.FormatNameFull}){Environment.NewLine}" +
+				$"File size                   : {value.FileSize} bytes{Environment.NewLine}" +
+				$"Duration                    : {value.Duration} seconds{Environment.NewLine}" +
+				$"Overall bit rate            : {value.BitRate} bps{Environment.NewLine}";
+
+			var video = $"{Environment.NewLine}Video{Environment.NewLine}";
+			foreach (var item in value.Video)
+			{
+				video += $"ID                          : {item.Id}{Environment.NewLine}" +
+					$"Format                      : {item.Codec}{Environment.NewLine}" +
+					$"Width                       : {item.Width}{Environment.NewLine}" +
+					$"Height                      : {item.Height}{Environment.NewLine}" +
+					$"Frame rate mode             : {(item.FrameRateConstant ? "Constant" : "Variable")}{Environment.NewLine}" +
+					$"Frame rate                  : {item.FrameRate} FPS ({item.FrameRateAvg} FPS){Environment.NewLine}" +
+					$"Chroma subsampling          : {item.Chroma}{Environment.NewLine}" +
+					$"Bit depth                   : {item.BitDepth} bits{Environment.NewLine}" +
+					$"Language                    : {item.Language}{Environment.NewLine}";
+			}
+
+			var audio = $"{Environment.NewLine}Audio{Environment.NewLine}";
+			foreach (var item in value.Audio)
+			{
+				audio += $"ID                          : {item.Id}{Environment.NewLine}" +
+					$"Format                      : {item.Codec}{Environment.NewLine}" +
+					$"Channel(s)                  : {item.Channel}{Environment.NewLine}" +
+					$"Sampling rate               : {item.SampleRate} Hz{Environment.NewLine}" +
+					$"Bit Depth                   : {item.BitDepth} bits{Environment.NewLine}" +
+					$"Language                    : {item.Language}{Environment.NewLine}";
+			}
+
+			var subtitle = $"{Environment.NewLine}Subtitles{Environment.NewLine}";
+			foreach (var item in value.Subtitle)
+			{
+				subtitle += $"ID                          : {item.Id}{Environment.NewLine}" +
+					$"Format                      : {item.Codec}{Environment.NewLine}" +
+					$"Language                    : {item.Language}{Environment.NewLine}";
+			}
+
+			var attach = $"{Environment.NewLine}Attachments{Environment.NewLine}";
+			foreach (var item in value.Attachment)
+			{
+				attach += $"ID                          : {item.Id}{Environment.NewLine}" +
+					$"Name                        : {item.FileName}{Environment.NewLine}" +
+					$"MIME                        : {item.MimeType}{Environment.NewLine}";
+			}
+
+			return info + video + audio + subtitle + attach;
 		}
 	}
 }

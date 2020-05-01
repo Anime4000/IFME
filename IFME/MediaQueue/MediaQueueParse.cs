@@ -65,8 +65,8 @@ namespace IFME
 					Id = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac"),
 					Mode = 0,
 					Quality = 128,
-					SampleRate = 48000,
-					Channel = 2,
+					SampleRate = data.SampleRate,
+					Channel = data.Channel,
 					Command = string.Empty
 				}
 			};

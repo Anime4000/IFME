@@ -172,6 +172,8 @@
             this.tsmiProfilesDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsPower = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiPowerOff = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabConfigMediaInfo = new System.Windows.Forms.TabPage();
+            this.txtMediaInfo = new System.Windows.Forms.TextBox();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -190,6 +192,7 @@
             this.cmsFileAdd.SuspendLayout();
             this.cmsProfiles.SuspendLayout();
             this.cmsPower.SuspendLayout();
+            this.tabConfigMediaInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -1508,6 +1511,7 @@
             this.tabConfig.AllowDrop = true;
             this.tabConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabConfig.Controls.Add(this.tabConfigMediaInfo);
             this.tabConfig.Controls.Add(this.tabConfigVideo);
             this.tabConfig.Controls.Add(this.tabConfigAudio);
             this.tabConfig.Controls.Add(this.tabConfigSubtitle);
@@ -1764,6 +1768,27 @@
             this.tsmiPowerOff.Text = "Shutdown when complete";
             this.tsmiPowerOff.Click += new System.EventHandler(this.tsmiPowerOff_Click);
             // 
+            // tabConfigMediaInfo
+            // 
+            this.tabConfigMediaInfo.Controls.Add(this.txtMediaInfo);
+            this.tabConfigMediaInfo.Location = new System.Drawing.Point(4, 24);
+            this.tabConfigMediaInfo.Name = "tabConfigMediaInfo";
+            this.tabConfigMediaInfo.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigMediaInfo.TabIndex = 6;
+            this.tabConfigMediaInfo.Text = "Media Info";
+            this.tabConfigMediaInfo.UseVisualStyleBackColor = true;
+            // 
+            // txtMediaInfo
+            // 
+            this.txtMediaInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtMediaInfo.Location = new System.Drawing.Point(0, 0);
+            this.txtMediaInfo.Multiline = true;
+            this.txtMediaInfo.Name = "txtMediaInfo";
+            this.txtMediaInfo.ReadOnly = true;
+            this.txtMediaInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtMediaInfo.Size = new System.Drawing.Size(768, 264);
+            this.txtMediaInfo.TabIndex = 0;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1817,6 +1842,8 @@
             this.cmsFileAdd.ResumeLayout(false);
             this.cmsProfiles.ResumeLayout(false);
             this.cmsPower.ResumeLayout(false);
+            this.tabConfigMediaInfo.ResumeLayout(false);
+            this.tabConfigMediaInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1967,5 +1994,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiProfilesDelete;
         private System.Windows.Forms.ContextMenuStrip cmsPower;
         private System.Windows.Forms.ToolStripMenuItem tsmiPowerOff;
+        private System.Windows.Forms.TabPage tabConfigMediaInfo;
+        private System.Windows.Forms.TextBox txtMediaInfo;
     }
 }

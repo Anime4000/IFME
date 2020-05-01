@@ -48,6 +48,7 @@ namespace IFME
 				}
 			} while (ctrl != null);
 
+			txtMediaInfo.Font = Fonts.Uni(12f, FontStyle.Regular);
 			rtfConsole.Font = Fonts.Uni(12f, FontStyle.Regular);
 
 			btnFileAdd.Text = Fonts.fa.plus;
@@ -81,6 +82,7 @@ namespace IFME
 			btnOutputBrowse.Text = Fonts.fa.folder;
 
 			tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
+			tabConfigMediaInfo.Text = $"{Fonts.fa.info} {tabConfigMediaInfo.Text}";
 			tabConfigVideo.Text = $"{Fonts.fa.video_camera} {tabConfigVideo.Text}";
 			tabConfigAudio.Text = $"{Fonts.fa.volume_up} {tabConfigAudio.Text}";
 			tabConfigSubtitle.Text = $"{Fonts.fa.subscript} {tabConfigSubtitle.Text}";
@@ -154,14 +156,24 @@ namespace IFME
 			return Array.Empty<string>();
 		}
 
+		public static void EnableTab(TabPage page, bool enable)
+		{
+			foreach (Control ctrl in page.Controls)
+				ctrl.Enabled = enable;
+		}
+
 		private void MediaFileListAdd(string path)
 		{
 			var fileData = new FFmpeg.MediaInfo(path);
 			var fileQueue = new MediaQueue()
 			{
-				FilePath = path,
 				Enable = true,
+				FilePath = path,
+				FileSize = fileData.FileSize,
+				Duration = fileData.Duration,
+				InputFormat = fileData.FormatNameFull,
 				OutputFormat = MediaContainer.MKV,
+				Info = fileData
 			};
 
 			foreach (var item in fileData.Video)

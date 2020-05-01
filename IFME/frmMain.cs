@@ -208,7 +208,7 @@ namespace IFME
 
 		private void btnDonate_Click(object sender, EventArgs e)
 		{
-
+			ProcessManager.Donate();
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
@@ -391,6 +391,9 @@ namespace IFME
 					lstSub.Items[0].Selected = true;
 				if (data.Attachment.Count > 0)
 					lstAttach.Items[0].Selected = true;
+
+				// Media Info
+				txtMediaInfo.Text = FFmpeg.MediaInfo.Print(data.Info);
 			}
 			else if (lstFile.SelectedItems.Count == 0)
 			{
@@ -577,8 +580,21 @@ namespace IFME
 
 		private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (cboVideoEncoder.SelectedIndex < 0)
+			try
+			{
+				_ = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+			}
+			catch (Exception ex)
+			{
+				Console2.WriteLine($"[INFO] Selected format (container) doesn't support video: {ex.Message}");
+
+				//TabEna
+
 				return;
+			}
+
+			foreach (Control ctl in tabConfigVideo.Controls)
+				ctl.Enabled = true;
 
 			var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 

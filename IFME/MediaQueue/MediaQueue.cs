@@ -23,10 +23,15 @@ namespace IFME
 {
 	public class MediaQueue
     {
-		public bool Enable { get; set; }
-		public string FilePath { get; set; }
-		public bool HardSub { get; set; }
 		public bool AudioOnly { get; set; } = false;
+		public bool Enable { get; set; }
+		public bool HardSub { get; set; }
+
+		public string FilePath { get; set; }
+		public ulong FileSize { get; set; }
+		public ulong BitRate { get; set; }
+		public float Duration { get; set; }
+		public string InputFormat { get; set; }
 		public MediaContainer OutputFormat { get; set; }
 		public int ProfileId { get; set; } = -1;
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();
@@ -34,6 +39,7 @@ namespace IFME
 		public List<MediaQueueVideo> Video { get; set; } = new List<MediaQueueVideo>();
 		public List<MediaQueueSubtitle> Subtitle { get; set; } = new List<MediaQueueSubtitle>();
 		public List<MediaQueueAttachment> Attachment { get; set; } = new List<MediaQueueAttachment>();
+		public FFmpeg.MediaInfo Info { get; set; } = new FFmpeg.MediaInfo();
 	}
 
 	public partial class MediaQueueCommon

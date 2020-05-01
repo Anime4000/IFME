@@ -109,5 +109,10 @@ namespace IFME
 
 			IsPause = false;
 		}
+
+		internal static void Donate()
+		{
+			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+		}
 	}
 }
