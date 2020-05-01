@@ -123,10 +123,16 @@
     <None Include="Mime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Profiles\Profile_0000-00-00_00-00-00_0002.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Profiles\Profile_0000-00-00_00-00-00_0000.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Profiles\Profile_0000-00-00_00-00-00_0002.json">
+    <None Include="Profiles\Profile_0000-00-00_00-00-00_0003.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Profiles\Profile_0000-00-00_00-00-00_0004.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

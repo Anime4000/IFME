@@ -1,16 +1,16 @@
 ﻿{
-	"ProfileName": "x265 High Compression & Quality",
+	"ProfileName": "High Compression & Quality (AV1 OGG)",
 	"ProfileAuthor": "Anime4000",
-	"Container": "mkv",
+	"Container": "webm",
 	"Video": {
 		"Encoder": {
-			"Id": "deadbeef-0265-0265-0265-026502650265",
+			"Id": "deadbeef-0011-0011-0011-001100110011",
 			"Preset": "veryslow",
 			"Tune": "psnr",
 			"Mode": 0,
-			"Value": 24.0,
+			"Value": 23.5,
 			"MultiPass": 2,
-			"Command": "--pme --pmode"
+			"Command": ""
 		},
 		"Quality": {
 			"Width": 0,
@@ -29,7 +29,7 @@
 	},
 	"Audio": {
 		"Encoder": {
-			"Id": "deadbeef-0aac-0aac-0aac-0aac0aac0aac",
+			"Id": "deadface-f154-f154-f154-f154f154f154",
 			"Mode": 0,
 			"Quality": 128,
 			"SampleRate": 44100,

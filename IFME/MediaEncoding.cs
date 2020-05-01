@@ -193,6 +193,11 @@ namespace IFME
 						fi.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
 					}
 
+					if (item.Quality.CommandFilter.IsDisable())
+					{
+						fi.Add(item.Quality.CommandFilter);
+					}
+
 					if (queue.HardSub)
 					{
 						var files = Directory.GetFiles(tempDir, "subtitle*");
