@@ -33,6 +33,8 @@ namespace IFME
 				{
 					Width = data.Width,
 					Height = data.Height,
+					OriginalWidth = data.Width,
+					OriginalHeight = data.Height,
 					FrameRate = (float)Math.Round(data.FrameRateAvg, 3),
 					FrameRateAvg = data.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),

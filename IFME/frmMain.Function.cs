@@ -482,15 +482,17 @@ namespace IFME
 						item.Quality.BitDepth = value.Video.Quality.BitDepth;
 						item.Quality.PixelFormat = value.Video.Quality.PixelFormat;
 						item.Quality.Command = value.Video.Quality.Command;
+						item.Quality.CommandFilter = value.Video.Quality.CommandFilter;
 
 						item.DeInterlace = value.Video.DeInterlace;
 					}
 
 					foreach (var item in (queue.Tag as MediaQueue).Audio)
 					{
+						item.Copy = value.Audio.Copy;
 						item.Encoder = value.Audio.Encoder;
 						item.Command = value.Audio.Command;
-						item.Copy = value.Audio.Copy;
+						item.CommandFilter = value.Audio.CommandFilter;
 					}
 				}
 

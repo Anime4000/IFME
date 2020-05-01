@@ -1181,6 +1181,9 @@ namespace IFME
 
 		private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (btnAudioDel.Focused)
+				return;
+
 			if (lstAudio.SelectedItems.Count > 0)
 			{
 				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];

@@ -106,8 +106,6 @@ namespace IFME
 
 		internal static void Video(MediaQueue queue, string tempDir)
 		{
-			var original_data = new FFmpeg.MediaInfo(queue.FilePath);
-
 			for (int i = 0; i < queue.Video.Count; i++)
 			{
 				var item = queue.Video[i];
@@ -152,15 +150,6 @@ namespace IFME
 						fps = $"-r {item.Quality.FrameRate}";
 					}
 
-					if (item.Quality.Width >= 128 && item.Quality.Height >= 128)
-					{
-						res = $"-s {item.Quality.Width}x{item.Quality.Height}";
-					}
-					else
-					{
-						res = $"-s {original_data.Video[i].Width}x{original_data.Video[i].Height}";
-					}
-
 					if (!vc.Args.Preset.IsDisable() && !item.Encoder.Preset.IsDisable())
 					{
 						preset = $"{vc.Args.Preset} {item.Encoder.Preset}";
@@ -188,12 +177,24 @@ namespace IFME
 					}
 
 					// FFmpeg Video Filter
+					if (item.Quality.Width >= 128 && item.Quality.Height >= 128)
+					{
+						res = $"scale={item.Quality.Width}:{item.Quality.Height}";
+
+						if (item.Quality.OriginalWidth > item.Quality.Width)
+							res += ":flags=lanczos";
+					}
+					else
+					{
+						res = $"scale={item.Quality.OriginalWidth}:{item.Quality.OriginalHeight}";
+					}
+
 					if (item.DeInterlace.Enable)
 					{
 						fi.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
 					}
 
-					if (item.Quality.CommandFilter.IsDisable())
+					if (!item.Quality.CommandFilter.IsDisable())
 					{
 						fi.Add(item.Quality.CommandFilter);
 					}
@@ -218,8 +219,15 @@ namespace IFME
 						}
 					}
 
+					// Resolution filter
+					fi.Add(res);
+
+					// Concat multiple filter
 					if (fi.Count > 0)
-						vf = $"-vf \"{string.Join(", ", fi)}\"";
+						vf = $"-vf \"{string.Join(",", fi)}\"";
+
+					// Tell You
+					Console2.WriteLine($"[INFO] Video filter command is: {vf}");
 
 					// begin encoding
 					Console2.WriteLine($"[INFO] Encoding video file...");
@@ -244,9 +252,9 @@ namespace IFME
 							Console2.WriteLine($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
 							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outrawfile}");
+								ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outrawfile}");
 
 							++p;
 
@@ -255,9 +263,9 @@ namespace IFME
 					else
 					{
 						if (vc.Args.Pipe)
-							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {res} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
 						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {res} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+							ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
 					}
 
 					// Raw file dont have pts (time), need to remux
