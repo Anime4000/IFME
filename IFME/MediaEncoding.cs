@@ -92,13 +92,20 @@ namespace IFME
 
 					var outfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
 
+					var af = string.Empty;
+					
+					if (!item.CommandFilter.IsDisable())
+					{
+						af = $"-af {item.CommandFilter}";
+					}
+
 					if (ac.Args.Pipe)
 					{
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} -f wav {item.Command} - | \"{Path.Combine(codec.FilePath, ac.Encoder)}\" {qu} {ac.Args.Command} {ac.Args.Input} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
+						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{Path.Combine(codec.FilePath, ac.Encoder)}\" {qu} {ac.Args.Command} {ac.Args.Input} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
 					}
 					else
 					{
-						ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
+						ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
 					}
 				}
 			}

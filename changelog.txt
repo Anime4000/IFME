@@ -1,8 +1,12 @@
-﻿Version 20.04.2 Alpha (The Quintessence Inside You)
+﻿Version 20.04.2 Alpha (Darkness to Light)
 ---------------------------------------------------
 [new] Advance Decoding/Encoding CLI button is functional
 [new] Profile is functional as well
 [new] New check box for Shutdown
+[new] HDR to SDR profiles, allow you to high quality downscale
+[fixed] High quality downscale resolution
+[fixed] Various GUI bug
+[fixed] Null Language in FFmpeg Media Info (default to "und")
 [mistake] x265 in previous version was 3.2, now with 3.3 stable
 
 Version 20.04.1 Alpha (The Quintessence Inside You)

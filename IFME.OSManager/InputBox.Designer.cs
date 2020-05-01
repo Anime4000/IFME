@@ -38,7 +38,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(488, 114);
+            this.btnOK.Location = new System.Drawing.Point(688, 114);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 24);
             this.btnOK.TabIndex = 2;
@@ -53,7 +53,7 @@
             this.txtInputBox.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtInputBox.Location = new System.Drawing.Point(12, 84);
             this.txtInputBox.Name = "txtInputBox";
-            this.txtInputBox.Size = new System.Drawing.Size(576, 24);
+            this.txtInputBox.Size = new System.Drawing.Size(776, 24);
             this.txtInputBox.TabIndex = 1;
             this.txtInputBox.TextChanged += new System.EventHandler(this.txtInputBox_TextChanged);
             this.txtInputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInputBox_KeyDown);
@@ -65,7 +65,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMessage.Location = new System.Drawing.Point(12, 9);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(576, 72);
+            this.lblMessage.Size = new System.Drawing.Size(776, 72);
             this.lblMessage.TabIndex = 0;
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(600, 150);
+            this.ClientSize = new System.Drawing.Size(800, 150);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.txtInputBox);
             this.Controls.Add(this.btnOK);
