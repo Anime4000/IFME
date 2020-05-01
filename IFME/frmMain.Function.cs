@@ -309,7 +309,12 @@ namespace IFME
 
 		private void MediaShowDataSubtitle(object obj)
 		{
+			var data = obj as MediaQueueSubtitle;
 
+			BeginInvoke((Action)delegate ()
+			{
+				cboSubLang.SelectedValue = data.Lang;
+			});
 		}
 
 		private void MediaShowDataAttachment(object obj)

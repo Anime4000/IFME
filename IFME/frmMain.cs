@@ -263,6 +263,7 @@ namespace IFME
 					else
 					{
 						Console2.WriteLine("[WARN] Noting to encode...");
+						btnStart.Text = Fonts.fa.play;
 					}
 				}
 			}
@@ -1633,7 +1634,14 @@ namespace IFME
 
 		private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (btnSubDel.Focused)
+				return;
 
+			if (lstSub.SelectedItems.Count > 0)
+			{
+				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
+				new Thread(MediaShowDataSubtitle).Start(data);
+			}
 		}
 
 		private void lstSub_DragDrop(object sender, DragEventArgs e)
