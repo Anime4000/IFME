@@ -191,9 +191,9 @@ namespace IFME
 			lstFile.Items.Add(new ListViewItem(new[]
 			{
 				Path.GetFileName(path),
-				TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
 				Path.GetExtension(path).Substring(1).ToUpperInvariant(),
-				$"{fileQueue.OutputFormat}",
+				TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
+				$"{fileData.FileSize}",
 				fileQueue.Enable ? "Ready" : "Done"
 			})
 			{
