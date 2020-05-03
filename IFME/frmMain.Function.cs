@@ -356,6 +356,7 @@ namespace IFME
 				lstFile.Items[id].Selected = true;
 
 				// Re-select
+				lst.SelectedItems.Clear();
 				foreach (var i in index)
 				{
 					lst.Items[i].Selected = false;

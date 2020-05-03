@@ -533,6 +533,12 @@ namespace IFME
 
 		private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (btnVideoDel.Focused)
+				return;
+
+			if (cboVideoLang.Focused)
+				return;
+			
 			if (lstVideo.SelectedItems.Count > 0)
 			{
 				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
@@ -1185,6 +1191,9 @@ namespace IFME
 			if (btnAudioDel.Focused)
 				return;
 
+			if (cboAudioLang.Focused)
+				return;
+
 			if (lstAudio.SelectedItems.Count > 0)
 			{
 				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
@@ -1637,6 +1646,9 @@ namespace IFME
 			if (btnSubDel.Focused)
 				return;
 
+			if (cboSubLang.Focused)
+				return;
+
 			if (lstSub.SelectedItems.Count > 0)
 			{
 				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
@@ -1701,7 +1713,8 @@ namespace IFME
 
 		private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
+			if (cboAttachMime.Focused)
+				return;
 		}
 
 		private void lstAttach_DragDrop(object sender, DragEventArgs e)
