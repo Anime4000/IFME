@@ -1551,11 +1551,26 @@ namespace IFME
 			}
 		}
 
-		private void btnSubAdd_Click(object sender, EventArgs e)
+		private void tsmiFileAddSubs_Click(object sender, EventArgs e)
 		{
 			if (lstFile.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Subtitle))
 					MediaSubtitleListAdd(item);
+		}
+
+		private void tsmiFileAddSubsEmbed_Click(object sender, EventArgs e)
+		{
+			if (lstFile.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video | MediaType.Subtitle))
+					MediaSubtitleListAddEmbed(item);
+		}
+
+		private void btnSubAdd_Click(object sender, EventArgs e)
+		{
+			var btnSender = (Button)sender;
+			var ptLowerLeft = new Point(1, btnSender.Height);
+			ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+			cmsFileAddSubs.Show(ptLowerLeft);
 		}
 
 		private void btnSubDel_Click(object sender, EventArgs e)
@@ -1695,11 +1710,26 @@ namespace IFME
 			}
 		}
 
-		private void btnAttachAdd_Click(object sender, EventArgs e)
+		private void tsmiFileAddAttach_Click(object sender, EventArgs e)
 		{
 			if (lstFile.SelectedItems.Count > 0)
 				foreach (var item in OpenFiles(MediaType.Attachment))
 					MediaAttachmentListAdd(item);
+		}
+
+		private void tsmiFileAddAttachEmbed_Click(object sender, EventArgs e)
+		{
+			if (lstFile.SelectedItems.Count > 0)
+				foreach (var item in OpenFiles(MediaType.Video | MediaType.Attachment))
+					MediaAttachmentListAddEmbed(item);
+		}
+
+		private void btnAttachAdd_Click(object sender, EventArgs e)
+		{
+			var btnSender = (Button)sender;
+			var ptLowerLeft = new Point(1, btnSender.Height);
+			ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+			cmsFileAddAttach.Show(ptLowerLeft);
 		}
 
 		private void btnAttachDel_Click(object sender, EventArgs e)

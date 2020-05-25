@@ -174,6 +174,12 @@
             this.tsmiProfilesDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsPower = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiPowerOff = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFileAddSubs = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiFileAddSubs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileAddSubsEmbed = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFileAddAttach = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -193,6 +199,8 @@
             this.cmsFileAdd.SuspendLayout();
             this.cmsProfiles.SuspendLayout();
             this.cmsPower.SuspendLayout();
+            this.cmsFileAddSubs.SuspendLayout();
+            this.cmsFileAddAttach.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -1790,6 +1798,52 @@
             this.tsmiPowerOff.Text = "Shutdown when complete";
             this.tsmiPowerOff.Click += new System.EventHandler(this.tsmiPowerOff_Click);
             // 
+            // cmsFileAddSubs
+            // 
+            this.cmsFileAddSubs.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.cmsFileAddSubs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFileAddSubs,
+            this.tsmiFileAddSubsEmbed});
+            this.cmsFileAddSubs.Name = "cmsFileAddSubs";
+            this.cmsFileAddSubs.Size = new System.Drawing.Size(180, 48);
+            // 
+            // tsmiFileAddSubs
+            // 
+            this.tsmiFileAddSubs.Name = "tsmiFileAddSubs";
+            this.tsmiFileAddSubs.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddSubs.Text = "Add &Subtitle File";
+            this.tsmiFileAddSubs.Click += new System.EventHandler(this.tsmiFileAddSubs_Click);
+            // 
+            // tsmiFileAddSubsEmbed
+            // 
+            this.tsmiFileAddSubsEmbed.Name = "tsmiFileAddSubsEmbed";
+            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddSubsEmbed.Text = "Add &Embeded Subtitle";
+            this.tsmiFileAddSubsEmbed.Click += new System.EventHandler(this.tsmiFileAddSubsEmbed_Click);
+            // 
+            // cmsFileAddAttach
+            // 
+            this.cmsFileAddAttach.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.cmsFileAddAttach.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFileAddAttach,
+            this.tsmiFileAddAttachEmbed});
+            this.cmsFileAddAttach.Name = "cmsFileAddAttach";
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(181, 70);
+            // 
+            // tsmiFileAddAttach
+            // 
+            this.tsmiFileAddAttach.Name = "tsmiFileAddAttach";
+            this.tsmiFileAddAttach.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttach.Text = "Add &Fonts File";
+            this.tsmiFileAddAttach.Click += new System.EventHandler(this.tsmiFileAddAttach_Click);
+            // 
+            // tsmiFileAddAttachEmbed
+            // 
+            this.tsmiFileAddAttachEmbed.Name = "tsmiFileAddAttachEmbed";
+            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttachEmbed.Text = "Add &Embeded Fonts";
+            this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1845,6 +1899,8 @@
             this.cmsFileAdd.ResumeLayout(false);
             this.cmsProfiles.ResumeLayout(false);
             this.cmsPower.ResumeLayout(false);
+            this.cmsFileAddSubs.ResumeLayout(false);
+            this.cmsFileAddAttach.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1997,5 +2053,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiPowerOff;
         private System.Windows.Forms.TabPage tabConfigMediaInfo;
         private System.Windows.Forms.TextBox txtMediaInfo;
+        private System.Windows.Forms.ContextMenuStrip cmsFileAddSubs;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileAddSubs;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileAddSubsEmbed;
+        private System.Windows.Forms.ContextMenuStrip cmsFileAddAttach;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileAddAttach;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFileAddAttachEmbed;
     }
 }

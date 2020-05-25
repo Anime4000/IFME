@@ -120,27 +120,26 @@ namespace IFME
 			var extsSub = "All subtitle types|*.ssa;*.ass;*.srt|";
 			var extsAtt = "All font types|*.ttf;*.otf;*.woff;*.woff2;*.eot|";
 
-			string exts;
-			switch (type)
+			string exts = string.Empty;
+
+			if (type.HasFlag(MediaType.Video))
 			{
-				case MediaType.Video:
-					exts = extsVideo;
-					break;
-				case MediaType.Audio:
-					exts = extsAudio;
-					break;
-				case MediaType.Subtitle:
-					exts = extsSub;
-					break;
-				case MediaType.Attachment:
-					exts = extsAtt;
-					break;
-				case MediaType.Video | MediaType.Audio:
-					exts = extsVideo + extsAudio;
-					break;
-				default:
-					exts = extsVideo + extsAudio + extsSub + extsAtt;
-					break;
+				exts += extsVideo;
+			}
+
+			if (type.HasFlag(MediaType.Audio))
+			{
+				exts += extsAudio;
+			}
+
+			if (type.HasFlag(MediaType.Subtitle))
+			{
+				exts += extsSub;
+			}
+
+			if (type.HasFlag(MediaType.Attachment))
+			{
+				exts += extsAtt;
 			}
 
 			var ofd = new OpenFileDialog
@@ -235,6 +234,23 @@ namespace IFME
 
 		private void MediaSubtitleListAdd(string path)
 		{
+			foreach (ListViewItem lst in lstFile.SelectedItems)
+			{
+				(lst.Tag as MediaQueue).Subtitle.Add(new MediaQueueSubtitle
+				{
+					Enable = true,
+					File = path,
+					Id = -1,
+					Lang = "und",
+					Codec = string.Empty
+				});
+			}
+
+			MediaShowReList();
+		}
+
+		private void MediaSubtitleListAddEmbed(string path)
+		{
 			var fileData = new FFmpeg.MediaInfo(path);
 
 			foreach (ListViewItem lst in lstFile.SelectedItems)
@@ -250,12 +266,32 @@ namespace IFME
 
 		private void MediaAttachmentListAdd(string path)
 		{
+			foreach (ListViewItem lst in lstFile.SelectedItems)
+			{
+				(lst.Tag as MediaQueue).Attachment.Add(new MediaQueueAttachment
+				{
+					Enable = true,
+					File = path,
+					Id = -1,
+					Name = Path.GetFileName(path),
+					Mime = Mime.GetType(path)
+				});
+			}
+
 			MediaShowReList();
 		}
 
-		private void MediaUseProfile()
+		private void MediaAttachmentListAddEmbed(string path)
 		{
+			var fileData = new FFmpeg.MediaInfo(path);
 
+			foreach (ListViewItem lst in lstFile.SelectedItems)
+			{
+				foreach (var item in fileData.Attachment)
+				{
+					(lst.Tag as MediaQueue).Attachment.Add(MediaQueueParse.Attachment(path, item));
+				}
+			}
 		}
 
 		private void MediaShowDataVideo(object obj)
