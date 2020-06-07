@@ -1,4 +1,18 @@
-﻿Version 20.04.2 Alpha (Darkness to Light)
+﻿Version 20.05.2 Alpha (Always remember why you started)
+-------------------------------------------------------
+[new] Updated banner
+[new] Realtime progress and status (no more print multiple line of progress)
+[new] Windows: File size now in IEC Standard (/1024, International Electrotechnical Commission)
+[new] Unix: File size now in Metric Standard (/1000)
+[new] Add new Nero AAC audio encoder!
+[fixed] Static Build: MP4Box
+[fixed] Static Build: x264 Encoder (this will rarely update)
+[fixed] Able to extract and embed BDMV Subtitle
+[fixed] Various GUI bug, take note that burn subtitle not working at the moment
+[fixed] Decimal separator problem (some country use , instead of .)
+
+
+Version 20.04.2 Alpha (Darkness to Light)
 ---------------------------------------------------
 [new] Advance Decoding/Encoding CLI button is functional
 [new] Profile is functional as well
