@@ -192,7 +192,7 @@ namespace IFME
 				Path.GetFileName(path),
 				Path.GetExtension(path).Substring(1).ToUpperInvariant(),
 				TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
-				$"{fileData.FileSize}",
+				OS.PrintFileSize(fileData.FileSize),
 				fileQueue.Enable ? "Ready" : "Done",
 				""
 			})

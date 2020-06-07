@@ -97,5 +97,33 @@ namespace IFME.OSManager
             else if (IsLinux)
                 Process.Start("bash", "-c 'poweroff'");
         }
+
+        public static string PrintFileSize(ulong value)
+        {
+            if (IsWindows)
+            {
+                string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
+
+                if (value == 0)
+                    return $"0{IEC[0]}";
+
+                long bytes = Math.Abs((long)value);
+                int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+                double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+                return $"{(Math.Sign((long)value) * num)} {IEC[place]}";
+            }
+            else
+            {
+                string[] DEC = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+
+                if (value == 0)
+                    return $"0{DEC[0]}";
+
+                long bytes = Math.Abs((long)value);
+                int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1000)));
+                double num = Math.Round(bytes / Math.Pow(1000, place), 1);
+                return $"{(Math.Sign((long)value) * num)} {DEC[place]}";
+            }
+        }
     }
 }

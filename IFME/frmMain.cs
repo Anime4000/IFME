@@ -404,6 +404,7 @@ namespace IFME
 				lstAudio.Items.Clear();
 				lstSub.Items.Clear();
 				lstAttach.Items.Clear();
+				txtMediaInfo.Text = "FFmpeg Media Info ♥";
 			}
 
 			// Check queue consistency
