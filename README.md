@@ -26,25 +26,18 @@ For Ubuntu, Linux, you need:
 * `mono-complete` (Mono Runtime)
 
 #### 32-bit
-* OS: 32-bit Windows (XP to 10) & Linux (Ubuntu, etc...)
-* CPU: Intel Core 2 Duo or AMD AthlonII X2
-* RAM: 1GB DDR2
-* HDD: 1GB
-* Internet Connection
+*IFME no longer support 32-bit since High Resolution (QHD, UHD), High BitDepth require very large RAM*
 
 #### 64-bit
-* OS: 64-bit Windows (7 to 10) & Linux (Ubuntu, etc...)
-* CPU: Intel Core i3 4th Gen or AMD FX 4000
-* RAM: 4GB DDR3
-* HDD: 1GB
-* Internet Connection
-
-#### Recommended
 * OS: 64-bit Windows 10 & Linux (Ubuntu, etc...)
 * CPU: Intel Core i9 10th Gen or AMD Ryzen 7 3700X
-* RAM: 8GB DDR4
-* HDD: 10GB
-* Internet Connection
+* RAM:  8GB DDR4 (QHD and below)
+* RAM: 16GB DDR4 (UHD and above)
+* HDD: 70GB (UHD, HDR temp disk)
+
+```
+IFME was build and compiled under Zen 2 Architecture, likely run very poor on non-Ryzen system, I strongly advice you to compile own x265 aginst own processor for maximum performance
+```
 
 ### Downloads
 You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Build from Source)](https://github.com/Anime4000/IFME/releases/latest)
