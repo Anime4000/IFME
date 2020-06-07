@@ -152,6 +152,7 @@
             this.colFileDuration = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colFileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colFileStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colFileProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDonate = new System.Windows.Forms.Button();
             this.Seperator2 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
@@ -1567,7 +1568,8 @@
             this.colFileType,
             this.colFileDuration,
             this.colFileSize,
-            this.colFileStatus});
+            this.colFileStatus,
+            this.colFileProgress});
             this.lstFile.FullRowSelect = true;
             this.lstFile.GridLines = true;
             this.lstFile.HideSelection = false;
@@ -1585,27 +1587,32 @@
             // colFileName
             // 
             this.colFileName.Text = "Name";
-            this.colFileName.Width = 300;
+            this.colFileName.Width = 260;
             // 
             // colFileType
             // 
             this.colFileType.Text = "Type";
-            this.colFileType.Width = 100;
+            this.colFileType.Width = 70;
             // 
             // colFileDuration
             // 
             this.colFileDuration.Text = "Duration";
-            this.colFileDuration.Width = 100;
+            this.colFileDuration.Width = 70;
             // 
             // colFileSize
             // 
             this.colFileSize.Text = "Size";
-            this.colFileSize.Width = 100;
+            this.colFileSize.Width = 70;
             // 
             // colFileStatus
             // 
             this.colFileStatus.Text = "Status";
-            this.colFileStatus.Width = 150;
+            this.colFileStatus.Width = 80;
+            // 
+            // colFileProgress
+            // 
+            this.colFileProgress.Text = "Progress";
+            this.colFileProgress.Width = 200;
             // 
             // btnDonate
             // 
@@ -1810,14 +1817,14 @@
             // tsmiFileAddSubs
             // 
             this.tsmiFileAddSubs.Name = "tsmiFileAddSubs";
-            this.tsmiFileAddSubs.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddSubs.Size = new System.Drawing.Size(179, 22);
             this.tsmiFileAddSubs.Text = "Add &Subtitle File";
             this.tsmiFileAddSubs.Click += new System.EventHandler(this.tsmiFileAddSubs_Click);
             // 
             // tsmiFileAddSubsEmbed
             // 
             this.tsmiFileAddSubsEmbed.Name = "tsmiFileAddSubsEmbed";
-            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(179, 22);
             this.tsmiFileAddSubsEmbed.Text = "Add &Embeded Subtitle";
             this.tsmiFileAddSubsEmbed.Click += new System.EventHandler(this.tsmiFileAddSubsEmbed_Click);
             // 
@@ -1828,19 +1835,19 @@
             this.tsmiFileAddAttach,
             this.tsmiFileAddAttachEmbed});
             this.cmsFileAddAttach.Name = "cmsFileAddAttach";
-            this.cmsFileAddAttach.Size = new System.Drawing.Size(181, 70);
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(171, 48);
             // 
             // tsmiFileAddAttach
             // 
             this.tsmiFileAddAttach.Name = "tsmiFileAddAttach";
-            this.tsmiFileAddAttach.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttach.Size = new System.Drawing.Size(170, 22);
             this.tsmiFileAddAttach.Text = "Add &Fonts File";
             this.tsmiFileAddAttach.Click += new System.EventHandler(this.tsmiFileAddAttach_Click);
             // 
             // tsmiFileAddAttachEmbed
             // 
             this.tsmiFileAddAttachEmbed.Name = "tsmiFileAddAttachEmbed";
-            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(170, 22);
             this.tsmiFileAddAttachEmbed.Text = "Add &Embeded Fonts";
             this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
             // 
@@ -2041,7 +2048,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiImportFolder;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportYouTube;
         internal System.Windows.Forms.RichTextBox rtfConsole;
-        private System.Windows.Forms.ListView lstFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportImgSeq;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         internal System.Windows.Forms.ComboBox cboProfile;
@@ -2059,5 +2065,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsFileAddAttach;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileAddAttach;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileAddAttachEmbed;
+        private System.Windows.Forms.ColumnHeader colFileProgress;
+        internal System.Windows.Forms.ListView lstFile;
     }
 }

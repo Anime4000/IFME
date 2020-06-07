@@ -55,7 +55,6 @@
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Console2.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts\FontAwesome.cs" />
     <Compile Include="Fonts\Fonts.cs" />
@@ -66,6 +65,7 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMain.Status.cs" />
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>

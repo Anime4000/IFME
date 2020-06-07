@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace IFME
 {
@@ -43,8 +43,8 @@ namespace IFME
 				}
 			};
 
-			proc.OutputDataReceived += Proc_OutputDataReceived;
-			proc.ErrorDataReceived += Proc_ErrorDataReceived;
+			proc.OutputDataReceived += Proc_DataReceived;
+			proc.ErrorDataReceived += Proc_DataReceived;
 
 			proc.Start();
 
@@ -60,20 +60,16 @@ namespace IFME
 			return proc.ExitCode;
 		}
 
-		private void Proc_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+		private void Proc_DataReceived(object sender, DataReceivedEventArgs e)
 		{
 			if (!string.IsNullOrEmpty(e.Data))
 			{
-
-				Console2.WriteLine(e.Data);
-			}
-		}
-
-		private void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
-		{
-			if (!string.IsNullOrEmpty(e.Data))
-			{
-				Console2.WriteLine(e.Data);
+				var regexPattern = @"(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)";
+				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
+				if (m.Success)
+					frmMain.PrintProgress(e.Data);
+				else
+					frmMain.PrintLog(e.Data);
 			}
 		}
 

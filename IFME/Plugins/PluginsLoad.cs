@@ -38,7 +38,7 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					Console2.WriteLine($"[WARN] {ex.Message}");
+					frmMain.PrintLog($"[WARN] {ex.Message}");
 				}
 			}
 		}
@@ -65,7 +65,7 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					Console2.WriteLine($"[WARN] {ex.Message}");
+					frmMain.PrintLog($"[WARN] {ex.Message}");
 				}
 			}
 		}

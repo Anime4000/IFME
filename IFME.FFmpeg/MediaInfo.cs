@@ -198,7 +198,7 @@ namespace IFME.FFmpeg
 					{
 						Id = id,
 						Language = lang,
-						Codec = codec,
+						Codec = FormatId.Get(codec),
 					});
 				}
 

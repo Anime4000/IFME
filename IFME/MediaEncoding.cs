@@ -13,10 +13,14 @@ namespace IFME
 		private static int Arch = OS.Is64bit ? 64 : 32;
 		internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
 		internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "MP4Box", "MP4Box");
+		internal static int CurrentIndex = 0;
 
 		internal static void Extract(MediaQueue queue, string tempDir)
 		{
-			Console2.WriteLine("[INFO] Extracting subtitle file...");
+			frmMain.PrintStatus("Extracting...");
+
+			frmMain.PrintLog("[INFO] Extracting subtitle file...");
+
 			for (int i = 0; i < queue.Subtitle.Count; i++)
 			{
 				var id = queue.Subtitle[i].Id;
@@ -35,7 +39,7 @@ namespace IFME
 				}
 			}
 
-			Console2.WriteLine("[INFO] Extracting embeded attachment...");
+			frmMain.PrintLog("[INFO] Extracting embeded attachment...");
 			var tempDirFont = Path.Combine(tempDir, "attachment");
 			for (int i = 0; i < queue.Attachment.Count; i++)
 			{
@@ -68,14 +72,16 @@ namespace IFME
 			{
 				var item = queue.Audio[i];
 
-				Console2.WriteLine("[INFO] Extract audio file...");
+				frmMain.PrintStatus($"Encoding Audio Id: {i}");
+
+				frmMain.PrintLog("[INFO] Extract audio file...");
 				if (item.Copy && queue.OutputFormat == MediaContainer.MKV)
 				{
 					ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y \"audio{i:D4}_{item.Lang}.mka\"");
 					continue;
 				}
 
-				Console2.WriteLine("[INFO] Encoding audio file...");
+				frmMain.PrintLog("[INFO] Encoding audio file...");
 				if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
 				{
 					var ac = codec.Audio;
@@ -90,7 +96,7 @@ namespace IFME
 					var hz = (item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}");
 					var ch = (item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}");
 
-					var outfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
+					var outfmtfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
 
 					var af = string.Empty;
 					
@@ -101,11 +107,11 @@ namespace IFME
 
 					if (ac.Args.Pipe)
 					{
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{Path.Combine(codec.FilePath, ac.Encoder)}\" {qu} {ac.Args.Command} {ac.Args.Input} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
+						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{Path.Combine(codec.FilePath, ac.Encoder)}\" {qu} {ac.Args.Command} {ac.Args.Input} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
 					}
 					else
 					{
-						ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfile}\"");
+						ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
 					}
 				}
 			}
@@ -233,18 +239,21 @@ namespace IFME
 					if (fi.Count > 0)
 						vf = $"-vf \"{string.Join(",", fi)}\"";
 
-					// Tell You
-					Console2.WriteLine($"[INFO] Video filter command is: {vf}");
+
 
 					// begin encoding
-					Console2.WriteLine($"[INFO] Encoding video file...");
+					frmMain.PrintStatus($"Encoding Video Id: {i}");
+					frmMain.PrintLog($"[INFO] Encoding video file...");
+
+					// Tell You
+					frmMain.PrintLog($"[INFO] Video filter command is: {vf}");
 
 					if (vc.Mode[item.Encoder.Mode].MultiPass)
 					{
 						var p = 1;
 						var pass = string.Empty;
 
-						Console2.Write("[WARN] Frame count is disable for Multi-pass encoding, Avoid inconsistent across multi-pass.");
+						frmMain.PrintLog("[WARN] Frame count is disable for Multi-pass encoding, Avoid inconsistent across multi-pass.");
 
 						do
 						{
@@ -256,7 +265,7 @@ namespace IFME
 							if (p == item.Encoder.MultiPass)
 								pass = vc.Args.PassLast;
 
-							Console2.WriteLine($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
+							frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
 							if (vc.Args.Pipe)
 								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
@@ -276,7 +285,8 @@ namespace IFME
 					}
 
 					// Raw file dont have pts (time), need to remux
-					Console2.WriteLine($"[INFO] Restructure RAW video file...");
+					frmMain.PrintStatus($"Restructure...");
+					frmMain.PrintLog($"[INFO] Restructure RAW video file...");
 
 					if (vc.RawOutput)
 					{
@@ -302,7 +312,7 @@ namespace IFME
 			var x = 0;
 			var metadata = string.Empty;
 			var metafile = string.Empty;
-			var map = string.Empty;
+			var map = "-map_metadata -1 -map_chapters -1 -dn ";
 
 			var argVideo = string.Empty;
 			var argAudio = string.Empty;
@@ -311,7 +321,8 @@ namespace IFME
 
 			var outFile = Path.Combine(saveDir, $"{Path.GetFileNameWithoutExtension(queue.FilePath)}_encoded.{queue.OutputFormat.ToString().ToLowerInvariant()}");
 
-			Console2.WriteLine($"[INFO] Multiplexing encoded files into single file...");
+			frmMain.PrintStatus("Repacking...");
+			frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
 
 			if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
 			{
