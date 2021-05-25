@@ -20,8 +20,7 @@ namespace IFME
 
 		public frmMain()
 		{
-			new frmSplashScreen().Show();
-			new PluginsLoad();
+			new frmSplashScreen().ShowDialog(); // loading, init all inside that
 
 			InitializeComponent();
 			InitializeProfiles();
@@ -580,7 +579,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataVideoRe();
 			}
 		}
 
@@ -621,13 +620,14 @@ namespace IFME
 				nudVideoRateFactor.Value = video.Mode[0].Value.Default;
 				nudVideoMultiPass.Value = 2;
 
-				cboVideoBitDepth.Items.Clear();
-				cboVideoBitDepth.Items.AddRange(temp.Video.Encoder.Select(x => x.BitDepth.ToString()).ToArray());
-				cboVideoBitDepth.SelectedIndex = 0;
-
 				cboVideoRateControl.Items.Clear();
 				cboVideoRateControl.Items.AddRange(temp.Video.Mode.Select(x => x.Name).ToArray());
 				cboVideoRateControl.SelectedIndex = 0;
+
+				cboVideoBitDepth.Items.Clear();
+				cboVideoBitDepth.Items.AddRange(temp.Video.Encoder.Select(x => x.BitDepth.ToString()).ToArray());
+				if (cboVideoBitDepth.SelectedIndex == -1)
+					cboVideoBitDepth.SelectedIndex = 0;
 
 				var dei = temp.Video.Args.Pipe;
 				chkVideoDeInterlace.Enabled = dei;
@@ -635,6 +635,9 @@ namespace IFME
 
 				cboVideoPreset.Enabled = cboVideoPreset.Items.Count > 0;
 				cboVideoTune.Enabled = cboVideoTune.Items.Count > 0;
+
+				var topBitDepth = Convert.ToInt32(cboVideoBitDepth.Items[cboVideoBitDepth.Items.Count - 1]);
+				var topPixelFmt = Convert.ToInt32(cboVideoPixFmt.Items[cboVideoPixFmt.Items.Count - 1]);
 
 				if ((sender as Control).Focused)
 				{
@@ -648,28 +651,30 @@ namespace IFME
 						MultiPass = (int)nudVideoMultiPass.Value
 					};
 
-					/*var pic = new MediaQueueVideoQuality
+					foreach (ListViewItem queue in lstFile.SelectedItems)
 					{
-						BitDepth = 8, // default
-						PixelFormat = 420 // default
-					};*/
-
-					if (lstFile.SelectedItems.Count == 1)
-					{
-						foreach (ListViewItem item in lstVideo.SelectedItems)
+						if (lstFile.SelectedItems.Count == 1)
 						{
-							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder = enc;
-							//(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality = pic;
+							foreach (ListViewItem item in lstVideo.SelectedItems)
+							{
+								var d = (queue.Tag as MediaQueue).Video[item.Index];
+
+								d.Encoder = enc;
+
+								d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
+								d.Quality.PixelFormat = d.Quality.PixelFormat <= topPixelFmt ? d.Quality.PixelFormat : topPixelFmt;
+							}
+
+							break;
 						}
-					}
-					else if (lstFile.SelectedItems.Count > 1)
-					{
-						foreach (ListViewItem queue in lstFile.SelectedItems)
+						else
 						{
 							foreach (var d in (queue.Tag as MediaQueue).Video)
 							{
 								d.Encoder = enc;
-								//d.Quality = pic;
+
+								d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
+								d.Quality.PixelFormat = d.Quality.PixelFormat <= topPixelFmt ? d.Quality.PixelFormat : topPixelFmt;
 							}
 						}
 					}
@@ -946,7 +951,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataVideoRe();
 			}
 		}
 
@@ -990,7 +995,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataVideoRe();
 			}
 		}
 
@@ -1240,7 +1245,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataAudioRe();
 			}
 		}
 
@@ -1448,7 +1453,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataAudioRe();
 			}
 		}
 
@@ -1474,7 +1479,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataAudioRe();
 			}
 		}
 
@@ -1706,7 +1711,7 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataSubtitleRe();
 			}
 		}
 

@@ -215,7 +215,7 @@ namespace IFME
 				}
 			}
 
-			MediaShowReList();
+			MediaShowDataVideoRe();
 		}
 
 		private void MediaAudioListAdd(string path)
@@ -230,7 +230,7 @@ namespace IFME
 				}
 			}
 
-			MediaShowReList();
+			MediaShowDataAudioRe();
 		}
 
 		private void MediaSubtitleListAdd(string path)
@@ -247,7 +247,7 @@ namespace IFME
 				});
 			}
 
-			MediaShowReList();
+			MediaShowDataSubtitleRe();
 		}
 
 		private void MediaSubtitleListAddEmbed(string path)
@@ -262,7 +262,7 @@ namespace IFME
 				}
 			}
 
-			MediaShowReList();
+			MediaShowDataSubtitleRe();
 		}
 
 		private void MediaAttachmentListAdd(string path)
@@ -279,7 +279,7 @@ namespace IFME
 				});
 			}
 
-			MediaShowReList();
+			MediaShowDataAttachmentRe();
 		}
 
 		private void MediaAttachmentListAddEmbed(string path)
@@ -391,57 +391,6 @@ namespace IFME
 
 		}
 
-		private void MediaShowReList()
-		{
-			if (lstFile.SelectedItems.Count == 1)
-			{
-				var lst = new ListView();
-				var index = new List<int>();
-
-				if (tabConfig.SelectedTab == tabConfigVideo)
-				{
-					lst = lstVideo; // all is reference, not copy
-				}
-				else if (tabConfig.SelectedTab == tabConfigAudio)
-				{
-					lst = lstAudio;
-				}
-				else if (tabConfig.SelectedTab == tabConfigSubtitle)
-				{
-					lst = lstSub;
-				}
-				else if (tabConfig.SelectedTab == tabConfigAttachment)
-				{
-					lst = lstAttach;
-				}
-
-				// Copy selected item index
-				foreach (ListViewItem item in lst.SelectedItems)
-					index.Add(item.Index);
-
-				// Re-select main list cause lst var get followed, not copy
-				var id = lstFile.SelectedItems[0].Index;
-				lstFile.Items[id].Selected = false;
-				lstFile.Items[id].Selected = true;
-
-				// Re-select
-				lst.SelectedItems.Clear();
-				foreach (var i in index)
-				{
-					lst.Items[i].Selected = false;
-					lst.Items[i].Selected = true;
-				}
-			}
-			else if (lstFile.SelectedItems.Count > 1)
-			{
-				foreach (ListViewItem item in lstFile.SelectedItems)
-				{
-					item.Selected = false;
-					item.Selected = true;
-				}
-			}
-		}
-
 		private void ShowSupportedCodec(string value)
 		{
 			var videoCodec = new Dictionary<Guid, PluginsVideo>();
@@ -532,7 +481,10 @@ namespace IFME
 				}
 			}
 
-			MediaShowReList(); // redisplay data
+			MediaShowDataVideoRe();
+			MediaShowDataAudioRe();
+			MediaShowDataSubtitleRe();
+			MediaShowDataAttachmentRe();
 		}
 
 		private void SetProfileData(Profiles value)
@@ -571,7 +523,10 @@ namespace IFME
 					}
 				}
 
-				MediaShowReList();
+				MediaShowDataVideoRe();
+				MediaShowDataAudioRe();
+				MediaShowDataSubtitleRe();
+				MediaShowDataAttachmentRe();
 			}
 		}
 	}

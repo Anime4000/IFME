@@ -180,12 +180,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen7A_DPI.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Profiles\Profile_0000-00-00_00-00-00_0005.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen7A_DPI.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
