@@ -295,6 +295,38 @@ namespace IFME
 			}
 		}
 
+		private void MediaShowDataVideoRe()
+        {
+			if (lstVideo.SelectedItems.Count > 0)
+			{
+				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
+				new Thread(MediaShowDataVideo).Start(data);
+			}
+		}
+
+		private void MediaShowDataAudioRe()
+        {
+			if (lstAudio.SelectedItems.Count > 0)
+			{
+				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
+				new Thread(MediaShowDataAudio).Start(data);
+			}
+		}
+
+		private void MediaShowDataSubtitleRe()
+        {
+			if (lstSub.SelectedItems.Count > 0)
+			{
+				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
+				new Thread(MediaShowDataSubtitle).Start(data);
+			}
+		}
+
+		private void MediaShowDataAttachmentRe()
+		{
+
+		}
+
 		private void MediaShowDataVideo(object obj)
 		{
 			var data = obj as MediaQueueVideo;

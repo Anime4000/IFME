@@ -126,6 +126,7 @@ namespace IFME
 				if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
 				{
 					var vc = codec.Video;
+
 					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary);
 					var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
 					var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";

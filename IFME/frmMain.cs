@@ -541,12 +541,8 @@ namespace IFME
 
 			if (cboVideoLang.Focused)
 				return;
-			
-			if (lstVideo.SelectedItems.Count > 0)
-			{
-				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
-				new Thread(MediaShowDataVideo).Start(data);
-			}
+
+			MediaShowDataVideoRe();
 		}
 
 		private void lstVideo_DragDrop(object sender, DragEventArgs e)
@@ -612,11 +608,6 @@ namespace IFME
 			{
 				var video = temp.Video;
 
-				cboVideoBitDepth.Items.Clear();
-				foreach (var item in video.Encoder)
-					cboVideoBitDepth.Items.Add(item.BitDepth);
-				cboVideoBitDepth.SelectedIndex = 0;
-
 				cboVideoPreset.Items.Clear();
 				cboVideoPreset.Items.AddRange(video.Preset);
 				cboVideoPreset.SelectedItem = video.PresetDefault;
@@ -625,15 +616,18 @@ namespace IFME
 				cboVideoTune.Items.AddRange(video.Tune);
 				cboVideoTune.SelectedItem = video.TuneDefault;
 
-				cboVideoRateControl.Items.Clear();
-				foreach (var item in video.Mode)
-					cboVideoRateControl.Items.Add(item.Name);
-				cboVideoRateControl.SelectedIndex = 0;
-
 				nudVideoRateFactor.Minimum = video.Mode[0].Value.Min;
 				nudVideoRateFactor.Maximum = video.Mode[0].Value.Max;
 				nudVideoRateFactor.Value = video.Mode[0].Value.Default;
 				nudVideoMultiPass.Value = 2;
+
+				cboVideoBitDepth.Items.Clear();
+				cboVideoBitDepth.Items.AddRange(temp.Video.Encoder.Select(x => x.BitDepth.ToString()).ToArray());
+				cboVideoBitDepth.SelectedIndex = 0;
+
+				cboVideoRateControl.Items.Clear();
+				cboVideoRateControl.Items.AddRange(temp.Video.Mode.Select(x => x.Name).ToArray());
+				cboVideoRateControl.SelectedIndex = 0;
 
 				var dei = temp.Video.Args.Pipe;
 				chkVideoDeInterlace.Enabled = dei;
@@ -654,11 +648,18 @@ namespace IFME
 						MultiPass = (int)nudVideoMultiPass.Value
 					};
 
+					/*var pic = new MediaQueueVideoQuality
+					{
+						BitDepth = 8, // default
+						PixelFormat = 420 // default
+					};*/
+
 					if (lstFile.SelectedItems.Count == 1)
 					{
 						foreach (ListViewItem item in lstVideo.SelectedItems)
 						{
 							(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder = enc;
+							//(lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality = pic;
 						}
 					}
 					else if (lstFile.SelectedItems.Count > 1)
@@ -668,9 +669,13 @@ namespace IFME
 							foreach (var d in (queue.Tag as MediaQueue).Video)
 							{
 								d.Encoder = enc;
+								//d.Quality = pic;
 							}
 						}
 					}
+
+					// Display predefine and default value
+					MediaShowDataVideoRe();
 				}
 			}
 		}
@@ -1197,11 +1202,7 @@ namespace IFME
 			if (cboAudioLang.Focused)
 				return;
 
-			if (lstAudio.SelectedItems.Count > 0)
-			{
-				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
-				new Thread(MediaShowDataAudio).Start(data);
-			}
+			MediaShowDataAudioRe();
 		}
 
 		private void lstAudio_DragDrop(object sender, DragEventArgs e)
@@ -1667,11 +1668,7 @@ namespace IFME
 			if (cboSubLang.Focused)
 				return;
 
-			if (lstSub.SelectedItems.Count > 0)
-			{
-				var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
-				new Thread(MediaShowDataSubtitle).Start(data);
-			}
+			MediaShowDataSubtitleRe();
 		}
 
 		private void lstSub_DragDrop(object sender, DragEventArgs e)
