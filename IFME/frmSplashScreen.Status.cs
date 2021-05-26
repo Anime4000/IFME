@@ -13,6 +13,7 @@ namespace IFME
     {
         private static frmSplashScreen frmSplashScreenStatus = null;
         private delegate void SetStatusUpdate(string text);
+        private delegate void SetStatusUpdateAppend(string text);
 
         private void lblStatus_Update(string value)
         {
@@ -29,6 +30,23 @@ namespace IFME
         {
             if (frmSplashScreenStatus != null)
                 frmSplashScreenStatus.lblStatus_Update(value);
+        }
+
+        private void lblStatus_UpdateAppend(string value)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SetStatusUpdateAppend(lblStatus_UpdateAppend), new object[] { value });
+                return;
+            }
+
+            lblStatus.Text += value;
+        }
+
+        internal static void SetStatusAppend(string value)
+        {
+            if (frmSplashScreenStatus != null)
+                frmSplashScreenStatus.lblStatus_UpdateAppend(value);
         }
     }
 }

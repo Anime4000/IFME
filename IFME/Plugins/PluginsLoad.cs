@@ -35,11 +35,11 @@ namespace IFME
 
 					plugin.FilePath = Path.GetDirectoryName(item);
 
-					frmSplashScreen.SetStatus($"Loading Plugins: {plugin.Name}");
+					frmSplashScreen.SetStatus($"{plugin.Name}");
 
 					if (!TestAudio(plugin))
                     {
-						frmSplashScreen.SetStatus($"Loading Plugins: {plugin.Name} (incompatible host, skipping...)");
+						frmSplashScreen.SetStatusAppend(" (incompatible host, skipping...)");
 						Thread.Sleep(2000);
 						continue;
 					}
@@ -72,11 +72,11 @@ namespace IFME
 
 					plugin.FilePath = Path.GetDirectoryName(item);
 
-					frmSplashScreen.SetStatus($"Loading Plugins: {plugin.Name}");
+					frmSplashScreen.SetStatus($"{plugin.Name}");
 
 					if (!TestVideo(plugin))
                     {
-						frmSplashScreen.SetStatus($"Loading Plugins: {plugin.Name} (incompatible host, skipping...)");
+						frmSplashScreen.SetStatusAppend(" (incompatible host, skipping...)");
 						Thread.Sleep(2000);
 						continue;
 					}
