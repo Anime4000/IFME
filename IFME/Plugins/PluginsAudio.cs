@@ -27,6 +27,7 @@ namespace IFME
     {
         public bool Pipe { get; set; }
         public string Input { get; set; }
+        public string Codec { get; set; }
         public string Output { get; set; }
         public string Command { get; set; }
     }

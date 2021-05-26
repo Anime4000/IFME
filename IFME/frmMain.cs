@@ -22,6 +22,7 @@ namespace IFME
 		{
 			new frmSplashScreen().ShowDialog(); // loading, init all inside that
 
+			frmMainStatus = this;
 			InitializeComponent();
 			InitializeProfiles();
 			InitializeFonts();
@@ -36,8 +37,6 @@ namespace IFME
 			bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
 			try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME"), true); } catch { }
-
-			frmMainStatus = this;
 		}
 
 		private void frmMain_Load(object sender, EventArgs e)

@@ -1,4 +1,17 @@
-﻿Version 20.05.2 Alpha (Always remember why you started)
+﻿Version 21.05.25 Alpha (One More Time)
+--------------------------------------
+[new] Hardware Acceleration for Nvidia (NVENC)
+[new] Hardware Acceleration for AMD Advanced Media Framework
+[fixed] GUI Control bug on Bit Depth
+[fixed] GUI Control bug on ListViewItem during Selection
+[fixed] GUI Control bug on various stuff
+[fixed] Opus sample rate, only 48000Hz valid
+[change] IFME will test encoders plugins during loading, incompatible will not added into ComboBox list
+[update] x265 version 3.5+10-82786fccc
+[update] ffmpeg 64-bit 2021-05-23-git-4c0d6c91f6
+[update] ffmpeg 32-bit 4.3.1 (Final version for ancient pc)
+
+Version 20.05.2 Alpha (Always remember why you started)
 -------------------------------------------------------
 [new] Updated banner
 [new] Realtime progress and status (no more print multiple line of progress)

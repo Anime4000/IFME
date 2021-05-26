@@ -28,16 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.lblStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ForeColor = System.Drawing.Color.White;
+            this.lblStatus.Location = new System.Drawing.Point(28, 330);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(814, 24);
+            this.lblStatus.TabIndex = 0;
+            this.lblStatus.Text = "Loading...";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // frmSplashScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen7A_DPI;
+            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen7B;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(854, 480);
+            this.Controls.Add(this.lblStatus);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -52,5 +67,7 @@
         }
 
         #endregion
+
+        internal System.Windows.Forms.Label lblStatus;
     }
 }

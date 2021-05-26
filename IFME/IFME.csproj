@@ -72,6 +72,7 @@
     <Compile Include="frmSplashScreen.Designer.cs">
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSplashScreen.Status.cs" />
     <Compile Include="Images.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="MediaEncoding.cs" />
@@ -185,7 +186,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen7A_DPI.png" />
+    <None Include="Resources\SplashScreen7B.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

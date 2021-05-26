@@ -13,7 +13,9 @@ namespace IFME
 
         public frmSplashScreen()
         {
+            frmSplashScreenStatus = this;
             InitializeComponent();
+
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Opacity = 0;
 
@@ -33,16 +35,8 @@ namespace IFME
 
         private void BgThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            // Fade In
-            while (Opacity < 1)
-            {
-                BeginInvoke((Action)delegate ()
-                {
-                    Opacity += 0.02;
-                });
-
-                Thread.Sleep(1);
-            }
+            lblStatusUpdate(string.Empty);
+            frmFadeInOut(true);
 
             // Detect user machine
             // TODO: Detect user GPU
@@ -50,23 +44,53 @@ namespace IFME
             // Load everything
             new PluginsLoad();
 
+            // Finished loading, clear status text
+            lblStatusUpdate(string.Empty);
+
             // Wait some CPU free
             Thread.Sleep(3000);
 
-            // Fade Out
-            while (Opacity > 0)
-            {
-                BeginInvoke((Action)delegate ()
-                {
-                    Opacity -= 0.02;
-                });
-
-                Thread.Sleep(1);
-            }
+            frmFadeInOut(false);
         }
         private void BgThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Close();
+        }
+
+        private void frmFadeInOut(bool fadeIn)
+        {
+            if (fadeIn)
+            {
+                while (Opacity < 1)
+                {
+                    BeginInvoke((Action)delegate ()
+                    {
+                        Opacity += 0.02;
+                    });
+
+                    Thread.Sleep(1);
+                }
+            }
+            else
+            {
+                while (Opacity > 0)
+                {
+                    BeginInvoke((Action)delegate ()
+                    {
+                        Opacity -= 0.02;
+                    });
+
+                    Thread.Sleep(1);
+                }
+            }
+        }
+
+        private void lblStatusUpdate(string text)
+        {
+            BeginInvoke((Action)delegate ()
+            {
+                lblStatus.Text = text;
+            });
         }
     }
 }
