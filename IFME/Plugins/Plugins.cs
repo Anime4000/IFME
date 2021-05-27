@@ -21,7 +21,6 @@ namespace IFME
 	public class PluginsCommon
 	{
 		public Guid GUID { get; set; }
-		public string FilePath { get; set; }
 		public string Name { get; set; }
 		public string Version { get; set; }
 		public bool X64 { get; set; }

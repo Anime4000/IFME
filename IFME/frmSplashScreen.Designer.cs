@@ -37,9 +37,9 @@
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.Color.White;
-            this.lblStatus.Location = new System.Drawing.Point(28, 330);
+            this.lblStatus.Location = new System.Drawing.Point(28, 320);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(814, 24);
+            this.lblStatus.Size = new System.Drawing.Size(814, 32);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Loading...";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.BottomLeft;

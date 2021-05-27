@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 namespace IFME
@@ -13,19 +12,17 @@ namespace IFME
 	{
 		internal PluginsLoad()
 		{
-			Audio();
-			Video();
+			var folder = Path.GetFullPath("Plugins");
+
+			if (!Directory.Exists(folder))
+				Directory.CreateDirectory(folder);
+
+			Audio(folder);
+			Video(folder);
 		}
 
-		private void Audio()
+		private void Audio(string folder)
 		{
-			var path = Path.Combine("Plugins");
-
-			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
-
-			var folder = Path.Combine(Directory.GetCurrentDirectory(), path);
-
 			foreach (var item in Directory.EnumerateFiles(folder, "_plugin.a*.json", SearchOption.AllDirectories).OrderBy(file => file))
 			{
 				try
@@ -33,13 +30,25 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsAudio>(json);
 
-					plugin.FilePath = Path.GetDirectoryName(item);
+					frmSplashScreen.SetStatus($"Initializing Audio:\n{plugin.Name}");
 
-					frmSplashScreen.SetStatus($"{plugin.Name}");
+					// Skip wrong cpu arch
+					if (OSManager.OS.Is64bit != plugin.X64)
+					{
+						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
+						Thread.Sleep(250);
+						continue;
+					}
+
+					// Parse into fully qualified path
+					if (Path.IsPathRooted(plugin.Audio.Encoder))
+						plugin.Audio.Encoder = Path.GetFullPath(plugin.Audio.Encoder);
+					else
+						plugin.Audio.Encoder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), plugin.Audio.Encoder));
 
 					if (!TestAudio(plugin))
                     {
-						frmSplashScreen.SetStatusAppend(" (incompatible host, skipping...)");
+						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
 						Thread.Sleep(2000);
 						continue;
 					}
@@ -49,20 +58,14 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					frmMain.PrintLog($"[WARN] {ex.Message}");
+					frmSplashScreen.SetStatusAppend($" [{ex.Message}]");
+					Thread.Sleep(5000);
 				}
 			}
 ;		}
 
-		private void Video()
+		private void Video(string folder)
 		{
-			var path = Path.Combine("Plugins");
-
-			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
-
-			var folder = Path.Combine(Directory.GetCurrentDirectory(), path);
-
 			foreach (var item in Directory.EnumerateFiles(folder, "_plugin.v*.json", SearchOption.AllDirectories).OrderBy(file => file))
 			{
 				try
@@ -70,13 +73,36 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsVideo>(json);
 
-					plugin.FilePath = Path.GetDirectoryName(item);
+					frmSplashScreen.SetStatus($"Initializing Video:\n{plugin.Name}");
 
-					frmSplashScreen.SetStatus($"{plugin.Name}");
+					// Skip wrong cpu arch
+					if (OSManager.OS.Is64bit != plugin.X64)
+					{
+						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
+						Thread.Sleep(250);
+						continue;
+					}
+
+					// Parse into fully qualified path
+					foreach (var p in plugin.Video.Encoder)
+                    {
+						if (Path.IsPathRooted(p.Binary))
+							p.Binary = Path.GetFullPath(p.Binary);
+						else
+							p.Binary = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), p.Binary));
+                    }
+
+					// Check if plugins already in the list
+					if (Plugins.Items.Video.ContainsKey(plugin.GUID))
+                    {
+						frmSplashScreen.SetStatusAppend(" (best encoder already loaded, skipping...)");
+						Thread.Sleep(2000);
+						continue;
+					}
 
 					if (!TestVideo(plugin))
                     {
-						frmSplashScreen.SetStatusAppend(" (incompatible host, skipping...)");
+						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
 						Thread.Sleep(2000);
 						continue;
 					}
@@ -85,7 +111,8 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					frmMain.PrintLog($"[WARN] {ex.Message}");
+					frmSplashScreen.SetStatusAppend($" [{ex.Message}]");
+					Thread.Sleep(5000);
 				}
 			}
 		}
@@ -94,7 +121,7 @@ namespace IFME
         {
 			var ac = codec.Audio;
 			var ff = MediaEncoding.FFmpeg;
-			var en = Path.Combine(codec.FilePath, ac.Encoder);
+			var en = ac.Encoder;
 			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online.m4a");
 			var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{ac.Extension}");
 			var outTempFolder = Path.Combine(Path.GetTempPath());
@@ -118,7 +145,7 @@ namespace IFME
         {
             var vc = codec.Video;
             var ff = MediaEncoding.FFmpeg;
-			var en = Path.Combine(codec.FilePath, vc.Encoder[0].Binary);
+			var en = vc.Encoder[0].Binary;
 			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online.mp4");
 			var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{vc.Extension}");
 			var outTempFolder = Path.Combine(Path.GetTempPath());

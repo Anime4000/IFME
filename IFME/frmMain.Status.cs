@@ -10,7 +10,7 @@ namespace IFME
 
     public partial class frmMain
     {
-        private static frmMain frmMainStatus = null;
+        internal static frmMain frmMainStatus = null;
         private delegate void rtfConsoleAppendText(string value);
         private delegate void lstFileProgressText(string value);
         private delegate void lstFileStatusText(string value);

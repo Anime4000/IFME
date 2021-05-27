@@ -86,7 +86,7 @@ namespace IFME
 				{
 					var ac = codec.Audio;
 					var md = item.Encoder.Mode;
-					var en = Path.Combine(codec.FilePath, ac.Encoder);
+					var en = ac.Encoder;
 
 					var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
 
@@ -105,7 +105,7 @@ namespace IFME
 
 					if (ac.Args.Pipe)
 					{
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{Path.Combine(codec.FilePath, ac.Encoder)}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
+						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{en}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
 					}
 					else
 					{
@@ -125,7 +125,7 @@ namespace IFME
 				{
 					var vc = codec.Video;
 
-					var en = Path.Combine(codec.FilePath, vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary);
+					var en = vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary;
 					var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
 					var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
 

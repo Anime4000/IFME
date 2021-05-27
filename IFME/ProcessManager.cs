@@ -62,9 +62,21 @@ namespace IFME
 
 		private void Proc_DataReceived(object sender, DataReceivedEventArgs e)
 		{
+			if (frmMain.frmMainStatus == null)
+				return;
+
 			if (!string.IsNullOrEmpty(e.Data))
 			{
-				var regexPattern = @"(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)";
+				var p = @"(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kbps)|(\d+.\d+[ ]{1,}fps)";
+				var x = Regex.Matches(e.Data, p, RegexOptions.IgnoreCase);
+				if (x.Count >= 3)
+                {
+					frmMain.PrintProgress($"{x[0]}, Bitrate: {x[1]}, Speed: {x[2]}");
+					return;
+				}
+				
+
+				var regexPattern = @"(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)|(frame[ ]{1,}\d+)";
 				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
 				if (m.Success)
 					frmMain.PrintProgress(e.Data);
