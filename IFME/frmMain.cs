@@ -2010,31 +2010,44 @@ namespace IFME
 
 					MediaEncoding.CurrentIndex = id;
 
+					var saveFileName = $"{Path.GetFileNameWithoutExtension(mq.FilePath)}_Encoded.{mq.OutputFormat.ToString().ToLowerInvariant()}";
+
 					// Create Temporary Session Folder
-					var tses = Path.Combine(Path.GetTempPath(), "IFME", $"{Guid.NewGuid()}");
-					Directory.CreateDirectory(tses);
+					var tempSes = Path.Combine(Path.GetTempPath(), "IFME", $"{Guid.NewGuid()}");
+					Directory.CreateDirectory(tempSes);
 
 					// Extract
-					MediaEncoding.Extract(mq, tses);
+					MediaEncoding.Extract(mq, tempSes);
 
 					// Audio
-					MediaEncoding.Audio(mq, tses);
+					MediaEncoding.Audio(mq, tempSes);
 
 					// Video
-					MediaEncoding.Video(mq, tses);
+					MediaEncoding.Video(mq, tempSes);
 
 					// Mux
-					MediaEncoding.Muxing(mq, tses, txtOutputPath.Text);
+					var errCodeMux = MediaEncoding.Muxing(mq, tempSes, txtOutputPath.Text, saveFileName);
+
+					// Check Muxing is failed or sucess
+					if (errCodeMux > 0)
+                    {
+						Extensions.DirectoryCopy(tempSes, Path.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
+						PrintLog("[ERR ] FFmpeg failed to merge raw files... Check [Muxing Failed] folder to manual muxing...");
+					}
+                    else
+                    {
+						PrintLog("[ OK ] Multiplexing files was successfully!");
+					}
 
 					// Delete Temporary Session Folder
-					try { Directory.Delete(tses, true); }
-					catch (Exception ex) { frmMain.PrintLog($"[ERR ] {ex.Message}"); }
+					try { Directory.Delete(tempSes, true); }
+					catch (Exception ex) { PrintLog($"[ERR ] {ex.Message}"); }
 
 					lstFile.Invoke((MethodInvoker)delegate
 					{
 						lstFile.Items[id].Checked = false;
 						lstFile.Items[id].SubItems[4].Text = $"Done!";
-						lstFile.Items[id].SubItems[5].Text = $"{DateTime.Now.Subtract(tt):dd\\.hh\\:mm\\:ss}";
+						lstFile.Items[id].SubItems[5].Text = $"Completed in {DateTime.Now.Subtract(tt):dd\\:hh\\:mm\\:ss}";
 					});
 				}
 				else
@@ -2042,7 +2055,7 @@ namespace IFME
 					lstFile.Invoke((MethodInvoker)delegate
 					{
 						lstFile.Items[id].SubItems[4].Text = "Skip...";
-						lstFile.Items[id].SubItems[5].Text = "";
+						lstFile.Items[id].SubItems[5].Text = string.Empty;
 					});
 				}
 			}

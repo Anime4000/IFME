@@ -74,16 +74,18 @@ namespace IFME
 
 				frmMain.PrintStatus($"Encoding Audio Id: {i}");
 
-				frmMain.PrintLog("[INFO] Extract audio file...");
 				if (item.Copy && queue.OutputFormat == MediaContainer.MKV)
 				{
+					frmMain.PrintLog("[INFO] Extract audio file...");
+
 					ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y \"audio{i:D4}_{item.Lang}.mka\"");
 					continue;
 				}
 
-				frmMain.PrintLog("[INFO] Encoding audio file...");
 				if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
 				{
+					frmMain.PrintLog("[INFO] Encoding audio file...");
+
 					var ac = codec.Audio;
 					var md = item.Encoder.Mode;
 					var en = ac.Encoder;
@@ -289,7 +291,7 @@ namespace IFME
 					{
 						if (File.Exists(Path.Combine(tempDir, outrawfile)))
 						{
-							ProcessManager.Start(tempDir, $"\"{MP4Box}\" -add \"{outrawfile}\" -set-meta 0 -new \"{outfmtfile}\" ");
+							ProcessManager.Start(tempDir, $"\"{MP4Box}\" -add \"{outrawfile}#video:name=\" -itags tool=\"IFME MP4\" \"{outfmtfile}\" ");
 							File.Delete(Path.Combine(tempDir, outrawfile));
 						}
 					}
@@ -304,41 +306,41 @@ namespace IFME
 			}
 		}
 
-		internal static void Muxing(MediaQueue queue, string tempDir, string saveDir)
+		internal static int Muxing(MediaQueue queue, string tempDir, string saveDir, string saveFile)
 		{
 			var x = 0;
 			var metadata = string.Empty;
 			var metafile = string.Empty;
-			var map = "-map_metadata -1 -map_chapters -1 -dn ";
+			var map = string.Empty;
 
 			var argVideo = string.Empty;
 			var argAudio = string.Empty;
 			var argSubtitle = string.Empty;
 			var argEmbed = string.Empty;
 
-			var outFile = Path.Combine(saveDir, $"{Path.GetFileNameWithoutExtension(queue.FilePath)}_encoded.{queue.OutputFormat.ToString().ToLowerInvariant()}");
+			var outFile = Path.Combine(saveDir, saveFile);
 
 			frmMain.PrintStatus("Repacking...");
 			frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
 
 			if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
 			{
-				metafile = "-i metadata.ini ";
+				metafile = "-f ffmetadata -i metadata.ini ";
 			}
 
 			foreach (var video in Directory.GetFiles(tempDir, "video*"))
 			{
 				argVideo += $"-i \"{Path.GetFileName(video)}\" ";
-				metadata += $"-metadata:s:{x} language={video.GetLanguageCodeFromFileName()}  ";
-				map += $"-map {x} ";
+				metadata += $"-metadata:s:{x} title=\"{video.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={video.GetLanguageCodeFromFileName()}  ";
+				map += $" -map {x}:0";
 				x++;
 			}
 
 			foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
 			{
 				argAudio += $"-i \"{Path.GetFileName(audio)}\" ";
-				metadata += $"-metadata:s:{x} language={audio.GetLanguageCodeFromFileName()} ";
-				map += $"-map {x} ";
+				metadata += $"-metadata:s:{x} title=\"{audio.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={audio.GetLanguageCodeFromFileName()} ";
+				map += $" -map {x}:0";
 				x++;
 			}
 
@@ -348,8 +350,8 @@ namespace IFME
 				foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
 				{
 					argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-					metadata += $"-metadata:s:{x} language={subtitle.GetLanguageCodeFromFileName()} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
-					map += $"-map {x} ";
+					metadata += $"-metadata:s:{x} title=\"{subtitle.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={subtitle.GetLanguageCodeFromFileName()} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+					map += $" -map {x}:0";
 					x++;
 					d++;
 				}
@@ -360,15 +362,16 @@ namespace IFME
 					var files = Directory.GetFiles(tempDirFont, "*");
 					for (int i = 0; i < files.Length; i++)
 					{
-						argEmbed += $"-attach \"{Path.GetFileName(files[i])}\" ";
-						metadata += $"-metadata:s:{x++} \"mimetype={queue.Attachment[i].Mime}\" ";
+						argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+						metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+						x++;
 					}
 				}
 			}
 
 			var author = $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} @ {Version.CodeName}";
-			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argEmbed}{metafile}{map}{metadata}-metadata \"encoded_by={author}\" -c copy -y \"{outFile}\"";
-			ProcessManager.Start(tempDir, command);
+			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata \"encoded_by={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+			return ProcessManager.Start(tempDir, command);
 		}
 	}
 }

@@ -212,7 +212,7 @@
             this.cboSubLang.FormattingEnabled = true;
             this.cboSubLang.Location = new System.Drawing.Point(6, 237);
             this.cboSubLang.Name = "cboSubLang";
-            this.cboSubLang.Size = new System.Drawing.Size(756, 21);
+            this.cboSubLang.Size = new System.Drawing.Size(980, 21);
             this.cboSubLang.TabIndex = 8;
             this.cboSubLang.SelectedIndexChanged += new System.EventHandler(this.cboSubLang_SelectedIndexChanged);
             // 
@@ -281,7 +281,7 @@
             // 
             this.chkSubHard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSubHard.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkSubHard.Location = new System.Drawing.Point(512, 6);
+            this.chkSubHard.Location = new System.Drawing.Point(736, 6);
             this.chkSubHard.Name = "chkSubHard";
             this.chkSubHard.Size = new System.Drawing.Size(250, 24);
             this.chkSubHard.TabIndex = 5;
@@ -304,7 +304,7 @@
             this.lstSub.HideSelection = false;
             this.lstSub.Location = new System.Drawing.Point(6, 36);
             this.lstSub.Name = "lstSub";
-            this.lstSub.Size = new System.Drawing.Size(756, 177);
+            this.lstSub.Size = new System.Drawing.Size(980, 177);
             this.lstSub.TabIndex = 6;
             this.lstSub.UseCompatibleStateImageBehavior = false;
             this.lstSub.View = System.Windows.Forms.View.Details;
@@ -326,7 +326,7 @@
             this.tabConfigSubtitle.Location = new System.Drawing.Point(4, 24);
             this.tabConfigSubtitle.Name = "tabConfigSubtitle";
             this.tabConfigSubtitle.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigSubtitle.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigSubtitle.Size = new System.Drawing.Size(992, 264);
             this.tabConfigSubtitle.TabIndex = 2;
             this.tabConfigSubtitle.Text = "Subtitle";
             this.tabConfigSubtitle.UseVisualStyleBackColor = true;
@@ -353,7 +353,7 @@
             this.cboAudioLang.FormattingEnabled = true;
             this.cboAudioLang.Location = new System.Drawing.Point(6, 237);
             this.cboAudioLang.Name = "cboAudioLang";
-            this.cboAudioLang.Size = new System.Drawing.Size(250, 21);
+            this.cboAudioLang.Size = new System.Drawing.Size(474, 21);
             this.cboAudioLang.TabIndex = 7;
             this.cboAudioLang.SelectedIndexChanged += new System.EventHandler(this.cboAudioLang_SelectedIndexChanged);
             // 
@@ -449,7 +449,7 @@
             this.grpAudioCodec.Controls.Add(this.lblAudioQuality);
             this.grpAudioCodec.Controls.Add(this.cboAudioEncoder);
             this.grpAudioCodec.Controls.Add(this.lblAudioEncoder);
-            this.grpAudioCodec.Location = new System.Drawing.Point(262, 6);
+            this.grpAudioCodec.Location = new System.Drawing.Point(486, 6);
             this.grpAudioCodec.Name = "grpAudioCodec";
             this.grpAudioCodec.Size = new System.Drawing.Size(500, 252);
             this.grpAudioCodec.TabIndex = 8;
@@ -620,7 +620,7 @@
             this.tabConfigAudio.Location = new System.Drawing.Point(4, 24);
             this.tabConfigAudio.Name = "tabConfigAudio";
             this.tabConfigAudio.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigAudio.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigAudio.Size = new System.Drawing.Size(992, 264);
             this.tabConfigAudio.TabIndex = 1;
             this.tabConfigAudio.Text = "Audio";
             this.tabConfigAudio.UseVisualStyleBackColor = true;
@@ -639,7 +639,7 @@
             this.lstAudio.HideSelection = false;
             this.lstAudio.Location = new System.Drawing.Point(6, 36);
             this.lstAudio.Name = "lstAudio";
-            this.lstAudio.Size = new System.Drawing.Size(250, 177);
+            this.lstAudio.Size = new System.Drawing.Size(474, 177);
             this.lstAudio.TabIndex = 5;
             this.lstAudio.UseCompatibleStateImageBehavior = false;
             this.lstAudio.View = System.Windows.Forms.View.Details;
@@ -655,7 +655,7 @@
             // colAudioInfo
             // 
             this.colAudioInfo.Text = "Info";
-            this.colAudioInfo.Width = 145;
+            this.colAudioInfo.Width = 360;
             // 
             // lstVideo
             // 
@@ -671,7 +671,7 @@
             this.lstVideo.HideSelection = false;
             this.lstVideo.Location = new System.Drawing.Point(6, 36);
             this.lstVideo.Name = "lstVideo";
-            this.lstVideo.Size = new System.Drawing.Size(250, 177);
+            this.lstVideo.Size = new System.Drawing.Size(474, 177);
             this.lstVideo.TabIndex = 5;
             this.lstVideo.UseCompatibleStateImageBehavior = false;
             this.lstVideo.View = System.Windows.Forms.View.Details;
@@ -692,7 +692,7 @@
             // colVideoInfo
             // 
             this.colVideoInfo.Text = "Info";
-            this.colVideoInfo.Width = 145;
+            this.colVideoInfo.Width = 360;
             // 
             // tabConfigAttachment
             // 
@@ -704,7 +704,7 @@
             this.tabConfigAttachment.Location = new System.Drawing.Point(4, 24);
             this.tabConfigAttachment.Name = "tabConfigAttachment";
             this.tabConfigAttachment.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigAttachment.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigAttachment.Size = new System.Drawing.Size(992, 264);
             this.tabConfigAttachment.TabIndex = 3;
             this.tabConfigAttachment.Text = "Attachment";
             this.tabConfigAttachment.UseVisualStyleBackColor = true;
@@ -716,7 +716,7 @@
             this.cboAttachMime.FormattingEnabled = true;
             this.cboAttachMime.Location = new System.Drawing.Point(6, 237);
             this.cboAttachMime.Name = "cboAttachMime";
-            this.cboAttachMime.Size = new System.Drawing.Size(756, 21);
+            this.cboAttachMime.Size = new System.Drawing.Size(980, 21);
             this.cboAttachMime.TabIndex = 4;
             this.cboAttachMime.TextChanged += new System.EventHandler(this.cboAttachMime_TextChanged);
             // 
@@ -745,7 +745,7 @@
             this.lstAttach.HideSelection = false;
             this.lstAttach.Location = new System.Drawing.Point(6, 36);
             this.lstAttach.Name = "lstAttach";
-            this.lstAttach.Size = new System.Drawing.Size(756, 177);
+            this.lstAttach.Size = new System.Drawing.Size(980, 177);
             this.lstAttach.TabIndex = 2;
             this.lstAttach.UseCompatibleStateImageBehavior = false;
             this.lstAttach.View = System.Windows.Forms.View.Details;
@@ -870,7 +870,7 @@
             this.tabConfigLog.Location = new System.Drawing.Point(4, 24);
             this.tabConfigLog.Name = "tabConfigLog";
             this.tabConfigLog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigLog.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigLog.Size = new System.Drawing.Size(992, 264);
             this.tabConfigLog.TabIndex = 5;
             this.tabConfigLog.Text = "Logging";
             this.tabConfigLog.UseVisualStyleBackColor = true;
@@ -879,11 +879,11 @@
             // 
             this.rtfConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
             this.rtfConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtfConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.rtfConsole.ForeColor = System.Drawing.Color.DarkGray;
             this.rtfConsole.Location = new System.Drawing.Point(3, 3);
             this.rtfConsole.Name = "rtfConsole";
             this.rtfConsole.ReadOnly = true;
-            this.rtfConsole.Size = new System.Drawing.Size(762, 258);
+            this.rtfConsole.Size = new System.Drawing.Size(986, 258);
             this.rtfConsole.TabIndex = 0;
             this.rtfConsole.Text = "";
             // 
@@ -892,7 +892,7 @@
             this.mtxAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mtxAdvTimeDuration.Culture = new System.Globalization.CultureInfo("");
             this.mtxAdvTimeDuration.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeDuration.Location = new System.Drawing.Point(462, 51);
+            this.mtxAdvTimeDuration.Location = new System.Drawing.Point(574, 51);
             this.mtxAdvTimeDuration.Mask = "00:00:00";
             this.mtxAdvTimeDuration.Name = "mtxAdvTimeDuration";
             this.mtxAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
@@ -904,7 +904,7 @@
             this.mtxAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mtxAdvTimeEnd.Culture = new System.Globalization.CultureInfo("");
             this.mtxAdvTimeEnd.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeEnd.Location = new System.Drawing.Point(328, 51);
+            this.mtxAdvTimeEnd.Location = new System.Drawing.Point(440, 51);
             this.mtxAdvTimeEnd.Mask = "00:00:00";
             this.mtxAdvTimeEnd.Name = "mtxAdvTimeEnd";
             this.mtxAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
@@ -916,7 +916,7 @@
             this.mtxAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mtxAdvTimeStart.Culture = new System.Globalization.CultureInfo("");
             this.mtxAdvTimeStart.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeStart.Location = new System.Drawing.Point(194, 51);
+            this.mtxAdvTimeStart.Location = new System.Drawing.Point(306, 51);
             this.mtxAdvTimeStart.Mask = "90:00:00";
             this.mtxAdvTimeStart.Name = "mtxAdvTimeStart";
             this.mtxAdvTimeStart.Size = new System.Drawing.Size(100, 22);
@@ -941,7 +941,7 @@
             this.tabConfigAdvance.Location = new System.Drawing.Point(4, 24);
             this.tabConfigAdvance.Name = "tabConfigAdvance";
             this.tabConfigAdvance.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigAdvance.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigAdvance.Size = new System.Drawing.Size(992, 264);
             this.tabConfigAdvance.TabIndex = 4;
             this.tabConfigAdvance.Text = "Advanced";
             this.tabConfigAdvance.UseVisualStyleBackColor = true;
@@ -961,14 +961,14 @@
             this.grpAdvTrim.Enabled = false;
             this.grpAdvTrim.Location = new System.Drawing.Point(6, 6);
             this.grpAdvTrim.Name = "grpAdvTrim";
-            this.grpAdvTrim.Size = new System.Drawing.Size(756, 100);
+            this.grpAdvTrim.Size = new System.Drawing.Size(980, 100);
             this.grpAdvTrim.TabIndex = 1;
             this.grpAdvTrim.TabStop = false;
             // 
             // lblAdvTimeEqual
             // 
             this.lblAdvTimeEqual.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeEqual.Location = new System.Drawing.Point(434, 51);
+            this.lblAdvTimeEqual.Location = new System.Drawing.Point(546, 51);
             this.lblAdvTimeEqual.Name = "lblAdvTimeEqual";
             this.lblAdvTimeEqual.Size = new System.Drawing.Size(22, 22);
             this.lblAdvTimeEqual.TabIndex = 7;
@@ -978,7 +978,7 @@
             // lblAdvTimeUntil
             // 
             this.lblAdvTimeUntil.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeUntil.Location = new System.Drawing.Point(300, 51);
+            this.lblAdvTimeUntil.Location = new System.Drawing.Point(412, 51);
             this.lblAdvTimeUntil.Name = "lblAdvTimeUntil";
             this.lblAdvTimeUntil.Size = new System.Drawing.Size(22, 22);
             this.lblAdvTimeUntil.TabIndex = 6;
@@ -988,7 +988,7 @@
             // lblAdvTimeEnd
             // 
             this.lblAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeEnd.Location = new System.Drawing.Point(328, 26);
+            this.lblAdvTimeEnd.Location = new System.Drawing.Point(440, 26);
             this.lblAdvTimeEnd.Name = "lblAdvTimeEnd";
             this.lblAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeEnd.TabIndex = 2;
@@ -998,7 +998,7 @@
             // lblAdvTimeDuration
             // 
             this.lblAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeDuration.Location = new System.Drawing.Point(462, 26);
+            this.lblAdvTimeDuration.Location = new System.Drawing.Point(574, 26);
             this.lblAdvTimeDuration.Name = "lblAdvTimeDuration";
             this.lblAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeDuration.TabIndex = 4;
@@ -1008,7 +1008,7 @@
             // lblAdvTimeStart
             // 
             this.lblAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeStart.Location = new System.Drawing.Point(194, 26);
+            this.lblAdvTimeStart.Location = new System.Drawing.Point(306, 26);
             this.lblAdvTimeStart.Name = "lblAdvTimeStart";
             this.lblAdvTimeStart.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeStart.TabIndex = 0;
@@ -1130,7 +1130,7 @@
             this.grpVideoPicture.Controls.Add(this.cboVideoFps);
             this.grpVideoPicture.Controls.Add(this.cboVideoRes);
             this.grpVideoPicture.Controls.Add(this.lblVideoRes);
-            this.grpVideoPicture.Location = new System.Drawing.Point(515, 6);
+            this.grpVideoPicture.Location = new System.Drawing.Point(739, 6);
             this.grpVideoPicture.Name = "grpVideoPicture";
             this.grpVideoPicture.Size = new System.Drawing.Size(247, 124);
             this.grpVideoPicture.TabIndex = 9;
@@ -1241,7 +1241,7 @@
             // chkVideoDeInterlace
             // 
             this.chkVideoDeInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkVideoDeInterlace.Location = new System.Drawing.Point(524, 136);
+            this.chkVideoDeInterlace.Location = new System.Drawing.Point(748, 136);
             this.chkVideoDeInterlace.Name = "chkVideoDeInterlace";
             this.chkVideoDeInterlace.Size = new System.Drawing.Size(90, 16);
             this.chkVideoDeInterlace.TabIndex = 10;
@@ -1256,7 +1256,7 @@
             this.grpVideoInterlace.Controls.Add(this.lblVideoDeInterField);
             this.grpVideoInterlace.Controls.Add(this.cboVideoDeInterMode);
             this.grpVideoInterlace.Controls.Add(this.lblVideoDeInterMode);
-            this.grpVideoInterlace.Location = new System.Drawing.Point(515, 136);
+            this.grpVideoInterlace.Location = new System.Drawing.Point(739, 136);
             this.grpVideoInterlace.Name = "grpVideoInterlace";
             this.grpVideoInterlace.Size = new System.Drawing.Size(247, 122);
             this.grpVideoInterlace.TabIndex = 11;
@@ -1279,7 +1279,7 @@
             this.tabConfigVideo.Location = new System.Drawing.Point(4, 24);
             this.tabConfigVideo.Name = "tabConfigVideo";
             this.tabConfigVideo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfigVideo.Size = new System.Drawing.Size(768, 264);
+            this.tabConfigVideo.Size = new System.Drawing.Size(992, 264);
             this.tabConfigVideo.TabIndex = 0;
             this.tabConfigVideo.Text = "Video";
             this.tabConfigVideo.UseVisualStyleBackColor = true;
@@ -1303,7 +1303,7 @@
             this.grpVideoCodec.Controls.Add(this.lblVideoPreset);
             this.grpVideoCodec.Controls.Add(this.cboVideoEncoder);
             this.grpVideoCodec.Controls.Add(this.lblVideoEncoder);
-            this.grpVideoCodec.Location = new System.Drawing.Point(262, 6);
+            this.grpVideoCodec.Location = new System.Drawing.Point(486, 6);
             this.grpVideoCodec.Name = "grpVideoCodec";
             this.grpVideoCodec.Size = new System.Drawing.Size(247, 252);
             this.grpVideoCodec.TabIndex = 8;
@@ -1476,7 +1476,7 @@
             this.cboVideoLang.FormattingEnabled = true;
             this.cboVideoLang.Location = new System.Drawing.Point(6, 237);
             this.cboVideoLang.Name = "cboVideoLang";
-            this.cboVideoLang.Size = new System.Drawing.Size(250, 21);
+            this.cboVideoLang.Size = new System.Drawing.Size(474, 21);
             this.cboVideoLang.TabIndex = 7;
             this.cboVideoLang.SelectedIndexChanged += new System.EventHandler(this.cboVideoLang_SelectedIndexChanged);
             // 
