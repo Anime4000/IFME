@@ -55,7 +55,7 @@ namespace IFME
             this.lblFrameRate.Location = new System.Drawing.Point(212, 27);
             this.lblFrameRate.Name = "lblFrameRate";
             this.lblFrameRate.Size = new System.Drawing.Size(200, 18);
-            this.lblFrameRate.TabIndex = 2;
+            this.lblFrameRate.TabIndex = 0;
             this.lblFrameRate.Text = "Frame Rate:";
             this.lblFrameRate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -64,7 +64,7 @@ namespace IFME
             this.txtFrameRate.Location = new System.Drawing.Point(212, 48);
             this.txtFrameRate.Name = "txtFrameRate";
             this.txtFrameRate.Size = new System.Drawing.Size(200, 20);
-            this.txtFrameRate.TabIndex = 3;
+            this.txtFrameRate.TabIndex = 1;
             this.txtFrameRate.Text = "25";
             // 
             // lblInformation
@@ -152,7 +152,7 @@ namespace IFME
             this.lblPixelFormat.Location = new System.Drawing.Point(212, 71);
             this.lblPixelFormat.Name = "lblPixelFormat";
             this.lblPixelFormat.Size = new System.Drawing.Size(200, 18);
-            this.lblPixelFormat.TabIndex = 6;
+            this.lblPixelFormat.TabIndex = 4;
             this.lblPixelFormat.Text = "Pixel Format:";
             this.lblPixelFormat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -162,7 +162,7 @@ namespace IFME
             this.txtPixelFormat.Name = "txtPixelFormat";
             this.txtPixelFormat.ReadOnly = true;
             this.txtPixelFormat.Size = new System.Drawing.Size(200, 20);
-            this.txtPixelFormat.TabIndex = 7;
+            this.txtPixelFormat.TabIndex = 5;
             this.txtPixelFormat.Text = "RGB888";
             // 
             // txtBitDepth
@@ -171,7 +171,7 @@ namespace IFME
             this.txtBitDepth.Name = "txtBitDepth";
             this.txtBitDepth.ReadOnly = true;
             this.txtBitDepth.Size = new System.Drawing.Size(200, 20);
-            this.txtBitDepth.TabIndex = 5;
+            this.txtBitDepth.TabIndex = 7;
             this.txtBitDepth.Text = "8";
             // 
             // lblBitDepth
@@ -179,7 +179,7 @@ namespace IFME
             this.lblBitDepth.Location = new System.Drawing.Point(6, 71);
             this.lblBitDepth.Name = "lblBitDepth";
             this.lblBitDepth.Size = new System.Drawing.Size(200, 18);
-            this.lblBitDepth.TabIndex = 4;
+            this.lblBitDepth.TabIndex = 6;
             this.lblBitDepth.Text = "Bit Depth:";
             this.lblBitDepth.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -189,7 +189,7 @@ namespace IFME
             this.txtResolution.Name = "txtResolution";
             this.txtResolution.ReadOnly = true;
             this.txtResolution.Size = new System.Drawing.Size(200, 20);
-            this.txtResolution.TabIndex = 1;
+            this.txtResolution.TabIndex = 3;
             this.txtResolution.Text = "1920x1080";
             // 
             // lblResolution
@@ -197,7 +197,7 @@ namespace IFME
             this.lblResolution.Location = new System.Drawing.Point(6, 27);
             this.lblResolution.Name = "lblResolution";
             this.lblResolution.Size = new System.Drawing.Size(200, 18);
-            this.lblResolution.TabIndex = 0;
+            this.lblResolution.TabIndex = 2;
             this.lblResolution.Text = "Resolution:";
             this.lblResolution.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
