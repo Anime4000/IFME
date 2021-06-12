@@ -55,7 +55,6 @@ namespace IFME
             cboVideoEncoder.DataSource = new BindingSource(Plugins.Items.Video.ToDictionary(p => p.Key, p => p.Value.Name), null);
             cboVideoEncoder.DisplayMember = "Value";
             cboVideoEncoder.ValueMember = "Key";
-            cboVideoEncoder.SelectedValue = new Guid("deadbeef-0265-0265-0265-026502650265");
 
             cboVideoLang.DataSource = new BindingSource(Language.Codes, null);
             cboVideoLang.DisplayMember = "Value";
@@ -94,7 +93,7 @@ namespace IFME
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-            //ProfilesManager.Test();
+            cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
         }
 
         private void frmMain_SizeChanged(object sender, EventArgs e)
