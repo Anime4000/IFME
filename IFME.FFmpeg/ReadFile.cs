@@ -12,9 +12,14 @@ namespace IFME.FFmpeg
     {
         private string _output = string.Empty;
 
-        internal string Media(string FilePath)
+        internal string Media(string filePath, string frameRate = "")
         {
-            var args = $"{MediaInfo.FFmpegProbe} -v quiet -print_format json -show_format -show_streams \"{FilePath}\"";
+            var fps = string.Empty;
+
+            if (!string.IsNullOrEmpty(frameRate))
+                fps = $"-framerate {frameRate}";
+
+            var args = $"{MediaInfo.FFmpegProbe} -v quiet -print_format json -show_format -show_streams {fps} \"{filePath}\"";
 
             Environment.SetEnvironmentVariable("NEMU", args, EnvironmentVariableTarget.Process);
 

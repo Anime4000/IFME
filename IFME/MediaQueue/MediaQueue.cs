@@ -5,6 +5,7 @@ using Newtonsoft.Json.Converters;
 [JsonConverter(typeof(StringEnumConverter))]
 public enum MediaContainer
 {
+	AVI,
 	MP4,
 	MKV,
 	WEBM,

@@ -32,9 +32,9 @@ namespace IFME.FFmpeg
 
 		}
 
-		public MediaInfo(string path)
+		public MediaInfo(string filePath, string frameRate = "")
 		{
-			dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(path));
+			dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(filePath, frameRate));
 
 			// General info
 			FilePath = (string)json.format.filename;
