@@ -5,8 +5,15 @@
 
 [new] Support Image Sequence (right click + button)
 [new] Support H.263/XVID encode for older device
+[new] Support VP8 & VP9 encode for internet
 [fixed] Encoding bug did not remux for final files
 [fixed] Various code fix
+[fixed] Cut loading/testing time (using small sample file) for weak computers
+[update] Multiple x265 cpu arch support (avx2, avx, sse) for efficient encoding
+[update] Multiple x264 cpu arch support (avx2, sse) for efficient encoding
+[update] IFME will try which cpu arch supported during loading
+
+NOTE!!! 32-bit OS is experimental and drop in the future release
 
 Version 21.05.25 Alpha (One More Time)
 --------------------------------------
