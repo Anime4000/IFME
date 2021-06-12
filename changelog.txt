@@ -1,4 +1,14 @@
-﻿Version 21.05.25 Alpha (One More Time)
+﻿Version 21.06.13 Alpha (The galaxy is at a crossroads)
+------------------------------------------------------
+
+[update] This is pre-release version 8 beta, still many missing feature...
+
+[new] Support Image Sequence (right click + button)
+[new] Support H.263/XVID encode for older device
+[fixed] Encoding bug did not remux for final files
+[fixed] Various code fix
+
+Version 21.05.25 Alpha (One More Time)
 --------------------------------------
 [new] Hardware Acceleration for Nvidia (NVENC)
 [new] Hardware Acceleration for AMD Advanced Media Framework
