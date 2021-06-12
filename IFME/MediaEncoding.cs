@@ -12,7 +12,7 @@ namespace IFME
 	{
 		private static int Arch = OS.Is64bit ? 64 : 32;
 		internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
-		internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "MP4Box", "MP4Box");
+		internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
 		internal static int CurrentIndex = 0;
 
 		internal static void Extract(MediaQueue queue, string tempDir)
@@ -72,7 +72,7 @@ namespace IFME
 			{
 				var item = queue.Audio[i];
 
-				frmMain.PrintStatus($"Encoding Audio Id: {i}");
+				frmMain.PrintStatus($"Encoding, Audio #{i}");
 
 				if (item.Copy && queue.OutputFormat == MediaContainer.MKV)
 				{
@@ -128,91 +128,62 @@ namespace IFME
 					var vc = codec.Video;
 
 					var en = vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary;
+					
 					var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
 					var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
+					var outencfile = vc.RawOutput ? outrawfile : outfmtfile;
 
-					var m = item.Encoder.Mode;
+					var mode = item.Encoder.Mode;
 
-					var trim = string.Empty;
+					var val_w = item.Quality.Width >= 128 ? item.Quality.Width : item.Quality.OriginalWidth;
+					var val_h = item.Quality.Height >= 128 ? item.Quality.Height : item.Quality.OriginalHeight;
+					var val_fps = item.Quality.FrameRate >= 5 ? item.Quality.FrameRate : 23.976;
+					var val_bpc = item.Quality.BitDepth >= 8 ? item.Quality.BitDepth : 8;
+					var val_csp = item.Quality.PixelFormat >= 420 ? item.Quality.PixelFormat : 420;
 
-					var yuv = $"yuv{item.Quality.PixelFormat}p";
-					var res = string.Empty;
-					var fps = $"-r 23.976";
+					var ff_rawcodec = string.Empty;
+					var ff_trim = string.Empty;
+					var ff_res = string.Empty;
+					var ff_fps = string.Empty;
+					var ff_yuv = string.Empty;
+					var ff_vf = new List<string>();
+					
+					var en_res = string.Empty;
+					var en_fps = string.Empty;
+					var en_bit = string.Empty;
+					var en_csp = string.Empty;
+					var en_preset = string.Empty;
+					var en_tune = string.Empty;
+					var en_quality = string.Empty;
+					var en_framecount = string.Empty;
 
-					var preset = string.Empty;
-					var tune = string.Empty;
-					var quality = string.Empty;
-					var bitdepth = string.Empty;
-					var framecount = string.Empty;
+					// FFmpeg RAW Type
+					if (string.IsNullOrEmpty(vc.Args.Y4M))
+						ff_rawcodec = "-strict -1 -f rawvideo";
+					else
+						ff_rawcodec = "-strict -1 -f yuv4mpegpipe";
 
-					var vf = string.Empty;
-					var fi = new List<string>();
+					// FFmpeg Resolution
+					ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
 
-					// cmd builder
+					// FFmpeg Frame Rate
+					ff_fps = $"-r {item.Quality.FrameRate}";
+
+					// FFmpeg Pixel Format
+					ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{(val_bpc > 8 ? $"{val_bpc}le" : string.Empty)}";
+
+					// FFmpeg Trim
 					if (queue.Trim.Enable)
-					{
-						trim += $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}";
-					}
-
-					if (item.Quality.BitDepth > 8)
-					{
-						yuv += $"{item.Quality.BitDepth}le";
-					}
-
-					if (item.Quality.FrameRate >= 5)
-					{
-						fps = $"-r {item.Quality.FrameRate}";
-					}
-
-					if (!vc.Args.Preset.IsDisable() && !item.Encoder.Preset.IsDisable())
-					{
-						preset = $"{vc.Args.Preset} {item.Encoder.Preset}";
-					}
-
-					if (!vc.Args.Tune.IsDisable() && !item.Encoder.Tune.IsDisable())
-					{
-						tune = $"{vc.Args.Tune} {item.Encoder.Tune}";
-					}
-
-					if (!vc.Mode[m].Args.IsDisable())
-					{
-						quality = $"{vc.Mode[m].Args} {vc.Mode[m].Prefix}{item.Encoder.Value}{vc.Mode[m].Postfix}";
-					}
-
-					if (!vc.Args.BitDepth.IsDisable() && item.Quality.BitDepth >= 8)
-					{
-						bitdepth = $"{vc.Args.BitDepth} {item.Quality.BitDepth}";
-					}
-
-					if (!vc.Args.FrameCount.IsDisable())
-					{
-						if (item.Quality.FrameCount > 0)
-							framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
-					}
+						ff_trim += $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}";
 
 					// FFmpeg Video Filter
-					if (item.Quality.Width >= 128 && item.Quality.Height >= 128)
-					{
-						res = $"scale={item.Quality.Width}:{item.Quality.Height}";
-
-						if (item.Quality.OriginalWidth > item.Quality.Width)
-							res += ":flags=lanczos";
-					}
-					else
-					{
-						res = $"scale={item.Quality.OriginalWidth}:{item.Quality.OriginalHeight}";
-					}
-
 					if (item.DeInterlace.Enable)
-					{
-						fi.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
-					}
-
+						ff_vf.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
+					
+					// Fmpeg Video Filter (extra)
 					if (!item.Quality.CommandFilter.IsDisable())
-					{
-						fi.Add(item.Quality.CommandFilter);
-					}
-
+						ff_vf.Add(item.Quality.CommandFilter);
+					
 					if (queue.HardSub)
 					{
 						var files = Directory.GetFiles(tempDir, "subtitle*");
@@ -224,28 +195,80 @@ namespace IFME
 
 							if (ext.IsOneOf(".srt"))
 							{
-								fi.Add($"subtitles={file}");
+								ff_vf.Add($"subtitles={file}");
 							}
 							else if (ext.IsOneOf(".ass", ".ssa"))
 							{
-								fi.Add($"ass={file}");
+								ff_vf.Add($"ass={file}");
 							}
 						}
 					}
 
-					// Resolution filter
-					fi.Add(res);
+					//
+					// Encoder Resolution
+					if (!string.IsNullOrEmpty(vc.Args.Resolution))
+						en_res = string.Format(vc.Args.Resolution, val_w, val_h);
 
-					// Concat multiple filter
-					if (fi.Count > 0)
-						vf = $"-vf \"{string.Join(",", fi)}\"";
+					// Encoder Frame Rate
+					if (!string.IsNullOrEmpty(vc.Args.FrameRate))
+						en_fps = $"{vc.Args.FrameRate} {item.Quality.FrameRate}";
+
+					// Encoder BitDepth Input
+					if (!string.IsNullOrEmpty(vc.Args.BitDepthIn))
+						en_bit = $"{vc.Args.BitDepthIn} {item.Quality.BitDepth}";
+
+					// Encoder BitDepth Output
+					if (!string.IsNullOrEmpty(vc.Args.BitDepthOut))
+						en_bit += $" {vc.Args.BitDepthOut} {item.Quality.BitDepth}";
+
+					// Encoder Pixel Format/ColorSpace Format (csp)
+					foreach (var c in vc.Chroma)
+					{
+						if (c.Value == val_csp)
+							if (!string.IsNullOrEmpty(c.Command))
+								en_csp = c.Command;
+					}
+
+					// Encoder Preset
+					if (!vc.Args.Preset.IsDisable() && !item.Encoder.Preset.IsDisable())
+					{
+						en_preset = $"{vc.Args.Preset} {item.Encoder.Preset}";
+					}
+
+					// Encoder Tune
+					if (!vc.Args.Tune.IsDisable() && !item.Encoder.Tune.IsDisable())
+					{
+						en_tune = $"{vc.Args.Tune} {item.Encoder.Tune}";
+					}
+
+					// Encoder Mode
+					if (!vc.Mode[mode].Args.IsDisable())
+					{
+						en_quality = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
+					}
+
+					// Encoder Frame Count
+					if (!vc.Args.FrameCount.IsDisable())
+					{
+						if (item.Quality.FrameCount > 0)
+							en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
+					}
+
+					// Parse FFmpeg filter
+					var ffmpeg_filter = string.Join(",", ff_vf);
+
+					// Make commands
+					var ffmpeg_command = $"{ff_trim} -map 0:{item.Id} {ff_yuv} {ff_fps} -vf {ffmpeg_filter} {item.Quality.Command}";
+					var encoder_command = $"{en_res} {en_fps} {en_bit} {en_csp} {en_preset} {en_tune} {en_quality} {en_framecount}";
+
+					var ffmpeg_encoder = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? ffmpeg_command : encoder_command;
 
 					// begin encoding
-					frmMain.PrintStatus($"Encoding Video Id: {i}");
+					frmMain.PrintStatus($"Encoding, Video #{i}");
 					frmMain.PrintLog($"[INFO] Encoding video file...");
 
 					// Tell You
-					frmMain.PrintLog($"[INFO] Video filter command is: {vf}");
+					frmMain.PrintLog($"[INFO] Video filter command is: {ffmpeg_filter}");
 
 					if (vc.Mode[item.Encoder.Mode].MultiPass)
 					{
@@ -267,9 +290,9 @@ namespace IFME
 							frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {pass} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {ff_rawcodec} {ffmpeg_command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {pass} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outrawfile}");
+								ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {ffmpeg_encoder} {vc.Args.UnPipe} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 
 							++p;
 
@@ -278,9 +301,9 @@ namespace IFME
 					else
 					{
 						if (vc.Args.Pipe)
-							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -strict -1 {trim} -map 0:{item.Id} -f yuv4mpegpipe -pix_fmt {yuv} {fps} {vf} {item.Quality.Command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {preset} {quality} {tune} {bitdepth} {framecount} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {ff_rawcodec} {ffmpeg_command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} -pix_fmt {yuv} {fps} {vf} {vc.Args.UnPipe} {preset} {quality} {tune} {item.Encoder.Command} {vc.Args.Output} {outrawfile}");
+							ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {ffmpeg_encoder} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 					}
 
 					// Raw file dont have pts (time), need to remux

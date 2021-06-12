@@ -30,13 +30,13 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsAudio>(json);
 
-					frmSplashScreen.SetStatus($"Initializing Audio:\n{plugin.Name}");
+					frmSplashScreen.SetStatus($"{plugin.Name}");
 
 					// Skip wrong cpu arch
 					if (OSManager.OS.Is64bit != plugin.X64)
 					{
 						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
-						Thread.Sleep(250);
+						Thread.Sleep(100);
 						continue;
 					}
 
@@ -49,7 +49,7 @@ namespace IFME
 					if (!TestAudio(plugin))
                     {
 						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
-						Thread.Sleep(2000);
+						Thread.Sleep(100);
 						continue;
 					}
 
@@ -73,13 +73,13 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsVideo>(json);
 
-					frmSplashScreen.SetStatus($"Initializing Video:\n{plugin.Name}");
+					frmSplashScreen.SetStatus($"{plugin.Name}");
 
 					// Skip wrong cpu arch
 					if (OSManager.OS.Is64bit != plugin.X64)
 					{
 						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
-						Thread.Sleep(250);
+						Thread.Sleep(100);
 						continue;
 					}
 
@@ -96,14 +96,14 @@ namespace IFME
 					if (Plugins.Items.Video.ContainsKey(plugin.GUID))
                     {
 						frmSplashScreen.SetStatusAppend(" (best encoder already loaded, skipping...)");
-						Thread.Sleep(2000);
+						Thread.Sleep(100);
 						continue;
 					}
 
 					if (!TestVideo(plugin))
                     {
 						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
-						Thread.Sleep(2000);
+						Thread.Sleep(100);
 						continue;
 					}
 
@@ -122,7 +122,7 @@ namespace IFME
 			var ac = codec.Audio;
 			var ff = MediaEncoding.FFmpeg;
 			var en = ac.Encoder;
-			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online.m4a");
+			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.m4a");
 			var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{ac.Extension}");
 			var outTempFolder = Path.Combine(Path.GetTempPath());
 
@@ -146,20 +146,47 @@ namespace IFME
             var vc = codec.Video;
             var ff = MediaEncoding.FFmpeg;
 			var en = vc.Encoder[0].Binary;
-			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online.mp4");
+			var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.mp4");
 			var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{vc.Extension}");
 			var outTempFolder = Path.Combine(Path.GetTempPath());
 
-            var frameCount = vc.Args.FrameCount.IsDisable() ? string.Empty : $"{vc.Args.FrameCount} 1000";
+			var val_w = 320;
+			var val_h = 240;
+			var val_fps = 15;
+			var val_bit = 8;
 
-            int exitCode;
+			var ff_raw = string.IsNullOrEmpty(vc.Args.Y4M) ? "-strict -1 -f rawvideo" : "-strict -1 -f yuv4mpegpipe";
+
+			var en_res = string.Empty;
+			var en_fps = string.Empty;
+			var en_bit = string.Empty;
+			var en_frameCount = vc.Args.FrameCount.IsDisable() ? string.Empty : $"{vc.Args.FrameCount} 1000";
+
+			if (!string.IsNullOrEmpty(vc.Args.Resolution))
+				en_res = string.Format(vc.Args.Resolution, val_w, val_h);
+
+			if (!string.IsNullOrEmpty(vc.Args.FrameRate))
+				en_fps = $"{vc.Args.FrameRate} {val_fps}";
+
+			if (!string.IsNullOrEmpty(vc.Args.BitDepthIn))
+				en_bit = $"{vc.Args.BitDepthIn} {val_bit}";
+
+			if (!string.IsNullOrEmpty(vc.Args.BitDepthOut))
+				en_bit += $" {vc.Args.BitDepthOut} {val_bit}";
+
+			var ff_cmd = $"-pix_fmt yuv420p -r {val_fps} -vf \"scale={val_w}:{val_h}:flags=lanczos\"";
+			var en_cmd = $"{en_res} {en_fps} {en_bit} {vc.Chroma[0].Command} {vc.Args.Preset} {vc.PresetDefault} {vc.Args.Tune} {vc.TuneDefault} {en_frameCount}";
+
+			var ff_enc = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? ff_cmd : en_cmd;
+
+			int exitCode;
             if (codec.Video.Args.Pipe)
             {
-                exitCode = ProcessManager.Start(outTempFolder, $"\"{ff}\" -hide_banner -v error -i \"{sampleFile}\" -strict -1 -f yuv4mpegpipe -pix_fmt yuv420p -vf scale=640:-1 - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {vc.Args.Preset} {vc.PresetDefault} {vc.Args.Tune} {vc.TuneDefault} {frameCount} {vc.Args.Output} {outTempFile}");
+                exitCode = ProcessManager.Start(outTempFolder, $"\"{ff}\" -hide_banner -v error -i \"{sampleFile}\" {ff_raw} {ff_cmd} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {en_cmd} {vc.Args.Output} {outTempFile}");
             }
             else
             {
-                exitCode = ProcessManager.Start(outTempFolder, $"\"{ff}\" {vc.Args.Input} \"{sampleFile}\" -pix_fmt yuv420p {vc.Args.UnPipe} {vc.Args.Preset} {vc.PresetDefault} {vc.Args.Tune} {vc.TuneDefault} {frameCount} {vc.Args.Output} {outTempFile}");
+                exitCode = ProcessManager.Start(outTempFolder, $"\"{en}\" {vc.Args.Input} \"{sampleFile}\" {ff_enc} {vc.Args.UnPipe} {vc.Args.Output} {outTempFile}");
             }
 
             return exitCode == 0;

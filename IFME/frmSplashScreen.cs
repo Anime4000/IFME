@@ -35,16 +35,22 @@ namespace IFME
 
         private void BgThread_DoWork(object sender, DoWorkEventArgs e)
         {
+            lblLoadingUpdate(string.Empty);
             lblStatusUpdate(string.Empty);
+
+            Thread.Sleep(500);
+
             frmFadeInOut(true);
 
             // Detect user machine
             // TODO: Detect user GPU
+            lblLoadingUpdate("Initializing...");
 
             // Load everything
             new PluginsLoad();
 
             // Finished loading, clear status text
+            lblLoadingUpdate(string.Empty);
             lblStatusUpdate(string.Empty);
 
             // Wait some CPU free
@@ -85,11 +91,19 @@ namespace IFME
             }
         }
 
-        private void lblStatusUpdate(string text)
+        private void lblLoadingUpdate(string value)
         {
             BeginInvoke((Action)delegate ()
             {
-                lblStatus.Text = text;
+                lblLoading.Text = value;
+            });
+        }
+
+        private void lblStatusUpdate(string value)
+        {
+            BeginInvoke((Action)delegate ()
+            {
+                lblStatus.Text = value;
             });
         }
     }

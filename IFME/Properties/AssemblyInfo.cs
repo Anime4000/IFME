@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("The galaxy is at a crossroads")]
 [assembly: AssemblyCopyright("© 2017 Anime4000")]
-[assembly: AssemblyTrademark("Anime4000, MulticoreWare, VideoLAN, FFmpeg, Xiph.Org Foundation, Google Inc., Nero AG, GPAC, AMD, Intel, Nvidia et al.")]
+[assembly: AssemblyTrademark("Anime4000, Nemu, Jel42, Robin Lawrie, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, et al.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("21.06.7")]
-[assembly: AssemblyFileVersion("21.06.7")]
+[assembly: AssemblyVersion("21.06.12")]
+[assembly: AssemblyFileVersion("21.06.12")]

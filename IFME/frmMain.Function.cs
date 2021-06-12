@@ -64,11 +64,15 @@ namespace IFME
 			btnVideoDel.Text = btnFileDelete.Text;
 			btnVideoMoveUp.Text = btnFileUp.Text;
 			btnVideoMoveDown.Text = btnFileDown.Text;
+			btnVideoDec.Font = new Font("Tahoma", 8f);
+			btnVideoEnc.Font = new Font("Tahoma", 8f);
 
 			btnAudioAdd.Text = btnFileAdd.Text;
 			btnAudioDel.Text = btnFileDelete.Text;
 			btnAudioMoveUp.Text = btnFileUp.Text;
 			btnAudioMoveDown.Text = btnFileDown.Text;
+			btnAudioDec.Font = new Font("Tahoma", 8f);
+			btnAudioEnc.Font = new Font("Tahoma", 8f);
 
 			btnSubAdd.Text = btnFileAdd.Text;
 			btnSubDel.Text = btnFileDelete.Text;

@@ -26,6 +26,9 @@ namespace IFME
 		{
 			var EnvId = RandomGen.String(7);
 
+			// replace double or more space with single space except in quote char (" ' `)
+			Command = Regex.Replace(Command, "\\s{2,}(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)", " ");
+
 			Environment.SetEnvironmentVariable(EnvId, Command, EnvironmentVariableTarget.Process);
 
 			var cmd = OS.IsWindows ? "cmd" : "bash";
@@ -42,6 +45,10 @@ namespace IFME
 					RedirectStandardOutput = true
 				}
 			};
+
+#if DEBUG
+			frmMain.PrintLog($"[DEBG] Command Line: {Command}");
+#endif
 
 			proc.OutputDataReceived += Proc_DataReceived;
 			proc.ErrorDataReceived += Proc_DataReceived;

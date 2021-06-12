@@ -16,6 +16,7 @@ namespace IFME
         public bool RawOutput { get; set; }
         public string Extension { get; set; }
         public List<PluginsVideoEncoder> Encoder { get; set; } = new List<PluginsVideoEncoder>();
+        public List<PluginsVideoChroma> Chroma { get; set; } = new List<PluginsVideoChroma>();
         public string[] Preset { get; set; }
         public string PresetDefault { get; set; }
         public string[] Tune { get; set; }
@@ -30,6 +31,12 @@ namespace IFME
         public string Binary { get; set; }
     }
 
+    public class PluginsVideoChroma
+    {
+        public int Value { get; set; }
+        public string Command { get; set; }
+    }
+
     public class PluginsVideoArgs
     {
         public bool Pipe { get; set; }
@@ -39,7 +46,10 @@ namespace IFME
         public string Output { get; set; }
         public string Preset { get; set; }
         public string Tune { get; set; }
-        public string BitDepth { get; set; }
+        public string Resolution { get; set; }
+        public string FrameRate { get; set; }
+        public string BitDepthIn { get; set; }
+        public string BitDepthOut { get; set; }
         public string FrameCount { get; set; }
         public string PassFirst { get; set; }
         public string PassLast { get; set; }
