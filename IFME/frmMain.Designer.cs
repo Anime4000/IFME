@@ -181,6 +181,7 @@
             this.cmsFileAddAttach = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -407,7 +408,7 @@
             this.btnOutputBrowse.Location = new System.Drawing.Point(988, 564);
             this.btnOutputBrowse.Name = "btnOutputBrowse";
             this.btnOutputBrowse.Size = new System.Drawing.Size(24, 24);
-            this.btnOutputBrowse.TabIndex = 18;
+            this.btnOutputBrowse.TabIndex = 19;
             this.btnOutputBrowse.UseVisualStyleBackColor = true;
             this.btnOutputBrowse.Click += new System.EventHandler(this.btnOutputBrowse_Click);
             // 
@@ -792,7 +793,7 @@
             this.btnProfileSaveLoad.Location = new System.Drawing.Point(988, 534);
             this.btnProfileSaveLoad.Name = "btnProfileSaveLoad";
             this.btnProfileSaveLoad.Size = new System.Drawing.Size(24, 24);
-            this.btnProfileSaveLoad.TabIndex = 15;
+            this.btnProfileSaveLoad.TabIndex = 16;
             this.btnProfileSaveLoad.UseVisualStyleBackColor = true;
             this.btnProfileSaveLoad.Click += new System.EventHandler(this.btnProfileSaveLoad_Click);
             this.btnProfileSaveLoad.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnProfileSaveLoad_MouseUp);
@@ -807,7 +808,7 @@
             this.cboProfile.Location = new System.Drawing.Point(274, 534);
             this.cboProfile.Name = "cboProfile";
             this.cboProfile.Size = new System.Drawing.Size(708, 24);
-            this.cboProfile.TabIndex = 14;
+            this.cboProfile.TabIndex = 15;
             this.cboProfile.SelectedIndexChanged += new System.EventHandler(this.cboProfile_SelectedIndexChanged);
             // 
             // cboFormat
@@ -819,7 +820,7 @@
             this.cboFormat.Location = new System.Drawing.Point(148, 534);
             this.cboFormat.Name = "cboFormat";
             this.cboFormat.Size = new System.Drawing.Size(120, 24);
-            this.cboFormat.TabIndex = 13;
+            this.cboFormat.TabIndex = 14;
             this.cboFormat.SelectedIndexChanged += new System.EventHandler(this.cboFormat_SelectedIndexChanged);
             // 
             // txtOutputPath
@@ -830,7 +831,7 @@
             this.txtOutputPath.Location = new System.Drawing.Point(148, 564);
             this.txtOutputPath.Name = "txtOutputPath";
             this.txtOutputPath.Size = new System.Drawing.Size(834, 24);
-            this.txtOutputPath.TabIndex = 17;
+            this.txtOutputPath.TabIndex = 18;
             this.txtOutputPath.TextChanged += new System.EventHandler(this.txtOutputPath_TextChanged);
             // 
             // lblOutputPath
@@ -839,7 +840,7 @@
             this.lblOutputPath.Location = new System.Drawing.Point(12, 564);
             this.lblOutputPath.Name = "lblOutputPath";
             this.lblOutputPath.Size = new System.Drawing.Size(130, 24);
-            this.lblOutputPath.TabIndex = 16;
+            this.lblOutputPath.TabIndex = 17;
             this.lblOutputPath.Text = "&Output Folder:";
             this.lblOutputPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -849,7 +850,7 @@
             this.lblFormatProfile.Location = new System.Drawing.Point(12, 534);
             this.lblFormatProfile.Name = "lblFormatProfile";
             this.lblFormatProfile.Size = new System.Drawing.Size(130, 24);
-            this.lblFormatProfile.TabIndex = 12;
+            this.lblFormatProfile.TabIndex = 13;
             this.lblFormatProfile.Text = "Format && &Profile:";
             this.lblFormatProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1532,7 +1533,7 @@
             this.tabConfig.Padding = new System.Drawing.Point(16, 4);
             this.tabConfig.SelectedIndex = 0;
             this.tabConfig.Size = new System.Drawing.Size(1000, 292);
-            this.tabConfig.TabIndex = 11;
+            this.tabConfig.TabIndex = 12;
             // 
             // tabConfigMediaInfo
             // 
@@ -1576,7 +1577,7 @@
             this.lstFile.Location = new System.Drawing.Point(12, 114);
             this.lstFile.Name = "lstFile";
             this.lstFile.Size = new System.Drawing.Size(1000, 116);
-            this.lstFile.TabIndex = 10;
+            this.lstFile.TabIndex = 11;
             this.lstFile.UseCompatibleStateImageBehavior = false;
             this.lstFile.View = System.Windows.Forms.View.Details;
             this.lstFile.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lstFile_ItemChecked);
@@ -1618,10 +1619,10 @@
             // 
             this.btnDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDonate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnDonate.Location = new System.Drawing.Point(808, 76);
+            this.btnDonate.Location = new System.Drawing.Point(820, 76);
             this.btnDonate.Name = "btnDonate";
-            this.btnDonate.Size = new System.Drawing.Size(120, 32);
-            this.btnDonate.TabIndex = 6;
+            this.btnDonate.Size = new System.Drawing.Size(108, 32);
+            this.btnDonate.TabIndex = 7;
             this.btnDonate.Text = "&Donate";
             this.btnDonate.UseVisualStyleBackColor = true;
             this.btnDonate.Click += new System.EventHandler(this.btnDonate_Click);
@@ -1633,7 +1634,7 @@
             this.Seperator2.Location = new System.Drawing.Point(934, 76);
             this.Seperator2.Name = "Seperator2";
             this.Seperator2.Size = new System.Drawing.Size(2, 32);
-            this.Seperator2.TabIndex = 7;
+            this.Seperator2.TabIndex = 8;
             // 
             // btnStart
             // 
@@ -1641,7 +1642,7 @@
             this.btnStart.Location = new System.Drawing.Point(942, 76);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(32, 32);
-            this.btnStart.TabIndex = 8;
+            this.btnStart.TabIndex = 9;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             this.btnStart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnStart_MouseDown);
@@ -1652,7 +1653,7 @@
             this.btnStop.Location = new System.Drawing.Point(980, 76);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(32, 32);
-            this.btnStop.TabIndex = 9;
+            this.btnStop.TabIndex = 10;
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -1662,7 +1663,7 @@
             this.btnFileDown.Location = new System.Drawing.Point(515, 76);
             this.btnFileDown.Name = "btnFileDown";
             this.btnFileDown.Size = new System.Drawing.Size(32, 32);
-            this.btnFileDown.TabIndex = 5;
+            this.btnFileDown.TabIndex = 6;
             this.btnFileDown.UseVisualStyleBackColor = true;
             this.btnFileDown.Click += new System.EventHandler(this.btnFileDown_Click);
             // 
@@ -1672,7 +1673,7 @@
             this.btnFileUp.Location = new System.Drawing.Point(477, 76);
             this.btnFileUp.Name = "btnFileUp";
             this.btnFileUp.Size = new System.Drawing.Size(32, 32);
-            this.btnFileUp.TabIndex = 4;
+            this.btnFileUp.TabIndex = 5;
             this.btnFileUp.UseVisualStyleBackColor = true;
             this.btnFileUp.Click += new System.EventHandler(this.btnFileUp_Click);
             // 
@@ -1681,9 +1682,8 @@
             this.btnOptions.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnOptions.Location = new System.Drawing.Point(96, 76);
             this.btnOptions.Name = "btnOptions";
-            this.btnOptions.Size = new System.Drawing.Size(120, 32);
+            this.btnOptions.Size = new System.Drawing.Size(51, 32);
             this.btnOptions.TabIndex = 3;
-            this.btnOptions.Text = "&Options";
             this.btnOptions.UseVisualStyleBackColor = true;
             this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
@@ -1735,6 +1735,7 @@
             // 
             // tsmiImportFolder
             // 
+            this.tsmiImportFolder.Enabled = false;
             this.tsmiImportFolder.Name = "tsmiImportFolder";
             this.tsmiImportFolder.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportFolder.Text = "Import Fol&der";
@@ -1754,6 +1755,7 @@
             // 
             // tsmiImportYouTube
             // 
+            this.tsmiImportYouTube.Enabled = false;
             this.tsmiImportYouTube.Name = "tsmiImportYouTube";
             this.tsmiImportYouTube.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportYouTube.Text = "Import &YouTube";
@@ -1851,11 +1853,22 @@
             this.tsmiFileAddAttachEmbed.Text = "Add &Embeded Fonts";
             this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnAbout.Location = new System.Drawing.Point(153, 76);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(51, 32);
+            this.btnAbout.TabIndex = 4;
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1024, 600);
+            this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.btnOutputBrowse);
             this.Controls.Add(this.btnProfileSaveLoad);
             this.Controls.Add(this.cboProfile);
@@ -2067,5 +2080,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiFileAddAttachEmbed;
         private System.Windows.Forms.ColumnHeader colFileProgress;
         internal System.Windows.Forms.ListView lstFile;
+        private System.Windows.Forms.Button btnAbout;
     }
 }

@@ -29,7 +29,7 @@ namespace IFME
             InitializeLog();
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-            Text = $"{Version.Title} {Version.Release}-alpha ( '{Version.CodeName}' )";
+            Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )";
             FormBorderStyle = FormBorderStyle.Sizable;
 
             bgThread.DoWork += bgThread_DoWork;
@@ -137,18 +137,17 @@ namespace IFME
 
         private void btnFileAdd_Click(object sender, EventArgs e)
         {
-            foreach (var item in OpenFiles(MediaType.Video | MediaType.Audio))
-                MediaFileListAdd(item);
+            var btnSender = (Button)sender;
+            var ptLowerLeft = new Point(1, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            cmsFileAdd.Show(ptLowerLeft);
         }
 
         private void btnFileAdd_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                var btnSender = (Button)sender;
-                var ptLowerLeft = new Point(1, btnSender.Height);
-                ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
-                cmsFileAdd.Show(ptLowerLeft);
+                btnFileAdd.PerformClick();
             }
         }
 
@@ -161,6 +160,11 @@ namespace IFME
         private void btnOptions_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Option not yet implement in this alpha build release!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            new frmAbout().ShowDialog();
         }
 
         private void btnFileUp_Click(object sender, EventArgs e)
@@ -1919,13 +1923,14 @@ namespace IFME
             }
             catch (Exception ex)
             {
-                frmMain.PrintLog(ex.Message);
+                PrintLog(ex.Message);
             }
         }
 
         private void tsmiImportFiles_Click(object sender, EventArgs e)
         {
-            btnFileAdd.PerformClick(); // using same function
+            foreach (var item in OpenFiles(MediaType.Video | MediaType.Audio))
+                MediaFileListAdd(item);
         }
 
         private void tsmiImportFolder_Click(object sender, EventArgs e)

@@ -37,12 +37,12 @@ namespace IFME
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblSourceFileParse = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblResolution = new System.Windows.Forms.Label();
-            this.txtResolution = new System.Windows.Forms.TextBox();
-            this.lblBitDepth = new System.Windows.Forms.Label();
-            this.txtBitDepth = new System.Windows.Forms.TextBox();
-            this.txtPixelFormat = new System.Windows.Forms.TextBox();
             this.lblPixelFormat = new System.Windows.Forms.Label();
+            this.txtPixelFormat = new System.Windows.Forms.TextBox();
+            this.txtBitDepth = new System.Windows.Forms.TextBox();
+            this.lblBitDepth = new System.Windows.Forms.Label();
+            this.txtResolution = new System.Windows.Forms.TextBox();
+            this.lblResolution = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -147,41 +147,14 @@ namespace IFME
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Properties";
             // 
-            // lblResolution
+            // lblPixelFormat
             // 
-            this.lblResolution.Location = new System.Drawing.Point(6, 27);
-            this.lblResolution.Name = "lblResolution";
-            this.lblResolution.Size = new System.Drawing.Size(200, 18);
-            this.lblResolution.TabIndex = 0;
-            this.lblResolution.Text = "Resolution:";
-            this.lblResolution.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // txtResolution
-            // 
-            this.txtResolution.Location = new System.Drawing.Point(6, 48);
-            this.txtResolution.Name = "txtResolution";
-            this.txtResolution.ReadOnly = true;
-            this.txtResolution.Size = new System.Drawing.Size(200, 20);
-            this.txtResolution.TabIndex = 1;
-            this.txtResolution.Text = "1920x1080";
-            // 
-            // lblBitDepth
-            // 
-            this.lblBitDepth.Location = new System.Drawing.Point(6, 71);
-            this.lblBitDepth.Name = "lblBitDepth";
-            this.lblBitDepth.Size = new System.Drawing.Size(200, 18);
-            this.lblBitDepth.TabIndex = 4;
-            this.lblBitDepth.Text = "Bit Depth:";
-            this.lblBitDepth.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // txtBitDepth
-            // 
-            this.txtBitDepth.Location = new System.Drawing.Point(6, 92);
-            this.txtBitDepth.Name = "txtBitDepth";
-            this.txtBitDepth.ReadOnly = true;
-            this.txtBitDepth.Size = new System.Drawing.Size(200, 20);
-            this.txtBitDepth.TabIndex = 5;
-            this.txtBitDepth.Text = "8";
+            this.lblPixelFormat.Location = new System.Drawing.Point(212, 71);
+            this.lblPixelFormat.Name = "lblPixelFormat";
+            this.lblPixelFormat.Size = new System.Drawing.Size(200, 18);
+            this.lblPixelFormat.TabIndex = 6;
+            this.lblPixelFormat.Text = "Pixel Format:";
+            this.lblPixelFormat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // txtPixelFormat
             // 
@@ -192,20 +165,47 @@ namespace IFME
             this.txtPixelFormat.TabIndex = 7;
             this.txtPixelFormat.Text = "RGB888";
             // 
-            // lblPixelFormat
+            // txtBitDepth
             // 
-            this.lblPixelFormat.Location = new System.Drawing.Point(212, 71);
-            this.lblPixelFormat.Name = "lblPixelFormat";
-            this.lblPixelFormat.Size = new System.Drawing.Size(200, 18);
-            this.lblPixelFormat.TabIndex = 6;
-            this.lblPixelFormat.Text = "Pixel Format:";
-            this.lblPixelFormat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.txtBitDepth.Location = new System.Drawing.Point(6, 92);
+            this.txtBitDepth.Name = "txtBitDepth";
+            this.txtBitDepth.ReadOnly = true;
+            this.txtBitDepth.Size = new System.Drawing.Size(200, 20);
+            this.txtBitDepth.TabIndex = 5;
+            this.txtBitDepth.Text = "8";
+            // 
+            // lblBitDepth
+            // 
+            this.lblBitDepth.Location = new System.Drawing.Point(6, 71);
+            this.lblBitDepth.Name = "lblBitDepth";
+            this.lblBitDepth.Size = new System.Drawing.Size(200, 18);
+            this.lblBitDepth.TabIndex = 4;
+            this.lblBitDepth.Text = "Bit Depth:";
+            this.lblBitDepth.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // txtResolution
+            // 
+            this.txtResolution.Location = new System.Drawing.Point(6, 48);
+            this.txtResolution.Name = "txtResolution";
+            this.txtResolution.ReadOnly = true;
+            this.txtResolution.Size = new System.Drawing.Size(200, 20);
+            this.txtResolution.TabIndex = 1;
+            this.txtResolution.Text = "1920x1080";
+            // 
+            // lblResolution
+            // 
+            this.lblResolution.Location = new System.Drawing.Point(6, 27);
+            this.lblResolution.Name = "lblResolution";
+            this.lblResolution.Size = new System.Drawing.Size(200, 18);
+            this.lblResolution.TabIndex = 0;
+            this.lblResolution.Text = "Resolution:";
+            this.lblResolution.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(713, 310);
+            this.btnAdd.Location = new System.Drawing.Point(632, 310);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 24);
             this.btnAdd.TabIndex = 4;
@@ -217,7 +217,7 @@ namespace IFME
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Abort;
-            this.btnCancel.Location = new System.Drawing.Point(632, 310);
+            this.btnCancel.Location = new System.Drawing.Point(713, 310);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 24);
             this.btnCancel.TabIndex = 5;

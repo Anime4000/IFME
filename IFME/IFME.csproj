@@ -58,6 +58,12 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts\FontAwesome.cs" />
     <Compile Include="Fonts\Fonts.cs" />
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmImportImageSeq.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +107,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Version.cs" />
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmImportImageSeq.resx">
       <DependentUpon>frmImportImageSeq.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,9 +188,6 @@
     <None Include="Resources\Banner_2a.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Banner_2b.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ifme-zenui.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,9 @@
     <None Include="Profiles\Profile_0000-00-00_00-00-00_0005.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Banner_2b.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SplashScreen8.jpg" />

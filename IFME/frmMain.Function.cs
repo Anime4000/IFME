@@ -54,7 +54,8 @@ namespace IFME
 
             btnFileAdd.Text = Fonts.fa.plus;
             btnFileDelete.Text = Fonts.fa.minus;
-            btnOptions.Text = $"{Fonts.fa.gears} {btnOptions.Text}";
+            btnOptions.Text = $"{Fonts.fa.gears}";
+            btnAbout.Text = $"{Fonts.fa.info_circle}";
             btnFileUp.Text = Fonts.fa.chevron_up;
             btnFileDown.Text = Fonts.fa.chevron_down;
             btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
