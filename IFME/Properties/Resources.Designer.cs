@@ -63,6 +63,46 @@ namespace IFME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Avatar1_Ichika {
+            get {
+                object obj = ResourceManager.GetObject("Avatar1_Ichika", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Avatar2_Fumiko {
+            get {
+                object obj = ResourceManager.GetObject("Avatar2_Fumiko", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Avatar3_Miho {
+            get {
+                object obj = ResourceManager.GetObject("Avatar3_Miho", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Avatar4_Erika {
+            get {
+                object obj = ResourceManager.GetObject("Avatar4_Erika", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Banner_2a {
             get {
                 object obj = ResourceManager.GetObject("Banner_2a", resourceCulture);
@@ -76,6 +116,16 @@ namespace IFME.Properties {
         internal static System.Drawing.Bitmap Banner_2b {
             get {
                 object obj = ResourceManager.GetObject("Banner_2b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Banner_About {
+            get {
+                object obj = ResourceManager.GetObject("Banner_About", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

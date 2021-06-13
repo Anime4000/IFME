@@ -206,5 +206,20 @@
   <ItemGroup>
     <None Include="Resources\SplashScreen8.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Banner_About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avatar1_Ichika.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avatar2_Fumiko.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avatar3_Miho.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avatar4_Erika.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

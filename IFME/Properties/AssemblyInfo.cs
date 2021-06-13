@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Anime4000")]
 [assembly: AssemblyProduct("The galaxy is at a crossroads")]
 [assembly: AssemblyCopyright("© 2017 Anime4000")]
-[assembly: AssemblyTrademark("Anime4000, Nemu, Jel42, Robin Lawrie, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, et al.")]
+[assembly: AssemblyTrademark("Anime4000, Nemu, Jel42, Robin Lawrie, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

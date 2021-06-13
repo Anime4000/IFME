@@ -21,18 +21,38 @@ namespace IFME
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Text = $"{Text} {Version.Title}";
             FormBorderStyle = FormBorderStyle.Sizable;
+
+            
         }
 
         private void frmAbout_Load(object sender, EventArgs e)
         {
             lblCodeName.Text = $"'{Version.CodeName}'";
-            lblVersion.Text = $"Version {Version.Release} (pre v 8)";
+            lblVersion.Text = $"Version {Version.Release}";
             lblCopyRight.Text = $"© 2011-{DateTime.Now.Year} Anime4000 && Contributor, Some Right Reserved.";
-            lblArtWork.Text = $"Character illustration by Ray-en aka 53C for IFME Project\n\nIchika, Fumiko, Miko, Erika\n\nhttp://pixiv.me/ray53c";
+            lblArtWork.Text = $"Character illustration by Ray-en aka 53C for IFME Project.";
             lblDevs.Text = Version.TradeMark;
         }
 
+        private void frmAbout_Shown(object sender, EventArgs e)
+        {
+            pbCharIchika.Image = Images.Resize(Properties.Resources.Avatar1_Ichika, pbCharIchika.Width, pbCharIchika.Height);
+            pbCharFumiko.Image = Images.Resize(Properties.Resources.Avatar2_Fumiko, pbCharFumiko.Width, pbCharFumiko.Height);
+            pbCharMiho.Image = Images.Resize(Properties.Resources.Avatar3_Miho, pbCharMiho.Width, pbCharMiho.Height);
+            pbCharErika.Image = Images.Resize(Properties.Resources.Avatar4_Erika, pbCharErika.Width, pbCharErika.Height);
+        }
+
+        private void frmAbout_Resize(object sender, EventArgs e)
+        {
+
+        }
+
         private void lblArtWork_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://pixiv.me/ray53c");
+        }
+
+        private void lnkRayEn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://pixiv.me/ray53c");
         }
@@ -55,6 +75,11 @@ namespace IFME
         private void lnkFacebook_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://www.facebook.com/internetfriendlymediaencoder");
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://discord.gg/nQx7SmCSWg");
         }
 
         private void lnkHitoha_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -142,9 +142,9 @@ namespace IFME
 					var val_csp = item.Quality.PixelFormat >= 420 ? item.Quality.PixelFormat : 420;
 
 					var ff_rawcodec = string.Empty;
+					var ff_infps = string.Empty;
 					var ff_trim = string.Empty;
 					var ff_res = string.Empty;
-					var ff_fps = string.Empty;
 					var ff_yuv = string.Empty;
 					var ff_vf = new List<string>();
 					
@@ -163,11 +163,14 @@ namespace IFME
 					else
 						ff_rawcodec = "-strict -1 -f yuv4mpegpipe";
 
+					// FFmpeg Frame Rate (Input) for Image Sequence
+					ff_infps = item.IsImageSeq ? $"-framerate {item.Quality.OriginalFrameRate}" : string.Empty;
+
 					// FFmpeg Resolution
 					ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
 
-					// FFmpeg Frame Rate
-					ff_fps = $"-r {item.Quality.FrameRate}";
+					// FFmpeg Frame Rate (force encode to target frame rate, become constant fps)
+					ff_vf.Add($"fps={item.Quality.FrameRate}");
 
 					// FFmpeg Pixel Format
 					ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{(val_bpc > 8 ? $"{val_bpc}le" : string.Empty)}";
@@ -258,10 +261,13 @@ namespace IFME
 					var ffmpeg_filter = string.Join(",", ff_vf);
 
 					// Make commands
-					var ffmpeg_command = $"{ff_trim} -map 0:{item.Id} {ff_yuv} {ff_fps} -vf {ffmpeg_filter} {item.Quality.Command}";
+					var args_ffinput = $"{ff_infps} -i \"{item.File}\"";
+					var args_eninput = $"{vc.Args.Input} \"{item.File}\"";
+
+					var ffmpeg_command = $"{ff_trim} -map 0:{item.Id} {ff_yuv} -vf {ffmpeg_filter} {item.Quality.Command}";
 					var encoder_command = $"{en_res} {en_fps} {en_bit} {en_csp} {en_preset} {en_tune} {en_quality} {en_framecount}";
 
-					var ffmpeg_encoder = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? ffmpeg_command : encoder_command;
+					var ffmpeg_encoder = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? $"{ff_infps} {args_eninput} {ffmpeg_command}" : $"{args_eninput} {encoder_command}";
 
 					// begin encoding
 					frmMain.PrintStatus($"Encoding, Video #{i}");
@@ -290,9 +296,9 @@ namespace IFME
 							frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {ff_rawcodec} {ffmpeg_command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {pass} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {args_ffinput} {ffmpeg_command} {ff_rawcodec} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {pass} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {ffmpeg_encoder} {vc.Args.UnPipe} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+								ProcessManager.Start(tempDir, $"\"{en}\" {ffmpeg_encoder} {vc.Args.UnPipe} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 
 							++p;
 
@@ -301,9 +307,9 @@ namespace IFME
 					else
 					{
 						if (vc.Args.Pipe)
-							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {ff_rawcodec} {ffmpeg_command} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {args_ffinput} {ffmpeg_command} {ff_rawcodec} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {vc.Args.Input} \"{item.File}\" {ffmpeg_encoder} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+							ProcessManager.Start(tempDir, $"\"{en}\" {ffmpeg_encoder} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 					}
 
 					// Raw file dont have pts (time), need to remux
@@ -354,7 +360,7 @@ namespace IFME
 			foreach (var video in Directory.GetFiles(tempDir, "video*"))
 			{
 				argVideo += $"-i \"{Path.GetFileName(video)}\" ";
-				metadata += $"-metadata:s:{x} title=\"{video.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={video.GetLanguageCodeFromFileName()}  ";
+				metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(video)}\" -metadata:s:{x} language={Language.FromFileNameCode(video)}  ";
 				map += $" -map {x}:0";
 				x++;
 			}
@@ -362,7 +368,7 @@ namespace IFME
 			foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
 			{
 				argAudio += $"-i \"{Path.GetFileName(audio)}\" ";
-				metadata += $"-metadata:s:{x} title=\"{audio.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={audio.GetLanguageCodeFromFileName()} ";
+				metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(audio)}\" -metadata:s:{x} language={Language.FromFileNameCode(audio)} ";
 				map += $" -map {x}:0";
 				x++;
 			}
@@ -373,7 +379,7 @@ namespace IFME
 				foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
 				{
 					argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-					metadata += $"-metadata:s:{x} title=\"{subtitle.GetLanguageCodeFromFileName()}\" -metadata:s:{x} language={subtitle.GetLanguageCodeFromFileName()} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+					metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
 					map += $" -map {x}:0";
 					x++;
 					d++;

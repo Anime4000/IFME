@@ -8,6 +8,7 @@ namespace IFME
 {
     public partial class MediaQueueVideo : MediaQueueCommon
     {
+        public bool IsImageSeq { get; set; } = false;
         public MediaQueueVideoEncoder Encoder { get; set; } = new MediaQueueVideoEncoder();
         public MediaQueueVideoQuality Quality { get; set; } = new MediaQueueVideoQuality();
         public MediaQueueVideoDeInterlace DeInterlace { get; set; } = new MediaQueueVideoDeInterlace();
@@ -30,6 +31,7 @@ namespace IFME
         public int Height { get; set; }
         public int OriginalWidth { get; set; }
         public int OriginalHeight { get; set; }
+        public float OriginalFrameRate { get; set; }
         public bool IsVFR { get; set; }
         public float FrameRate { get; set; }
         public float FrameRateAvg { get; set; }

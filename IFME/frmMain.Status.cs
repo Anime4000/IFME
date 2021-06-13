@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IFME
 {
@@ -10,7 +6,7 @@ namespace IFME
 
     public partial class frmMain
     {
-        internal static frmMain frmMainStatus = null;
+        internal static frmMain frmMainStatic = null;
         private delegate void rtfConsoleAppendText(string value);
         private delegate void lstFileProgressText(string value);
         private delegate void lstFileStatusText(string value);
@@ -29,8 +25,8 @@ namespace IFME
 
         public static void PrintLog(string value)
         {
-            if (frmMainStatus != null)
-                frmMainStatus.rtfConsole_AppendText(value + Environment.NewLine);
+            if (frmMainStatic != null)
+                frmMainStatic.rtfConsole_AppendText(value + Environment.NewLine);
         }
 
         private void lstFile_ProgressText(string value)
@@ -46,8 +42,8 @@ namespace IFME
 
         public static void PrintProgress(string value)
         {
-            if (frmMainStatus != null)
-                frmMainStatus.lstFile_ProgressText(value);
+            if (frmMainStatic != null)
+                frmMainStatic.lstFile_ProgressText(value);
         }
 
         private void lstFile_StatusText(string value)
@@ -63,8 +59,8 @@ namespace IFME
 
         public static void PrintStatus(string value)
         {
-            if (frmMainStatus != null)
-                frmMainStatus.lstFile_StatusText(value);
+            if (frmMainStatic != null)
+                frmMainStatic.lstFile_StatusText(value);
         }
     }
 }

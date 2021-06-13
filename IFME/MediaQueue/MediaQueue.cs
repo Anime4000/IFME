@@ -24,9 +24,9 @@ namespace IFME
 {
 	public class MediaQueue
     {
-		public bool AudioOnly { get; set; } = false;
 		public bool Enable { get; set; }
 		public bool HardSub { get; set; }
+		public bool AudioOnly { get; set; } = false;
 
 		public string FilePath { get; set; }
 		public ulong FileSize { get; set; }

@@ -25,7 +25,7 @@ namespace IFME
 
         private void frmSplashScreen_Load(object sender, EventArgs e)
         {
-
+            lblVersion.Text = $"Release {Version.Release}";
         }
 
         private void frmSplashScreen_Shown(object sender, EventArgs e)
@@ -50,11 +50,14 @@ namespace IFME
             new PluginsLoad();
 
             // Finished loading, clear status text
-            lblLoadingUpdate(string.Empty);
             lblStatusUpdate(string.Empty);
 
+            Thread.Sleep(1000);
+
+            lblLoadingUpdate(string.Empty);
+
             // Wait some CPU free
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
 
             frmFadeInOut(false);
         }

@@ -70,11 +70,11 @@
             this.tabConfigAudio = new System.Windows.Forms.TabPage();
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colAudioInfo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAudioBitRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lstVideo = new System.Windows.Forms.ListView();
             this.colVideoId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colVideoLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colVideoInfo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabConfigAttachment = new System.Windows.Forms.TabPage();
             this.cboAttachMime = new System.Windows.Forms.ComboBox();
             this.lblAttachMime = new System.Windows.Forms.Label();
@@ -182,6 +182,11 @@
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoPixFmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAudioSampleRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAudioChannel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -343,7 +348,7 @@
             // 
             // colAudioId
             // 
-            this.colAudioId.Text = "ID";
+            this.colAudioId.Text = "Id";
             this.colAudioId.Width = 32;
             // 
             // cboAudioLang
@@ -635,7 +640,9 @@
             this.lstAudio.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colAudioId,
             this.colAudioLang,
-            this.colAudioInfo});
+            this.colAudioBitRate,
+            this.colAudioSampleRate,
+            this.colAudioChannel});
             this.lstAudio.FullRowSelect = true;
             this.lstAudio.HideSelection = false;
             this.lstAudio.Location = new System.Drawing.Point(6, 36);
@@ -650,13 +657,13 @@
             // 
             // colAudioLang
             // 
-            this.colAudioLang.Text = "Lang";
-            this.colAudioLang.Width = 48;
+            this.colAudioLang.Text = "Language";
+            this.colAudioLang.Width = 100;
             // 
-            // colAudioInfo
+            // colAudioBitRate
             // 
-            this.colAudioInfo.Text = "Info";
-            this.colAudioInfo.Width = 360;
+            this.colAudioBitRate.Text = "Bit Rate";
+            this.colAudioBitRate.Width = 100;
             // 
             // lstVideo
             // 
@@ -667,7 +674,10 @@
             this.lstVideo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colVideoId,
             this.colVideoLang,
-            this.colVideoInfo});
+            this.colVideoRes,
+            this.colVideoFps,
+            this.colVideoBitDepth,
+            this.colVideoPixFmt});
             this.lstVideo.FullRowSelect = true;
             this.lstVideo.HideSelection = false;
             this.lstVideo.Location = new System.Drawing.Point(6, 36);
@@ -682,18 +692,18 @@
             // 
             // colVideoId
             // 
-            this.colVideoId.Text = "ID";
+            this.colVideoId.Text = "Id";
             this.colVideoId.Width = 32;
             // 
             // colVideoLang
             // 
-            this.colVideoLang.Text = "Lang";
-            this.colVideoLang.Width = 48;
+            this.colVideoLang.Text = "Language";
+            this.colVideoLang.Width = 100;
             // 
-            // colVideoInfo
+            // colVideoRes
             // 
-            this.colVideoInfo.Text = "Info";
-            this.colVideoInfo.Width = 360;
+            this.colVideoRes.Text = "Resolution";
+            this.colVideoRes.Width = 100;
             // 
             // tabConfigAttachment
             // 
@@ -1814,20 +1824,20 @@
             this.tsmiFileAddSubs,
             this.tsmiFileAddSubsEmbed});
             this.cmsFileAddSubs.Name = "cmsFileAddSubs";
-            this.cmsFileAddSubs.Size = new System.Drawing.Size(180, 48);
+            this.cmsFileAddSubs.Size = new System.Drawing.Size(187, 48);
             // 
             // tsmiFileAddSubs
             // 
             this.tsmiFileAddSubs.Name = "tsmiFileAddSubs";
-            this.tsmiFileAddSubs.Size = new System.Drawing.Size(179, 22);
-            this.tsmiFileAddSubs.Text = "Add &Subtitle File";
+            this.tsmiFileAddSubs.Size = new System.Drawing.Size(186, 22);
+            this.tsmiFileAddSubs.Text = "Add &Subtitle";
             this.tsmiFileAddSubs.Click += new System.EventHandler(this.tsmiFileAddSubs_Click);
             // 
             // tsmiFileAddSubsEmbed
             // 
             this.tsmiFileAddSubsEmbed.Name = "tsmiFileAddSubsEmbed";
-            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(179, 22);
-            this.tsmiFileAddSubsEmbed.Text = "Add &Embeded Subtitle";
+            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(186, 22);
+            this.tsmiFileAddSubsEmbed.Text = "Add Subtitle from &Video";
             this.tsmiFileAddSubsEmbed.Click += new System.EventHandler(this.tsmiFileAddSubsEmbed_Click);
             // 
             // cmsFileAddAttach
@@ -1837,20 +1847,20 @@
             this.tsmiFileAddAttach,
             this.tsmiFileAddAttachEmbed});
             this.cmsFileAddAttach.Name = "cmsFileAddAttach";
-            this.cmsFileAddAttach.Size = new System.Drawing.Size(171, 48);
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(181, 70);
             // 
             // tsmiFileAddAttach
             // 
             this.tsmiFileAddAttach.Name = "tsmiFileAddAttach";
-            this.tsmiFileAddAttach.Size = new System.Drawing.Size(170, 22);
-            this.tsmiFileAddAttach.Text = "Add &Fonts File";
+            this.tsmiFileAddAttach.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttach.Text = "Add &Fonts";
             this.tsmiFileAddAttach.Click += new System.EventHandler(this.tsmiFileAddAttach_Click);
             // 
             // tsmiFileAddAttachEmbed
             // 
             this.tsmiFileAddAttachEmbed.Name = "tsmiFileAddAttachEmbed";
-            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(170, 22);
-            this.tsmiFileAddAttachEmbed.Text = "Add &Embeded Fonts";
+            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttachEmbed.Text = "Add Fonts from &Video";
             this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
             // 
             // btnAbout
@@ -1862,6 +1872,29 @@
             this.btnAbout.TabIndex = 4;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
+            // colVideoFps
+            // 
+            this.colVideoFps.Text = "fps";
+            // 
+            // colVideoBitDepth
+            // 
+            this.colVideoBitDepth.Text = "Bit Depth";
+            // 
+            // colVideoPixFmt
+            // 
+            this.colVideoPixFmt.Text = "Pixel Format";
+            this.colVideoPixFmt.Width = 100;
+            // 
+            // colAudioSampleRate
+            // 
+            this.colAudioSampleRate.Text = "Sample Rate";
+            this.colAudioSampleRate.Width = 100;
+            // 
+            // colAudioChannel
+            // 
+            this.colAudioChannel.Text = "Channel";
+            this.colAudioChannel.Width = 100;
             // 
             // frmMain
             // 
@@ -2029,7 +2062,6 @@
         private System.Windows.Forms.ComboBox cboVideoPreset;
         private System.Windows.Forms.Label lblVideoTune;
         private System.Windows.Forms.Label lblVideoPreset;
-        private System.Windows.Forms.ComboBox cboVideoEncoder;
         private System.Windows.Forms.Label lblVideoEncoder;
         private System.Windows.Forms.ComboBox cboVideoLang;
         private System.Windows.Forms.Button btnVideoMoveDown;
@@ -2053,9 +2085,9 @@
         private System.Windows.Forms.Button btnFileDelete;
         private System.Windows.Forms.Button btnFileAdd;
         private System.Windows.Forms.ColumnHeader colVideoLang;
-        private System.Windows.Forms.ColumnHeader colVideoInfo;
+        private System.Windows.Forms.ColumnHeader colVideoRes;
         private System.Windows.Forms.ColumnHeader colAudioLang;
-        private System.Windows.Forms.ColumnHeader colAudioInfo;
+        private System.Windows.Forms.ColumnHeader colAudioBitRate;
         private System.Windows.Forms.ContextMenuStrip cmsFileAdd;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportFiles;
         private System.Windows.Forms.ToolStripMenuItem tsmiImportFolder;
@@ -2081,5 +2113,11 @@
         private System.Windows.Forms.ColumnHeader colFileProgress;
         internal System.Windows.Forms.ListView lstFile;
         private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.ComboBox cboVideoEncoder;
+        private System.Windows.Forms.ColumnHeader colVideoFps;
+        private System.Windows.Forms.ColumnHeader colVideoBitDepth;
+        private System.Windows.Forms.ColumnHeader colVideoPixFmt;
+        private System.Windows.Forms.ColumnHeader colAudioSampleRate;
+        private System.Windows.Forms.ColumnHeader colAudioChannel;
     }
 }

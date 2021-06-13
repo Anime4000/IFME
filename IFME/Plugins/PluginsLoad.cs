@@ -18,6 +18,10 @@ namespace IFME
 				Directory.CreateDirectory(folder);
 
 			Audio(folder);
+
+			frmSplashScreen.SetStatus(string.Empty);
+			Thread.Sleep(500);			
+
 			Video(folder);
 		}
 

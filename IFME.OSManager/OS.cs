@@ -102,10 +102,10 @@ namespace IFME.OSManager
         {
             if (IsWindows)
             {
-                string[] IEC = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
+                string[] IEC = { "Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };
 
                 if (value == 0)
-                    return $"0{IEC[0]}";
+                    return $"0 {IEC[0]}";
 
                 long bytes = Math.Abs((long)value);
                 int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
@@ -114,10 +114,10 @@ namespace IFME.OSManager
             }
             else
             {
-                string[] DEC = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+                string[] DEC = { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 
                 if (value == 0)
-                    return $"0{DEC[0]}";
+                    return $"0 {DEC[0]}";
 
                 long bytes = Math.Abs((long)value);
                 int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1000)));

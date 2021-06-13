@@ -118,11 +118,26 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Avatar1_Ichika" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Avatar1_Ichika.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar2_Fumiko" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Avatar2_Fumiko.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar3_Miho" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Avatar3_Miho.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar4_Erika" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Avatar4_Erika.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Banner_2a" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Banner_2a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Banner_2b" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Banner_2b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Banner_About" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Banner_About.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SplashScreen8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SplashScreen8.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

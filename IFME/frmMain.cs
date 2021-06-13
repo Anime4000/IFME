@@ -22,7 +22,7 @@ namespace IFME
         {
             new frmSplashScreen().ShowDialog(); // loading, init all inside that
 
-            frmMainStatus = this;
+            frmMainStatic = this;
             InitializeComponent();
             InitializeProfiles();
             InitializeFonts();
@@ -311,81 +311,16 @@ namespace IFME
                 cboProfile.SelectedIndex = data.ProfileId;
 
                 // Video
-                lstVideo.SelectedItems.Clear();
-                lstVideo.Items.Clear();
-                foreach (var item in data.Video)
-                {
-                    var res = "original res";
-                    var fps = "original fps";
-
-                    if (item.Quality.Width != 0 && item.Quality.Height != 0)
-                        res = $"{item.Quality.Width}x{item.Quality.Height}";
-                    
-                    if (item.Quality.FrameRate != 0)
-                        fps = $"{item.Quality.FrameRate}fps";
-
-                    lstVideo.Items.Add(new ListViewItem(new[]
-                    {
-                        $"{item.Id}",
-                        item.Lang,
-                        $"{res}, {fps}"
-                    })
-                    {
-                        Checked = true,
-                        Tag = item
-                    });
-                }
+                ListViewItem_RefreshVideo(data);
 
                 // Audio
-                lstAudio.SelectedItems.Clear();
-                lstAudio.Items.Clear();
-                foreach (var item in data.Audio)
-                {
-                    lstAudio.Items.Add(new ListViewItem(new[]
-                    {
-                        $"{item.Id}",
-                        item.Lang,
-                        $"{item.Encoder.Channel}ch x {item.Encoder.SampleRate}Hz"
-                    })
-                    {
-                        Checked = true,
-                        Tag = item
-                    });
-                }
-
+                ListViewItem_RefreshAudio(data);
 
                 // Subtitle
-                lstSub.SelectedItems.Clear();
-                lstSub.Items.Clear();
-                foreach (var item in data.Subtitle)
-                {
-                    lstSub.Items.Add(new ListViewItem(new[]
-                    {
-                        $"{item.Id}",
-                        Path.GetFileName(item.File),
-                        Language.FullName(item.Lang)
-                    })
-                    {
-                        Checked = true,
-                        Tag = item
-                    });
-                }
+                ListViewItem_RefreshSubtitle(data);
 
                 // Attachment
-                lstAttach.SelectedItems.Clear();
-                lstAttach.Items.Clear();
-                foreach (var item in data.Attachment)
-                {
-                    lstAttach.Items.Add(new ListViewItem(new[]
-                    {
-                        $"{item.Id}",
-                        Path.GetFileName(item.File),
-                        item.Mime
-                    })
-                    {
-                        Checked = true
-                    });
-                }
+                ListViewItem_RefreshAttachment(data);
 
                 if (data.Video.Count > 0)
                     lstVideo.Items[0].Selected = true;
@@ -447,16 +382,31 @@ namespace IFME
             }
         }
 
-        private void lstFile_DragDrop(object sender, DragEventArgs e)
-        {
-            foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
-                MediaFileListAdd(file);
-        }
-
         private void lstFile_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effect = DragDropEffects.Copy;
+        }
+
+        private void lstFile_DragDrop(object sender, DragEventArgs e)
+        {
+            foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
+                MediaFileListAdd(file, false);
+        }
+
+        private void lstVideo_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void lstVideo_DragDrop(object sender, DragEventArgs e)
+        {
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
+                    MediaVideoListAdd(file);
+
+            ListViewItem_RefreshVideo();
         }
 
         private void btnVideoAdd_Click(object sender, EventArgs e)
@@ -464,6 +414,8 @@ namespace IFME
             if (lstFile.SelectedItems.Count > 0)
                 foreach (var item in OpenFiles(MediaType.Video))
                     MediaVideoListAdd(item);
+
+            ListViewItem_RefreshVideo();
         }
 
         private void btnVideoDel_Click(object sender, EventArgs e)
@@ -537,26 +489,13 @@ namespace IFME
 
         private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (btnVideoDel.Focused)
-                return;
-
-            if (cboVideoLang.Focused)
-                return;
-
-            MediaShowDataVideoRe();
-        }
-
-        private void lstVideo_DragDrop(object sender, DragEventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
-                    MediaVideoListAdd(file);
-        }
-
-        private void lstVideo_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    DisplayProperties_Video();
+                }
+            }
         }
 
         private void cboVideoLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -581,7 +520,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataVideoRe();
+                DisplayProperties_Video();
             }
         }
 
@@ -589,14 +528,11 @@ namespace IFME
         {
             try
             {
-                _ = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                MediaQueueParse.CurrentId_Video = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
             {
-                frmMain.PrintLog($"[INFO] Selected format (container) doesn't support video: {ex.Message}");
-
-                //TabEna
-
+                PrintLog($"[INFO] Selected format (container) doesn't support video: {ex.Message}");
                 return;
             }
 
@@ -687,7 +623,7 @@ namespace IFME
                     }
 
                     // Display predefine and default value
-                    MediaShowDataVideoRe();
+                    DisplayProperties_Video();
                 }
             }
         }
@@ -958,7 +894,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataVideoRe();
+                DisplayProperties_Video();
             }
         }
 
@@ -1002,7 +938,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataVideoRe();
+                DisplayProperties_Video();
             }
         }
 
@@ -1130,11 +1066,28 @@ namespace IFME
             }
         }
 
+        private void lstAudio_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void lstAudio_DragDrop(object sender, DragEventArgs e)
+        {
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
+                    MediaAudioListAdd(file);
+
+            ListViewItem_RefreshAudio();
+        }
+
         private void btnAudioAdd_Click(object sender, EventArgs e)
         {
             if (lstFile.SelectedItems.Count > 0)
                 foreach (var item in OpenFiles(MediaType.Audio))
                     MediaAudioListAdd(item);
+
+            ListViewItem_RefreshAudio();
         }
 
         private void btnAudioDel_Click(object sender, EventArgs e)
@@ -1208,26 +1161,13 @@ namespace IFME
 
         private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (btnAudioDel.Focused)
-                return;
-
-            if (cboAudioLang.Focused)
-                return;
-
-            MediaShowDataAudioRe();
-        }
-
-        private void lstAudio_DragDrop(object sender, DragEventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
-                    MediaAudioListAdd(file);
-        }
-
-        private void lstAudio_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    DisplayProperties_Audio();
+                }
+            }
         }
 
         private void cboAudioLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -1252,7 +1192,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataAudioRe();
+                DisplayProperties_Audio();
             }
         }
 
@@ -1282,6 +1222,16 @@ namespace IFME
 
         private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
+            try
+            {
+                MediaQueueParse.CurrentId_Audio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            }
+            catch (Exception ex)
+            {
+                PrintLog($"[INFO] Selected format (container) doesn't support audio: {ex.Message}");
+                return;
+            }
+            
             if (cboAudioEncoder.SelectedIndex < 0)
                 return;
 
@@ -1460,7 +1410,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataAudioRe();
+                DisplayProperties_Audio();
             }
         }
 
@@ -1486,7 +1436,7 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataAudioRe();
+                DisplayProperties_Audio();
             }
         }
 
@@ -1565,20 +1515,6 @@ namespace IFME
                     }
                 }
             }
-        }
-
-        private void tsmiFileAddSubs_Click(object sender, EventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Subtitle))
-                    MediaSubtitleListAdd(item);
-        }
-
-        private void tsmiFileAddSubsEmbed_Click(object sender, EventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video | MediaType.Subtitle))
-                    MediaSubtitleListAddEmbed(item);
         }
 
         private void btnSubAdd_Click(object sender, EventArgs e)
@@ -1674,13 +1610,19 @@ namespace IFME
 
         private void lstSub_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (btnSubDel.Focused)
-                return;
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    DisplayProperties_Subtitle();
+                }
+            }
+        }
 
-            if (cboSubLang.Focused)
-                return;
-
-            MediaShowDataSubtitleRe();
+        private void lstSub_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
         }
 
         private void lstSub_DragDrop(object sender, DragEventArgs e)
@@ -1688,12 +1630,26 @@ namespace IFME
             if (lstFile.SelectedItems.Count > 0)
                 foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
                     MediaSubtitleListAdd(file);
+
+            ListViewItem_RefreshSubtitle();
         }
 
-        private void lstSub_DragEnter(object sender, DragEventArgs e)
+        private void tsmiFileAddSubs_Click(object sender, EventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Subtitle))
+                    MediaSubtitleListAdd(item);
+
+            ListViewItem_RefreshSubtitle();
+        }
+
+        private void tsmiFileAddSubsEmbed_Click(object sender, EventArgs e)
+        {
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Video | MediaType.Subtitle))
+                    MediaSubtitleListAddEmbed(item);
+
+            ListViewItem_RefreshSubtitle();
         }
 
         private void cboSubLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -1718,22 +1674,8 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataSubtitleRe();
+                DisplayProperties_Subtitle();
             }
-        }
-
-        private void tsmiFileAddAttach_Click(object sender, EventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Attachment))
-                    MediaAttachmentListAdd(item);
-        }
-
-        private void tsmiFileAddAttachEmbed_Click(object sender, EventArgs e)
-        {
-            if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video | MediaType.Attachment))
-                    MediaAttachmentListAddEmbed(item);
         }
 
         private void btnAttachAdd_Click(object sender, EventArgs e)
@@ -1755,8 +1697,19 @@ namespace IFME
 
         private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboAttachMime.Focused)
-                return;
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    DisplayProperties_Attachment();
+                }
+            }
+        }
+
+        private void lstAttach_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
         }
 
         private void lstAttach_DragDrop(object sender, DragEventArgs e)
@@ -1764,12 +1717,26 @@ namespace IFME
             if (lstFile.SelectedItems.Count > 0)
                 foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
                     MediaAttachmentListAdd(file);
+
+            ListViewItem_RefreshAttachment();
         }
 
-        private void lstAttach_DragEnter(object sender, DragEventArgs e)
+        private void tsmiFileAddAttach_Click(object sender, EventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Attachment))
+                    MediaAttachmentListAdd(item);
+
+            ListViewItem_RefreshAttachment();
+        }
+
+        private void tsmiFileAddAttachEmbed_Click(object sender, EventArgs e)
+        {
+            if (lstFile.SelectedItems.Count > 0)
+                foreach (var item in OpenFiles(MediaType.Video | MediaType.Attachment))
+                    MediaAttachmentListAddEmbed(item);
+
+            ListViewItem_RefreshAttachment();
         }
 
         private void cboAttachMime_TextChanged(object sender, EventArgs e)
@@ -1930,7 +1897,7 @@ namespace IFME
         private void tsmiImportFiles_Click(object sender, EventArgs e)
         {
             foreach (var item in OpenFiles(MediaType.Video | MediaType.Audio))
-                MediaFileListAdd(item);
+                MediaFileListAdd(item, false);
         }
 
         private void tsmiImportFolder_Click(object sender, EventArgs e)
@@ -1949,7 +1916,7 @@ namespace IFME
             {
                 if (formImgSeq.ShowDialog() == DialogResult.OK)
                 {
-                    MediaFileListAdd(formImgSeq.FilePath, formImgSeq.FrameRate);
+                    MediaFileListAdd(formImgSeq.FilePath, true, formImgSeq.FrameRate);
                 }
             }
         }

@@ -69,7 +69,7 @@ namespace IFME
 
 		private void Proc_DataReceived(object sender, DataReceivedEventArgs e)
 		{
-			if (frmMain.frmMainStatus == null)
+			if (frmMain.frmMainStatic == null)
 				return;
 
 			if (!string.IsNullOrEmpty(e.Data))

@@ -8,7 +8,11 @@ namespace IFME
 {
     public static class MediaQueueParse
     {
-        public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data)
+		public static Guid CurrentId_Video { get; set; } = new Guid("deadbeef-0265-0265-0265-026502650265");
+		public static Guid CurrentId_Audio { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
+
+
+		public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data, bool isImageSeq = false)
         {
 			return new MediaQueueVideo
 			{
@@ -18,13 +22,15 @@ namespace IFME
 				Lang = data.Language,
 				Codec = data.Codec,
 
+				IsImageSeq = isImageSeq,
+
 				Encoder = new MediaQueueVideoEncoder
 				{
-					Id = new Guid("deadbeef-0265-0265-0265-026502650265"),
-					Preset = "medium",
-					Tune = "psnr",
+					Id = CurrentId_Video,
+					Preset = Plugins.Items.Video[CurrentId_Video].Video.PresetDefault,
+					Tune = Plugins.Items.Video[CurrentId_Video].Video.TuneDefault,
 					Mode = 0,
-					Value = 23,
+					Value = Plugins.Items.Video[CurrentId_Video].Video.Mode[0].Value.Default,
 					MultiPass = 2,
 					Command = string.Empty
 				},
@@ -35,6 +41,7 @@ namespace IFME
 					Height = data.Height,
 					OriginalWidth = data.Width,
 					OriginalHeight = data.Height,
+					OriginalFrameRate = data.FrameRateAvg,
 					FrameRate = (float)Math.Round(data.FrameRateAvg, 3),
 					FrameRateAvg = data.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
@@ -54,6 +61,11 @@ namespace IFME
 
         public static MediaQueueAudio Audio(string path, FFmpeg.StreamAudio data)
         {
+			var ch = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault;
+
+			if (ch == 0)
+				ch = data.Channel;
+
 			return new MediaQueueAudio
 			{
 				Enable = true,
@@ -64,11 +76,11 @@ namespace IFME
 
 				Encoder = new MediaQueueAudioEncoder
 				{
-					Id = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac"),
+					Id = CurrentId_Audio,
 					Mode = 0,
-					Quality = 128,
-					SampleRate = data.SampleRate,
-					Channel = data.Channel,
+					Quality = Plugins.Items.Audio[CurrentId_Audio].Audio.Mode[0].Default,
+					SampleRate = Plugins.Items.Audio[CurrentId_Audio].Audio.SampleRateDefault,
+					Channel = ch,
 					Command = string.Empty
 				}
 			};

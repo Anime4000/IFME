@@ -173,12 +173,13 @@ namespace IFME
                 ctrl.Enabled = enable;
         }
 
-        private void MediaFileListAdd(string path, string frameRate = "")
+        private void MediaFileListAdd(string path, bool isImages, string frameRate = "")
         {
             var fileData = new FFmpeg.MediaInfo(path, frameRate);
             var fileQueue = new MediaQueue()
             {
                 Enable = true,
+
                 FilePath = path,
                 FileSize = fileData.FileSize,
                 Duration = fileData.Duration,
@@ -188,7 +189,7 @@ namespace IFME
             };
 
             foreach (var item in fileData.Video)
-                fileQueue.Video.Add(MediaQueueParse.Video(path, item));
+                fileQueue.Video.Add(MediaQueueParse.Video(path, item, isImages));
 
             foreach (var item in fileData.Audio)
                 fileQueue.Audio.Add(MediaQueueParse.Audio(path, item));	
@@ -227,7 +228,7 @@ namespace IFME
                 }
             }
 
-            MediaShowDataVideoRe();
+            DisplayProperties_Video();
         }
 
         private void MediaAudioListAdd(string path)
@@ -242,7 +243,7 @@ namespace IFME
                 }
             }
 
-            MediaShowDataAudioRe();
+            DisplayProperties_Audio();
         }
 
         private void MediaSubtitleListAdd(string path)
@@ -259,7 +260,7 @@ namespace IFME
                 });
             }
 
-            MediaShowDataSubtitleRe();
+            DisplayProperties_Subtitle();
         }
 
         private void MediaSubtitleListAddEmbed(string path)
@@ -274,7 +275,7 @@ namespace IFME
                 }
             }
 
-            MediaShowDataSubtitleRe();
+            DisplayProperties_Subtitle();
         }
 
         private void MediaAttachmentListAdd(string path)
@@ -291,7 +292,7 @@ namespace IFME
                 });
             }
 
-            MediaShowDataAttachmentRe();
+            DisplayProperties_Attachment();
         }
 
         private void MediaAttachmentListAddEmbed(string path)
@@ -307,39 +308,43 @@ namespace IFME
             }
         }
 
-        private void MediaShowDataVideoRe()
+        private void DisplayProperties_Video()
         {
             if (lstVideo.SelectedItems.Count > 0)
             {
                 var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
-                new Thread(MediaShowDataVideo).Start(data);
+                new Thread(Thread_LoadPropertiesVideo).Start(data);
             }
         }
 
-        private void MediaShowDataAudioRe()
+        private void DisplayProperties_Audio()
         {
             if (lstAudio.SelectedItems.Count > 0)
             {
                 var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
-                new Thread(MediaShowDataAudio).Start(data);
+                new Thread(Thread_LoadPropertiesAudio).Start(data);
             }
         }
 
-        private void MediaShowDataSubtitleRe()
+        private void DisplayProperties_Subtitle()
         {
             if (lstSub.SelectedItems.Count > 0)
             {
                 var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
-                new Thread(MediaShowDataSubtitle).Start(data);
+                new Thread(Thread_LoadPropertiesSubtitle).Start(data);
             }
         }
 
-        private void MediaShowDataAttachmentRe()
+        private void DisplayProperties_Attachment()
         {
-
+            if (lstSub.SelectedItems.Count > 0)
+            {
+                var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment[lstAttach.SelectedItems[0].Index];
+                new Thread(Thread_LoadPropertiesAttachment).Start(data);
+            }
         }
 
-        private void MediaShowDataVideo(object obj)
+        private void Thread_LoadPropertiesVideo(object obj)
         {
             var data = obj as MediaQueueVideo;
 
@@ -363,10 +368,19 @@ namespace IFME
                 chkVideoDeInterlace.Checked = data.DeInterlace.Enable;
                 cboVideoDeInterMode.SelectedIndex = data.DeInterlace.Mode;
                 cboVideoDeInterField.SelectedIndex = data.DeInterlace.Field;
+
+                foreach (ListViewItem item in lstVideo.SelectedItems)
+                {
+                    item.SubItems[1].Text = Language.FullName(data.Lang);
+                    item.SubItems[2].Text = cboVideoRes.Text;
+                    item.SubItems[3].Text = cboVideoFps.Text;
+                    item.SubItems[4].Text = cboVideoBitDepth.Text;
+                    item.SubItems[5].Text = cboVideoPixFmt.Text;
+                }
             });
         }
 
-        private void MediaShowDataAudio(object obj)
+        private void Thread_LoadPropertiesAudio(object obj)
         {
             var data = obj as MediaQueueAudio;
 
@@ -385,22 +399,186 @@ namespace IFME
                 cboAudioQuality.SelectedItem = data.Encoder.Quality;
                 cboAudioSampleRate.SelectedItem = data.Encoder.SampleRate;
                 cboAudioChannel.SelectedValue = data.Encoder.Channel;
+
+                foreach (ListViewItem item in lstAudio.SelectedItems)
+                {
+                    item.SubItems[1].Text = Language.FullName(data.Lang);
+                    item.SubItems[2].Text = cboAudioQuality.Text;
+                    item.SubItems[3].Text = cboAudioSampleRate.Text;
+                    item.SubItems[4].Text = cboAudioChannel.Text;
+                }
             });
         }
 
-        private void MediaShowDataSubtitle(object obj)
+        private void Thread_LoadPropertiesSubtitle(object obj)
         {
             var data = obj as MediaQueueSubtitle;
 
             BeginInvoke((Action)delegate ()
             {
                 cboSubLang.SelectedValue = data.Lang;
+
+                foreach (ListViewItem item in lstSub.SelectedItems)
+                {
+                    item.SubItems[2].Text = Language.FullName(data.Lang);
+                }
             });
         }
 
-        private void MediaShowDataAttachment(object obj)
+        private void Thread_LoadPropertiesAttachment(object obj)
         {
+            var data = obj as MediaQueueAttachment;
 
+            BeginInvoke((Action)delegate ()
+            {
+                cboAttachMime.Text = data.Mime;
+
+                foreach (ListViewItem item in lstAttach.SelectedItems)
+                {
+                    item.SubItems[2].Text = Language.FullName(data.Mime);
+                }
+            });
+        }
+
+        private void ListViewItem_RefreshVideo()
+        {
+            if (lstFile.SelectedItems.Count > 0)
+            {
+                ListViewItem_RefreshVideo(lstFile.SelectedItems[0].Tag as MediaQueue);
+
+                foreach (ListViewItem item in lstVideo.Items)
+                {
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void ListViewItem_RefreshVideo(MediaQueue data)
+        {
+            lstVideo.SelectedItems.Clear();
+            lstVideo.Items.Clear();
+            foreach (var item in data.Video)
+            {
+                var res = "original res";
+                var fps = "original fps";
+
+                if (item.Quality.Width != 0 && item.Quality.Height != 0)
+                    res = $"{item.Quality.Width}x{item.Quality.Height}";
+
+                if (item.Quality.FrameRate != 0)
+                    fps = $"{item.Quality.FrameRate}fps";
+
+                lstVideo.Items.Add(new ListViewItem(new[]
+                {
+                        $"{item.Id}",
+                        Language.FullName(item.Lang),
+                        res,
+                        fps,
+                        $"{item.Quality.BitDepth}",
+                        $"{item.Quality.PixelFormat}"
+                    })
+                {
+                    Checked = true,
+                    Tag = item
+                });
+            }
+        }
+
+        private void ListViewItem_RefreshAudio()
+        {
+            if (lstFile.SelectedItems.Count > 0)
+            {
+                ListViewItem_RefreshAudio(lstFile.SelectedItems[0].Tag as MediaQueue);
+
+                foreach (ListViewItem item in lstAudio.Items)
+                {
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void ListViewItem_RefreshAudio(MediaQueue data)
+        {
+            lstAudio.SelectedItems.Clear();
+            lstAudio.Items.Clear();
+            foreach (var item in data.Audio)
+            {
+                lstAudio.Items.Add(new ListViewItem(new[]
+                {
+                        $"{item.Id}",
+                        Language.FullName(item.Lang),
+                        $"{item.Encoder.Quality}",
+                        $"{item.Encoder.SampleRate}Hz",
+                        $"{item.Encoder.Channel}"
+                    })
+                {
+                    Checked = true,
+                    Tag = item
+                });
+            }
+        }
+
+        private void ListViewItem_RefreshSubtitle()
+        {
+            if (lstFile.SelectedItems.Count > 0)
+            {
+                ListViewItem_RefreshSubtitle(lstFile.SelectedItems[0].Tag as MediaQueue);
+
+                foreach (ListViewItem item in lstSub.Items)
+                {
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void ListViewItem_RefreshSubtitle(MediaQueue data)
+        {
+            lstSub.SelectedItems.Clear();
+            lstSub.Items.Clear();
+            foreach (var item in data.Subtitle)
+            {
+                lstSub.Items.Add(new ListViewItem(new[]
+                {
+                        $"{item.Id}",
+                        Path.GetFileName(item.File),
+                        Language.FullName(item.Lang)
+                    })
+                {
+                    Checked = true,
+                    Tag = item
+                });
+            }
+        }
+
+        private void ListViewItem_RefreshAttachment()
+        {
+            if (lstFile.SelectedItems.Count > 0)
+            {
+                ListViewItem_RefreshAttachment(lstFile.SelectedItems[0].Tag as MediaQueue);
+
+                foreach (ListViewItem item in lstAttach.Items)
+                {
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void ListViewItem_RefreshAttachment(MediaQueue data)
+        {
+            lstAttach.SelectedItems.Clear();
+            lstAttach.Items.Clear();
+            foreach (var item in data.Attachment)
+            {
+                lstAttach.Items.Add(new ListViewItem(new[]
+                {
+                        $"{item.Id}",
+                        Path.GetFileName(item.File),
+                        item.Mime
+                    })
+                {
+                    Checked = true
+                });
+            }
         }
 
         private void ShowSupportedCodec(string value)
@@ -493,10 +671,10 @@ namespace IFME
                 }
             }
 
-            MediaShowDataVideoRe();
-            MediaShowDataAudioRe();
-            MediaShowDataSubtitleRe();
-            MediaShowDataAttachmentRe();
+            DisplayProperties_Video();
+            DisplayProperties_Audio();
+            DisplayProperties_Subtitle();
+            DisplayProperties_Attachment();
         }
 
         private void SetProfileData(Profiles value)
@@ -535,10 +713,10 @@ namespace IFME
                     }
                 }
 
-                MediaShowDataVideoRe();
-                MediaShowDataAudioRe();
-                MediaShowDataSubtitleRe();
-                MediaShowDataAttachmentRe();
+                DisplayProperties_Video();
+                DisplayProperties_Audio();
+                DisplayProperties_Subtitle();
+                DisplayProperties_Attachment();
             }
         }
     }
