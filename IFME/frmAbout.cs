@@ -77,9 +77,9 @@ namespace IFME
             Process.Start("https://www.facebook.com/internetfriendlymediaencoder");
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lnkDiscord_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://discord.gg/nQx7SmCSWg");
+            Process.Start("https://discord.gg/4f6MDpfug2");
         }
 
         private void lnkHitoha_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

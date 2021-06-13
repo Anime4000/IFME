@@ -58,8 +58,8 @@ namespace IFME
             this.pnlDevsRight = new System.Windows.Forms.Panel();
             this.pnlDevsLeft = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lnkDiscord = new System.Windows.Forms.LinkLabel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.pnlArtWork.SuspendLayout();
             this.pnlCharErika.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).BeginInit();
@@ -405,7 +405,7 @@ namespace IFME
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(17)))), ((int)(((byte)(47)))));
-            this.panel1.Controls.Add(this.linkLabel1);
+            this.panel1.Controls.Add(this.lnkDiscord);
             this.panel1.Controls.Add(this.lnkSoraIro);
             this.panel1.Controls.Add(this.lnkGithub);
             this.panel1.Controls.Add(this.lnkSourceForge);
@@ -418,6 +418,18 @@ namespace IFME
             this.panel1.Size = new System.Drawing.Size(600, 90);
             this.panel1.TabIndex = 4;
             // 
+            // lnkDiscord
+            // 
+            this.lnkDiscord.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.lnkDiscord.Location = new System.Drawing.Point(462, 15);
+            this.lnkDiscord.Name = "lnkDiscord";
+            this.lnkDiscord.Size = new System.Drawing.Size(100, 30);
+            this.lnkDiscord.TabIndex = 4;
+            this.lnkDiscord.TabStop = true;
+            this.lnkDiscord.Text = "Discord";
+            this.lnkDiscord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lnkDiscord.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDiscord_LinkClicked);
+            // 
             // panel2
             // 
             this.panel2.BackgroundImage = global::IFME.Properties.Resources.Banner_About;
@@ -427,18 +439,6 @@ namespace IFME
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(600, 64);
             this.panel2.TabIndex = 0;
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.linkLabel1.Location = new System.Drawing.Point(462, 15);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(100, 30);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Discord";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // frmAbout
             // 
@@ -510,6 +510,6 @@ namespace IFME
         private System.Windows.Forms.Panel pnlDevsLeft;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel lnkDiscord;
     }
 }

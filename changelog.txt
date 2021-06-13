@@ -1,4 +1,17 @@
-﻿Version 21.06.13 Alpha (The galaxy is at a crossroads)
+﻿Version 21.06.14 Alpha (The galaxy is at a crossroads)
+------------------------------------------------------
+
+I sorry for very quick update, sometime designing GUI event can be daunting
+
+[new] About IFME added for more information about this project
+[fixed] Image Sequence source frame rate -to- output frame rate
+[fixed] Adding additional streams did not show new item in the list git#217
+[fixed] Stealing subtitle/attachment from other video file is possible
+
+[support] Discord Server invite link available in "About IFME"
+-
+
+Version 21.06.13 Alpha (The galaxy is at a crossroads)
 ------------------------------------------------------
 
 [update] This is pre-release version 8 beta, still many missing feature...
