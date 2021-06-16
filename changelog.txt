@@ -1,13 +1,13 @@
 ﻿Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
 --------------------------------------------------------------------
 
-[new] Option window is now available
-[new] Undesire encoders now can disable/enable
-[new] Allow user to disable encoder test just to make program start faster (use at own risk)
+[new] Option window is now available [git#218]
+[new] Undesire encoders now can disable/enable [git#218]
+[new] Allow user to disable encoder test just to make program start faster (use at own risk) [git#218]
 [fixed] Prevent Image Sequence from selecting "Copy Stream [No Encoding]"
-[fixed] Rate Factor & Multi Pass value not updated in certain edit (eg: typing value)
-[change] Audio Copy Stream checkbox replaced with Drop Down List and become default
-[change] x265 & x264 tune default to SSIM instead of PSNR, better visual quality.
+[fixed] Rate Factor & Multi Pass value not updated in certain edit (eg: typing value) [git#218]
+[change] Audio Copy Stream checkbox replaced with Drop Down List and become default [git#218]
+[change] x265 & x264 tune default to SSIM instead of PSNR, better visual quality. [git#218]
 
 
 Version 21.06.14 Alpha (The galaxy is at a crossroads)
@@ -17,7 +17,7 @@ I sorry for very quick update, sometime designing GUI event can be daunting
 
 [new] About IFME added for more information about this project
 [fixed] Image Sequence source frame rate -to- output frame rate
-[fixed] Adding additional streams did not show new item in the list git#217
+[fixed] Adding additional streams did not show new item in the list [git#217]
 [fixed] Stealing subtitle/attachment from other video file is possible
 
 [support] Discord Server invite link available in "About IFME"
