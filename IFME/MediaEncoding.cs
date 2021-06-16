@@ -74,14 +74,6 @@ namespace IFME
 
 				frmMain.PrintStatus($"Encoding, Audio #{i}");
 
-				if (item.Copy && queue.OutputFormat == MediaContainer.MKV)
-				{
-					frmMain.PrintLog("[INFO] Extract audio file...");
-
-					ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y \"audio{i:D4}_{item.Lang}.mka\"");
-					continue;
-				}
-
 				if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
 				{
 					frmMain.PrintLog("[INFO] Encoding audio file...");
@@ -92,7 +84,7 @@ namespace IFME
 
 					var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
 
-					var qu = ac.Mode[md].Args.IsDisable() ? string.Empty : $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
+					var qu = string.IsNullOrEmpty(ac.Mode[md].Args) ? string.Empty : $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
 					var hz = item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}";
 					var ch = item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}";
 
@@ -128,12 +120,14 @@ namespace IFME
 					var vc = codec.Video;
 
 					var en = vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary;
-					
+
+					var ff = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg");
+
+					var mode = item.Encoder.Mode;
+
 					var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
 					var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
 					var outencfile = vc.RawOutput ? outrawfile : outfmtfile;
-
-					var mode = item.Encoder.Mode;
 
 					var val_w = item.Quality.Width >= 128 ? item.Quality.Width : item.Quality.OriginalWidth;
 					var val_h = item.Quality.Height >= 128 ? item.Quality.Height : item.Quality.OriginalHeight;
@@ -154,7 +148,7 @@ namespace IFME
 					var en_csp = string.Empty;
 					var en_preset = string.Empty;
 					var en_tune = string.Empty;
-					var en_quality = string.Empty;
+					var en_mode = string.Empty;
 					var en_framecount = string.Empty;
 
 					// FFmpeg RAW Type
@@ -233,48 +227,49 @@ namespace IFME
 					}
 
 					// Encoder Preset
-					if (!vc.Args.Preset.IsDisable() && !item.Encoder.Preset.IsDisable())
+					if (!string.IsNullOrEmpty(vc.Args.Preset) && !string.IsNullOrEmpty(item.Encoder.Preset))
 					{
 						en_preset = $"{vc.Args.Preset} {item.Encoder.Preset}";
 					}
 
 					// Encoder Tune
-					if (!vc.Args.Tune.IsDisable() && !item.Encoder.Tune.IsDisable())
+					if (!string.IsNullOrEmpty(vc.Args.Tune) && !string.IsNullOrEmpty(item.Encoder.Tune))
 					{
 						en_tune = $"{vc.Args.Tune} {item.Encoder.Tune}";
 					}
 
 					// Encoder Mode
-					if (!vc.Mode[mode].Args.IsDisable())
+					if (!string.IsNullOrEmpty(vc.Mode[mode].Args))
 					{
-						en_quality = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
+						en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
 					}
 
 					// Encoder Frame Count
-					if (!vc.Args.FrameCount.IsDisable())
+					if (!string.IsNullOrEmpty(vc.Args.FrameCount))
 					{
 						if (item.Quality.FrameCount > 0)
 							en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
 					}
 
-					// Parse FFmpeg filter
-					var ffmpeg_filter = string.Join(",", ff_vf);
+					// Copy Streams
+					if (codec.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
+					{
+						frmMain.PrintStatus($"Copying, Video #{i}");
+						frmMain.PrintLog($"[INFO] Copying video stream...");
 
-					// Make commands
-					var args_ffinput = $"{ff_infps} -i \"{item.File}\"";
-					var args_eninput = $"{vc.Args.Input} \"{item.File}\"";
+						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
+						continue;
+					}
 
-					var ffmpeg_command = $"{ff_trim} -map 0:{item.Id} {ff_yuv} -vf {ffmpeg_filter} {item.Quality.Command}";
-					var encoder_command = $"{en_res} {en_fps} {en_bit} {en_csp} {en_preset} {en_tune} {en_quality} {en_framecount}";
-
-					var ffmpeg_encoder = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? $"{ff_infps} {args_eninput} {ffmpeg_command}" : $"{args_eninput} {encoder_command}";
-
-					// begin encoding
+					// Begin encoding
 					frmMain.PrintStatus($"Encoding, Video #{i}");
 					frmMain.PrintLog($"[INFO] Encoding video file...");
 
-					// Tell You
-					frmMain.PrintLog($"[INFO] Video filter command is: {ffmpeg_filter}");
+					var cmd_ff = $"-map 0:{item.Id} {ff_trim} {ff_yuv} -vf {string.Join(",", ff_vf)}";
+
+					var cmd_en = $"{en_framecount} {en_res} {en_fps} {en_bit} {en_csp}";
+
+					var cmd_ff_en = ff ? cmd_ff : cmd_en;
 
 					if (vc.Mode[item.Encoder.Mode].MultiPass)
 					{
@@ -296,9 +291,9 @@ namespace IFME
 							frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
 							if (vc.Args.Pipe)
-								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {args_ffinput} {ffmpeg_command} {ff_rawcodec} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {pass} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
 							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {ffmpeg_encoder} {vc.Args.UnPipe} {pass} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+								ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
 
 							++p;
 
@@ -307,9 +302,9 @@ namespace IFME
 					else
 					{
 						if (vc.Args.Pipe)
-							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {args_ffinput} {ffmpeg_command} {ff_rawcodec} - | \"{en}\" {vc.Args.Input} {vc.Args.Y4M} {encoder_command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {ffmpeg_encoder} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+							ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 					}
 
 					// Raw file dont have pts (time), need to remux

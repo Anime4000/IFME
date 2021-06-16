@@ -387,7 +387,6 @@ namespace IFME
             BeginInvoke((Action)delegate ()
             {
                 cboAudioLang.SelectedValue = data.Lang;
-                chkAudioCopy.Checked = data.Copy;
                 cboAudioEncoder.SelectedValue = data.Encoder.Id;
                 cboAudioMode.SelectedIndex = data.Encoder.Mode;
             });
@@ -581,7 +580,20 @@ namespace IFME
             }
         }
 
-        private void ShowSupportedCodec(string value)
+        private bool CheckImageSeqEncoder(MediaQueueVideo data, Guid id)
+        {
+            if (data.IsImageSeq)
+            {
+                if (id.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ShowSupportedCodec(string value, bool imgSeq = false)
         {
             var videoCodec = new Dictionary<Guid, PluginsVideo>();
             var audioCodec = new Dictionary<Guid, PluginsAudio>();
@@ -591,6 +603,12 @@ namespace IFME
 
             foreach (var item in Plugins.Items.Video)
             {
+                if (item.Key.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
+                {
+                    if (imgSeq)
+                        continue;
+                }
+
                 if (item.Value.Format.Contains(value))
                 {
                     videoCodec.Add(item.Key, item.Value);
@@ -610,10 +628,12 @@ namespace IFME
             cboVideoEncoder.DataSource = new BindingSource(videoCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
             cboVideoEncoder.DisplayMember = "Value";
             cboVideoEncoder.ValueMember = "Key";
+            cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
 
             cboAudioEncoder.DataSource = new BindingSource(audioCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
             cboAudioEncoder.DisplayMember = "Value";
             cboAudioEncoder.ValueMember = "Key";
+            cboAudioEncoder.SelectedIndex = 0;
 
             SetDefinedData(videoId, audioId);
         }
@@ -706,7 +726,6 @@ namespace IFME
 
                     foreach (var item in (queue.Tag as MediaQueue).Audio)
                     {
-                        item.Copy = value.Audio.Copy;
                         item.Encoder = value.Audio.Encoder;
                         item.Command = value.Audio.Command;
                         item.CommandFilter = value.Audio.CommandFilter;

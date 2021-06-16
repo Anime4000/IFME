@@ -10,6 +10,8 @@ namespace IFME
 {
 	internal class PluginsLoad
 	{
+		private static List<Guid> Disabled = Properties.Settings.Default.PluginsDisabled.Split(',').Select(Guid.Parse).ToList();
+
 		internal PluginsLoad()
 		{
 			var folder = Path.GetFullPath("Plugins");
@@ -34,31 +36,54 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsAudio>(json);
 
-					frmSplashScreen.SetStatus($"{plugin.Name}");
-
-					// Skip wrong cpu arch
-					if (OSManager.OS.Is64bit != plugin.X64)
-					{
-						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
-						Thread.Sleep(100);
-						continue;
-					}
-
 					// Parse into fully qualified path
 					if (Path.IsPathRooted(plugin.Audio.Encoder))
 						plugin.Audio.Encoder = Path.GetFullPath(plugin.Audio.Encoder);
 					else
 						plugin.Audio.Encoder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), plugin.Audio.Encoder));
 
-					if (!TestAudio(plugin))
+					// Skip
+					if (plugin.GUID.Equals(new Guid("aaaaaaaa-0000-0000-0000-000000000000")))
                     {
-						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
-						Thread.Sleep(100);
+						Plugins.Items.Audio.Add(plugin.GUID, plugin);
 						continue;
 					}
 
+					frmSplashScreen.SetStatus($"{plugin.Name}");
+
+					// Skip wrong cpu arch
+					if (OSManager.OS.Is64bit != plugin.X64)
+					{
+						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
+						continue;
+					}
+
+					// Add List
+					Plugins.Items.Lists.Add(plugin.GUID, plugin);
+
+					// Skip disabled
+					if (Disabled.Contains(plugin.GUID))
+                    {
+						frmSplashScreen.SetStatusAppend(" (disabled, skipping...)");
+						continue;
+                    }
+
+					// Add Audio Encoder List
 					Plugins.Items.Audio.Add(plugin.GUID, plugin);
 
+					// Test
+					if (Properties.Settings.Default.TestEncoder)
+                    {
+						if (!TestAudio(plugin))
+						{
+							frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
+
+							Plugins.Items.Lists.Remove(plugin.GUID); // remove from Plugins List
+							Plugins.Items.Audio.Remove(plugin.GUID); // remove from Audio Encoder List
+
+							continue;
+						}
+					}
 				}
 				catch (Exception ex)
 				{
@@ -77,41 +102,66 @@ namespace IFME
 					var json = File.ReadAllText(item);
 					var plugin = JsonConvert.DeserializeObject<PluginsVideo>(json);
 
+					// Parse into fully qualified path
+					foreach (var p in plugin.Video.Encoder)
+					{
+						if (Path.IsPathRooted(p.Binary))
+							p.Binary = Path.GetFullPath(p.Binary);
+						else
+							p.Binary = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), p.Binary));
+					}
+
+					// Skip
+					if (plugin.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
+                    {
+						Plugins.Items.Video.Add(plugin.GUID, plugin);
+						continue;
+					}
+
 					frmSplashScreen.SetStatus($"{plugin.Name}");
 
 					// Skip wrong cpu arch
 					if (OSManager.OS.Is64bit != plugin.X64)
 					{
 						frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
-						Thread.Sleep(100);
 						continue;
 					}
-
-					// Parse into fully qualified path
-					foreach (var p in plugin.Video.Encoder)
-                    {
-						if (Path.IsPathRooted(p.Binary))
-							p.Binary = Path.GetFullPath(p.Binary);
-						else
-							p.Binary = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), p.Binary));
-                    }
 
 					// Check if plugins already in the list
-					if (Plugins.Items.Video.ContainsKey(plugin.GUID))
-                    {
+					if (Plugins.Items.Video.ContainsKey(plugin.GUID) || Plugins.Items.Lists.ContainsKey(plugin.GUID))
+					{
 						frmSplashScreen.SetStatusAppend(" (best encoder already loaded, skipping...)");
-						Thread.Sleep(100);
 						continue;
 					}
 
-					if (!TestVideo(plugin))
-                    {
-						frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
-						Thread.Sleep(100);
+					// Add List
+					Plugins.Items.Lists.Add(plugin.GUID, plugin);
+
+					// Skip disabled by user
+					if (Disabled.Contains(plugin.GUID))
+					{
+						frmSplashScreen.SetStatusAppend(" (disabled, skipping...)");
 						continue;
 					}
 
+					// Add Video Encoder List
 					Plugins.Items.Video.Add(plugin.GUID, plugin);
+
+					// Test
+					if (Properties.Settings.Default.TestEncoder)
+                    {
+						if (!TestVideo(plugin))
+						{
+							frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
+
+							Plugins.Items.Lists.Remove(plugin.GUID); // remove from Plugins List
+							Plugins.Items.Video.Remove(plugin.GUID); // remove from Video Encoder List
+
+							Thread.Sleep(100);
+
+							continue;
+						}
+					}
 				}
 				catch (Exception ex)
 				{
@@ -178,7 +228,7 @@ namespace IFME
 			if (!string.IsNullOrEmpty(vc.Args.BitDepthOut))
 				en_bit += $" {vc.Args.BitDepthOut} {val_bit}";
 
-			var ff_cmd = $"-pix_fmt yuv420p -r {val_fps} -vf \"scale={val_w}:{val_h}:flags=lanczos\"";
+			var ff_cmd = $"-pix_fmt yuv420p -vf \"scale={val_w}:{val_h}:flags=lanczos,fps={val_fps}\"";
 			var en_cmd = $"{en_res} {en_fps} {en_bit} {vc.Chroma[0].Command} {vc.Args.Preset} {vc.PresetDefault} {vc.Args.Tune} {vc.TuneDefault} {en_frameCount}";
 
 			var ff_enc = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? ff_cmd : en_cmd;

@@ -13,7 +13,9 @@ namespace IFME
 	{
 		public class Items
 		{
-			public static Dictionary<Guid, PluginsAudio> Audio { get; set; } = new Dictionary<Guid, PluginsAudio>();
+			public static Dictionary<Guid, PluginsCommon> Lists { get; set; } = new Dictionary<Guid, PluginsCommon>();
+
+            public static Dictionary<Guid, PluginsAudio> Audio { get; set; } = new Dictionary<Guid, PluginsAudio>();
 			public static Dictionary<Guid, PluginsVideo> Video { get; set; } = new Dictionary<Guid, PluginsVideo>();
 		}
 	}

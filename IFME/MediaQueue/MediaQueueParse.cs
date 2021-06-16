@@ -9,7 +9,7 @@ namespace IFME
     public static class MediaQueueParse
     {
 		public static Guid CurrentId_Video { get; set; } = new Guid("deadbeef-0265-0265-0265-026502650265");
-		public static Guid CurrentId_Audio { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
+		public static Guid CurrentId_Audio { get; set; } = new Guid("aaaaaaaa-0000-0000-0000-000000000000");
 
 
 		public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data, bool isImageSeq = false)
@@ -80,7 +80,7 @@ namespace IFME
 					Mode = 0,
 					Quality = Plugins.Items.Audio[CurrentId_Audio].Audio.Mode[0].Default,
 					SampleRate = Plugins.Items.Audio[CurrentId_Audio].Audio.SampleRateDefault,
-					Channel = ch,
+					Channel = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault,
 					Command = string.Empty
 				}
 			};

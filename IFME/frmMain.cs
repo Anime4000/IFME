@@ -82,13 +82,7 @@ namespace IFME
             }
             cboFormat.SelectedIndex = 2;
 
-            if (Properties.Settings.Default.OutputFolder.IsDisable())
-            {
-                Properties.Settings.Default.OutputFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
-                Properties.Settings.Default.Save();
-            }
-
-            txtOutputPath.Text = Properties.Settings.Default.OutputFolder;
+            txtOutputPath.Text = Properties.Settings.Default.FolderOutput;
         }
 
         private void frmMain_Shown(object sender, EventArgs e)
@@ -159,7 +153,7 @@ namespace IFME
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Option not yet implement in this alpha build release!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            new frmOptions().ShowDialog();
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
@@ -602,6 +596,12 @@ namespace IFME
                             {
                                 var d = (queue.Tag as MediaQueue).Video[item.Index];
 
+                                if (CheckImageSeqEncoder(d, enc.Id))
+                                {
+                                    MessageBox.Show("Image Source MUST ENCODE, CANNOT DO COPY!", "UNSUPPORTED!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    continue;
+                                }
+
                                 d.Encoder = enc;
 
                                 d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
@@ -614,6 +614,12 @@ namespace IFME
                         {
                             foreach (var d in (queue.Tag as MediaQueue).Video)
                             {
+                                if (CheckImageSeqEncoder(d, enc.Id))
+                                {
+                                    MessageBox.Show("Image Source MUST ENCODE, CANNOT DO COPY!", "UNSUPPORTED!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    continue;
+                                }
+
                                 d.Encoder = enc;
 
                                 d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
@@ -721,49 +727,43 @@ namespace IFME
             }
         }
 
-        private void nudVideoRateFactor_ValueChanged(object sender, EventArgs e)
+        private void nudVideoRateFactor_Leave(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if (lstFile.SelectedItems.Count == 1)
             {
-                if (lstFile.SelectedItems.Count == 1)
+                foreach (ListViewItem item in lstVideo.SelectedItems)
                 {
-                    foreach (ListViewItem item in lstVideo.SelectedItems)
-                    {
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Value = nudVideoRateFactor.Value;
-                    }
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Value = nudVideoRateFactor.Value;
                 }
-                else if (lstFile.SelectedItems.Count > 1)
+            }
+            else if (lstFile.SelectedItems.Count > 1)
+            {
+                foreach (ListViewItem queue in lstFile.SelectedItems)
                 {
-                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
-                        foreach (var item in (queue.Tag as MediaQueue).Video)
-                        {
-                            item.Encoder.Value = nudVideoRateFactor.Value;
-                        }
+                        item.Encoder.Value = nudVideoRateFactor.Value;
                     }
                 }
             }
         }
 
-        private void nudVideoMultiPass_ValueChanged(object sender, EventArgs e)
+        private void nudVideoMultiPass_Leave(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if (lstFile.SelectedItems.Count == 1)
             {
-                if (lstFile.SelectedItems.Count == 1)
+                foreach (ListViewItem item in lstVideo.SelectedItems)
                 {
-                    foreach (ListViewItem item in lstVideo.SelectedItems)
-                    {
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.MultiPass = (int)nudVideoMultiPass.Value;
-                    }
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.MultiPass = (int)nudVideoMultiPass.Value;
                 }
-                else if (lstFile.SelectedItems.Count > 1)
+            }
+            else if (lstFile.SelectedItems.Count > 1)
+            {
+                foreach (ListViewItem queue in lstFile.SelectedItems)
                 {
-                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
-                        foreach (var item in (queue.Tag as MediaQueue).Video)
-                        {
-                            item.Encoder.MultiPass = (int)nudVideoMultiPass.Value;
-                        }
+                        item.Encoder.MultiPass = (int)nudVideoMultiPass.Value;
                     }
                 }
             }
@@ -780,7 +780,7 @@ namespace IFME
                     var defaultValueCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.Command;
                     var defaultValueFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.CommandFilter;
 
-                    var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-vf) command with comma separated.\nExample: yadif=0:-1:0, scale=iw/2:-1", defaultValueCmd, defaultValueFil);
+                    var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-vf) command with comma separated.\nExample: yadif=0:-1:0,scale=iw/2:-1", defaultValueCmd, defaultValueFil);
                     if (ib2.ShowDialog() == DialogResult.OK)
                     {
                         cmd = ib2.ReturnValue1;
@@ -1196,34 +1196,13 @@ namespace IFME
             }
         }
 
-        private void chkAudioCopy_CheckedChanged(object sender, EventArgs e)
-        {
-            if ((sender as Control).Focused)
-            {
-                if (lstFile.SelectedItems.Count == 1)
-                {
-                    foreach (ListViewItem item in lstAudio.SelectedItems)
-                    {
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Copy = chkAudioCopy.Checked;
-                    }
-                }
-                else if (lstFile.SelectedItems.Count > 1)
-                {
-                    foreach (ListViewItem queue in lstFile.SelectedItems)
-                    {
-                        foreach (var item in (queue.Tag as MediaQueue).Audio)
-                        {
-                            item.Copy = chkAudioCopy.Checked;
-                        }
-                    }
-                }
-            }
-        }
-
         private void cboAudioEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
+                if (cboAudioEncoder.SelectedItem == null)
+                    cboAudioEncoder.SelectedIndex = 0;
+
                 MediaQueueParse.CurrentId_Audio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
@@ -1749,10 +1728,64 @@ namespace IFME
             grpAdvTrim.Enabled = chkAdvTrim.Checked;
         }
 
+        private void txtTrim_Validating(object sender, CancelEventArgs e)
+        {
+            var rTime = new Regex(@"[0-2][0-9]\:[0-6][0-9]\:[0-6][0-9]");
+
+            if ((sender as TextBox).Text.Length > 0)
+            {
+                if (!rTime.IsMatch((sender as TextBox).Text))
+                {
+                    MessageBox.Show("Please provide the time in hh:mm:ss format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void txtTrim_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) || (e.KeyChar.ToString() == ":"))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtTrim_TextChanged(object sender, EventArgs e)
+        {
+            var ctrl = sender as TextBox;
+
+            if (ctrl.Focused)
+            {
+                var bTimeStart = TimeSpan.TryParse(txtTrimStart.Text, out var timeStart);
+                var bTimeEnd = TimeSpan.TryParse(txtTrimEnd.Text, out var timeEnd);
+                var bTimeSpan = TimeSpan.TryParse(txtTrimDuration.Text, out var timeSpan);
+
+                if (bTimeStart && bTimeEnd && bTimeSpan)
+                {
+                    if (ctrl == txtTrimStart || ctrl == txtTrimEnd)
+                    {
+                        txtTrimDuration.Text = $"{timeEnd - timeStart:c}";
+                    }
+                    else
+                    {
+                        txtTrimEnd.Text = $"{timeStart + timeSpan:c}";
+                    }
+
+                    foreach (ListViewItem item in lstFile.SelectedItems)
+                    {
+                        (item.Tag as MediaQueue).Trim.Start = $"{timeStart:c}";
+                        (item.Tag as MediaQueue).Trim.End = $"{timeEnd:c}";
+                        (item.Tag as MediaQueue).Trim.Duration = $"{timeSpan:c}";
+                    }
+                }
+            }
+        }
+
         private void cboFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            chkAudioCopy.Enabled = string.Equals(cboFormat.Text.ToLowerInvariant(), "mkv");
-
             if ((sender as Control).Focused)
             {
                 cboProfile.SelectedIndex = -1;
@@ -1798,13 +1831,11 @@ namespace IFME
                     return;
                 }
 
-                var audioCps = false;
                 var audioEnc = new MediaQueueAudioEncoder();
                 var audioCmd = string.Empty;
                 var audioFil = string.Empty;
                 if ((lstFile.SelectedItems[0].Tag as MediaQueue).Audio.Count > 0)
                 {
-                    audioCps = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Copy;
                     audioEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder;
                     audioCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
                     audioFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
@@ -1827,7 +1858,6 @@ namespace IFME
 
                     var proAudio = new ProfilesAudio
                     {
-                        Copy = audioCps,
                         Encoder = audioEnc,
                         Command = audioCmd,
                         CommandFilter = audioFil
@@ -1864,7 +1894,8 @@ namespace IFME
                 CheckFileExists = false,
                 CheckPathExists = false,
                 Title = "Select desire save location folder",
-                FileName = "Save folder"
+                FileName = "Save folder",
+                InitialDirectory = txtOutputPath.Text
             };
 
             if (fbd.ShowDialog() == DialogResult.OK)
@@ -1884,7 +1915,7 @@ namespace IFME
                 
                 if (Path.IsPathRooted(fPath))
                 {
-                    Properties.Settings.Default.OutputFolder = fPath;
+                    Properties.Settings.Default.FolderOutput = fPath;
                     Properties.Settings.Default.Save();
                 }
             }
@@ -1997,10 +2028,33 @@ namespace IFME
 
                     MediaEncoding.CurrentIndex = id;
 
-                    var saveFileName = $"{Path.GetFileNameWithoutExtension(mq.FilePath)}_Encoded.{mq.OutputFormat.ToString().ToLowerInvariant()}";
+                    var prefix = string.Empty;
+                    var postfix = string.Empty;
+
+                    switch (Properties.Settings.Default.PrefixMode)
+                    {
+                        case 1:
+                            prefix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+                            break;
+                        default:
+                            prefix = $" {Properties.Settings.Default.PrefixText} ";
+                            break;
+                    }
+
+                    switch (Properties.Settings.Default.PostfixMode)
+                    {
+                        case 1:
+                            postfix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+                            break;
+                        default:
+                            postfix = $" {Properties.Settings.Default.PostfixText} ";
+                            break;
+                    }
+
+                    var saveFileName = $"{prefix}{Path.GetFileNameWithoutExtension(mq.FilePath)}{postfix}.{mq.OutputFormat.ToString().ToLowerInvariant()}";
 
                     // Create Temporary Session Folder
-                    var tempSes = Path.Combine(Path.GetTempPath(), "IFME", $"{Guid.NewGuid()}");
+                    var tempSes = Path.Combine(Properties.Settings.Default.FolderTemporary, $"{Guid.NewGuid()}");
                     Directory.CreateDirectory(tempSes);
 
                     // Extract

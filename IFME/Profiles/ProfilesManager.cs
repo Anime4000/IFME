@@ -121,7 +121,6 @@ namespace IFME
 						Channel = 2,
 						Command = "",
 					},
-					Copy = false,
 					Command = "",
 					CommandFilter = "",
 				}

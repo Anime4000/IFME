@@ -50,10 +50,8 @@
             this.btnAudioDel = new System.Windows.Forms.Button();
             this.btnAudioAdd = new System.Windows.Forms.Button();
             this.btnOutputBrowse = new System.Windows.Forms.Button();
-            this.Seperator5 = new System.Windows.Forms.Label();
             this.lblAudioLang = new System.Windows.Forms.Label();
             this.grpAudioCodec = new System.Windows.Forms.GroupBox();
-            this.chkAudioCopy = new System.Windows.Forms.CheckBox();
             this.btnAudioEnc = new System.Windows.Forms.Button();
             this.btnAudioDec = new System.Windows.Forms.Button();
             this.lblAudioAdv = new System.Windows.Forms.Label();
@@ -71,10 +69,15 @@
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colAudioBitRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAudioSampleRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAudioChannel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lstVideo = new System.Windows.Forms.ListView();
             this.colVideoId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colVideoLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colVideoRes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVideoPixFmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabConfigAttachment = new System.Windows.Forms.TabPage();
             this.cboAttachMime = new System.Windows.Forms.ComboBox();
             this.lblAttachMime = new System.Windows.Forms.Label();
@@ -93,12 +96,13 @@
             this.PbxBanner = new System.Windows.Forms.PictureBox();
             this.tabConfigLog = new System.Windows.Forms.TabPage();
             this.rtfConsole = new System.Windows.Forms.RichTextBox();
-            this.mtxAdvTimeDuration = new System.Windows.Forms.MaskedTextBox();
-            this.mtxAdvTimeEnd = new System.Windows.Forms.MaskedTextBox();
-            this.mtxAdvTimeStart = new System.Windows.Forms.MaskedTextBox();
             this.chkAdvTrim = new System.Windows.Forms.CheckBox();
             this.tabConfigAdvance = new System.Windows.Forms.TabPage();
+            this.grpAdvHdr = new System.Windows.Forms.GroupBox();
             this.grpAdvTrim = new System.Windows.Forms.GroupBox();
+            this.txtTrimDuration = new System.Windows.Forms.TextBox();
+            this.txtTrimEnd = new System.Windows.Forms.TextBox();
+            this.txtTrimStart = new System.Windows.Forms.TextBox();
             this.lblAdvTimeEqual = new System.Windows.Forms.Label();
             this.lblAdvTimeUntil = new System.Windows.Forms.Label();
             this.lblAdvTimeEnd = new System.Windows.Forms.Label();
@@ -182,11 +186,6 @@
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.colVideoFps = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colVideoBitDepth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colVideoPixFmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colAudioSampleRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colAudioChannel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -417,14 +416,6 @@
             this.btnOutputBrowse.UseVisualStyleBackColor = true;
             this.btnOutputBrowse.Click += new System.EventHandler(this.btnOutputBrowse_Click);
             // 
-            // Seperator5
-            // 
-            this.Seperator5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Seperator5.Location = new System.Drawing.Point(63, 77);
-            this.Seperator5.Name = "Seperator5";
-            this.Seperator5.Size = new System.Drawing.Size(375, 2);
-            this.Seperator5.TabIndex = 1;
-            // 
             // lblAudioLang
             // 
             this.lblAudioLang.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -440,8 +431,6 @@
             // 
             this.grpAudioCodec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpAudioCodec.Controls.Add(this.Seperator5);
-            this.grpAudioCodec.Controls.Add(this.chkAudioCopy);
             this.grpAudioCodec.Controls.Add(this.btnAudioEnc);
             this.grpAudioCodec.Controls.Add(this.btnAudioDec);
             this.grpAudioCodec.Controls.Add(this.lblAudioAdv);
@@ -462,23 +451,10 @@
             this.grpAudioCodec.TabStop = false;
             this.grpAudioCodec.Text = "&Codec";
             // 
-            // chkAudioCopy
-            // 
-            this.chkAudioCopy.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.chkAudioCopy.Enabled = false;
-            this.chkAudioCopy.Location = new System.Drawing.Point(63, 39);
-            this.chkAudioCopy.Name = "chkAudioCopy";
-            this.chkAudioCopy.Size = new System.Drawing.Size(375, 35);
-            this.chkAudioCopy.TabIndex = 0;
-            this.chkAudioCopy.Text = "&Copy audio stream as is!\r\n(If output not compatible, it will encode by following" +
-    " setting below)";
-            this.chkAudioCopy.UseVisualStyleBackColor = true;
-            this.chkAudioCopy.CheckedChanged += new System.EventHandler(this.chkAudioCopy_CheckedChanged);
-            // 
             // btnAudioEnc
             // 
             this.btnAudioEnc.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnAudioEnc.Location = new System.Drawing.Point(253, 190);
+            this.btnAudioEnc.Location = new System.Drawing.Point(253, 170);
             this.btnAudioEnc.Name = "btnAudioEnc";
             this.btnAudioEnc.Size = new System.Drawing.Size(185, 23);
             this.btnAudioEnc.TabIndex = 14;
@@ -489,7 +465,7 @@
             // btnAudioDec
             // 
             this.btnAudioDec.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnAudioDec.Location = new System.Drawing.Point(63, 190);
+            this.btnAudioDec.Location = new System.Drawing.Point(63, 170);
             this.btnAudioDec.Name = "btnAudioDec";
             this.btnAudioDec.Size = new System.Drawing.Size(184, 23);
             this.btnAudioDec.TabIndex = 13;
@@ -500,7 +476,7 @@
             // lblAudioAdv
             // 
             this.lblAudioAdv.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioAdv.Location = new System.Drawing.Point(63, 169);
+            this.lblAudioAdv.Location = new System.Drawing.Point(63, 149);
             this.lblAudioAdv.Name = "lblAudioAdv";
             this.lblAudioAdv.Size = new System.Drawing.Size(375, 18);
             this.lblAudioAdv.TabIndex = 12;
@@ -512,7 +488,7 @@
             this.cboAudioMode.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboAudioMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAudioMode.FormattingEnabled = true;
-            this.cboAudioMode.Location = new System.Drawing.Point(317, 100);
+            this.cboAudioMode.Location = new System.Drawing.Point(317, 80);
             this.cboAudioMode.Name = "cboAudioMode";
             this.cboAudioMode.Size = new System.Drawing.Size(121, 21);
             this.cboAudioMode.TabIndex = 5;
@@ -521,7 +497,7 @@
             // lblAudioMode
             // 
             this.lblAudioMode.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioMode.Location = new System.Drawing.Point(317, 79);
+            this.lblAudioMode.Location = new System.Drawing.Point(317, 59);
             this.lblAudioMode.Name = "lblAudioMode";
             this.lblAudioMode.Size = new System.Drawing.Size(121, 18);
             this.lblAudioMode.TabIndex = 4;
@@ -533,7 +509,7 @@
             this.cboAudioChannel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboAudioChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAudioChannel.FormattingEnabled = true;
-            this.cboAudioChannel.Location = new System.Drawing.Point(317, 145);
+            this.cboAudioChannel.Location = new System.Drawing.Point(317, 125);
             this.cboAudioChannel.Name = "cboAudioChannel";
             this.cboAudioChannel.Size = new System.Drawing.Size(121, 21);
             this.cboAudioChannel.TabIndex = 11;
@@ -542,7 +518,7 @@
             // lblAudioChannel
             // 
             this.lblAudioChannel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioChannel.Location = new System.Drawing.Point(317, 124);
+            this.lblAudioChannel.Location = new System.Drawing.Point(317, 104);
             this.lblAudioChannel.Name = "lblAudioChannel";
             this.lblAudioChannel.Size = new System.Drawing.Size(121, 18);
             this.lblAudioChannel.TabIndex = 10;
@@ -554,7 +530,7 @@
             this.cboAudioSampleRate.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboAudioSampleRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAudioSampleRate.FormattingEnabled = true;
-            this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 145);
+            this.cboAudioSampleRate.Location = new System.Drawing.Point(190, 125);
             this.cboAudioSampleRate.Name = "cboAudioSampleRate";
             this.cboAudioSampleRate.Size = new System.Drawing.Size(121, 21);
             this.cboAudioSampleRate.TabIndex = 9;
@@ -563,7 +539,7 @@
             // lblAudioSampleRate
             // 
             this.lblAudioSampleRate.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 124);
+            this.lblAudioSampleRate.Location = new System.Drawing.Point(190, 104);
             this.lblAudioSampleRate.Name = "lblAudioSampleRate";
             this.lblAudioSampleRate.Size = new System.Drawing.Size(121, 18);
             this.lblAudioSampleRate.TabIndex = 8;
@@ -575,7 +551,7 @@
             this.cboAudioQuality.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboAudioQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAudioQuality.FormattingEnabled = true;
-            this.cboAudioQuality.Location = new System.Drawing.Point(63, 145);
+            this.cboAudioQuality.Location = new System.Drawing.Point(63, 125);
             this.cboAudioQuality.Name = "cboAudioQuality";
             this.cboAudioQuality.Size = new System.Drawing.Size(121, 21);
             this.cboAudioQuality.TabIndex = 7;
@@ -584,7 +560,7 @@
             // lblAudioQuality
             // 
             this.lblAudioQuality.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioQuality.Location = new System.Drawing.Point(63, 124);
+            this.lblAudioQuality.Location = new System.Drawing.Point(63, 104);
             this.lblAudioQuality.Name = "lblAudioQuality";
             this.lblAudioQuality.Size = new System.Drawing.Size(121, 18);
             this.lblAudioQuality.TabIndex = 6;
@@ -596,7 +572,7 @@
             this.cboAudioEncoder.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cboAudioEncoder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAudioEncoder.FormattingEnabled = true;
-            this.cboAudioEncoder.Location = new System.Drawing.Point(63, 100);
+            this.cboAudioEncoder.Location = new System.Drawing.Point(63, 80);
             this.cboAudioEncoder.Name = "cboAudioEncoder";
             this.cboAudioEncoder.Size = new System.Drawing.Size(248, 21);
             this.cboAudioEncoder.TabIndex = 3;
@@ -605,7 +581,7 @@
             // lblAudioEncoder
             // 
             this.lblAudioEncoder.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAudioEncoder.Location = new System.Drawing.Point(63, 79);
+            this.lblAudioEncoder.Location = new System.Drawing.Point(63, 59);
             this.lblAudioEncoder.Name = "lblAudioEncoder";
             this.lblAudioEncoder.Size = new System.Drawing.Size(248, 18);
             this.lblAudioEncoder.TabIndex = 2;
@@ -665,6 +641,16 @@
             this.colAudioBitRate.Text = "Bit Rate";
             this.colAudioBitRate.Width = 100;
             // 
+            // colAudioSampleRate
+            // 
+            this.colAudioSampleRate.Text = "Sample Rate";
+            this.colAudioSampleRate.Width = 100;
+            // 
+            // colAudioChannel
+            // 
+            this.colAudioChannel.Text = "Channel";
+            this.colAudioChannel.Width = 100;
+            // 
             // lstVideo
             // 
             this.lstVideo.AllowDrop = true;
@@ -704,6 +690,19 @@
             // 
             this.colVideoRes.Text = "Resolution";
             this.colVideoRes.Width = 100;
+            // 
+            // colVideoFps
+            // 
+            this.colVideoFps.Text = "fps";
+            // 
+            // colVideoBitDepth
+            // 
+            this.colVideoBitDepth.Text = "Bit Depth";
+            // 
+            // colVideoPixFmt
+            // 
+            this.colVideoPixFmt.Text = "Pixel Format";
+            this.colVideoPixFmt.Width = 100;
             // 
             // tabConfigAttachment
             // 
@@ -898,42 +897,6 @@
             this.rtfConsole.TabIndex = 0;
             this.rtfConsole.Text = "";
             // 
-            // mtxAdvTimeDuration
-            // 
-            this.mtxAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mtxAdvTimeDuration.Culture = new System.Globalization.CultureInfo("");
-            this.mtxAdvTimeDuration.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeDuration.Location = new System.Drawing.Point(574, 51);
-            this.mtxAdvTimeDuration.Mask = "00:00:00";
-            this.mtxAdvTimeDuration.Name = "mtxAdvTimeDuration";
-            this.mtxAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
-            this.mtxAdvTimeDuration.TabIndex = 5;
-            this.mtxAdvTimeDuration.Text = "000000";
-            // 
-            // mtxAdvTimeEnd
-            // 
-            this.mtxAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mtxAdvTimeEnd.Culture = new System.Globalization.CultureInfo("");
-            this.mtxAdvTimeEnd.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeEnd.Location = new System.Drawing.Point(440, 51);
-            this.mtxAdvTimeEnd.Mask = "00:00:00";
-            this.mtxAdvTimeEnd.Name = "mtxAdvTimeEnd";
-            this.mtxAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
-            this.mtxAdvTimeEnd.TabIndex = 3;
-            this.mtxAdvTimeEnd.Text = "000000";
-            // 
-            // mtxAdvTimeStart
-            // 
-            this.mtxAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mtxAdvTimeStart.Culture = new System.Globalization.CultureInfo("");
-            this.mtxAdvTimeStart.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.mtxAdvTimeStart.Location = new System.Drawing.Point(306, 51);
-            this.mtxAdvTimeStart.Mask = "90:00:00";
-            this.mtxAdvTimeStart.Name = "mtxAdvTimeStart";
-            this.mtxAdvTimeStart.Size = new System.Drawing.Size(100, 22);
-            this.mtxAdvTimeStart.TabIndex = 1;
-            this.mtxAdvTimeStart.Text = "000000";
-            // 
             // chkAdvTrim
             // 
             this.chkAdvTrim.AutoSize = true;
@@ -947,6 +910,7 @@
             // 
             // tabConfigAdvance
             // 
+            this.tabConfigAdvance.Controls.Add(this.grpAdvHdr);
             this.tabConfigAdvance.Controls.Add(this.chkAdvTrim);
             this.tabConfigAdvance.Controls.Add(this.grpAdvTrim);
             this.tabConfigAdvance.Location = new System.Drawing.Point(4, 24);
@@ -957,13 +921,25 @@
             this.tabConfigAdvance.Text = "Advanced";
             this.tabConfigAdvance.UseVisualStyleBackColor = true;
             // 
+            // grpAdvHdr
+            // 
+            this.grpAdvHdr.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpAdvHdr.Location = new System.Drawing.Point(6, 112);
+            this.grpAdvHdr.Name = "grpAdvHdr";
+            this.grpAdvHdr.Size = new System.Drawing.Size(980, 146);
+            this.grpAdvHdr.TabIndex = 2;
+            this.grpAdvHdr.TabStop = false;
+            this.grpAdvHdr.Text = "HDR";
+            // 
             // grpAdvTrim
             // 
             this.grpAdvTrim.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpAdvTrim.Controls.Add(this.mtxAdvTimeDuration);
-            this.grpAdvTrim.Controls.Add(this.mtxAdvTimeEnd);
-            this.grpAdvTrim.Controls.Add(this.mtxAdvTimeStart);
+            this.grpAdvTrim.Controls.Add(this.txtTrimDuration);
+            this.grpAdvTrim.Controls.Add(this.txtTrimEnd);
+            this.grpAdvTrim.Controls.Add(this.txtTrimStart);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeEqual);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeUntil);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeEnd);
@@ -975,6 +951,42 @@
             this.grpAdvTrim.Size = new System.Drawing.Size(980, 100);
             this.grpAdvTrim.TabIndex = 1;
             this.grpAdvTrim.TabStop = false;
+            // 
+            // txtTrimDuration
+            // 
+            this.txtTrimDuration.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtTrimDuration.Location = new System.Drawing.Point(574, 51);
+            this.txtTrimDuration.Name = "txtTrimDuration";
+            this.txtTrimDuration.Size = new System.Drawing.Size(100, 22);
+            this.txtTrimDuration.TabIndex = 10;
+            this.txtTrimDuration.Text = "00:01:00";
+            this.txtTrimDuration.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
+            this.txtTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            // 
+            // txtTrimEnd
+            // 
+            this.txtTrimEnd.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtTrimEnd.Location = new System.Drawing.Point(440, 52);
+            this.txtTrimEnd.Name = "txtTrimEnd";
+            this.txtTrimEnd.Size = new System.Drawing.Size(100, 22);
+            this.txtTrimEnd.TabIndex = 9;
+            this.txtTrimEnd.Text = "00:10:05";
+            this.txtTrimEnd.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
+            this.txtTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            // 
+            // txtTrimStart
+            // 
+            this.txtTrimStart.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtTrimStart.Location = new System.Drawing.Point(306, 52);
+            this.txtTrimStart.Name = "txtTrimStart";
+            this.txtTrimStart.Size = new System.Drawing.Size(100, 22);
+            this.txtTrimStart.TabIndex = 8;
+            this.txtTrimStart.Text = "00:09:46";
+            this.txtTrimStart.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
+            this.txtTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // lblAdvTimeEqual
             // 
@@ -1358,7 +1370,7 @@
             this.nudVideoMultiPass.Name = "nudVideoMultiPass";
             this.nudVideoMultiPass.Size = new System.Drawing.Size(114, 20);
             this.nudVideoMultiPass.TabIndex = 11;
-            this.nudVideoMultiPass.ValueChanged += new System.EventHandler(this.nudVideoMultiPass_ValueChanged);
+            this.nudVideoMultiPass.Leave += new System.EventHandler(this.nudVideoMultiPass_Leave);
             // 
             // nudVideoRateFactor
             // 
@@ -1366,7 +1378,7 @@
             this.nudVideoRateFactor.Name = "nudVideoRateFactor";
             this.nudVideoRateFactor.Size = new System.Drawing.Size(115, 20);
             this.nudVideoRateFactor.TabIndex = 9;
-            this.nudVideoRateFactor.ValueChanged += new System.EventHandler(this.nudVideoRateFactor_ValueChanged);
+            this.nudVideoRateFactor.Leave += new System.EventHandler(this.nudVideoRateFactor_Leave);
             // 
             // lblVideoMultiPass
             // 
@@ -1847,19 +1859,19 @@
             this.tsmiFileAddAttach,
             this.tsmiFileAddAttachEmbed});
             this.cmsFileAddAttach.Name = "cmsFileAddAttach";
-            this.cmsFileAddAttach.Size = new System.Drawing.Size(181, 70);
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(178, 48);
             // 
             // tsmiFileAddAttach
             // 
             this.tsmiFileAddAttach.Name = "tsmiFileAddAttach";
-            this.tsmiFileAddAttach.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttach.Size = new System.Drawing.Size(177, 22);
             this.tsmiFileAddAttach.Text = "Add &Fonts";
             this.tsmiFileAddAttach.Click += new System.EventHandler(this.tsmiFileAddAttach_Click);
             // 
             // tsmiFileAddAttachEmbed
             // 
             this.tsmiFileAddAttachEmbed.Name = "tsmiFileAddAttachEmbed";
-            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(177, 22);
             this.tsmiFileAddAttachEmbed.Text = "Add Fonts from &Video";
             this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
             // 
@@ -1872,29 +1884,6 @@
             this.btnAbout.TabIndex = 4;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
-            // colVideoFps
-            // 
-            this.colVideoFps.Text = "fps";
-            // 
-            // colVideoBitDepth
-            // 
-            this.colVideoBitDepth.Text = "Bit Depth";
-            // 
-            // colVideoPixFmt
-            // 
-            this.colVideoPixFmt.Text = "Pixel Format";
-            this.colVideoPixFmt.Width = 100;
-            // 
-            // colAudioSampleRate
-            // 
-            this.colAudioSampleRate.Text = "Sample Rate";
-            this.colAudioSampleRate.Width = 100;
-            // 
-            // colAudioChannel
-            // 
-            this.colAudioChannel.Text = "Channel";
-            this.colAudioChannel.Width = 100;
             // 
             // frmMain
             // 
@@ -1982,10 +1971,8 @@
         private System.Windows.Forms.Button btnAudioDel;
         private System.Windows.Forms.Button btnAudioAdd;
         private System.Windows.Forms.Button btnOutputBrowse;
-        private System.Windows.Forms.Label Seperator5;
         private System.Windows.Forms.Label lblAudioLang;
         private System.Windows.Forms.GroupBox grpAudioCodec;
-        private System.Windows.Forms.CheckBox chkAudioCopy;
         private System.Windows.Forms.Button btnAudioEnc;
         private System.Windows.Forms.Button btnAudioDec;
         private System.Windows.Forms.Label lblAudioAdv;
@@ -2019,9 +2006,6 @@
         private System.Windows.Forms.Label lblFormatProfile;
         private System.Windows.Forms.PictureBox PbxBanner;
         private System.Windows.Forms.TabPage tabConfigLog;
-        private System.Windows.Forms.MaskedTextBox mtxAdvTimeDuration;
-        private System.Windows.Forms.MaskedTextBox mtxAdvTimeEnd;
-        private System.Windows.Forms.MaskedTextBox mtxAdvTimeStart;
         private System.Windows.Forms.CheckBox chkAdvTrim;
         private System.Windows.Forms.TabPage tabConfigAdvance;
         private System.Windows.Forms.GroupBox grpAdvTrim;
@@ -2119,5 +2103,9 @@
         private System.Windows.Forms.ColumnHeader colVideoPixFmt;
         private System.Windows.Forms.ColumnHeader colAudioSampleRate;
         private System.Windows.Forms.ColumnHeader colAudioChannel;
+        private System.Windows.Forms.TextBox txtTrimDuration;
+        private System.Windows.Forms.TextBox txtTrimEnd;
+        private System.Windows.Forms.TextBox txtTrimStart;
+        private System.Windows.Forms.GroupBox grpAdvHdr;
     }
 }

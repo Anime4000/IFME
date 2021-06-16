@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Allow user to compress raw media")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
-[assembly: AssemblyProduct("The galaxy is at a crossroads")]
+[assembly: AssemblyProduct("Undomesticated equines could not remove me.")]
 [assembly: AssemblyCopyright("© 2017 Anime4000")]
 [assembly: AssemblyTrademark("Anime4000, Nemu, Jel42, Robin Lawrie, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")]
 [assembly: AssemblyCulture("")]

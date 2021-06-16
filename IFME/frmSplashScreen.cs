@@ -4,6 +4,7 @@ using System.Threading;
 using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.IO;
 
 namespace IFME
 {
@@ -46,7 +47,17 @@ namespace IFME
             // TODO: Detect user GPU
             lblLoadingUpdate("Initializing...");
 
-            // Load everything
+            // Load settings
+            if (Properties.Settings.Default.FolderOutput.IsDisable())
+                Properties.Settings.Default.FolderOutput = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+            
+
+            if (Properties.Settings.Default.FolderTemporary.IsDisable())
+                Properties.Settings.Default.FolderTemporary = Path.Combine(Path.GetTempPath(), "IFME");
+
+            Properties.Settings.Default.Save();
+
+            // Load config
             new PluginsLoad();
 
             // Finished loading, clear status text

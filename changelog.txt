@@ -1,4 +1,16 @@
-﻿Version 21.06.14 Alpha (The galaxy is at a crossroads)
+﻿Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
+--------------------------------------------------------------------
+
+[new] Option window is now available
+[new] Undesire encoders now can disable/enable
+[new] Allow user to disable encoder test just to make program start faster (use at own risk)
+[fixed] Prevent Image Sequence from selecting "Copy Stream [No Encoding]"
+[fixed] Rate Factor & Multi Pass value not updated in certain edit (eg: typing value)
+[change] Audio Copy Stream checkbox replaced with Drop Down List and become default
+[change] x265 & x264 tune default to SSIM instead of PSNR, better visual quality.
+
+
+Version 21.06.14 Alpha (The galaxy is at a crossroads)
 ------------------------------------------------------
 
 I sorry for very quick update, sometime designing GUI event can be daunting
