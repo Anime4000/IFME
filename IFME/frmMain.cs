@@ -325,6 +325,8 @@ namespace IFME
                 if (data.Attachment.Count > 0)
                     lstAttach.Items[0].Selected = true;
 
+                chkAdvTrim.Checked = data.Trim.Enable;
+
                 // Media Info
                 txtMediaInfo.Text = FFmpeg.MediaInfo.Print(data.Info);
             }
@@ -1726,24 +1728,35 @@ namespace IFME
         private void chkAdvTrim_CheckedChanged(object sender, EventArgs e)
         {
             grpAdvTrim.Enabled = chkAdvTrim.Checked;
+
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    {
+                        (queue.Tag as MediaQueue).Trim.Enable = grpAdvTrim.Enabled;
+                    }
+                }
+            }
         }
 
         private void txtTrim_Validating(object sender, CancelEventArgs e)
         {
-            var rTime = new Regex(@"[0-2][0-9]\:[0-6][0-9]\:[0-6][0-9]");
+            var rTime = new Regex(@"[0-9][0-9]\:[0-6][0-9]\:[0-6][0-9]\.[0-9]{1,}");
 
             if ((sender as TextBox).Text.Length > 0)
             {
                 if (!rTime.IsMatch((sender as TextBox).Text))
                 {
-                    MessageBox.Show("Please provide the time in hh:mm:ss format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please provide the time in hh:mm:ss.xxx format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         private void txtTrim_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) || (e.KeyChar.ToString() == ":"))
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) || (e.KeyChar.ToString() == ":") || (e.KeyChar.ToString() == "."))
             {
                 e.Handled = false;
             }
@@ -1757,29 +1770,39 @@ namespace IFME
         {
             var ctrl = sender as TextBox;
 
-            if (ctrl.Focused)
+            var bTimeStart = TimeSpan.TryParse(txtTrimStart.Text, out var timeStart);
+            var bTimeEnd = TimeSpan.TryParse(txtTrimEnd.Text, out var timeEnd);
+            var bTimeSpan = TimeSpan.TryParse(txtTrimDuration.Text, out var timeSpan);
+
+            if (bTimeStart && bTimeEnd && bTimeSpan)
             {
-                var bTimeStart = TimeSpan.TryParse(txtTrimStart.Text, out var timeStart);
-                var bTimeEnd = TimeSpan.TryParse(txtTrimEnd.Text, out var timeEnd);
-                var bTimeSpan = TimeSpan.TryParse(txtTrimDuration.Text, out var timeSpan);
-
-                if (bTimeStart && bTimeEnd && bTimeSpan)
+                if (ctrl.Focused)
                 {
-                    if (ctrl == txtTrimStart || ctrl == txtTrimEnd)
+                    if (ctrl == txtTrimStart)
                     {
-                        txtTrimDuration.Text = $"{timeEnd - timeStart:c}";
-                    }
-                    else
-                    {
-                        txtTrimEnd.Text = $"{timeStart + timeSpan:c}";
+                        timeSpan = timeEnd - timeStart;
                     }
 
-                    foreach (ListViewItem item in lstFile.SelectedItems)
+                    if (ctrl == txtTrimEnd)
                     {
-                        (item.Tag as MediaQueue).Trim.Start = $"{timeStart:c}";
-                        (item.Tag as MediaQueue).Trim.End = $"{timeEnd:c}";
-                        (item.Tag as MediaQueue).Trim.Duration = $"{timeSpan:c}";
+                        timeSpan = timeEnd - timeStart;
                     }
+
+                    if (ctrl == txtTrimDuration)
+                    {
+                        timeEnd = timeStart + timeSpan;
+                    }
+
+                    txtTrimStart.Text = $"{timeStart:hh\\:mm\\:ss\\.fff}";
+                    txtTrimEnd.Text = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
+                    txtTrimDuration.Text = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
+                }
+
+                foreach (ListViewItem item in lstFile.SelectedItems)
+                {
+                    (item.Tag as MediaQueue).Trim.Start = $"{timeStart:hh\\:mm\\:ss\\.fff}";
+                    (item.Tag as MediaQueue).Trim.End = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
+                    (item.Tag as MediaQueue).Trim.Duration = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
                 }
             }
         }

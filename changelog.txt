@@ -4,6 +4,7 @@
 [new] Option window is now available [git#218]
 [new] Undesire encoders now can disable/enable [git#218]
 [new] Allow user to disable encoder test just to make program start faster (use at own risk) [git#218]
+[fixed] Cut video & audio with milisecond precision
 [fixed] Prevent Image Sequence from selecting "Copy Stream [No Encoding]"
 [fixed] Rate Factor & Multi Pass value not updated in certain edit (eg: typing value) [git#218]
 [change] Audio Copy Stream checkbox replaced with Drop Down List and become default [git#218]

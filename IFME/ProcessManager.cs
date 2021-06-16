@@ -83,7 +83,7 @@ namespace IFME
 				}
 				
 
-				var regexPattern = @"(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)|(frame[ ]{1,}\d+)";
+				var regexPattern = @"(Processed[ ]{1,}\d+)|(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)|(frame[ ]{1,}\d+)";
 				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
 				if (m.Success)
 					frmMain.PrintProgress(e.Data);

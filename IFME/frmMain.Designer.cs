@@ -959,7 +959,7 @@
             this.txtTrimDuration.Name = "txtTrimDuration";
             this.txtTrimDuration.Size = new System.Drawing.Size(100, 22);
             this.txtTrimDuration.TabIndex = 10;
-            this.txtTrimDuration.Text = "00:01:00";
+            this.txtTrimDuration.Text = "00:01:00.000";
             this.txtTrimDuration.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
             this.txtTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
@@ -971,7 +971,7 @@
             this.txtTrimEnd.Name = "txtTrimEnd";
             this.txtTrimEnd.Size = new System.Drawing.Size(100, 22);
             this.txtTrimEnd.TabIndex = 9;
-            this.txtTrimEnd.Text = "00:10:05";
+            this.txtTrimEnd.Text = "00:10:05.000";
             this.txtTrimEnd.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
             this.txtTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
@@ -983,7 +983,7 @@
             this.txtTrimStart.Name = "txtTrimStart";
             this.txtTrimStart.Size = new System.Drawing.Size(100, 22);
             this.txtTrimStart.TabIndex = 8;
-            this.txtTrimStart.Text = "00:09:46";
+            this.txtTrimStart.Text = "00:09:45.500";
             this.txtTrimStart.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
             this.txtTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);

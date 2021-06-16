@@ -120,7 +120,7 @@ namespace IFME
             this.groupBox1.Location = new System.Drawing.Point(381, 19);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(369, 140);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Postfi&x";
             // 
@@ -130,7 +130,7 @@ namespace IFME
             this.txtPostfix.Location = new System.Drawing.Point(120, 88);
             this.txtPostfix.Name = "txtPostfix";
             this.txtPostfix.Size = new System.Drawing.Size(234, 24);
-            this.txtPostfix.TabIndex = 4;
+            this.txtPostfix.TabIndex = 2;
             this.txtPostfix.TextChanged += new System.EventHandler(this.txtPostfix_TextChanged);
             // 
             // rdoPostfixCustom
@@ -148,7 +148,7 @@ namespace IFME
             this.rdoPostfixDateTime.Location = new System.Drawing.Point(14, 58);
             this.rdoPostfixDateTime.Name = "rdoPostfixDateTime";
             this.rdoPostfixDateTime.Size = new System.Drawing.Size(340, 24);
-            this.rdoPostfixDateTime.TabIndex = 4;
+            this.rdoPostfixDateTime.TabIndex = 1;
             this.rdoPostfixDateTime.Text = "&Date Time";
             this.rdoPostfixDateTime.UseVisualStyleBackColor = true;
             // 
@@ -158,7 +158,7 @@ namespace IFME
             this.rdoPostfixNone.Location = new System.Drawing.Point(14, 28);
             this.rdoPostfixNone.Name = "rdoPostfixNone";
             this.rdoPostfixNone.Size = new System.Drawing.Size(340, 24);
-            this.rdoPostfixNone.TabIndex = 4;
+            this.rdoPostfixNone.TabIndex = 0;
             this.rdoPostfixNone.TabStop = true;
             this.rdoPostfixNone.Text = "&None";
             this.rdoPostfixNone.UseVisualStyleBackColor = true;
@@ -286,7 +286,7 @@ namespace IFME
             this.tabPlugins.Padding = new System.Windows.Forms.Padding(3);
             this.tabPlugins.Size = new System.Drawing.Size(768, 518);
             this.tabPlugins.TabIndex = 2;
-            this.tabPlugins.Text = "Plugins";
+            this.tabPlugins.Text = "Encoders";
             this.tabPlugins.UseVisualStyleBackColor = true;
             // 
             // chkSkipTest
@@ -381,7 +381,7 @@ namespace IFME
             this.btnCancel.Location = new System.Drawing.Point(708, 564);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 24);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -393,7 +393,7 @@ namespace IFME
             this.btnOK.Location = new System.Drawing.Point(622, 564);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(80, 24);
-            this.btnOK.TabIndex = 2;
+            this.btnOK.TabIndex = 1;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);

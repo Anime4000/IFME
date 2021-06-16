@@ -312,8 +312,15 @@ namespace IFME
         {
             if (lstVideo.SelectedItems.Count > 0)
             {
-                var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
-                new Thread(Thread_LoadPropertiesVideo).Start(data);
+                try
+                {
+                    var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[lstVideo.SelectedItems[0].Index];
+                    new Thread(Thread_LoadPropertiesVideo).Start(data);
+                }
+                catch (Exception ex)
+                {
+                    PrintLog($"[ERRO] DisplayProperties_Video(), {ex.Message}");
+                }
             }
         }
 
@@ -321,26 +328,47 @@ namespace IFME
         {
             if (lstAudio.SelectedItems.Count > 0)
             {
-                var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
-                new Thread(Thread_LoadPropertiesAudio).Start(data);
+                try
+                {
+                    var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[lstAudio.SelectedItems[0].Index];
+                    new Thread(Thread_LoadPropertiesAudio).Start(data);
+                }
+                catch (Exception ex)
+                {
+                    PrintLog($"[ERRO] ID: DisplayProperties_Audio(), {ex.Message}");
+                }
             }
         }
 
         private void DisplayProperties_Subtitle()
         {
-            if (lstSub.SelectedItems.Count > 0)
+            if (lstSub.SelectedItems.Count == 1)
             {
-                var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
-                new Thread(Thread_LoadPropertiesSubtitle).Start(data);
+                try
+                {
+                    var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle[lstSub.SelectedItems[0].Index];
+                    new Thread(Thread_LoadPropertiesSubtitle).Start(data);
+                }
+                catch (Exception ex)
+                {
+                    PrintLog($"[ERRO] ID: DisplayProperties_Subtitle(), {ex.Message}");
+                }
             }
         }
 
         private void DisplayProperties_Attachment()
         {
-            if (lstSub.SelectedItems.Count > 0)
+            if (lstSub.SelectedItems.Count == 1)
             {
-                var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment[lstAttach.SelectedItems[0].Index];
-                new Thread(Thread_LoadPropertiesAttachment).Start(data);
+                try
+                {
+                    var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment[lstAttach.SelectedItems[0].Index];
+                    new Thread(Thread_LoadPropertiesAttachment).Start(data);
+                }
+                catch (Exception ex)
+                {
+                    PrintLog($"[ERRO] ID: DisplayProperties_Attachment(), {ex.Message}");
+                }
             }
         }
 
