@@ -227,22 +227,19 @@ namespace IFME
 					}
 
 					// Encoder Preset
-					if (!string.IsNullOrEmpty(vc.Args.Preset) && !string.IsNullOrEmpty(item.Encoder.Preset))
-					{
-						en_preset = $"{vc.Args.Preset} {item.Encoder.Preset}";
-					}
+					en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);
 
 					// Encoder Tune
-					if (!string.IsNullOrEmpty(vc.Args.Tune) && !string.IsNullOrEmpty(item.Encoder.Tune))
-					{
-						en_tune = $"{vc.Args.Tune} {item.Encoder.Tune}";
-					}
+					en_tune = ArgsParser.Parse(vc.Args.Tune, item.Encoder.Tune);
 
 					// Encoder Mode
 					if (!string.IsNullOrEmpty(vc.Mode[mode].Args))
 					{
 						en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
 					}
+
+					// Encoder Mode (Native)
+
 
 					// Encoder Frame Count
 					if (!string.IsNullOrEmpty(vc.Args.FrameCount))
@@ -293,7 +290,7 @@ namespace IFME
 							if (vc.Args.Pipe)
 								ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
 							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
+								ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
 
 							++p;
 
@@ -304,7 +301,7 @@ namespace IFME
 						if (vc.Args.Pipe)
 							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
 						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+							ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 					}
 
 					// Raw file dont have pts (time), need to remux

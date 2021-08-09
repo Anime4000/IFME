@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Allow user to compress raw media")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Anime4000")]
-[assembly: AssemblyProduct("Undomesticated equines could not remove me.")]
+[assembly: AssemblyProduct("Magnus Exorcismus")]
 [assembly: AssemblyCopyright("© 2017 Anime4000")]
-[assembly: AssemblyTrademark("Anime4000, Nemu, Jel42, Robin Lawrie, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")]
+[assembly: AssemblyTrademark("Anime4000, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("21.06.17")]
-[assembly: AssemblyFileVersion("21.06.17")]
+[assembly: AssemblyVersion("21.08.08")]
+[assembly: AssemblyFileVersion("21.08.08")]

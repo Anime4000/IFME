@@ -31,7 +31,7 @@ namespace IFME
             lblVersion.Text = $"Version {Version.Release}";
             lblCopyRight.Text = $"© 2011-{DateTime.Now.Year} Anime4000 && Contributor, Some Right Reserved.";
             lblArtWork.Text = $"Character illustration by Ray-en aka 53C for IFME Project.";
-            lblDevs.Text = Version.TradeMark;
+            lblDevs.Text = $"{Version.Contrib}\n\n{Version.TradeMark}";
         }
 
         private void frmAbout_Shown(object sender, EventArgs e)

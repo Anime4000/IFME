@@ -102,7 +102,7 @@ namespace IFME
             rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
                 $"Build: {Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
                 "\r\n" +
-                $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n" +
+                $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\nContributor: {Version.Contrib}\r\n" +
                 "\r\n" +
                 "Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\r\n" +
                 "\r\n";
@@ -430,9 +430,9 @@ namespace IFME
                 foreach (ListViewItem item in lstAudio.SelectedItems)
                 {
                     item.SubItems[1].Text = Language.FullName(data.Lang);
-                    item.SubItems[2].Text = cboAudioQuality.Text;
-                    item.SubItems[3].Text = cboAudioSampleRate.Text;
-                    item.SubItems[4].Text = cboAudioChannel.Text;
+                    item.SubItems[2].Text = cboAudioQuality.Text.Equals("0") ? "Auto" : cboAudioQuality.Text;
+                    item.SubItems[3].Text = cboAudioSampleRate.Text.Equals("0") ? "Auto" : cboAudioSampleRate.Text;
+                    item.SubItems[4].Text = cboAudioChannel.Text.Equals("0") ? "Auto" : cboAudioChannel.Text;
                 }
             });
         }
@@ -486,14 +486,14 @@ namespace IFME
             lstVideo.Items.Clear();
             foreach (var item in data.Video)
             {
-                var res = "original res";
-                var fps = "original fps";
+                var res = $"{item.Quality.OriginalWidth}x{item.Quality.OriginalHeight}";
+                var fps = item.Quality.OriginalFrameRate.ToString();
 
                 if (item.Quality.Width != 0 && item.Quality.Height != 0)
                     res = $"{item.Quality.Width}x{item.Quality.Height}";
 
                 if (item.Quality.FrameRate != 0)
-                    fps = $"{item.Quality.FrameRate}fps";
+                    fps = $"{item.Quality.FrameRate, 3}";
 
                 lstVideo.Items.Add(new ListViewItem(new[]
                 {
@@ -534,9 +534,9 @@ namespace IFME
                 {
                         $"{item.Id}",
                         Language.FullName(item.Lang),
-                        $"{item.Encoder.Quality}",
-                        $"{item.Encoder.SampleRate}Hz",
-                        $"{item.Encoder.Channel}"
+                        item.Encoder.Quality.Equals(0) ? "Auto" : item.Encoder.Quality.ToString(),
+                        item.Encoder.SampleRate.Equals(0) ? "Auto" : item.Encoder.SampleRate.ToString(),
+                        item.Encoder.Channel.Equals(0) ? "Auto" : item.Encoder.Channel.ToString()
                     })
                 {
                     Checked = true,

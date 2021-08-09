@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgsParser.cs" />
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
