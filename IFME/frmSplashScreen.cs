@@ -27,6 +27,7 @@ namespace IFME
         private void frmSplashScreen_Load(object sender, EventArgs e)
         {
             lblVersion.Text = $"Release {Version.Release}";
+            lblContrib.Text = $"{Version.Contrib}\n\n{Version.TradeMark}";
         }
 
         private void frmSplashScreen_Shown(object sender, EventArgs e)

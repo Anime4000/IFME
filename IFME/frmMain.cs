@@ -1982,7 +1982,7 @@ namespace IFME
 
         private void tsmiImportImgSeq_Click(object sender, EventArgs e)
         {
-            var files = OpenFiles(MediaType.Image, false);
+            var files = OpenFiles(MediaType.Image, true);
 
             if (files.Length <= 0)
                 return;

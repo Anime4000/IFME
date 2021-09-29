@@ -31,6 +31,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblLoading = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
+            this.lblContrib = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -41,7 +42,7 @@
             this.lblStatus.ForeColor = System.Drawing.Color.White;
             this.lblStatus.Location = new System.Drawing.Point(16, 241);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(282, 268);
+            this.lblStatus.Size = new System.Drawing.Size(282, 200);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Loading...";
             // 
@@ -71,6 +72,19 @@
             this.lblVersion.Text = "Version";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lblContrib
+            // 
+            this.lblContrib.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblContrib.BackColor = System.Drawing.Color.Transparent;
+            this.lblContrib.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblContrib.ForeColor = System.Drawing.Color.White;
+            this.lblContrib.Location = new System.Drawing.Point(16, 450);
+            this.lblContrib.Name = "lblContrib";
+            this.lblContrib.Size = new System.Drawing.Size(303, 133);
+            this.lblContrib.TabIndex = 3;
+            this.lblContrib.Text = "Contrib";
+            this.lblContrib.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // frmSplashScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -79,6 +93,7 @@
             this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen8;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1066, 600);
+            this.Controls.Add(this.lblContrib);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.lblStatus);
@@ -100,5 +115,6 @@
         internal System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblLoading;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblContrib;
     }
 }

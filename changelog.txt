@@ -1,4 +1,12 @@
-﻿Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
+﻿Version 21.09.30 Alpha (Grus Nivis Chapter)
+-------------------------------------------
+[fixed] Project Angel (Siglus) reported Attachment Tab has broken behaviour and not update data properly.
+[Tested] Image Sequence import has reached stable, no further development
+
+NOTE!!! Decoder Encoder are not updated, currently has no issue to replace, you can override bundled tools
+
+
+Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
 --------------------------------------------------------------------
 
 [new] Option window is now available [git#218]
