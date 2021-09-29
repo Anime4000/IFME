@@ -1702,6 +1702,32 @@ namespace IFME
             ListViewItem_RefreshAttachment();
         }
 
+        private void cboAttachMime_TextChanged(object sender, EventArgs e)
+        {
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count == 1)
+                {
+                    foreach (ListViewItem item in lstAttach.SelectedItems)
+                    {
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment[item.Index].Mime = cboAttachMime.Text;
+                    }
+                }
+                else if (lstFile.SelectedItems.Count > 1)
+                {
+                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    {
+                        foreach (var item in (queue.Tag as MediaQueue).Attachment)
+                        {
+                            item.Mime = cboAttachMime.Text;
+                        }
+                    }
+                }
+
+                DisplayProperties_Attachment();
+            }
+        }
+
         private void tsmiFileAddAttach_Click(object sender, EventArgs e)
         {
             if (lstFile.SelectedItems.Count > 0)
@@ -1718,11 +1744,6 @@ namespace IFME
                     MediaAttachmentListAddEmbed(item);
 
             ListViewItem_RefreshAttachment();
-        }
-
-        private void cboAttachMime_TextChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void chkAdvTrim_CheckedChanged(object sender, EventArgs e)

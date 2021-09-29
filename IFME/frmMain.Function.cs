@@ -342,7 +342,7 @@ namespace IFME
 
         private void DisplayProperties_Subtitle()
         {
-            if (lstSub.SelectedItems.Count == 1)
+            if (lstSub.SelectedItems.Count > 0)
             {
                 try
                 {
@@ -358,12 +358,13 @@ namespace IFME
 
         private void DisplayProperties_Attachment()
         {
-            if (lstSub.SelectedItems.Count == 1)
+            if (lstAttach.SelectedItems.Count > 0)
             {
                 try
                 {
                     var data = (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment[lstAttach.SelectedItems[0].Index];
                     new Thread(Thread_LoadPropertiesAttachment).Start(data);
+
                 }
                 catch (Exception ex)
                 {
@@ -457,13 +458,13 @@ namespace IFME
             var data = obj as MediaQueueAttachment;
 
             BeginInvoke((Action)delegate ()
-            {
-                cboAttachMime.Text = data.Mime;
-
+            {                
                 foreach (ListViewItem item in lstAttach.SelectedItems)
                 {
-                    item.SubItems[2].Text = Language.FullName(data.Mime);
+                    item.SubItems[2].Text = data.Mime;
                 }
+
+                cboAttachMime.Text = data.Mime;
             });
         }
 
