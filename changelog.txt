@@ -1,4 +1,12 @@
-﻿Version 21.09.30 Alpha (Grus Nivis Chapter)
+﻿Version 22.01.02 Alpha (True Eternity)
+--------------------------------------
+[fixed] Hard Sub with MKV cause wrong data because previous subtitle and fonts copied over
+[fixed] Extra space when Pre/Post fix in file name
+[change] Invalid progress when using Trim, IFME automatically calculate with 2 second buffer (total length * frame rate) + frame rate * 2
+
+NOTE!!! Trim not work on subtitles, you need to burn it.
+
+Version 21.09.30 Alpha (Grus Nivis Chapter)
 -------------------------------------------
 [fixed] Project Angel (Siglus) reported Attachment Tab has broken behaviour and not update data properly.
 [Tested] Image Sequence import has reached stable, no further development

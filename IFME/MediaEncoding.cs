@@ -61,6 +61,13 @@ namespace IFME
 			}
 
 			// Hard Sub
+			if (queue.HardSub)
+            {
+				File.Copy(Path.Combine("Fonts", "fonts.conf"), Path.Combine(tempDir, "fonts.conf"), true);
+				Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDir);
+				Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
+				Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
+			}
 
 			// Chapters
 			ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
@@ -246,6 +253,9 @@ namespace IFME
 					{
 						if (item.Quality.FrameCount > 0)
 							en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
+
+						if (queue.Trim.Enable)
+							en_framecount = $"{vc.Args.FrameCount} {(TimeSpan.Parse(queue.Trim.Duration).TotalSeconds * item.Quality.FrameRate) + item.Quality.FrameRate * 2}"; // add one 2 sec buffer
 					}
 
 					// Copy Streams
