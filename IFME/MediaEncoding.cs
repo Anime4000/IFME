@@ -367,25 +367,28 @@ namespace IFME
 
 			if (queue.OutputFormat == MediaContainer.MKV)
 			{
-				var d = 0;
-				foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
-				{
-					argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-					metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
-					map += $" -map {x}:0";
-					x++;
-					d++;
-				}
-
-				var tempDirFont = Path.Combine(tempDir, "attachment");
-				if (Directory.Exists(tempDirFont))
-				{
-					var files = Directory.GetFiles(tempDirFont, "*");
-					for (int i = 0; i < files.Length; i++)
+				if (!queue.HardSub)
+                {
+					var d = 0;
+					foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
 					{
-						argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
-						metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+						argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
+						metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+						map += $" -map {x}:0";
 						x++;
+						d++;
+					}
+
+					var tempDirFont = Path.Combine(tempDir, "attachment");
+					if (Directory.Exists(tempDirFont))
+					{
+						var files = Directory.GetFiles(tempDirFont, "*");
+						for (int i = 0; i < files.Length; i++)
+						{
+							argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+							metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+							x++;
+						}
 					}
 				}
 			}

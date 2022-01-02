@@ -2078,20 +2078,24 @@ namespace IFME
                     switch (Properties.Settings.Default.PrefixMode)
                     {
                         case 1:
-                            prefix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+                            prefix = $"[{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+                            break;
+                        case 2:
+                            prefix = $"{Properties.Settings.Default.PrefixText} ";
                             break;
                         default:
-                            prefix = $" {Properties.Settings.Default.PrefixText} ";
                             break;
                     }
 
                     switch (Properties.Settings.Default.PostfixMode)
                     {
                         case 1:
-                            postfix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+                            postfix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}]";
+                            break;
+                        case 2:
+                            postfix = $" {Properties.Settings.Default.PostfixText}";
                             break;
                         default:
-                            postfix = $" {Properties.Settings.Default.PostfixText} ";
                             break;
                     }
 
