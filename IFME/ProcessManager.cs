@@ -12,6 +12,8 @@ namespace IFME
 
 		internal static bool IsPause = false;
 
+		internal static int TotalFrames = 0;
+
 		internal static int Start(string Command)
 		{
 			return new ProcessManager().Run(Command, string.Empty);
@@ -63,6 +65,11 @@ namespace IFME
 			proc.WaitForExit();
 
 			ProcessId.Remove(proc.Id);
+
+			if (TotalFrames > 0)
+            {
+				return TotalFrames; //x265
+			}
 			
 			return proc.ExitCode;
 		}
@@ -74,6 +81,19 @@ namespace IFME
 
 			if (!string.IsNullOrEmpty(e.Data))
 			{
+				var tf = @"(?<=encoded\s) ?\d+(?=> frames in \d+.\d+)?"; //x265 encoded total frame
+				var tfm = Regex.Matches(e.Data, tf, RegexOptions.IgnoreCase);
+				if (tfm.Count > 0)
+                {
+					if (tfm.Count > 0)
+					{
+						if (!int.TryParse(tfm[0].Value, out TotalFrames))
+							TotalFrames = 0;
+					}
+
+					return;
+                }
+
 				var p = @"(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kbps)|(\d+.\d+[ ]{1,}fps)";
 				var x = Regex.Matches(e.Data, p, RegexOptions.IgnoreCase);
 				if (x.Count >= 3)

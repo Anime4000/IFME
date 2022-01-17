@@ -1,4 +1,9 @@
-﻿Version 22.01.02 Alpha (True Eternity)
+﻿Version 22.01.18 Alpha (True Eternity)
+--------------------------------------
+[fixed] Wrong interpretation of FFmpeg return code, negative means error/something bad, positive means ok/warning.
+[fixed] Multipass for x265 (dirty fix)
+
+Version 22.01.02 Alpha (True Eternity)
 --------------------------------------
 [fixed] Hard Sub with MKV cause wrong data because previous subtitle and fonts copied over
 [fixed] Extra space when Pre/Post fix in file name
