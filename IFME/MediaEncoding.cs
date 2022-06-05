@@ -323,6 +323,9 @@ namespace IFME
 						Thread.Sleep(1500);
 					}
 
+					var enc = new EncoderNamedPipe();
+					enc.Start();
+
 					// Raw file dont have pts (time), need to remux
 					frmMain.PrintStatus($"Restructure...");
 					frmMain.PrintLog($"[INFO] Restructure RAW video file...");

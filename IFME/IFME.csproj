@@ -56,6 +56,9 @@
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Encoder\EncoderMedia.cs" />
+    <Compile Include="Encoder\EncoderNamedPipe.cs" />
+    <Compile Include="Encoder\EncoderProcess.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts\FontAwesome.cs" />
     <Compile Include="Fonts\Fonts.cs" />
