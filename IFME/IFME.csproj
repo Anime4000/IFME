@@ -85,6 +85,12 @@
     <Compile Include="frmOptions.Designer.cs">
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProgressBar.Designer.cs">
+      <DependentUpon>frmProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>

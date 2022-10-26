@@ -200,10 +200,10 @@ namespace IFME
             foreach (var item in fileData.Attachment)
                 fileQueue.Attachment.Add(MediaQueueParse.Attachment(path, item));
 
-            lstFile.Items.Add(new ListViewItem(new[]
+            var lst = new ListViewItem(new[]
             {
                 Path.GetFileName(path),
-                Path.GetExtension(path).Substring(1).ToUpperInvariant(),
+                $"{Path.GetExtension(path).Substring(1).ToUpperInvariant()} > {Enum.GetName(typeof(MediaContainer), MediaContainer.MKV)}",
                 TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
                 OS.PrintFileSize(fileData.FileSize),
                 fileQueue.Enable ? "Ready" : "Done",
@@ -213,7 +213,16 @@ namespace IFME
                 Tag = fileQueue,
                 Checked = true,
                 Selected = true
-            });			
+            };
+
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(delegate { lstFile.Items.Add(lst); }));
+            }
+            else
+            {
+                lstFile.Items.Add(lst);
+            }
         }
 
         private void MediaVideoListAdd(string path)

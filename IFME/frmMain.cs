@@ -304,6 +304,10 @@ namespace IFME
                 // Profile
                 cboProfile.SelectedIndex = data.ProfileId;
 
+                // MP4 Remux Test
+                chkVideoMP4Compt.Checked = data.MP4MuxVideo;
+                chkAudioMP4Compt.Checked = data.MP4MuxAudio;
+
                 // Video
                 ListViewItem_RefreshVideo(data);
 
@@ -388,6 +392,29 @@ namespace IFME
         {
             foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
                 MediaFileListAdd(file, false);
+        }
+
+        private void lstFile_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A && e.Control)
+            {
+                lstFile.MultiSelect = true; // force
+                foreach (ListViewItem item in lstFile.Items)
+                {
+                    item.Selected = true;
+                }
+
+                if (string.IsNullOrEmpty(cboFormat.Text))
+                {
+                    var tt = new ToolTip();
+                    tt.Show(null, cboFormat, 0);
+                    tt.IsBalloon = false;
+                    tt.ToolTipIcon = ToolTipIcon.Info;
+                    tt.ToolTipTitle = "Inconsistent output format!";
+                    tt.SetToolTip(btnAbout, "");
+                    tt.Show("There are mixed output format that need to change first before set audio/video Encoder", cboFormat, cboFormat.Width / 2, cboFormat.Height / 2, 30000);
+                }
+            }
         }
 
         private void lstVideo_DragEnter(object sender, DragEventArgs e)
@@ -1063,6 +1090,42 @@ namespace IFME
                         {
                             item.DeInterlace.Field = cboVideoDeInterField.SelectedIndex;
                         }
+                    }
+                }
+            }
+        }
+
+        private void chkVideoMP4Compt_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count == 1)
+                {
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).MP4MuxVideo = chkVideoMP4Compt.Checked;
+                }
+                else if (lstFile.SelectedItems.Count > 1)
+                {
+                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    {
+                        (queue.Tag as MediaQueue).MP4MuxVideo = chkVideoMP4Compt.Checked;
+                    }
+                }
+            }
+        }
+
+        private void chkAudioMP4Compt_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count == 1)
+                {
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).MP4MuxAudio = chkAudioMP4Compt.Checked;
+                }
+                else if (lstFile.SelectedItems.Count > 1)
+                {
+                    foreach (ListViewItem queue in lstFile.SelectedItems)
+                    {
+                        (queue.Tag as MediaQueue).MP4MuxAudio = chkAudioMP4Compt.Checked;
                     }
                 }
             }
@@ -1838,6 +1901,10 @@ namespace IFME
                 {
                     foreach (ListViewItem queue in lstFile.SelectedItems)
                     {
+                        var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
+                        var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
+
+                        queue.SubItems[1].Text = $"{inExt} > {outExt}";
                         (queue.Tag as MediaQueue).OutputFormat = (MediaContainer)cboFormat.SelectedIndex;
                     }
                 }
@@ -1845,6 +1912,9 @@ namespace IFME
 
             if (cboFormat.SelectedIndex > -1)
                 ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
+
+            chkVideoMP4Compt.Enabled = cboFormat.SelectedIndex == 1;
+            chkAudioMP4Compt.Enabled = cboFormat.SelectedIndex == 1;
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
@@ -1860,9 +1930,9 @@ namespace IFME
 
             if (lstFile.SelectedItems.Count > 0)
             {
-                var videoEnc = new MediaQueueVideoEncoder();
-                var videoPix = new MediaQueueVideoQuality();
-                var videoDei = new MediaQueueVideoDeInterlace();
+                MediaQueueVideoEncoder videoEnc;
+                MediaQueueVideoQuality videoPix;
+                MediaQueueVideoDeInterlace videoDei;
                 if ((lstFile.SelectedItems[0].Tag as MediaQueue).Video.Count > 0)
                 {
                     videoEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder;
@@ -1875,9 +1945,9 @@ namespace IFME
                     return;
                 }
 
-                var audioEnc = new MediaQueueAudioEncoder();
-                var audioCmd = string.Empty;
-                var audioFil = string.Empty;
+                MediaQueueAudioEncoder audioEnc;
+                string audioCmd;
+                string audioFil;
                 if ((lstFile.SelectedItems[0].Tag as MediaQueue).Audio.Count > 0)
                 {
                     audioEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder;
@@ -1977,7 +2047,44 @@ namespace IFME
 
         private void tsmiImportFolder_Click(object sender, EventArgs e)
         {
+            var files = OS.FilesRecursive();
+            var frm = new frmProgressBar();
 
+            if (files.Count == 0)
+                return;
+
+            frm.Show();
+            frm.Text = "Importing Media...";
+            frm.Status = "Reading {0} of {1} file\n{2}";
+
+            var thread = new BackgroundWorker();
+
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
+            {
+                for (int i = 0; i < files.Count; i++)
+                {
+                    MediaFileListAdd(files[i], false);
+
+                    if (InvokeRequired)
+                    {
+                        Invoke(new MethodInvoker(delegate
+                        {
+                            frm.Progress = (int)(((float)(i + 1) / files.Count) * 100.0);
+                            frm.Status = $"Reading {i + 1} of {files.Count} file\n{files[i]}";
+                            frm.Text = $"Importing: {frm.Progress}%";
+
+                            //Application.DoEvents();
+                        }));
+                    }
+                }
+            };
+
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                frm.Close();
+            };
+
+            thread.RunWorkerAsync();
         }
 
         private void tsmiImportImgSeq_Click(object sender, EventArgs e)
@@ -2099,7 +2206,15 @@ namespace IFME
                             break;
                     }
 
-                    var saveFileName = $"{prefix}{Path.GetFileNameWithoutExtension(mq.FilePath)}{postfix}.{mq.OutputFormat.ToString().ToLowerInvariant()}";
+                    var outFileName = $"{prefix}{Path.GetFileNameWithoutExtension(mq.FilePath)}{postfix}";
+                    var outFileExts = $"{mq.OutputFormat.ToString().ToLowerInvariant()}";
+                    var saveFileName = $"{outFileName}.{outFileExts}";
+                    var r = 1;
+
+                    while (File.Exists(Path.Combine(txtOutputPath.Text, saveFileName)))
+                    {
+                        saveFileName = $"{outFileName}_{++r}.{outFileExts}";
+                    }
 
                     // Create Temporary Session Folder
                     var tempSes = Path.Combine(Properties.Settings.Default.FolderTemporary, $"{Guid.NewGuid()}");

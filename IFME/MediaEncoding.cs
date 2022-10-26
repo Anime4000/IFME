@@ -99,7 +99,26 @@ namespace IFME
 					var outfmtfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
 
 					var af = string.Empty;
-					
+
+					if(queue.MP4MuxAudio && queue.OutputFormat == MediaContainer.MP4)
+                    {
+						frmMain.PrintStatus($"MP4 Remux, Audio #{i}");
+						frmMain.PrintLog($"[INFO] Remuxing into MP4 audio...");
+
+						var fourCC = "mp4a";
+
+						if (codec.GUID.Equals(new Guid("deadbeef-0ac3-0ac3-0ac3-0ac30ac30ac3")))
+							fourCC = "ac-3";
+
+						var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:a copy -tag:a {fourCC} -y audio{i:D4}_{item.Lang}.m4a");
+
+						if (exitCode == 0 || exitCode == 5522)
+							continue;
+
+						frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
+						File.Delete(Path.Combine(tempDir, $"audio{i:D4}_{item.Lang}.mov"));
+					}
+
 					if (!item.CommandFilter.IsDisable())
 					{
 						af = $"-af {item.CommandFilter}";
@@ -265,8 +284,28 @@ namespace IFME
 						frmMain.PrintStatus($"Copying, Video #{i}");
 						frmMain.PrintLog($"[INFO] Copying video stream...");
 
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
+						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
 						continue;
+					}
+
+					// MP4 Remux Test
+					if (queue.MP4MuxVideo && queue.OutputFormat == MediaContainer.MP4)
+                    {
+						frmMain.PrintStatus($"MP4 Remux, Video #{i}");
+						frmMain.PrintLog($"[INFO] Remuxing into MP4 video...");
+
+						var fourCC = "avc1";
+
+						if (codec.GUID.Equals(new Guid("deadbeef-0265-0265-0265-026502650265")))
+							fourCC = "hcv1";
+
+						var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:v copy -tag:v {fourCC} -y video{i:D4}_{item.Lang}.mp4");
+
+						if (exitCode == 0 || exitCode == 5522)
+							continue;
+
+						frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
+						File.Delete(Path.Combine(tempDir, $"video{i:D4}_{item.Lang}.mov"));
 					}
 
 					// Begin encoding

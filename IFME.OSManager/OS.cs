@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace IFME.OSManager
 {
@@ -124,6 +126,34 @@ namespace IFME.OSManager
                 double num = Math.Round(bytes / Math.Pow(1000, place), 1);
                 return $"{(Math.Sign((long)value) * num)} {DEC[place]}";
             }
+        }
+
+        public static List<string> FilesRecursive()
+        {
+            var files = new List<string>();
+            var fbd = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = false,
+                SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)
+            };
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                var dirs = new List<string>(Directory.GetDirectories(fbd.SelectedPath));
+
+                if (dirs.Count == 0)
+                    dirs.Add(fbd.SelectedPath);
+
+                foreach (var d in dirs)
+                {
+                    foreach (var f in Directory.GetFiles(d))
+                    {
+                        files.Add(f);
+                    }
+                }
+            }
+
+            return files;
         }
     }
 }

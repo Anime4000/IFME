@@ -46,6 +46,12 @@
   <ItemGroup>
     <Compile Include="API\Linux.cs" />
     <Compile Include="API\Windows.cs" />
+    <Compile Include="ProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgressBar.Designer.cs">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputBox.cs">
       <SubType>Form</SubType>
     </Compile>

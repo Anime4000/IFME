@@ -186,6 +186,8 @@
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.chkVideoMP4Compt = new System.Windows.Forms.CheckBox();
+            this.chkAudioMP4Compt = new System.Windows.Forms.CheckBox();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -590,6 +592,7 @@
             // 
             // tabConfigAudio
             // 
+            this.tabConfigAudio.Controls.Add(this.chkAudioMP4Compt);
             this.tabConfigAudio.Controls.Add(this.lblAudioLang);
             this.tabConfigAudio.Controls.Add(this.grpAudioCodec);
             this.tabConfigAudio.Controls.Add(this.cboAudioLang);
@@ -638,7 +641,7 @@
             // 
             // colAudioBitRate
             // 
-            this.colAudioBitRate.Text = "Bit Rate";
+            this.colAudioBitRate.Text = "Quality";
             this.colAudioBitRate.Width = 100;
             // 
             // colAudioSampleRate
@@ -1287,6 +1290,7 @@
             // 
             // tabConfigVideo
             // 
+            this.tabConfigVideo.Controls.Add(this.chkVideoMP4Compt);
             this.tabConfigVideo.Controls.Add(this.lblVideoLang);
             this.tabConfigVideo.Controls.Add(this.chkVideoDeInterlace);
             this.tabConfigVideo.Controls.Add(this.grpVideoInterlace);
@@ -1606,6 +1610,7 @@
             this.lstFile.SelectedIndexChanged += new System.EventHandler(this.lstFile_SelectedIndexChanged);
             this.lstFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFile_DragDrop);
             this.lstFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstFile_DragEnter);
+            this.lstFile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstFile_KeyDown);
             // 
             // colFileName
             // 
@@ -1757,7 +1762,6 @@
             // 
             // tsmiImportFolder
             // 
-            this.tsmiImportFolder.Enabled = false;
             this.tsmiImportFolder.Name = "tsmiImportFolder";
             this.tsmiImportFolder.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportFolder.Text = "Import Fol&der";
@@ -1884,6 +1888,34 @@
             this.btnAbout.TabIndex = 4;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
+            // chkVideoMP4Compt
+            // 
+            this.chkVideoMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkVideoMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVideoMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkVideoMP4Compt.Name = "chkVideoMP4Compt";
+            this.chkVideoMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkVideoMP4Compt.TabIndex = 12;
+            this.chkVideoMP4Compt.Text = "Copy/Remux MP&4 in High Compatibility";
+            this.chkVideoMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVideoMP4Compt.UseVisualStyleBackColor = true;
+            this.chkVideoMP4Compt.CheckedChanged += new System.EventHandler(this.chkVideoMP4Compt_CheckedChanged);
+            // 
+            // chkAudioMP4Compt
+            // 
+            this.chkAudioMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAudioMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkAudioMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkAudioMP4Compt.Name = "chkAudioMP4Compt";
+            this.chkAudioMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkAudioMP4Compt.TabIndex = 13;
+            this.chkAudioMP4Compt.Text = "Copy/Remux MP&4 in High Compatibility";
+            this.chkAudioMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkAudioMP4Compt.UseVisualStyleBackColor = true;
+            this.chkAudioMP4Compt.CheckedChanged += new System.EventHandler(this.chkAudioMP4Compt_CheckedChanged);
             // 
             // frmMain
             // 
@@ -2107,5 +2139,7 @@
         private System.Windows.Forms.TextBox txtTrimEnd;
         private System.Windows.Forms.TextBox txtTrimStart;
         private System.Windows.Forms.GroupBox grpAdvHdr;
+        private System.Windows.Forms.CheckBox chkAudioMP4Compt;
+        private System.Windows.Forms.CheckBox chkVideoMP4Compt;
     }
 }
