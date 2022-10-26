@@ -9,453 +9,448 @@ using IFME.OSManager;
 
 namespace IFME
 {
-	internal class MediaEncoding
-	{
-		private static int Arch = OS.Is64bit ? 64 : 32;
-		internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
-		internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
-		internal static int CurrentIndex = 0;
+    internal class MediaEncoding
+    {
+        private static int Arch = OS.Is64bit ? 64 : 32;
+        internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
+        internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
+        internal static int CurrentIndex = 0;
 
-		internal static void Extract(MediaQueue queue, string tempDir)
-		{
-			frmMain.PrintStatus("Extracting...");
+        internal static void Extract(MediaQueue queue, string tempDir)
+        {
+            frmMain.PrintStatus("Extracting...");
 
-			frmMain.PrintLog("[INFO] Extracting subtitle file...");
+            frmMain.PrintLog("[INFO] Extracting subtitle file...");
 
-			for (int i = 0; i < queue.Subtitle.Count; i++)
-			{
-				var id = queue.Subtitle[i].Id;
-				var fmt = queue.Subtitle[i].Codec;
-				var file = queue.Subtitle[i].File;
-				var lang = queue.Subtitle[i].Lang;
-				var fext = Path.GetExtension(file);
-
-				if (id < 0)
-				{
-					File.Copy(file, Path.Combine(tempDir, $"subtitle{i:D4}_{lang}{fext}"));
-				}
-				else
-				{
-					ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{i:D4}_{lang}.{fmt}");
-				}
-			}
-
-			frmMain.PrintLog("[INFO] Extracting embeded attachment...");
-			var tempDirFont = Path.Combine(tempDir, "attachment");
-			for (int i = 0; i < queue.Attachment.Count; i++)
-			{
-				var id = queue.Attachment[i].Id;
-				var file = queue.Attachment[i].File;
-				var name = queue.Attachment[i].Name;
-
-				if (!Directory.Exists(tempDirFont))
-					Directory.CreateDirectory(tempDirFont);
-				
-				if (id < 0)
-				{
-					File.Copy(file, Path.Combine(tempDirFont, Path.GetFileName(file)));
-				}
-				else
-				{
-					ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} {name} -i \"{file}\" -y");
-				}
-			}
-
-			// Hard Sub
-			if (queue.HardSub)
+            for (int i = 0; i < queue.Subtitle.Count; i++)
             {
-				File.Copy(Path.Combine("Fonts", "fonts.conf"), Path.Combine(tempDir, "fonts.conf"), true);
-				Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDir);
-				Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
-				Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
-			}
-
-			// Chapters
-			ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
-		}
-
-		internal static void Audio(MediaQueue queue, string tempDir)
-		{
-			for (int i = 0; i < queue.Audio.Count; i++)
-			{
-				var item = queue.Audio[i];
-
-				frmMain.PrintStatus($"Encoding, Audio #{i}");
-
-				if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
-				{
-					frmMain.PrintLog("[INFO] Encoding audio file...");
-
-					var ac = codec.Audio;
-					var md = item.Encoder.Mode;
-					var en = ac.Encoder;
-
-					var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
-
-					var qu = string.IsNullOrEmpty(ac.Mode[md].Args) ? string.Empty : $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
-					var hz = item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}";
-					var ch = item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}";
-
-					var outfmtfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
-
-					var af = string.Empty;
-
-					if(queue.MP4MuxAudio && queue.OutputFormat == MediaContainer.MP4)
-                    {
-						frmMain.PrintStatus($"MP4 Remux, Audio #{i}");
-						frmMain.PrintLog($"[INFO] Remuxing into MP4 audio...");
-
-						var fourCC = "mp4a";
-
-						if (codec.GUID.Equals(new Guid("deadbeef-0ac3-0ac3-0ac3-0ac30ac30ac3")))
-							fourCC = "ac-3";
-
-						var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:a copy -tag:a {fourCC} -y audio{i:D4}_{item.Lang}.m4a");
-
-						if (exitCode == 0 || exitCode == 5522)
-							continue;
-
-						frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
-						File.Delete(Path.Combine(tempDir, $"audio{i:D4}_{item.Lang}.mov"));
-					}
-
-					if (!item.CommandFilter.IsDisable())
-					{
-						af = $"-af {item.CommandFilter}";
-					}
-
-					if (ac.Args.Pipe)
-					{
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{en}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
-					}
-					else
-					{
-						ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {ac.Args.Codec} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
-					}
-				}
-			}
-		}
-
-		internal static void Video(MediaQueue queue, string tempDir)
-		{
-			for (int i = 0; i < queue.Video.Count; i++)
-			{
-				var item = queue.Video[i];
-
-				if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
-				{
-					var vc = codec.Video;
-
-					var en = vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary;
-
-					var ff = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg");
-
-					var mode = item.Encoder.Mode;
-
-					var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
-					var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
-					var outencfile = vc.RawOutput ? outrawfile : outfmtfile;
-
-					var val_w = item.Quality.Width >= 128 ? item.Quality.Width : item.Quality.OriginalWidth;
-					var val_h = item.Quality.Height >= 128 ? item.Quality.Height : item.Quality.OriginalHeight;
-					var val_fps = item.Quality.FrameRate >= 5 ? item.Quality.FrameRate : 23.976;
-					var val_bpc = item.Quality.BitDepth >= 8 ? item.Quality.BitDepth : 8;
-					var val_csp = item.Quality.PixelFormat >= 420 ? item.Quality.PixelFormat : 420;
-
-					var ff_rawcodec = string.Empty;
-					var ff_infps = string.Empty;
-					var ff_trim = string.Empty;
-					var ff_res = string.Empty;
-					var ff_yuv = string.Empty;
-					var ff_vf = new List<string>();
-					
-					var en_res = string.Empty;
-					var en_fps = string.Empty;
-					var en_bit = string.Empty;
-					var en_csp = string.Empty;
-					var en_preset = string.Empty;
-					var en_tune = string.Empty;
-					var en_mode = string.Empty;
-					var en_framecount = string.Empty;
-
-					// FFmpeg RAW Type
-					if (string.IsNullOrEmpty(vc.Args.Y4M))
-						ff_rawcodec = "-strict -1 -f rawvideo";
-					else
-						ff_rawcodec = "-strict -1 -f yuv4mpegpipe";
-
-					// FFmpeg Frame Rate (Input) for Image Sequence
-					ff_infps = item.IsImageSeq ? $"-framerate {item.Quality.OriginalFrameRate}" : string.Empty;
-
-					// FFmpeg Resolution
-					ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
-
-					// FFmpeg Frame Rate (force encode to target frame rate, become constant fps)
-					ff_vf.Add($"fps={item.Quality.FrameRate}");
-
-					// FFmpeg Pixel Format
-					ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{(val_bpc > 8 ? $"{val_bpc}le" : string.Empty)}";
-
-					// FFmpeg Trim
-					if (queue.Trim.Enable)
-						ff_trim += $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}";
-
-					// FFmpeg Video Filter
-					if (item.DeInterlace.Enable)
-						ff_vf.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
-					
-					// Fmpeg Video Filter (extra)
-					if (!item.Quality.CommandFilter.IsDisable())
-						ff_vf.Add(item.Quality.CommandFilter);
-					
-					if (queue.HardSub)
-					{
-						var files = Directory.GetFiles(tempDir, "subtitle*");
-
-						if (files.Length > 0)
-						{
-							var file = Path.GetFileName(files[0]);
-							var ext = Path.GetExtension(file).ToLowerInvariant();
-
-							if (ext.IsOneOf(".srt"))
-							{
-								ff_vf.Add($"subtitles={file}");
-							}
-							else if (ext.IsOneOf(".ass", ".ssa"))
-							{
-								ff_vf.Add($"ass={file}");
-							}
-						}
-					}
-
-					//
-					// Encoder Resolution
-					if (!string.IsNullOrEmpty(vc.Args.Resolution))
-						en_res = string.Format(vc.Args.Resolution, val_w, val_h);
-
-					// Encoder Frame Rate
-					if (!string.IsNullOrEmpty(vc.Args.FrameRate))
-						en_fps = $"{vc.Args.FrameRate} {item.Quality.FrameRate}";
-
-					// Encoder BitDepth Input
-					if (!string.IsNullOrEmpty(vc.Args.BitDepthIn))
-						en_bit = $"{vc.Args.BitDepthIn} {item.Quality.BitDepth}";
-
-					// Encoder BitDepth Output
-					if (!string.IsNullOrEmpty(vc.Args.BitDepthOut))
-						en_bit += $" {vc.Args.BitDepthOut} {item.Quality.BitDepth}";
-
-					// Encoder Pixel Format/ColorSpace Format (csp)
-					foreach (var c in vc.Chroma)
-					{
-						if (c.Value == val_csp)
-							if (!string.IsNullOrEmpty(c.Command))
-								en_csp = c.Command;
-					}
-
-					// Encoder Preset
-					en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);
-
-					// Encoder Tune
-					en_tune = ArgsParser.Parse(vc.Args.Tune, item.Encoder.Tune);
-
-					// Encoder Mode
-					if (!string.IsNullOrEmpty(vc.Mode[mode].Args))
-					{
-						en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
-					}
-
-					// Encoder Mode (Native)
-
-
-					// Encoder Frame Count
-					if (!string.IsNullOrEmpty(vc.Args.FrameCount))
-					{
-						if (item.Quality.FrameCount > 0)
-							en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
-
-						if (queue.Trim.Enable)
-							en_framecount = $"{vc.Args.FrameCount} {(TimeSpan.Parse(queue.Trim.Duration).TotalSeconds * item.Quality.FrameRate) + item.Quality.FrameRate * 2}"; // add one 2 sec buffer
-					}
-
-					// Copy Streams
-					if (codec.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
-					{
-						frmMain.PrintStatus($"Copying, Video #{i}");
-						frmMain.PrintLog($"[INFO] Copying video stream...");
-
-						ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
-						continue;
-					}
-
-					// MP4 Remux Test
-					if (queue.MP4MuxVideo && queue.OutputFormat == MediaContainer.MP4)
-                    {
-						frmMain.PrintStatus($"MP4 Remux, Video #{i}");
-						frmMain.PrintLog($"[INFO] Remuxing into MP4 video...");
-
-						var fourCC = "avc1";
-
-						if (codec.GUID.Equals(new Guid("deadbeef-0265-0265-0265-026502650265")))
-							fourCC = "hcv1";
-
-						var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:v copy -tag:v {fourCC} -y video{i:D4}_{item.Lang}.mp4");
-
-						if (exitCode == 0 || exitCode == 5522)
-							continue;
-
-						frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
-						File.Delete(Path.Combine(tempDir, $"video{i:D4}_{item.Lang}.mov"));
-					}
-
-					// Begin encoding
-					frmMain.PrintStatus($"Encoding, Video #{i}");
-					frmMain.PrintLog($"[INFO] Encoding video file...");
-
-					var cmd_ff = $"-map 0:{item.Id} {ff_trim} {ff_yuv} -vf {string.Join(",", ff_vf)}";
-
-					var cmd_en = $"{en_res} {en_fps} {en_bit} {en_csp}";
-
-					var cmd_ff_en = ff ? cmd_ff : cmd_en;
-
-					if (vc.Mode[item.Encoder.Mode].MultiPass)
-					{
-						var p = 1;
-						var pass = string.Empty;
-						var realframecount = 0;
-
-						frmMain.PrintLog("[WARN] Frame count is disable for Multi-pass encoding, Avoid inconsistent across multi-pass.");
-
-						do
-						{
-							pass = vc.Args.PassNth;
-
-							if (p == 1)
-								pass = vc.Args.PassFirst;
-
-							if (p == item.Encoder.MultiPass)
-								pass = vc.Args.PassLast;
-
-							frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
-
-							if (vc.Args.Pipe)
-								realframecount = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
-							else
-								ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
-
-							if (p == 1)
-								en_framecount = $"{vc.Args.FrameCount} {realframecount}";
-
-							++p;
-
-							Thread.Sleep(1500);
-
-						} while (p <= item.Encoder.MultiPass);
-					}
-					else
-					{
-						if (vc.Args.Pipe)
-							ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
-						else
-							ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
-
-						Thread.Sleep(1500);
-					}
-
-					// Raw file dont have pts (time), need to remux
-					frmMain.PrintStatus($"Restructure...");
-					frmMain.PrintLog($"[INFO] Restructure RAW video file...");
-
-					if (vc.RawOutput)
-					{
-						if (File.Exists(Path.Combine(tempDir, outrawfile)))
-						{
-							ProcessManager.Start(tempDir, $"\"{MP4Box}\" -add \"{outrawfile}#video:name=\" -itags tool=\"IFME MP4\" \"{outfmtfile}\" ");
-							File.Delete(Path.Combine(tempDir, outrawfile));
-						}
-					}
-					else
-					{
-						if (File.Exists(Path.Combine(tempDir, outrawfile)))
-						{
-							File.Move(Path.Combine(tempDir, outrawfile), Path.Combine(tempDir, outfmtfile));
-						}
-					}
-				}
-			}
-		}
-
-		internal static int Muxing(MediaQueue queue, string tempDir, string saveDir, string saveFile)
-		{
-			var x = 0;
-			var metadata = string.Empty;
-			var metafile = string.Empty;
-			var map = string.Empty;
-
-			var argVideo = string.Empty;
-			var argAudio = string.Empty;
-			var argSubtitle = string.Empty;
-			var argEmbed = string.Empty;
-
-			var outFile = Path.Combine(saveDir, saveFile);
-
-			frmMain.PrintStatus("Repacking...");
-			frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
-
-			Thread.Sleep(1500); // Wait NTFS finish updating the content
-
-			if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
-			{
-				metafile = "-f ffmetadata -i metadata.ini ";
-			}
-
-			foreach (var video in Directory.GetFiles(tempDir, "video*"))
-			{
-				argVideo += $"-i \"{Path.GetFileName(video)}\" ";
-				metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(video)}\" -metadata:s:{x} language={Language.FromFileNameCode(video)}  ";
-				map += $" -map {x}:0";
-				x++;
-			}
-
-			foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
-			{
-				argAudio += $"-i \"{Path.GetFileName(audio)}\" ";
-				metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(audio)}\" -metadata:s:{x} language={Language.FromFileNameCode(audio)} ";
-				map += $" -map {x}:0";
-				x++;
-			}
-
-			if (queue.OutputFormat == MediaContainer.MKV)
-			{
-				if (!queue.HardSub)
+                var id = queue.Subtitle[i].Id;
+                var fmt = queue.Subtitle[i].Codec;
+                var file = queue.Subtitle[i].File;
+                var lang = queue.Subtitle[i].Lang;
+                var fext = Path.GetExtension(file);
+
+                if (id < 0)
                 {
-					var d = 0;
-					foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
-					{
-						argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-						metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
-						map += $" -map {x}:0";
-						x++;
-						d++;
-					}
+                    File.Copy(file, Path.Combine(tempDir, $"subtitle{i:D4}_{lang}{fext}"));
+                }
+                else
+                {
+                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{i:D4}_{lang}.{fmt}");
+                }
+            }
 
-					var tempDirFont = Path.Combine(tempDir, "attachment");
-					if (Directory.Exists(tempDirFont))
-					{
-						var files = Directory.GetFiles(tempDirFont, "*");
-						for (int i = 0; i < files.Length; i++)
-						{
-							argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
-							metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
-							x++;
-						}
-					}
-				}
-			}
+            frmMain.PrintLog("[INFO] Extracting embeded attachment...");
+            var tempDirFont = Path.Combine(tempDir, "attachment");
+            for (int i = 0; i < queue.Attachment.Count; i++)
+            {
+                var id = queue.Attachment[i].Id;
+                var file = queue.Attachment[i].File;
+                var name = queue.Attachment[i].Name;
 
-			var author = $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} @ {Version.CodeName}";
-			var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata \"encoded_by={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
-			return ProcessManager.Start(tempDir, command);
-		}
-	}
+                if (!Directory.Exists(tempDirFont))
+                    Directory.CreateDirectory(tempDirFont);
+                
+                if (id < 0)
+                {
+                    File.Copy(file, Path.Combine(tempDirFont, Path.GetFileName(file)));
+                }
+                else
+                {
+                    ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} {name} -i \"{file}\" -y");
+                }
+            }
+
+            // Hard Sub
+            if (queue.HardSub)
+            {
+                File.Copy(Path.Combine("Fonts", "fonts.conf"), Path.Combine(tempDir, "fonts.conf"), true);
+                Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDir);
+                Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
+                Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
+            }
+
+            // Chapters
+            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
+        }
+
+        internal static void Audio(MediaQueue queue, string tempDir)
+        {
+            for (int i = 0; i < queue.Audio.Count; i++)
+            {
+                var item = queue.Audio[i];
+
+                frmMain.PrintStatus($"Encoding, Audio #{i}");
+
+                if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
+                {
+                    frmMain.PrintLog("[INFO] Encoding audio file...");
+
+                    var ac = codec.Audio;
+                    var md = item.Encoder.Mode;
+                    var en = ac.Encoder;
+
+                    var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
+
+                    var qu = string.IsNullOrEmpty(ac.Mode[md].Args) ? string.Empty : $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
+                    var hz = item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}";
+                    var ch = item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}";
+
+                    var outfmtfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
+
+                    var af = string.Empty;
+
+                    if(queue.MP4MuxAudio && queue.OutputFormat == MediaContainer.MP4)
+                    {
+                        frmMain.PrintStatus($"MP4 Remux, Audio #{i}");
+                        frmMain.PrintLog($"[INFO] Remuxing into MP4 audio...");
+
+                        var tempName = $"audio{i:D4}_{item.Lang}.m4a";
+                        var fourCC = "mp4a"; //AAC
+
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -tag:a {fourCC} -c:a copy -y {tempName}");
+
+                        if (exitCode == 0 || exitCode == 5522)
+                            continue;
+
+                        frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
+                        File.Delete(Path.Combine(tempDir, tempName));
+                    }
+
+                    if (!item.CommandFilter.IsDisable())
+                    {
+                        af = $"-af {item.CommandFilter}";
+                    }
+
+                    if (ac.Args.Pipe)
+                    {
+                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{en}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
+                    }
+                    else
+                    {
+                        ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {ac.Args.Codec} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
+                    }
+                }
+            }
+        }
+
+        internal static void Video(MediaQueue queue, string tempDir)
+        {
+            for (int i = 0; i < queue.Video.Count; i++)
+            {
+                var item = queue.Video[i];
+
+                if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
+                {
+                    var vc = codec.Video;
+
+                    var en = vc.Encoder.Find(b => b.BitDepth == item.Quality.BitDepth).Binary;
+
+                    var ff = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg");
+
+                    var mode = item.Encoder.Mode;
+
+                    var outrawfile = $"raw-v{i:D4}_{item.Lang}.{vc.Extension}";
+                    var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
+                    var outencfile = vc.RawOutput ? outrawfile : outfmtfile;
+
+                    var val_w = item.Quality.Width >= 128 ? item.Quality.Width : item.Quality.OriginalWidth;
+                    var val_h = item.Quality.Height >= 128 ? item.Quality.Height : item.Quality.OriginalHeight;
+                    var val_fps = item.Quality.FrameRate >= 5 ? item.Quality.FrameRate : 23.976;
+                    var val_bpc = item.Quality.BitDepth >= 8 ? item.Quality.BitDepth : 8;
+                    var val_csp = item.Quality.PixelFormat >= 420 ? item.Quality.PixelFormat : 420;
+
+                    var ff_rawcodec = string.Empty;
+                    var ff_infps = string.Empty;
+                    var ff_trim = string.Empty;
+                    var ff_res = string.Empty;
+                    var ff_yuv = string.Empty;
+                    var ff_vf = new List<string>();
+                    
+                    var en_res = string.Empty;
+                    var en_fps = string.Empty;
+                    var en_bit = string.Empty;
+                    var en_csp = string.Empty;
+                    var en_preset = string.Empty;
+                    var en_tune = string.Empty;
+                    var en_mode = string.Empty;
+                    var en_framecount = string.Empty;
+
+                    // FFmpeg RAW Type
+                    if (string.IsNullOrEmpty(vc.Args.Y4M))
+                        ff_rawcodec = "-strict -1 -f rawvideo";
+                    else
+                        ff_rawcodec = "-strict -1 -f yuv4mpegpipe";
+
+                    // FFmpeg Frame Rate (Input) for Image Sequence
+                    ff_infps = item.IsImageSeq ? $"-framerate {item.Quality.OriginalFrameRate}" : string.Empty;
+
+                    // FFmpeg Resolution
+                    ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
+
+                    // FFmpeg Frame Rate (force encode to target frame rate, become constant fps)
+                    ff_vf.Add($"fps={item.Quality.FrameRate}");
+
+                    // FFmpeg Pixel Format
+                    ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{(val_bpc > 8 ? $"{val_bpc}le" : string.Empty)}";
+
+                    // FFmpeg Trim
+                    if (queue.Trim.Enable)
+                        ff_trim += $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}";
+
+                    // FFmpeg Video Filter
+                    if (item.DeInterlace.Enable)
+                        ff_vf.Add($"yadif={item.DeInterlace.Mode}:{item.DeInterlace.Field}:0");
+                    
+                    // Fmpeg Video Filter (extra)
+                    if (!item.Quality.CommandFilter.IsDisable())
+                        ff_vf.Add(item.Quality.CommandFilter);
+                    
+                    if (queue.HardSub)
+                    {
+                        var files = Directory.GetFiles(tempDir, "subtitle*");
+
+                        if (files.Length > 0)
+                        {
+                            var file = Path.GetFileName(files[0]);
+                            var ext = Path.GetExtension(file).ToLowerInvariant();
+
+                            if (ext.IsOneOf(".srt"))
+                            {
+                                ff_vf.Add($"subtitles={file}");
+                            }
+                            else if (ext.IsOneOf(".ass", ".ssa"))
+                            {
+                                ff_vf.Add($"ass={file}");
+                            }
+                        }
+                    }
+
+                    //
+                    // Encoder Resolution
+                    if (!string.IsNullOrEmpty(vc.Args.Resolution))
+                        en_res = string.Format(vc.Args.Resolution, val_w, val_h);
+
+                    // Encoder Frame Rate
+                    if (!string.IsNullOrEmpty(vc.Args.FrameRate))
+                        en_fps = $"{vc.Args.FrameRate} {item.Quality.FrameRate}";
+
+                    // Encoder BitDepth Input
+                    if (!string.IsNullOrEmpty(vc.Args.BitDepthIn))
+                        en_bit = $"{vc.Args.BitDepthIn} {item.Quality.BitDepth}";
+
+                    // Encoder BitDepth Output
+                    if (!string.IsNullOrEmpty(vc.Args.BitDepthOut))
+                        en_bit += $" {vc.Args.BitDepthOut} {item.Quality.BitDepth}";
+
+                    // Encoder Pixel Format/ColorSpace Format (csp)
+                    foreach (var c in vc.Chroma)
+                    {
+                        if (c.Value == val_csp)
+                            if (!string.IsNullOrEmpty(c.Command))
+                                en_csp = c.Command;
+                    }
+
+                    // Encoder Preset
+                    en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);
+
+                    // Encoder Tune
+                    en_tune = ArgsParser.Parse(vc.Args.Tune, item.Encoder.Tune);
+
+                    // Encoder Mode
+                    if (!string.IsNullOrEmpty(vc.Mode[mode].Args))
+                    {
+                        en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
+                    }
+
+                    // Encoder Mode (Native)
+
+
+                    // Encoder Frame Count
+                    if (!string.IsNullOrEmpty(vc.Args.FrameCount))
+                    {
+                        if (item.Quality.FrameCount > 0)
+                            en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
+
+                        if (queue.Trim.Enable)
+                            en_framecount = $"{vc.Args.FrameCount} {(TimeSpan.Parse(queue.Trim.Duration).TotalSeconds * item.Quality.FrameRate) + item.Quality.FrameRate * 2}"; // add one 2 sec buffer
+                    }
+
+                    // Copy Streams
+                    if (codec.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
+                    {
+                        frmMain.PrintStatus($"Copying, Video #{i}");
+                        frmMain.PrintLog($"[INFO] Copying video stream...");
+
+                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
+                        continue;
+                    }
+
+                    // MP4 Remux Test
+                    if (queue.MP4MuxVideo && queue.OutputFormat == MediaContainer.MP4)
+                    {
+                        frmMain.PrintStatus($"MP4 Remux, Video #{i}");
+                        frmMain.PrintLog($"[INFO] Remuxing into MP4 video...");
+
+                        var tempName = $"video{i:D4}_{item.Lang}.mov";
+
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:v copy -y {tempName}");
+
+                        if (exitCode == 0 || exitCode == 5522)
+                            continue;
+
+                        frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
+                        File.Delete(Path.Combine(tempDir, tempName));
+                    }
+
+                    // Begin encoding
+                    frmMain.PrintStatus($"Encoding, Video #{i}");
+                    frmMain.PrintLog($"[INFO] Encoding video file...");
+
+                    var cmd_ff = $"-map 0:{item.Id} {ff_trim} {ff_yuv} -vf {string.Join(",", ff_vf)}";
+
+                    var cmd_en = $"{en_res} {en_fps} {en_bit} {en_csp}";
+
+                    var cmd_ff_en = ff ? cmd_ff : cmd_en;
+
+                    if (vc.Mode[item.Encoder.Mode].MultiPass)
+                    {
+                        var p = 1;
+                        var pass = string.Empty;
+                        var realframecount = 0;
+
+                        frmMain.PrintLog("[WARN] Frame count is disable for Multi-pass encoding, Avoid inconsistent across multi-pass.");
+
+                        do
+                        {
+                            pass = vc.Args.PassNth;
+
+                            if (p == 1)
+                                pass = vc.Args.PassFirst;
+
+                            if (p == item.Encoder.MultiPass)
+                                pass = vc.Args.PassLast;
+
+                            frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
+
+                            if (vc.Args.Pipe)
+                                realframecount = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
+                            else
+                                ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
+
+                            if (p == 1)
+                                en_framecount = $"{vc.Args.FrameCount} {realframecount}";
+
+                            ++p;
+
+                            Thread.Sleep(1500);
+
+                        } while (p <= item.Encoder.MultiPass);
+                    }
+                    else
+                    {
+                        if (vc.Args.Pipe)
+                            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+                        else
+                            ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+
+                        Thread.Sleep(1500);
+                    }
+
+                    // Raw file dont have pts (time), need to remux
+                    frmMain.PrintStatus($"Restructure...");
+                    frmMain.PrintLog($"[INFO] Restructure RAW video file...");
+
+                    if (vc.RawOutput)
+                    {
+                        if (File.Exists(Path.Combine(tempDir, outrawfile)))
+                        {
+                            ProcessManager.Start(tempDir, $"\"{MP4Box}\" -add \"{outrawfile}#video:name=\" -itags tool=\"IFME MP4\" \"{outfmtfile}\" ");
+                            File.Delete(Path.Combine(tempDir, outrawfile));
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(Path.Combine(tempDir, outrawfile)))
+                        {
+                            File.Move(Path.Combine(tempDir, outrawfile), Path.Combine(tempDir, outfmtfile));
+                        }
+                    }
+                }
+            }
+        }
+
+        internal static int Muxing(MediaQueue queue, string tempDir, string saveDir, string saveFile)
+        {
+            var x = 0;
+            var metadata = string.Empty;
+            var metafile = string.Empty;
+            var map = string.Empty;
+
+            var argVideo = string.Empty;
+            var argAudio = string.Empty;
+            var argSubtitle = string.Empty;
+            var argEmbed = string.Empty;
+
+            var outFile = Path.Combine(saveDir, saveFile);
+
+            frmMain.PrintStatus("Repacking...");
+            frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
+
+            Thread.Sleep(1500); // Wait NTFS finish updating the content
+
+            if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
+            {
+                metafile = "-f ffmetadata -i metadata.ini ";
+            }
+
+            foreach (var video in Directory.GetFiles(tempDir, "video*"))
+            {
+                argVideo += $"-i \"{Path.GetFileName(video)}\" ";
+                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(video)}\" -metadata:s:{x} language={Language.FromFileNameCode(video)}  ";
+                map += $" -map {x}:0";
+                x++;
+            }
+
+            foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
+            {
+                argAudio += $"-i \"{Path.GetFileName(audio)}\" ";
+                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(audio)}\" -metadata:s:{x} language={Language.FromFileNameCode(audio)} ";
+                map += $" -map {x}:0";
+                x++;
+            }
+
+            if (queue.OutputFormat == MediaContainer.MKV)
+            {
+                if (!queue.HardSub)
+                {
+                    var d = 0;
+                    foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
+                    {
+                        argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
+                        metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+                        map += $" -map {x}:0";
+                        x++;
+                        d++;
+                    }
+
+                    var tempDirFont = Path.Combine(tempDir, "attachment");
+                    if (Directory.Exists(tempDirFont))
+                    {
+                        var files = Directory.GetFiles(tempDirFont, "*");
+                        for (int i = 0; i < files.Length; i++)
+                        {
+                            argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+                            metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+                            x++;
+                        }
+                    }
+                }
+            }
+
+            var author = $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} @ {Version.CodeName}";
+            var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata \"encoded_by={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            return ProcessManager.Start(tempDir, command);
+        }
+    }
 }

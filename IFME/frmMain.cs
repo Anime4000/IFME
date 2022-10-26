@@ -2233,16 +2233,16 @@ namespace IFME
                     var errCodeMux = MediaEncoding.Muxing(mq, tempSes, txtOutputPath.Text, saveFileName);
 
                     // Check FFmpeg Muxing is failed (negative) or sucess/warning (positive)
-                    if (errCodeMux < 0)
+                    if (errCodeMux == 0 || errCodeMux == 5522)
+                    {
+                        PrintLog("[ OK ] Multiplexing files was successfully!");
+                        PrintLog($"[DEBG] FFmpeg return code {errCodeMux}");
+                    }
+                    else
                     {
                         Extensions.DirectoryCopy(tempSes, Path.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
                         PrintLog("[ERR ] FFmpeg failed to merge raw files... Check [Muxing Failed] folder to manual muxing...");
                         PrintLog($"[ERR ] FFmpeg return code {errCodeMux}");
-                    }
-                    else
-                    {
-                        PrintLog("[ OK ] Multiplexing files was successfully!");
-                        PrintLog($"[DEBG] FFmpeg return code {errCodeMux}");
                     }
 
                     // Delete Temporary Session Folder

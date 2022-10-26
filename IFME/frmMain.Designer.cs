@@ -1898,7 +1898,7 @@
             this.chkVideoMP4Compt.Name = "chkVideoMP4Compt";
             this.chkVideoMP4Compt.Size = new System.Drawing.Size(222, 24);
             this.chkVideoMP4Compt.TabIndex = 12;
-            this.chkVideoMP4Compt.Text = "Copy/Remux MP&4 in High Compatibility";
+            this.chkVideoMP4Compt.Text = "Fast Remux MP&4 in High Compatibility\r\n";
             this.chkVideoMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkVideoMP4Compt.UseVisualStyleBackColor = true;
             this.chkVideoMP4Compt.CheckedChanged += new System.EventHandler(this.chkVideoMP4Compt_CheckedChanged);
@@ -1912,7 +1912,7 @@
             this.chkAudioMP4Compt.Name = "chkAudioMP4Compt";
             this.chkAudioMP4Compt.Size = new System.Drawing.Size(222, 24);
             this.chkAudioMP4Compt.TabIndex = 13;
-            this.chkAudioMP4Compt.Text = "Copy/Remux MP&4 in High Compatibility";
+            this.chkAudioMP4Compt.Text = "Fast Remux MP&4 in High Compatibility";
             this.chkAudioMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkAudioMP4Compt.UseVisualStyleBackColor = true;
             this.chkAudioMP4Compt.CheckedChanged += new System.EventHandler(this.chkAudioMP4Compt_CheckedChanged);
