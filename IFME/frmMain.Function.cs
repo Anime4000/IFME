@@ -51,6 +51,9 @@ namespace IFME
 
             txtMediaInfo.Font = Fonts.Uni(12f, FontStyle.Regular);
             rtfConsole.Font = Fonts.Uni(12f, FontStyle.Regular);
+            cboFormat.Font = new Font("Consolas", 10f);
+            cboProfile.Font = cboFormat.Font;
+            txtOutputPath.Font = cboFormat.Font;
 
             btnFileAdd.Text = Fonts.fa.plus;
             btnFileDelete.Text = Fonts.fa.minus;

@@ -1,4 +1,12 @@
-﻿Version 22.01.18 Alpha (True Eternity)
+﻿Version 22.10.1 Alpha (Erdentempel)
+-----------------------------------
+[new] Introduce "Fast Remux", where you can remux file when codec is compatible to target file container, otherwise encode to compatible codec. Example use case: Any wrong codec (AVI) in your Jellyfin/Plex will be encoded to H.264
+[new] Folder import is available! Example use case: Scan Import all Jellyfin/Plex media
+[fixed] Re-fix interpretation of FFmpeg return code, where IFME treat positive 1 mean ok/warning
+[change] "Copy Stream" is deprecated due to "Fast Remux" feature!
+[change] No longer ship CPU Specific x264/x265 encoder where non AVX processor cannot use
+
+Version 22.01.18 Alpha (True Eternity)
 --------------------------------------
 [fixed] Wrong interpretation of FFmpeg return code, negative means error/something bad, positive means ok/warning.
 [fixed] Multipass for x265 (dirty fix)
@@ -21,7 +29,6 @@ NOTE!!! Decoder Encoder are not updated, currently has no issue to replace, you 
 
 Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
 --------------------------------------------------------------------
-
 [new] Option window is now available [git#218]
 [new] Undesire encoders now can disable/enable [git#218]
 [new] Allow user to disable encoder test just to make program start faster (use at own risk) [git#218]
@@ -34,9 +41,7 @@ Version 21.06.17 Alpha (Undomesticated equines could not remove me.)
 
 Version 21.06.14 Alpha (The galaxy is at a crossroads)
 ------------------------------------------------------
-
 I sorry for very quick update, sometime designing GUI event can be daunting
-
 [new] About IFME added for more information about this project
 [fixed] Image Sequence source frame rate -to- output frame rate
 [fixed] Adding additional streams did not show new item in the list [git#217]
@@ -47,9 +52,7 @@ I sorry for very quick update, sometime designing GUI event can be daunting
 
 Version 21.06.13 Alpha (The galaxy is at a crossroads)
 ------------------------------------------------------
-
 [update] This is pre-release version 8 beta, still many missing feature...
-
 [new] Support Image Sequence (right click + button)
 [new] Support H.263/XVID encode for older device
 [new] Support VP8 & VP9 encode for internet

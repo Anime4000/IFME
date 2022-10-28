@@ -16,6 +16,41 @@ namespace IFME
         internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
         internal static int CurrentIndex = 0;
 
+        private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
+
+        private static string FileContainerCompact(MediaContainer Cont)
+        {
+            switch (Cont)
+            {
+                case MediaContainer.AVI:
+                    return "avi";
+                case MediaContainer.MP4:
+                    return "mov";
+                case MediaContainer.MKV:
+                    return "mp4";
+                case MediaContainer.WEBM:
+                    return "webm";
+                case MediaContainer.TS:
+                    return "m4v";
+                case MediaContainer.M2TS:
+                    return "m4v";
+                case MediaContainer.MP2:
+                    return "mp2";
+                case MediaContainer.MP3:
+                    return "mp3";
+                case MediaContainer.M4A:
+                    return "m4a";
+                case MediaContainer.OGG:
+                    return "ogg";
+                case MediaContainer.OPUS:
+                    return "opus";
+                case MediaContainer.FLAC:
+                    return "flac";
+                default:
+                    return "mkv";
+            }
+        }
+
         internal static void Extract(MediaQueue queue, string tempDir)
         {
             frmMain.PrintStatus("Extracting...");
@@ -100,17 +135,16 @@ namespace IFME
 
                     var af = string.Empty;
 
-                    if(queue.MP4MuxAudio && queue.OutputFormat == MediaContainer.MP4)
+                    if(queue.FastMuxAudio)
                     {
-                        frmMain.PrintStatus($"MP4 Remux, Audio #{i}");
-                        frmMain.PrintLog($"[INFO] Remuxing into MP4 audio...");
+                        frmMain.PrintStatus($"Fast Remux, Audio #{i}");
+                        frmMain.PrintLog($"[INFO] Fast Remuxing Audio...");
 
-                        var tempName = $"audio{i:D4}_{item.Lang}.m4a";
-                        var fourCC = "mp4a"; //AAC
+                        var tempName = $"audio{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
 
-                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -tag:a {fourCC} -c:a copy -y {tempName}");
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y {tempName}");
 
-                        if (exitCode == 0 || exitCode == 5522)
+                        if (!IsExitError(exitCode))
                             continue;
 
                         frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
@@ -287,16 +321,16 @@ namespace IFME
                     }
 
                     // MP4 Remux Test
-                    if (queue.MP4MuxVideo && queue.OutputFormat == MediaContainer.MP4)
+                    if (queue.FastMuxVideo)
                     {
-                        frmMain.PrintStatus($"MP4 Remux, Video #{i}");
-                        frmMain.PrintLog($"[INFO] Remuxing into MP4 video...");
+                        frmMain.PrintStatus($"Fast Remux, Video #{i}");
+                        frmMain.PrintLog($"[INFO] Fast Remuxing Video...");
 
-                        var tempName = $"video{i:D4}_{item.Lang}.mov";
+                        var tempName = $"video{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
 
-                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -i \"{item.File}\" -map 0:{item.Id} -c:v copy -y {tempName}");
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:v copy -y {tempName}");
 
-                        if (exitCode == 0 || exitCode == 5522)
+                        if (!IsExitError(exitCode))
                             continue;
 
                         frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");

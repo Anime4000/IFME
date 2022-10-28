@@ -66,6 +66,7 @@
             this.cboAudioEncoder = new System.Windows.Forms.ComboBox();
             this.lblAudioEncoder = new System.Windows.Forms.Label();
             this.tabConfigAudio = new System.Windows.Forms.TabPage();
+            this.chkAudioMP4Compt = new System.Windows.Forms.CheckBox();
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colAudioBitRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -126,6 +127,7 @@
             this.chkVideoDeInterlace = new System.Windows.Forms.CheckBox();
             this.grpVideoInterlace = new System.Windows.Forms.GroupBox();
             this.tabConfigVideo = new System.Windows.Forms.TabPage();
+            this.chkVideoMP4Compt = new System.Windows.Forms.CheckBox();
             this.grpVideoCodec = new System.Windows.Forms.GroupBox();
             this.btnVideoEnc = new System.Windows.Forms.Button();
             this.lblVideoAdv = new System.Windows.Forms.Label();
@@ -186,8 +188,6 @@
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.chkVideoMP4Compt = new System.Windows.Forms.CheckBox();
-            this.chkAudioMP4Compt = new System.Windows.Forms.CheckBox();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -610,6 +610,20 @@
             this.tabConfigAudio.Text = "Audio";
             this.tabConfigAudio.UseVisualStyleBackColor = true;
             // 
+            // chkAudioMP4Compt
+            // 
+            this.chkAudioMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAudioMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkAudioMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkAudioMP4Compt.Name = "chkAudioMP4Compt";
+            this.chkAudioMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkAudioMP4Compt.TabIndex = 13;
+            this.chkAudioMP4Compt.Text = "Fast Remux in High Compatibility";
+            this.chkAudioMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkAudioMP4Compt.UseVisualStyleBackColor = true;
+            this.chkAudioMP4Compt.CheckedChanged += new System.EventHandler(this.chkAudioMP4Compt_CheckedChanged);
+            // 
             // lstAudio
             // 
             this.lstAudio.AllowDrop = true;
@@ -815,11 +829,11 @@
             this.cboProfile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cboProfile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboProfile.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.cboProfile.Font = new System.Drawing.Font("Consolas", 10F);
             this.cboProfile.FormattingEnabled = true;
-            this.cboProfile.Location = new System.Drawing.Point(274, 534);
+            this.cboProfile.Location = new System.Drawing.Point(322, 534);
             this.cboProfile.Name = "cboProfile";
-            this.cboProfile.Size = new System.Drawing.Size(708, 24);
+            this.cboProfile.Size = new System.Drawing.Size(660, 23);
             this.cboProfile.TabIndex = 15;
             this.cboProfile.SelectedIndexChanged += new System.EventHandler(this.cboProfile_SelectedIndexChanged);
             // 
@@ -827,11 +841,11 @@
             // 
             this.cboFormat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboFormat.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.cboFormat.Font = new System.Drawing.Font("Consolas", 10F);
             this.cboFormat.FormattingEnabled = true;
             this.cboFormat.Location = new System.Drawing.Point(148, 534);
             this.cboFormat.Name = "cboFormat";
-            this.cboFormat.Size = new System.Drawing.Size(120, 24);
+            this.cboFormat.Size = new System.Drawing.Size(168, 23);
             this.cboFormat.TabIndex = 14;
             this.cboFormat.SelectedIndexChanged += new System.EventHandler(this.cboFormat_SelectedIndexChanged);
             // 
@@ -1310,6 +1324,20 @@
             this.tabConfigVideo.TabIndex = 0;
             this.tabConfigVideo.Text = "Video";
             this.tabConfigVideo.UseVisualStyleBackColor = true;
+            // 
+            // chkVideoMP4Compt
+            // 
+            this.chkVideoMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkVideoMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVideoMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkVideoMP4Compt.Name = "chkVideoMP4Compt";
+            this.chkVideoMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkVideoMP4Compt.TabIndex = 12;
+            this.chkVideoMP4Compt.Text = "Fast Remux in High Compatibility\r\n";
+            this.chkVideoMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVideoMP4Compt.UseVisualStyleBackColor = true;
+            this.chkVideoMP4Compt.CheckedChanged += new System.EventHandler(this.chkVideoMP4Compt_CheckedChanged);
             // 
             // grpVideoCodec
             // 
@@ -1888,34 +1916,6 @@
             this.btnAbout.TabIndex = 4;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
-            // chkVideoMP4Compt
-            // 
-            this.chkVideoMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkVideoMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkVideoMP4Compt.Location = new System.Drawing.Point(258, 6);
-            this.chkVideoMP4Compt.Name = "chkVideoMP4Compt";
-            this.chkVideoMP4Compt.Size = new System.Drawing.Size(222, 24);
-            this.chkVideoMP4Compt.TabIndex = 12;
-            this.chkVideoMP4Compt.Text = "Fast Remux MP&4 in High Compatibility\r\n";
-            this.chkVideoMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkVideoMP4Compt.UseVisualStyleBackColor = true;
-            this.chkVideoMP4Compt.CheckedChanged += new System.EventHandler(this.chkVideoMP4Compt_CheckedChanged);
-            // 
-            // chkAudioMP4Compt
-            // 
-            this.chkAudioMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkAudioMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkAudioMP4Compt.Location = new System.Drawing.Point(258, 6);
-            this.chkAudioMP4Compt.Name = "chkAudioMP4Compt";
-            this.chkAudioMP4Compt.Size = new System.Drawing.Size(222, 24);
-            this.chkAudioMP4Compt.TabIndex = 13;
-            this.chkAudioMP4Compt.Text = "Fast Remux MP&4 in High Compatibility";
-            this.chkAudioMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkAudioMP4Compt.UseVisualStyleBackColor = true;
-            this.chkAudioMP4Compt.CheckedChanged += new System.EventHandler(this.chkAudioMP4Compt_CheckedChanged);
             // 
             // frmMain
             // 

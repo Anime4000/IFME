@@ -76,9 +76,11 @@ namespace IFME
             cboAttachMime.ValueMember = "Key";
             cboAttachMime.SelectedValue = ".ttf";
 
+            var c = 0;
             foreach (var item in Format)
             {
-                cboFormat.Items.Add(item.ToString());
+                cboFormat.Items.Add($"{item}{(c >= 6 ? " (Audio only)" : "")}");
+                c++;
             }
             cboFormat.SelectedIndex = 2;
 
@@ -305,8 +307,8 @@ namespace IFME
                 cboProfile.SelectedIndex = data.ProfileId;
 
                 // MP4 Remux Test
-                chkVideoMP4Compt.Checked = data.MP4MuxVideo;
-                chkAudioMP4Compt.Checked = data.MP4MuxAudio;
+                chkVideoMP4Compt.Checked = data.FastMuxVideo;
+                chkAudioMP4Compt.Checked = data.FastMuxAudio;
 
                 // Video
                 ListViewItem_RefreshVideo(data);
@@ -1101,13 +1103,13 @@ namespace IFME
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).MP4MuxVideo = chkVideoMP4Compt.Checked;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).FastMuxVideo = chkVideoMP4Compt.Checked;
                 }
                 else if (lstFile.SelectedItems.Count > 1)
                 {
                     foreach (ListViewItem queue in lstFile.SelectedItems)
                     {
-                        (queue.Tag as MediaQueue).MP4MuxVideo = chkVideoMP4Compt.Checked;
+                        (queue.Tag as MediaQueue).FastMuxVideo = chkVideoMP4Compt.Checked;
                     }
                 }
             }
@@ -1119,13 +1121,13 @@ namespace IFME
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).MP4MuxAudio = chkAudioMP4Compt.Checked;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).FastMuxAudio = chkAudioMP4Compt.Checked;
                 }
                 else if (lstFile.SelectedItems.Count > 1)
                 {
                     foreach (ListViewItem queue in lstFile.SelectedItems)
                     {
-                        (queue.Tag as MediaQueue).MP4MuxAudio = chkAudioMP4Compt.Checked;
+                        (queue.Tag as MediaQueue).FastMuxAudio = chkAudioMP4Compt.Checked;
                     }
                 }
             }
@@ -1912,9 +1914,6 @@ namespace IFME
 
             if (cboFormat.SelectedIndex > -1)
                 ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
-
-            chkVideoMP4Compt.Enabled = cboFormat.SelectedIndex == 1;
-            chkAudioMP4Compt.Enabled = cboFormat.SelectedIndex == 1;
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
