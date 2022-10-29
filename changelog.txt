@@ -5,6 +5,10 @@
 [fixed] Re-fix interpretation of FFmpeg return code, where IFME treat positive 1 mean ok/warning
 [change] "Copy Stream" is deprecated due to "Fast Remux" feature!
 [change] No longer ship CPU Specific x264/x265 encoder where non AVX processor cannot use
+[update] x264: 3.5+56-8c159ba54
+[update] x265: 0.164.3094
+[update] SVT AV1: 1.3.0
+[update] FFmpeg: 2022-10-27-git-00b03331a0-full
 
 Version 22.01.18 Alpha (True Eternity)
 --------------------------------------

@@ -253,6 +253,7 @@ namespace IFME
 
                         data.Add(item.Index, item.Tag as MediaQueue);
                         item.SubItems[4].Text = "Waiting . . .";
+                        item.SubItems[5].Text = string.Empty;
                     }
 
                     if (data.Count > 0)
@@ -551,6 +552,9 @@ namespace IFME
 
         private void cboVideoEncoder_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cboVideoEncoder.SelectedItem == null)
+                return;
+
             try
             {
                 MediaQueueParse.CurrentId_Video = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
@@ -1914,6 +1918,8 @@ namespace IFME
 
             if (cboFormat.SelectedIndex > -1)
                 ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
+
+            EnableTab(tabConfigVideo, cboVideoEncoder.Items.Count > 0);
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
@@ -2231,17 +2237,17 @@ namespace IFME
                     // Mux
                     var errCodeMux = MediaEncoding.Muxing(mq, tempSes, txtOutputPath.Text, saveFileName);
 
-                    // Check FFmpeg Muxing is failed (negative) or sucess/warning (positive)
-                    if (errCodeMux == 0 || errCodeMux == 5522)
-                    {
-                        PrintLog("[ OK ] Multiplexing files was successfully!");
-                        PrintLog($"[DEBG] FFmpeg return code {errCodeMux}");
-                    }
-                    else
+                    // Check FFmpeg Muxing is failed (negative) or 1 or sucess/warning (positive)
+                    if (errCodeMux <= -1 || errCodeMux == 1)
                     {
                         Extensions.DirectoryCopy(tempSes, Path.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
                         PrintLog("[ERR ] FFmpeg failed to merge raw files... Check [Muxing Failed] folder to manual muxing...");
                         PrintLog($"[ERR ] FFmpeg return code {errCodeMux}");
+                    }
+                    else
+                    {
+                        PrintLog("[ OK ] Multiplexing files was successfully!");
+                        PrintLog($"[DEBG] FFmpeg return code {errCodeMux}");
                     }
 
                     // Delete Temporary Session Folder

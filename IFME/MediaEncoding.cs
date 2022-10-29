@@ -144,6 +144,9 @@ namespace IFME
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y {tempName}");
 
+                        if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 1024)
+                            exitCode = 1;
+
                         if (!IsExitError(exitCode))
                             continue;
 
@@ -330,10 +333,19 @@ namespace IFME
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:v copy -y {tempName}");
 
-                        if (!IsExitError(exitCode))
-                            continue;
+                        if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 8192)
+                        {
+                            frmMain.PrintLog($"[ERR ] Fast Remux is complete but remuxed file is corrupted... Exit Code {exitCode}");
+                            exitCode = 1;
+                        }
 
-                        frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
+                        if (!IsExitError(exitCode))
+                        {
+                            frmMain.PrintLog($"[ OK ] Fast Remux is complete... Exit Code {exitCode}");
+                            continue;
+                        }
+
+                        frmMain.PrintLog($"[WARN] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
                         File.Delete(Path.Combine(tempDir, tempName));
                     }
 

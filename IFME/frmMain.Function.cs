@@ -659,22 +659,39 @@ namespace IFME
 
             foreach (var item in Plugins.Items.Audio)
             {
-                if (item.Value.Format.Contains(value))
+                var exts = value;
+
+                if (value.Contains(' '))
+                    exts = value.Remove(value.IndexOf(' '));
+
+                if (item.Value.Format.Contains(exts))
                 {
                     audioCodec.Add(item.Key, item.Value);
                     audioId = item.Key;
                 }
             }
 
-            cboVideoEncoder.DataSource = new BindingSource(videoCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
-            cboVideoEncoder.DisplayMember = "Value";
-            cboVideoEncoder.ValueMember = "Key";
-            cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
+            if (videoCodec.Count > 0)
+            {
+                cboVideoEncoder.DataSource = new BindingSource(videoCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
+                cboVideoEncoder.DisplayMember = "Value";
+                cboVideoEncoder.ValueMember = "Key";
+            }
+            else
+            {
+                cboVideoEncoder.DataSource = null;
+            }
 
-            cboAudioEncoder.DataSource = new BindingSource(audioCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
-            cboAudioEncoder.DisplayMember = "Value";
-            cboAudioEncoder.ValueMember = "Key";
-            cboAudioEncoder.SelectedIndex = 0;
+            if (audioCodec.Count > 0)
+            {
+                cboAudioEncoder.DataSource = new BindingSource(audioCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
+                cboAudioEncoder.DisplayMember = "Value";
+                cboAudioEncoder.ValueMember = "Key";
+            }
+            else
+            {
+                cboAudioEncoder.DataSource = null;
+            }
 
             SetDefinedData(videoId, audioId);
         }
@@ -703,31 +720,43 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
-                        item.Encoder = new MediaQueueVideoEncoder
+                        if (vData != null)
                         {
-                            Id = vData.GUID,
-                            Preset = vData.Video.PresetDefault,
-                            Tune = vData.Video.TuneDefault,
-                            Mode = 0,
-                            Value = vData.Video.Mode[0].Value.Default,
-                            MultiPass = 2,
-                            Command = string.Empty
-                        };
-                        item.Quality.Command = string.Empty;
+                            if (Guid.TryParse($"{vData.GUID}", out Guid guid))
+                            {
+                                item.Encoder = new MediaQueueVideoEncoder
+                                {
+                                    Id = guid,
+                                    Preset = vData.Video.PresetDefault,
+                                    Tune = vData.Video.TuneDefault,
+                                    Mode = 0,
+                                    Value = vData.Video.Mode[0].Value.Default,
+                                    MultiPass = 2,
+                                    Command = string.Empty
+                                };
+                                item.Quality.Command = string.Empty;
+                            }
+                        }
                     }
 
                     foreach (var item in (queue.Tag as MediaQueue).Audio)
                     {
-                        item.Encoder = new MediaQueueAudioEncoder
+                        if (aData != null)
                         {
-                            Id = aData.GUID,
-                            Mode = 0,
-                            Quality = aData.Audio.Mode[0].Default,
-                            SampleRate = aData.Audio.SampleRateDefault,
-                            Channel = aData.Audio.ChannelDefault,
-                            Command = string.Empty,
-                        };
-                        item.Command = string.Empty;
+                            if (Guid.TryParse($"{aData.GUID}", out Guid guid))
+                            {
+                                item.Encoder = new MediaQueueAudioEncoder
+                                {
+                                    Id = guid,
+                                    Mode = 0,
+                                    Quality = aData.Audio.Mode[0].Default,
+                                    SampleRate = aData.Audio.SampleRateDefault,
+                                    Channel = aData.Audio.ChannelDefault,
+                                    Command = string.Empty,
+                                };
+                                item.Command = string.Empty;
+                            }
+                        }
                     }
                 }
             }
