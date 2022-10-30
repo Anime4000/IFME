@@ -495,8 +495,8 @@ namespace IFME
                 }
             }
 
-            var author = $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} @ {Version.CodeName}";
-            var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata \"encoded_by={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
+            var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
     }
