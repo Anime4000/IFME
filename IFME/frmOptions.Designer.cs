@@ -59,12 +59,14 @@ namespace IFME
             this.colPluginsAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.cboLanguage = new System.Windows.Forms.ComboBox();
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grpPrefix.SuspendLayout();
             this.grpTempFolder.SuspendLayout();
+            this.grpLanguage.SuspendLayout();
             this.tabPlugins.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -257,6 +259,7 @@ namespace IFME
             // 
             this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpLanguage.Controls.Add(this.cboLanguage);
             this.grpLanguage.Location = new System.Drawing.Point(6, 6);
             this.grpLanguage.Name = "grpLanguage";
             this.grpLanguage.Size = new System.Drawing.Size(756, 165);
@@ -398,6 +401,17 @@ namespace IFME
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // cboLanguage
+            // 
+            this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLanguage.Enabled = false;
+            this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.cboLanguage.FormattingEnabled = true;
+            this.cboLanguage.Location = new System.Drawing.Point(69, 65);
+            this.cboLanguage.Name = "cboLanguage";
+            this.cboLanguage.Size = new System.Drawing.Size(618, 24);
+            this.cboLanguage.TabIndex = 0;
+            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -422,6 +436,7 @@ namespace IFME
             this.grpPrefix.PerformLayout();
             this.grpTempFolder.ResumeLayout(false);
             this.grpTempFolder.PerformLayout();
+            this.grpLanguage.ResumeLayout(false);
             this.tabPlugins.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -459,5 +474,6 @@ namespace IFME
         private System.Windows.Forms.Button btnOnly265;
         private System.Windows.Forms.Button btnCheckAll;
         private System.Windows.Forms.CheckBox chkSkipTest;
+        private System.Windows.Forms.ComboBox cboLanguage;
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+
 using IFME.OSManager;
 
 namespace IFME
@@ -176,6 +174,9 @@ namespace IFME
             for (int i = 0; i < queue.Video.Count; i++)
             {
                 var item = queue.Video[i];
+
+                if (item.Encoder.Id.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+                    continue; // skip encode video when choosing audio only
 
                 if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
                 {

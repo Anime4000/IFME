@@ -1,5 +1,5 @@
-﻿Version 22.10.1 Alpha (Erdentempel)
------------------------------------
+﻿Version 8.0 beta 1 (Erdentempel)
+--------------------------------
 [new] Introduce "Fast Remux", where you can remux file when codec is compatible to target file container, otherwise encode to compatible codec. Example use case: Any wrong codec (AVI) in your Jellyfin/Plex will be encoded to H.264
 [new] Folder import is available! Example use case: Scan Import all Jellyfin/Plex media
 [fixed] Re-fix interpretation of FFmpeg return code, where IFME treat positive 1 mean ok/warning
@@ -9,6 +9,10 @@
 [update] x265: 0.164.3094
 [update] SVT AV1: 1.3.0
 [update] FFmpeg: 2022-10-27-git-00b03331a0-full
+
+It’s been a while that IFME under ALPHA release, I just too afraid some bug that I didn’t find during testing, now IFME enter BETA stage, all bug and GUI glitch has been iron out, I hope this working as expected. 
+Also this 8 iteration of rebuilding GUI from scratch, it become incompatible to each other, I know, I not some professional programmer but I do what I could >.< 
+I just too confused with FFmpeg exit code, sometime it returns random positive number, what I found that exit code was total frame has been processed, all these years I thought wrong, looking into FFmpeg code alone without help is bad idea, not sure where to ask help, afraid community mad about it
 
 Version 22.01.18 Alpha (True Eternity)
 --------------------------------------

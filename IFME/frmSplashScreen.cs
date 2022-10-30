@@ -69,7 +69,7 @@ namespace IFME
             lblLoadingUpdate(string.Empty);
 
             // Wait some CPU free
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
 
             frmFadeInOut(false);
         }

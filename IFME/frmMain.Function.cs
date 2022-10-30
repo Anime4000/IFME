@@ -1,15 +1,12 @@
-﻿using IFME.OSManager;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Generic;
+
+using IFME.OSManager;
 
 namespace IFME
 {
@@ -122,6 +119,11 @@ namespace IFME
             cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
         }
 
+        private void InitializeTab()
+        {
+            new Thread(Thread_InitializedTabs).Start();
+        }
+
         private string[] OpenFiles(MediaType type, bool multiSelect = true)
         {
             var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.ts;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";
@@ -220,10 +222,15 @@ namespace IFME
 
             if (InvokeRequired)
             {
-                Invoke(new MethodInvoker(delegate { lstFile.Items.Add(lst); }));
+                Invoke(new MethodInvoker(delegate
+                {
+                    lstFile.Focus();
+                    lstFile.Items.Add(lst);
+                }));
             }
             else
             {
+                lstFile.Focus();
                 lstFile.Items.Add(lst);
             }
         }
@@ -383,6 +390,19 @@ namespace IFME
                     PrintLog($"[ERRO] ID: DisplayProperties_Attachment(), {ex.Message}");
                 }
             }
+        }
+
+        private void Thread_InitializedTabs()
+        {
+            BeginInvoke((Action)delegate ()
+            {
+                foreach (TabPage item in tabConfig.TabPages)
+                {
+                    tabConfig.SelectedTab = item;
+                }
+
+                tabConfig.SelectedTab = tabConfigMediaInfo;
+            });
         }
 
         private void Thread_LoadPropertiesVideo(object obj)
@@ -736,6 +756,13 @@ namespace IFME
                                 };
                                 item.Quality.Command = string.Empty;
                             }
+                        }
+                        else
+                        {
+                            item.Encoder = new MediaQueueVideoEncoder
+                            {
+                                Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff") // GUID do not encode video
+                            };
                         }
                     }
 

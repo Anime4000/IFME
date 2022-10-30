@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Drawing.Imaging;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 using IFME.OSManager;
 
 namespace IFME
@@ -23,10 +23,8 @@ namespace IFME
             new frmSplashScreen().ShowDialog(); // loading, init all inside that
 
             frmMainStatic = this;
+
             InitializeComponent();
-            InitializeProfiles();
-            InitializeFonts();
-            InitializeLog();
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )";
@@ -41,6 +39,11 @@ namespace IFME
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            InitializeProfiles();
+            InitializeFonts();
+            InitializeLog();
+            InitializeTab(); // need loop all table to make controls respond
+
             cboVideoRes.SelectedIndex = 9;
             cboVideoFps.SelectedIndex = 5;
             cboVideoPixFmt.SelectedIndex = 0;
@@ -50,7 +53,6 @@ namespace IFME
             cboAudioEncoder.DataSource = new BindingSource(Plugins.Items.Audio.ToDictionary(p => p.Key, p => p.Value.Name), null);
             cboAudioEncoder.DisplayMember = "Value";
             cboAudioEncoder.ValueMember = "Key";
-            cboAudioEncoder.SelectedValue = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
 
             cboVideoEncoder.DataSource = new BindingSource(Plugins.Items.Video.ToDictionary(p => p.Key, p => p.Value.Name), null);
             cboVideoEncoder.DisplayMember = "Value";
@@ -89,7 +91,7 @@ namespace IFME
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-            cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
+            
         }
 
         private void frmMain_SizeChanged(object sender, EventArgs e)
@@ -406,17 +408,6 @@ namespace IFME
                 {
                     item.Selected = true;
                 }
-
-                if (string.IsNullOrEmpty(cboFormat.Text))
-                {
-                    var tt = new ToolTip();
-                    tt.Show(null, cboFormat, 0);
-                    tt.IsBalloon = false;
-                    tt.ToolTipIcon = ToolTipIcon.Info;
-                    tt.ToolTipTitle = "Inconsistent output format!";
-                    tt.SetToolTip(btnAbout, "");
-                    tt.Show("There are mixed output format that need to change first before set audio/video Encoder", cboFormat, cboFormat.Width / 2, cboFormat.Height / 2, 30000);
-                }
             }
         }
 
@@ -515,7 +506,7 @@ namespace IFME
 
         private void lstVideo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if (lstFile.Focused || (sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count > 0)
                 {
@@ -557,7 +548,8 @@ namespace IFME
 
             try
             {
-                MediaQueueParse.CurrentId_Video = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                if (MediaQueueParse.CurrentId_Video == null)
+                    MediaQueueParse.CurrentId_Video = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
             {
@@ -1232,7 +1224,7 @@ namespace IFME
 
         private void lstAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if (lstFile.Focused || (sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count > 0)
                 {
@@ -1274,7 +1266,8 @@ namespace IFME
                 if (cboAudioEncoder.SelectedItem == null)
                     cboAudioEncoder.SelectedIndex = 0;
 
-                MediaQueueParse.CurrentId_Audio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                if (MediaQueueParse.CurrentId_Audio == null)
+                    MediaQueueParse.CurrentId_Audio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
             {
@@ -1919,7 +1912,27 @@ namespace IFME
             if (cboFormat.SelectedIndex > -1)
                 ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
 
+            if (string.IsNullOrEmpty(cboFormat.Text))
+            {
+                var tt = new ToolTip();
+                tt.Show(null, cboFormat, 0);
+                tt.IsBalloon = true;
+                tt.ToolTipIcon = ToolTipIcon.Warning;
+                tt.ToolTipTitle = "Inconsistent output format!";
+                tt.SetToolTip(cboFormat, "");
+                tt.Show("There are mixed output format that need to change first before set audio/video Encoder", cboFormat, (int)(cboFormat.Width / 2.5), cboFormat.Height * -3, 30000);
+                
+                btnStart.Enabled = false;
+                cboVideoEncoder.DataSource = null;
+                cboAudioEncoder.DataSource = null;
+            }
+            else
+            {
+                btnStart.Enabled = true;
+            }
+
             EnableTab(tabConfigVideo, cboVideoEncoder.Items.Count > 0);
+            EnableTab(tabConfigAudio, cboAudioEncoder.Items.Count > 0);
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)

@@ -24,7 +24,8 @@ namespace IFME
 
         private void frmOptions_Load(object sender, EventArgs e)
         {
-
+            cboLanguage.Items.Add("English");
+            cboLanguage.SelectedIndex = 0;
         }
 
         private void frmOptions_Shown(object sender, EventArgs e)

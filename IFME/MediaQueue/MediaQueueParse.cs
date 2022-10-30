@@ -9,7 +9,7 @@ namespace IFME
     public static class MediaQueueParse
     {
 		public static Guid CurrentId_Video { get; set; } = new Guid("deadbeef-0265-0265-0265-026502650265");
-		public static Guid CurrentId_Audio { get; set; } = new Guid("aaaaaaaa-0000-0000-0000-000000000000");
+		public static Guid CurrentId_Audio { get; set; } = new Guid("deadbeef-1aac-1aac-1aac-1aac2aac3aac");
 
 
 		public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data, bool isImageSeq = false)
