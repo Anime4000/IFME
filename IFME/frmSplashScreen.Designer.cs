@@ -38,11 +38,11 @@
             // 
             this.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatus.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStatus.ForeColor = System.Drawing.Color.White;
             this.lblStatus.Location = new System.Drawing.Point(16, 241);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(282, 200);
+            this.lblStatus.Size = new System.Drawing.Size(400, 200);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Loading...";
             // 
@@ -50,11 +50,11 @@
             // 
             this.lblLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblLoading.BackColor = System.Drawing.Color.Transparent;
-            this.lblLoading.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoading.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblLoading.ForeColor = System.Drawing.Color.White;
             this.lblLoading.Location = new System.Drawing.Point(16, 217);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(296, 24);
+            this.lblLoading.Size = new System.Drawing.Size(400, 24);
             this.lblLoading.TabIndex = 1;
             this.lblLoading.Text = "Initializing...";
             this.lblLoading.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -63,11 +63,11 @@
             // 
             this.lblVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
-            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblVersion.ForeColor = System.Drawing.Color.White;
             this.lblVersion.Location = new System.Drawing.Point(16, 171);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(296, 46);
+            this.lblVersion.Size = new System.Drawing.Size(400, 46);
             this.lblVersion.TabIndex = 0;
             this.lblVersion.Text = "Version";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -80,7 +80,7 @@
             this.lblContrib.ForeColor = System.Drawing.Color.White;
             this.lblContrib.Location = new System.Drawing.Point(16, 450);
             this.lblContrib.Name = "lblContrib";
-            this.lblContrib.Size = new System.Drawing.Size(303, 133);
+            this.lblContrib.Size = new System.Drawing.Size(440, 133);
             this.lblContrib.TabIndex = 3;
             this.lblContrib.Text = "Contrib";
             this.lblContrib.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -90,7 +90,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen8;
+            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen9;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1066, 600);
             this.Controls.Add(this.lblContrib);
