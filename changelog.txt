@@ -1,4 +1,8 @@
-﻿Version 8.0 beta 1 (Erdentempel)
+﻿Version 8.0 beta 2 (Aufbruch)
+-----------------------------
+[change] Metadata about "Writing Application" now display IFME version, platfrom and cpu arch, easier to troubleshoot broken encoding at which version given sample
+
+Version 8.0 beta 1 (Erdentempel)
 --------------------------------
 [new] Introduce "Fast Remux", where you can remux file when codec is compatible to target file container, otherwise encode to compatible codec. Example use case: Any wrong codec (AVI) in your Jellyfin/Plex will be encoded to H.264
 [new] Folder import is available! Example use case: Scan Import all Jellyfin/Plex media
