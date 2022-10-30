@@ -241,7 +241,7 @@
     <None Include="Resources\Avatar4_Erika.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SplashScreen9.png" />
+    <None Include="Resources\SplashScreen9.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
