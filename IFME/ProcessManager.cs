@@ -12,8 +12,6 @@ namespace IFME
 
 		internal static bool IsPause = false;
 
-		internal static int TotalFrames = 0;
-
 		internal static int Start(string Command)
 		{
 			return new ProcessManager().Run(Command, string.Empty);
@@ -65,11 +63,6 @@ namespace IFME
 			proc.WaitForExit();
 
 			ProcessId.Remove(proc.Id);
-
-			if (TotalFrames > 0)
-            {
-				return TotalFrames; //x265
-			}
 			
 			return proc.ExitCode;
 		}
@@ -87,8 +80,8 @@ namespace IFME
                 {
 					if (tfm.Count > 0)
 					{
-						if (!int.TryParse(tfm[0].Value, out TotalFrames))
-							TotalFrames = 0;
+						if (!int.TryParse(tfm[0].Value, out int rfc))
+							MediaEncoding.RealFrameCount = rfc;
 					}
 
 					return;
@@ -98,7 +91,9 @@ namespace IFME
 				var x = Regex.Matches(e.Data, p, RegexOptions.IgnoreCase);
 				if (x.Count >= 3)
                 {
-					frmMain.PrintProgress($"{x[0]}, Bitrate: {x[1]}, Speed: {x[2]}");
+					int.TryParse(x[0].ToString().Substring(6), out int cf);
+
+					frmMain.PrintProgress($"[{(float)cf / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {cf}, Bitrate: {x[1]}, Speed: {x[2]}");
 					return;
 				}
 				

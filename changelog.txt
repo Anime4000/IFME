@@ -1,4 +1,9 @@
-﻿Version 8.0 beta 2 (Aufbruch)
+﻿Version 8.0 beta 3 (Kurzes Epos)
+--------------------------------
+[change] AV1 doesnt show total progress, now IFME able to show total % completed
+[change] AV1 preset in reverse order just like x265 and x264, last item in the list mean slower encoding at higher quality and low bit-rate
+
+Version 8.0 beta 2 (Aufbruch)
 -----------------------------
 [change] Metadata about "Writing Application" now display IFME version, platfrom and cpu arch, easier to troubleshoot broken encoding at which version given sample
 

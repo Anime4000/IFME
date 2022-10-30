@@ -1903,7 +1903,7 @@ namespace IFME
                         var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
                         var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
 
-                        queue.SubItems[1].Text = $"{inExt} > {outExt}";
+                        queue.SubItems[1].Text = $"{inExt} ► {outExt}";
                         (queue.Tag as MediaQueue).OutputFormat = (MediaContainer)cboFormat.SelectedIndex;
                     }
                 }
@@ -1931,8 +1931,12 @@ namespace IFME
                 btnStart.Enabled = true;
             }
 
+            EnableTab(tabConfigMediaInfo, btnStart.Enabled);
             EnableTab(tabConfigVideo, cboVideoEncoder.Items.Count > 0);
             EnableTab(tabConfigAudio, cboAudioEncoder.Items.Count > 0);
+            EnableTab(tabConfigSubtitle, btnStart.Enabled);
+            EnableTab(tabConfigAttachment, btnStart.Enabled);
+            EnableTab(tabConfigAdvance, btnStart.Enabled);
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)

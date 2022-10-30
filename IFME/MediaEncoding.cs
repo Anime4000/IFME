@@ -13,6 +13,7 @@ namespace IFME
         internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
         internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
         internal static int CurrentIndex = 0;
+        internal static int RealFrameCount = 0;
 
         private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
 
@@ -360,11 +361,12 @@ namespace IFME
 
                     var cmd_ff_en = ff ? cmd_ff : cmd_en;
 
+                    RealFrameCount = item.Quality.FrameCount;
+
                     if (vc.Mode[item.Encoder.Mode].MultiPass)
                     {
                         var p = 1;
                         var pass = string.Empty;
-                        var realframecount = 0;
 
                         frmMain.PrintLog("[WARN] Frame count is disable for Multi-pass encoding, Avoid inconsistent across multi-pass.");
 
@@ -381,12 +383,12 @@ namespace IFME
                             frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
                             if (vc.Args.Pipe)
-                                realframecount = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
+                                ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
                             else
                                 ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
 
                             if (p == 1)
-                                en_framecount = $"{vc.Args.FrameCount} {realframecount}";
+                                en_framecount = $"{vc.Args.FrameCount} {RealFrameCount}";
 
                             ++p;
 
