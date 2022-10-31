@@ -35,28 +35,34 @@ namespace IFME
             bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
             try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME"), true); } catch { }
-        }
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
             InitializeProfiles();
             InitializeFonts();
             InitializeLog();
             InitializeTab(); // need loop all table to make controls respond
+        }
 
+        private void frmMain_Load(object sender, EventArgs e)
+        {
             cboVideoRes.SelectedIndex = 9;
             cboVideoFps.SelectedIndex = 5;
             cboVideoPixFmt.SelectedIndex = 0;
             cboVideoDeInterMode.SelectedIndex = 1;
             cboVideoDeInterField.SelectedIndex = 0;
-            
-            cboAudioEncoder.DataSource = new BindingSource(Plugins.Items.Audio.ToDictionary(p => p.Key, p => p.Value.Name), null);
-            cboAudioEncoder.DisplayMember = "Value";
-            cboAudioEncoder.ValueMember = "Key";
 
-            cboVideoEncoder.DataSource = new BindingSource(Plugins.Items.Video.ToDictionary(p => p.Key, p => p.Value.Name), null);
-            cboVideoEncoder.DisplayMember = "Value";
-            cboVideoEncoder.ValueMember = "Key";
+            if (Plugins.Items.Audio.Count > 0)
+            {
+                cboAudioEncoder.DataSource = new BindingSource(Plugins.Items.Audio.ToDictionary(p => p.Key, p => p.Value.Name), null);
+                cboAudioEncoder.DisplayMember = "Value";
+                cboAudioEncoder.ValueMember = "Key";
+            }
+            
+            if (Plugins.Items.Video.Count > 0)
+            {
+                cboVideoEncoder.DataSource = new BindingSource(Plugins.Items.Video.ToDictionary(p => p.Key, p => p.Value.Name), null);
+                cboVideoEncoder.DisplayMember = "Value";
+                cboVideoEncoder.ValueMember = "Key";
+            }
 
             cboVideoLang.DataSource = new BindingSource(Language.Codes, null);
             cboVideoLang.DisplayMember = "Value";
@@ -91,7 +97,10 @@ namespace IFME
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-            
+            if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
+            {
+                MessageBox.Show("There is no encoder to use, high chance using older encoder plugins installed into this version, please re-install IFME without any modification!", "No encoder to use", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void frmMain_SizeChanged(object sender, EventArgs e)
