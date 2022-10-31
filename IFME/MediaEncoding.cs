@@ -134,7 +134,7 @@ namespace IFME
 
                     var af = string.Empty;
 
-                    if(queue.FastMuxAudio)
+                    if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
                         frmMain.PrintStatus($"Fast Remux, Audio #{i}");
                         frmMain.PrintLog($"[INFO] Fast Remuxing Audio...");
@@ -326,7 +326,7 @@ namespace IFME
                     }
 
                     // MP4 Remux Test
-                    if (queue.FastMuxVideo)
+                    if (queue.FastMuxVideo && !queue.Trim.Enable)
                     {
                         frmMain.PrintStatus($"Fast Remux, Video #{i}");
                         frmMain.PrintLog($"[INFO] Fast Remuxing Video...");

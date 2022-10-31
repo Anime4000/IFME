@@ -1,7 +1,9 @@
 ﻿Version 8.0 beta 3 (Kurzes Epos)
 --------------------------------
+[fixed] "Fast Remux" cannot together with "Trim", when "Trim" is in use, it will skip "Fast Remux" process!
 [change] AV1 doesnt show total progress, now IFME able to show total % completed
 [change] AV1 preset in reverse order just like x265 and x264, last item in the list mean slower encoding at higher quality and low bit-rate
+[update] Showing plugins init error in the log instead on Splash Screen...
 
 Version 8.0 beta 2 (Aufbruch)
 -----------------------------

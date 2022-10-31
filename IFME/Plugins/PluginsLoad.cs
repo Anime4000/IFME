@@ -11,6 +11,7 @@ namespace IFME
 	internal class PluginsLoad
 	{
 		private static List<Guid> Disabled = Properties.Settings.Default.PluginsDisabled.Split(',').Select(Guid.Parse).ToList();
+		internal static string ErrorLog = string.Empty;
 
 		internal PluginsLoad()
 		{
@@ -87,7 +88,7 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					frmSplashScreen.SetStatusAppend($" [{ex.Message}]");
+					ErrorLog += $"[ERR ] {ex.Message}\r\n";
 					Thread.Sleep(5000);
 				}
 			}
@@ -165,7 +166,7 @@ namespace IFME
 				}
 				catch (Exception ex)
 				{
-					frmSplashScreen.SetStatusAppend($" [{ex.Message}]");
+					ErrorLog += $"[ERR ] {ex.Message}\r\n";
 					Thread.Sleep(5000);
 				}
 			}

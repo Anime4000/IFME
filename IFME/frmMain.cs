@@ -99,7 +99,12 @@ namespace IFME
         {
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
             {
-                MessageBox.Show("There is no encoder to use, high chance using older encoder plugins installed into this version, please re-install IFME without any modification!", "No encoder to use", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var hed = "No encoder to use";
+                var msg = "There is no encoder to use, high chance using older encoder plugins installed into this version, please re-install IFME without any modification!";
+
+                MessageBox.Show(msg, hed, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                rtfConsole.AppendText($"[ERR ] {msg}\r\n");
+                tabConfig.SelectedTab = tabConfigLog;
             }
         }
 
@@ -1104,6 +1109,8 @@ namespace IFME
 
         private void chkVideoMP4Compt_CheckedChanged(object sender, EventArgs e)
         {
+            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
+
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1122,6 +1129,8 @@ namespace IFME
 
         private void chkAudioMP4Compt_CheckedChanged(object sender, EventArgs e)
         {
+            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
+
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1820,6 +1829,9 @@ namespace IFME
         private void chkAdvTrim_CheckedChanged(object sender, EventArgs e)
         {
             grpAdvTrim.Enabled = chkAdvTrim.Checked;
+
+            chkVideoMP4Compt.Enabled = !chkAdvTrim.Checked;
+            chkAudioMP4Compt.Enabled = !chkAdvTrim.Checked;
 
             if ((sender as Control).Focused)
             {

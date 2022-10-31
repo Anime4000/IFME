@@ -106,6 +106,11 @@ namespace IFME
                 "\r\n" +
                 "Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\r\n" +
                 "\r\n";
+
+            if (string.IsNullOrEmpty(PluginsLoad.ErrorLog))
+                rtfConsole.AppendText("[INFO] No error during plugins initialising...\r\n");
+            else
+                rtfConsole.AppendText(PluginsLoad.ErrorLog);
         }
 
         private void InitializeProfiles()
