@@ -58,6 +58,12 @@ namespace IFME
 
             Properties.Settings.Default.Save();
 
+            // Temp folder
+            if (Directory.Exists(Properties.Settings.Default.FolderTemporary))
+                Directory.Delete(Properties.Settings.Default.FolderTemporary, true);
+
+            Directory.CreateDirectory(Properties.Settings.Default.FolderTemporary);
+
             // Load config
             new PluginsLoad();
 

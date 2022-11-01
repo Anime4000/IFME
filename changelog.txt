@@ -2,6 +2,9 @@
 --------------------------------
 [fixed] IFME crash in certain computer due to "Tabs Init" before WinForm loaded (code behave differently when run via VS IDE and Standalone)
 [fixed] "Fast Remux" cannot together with "Trim", when "Trim" is in use, it will skip "Fast Remux" process!
+[fixed] "Fast Remux" cannot together with "Image Sequence"
+[fixed] Plugins Init (Test Encoder) wrong exit code cause no encoder to use since IFME treat exit code 0 only!
+[change] Plugins Init (Test Encoder) now skip CPU encoder, only test GPU encoder unless "TestRequired" is set to true.
 [change] AV1 doesnt show total progress, now IFME able to show total % completed
 [change] AV1 preset in reverse order just like x265 and x264, last item in the list mean slower encoding at higher quality and low bit-rate
 [update] Showing plugins init error in the log instead on Splash Screen...

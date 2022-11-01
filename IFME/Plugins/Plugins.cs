@@ -26,7 +26,7 @@ namespace IFME
 		public string Name { get; set; }
 		public string Version { get; set; }
 		public bool X64 { get; set; }
-		public string Codec { get; set; } = "???";
+		public bool TestRequired { get; set; } = false;
 		public string[] Format { get; set; }
 		public PluginsAuthor Author { get; set; } = new PluginsAuthor();
 		public PluginsUpdate Update { get; set; } = new PluginsUpdate();

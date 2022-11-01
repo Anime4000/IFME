@@ -435,6 +435,9 @@ namespace IFME
                 cboVideoDeInterMode.SelectedIndex = data.DeInterlace.Mode;
                 cboVideoDeInterField.SelectedIndex = data.DeInterlace.Field;
 
+                // Fast Remux compact.
+                chkVideoMP4Compt.Enabled = !data.IsImageSeq;
+
                 foreach (ListViewItem item in lstVideo.SelectedItems)
                 {
                     item.SubItems[1].Text = Language.FullName(data.Lang);

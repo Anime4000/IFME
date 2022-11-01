@@ -33,8 +33,6 @@ namespace IFME
             bgThread.DoWork += bgThread_DoWork;
             bgThread.ProgressChanged += bgThread_ProgressChanged;
             bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
-
-            try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME"), true); } catch { }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -317,6 +315,7 @@ namespace IFME
             if (lstFile.SelectedItems.Count > 0)
             {
                 var data = lstFile.SelectedItems[0].Tag as MediaQueue;
+                var isImgSq = false;
 
                 // Format
                 cboFormat.SelectedIndex = (int)data.OutputFormat;

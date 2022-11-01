@@ -1857,20 +1857,20 @@
             this.tsmiFileAddSubs,
             this.tsmiFileAddSubsEmbed});
             this.cmsFileAddSubs.Name = "cmsFileAddSubs";
-            this.cmsFileAddSubs.Size = new System.Drawing.Size(187, 48);
+            this.cmsFileAddSubs.Size = new System.Drawing.Size(196, 48);
             // 
             // tsmiFileAddSubs
             // 
             this.tsmiFileAddSubs.Name = "tsmiFileAddSubs";
-            this.tsmiFileAddSubs.Size = new System.Drawing.Size(186, 22);
+            this.tsmiFileAddSubs.Size = new System.Drawing.Size(195, 22);
             this.tsmiFileAddSubs.Text = "Add &Subtitle";
             this.tsmiFileAddSubs.Click += new System.EventHandler(this.tsmiFileAddSubs_Click);
             // 
             // tsmiFileAddSubsEmbed
             // 
             this.tsmiFileAddSubsEmbed.Name = "tsmiFileAddSubsEmbed";
-            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(186, 22);
-            this.tsmiFileAddSubsEmbed.Text = "Add Subtitle from &Video";
+            this.tsmiFileAddSubsEmbed.Size = new System.Drawing.Size(195, 22);
+            this.tsmiFileAddSubsEmbed.Text = "Add Subtitle from a &Video";
             this.tsmiFileAddSubsEmbed.Click += new System.EventHandler(this.tsmiFileAddSubsEmbed_Click);
             // 
             // cmsFileAddAttach
@@ -1880,20 +1880,20 @@
             this.tsmiFileAddAttach,
             this.tsmiFileAddAttachEmbed});
             this.cmsFileAddAttach.Name = "cmsFileAddAttach";
-            this.cmsFileAddAttach.Size = new System.Drawing.Size(178, 48);
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(187, 70);
             // 
             // tsmiFileAddAttach
             // 
             this.tsmiFileAddAttach.Name = "tsmiFileAddAttach";
-            this.tsmiFileAddAttach.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFileAddAttach.Size = new System.Drawing.Size(186, 22);
             this.tsmiFileAddAttach.Text = "Add &Fonts";
             this.tsmiFileAddAttach.Click += new System.EventHandler(this.tsmiFileAddAttach_Click);
             // 
             // tsmiFileAddAttachEmbed
             // 
             this.tsmiFileAddAttachEmbed.Name = "tsmiFileAddAttachEmbed";
-            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(177, 22);
-            this.tsmiFileAddAttachEmbed.Text = "Add Fonts from &Video";
+            this.tsmiFileAddAttachEmbed.Size = new System.Drawing.Size(186, 22);
+            this.tsmiFileAddAttachEmbed.Text = "Add Fonts from a &Video";
             this.tsmiFileAddAttachEmbed.Click += new System.EventHandler(this.tsmiFileAddAttachEmbed_Click);
             // 
             // btnAbout
