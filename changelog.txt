@@ -1,5 +1,6 @@
 ﻿Version 8.0 beta 3 (Kurzes Epos)
 --------------------------------
+[fixed] IFME crash in certain computer due to "Tabs Init" before WinForm loaded (code behave differently when run via VS IDE and Standalone)
 [fixed] "Fast Remux" cannot together with "Trim", when "Trim" is in use, it will skip "Fast Remux" process!
 [change] AV1 doesnt show total progress, now IFME able to show total % completed
 [change] AV1 preset in reverse order just like x265 and x264, last item in the list mean slower encoding at higher quality and low bit-rate

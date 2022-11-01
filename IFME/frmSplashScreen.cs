@@ -46,7 +46,7 @@ namespace IFME
 
             // Detect user machine
             // TODO: Detect user GPU
-            lblLoadingUpdate("Initializing...");
+            lblLoadingUpdate("Initialising...");
 
             // Load settings
             if (Properties.Settings.Default.FolderOutput.IsDisable())

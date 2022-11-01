@@ -94,7 +94,6 @@
             this.txtOutputPath = new System.Windows.Forms.TextBox();
             this.lblOutputPath = new System.Windows.Forms.Label();
             this.lblFormatProfile = new System.Windows.Forms.Label();
-            this.PbxBanner = new System.Windows.Forms.PictureBox();
             this.tabConfigLog = new System.Windows.Forms.TabPage();
             this.rtfConsole = new System.Windows.Forms.RichTextBox();
             this.chkAdvTrim = new System.Windows.Forms.CheckBox();
@@ -188,11 +187,11 @@
             this.tsmiFileAddAttach = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.PbxBanner = new System.Windows.Forms.PictureBox();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
             this.tabConfigAttachment.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).BeginInit();
             this.tabConfigLog.SuspendLayout();
             this.tabConfigAdvance.SuspendLayout();
             this.grpAdvTrim.SuspendLayout();
@@ -209,6 +208,7 @@
             this.cmsPower.SuspendLayout();
             this.cmsFileAddSubs.SuspendLayout();
             this.cmsFileAddAttach.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).BeginInit();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -879,17 +879,6 @@
             this.lblFormatProfile.TabIndex = 13;
             this.lblFormatProfile.Text = "Format && &Profile:";
             this.lblFormatProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // PbxBanner
-            // 
-            this.PbxBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PbxBanner.BackColor = System.Drawing.Color.Black;
-            this.PbxBanner.Location = new System.Drawing.Point(0, 0);
-            this.PbxBanner.Name = "PbxBanner";
-            this.PbxBanner.Size = new System.Drawing.Size(1024, 64);
-            this.PbxBanner.TabIndex = 27;
-            this.PbxBanner.TabStop = false;
             // 
             // tabConfigLog
             // 
@@ -1909,13 +1898,23 @@
             // 
             // btnAbout
             // 
-            this.btnAbout.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnAbout.Location = new System.Drawing.Point(153, 76);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(51, 32);
             this.btnAbout.TabIndex = 4;
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
+            // PbxBanner
+            // 
+            this.PbxBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PbxBanner.BackColor = System.Drawing.Color.Black;
+            this.PbxBanner.Location = new System.Drawing.Point(0, 0);
+            this.PbxBanner.Name = "PbxBanner";
+            this.PbxBanner.Size = new System.Drawing.Size(1024, 64);
+            this.PbxBanner.TabIndex = 27;
+            this.PbxBanner.TabStop = false;
             // 
             // frmMain
             // 
@@ -1955,7 +1954,6 @@
             this.grpAudioCodec.ResumeLayout(false);
             this.tabConfigAudio.ResumeLayout(false);
             this.tabConfigAttachment.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).EndInit();
             this.tabConfigLog.ResumeLayout(false);
             this.tabConfigAdvance.ResumeLayout(false);
             this.tabConfigAdvance.PerformLayout();
@@ -1975,6 +1973,7 @@
             this.cmsPower.ResumeLayout(false);
             this.cmsFileAddSubs.ResumeLayout(false);
             this.cmsFileAddAttach.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

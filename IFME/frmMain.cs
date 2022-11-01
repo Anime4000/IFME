@@ -35,11 +35,6 @@ namespace IFME
             bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
 
             try { Directory.Delete(Path.Combine(Path.GetTempPath(), "IFME"), true); } catch { }
-
-            InitializeProfiles();
-            InitializeFonts();
-            InitializeLog();
-            InitializeTab(); // need loop all table to make controls respond
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -93,10 +88,16 @@ namespace IFME
             cboFormat.SelectedIndex = 2;
 
             txtOutputPath.Text = Properties.Settings.Default.FolderOutput;
+
+            InitializeProfiles();
+            InitializeFonts();
+            InitializeLog();
         }
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
+            InitializeTab(); // need loop all table to make controls respond
+
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
             {
                 var hed = "No encoder to use";
