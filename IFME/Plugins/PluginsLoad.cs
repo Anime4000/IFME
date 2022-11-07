@@ -87,8 +87,10 @@ namespace IFME
                         {
                             frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
 
-                            Plugins.Items.Lists.Remove(plugin.GUID); // remove from Plugins List
+                            Plugins.Items.Lists[plugin.GUID].Version += "Error"; // remove from Plugins List
                             Plugins.Items.Audio.Remove(plugin.GUID); // remove from Audio Encoder List
+
+                            Properties.Settings.Default.PluginsDisabled += $",{plugin.GUID}";
 
                             continue;
                         }
@@ -169,8 +171,10 @@ namespace IFME
                         {
                             frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
 
-                            Plugins.Items.Lists.Remove(plugin.GUID); // remove from Plugins List
+                            Plugins.Items.Lists[plugin.GUID].Version += "System Incompatible"; // remove from Plugins List
                             Plugins.Items.Video.Remove(plugin.GUID); // remove from Video Encoder List
+
+                            Properties.Settings.Default.PluginsDisabled += $",{plugin.GUID}";
 
                             Thread.Sleep(100);
 
