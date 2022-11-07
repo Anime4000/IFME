@@ -1,4 +1,9 @@
-﻿Version 8.0 beta 3 (Kurzes Epos)
+﻿Version 8.0 beta 4 (Prolog auf Erden)
+-------------------------------------
+[new] AV1 NVENC support (test mode). I unable to test if AV1 NVENC working, no suitable hardware to test the encoding and adjust the quality.
+[update] FFmpeg: BtbN builds, version N-109027-g202b7a9ae7 (shared, GPL)
+
+Version 8.0 beta 3 (Kurzes Epos)
 --------------------------------
 [fixed] IFME crash in certain computer due to "Tabs Init" before WinForm loaded (code behave differently when run via VS IDE and Standalone)
 [fixed] "Fast Remux" cannot together with "Trim", when "Trim" is in use, it will skip "Fast Remux" process!
