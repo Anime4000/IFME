@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -77,6 +78,8 @@ namespace IFME
             }
 
             chkSkipTest.Checked = Properties.Settings.Default.TestEncoder;
+
+            FileNameExample();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -146,9 +149,17 @@ namespace IFME
             }
         }
 
+        private void rdoPrePostFixFilename_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as Control).Focused)
+            {
+                FileNameExample();
+            }
+        }
+
         private void txtPrefix_TextChanged(object sender, EventArgs e)
         {
-            if ((sender as TextBox).Focused)
+            if ((sender as Control).Focused)
             {
                 if (string.IsNullOrEmpty((sender as TextBox).Text))
                 {
@@ -157,13 +168,14 @@ namespace IFME
                 else
                 {
                     rdoPrefixCustom.Checked = true;
+                    FileNameExample();
                 }
             }
         }
 
         private void txtPostfix_TextChanged(object sender, EventArgs e)
         {
-            if ((sender as TextBox).Focused)
+            if ((sender as Control).Focused)
             {
                 if (string.IsNullOrEmpty((sender as TextBox).Text))
                 {
@@ -172,6 +184,7 @@ namespace IFME
                 else
                 {
                     rdoPostfixCustom.Checked = true;
+                    FileNameExample();
                 }
             }
         }
@@ -223,6 +236,45 @@ namespace IFME
                     }
                 }
             }
+        }
+
+        private void FileNameExample()
+        {
+            var preFix = string.Empty;
+            var postFix = string.Empty;
+
+            if (rdoPrefixCustom.Checked)
+            {
+                preFix = txtPrefix.Text;
+            }
+            else if (rdoPrefixDateTime.Checked)
+            {
+                preFix = $"[{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
+            }
+
+            if (rdoPostfixCustom.Checked)
+            {
+                postFix = txtPostfix.Text;
+            }
+            else if (rdoPostfixDateTime.Checked)
+            {
+                postFix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}]";
+            }
+
+            lblFileNameEx.Text = $"{preFix}{Properties.Settings.Default.FileNameExample}{postFix}.mkv";
+        }
+
+        private void lblFileNameEx_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.youtube.com/watch?v=V47hPO7gSok");
+        }
+
+        private void btnFactoryReset_Click(object sender, EventArgs e)
+        {
+            var msg = MessageBox.Show("This will reset to factory settings, all custom settings will be deleted!\n\nProceed such action?", "Factory Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (msg == DialogResult.Yes)
+                Properties.Settings.Default.Reset();
         }
     }
 }

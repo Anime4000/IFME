@@ -2231,7 +2231,7 @@ namespace IFME
                             prefix = $"[{DateTime.Now:yyyy-MM-dd_HH-mm-ss}] ";
                             break;
                         case 2:
-                            prefix = $"{Properties.Settings.Default.PrefixText} ";
+                            prefix = Properties.Settings.Default.PrefixText;
                             break;
                         default:
                             break;
@@ -2243,7 +2243,7 @@ namespace IFME
                             postfix = $" [{DateTime.Now:yyyy-MM-dd_HH-mm-ss}]";
                             break;
                         case 2:
-                            postfix = $" {Properties.Settings.Default.PostfixText}";
+                            postfix = Properties.Settings.Default.PostfixText;
                             break;
                         default:
                             break;

@@ -12,7 +12,7 @@ namespace IFME.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -37,7 +37,7 @@ namespace IFME.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[IFME]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[IFME] ")]
         public string PrefixText {
             get {
                 return ((string)(this["PrefixText"]));
@@ -141,6 +141,18 @@ namespace IFME.Properties {
             }
             set {
                 this["TestEncoder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Erdentempel - S01E13 - Aufbruch Bluray-1080p")]
+        public string FileNameExample {
+            get {
+                return ((string)(this["FileNameExample"]));
+            }
+            set {
+                this["FileNameExample"] = value;
             }
         }
     }

@@ -6,7 +6,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PrefixText" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[IFME]</Value>
+      <Value Profile="(Default)">[IFME] </Value>
     </Setting>
     <Setting Name="PostfixText" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -31,6 +31,9 @@
     </Setting>
     <Setting Name="TestEncoder" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FileNameExample" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Erdentempel - S01E13 - Aufbruch Bluray-1080p</Value>
     </Setting>
   </Settings>
 </SettingsFile>
