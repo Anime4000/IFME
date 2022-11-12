@@ -1,5 +1,6 @@
 ﻿Version 8.0 beta 5 (Mana)
 -------------------------
+[new] More hardware aceeleration support including Intel Quick Sync (av1, h265, h264, vp9), Nvidia NVENC (h264, h265, av1) and AMD AMF (h264, h265)
 [new] New filename example show when using Prefix and Postfix, get the idea how final name will be.
 [fixed] Remove spavce on Postfix filename
 [fixed] Allow user to factory reset (reset settings)
