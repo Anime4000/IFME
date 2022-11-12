@@ -407,6 +407,11 @@ namespace IFME
                 }
 
                 tabConfig.SelectedTab = tabConfigMediaInfo;
+
+                chkVideoDeInterlace.Checked = true;
+                chkVideoDeInterlace.Checked = false;
+                chkAdvTrim.Checked = true;
+                chkAdvTrim.Checked = false;
             });
         }
 

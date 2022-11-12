@@ -1880,7 +1880,7 @@
             this.tsmiFileAddAttach,
             this.tsmiFileAddAttachEmbed});
             this.cmsFileAddAttach.Name = "cmsFileAddAttach";
-            this.cmsFileAddAttach.Size = new System.Drawing.Size(187, 70);
+            this.cmsFileAddAttach.Size = new System.Drawing.Size(187, 48);
             // 
             // tsmiFileAddAttach
             // 

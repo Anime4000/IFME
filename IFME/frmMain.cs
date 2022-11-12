@@ -902,7 +902,7 @@ namespace IFME
             MatchCollection matches = regex.Matches(cboVideoRes.Text);
 
             if (matches.Count == 0)
-                cboVideoRes.Text = "1280x720";
+                cboVideoRes.Text = "0x0";
 
             var w = 0;
             var h = 0;
@@ -919,6 +919,12 @@ namespace IFME
                 {
                     foreach (ListViewItem item in lstVideo.SelectedItems)
                     {
+                        if (w == 0 || h == 0)
+                        {
+                            w = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalWidth;
+                            h = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalHeight;
+                        }
+
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Width = w;
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Height = h;
                     }
@@ -929,6 +935,12 @@ namespace IFME
                     {
                         foreach (var item in (queue.Tag as MediaQueue).Video)
                         {
+                            if (w == 0 || h == 0)
+                            {
+                                w = item.Quality.OriginalWidth;
+                                h = item.Quality.OriginalHeight;
+                            }
+
                             item.Quality.Width = w;
                             item.Quality.Height = h;
                         }
@@ -953,18 +965,20 @@ namespace IFME
             Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
             MatchCollection matches = regex.Matches(cboVideoFps.Text);
 
-            if (matches.Count == 0)
-                cboVideoFps.Text = "23.976";
-
-            float fps = 23.796F;
-            float.TryParse(cboVideoFps.Text, out fps);
-
             if ((sender as Control).Focused)
             {
+                if (matches.Count == 0)
+                    cboVideoFps.Text = "0";
+
+                float.TryParse(cboVideoFps.Text, out float fps);
+
                 if (lstFile.SelectedItems.Count == 1)
                 {
                     foreach (ListViewItem item in lstVideo.SelectedItems)
                     {
+                        if (fps == 0.0)
+                            fps = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalFrameRate;
+
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.FrameRate = fps;
                     }
                 }
@@ -974,6 +988,9 @@ namespace IFME
                     {
                         foreach (var item in (queue.Tag as MediaQueue).Video)
                         {
+                            if (fps == 0.0)
+                                fps = item.Quality.OriginalFrameRate;
+
                             item.Quality.FrameRate = fps;
                         }
                     }
@@ -1057,6 +1074,8 @@ namespace IFME
                     }
                 }
             }
+
+            grpVideoInterlace.Enabled = chkVideoDeInterlace.Checked;
         }
 
         private void cboVideoDeInterMode_SelectedIndexChanged(object sender, EventArgs e)

@@ -86,6 +86,7 @@ namespace IFME
                         if (!TestAudio(plugin))
                         {
                             frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
+                            frmSplashScreen.PrintLogAppend($"{plugin.Name} is not compatible for this system");
 
                             Plugins.Items.Lists[plugin.GUID].Version += "Error"; // remove from Plugins List
                             Plugins.Items.Audio.Remove(plugin.GUID); // remove from Audio Encoder List
@@ -94,11 +95,16 @@ namespace IFME
 
                             continue;
                         }
+
+                        continue;
                     }
+
+                    frmSplashScreen.PrintLogAppend($"{plugin.Name} is skip from initialising");
                 }
                 catch (Exception ex)
                 {
                     ErrorLog += $"[ERR ] {ex.Message}\r\n";
+                    frmSplashScreen.PrintLogAppend(ex.Message);
                     Thread.Sleep(5000);
                 }
             }
@@ -170,6 +176,7 @@ namespace IFME
                         if (!TestVideo(plugin))
                         {
                             frmSplashScreen.SetStatusAppend(" (incompatible hardware, skipping...)");
+                            frmSplashScreen.PrintLogAppend($"{plugin.Name} is not compatible for this system");
 
                             Plugins.Items.Lists[plugin.GUID].Version += "System Incompatible"; // remove from Plugins List
                             Plugins.Items.Video.Remove(plugin.GUID); // remove from Video Encoder List
@@ -180,11 +187,16 @@ namespace IFME
 
                             continue;
                         }
+
+                        continue;
                     }
+
+                    frmSplashScreen.PrintLogAppend($"{plugin.Name} is skip from initialising");
                 }
                 catch (Exception ex)
                 {
                     ErrorLog += $"[ERR ] {ex.Message}\r\n";
+                    frmSplashScreen.PrintLogAppend(ex.Message);
                     Thread.Sleep(5000);
                 }
             }

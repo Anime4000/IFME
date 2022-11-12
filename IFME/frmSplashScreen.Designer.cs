@@ -32,23 +32,22 @@
             this.lblLoading = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblContrib = new System.Windows.Forms.Label();
+            this.lblLog = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblStatus
             // 
-            this.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStatus.ForeColor = System.Drawing.Color.White;
             this.lblStatus.Location = new System.Drawing.Point(16, 241);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(400, 200);
+            this.lblStatus.Size = new System.Drawing.Size(400, 32);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Loading...";
             // 
             // lblLoading
             // 
-            this.lblLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblLoading.BackColor = System.Drawing.Color.Transparent;
             this.lblLoading.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblLoading.ForeColor = System.Drawing.Color.White;
@@ -61,7 +60,6 @@
             // 
             // lblVersion
             // 
-            this.lblVersion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblVersion.ForeColor = System.Drawing.Color.White;
@@ -85,6 +83,19 @@
             this.lblContrib.Text = "Contrib";
             this.lblContrib.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
+            // lblLog
+            // 
+            this.lblLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblLog.BackColor = System.Drawing.Color.Transparent;
+            this.lblLog.Font = new System.Drawing.Font("Tahoma", 7F);
+            this.lblLog.ForeColor = System.Drawing.Color.White;
+            this.lblLog.Location = new System.Drawing.Point(17, 280);
+            this.lblLog.Name = "lblLog";
+            this.lblLog.Size = new System.Drawing.Size(439, 160);
+            this.lblLog.TabIndex = 4;
+            this.lblLog.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // frmSplashScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -93,6 +104,7 @@
             this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen9;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1066, 600);
+            this.Controls.Add(this.lblLog);
             this.Controls.Add(this.lblContrib);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblLoading);
@@ -116,5 +128,6 @@
         private System.Windows.Forms.Label lblLoading;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label lblContrib;
+        private System.Windows.Forms.Label lblLog;
     }
 }

@@ -245,7 +245,7 @@ namespace IFME.FFmpeg
 					$"Width                       : {item.Width}{Environment.NewLine}" +
 					$"Height                      : {item.Height}{Environment.NewLine}" +
 					$"Frame rate mode             : {(item.FrameRateConstant ? "Constant" : "Variable")}{Environment.NewLine}" +
-					$"Frame rate                  : {item.FrameRate} FPS ({item.FrameRateAvg} FPS){Environment.NewLine}" +
+					$"Frame rate                  : {item.FrameRate} fps ({item.FrameRateAvg} fps){Environment.NewLine}" +
 					$"Chroma subsampling          : {item.Chroma}{Environment.NewLine}" +
 					$"Bit depth                   : {item.BitDepth} bits{Environment.NewLine}" +
 					$"Language                    : {item.Language}{Environment.NewLine}";

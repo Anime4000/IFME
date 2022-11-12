@@ -4,6 +4,7 @@
 [new] New filename example show when using Prefix and Postfix, get the idea how final name will be.
 [fixed] Remove spavce on Postfix filename
 [fixed] Allow user to factory reset (reset settings)
+[fixed] Auto value hang the program (issue #223 found by MrxHellsing)
 
 Version 8.0 beta 4 (Prolog auf Erden)
 -------------------------------------
