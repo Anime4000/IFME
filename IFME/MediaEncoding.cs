@@ -308,11 +308,15 @@ namespace IFME
                     // Encoder Frame Count
                     if (!string.IsNullOrEmpty(vc.Args.FrameCount))
                     {
+                        var numFrames = (int)(queue.Duration * item.Quality.FrameRate);
+
                         if (item.Quality.FrameCount > 0)
-                            en_framecount = $"{vc.Args.FrameCount} {item.Quality.FrameCount}";
+                            numFrames = item.Quality.FrameCount;
 
                         if (queue.Trim.Enable)
-                            en_framecount = $"{vc.Args.FrameCount} {(TimeSpan.Parse(queue.Trim.Duration).TotalSeconds * item.Quality.FrameRate) + item.Quality.FrameRate * 2}"; // add one 2 sec buffer
+                            numFrames = (int)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / item.Quality.FrameRate));
+
+                        en_framecount = $"{vc.Args.FrameCount} {numFrames}";
                     }
 
                     // Copy Streams
