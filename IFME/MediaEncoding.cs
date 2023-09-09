@@ -91,15 +91,18 @@ namespace IFME
                 }
                 else
                 {
-                    ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} {name} -i \"{file}\" -y");
+                    ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} \"{name}\" -i \"{file}\" -y");
                 }
             }
 
             // Hard Sub
             if (queue.HardSub)
             {
-                File.Copy(Path.Combine("Fonts", "fonts.conf"), Path.Combine(tempDir, "fonts.conf"), true);
-                Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDir);
+                var fontConfigFile = File.ReadAllText(Path.Combine("Fonts", "fonts.conf"));
+                var fontConfigData = string.Format(fontConfigFile, tempDirFont);
+                File.WriteAllText(Path.Combine(tempDir, "fonts.conf"), fontConfigData);
+
+                Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDirFont);
                 Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
                 Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
             }

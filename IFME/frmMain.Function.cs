@@ -645,7 +645,7 @@ namespace IFME
                 lstAttach.Items.Add(new ListViewItem(new[]
                 {
                         $"{item.Id}",
-                        Path.GetFileName(item.File),
+                        Path.GetFileName(item.Name),
                         item.Mime
                     })
                 {

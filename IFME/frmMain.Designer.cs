@@ -615,11 +615,11 @@
             this.chkAudioMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAudioMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkAudioMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkAudioMP4Compt.Location = new System.Drawing.Point(134, 6);
             this.chkAudioMP4Compt.Name = "chkAudioMP4Compt";
-            this.chkAudioMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkAudioMP4Compt.Size = new System.Drawing.Size(346, 24);
             this.chkAudioMP4Compt.TabIndex = 13;
-            this.chkAudioMP4Compt.Text = "Fast Remux in High Compatibility";
+            this.chkAudioMP4Compt.Text = "Smart Stream Copy (Change File Format)";
             this.chkAudioMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkAudioMP4Compt.UseVisualStyleBackColor = true;
             this.chkAudioMP4Compt.CheckedChanged += new System.EventHandler(this.chkAudioMP4Compt_CheckedChanged);
@@ -966,8 +966,8 @@
             this.txtTrimDuration.Size = new System.Drawing.Size(100, 22);
             this.txtTrimDuration.TabIndex = 10;
             this.txtTrimDuration.Text = "00:01:00.000";
-            this.txtTrimDuration.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimDuration.Leave += new System.EventHandler(this.txtTrim_Event);
             this.txtTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // txtTrimEnd
@@ -978,8 +978,8 @@
             this.txtTrimEnd.Size = new System.Drawing.Size(100, 22);
             this.txtTrimEnd.TabIndex = 9;
             this.txtTrimEnd.Text = "00:10:05.000";
-            this.txtTrimEnd.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimEnd.Leave += new System.EventHandler(this.txtTrim_Event);
             this.txtTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // txtTrimStart
@@ -990,8 +990,8 @@
             this.txtTrimStart.Size = new System.Drawing.Size(100, 22);
             this.txtTrimStart.TabIndex = 8;
             this.txtTrimStart.Text = "00:09:45.500";
-            this.txtTrimStart.TextChanged += new System.EventHandler(this.txtTrim_TextChanged);
             this.txtTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtTrimStart.Leave += new System.EventHandler(this.txtTrim_Event);
             this.txtTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // lblAdvTimeEqual
@@ -1319,11 +1319,11 @@
             this.chkVideoMP4Compt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chkVideoMP4Compt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkVideoMP4Compt.Location = new System.Drawing.Point(258, 6);
+            this.chkVideoMP4Compt.Location = new System.Drawing.Point(134, 6);
             this.chkVideoMP4Compt.Name = "chkVideoMP4Compt";
-            this.chkVideoMP4Compt.Size = new System.Drawing.Size(222, 24);
+            this.chkVideoMP4Compt.Size = new System.Drawing.Size(346, 24);
             this.chkVideoMP4Compt.TabIndex = 12;
-            this.chkVideoMP4Compt.Text = "Fast Remux in High Compatibility\r\n";
+            this.chkVideoMP4Compt.Text = "Smart Stream Copy (Change File Format)";
             this.chkVideoMP4Compt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkVideoMP4Compt.UseVisualStyleBackColor = true;
             this.chkVideoMP4Compt.CheckedChanged += new System.EventHandler(this.chkVideoMP4Compt_CheckedChanged);

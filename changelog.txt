@@ -1,50 +1,60 @@
-﻿Version 8.0 beta 6 (Tearful)
+﻿Version 8.0 beta 8 (Night Princess)
+-----------------------------------
+[Fixed] Addressed a problem with the "Trim Video" input. Instead of validating the input during text changes, validation now occurs when leaving the TextBox control.
+[Fixed] The "HardSub" CheckBox control now correctly displays the current status (Enable/Disable) of the selected video.
+
+Version 8.0 beta 7 (Realize Maze)
+---------------------------------
+[Fixed] Renamed the label "Fast Remux" to "Smart Stream Copy" to reduce confusion among users when attempting to copy streams.
+
+Version 8.0 beta 6 (Tearful)
 ----------------------------
-[fixed] Wrong data-type (float) for total frame command instead of (int)
+[Fixed] Corrected the data type issue (float instead of int) for the total frame command.
 
 Version 8.0 beta 5 (Mana)
 -------------------------
-[new] More hardware aceeleration support including Intel Quick Sync (av1, h265, h264, vp9), Nvidia NVENC (h264, h265, av1) and AMD AMF (h264, h265)
-[new] New filename example show when using Prefix and Postfix, get the idea how final name will be.
-[fixed] Remove space at Postfix filename
-[fixed] Allow user to factory reset (reset settings)
-[fixed] Auto value hang the program (issue #223 found by MrxHellsing)
+[New] Expanded hardware acceleration support, including Intel Quick Sync (av1, h265, h264, vp9), Nvidia NVENC (h264, h265, av1), and AMD AMF (h264, h265).
+[New] Added filename examples to demonstrate the final name when using Prefix and Postfix, making it easier for users to understand the naming convention.
+[Fixed] Eliminated spaces in Postfix filenames.
+[Fixed] Enabled a factory reset option for users to reset settings.
+[Fixed] Resolved an issue (issue #223 reported by MrxHellsing) related to program hang caused by auto values.
 
 Version 8.0 beta 4 (Prolog auf Erden)
 -------------------------------------
-[new] AV1 NVENC support (test mode). I unable to test if AV1 NVENC working, no suitable hardware to test the encoding and adjust the quality.
-[update] FFmpeg: BtbN builds, version N-109027-g202b7a9ae7 (shared, GPL)
+[New] Introduced AV1 NVENC support in test mode, although testing was limited due to a lack of suitable hardware for encoding and quality adjustment.
+[Update] Updated FFmpeg to BtbN builds, version N-109027-g202b7a9ae7 (shared, GPL).
 
 Version 8.0 beta 3 (Kurzes Epos)
 --------------------------------
-[fixed] IFME crash in certain computer due to "Tabs Init" before WinForm loaded (code behave differently when run via VS IDE and Standalone)
-[fixed] "Fast Remux" cannot together with "Trim", when "Trim" is in use, it will skip "Fast Remux" process!
-[fixed] "Fast Remux" cannot together with "Image Sequence"
-[fixed] Plugins Init (Test Encoder) wrong exit code cause no encoder to use since IFME treat exit code 0 only!
-[change] Plugins Init (Test Encoder) now skip CPU encoder, only test GPU encoder unless "TestRequired" is set to true.
-[change] AV1 doesnt show total progress, now IFME able to show total % completed
-[change] AV1 preset in reverse order just like x265 and x264, last item in the list mean slower encoding at higher quality and low bit-rate
-[update] Showing plugins init error in the log instead on Splash Screen...
+[Fixed] Addressed IFME crashes on certain computers due to "Tabs Init" occurring before WinForm loading, causing different behavior when run via VS IDE and Standalone.
+[Fixed] Allowed "Fast Remux" to work alongside "Trim"; when "Trim" is in use, it no longer skips the "Fast Remux" process.
+[Fixed] Enabled "Fast Remux" to work with "Image Sequence."
+[Fixed] Fixed issues related to Plugins Init (Test Encoder) with incorrect exit codes, ensuring proper encoder usage.
+[Change] Modified Plugins Init (Test Encoder) to skip CPU encoders and test only GPU encoders unless "TestRequired" is set to true.
+[Change] Made AV1 show total progress, enabling IFME to display the overall completion percentage.
+[Change] Rearranged AV1 presets in reverse order, similar to x265 and x264, with the last item indicating slower encoding for higher quality and lower bit-rate.
+[Update] Errors during plugins initialization are now shown in the log instead of the Splash Screen.
 
 Version 8.0 beta 2 (Aufbruch)
 -----------------------------
-[change] Metadata about "Writing Application" now display IFME version, platfrom and cpu arch, easier to troubleshoot broken encoding at which version given sample
+[Change] Metadata about "Writing Application" now displays IFME version, platform, and CPU architecture, making it easier to troubleshoot issues related to encoding versions.
 
 Version 8.0 beta 1 (Erdentempel)
 --------------------------------
-[new] Introduce "Fast Remux", where you can remux file when codec is compatible to target file container, otherwise encode to compatible codec. Example use case: Any wrong codec (AVI) in your Jellyfin/Plex will be encoded to H.264
-[new] Folder import is available! Example use case: Scan Import all Jellyfin/Plex media
-[fixed] Re-fix interpretation of FFmpeg return code, where IFME treat positive 1 mean ok/warning
-[change] "Copy Stream" is deprecated due to "Fast Remux" feature!
-[change] No longer ship CPU Specific x264/x265 encoder where non AVX processor cannot use
-[update] x264: 3.5+56-8c159ba54
-[update] x265: 0.164.3094
-[update] SVT AV1: 1.3.0
-[update] FFmpeg: 2022-10-27-git-00b03331a0-full
+[New] Introduced "Fast Remux" feature, allowing users to remux files when the codec is compatible with the target file container. Otherwise, it encodes to a compatible codec. Useful for cases where a wrong codec (e.g., AVI) in Jellyfin/Plex is encoded to H.264.
+[New] Enabled folder import functionality for scanning and importing all Jellyfin/Plex media.
+[Fixed] Refined the interpretation of FFmpeg return codes, where IFME now treats positive 1 as OK or a warning.
+[Change] Deprecated "Copy Stream" due to the addition of the "Fast Remux" feature.
+[Change] No longer ships CPU-specific x264/x265 encoders, as non-AVX processors cannot use them.
+[Update] Updated x264 to version 3.5+56-8c159ba54.
+[Update] Updated x265 to version 0.164.3094.
+[Update] Updated SVT AV1 to version 1.3.0.
+[Update] Updated FFmpeg to version 2022-10-27-git-00b03331a0-full.
 
-It’s been a while that IFME under ALPHA release, I just too afraid some bug that I didn’t find during testing, now IFME enter BETA stage, all bug and GUI glitch has been iron out, I hope this working as expected. 
-Also this 8 iteration of rebuilding GUI from scratch, it become incompatible to each other, I know, I not some professional programmer but I do what I could >.< 
-I just too confused with FFmpeg exit code, sometime it returns random positive number, what I found that exit code was total frame has been processed, all these years I thought wrong, looking into FFmpeg code alone without help is bad idea, not sure where to ask help, afraid community mad about it
+It's been a while since IFME was under ALPHA release. I was concerned about potential bugs that might have gone unnoticed during testing. Now, IFME has entered the BETA stage, and all bugs and GUI glitches have been ironed out. I hope it functions as expected.
+
+Furthermore, this 8th iteration of rebuilding the GUI from scratch has made it incompatible with previous versions. I understand that I'm not a professional programmer, but I've done my best. Sometimes, I get confused by FFmpeg's exit codes, as they can return random positive numbers. I recently discovered that the exit code reflects the total number of processed frames. All these years, I've been mistaken. I've realized that trying to understand FFmpeg's code on my own, without seeking help, was a bad idea. I'm not sure where to turn for assistance, and I'm afraid the community might become frustrated with my inquiries.
+
 
 Version 22.01.18 Alpha (True Eternity)
 --------------------------------------

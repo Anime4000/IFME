@@ -327,6 +327,9 @@ namespace IFME
                 chkVideoMP4Compt.Checked = data.FastMuxVideo;
                 chkAudioMP4Compt.Checked = data.FastMuxAudio;
 
+                // Sub Burn
+                chkSubHard.Checked = data.HardSub;
+
                 // Video
                 ListViewItem_RefreshVideo(data);
 
@@ -1889,7 +1892,7 @@ namespace IFME
             }
         }
 
-        private void txtTrim_TextChanged(object sender, EventArgs e)
+        private void txtTrim_Event(object sender, EventArgs e)
         {
             var ctrl = sender as TextBox;
 
@@ -2281,6 +2284,8 @@ namespace IFME
                     // Create Temporary Session Folder
                     var tempSes = Path.Combine(Properties.Settings.Default.FolderTemporary, $"{Guid.NewGuid()}");
                     Directory.CreateDirectory(tempSes);
+
+
 
                     // Extract
                     MediaEncoding.Extract(mq, tempSes);
