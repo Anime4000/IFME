@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace IFME.FFmpeg
 {
@@ -36,193 +37,200 @@ namespace IFME.FFmpeg
 		{
 			dynamic json = JsonConvert.DeserializeObject(new ReadFile().Media(filePath, frameRate));
 
-			// General info
-			FilePath = (string)json.format.filename;
-			FileSize = ulong.TryParse((string)json.format.size, out ulong fs) ? fs : 0;
-			BitRate = ulong.TryParse((string)json.format.bit_rate, out ulong br) ? br : 0;
-			Duration = float.TryParse((string)json.format.duration, out float d) ? d : 0;
-			FormatName = (string)json.format.format_name;
-			FormatNameFull = (string)json.format.format_long_name;
-
-			// Capture stream type
-			foreach (var stream in json.streams)
+			try
 			{
-				string type = stream.codec_type;
+                // General info
+                FilePath = (string)json.format.filename;
+                FileSize = ulong.TryParse((string)json.format.size, out ulong fs) ? fs : 0;
+                BitRate = ulong.TryParse((string)json.format.bit_rate, out ulong br) ? br : 0;
+                Duration = float.TryParse((string)json.format.duration, out float d) ? d : 0;
+                FormatName = (string)json.format.format_name;
+                FormatNameFull = (string)json.format.format_long_name;
 
-				if (string.Equals(type, "video", IgnoreCase))
-				{
-					int id = 0;
-					try { id = int.Parse((string)stream.index); }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                // Capture stream type
+                foreach (var stream in json.streams)
+                {
+                    string type = stream.codec_type;
 
-					string lang = "und";
-					try { lang = stream.tags.language; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
-					if (string.IsNullOrEmpty(lang)) lang = "und";
+                    if (string.Equals(type, "video", IgnoreCase))
+                    {
+                        int id = 0;
+                        try { id = int.Parse((string)stream.index); }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string codec = "unknown";
-					try { codec = stream.codec_name; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string lang = "und";
+                        try { lang = stream.tags.language; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        if (string.IsNullOrEmpty(lang)) lang = "und";
 
-					int width = 0;
-					try { width = int.Parse((string)stream.width); }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string codec = "unknown";
+                        try { codec = stream.codec_name; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					int height = 0;
-					try { height = int.Parse((string)stream.height); }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        int width = 0;
+                        try { width = int.Parse((string)stream.width); }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string r = "0/0";
-					try { r = stream.r_frame_rate; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
-					float.TryParse(r.Split('/')[0], out float rn);
-					float.TryParse(r.Split('/')[1], out float rd);
-					float rfps = rn / rd;
+                        int height = 0;
+                        try { height = int.Parse((string)stream.height); }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string a = "0/0";
-					try { a = stream.avg_frame_rate; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
-					float.TryParse(a.Split('/')[0], out float an);
-					float.TryParse(a.Split('/')[1], out float ad);
-					float afps = an / ad;
+                        string r = "0/0";
+                        try { r = stream.r_frame_rate; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        float.TryParse(r.Split('/')[0], out float rn);
+                        float.TryParse(r.Split('/')[1], out float rd);
+                        float rfps = rn / rd;
 
-					int pix = 420;
-					try
-					{
-						if (!string.IsNullOrEmpty((string)stream.pix_fmt))
-						{
-							var mpix = Regex.Match((string)stream.pix_fmt, @"yuv(\d+)");
+                        string a = "0/0";
+                        try { a = stream.avg_frame_rate; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        float.TryParse(a.Split('/')[0], out float an);
+                        float.TryParse(a.Split('/')[1], out float ad);
+                        float afps = an / ad;
 
-							if (mpix.Success)
-								int.TryParse(mpix.Groups[1].Value, out pix);
-							else
-								pix = 420;
-						}
-					}
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        int pix = 420;
+                        try
+                        {
+                            if (!string.IsNullOrEmpty((string)stream.pix_fmt))
+                            {
+                                var mpix = Regex.Match((string)stream.pix_fmt, @"yuv(\d+)");
 
-					int bpc = 8;
-					try
-					{
-						if (int.TryParse((string)stream.bits_per_raw_sample, out int x))
-						{
-							bpc = x;
-						}
-						else
-						{
-							var mbpc = Regex.Match((string)stream.pix_fmt, @"yuv\d+p(\d+)");
+                                if (mpix.Success)
+                                    int.TryParse(mpix.Groups[1].Value, out pix);
+                                else
+                                    pix = 420;
+                            }
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-							if (mbpc.Success)
-								int.TryParse(mbpc.Groups[1].Value, out bpc);
-							else
-								bpc = 8;
-						}
-					}
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        int bpc = 8;
+                        try
+                        {
+                            if (int.TryParse((string)stream.bits_per_raw_sample, out int x))
+                            {
+                                bpc = x;
+                            }
+                            else
+                            {
+                                var mbpc = Regex.Match((string)stream.pix_fmt, @"yuv\d+p(\d+)");
 
-					Video.Add(new StreamVideo
-					{
-						Id = id,
-						Language = lang,
-						Codec = codec,
-						Chroma = pix,
-						BitDepth = bpc,
-						Width = width,
-						Height = height,
-						FrameRateConstant = rfps == afps,
-						FrameRate = rfps,
-						FrameRateAvg = afps,
-						FrameCount = (int)(Duration * afps),
-						Duration = Duration,
-					});
-				}
+                                if (mbpc.Success)
+                                    int.TryParse(mbpc.Groups[1].Value, out bpc);
+                                else
+                                    bpc = 8;
+                            }
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-				if (string.Equals(type, "audio", IgnoreCase))
-				{
-					int id = 1;
-					try { id = stream.index; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        Video.Add(new StreamVideo
+                        {
+                            Id = id,
+                            Language = lang,
+                            Codec = codec,
+                            Chroma = pix,
+                            BitDepth = bpc,
+                            Width = width,
+                            Height = height,
+                            FrameRateConstant = rfps == afps,
+                            FrameRate = rfps,
+                            FrameRateAvg = afps,
+                            FrameCount = (int)(Duration * afps),
+                            Duration = Duration,
+                        });
+                    }
 
-					string lang = "und";
-					try { lang = stream.tags.language; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
-					if (string.IsNullOrEmpty(lang)) lang = "und";
+                    if (string.Equals(type, "audio", IgnoreCase))
+                    {
+                        int id = 1;
+                        try { id = stream.index; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string codec = "unknown";
-					try { codec = stream.codec_name; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string lang = "und";
+                        try { lang = stream.tags.language; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        if (string.IsNullOrEmpty(lang)) lang = "und";
 
-					int sample = 44100;
-					try { sample = stream.sample_rate; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string codec = "unknown";
+                        try { codec = stream.codec_name; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					int bitdepth = 16;
-					try { bitdepth = stream.sample_fmt; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        int sample = 44100;
+                        try { sample = stream.sample_rate; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					int channel = 2;
-					try { channel = stream.channels; }
-					catch(Exception ex) { Console.WriteLine(ex.Message); }
+                        int bitdepth = 16;
+                        try { bitdepth = stream.sample_fmt; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					if (bitdepth == 0) bitdepth = 16;
-					else if (bitdepth >= 32) bitdepth = 24;
+                        int channel = 2;
+                        try { channel = stream.channels; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					Audio.Add(new StreamAudio
-					{
-						Id = id,
-						Language = lang,
-						Codec = codec,
-						SampleRate = sample,
-						BitDepth = bitdepth,
-						Channel = channel,
-						Duration = Duration,
-					});
-				}
+                        if (bitdepth == 0) bitdepth = 16;
+                        else if (bitdepth >= 32) bitdepth = 24;
 
-				if (string.Equals(type, "subtitle", IgnoreCase))
-				{
-					int id = 2;
-					try { id = stream.index; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        Audio.Add(new StreamAudio
+                        {
+                            Id = id,
+                            Language = lang,
+                            Codec = codec,
+                            SampleRate = sample,
+                            BitDepth = bitdepth,
+                            Channel = channel,
+                            Duration = Duration,
+                        });
+                    }
 
-					string lang = "und";
-					try { lang = stream.tags.language; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
-					if (string.IsNullOrEmpty(lang)) lang = "und";
+                    if (string.Equals(type, "subtitle", IgnoreCase))
+                    {
+                        int id = 2;
+                        try { id = stream.index; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string codec = "unknown";
-					try { codec = stream.codec_name; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string lang = "und";
+                        try { lang = stream.tags.language; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        if (string.IsNullOrEmpty(lang)) lang = "und";
 
-					Subtitle.Add(new StreamSubtitle
-					{
-						Id = id,
-						Language = lang,
-						Codec = FormatId.Get(codec),
-					});
-				}
+                        string codec = "unknown";
+                        try { codec = stream.codec_name; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-				if (string.Equals(type, "attachment", IgnoreCase))
-				{
-					int id = 3;
-					try { id = stream.index; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        Subtitle.Add(new StreamSubtitle
+                        {
+                            Id = id,
+                            Language = lang,
+                            Codec = FormatId.Get(codec),
+                        });
+                    }
 
-					string fname = "unknown";
-					try { fname = stream.tags.filename; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    if (string.Equals(type, "attachment", IgnoreCase))
+                    {
+                        int id = 3;
+                        try { id = stream.index; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					string mtype = "application/octet-stream";
-					try { mtype = stream.tags.mimetype; }
-					catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        string fname = "unknown";
+                        try { fname = stream.tags.filename; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-					Attachment.Add(new StreamAttachment
-					{
-						Id = id,
-						FileName = fname,
-						MimeType = mtype
-					});
-				}
+                        string mtype = "application/octet-stream";
+                        try { mtype = stream.tags.mimetype; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+                        Attachment.Add(new StreamAttachment
+                        {
+                            Id = id,
+                            FileName = fname,
+                            MimeType = mtype
+                        });
+                    }
+                }
+            }
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
 			}
 		}
 

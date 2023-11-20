@@ -188,6 +188,8 @@
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
             this.PbxBanner = new System.Windows.Forms.PictureBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiUseAsIngestStation = new System.Windows.Forms.ToolStripMenuItem();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -1766,9 +1768,11 @@
             this.tsmiImportFolder,
             this.tsmiImportImgSeq,
             this.toolStripSeparator1,
-            this.tsmiImportYouTube});
+            this.tsmiImportYouTube,
+            this.toolStripSeparator2,
+            this.tsmiUseAsIngestStation});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(190, 98);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 148);
             // 
             // tsmiImportFiles
             // 
@@ -1915,6 +1919,18 @@
             this.PbxBanner.Size = new System.Drawing.Size(1024, 64);
             this.PbxBanner.TabIndex = 27;
             this.PbxBanner.TabStop = false;
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(186, 6);
+            // 
+            // tsmiUseAsIngestStation
+            // 
+            this.tsmiUseAsIngestStation.Name = "tsmiUseAsIngestStation";
+            this.tsmiUseAsIngestStation.Size = new System.Drawing.Size(189, 22);
+            this.tsmiUseAsIngestStation.Text = "Use as Ingest &Station";
+            this.tsmiUseAsIngestStation.Click += new System.EventHandler(this.tsmiUseAsIngestStation_Click);
             // 
             // frmMain
             // 
@@ -2140,5 +2156,7 @@
         private System.Windows.Forms.GroupBox grpAdvHdr;
         private System.Windows.Forms.CheckBox chkAudioMP4Compt;
         private System.Windows.Forms.CheckBox chkVideoMP4Compt;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiUseAsIngestStation;
     }
 }

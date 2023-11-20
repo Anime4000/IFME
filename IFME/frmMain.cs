@@ -363,6 +363,11 @@ namespace IFME
                 lstSub.Items.Clear();
                 lstAttach.Items.Clear();
                 txtMediaInfo.Text = "FFmpeg Media Info ♥";
+                chkVideoDeInterlace.Checked = false;
+                chkVideoMP4Compt.Checked = false;
+                chkAudioMP4Compt.Checked = false;
+                chkSubHard.Checked = false;
+                chkAdvTrim.Checked = false;
             }
 
             // Check queue consistency
@@ -1957,14 +1962,6 @@ namespace IFME
 
             if (string.IsNullOrEmpty(cboFormat.Text))
             {
-                var tt = new ToolTip();
-                tt.Show(null, cboFormat, 0);
-                tt.IsBalloon = true;
-                tt.ToolTipIcon = ToolTipIcon.Warning;
-                tt.ToolTipTitle = "Inconsistent output format!";
-                tt.SetToolTip(cboFormat, "");
-                tt.Show("There are mixed output format that need to change first before set audio/video Encoder", cboFormat, (int)(cboFormat.Width / 2.5), cboFormat.Height * -3, 30000);
-                
                 btnStart.Enabled = false;
                 cboVideoEncoder.DataSource = null;
                 cboAudioEncoder.DataSource = null;
@@ -2120,7 +2117,7 @@ namespace IFME
 
             frm.Show();
             frm.Text = "Importing Media...";
-            frm.Status = "Reading {0} of {1} file\n{2}";
+            frm.Status = "Indexing...";
 
             var thread = new BackgroundWorker();
 
@@ -2171,6 +2168,12 @@ namespace IFME
         private void tsmiImportYouTube_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void tsmiUseAsIngestStation_Click(object sender, EventArgs e)
+        {
+
+            tsmiUseAsIngestStation.Checked = true;
         }
 
         private void tsmiPowerOff_Click(object sender, EventArgs e)

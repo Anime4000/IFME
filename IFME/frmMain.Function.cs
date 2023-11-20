@@ -753,10 +753,16 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
+                        var matchVideo = cboVideoEncoder.Items.Cast<KeyValuePair<Guid, string>>().Any(index => Equals(item.Encoder.Id, index.Key));
+                        if (matchVideo) break;
+
                         if (vData != null)
                         {
                             if (Guid.TryParse($"{vData.GUID}", out Guid guid))
                             {
+                                if (Equals(guid, item.Encoder.Id))
+                                    continue;
+
                                 item.Encoder = new MediaQueueVideoEncoder
                                 {
                                     Id = guid,
@@ -781,6 +787,9 @@ namespace IFME
 
                     foreach (var item in (queue.Tag as MediaQueue).Audio)
                     {
+                        var matchAudio = cboAudioEncoder.Items.Cast<KeyValuePair<Guid, string>>().Any(index => Equals(item.Encoder.Id, index.Key));
+                        if (matchAudio) break;
+
                         if (aData != null)
                         {
                             if (Guid.TryParse($"{aData.GUID}", out Guid guid))

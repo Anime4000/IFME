@@ -1,4 +1,10 @@
-﻿Version 8.0 beta 8 (Night Princess)
+﻿version 8.0 beta 9 (Enigma Ascension)
+-------------------------------------
+[New] IFME now capable to become a Ingest Station Server where IFME watch the folder for any new file and encode based on user settings
+[Fixed] Fix issue where user change format container cause Video/Audio Encoder to reset and override user value even container is compatible
+[Fixed] Remove ToolTip "Inconsistent output format!"
+
+Version 8.0 beta 8 (Night Princess)
 -----------------------------------
 [Fixed] Addressed a problem with the "Trim Video" input. Instead of validating the input during text changes, validation now occurs when leaving the TextBox control.
 [Fixed] The "HardSub" CheckBox control now correctly displays the current status (Enable/Disable) of the selected video.
