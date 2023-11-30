@@ -174,6 +174,8 @@
             this.tsmiImportImgSeq = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiImportYouTube = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiUseAsIngestStation = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsProfiles = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiProfilesSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProfilesRename = new System.Windows.Forms.ToolStripMenuItem();
@@ -188,8 +190,6 @@
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
             this.PbxBanner = new System.Windows.Forms.PictureBox();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiUseAsIngestStation = new System.Windows.Forms.ToolStripMenuItem();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -1175,6 +1175,7 @@
             this.cboVideoRes.FormattingEnabled = true;
             this.cboVideoRes.Items.AddRange(new object[] {
             "auto",
+            "original",
             "640x480",
             "640x360",
             "720x404",
@@ -1772,7 +1773,7 @@
             this.toolStripSeparator2,
             this.tsmiUseAsIngestStation});
             this.cmsFileAdd.Name = "cmsFileAdd";
-            this.cmsFileAdd.Size = new System.Drawing.Size(190, 148);
+            this.cmsFileAdd.Size = new System.Drawing.Size(190, 126);
             // 
             // tsmiImportFiles
             // 
@@ -1807,6 +1808,18 @@
             this.tsmiImportYouTube.Size = new System.Drawing.Size(189, 22);
             this.tsmiImportYouTube.Text = "Import &YouTube";
             this.tsmiImportYouTube.Click += new System.EventHandler(this.tsmiImportYouTube_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(186, 6);
+            // 
+            // tsmiUseAsIngestStation
+            // 
+            this.tsmiUseAsIngestStation.Name = "tsmiUseAsIngestStation";
+            this.tsmiUseAsIngestStation.Size = new System.Drawing.Size(189, 22);
+            this.tsmiUseAsIngestStation.Text = "Use as Ingest &Station";
+            this.tsmiUseAsIngestStation.Click += new System.EventHandler(this.tsmiUseAsIngestStation_Click);
             // 
             // cmsProfiles
             // 
@@ -1919,18 +1932,6 @@
             this.PbxBanner.Size = new System.Drawing.Size(1024, 64);
             this.PbxBanner.TabIndex = 27;
             this.PbxBanner.TabStop = false;
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(186, 6);
-            // 
-            // tsmiUseAsIngestStation
-            // 
-            this.tsmiUseAsIngestStation.Name = "tsmiUseAsIngestStation";
-            this.tsmiUseAsIngestStation.Size = new System.Drawing.Size(189, 22);
-            this.tsmiUseAsIngestStation.Text = "Use as Ingest &Station";
-            this.tsmiUseAsIngestStation.Click += new System.EventHandler(this.tsmiUseAsIngestStation_Click);
             // 
             // frmMain
             // 

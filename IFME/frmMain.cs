@@ -99,11 +99,13 @@ namespace IFME
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
             {
                 var hed = "No encoder to use";
-                var msg = "There is no encoder to use, high chance using older encoder plugins installed into this version, please re-install IFME without any modification!";
+                var msg = "No suitable encoder was found. This may be due to using outdated encoder plugins with the current version or missing necessary Runtime Libraries. If you're on Windows, ensure you have the required Visual C++ Redistributable installed. On Debian Linux, make sure to have the necessary libstdc++/libgcc libraries. Please consider reinstalling IFME without any modifications to address this issue.";
 
                 MessageBox.Show(msg, hed, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 rtfConsole.AppendText($"[ERR ] {msg}\r\n");
                 tabConfig.SelectedTab = tabConfigLog;
+
+                btnOptions.PerformClick();
             }
         }
 
@@ -838,10 +840,20 @@ namespace IFME
                 }
             }
 
+            var auto = vf.Contains("crop"); // ToDo: add more function that resolution changed
+            if (auto)
+                cboVideoRes.Text = "auto";
+
             if (lstFile.SelectedItems.Count == 1)
             {
                 foreach (ListViewItem item in lstVideo.SelectedItems)
                 {
+                    if (auto)
+                    {
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Width = 0;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Height = 0;
+                    }
+
                     (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Command = cmd;
                     (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.CommandFilter = vf;
                 }
@@ -852,11 +864,19 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
+                        if (auto)
+                        {
+                            item.Quality.Width = 0;
+                            item.Quality.Height = 0;
+                        }
+
                         item.Quality.Command = cmd;
                         item.Quality.CommandFilter = vf;
                     }
                 }
             }
+
+            DisplayProperties_Video();
         }
 
         private void btnVideoEnc_Click(object sender, EventArgs e)
@@ -904,17 +924,23 @@ namespace IFME
 
                 if (cboVideoRes.Text[0] == '0')
                     cboVideoRes.Text = "auto";
+
+                if (cboVideoRes.Text[0] == 'o')
+                    cboVideoRes.Text = "original";
             }
 
-            Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$");
+            Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$|^original$");
             MatchCollection matches = regex.Matches(cboVideoRes.Text);
 
             if (matches.Count == 0)
-                cboVideoRes.Text = "0x0";
+                cboVideoRes.Text = "auto";
 
             var w = 0;
             var h = 0;
             var x = cboVideoRes.Text;
+            var auto = string.Equals(cboVideoRes.Text, "auto", StringComparison.OrdinalIgnoreCase);
+            var original = string.Equals(cboVideoRes.Text, "original", StringComparison.OrdinalIgnoreCase);
+
             if (x.Contains('x'))
             {
                 int.TryParse(x.Split('x')[0], out w);
@@ -927,10 +953,15 @@ namespace IFME
                 {
                     foreach (ListViewItem item in lstVideo.SelectedItems)
                     {
-                        if (w == 0 || h == 0)
+                        if (original)
                         {
                             w = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalWidth;
                             h = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalHeight;
+                        }
+                        else if (auto)
+                        {
+                            w = 0;
+                            h = 0;
                         }
 
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Width = w;
@@ -943,10 +974,15 @@ namespace IFME
                     {
                         foreach (var item in (queue.Tag as MediaQueue).Video)
                         {
-                            if (w == 0 || h == 0)
+                            if (original)
                             {
                                 w = item.Quality.OriginalWidth;
                                 h = item.Quality.OriginalHeight;
+                            }
+                            else if (auto)
+                            {
+                                w = 0;
+                                h = 0;
                             }
 
                             item.Quality.Width = w;

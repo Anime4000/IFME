@@ -431,7 +431,7 @@ namespace IFME
                 nudVideoRateFactor.Value = data.Encoder.Value;
                 nudVideoMultiPass.Value = data.Encoder.MultiPass;
 
-                cboVideoRes.Text = $"{data.Quality.Width}x{data.Quality.Height}";
+                cboVideoRes.Text = $"{(data.Quality.Width == 0 || data.Quality.Height == 0 ? "auto" : $"{data.Quality.Width}x{data.Quality.Height}" )}";
                 cboVideoFps.Text = $"{Math.Round(data.Quality.FrameRate, 3)}";
                 cboVideoBitDepth.Text = $"{data.Quality.BitDepth}";
                 cboVideoPixFmt.Text = $"{data.Quality.PixelFormat}";

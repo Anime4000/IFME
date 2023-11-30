@@ -1,4 +1,13 @@
-﻿version 8.0 beta 9 (Enigma Ascension)
+﻿Version 8.0 beta 10 (Digital Horizon Symphony)
+----------------------------------------------
+[New] Introducing the "original" option in the Combo Box List; selecting it will use the original value.
+[Fixed] Addressed conflicts with the "-vf" filter when applying crop operations.
+[Fixed] Clarified the functionality of "auto" resolution, now truly adaptive based on the "-vf" or any specified parameters.
+[Fixed] Resolved an issue where, if the FFmpeg "-vf" contained the "crop" parameter, the resolution would be set to "auto."
+
+Note: This changelog is improved by OpenAI ChatGPT from my broken English input.
+
+Version 8.0 beta 9 (Enigma Ascension)
 -------------------------------------
 [New] IFME now capable to become a Ingest Station Server where IFME watch the folder for any new file and encode based on user settings
 [Fixed] Fix issue where user change format container cause Video/Audio Encoder to reset and override user value even container is compatible

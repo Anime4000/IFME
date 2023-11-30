@@ -196,8 +196,8 @@ namespace IFME
                     var outfmtfile = $"video{i:D4}_{item.Lang}.{codec.Format[0]}";
                     var outencfile = vc.RawOutput ? outrawfile : outfmtfile;
 
-                    var val_w = item.Quality.Width >= 128 ? item.Quality.Width : item.Quality.OriginalWidth;
-                    var val_h = item.Quality.Height >= 128 ? item.Quality.Height : item.Quality.OriginalHeight;
+                    var val_w = item.Quality.Width;
+                    var val_h = item.Quality.Height;
                     var val_fps = item.Quality.FrameRate >= 5 ? item.Quality.FrameRate : 23.976;
                     var val_bpc = item.Quality.BitDepth >= 8 ? item.Quality.BitDepth : 8;
                     var val_csp = item.Quality.PixelFormat >= 420 ? item.Quality.PixelFormat : 420;
@@ -228,7 +228,8 @@ namespace IFME
                     ff_infps = item.IsImageSeq ? $"-framerate {item.Quality.OriginalFrameRate}" : string.Empty;
 
                     // FFmpeg Resolution
-                    ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
+                    if (item.Quality.Width >= 128 || item.Quality.Height >= 128)
+                        ff_vf.Add($"scale={val_w}:{val_h}:flags=lanczos");
 
                     // FFmpeg Frame Rate (force encode to target frame rate, become constant fps)
                     ff_vf.Add($"fps={item.Quality.FrameRate}");

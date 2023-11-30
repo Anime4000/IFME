@@ -77,7 +77,7 @@ namespace IFME
             // 
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
             this.lblVersion.ForeColor = System.Drawing.Color.White;
             this.lblVersion.Location = new System.Drawing.Point(0, 112);
             this.lblVersion.Name = "lblVersion";
@@ -115,7 +115,7 @@ namespace IFME
             // 
             this.lblCodeName.BackColor = System.Drawing.Color.Transparent;
             this.lblCodeName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblCodeName.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.lblCodeName.Font = new System.Drawing.Font("Tahoma", 14F);
             this.lblCodeName.ForeColor = System.Drawing.Color.White;
             this.lblCodeName.Location = new System.Drawing.Point(0, 64);
             this.lblCodeName.Name = "lblCodeName";

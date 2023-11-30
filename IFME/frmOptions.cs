@@ -80,6 +80,14 @@ namespace IFME
             chkSkipTest.Checked = Properties.Settings.Default.TestEncoder;
 
             FileNameExample();
+
+            // in case encoder test failed, show this to user
+            int checkedItemCount = lstPlugins.Items.Cast<ListViewItem>().Count(item => item.Checked);
+            if (checkedItemCount == 0)
+            {
+                tabSetting.SelectedTab = tabPlugins;
+                chkSkipTest.ForeColor = Color.Red;
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
