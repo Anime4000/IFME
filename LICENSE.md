@@ -1,6 +1,3 @@
-Take note that you are not allowed to sell either Source Code or Binary,
-for more info please refer to: <https://github.com/Anime4000/IFME#license>
-
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
