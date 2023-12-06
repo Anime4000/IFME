@@ -97,8 +97,7 @@ namespace IFME
 					return;
 				}
 				
-
-				var regexPattern = @"(Processed[ ]{1,}\d+)|(\d\%\] )|(time=\d)|(\| \(\d+\/\d+\))|(\x08)|(frame[ ]{1,}\d+)";
+				var regexPattern = @"(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kb/s)|(\d+.\d+[ ]{1,}fps)|(\d+[ ]{1,}frames:\s\d+.\d+[ ]{1,}fps,\s\d+.\d+[ ]{1,}kb/s,\sGPU\s\d+%,\sVE\s\d+%)";
 				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
 				if (m.Success)
 					frmMain.PrintProgress(e.Data);

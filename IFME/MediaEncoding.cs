@@ -218,6 +218,8 @@ namespace IFME
                     var en_mode = string.Empty;
                     var en_framecount = string.Empty;
 
+                    var yuv_bit_enc = val_bpc > 8 ? $"{val_bpc}le" : string.Empty;
+
                     // FFmpeg RAW Type
                     if (string.IsNullOrEmpty(vc.Args.Y4M))
                         ff_rawcodec = "-strict -1 -f rawvideo";
@@ -235,7 +237,7 @@ namespace IFME
                     ff_vf.Add($"fps={item.Quality.FrameRate}");
 
                     // FFmpeg Pixel Format
-                    ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{(val_bpc > 8 ? $"{val_bpc}le" : string.Empty)}";
+                    ff_yuv = $"-pix_fmt yuv{item.Quality.PixelFormat}p{yuv_bit_enc}";
 
                     // FFmpeg Trim
                     if (queue.Trim.Enable)
@@ -293,6 +295,9 @@ namespace IFME
                             if (!string.IsNullOrEmpty(c.Command))
                                 en_csp = c.Command;
                     }
+
+                    // Encoder Pixel Format BitDepth
+                    en_csp += yuv_bit_enc;
 
                     // Encoder Preset
                     en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);

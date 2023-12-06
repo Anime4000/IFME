@@ -1,4 +1,11 @@
-﻿Version 8.0 beta 10 (Digital Horizon Symphony)
+﻿Version 8.0 beta 11 (Celestial Cascade)
+---------------------------------------
+[New] Welcome Rigaya NVEnc: Introducing Nvidia Video Encoder support for GPU-based video encoding.
+[Fixed] Progress in Motion: Now seamlessly integrates Rigaya NVEnc console output into the status display for a more comprehensive monitoring experience.
+
+[Note] Rigaya's Contribution: Rigaya has also developed Intel Quick Sync and AMD VCE plugins, though we couldn't add support in this release due to a lack of hardware for validation. Feel free to explore the plugins in `Plugins\rigaya_nvencc\_plugin.video*` and make replacements as needed.
+
+Version 8.0 beta 10 (Digital Horizon Symphony)
 ----------------------------------------------
 [New] Introducing the "original" option in the Combo Box List; selecting it will use the original value.
 [Fixed] Addressed conflicts with the "-vf" filter when applying crop operations.
