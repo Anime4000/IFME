@@ -296,8 +296,9 @@ namespace IFME
                                 en_csp = c.Command;
                     }
 
-                    // Encoder Pixel Format BitDepth
-                    en_csp += yuv_bit_enc;
+                    // Encoder Pixel Format BitDepth (only to YUV)
+                    if (en_csp.Contains("yuv"))
+                        en_csp += yuv_bit_enc;
 
                     // Encoder Preset
                     en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);

@@ -1,4 +1,8 @@
-﻿Version 8.0 beta 11 (Celestial Cascade)
+﻿Version 8.0 beta 12 (Luminar Spectrum)
+---------------------------------------
+[Fixed] Precision Polishing: Corrected a minor typo in the Chroma Subsample Pixel (CSP) handling. The issue involved incorrectly appending the Bit Depth for non-YUV formats. Special thanks to Shiniori-raws for bringing this to my attention.
+
+Version 8.0 beta 11 (Celestial Cascade)
 ---------------------------------------
 [New] Welcome Rigaya NVEnc: Introducing Nvidia Video Encoder support for GPU-based video encoding.
 [Fixed] Progress in Motion: Now seamlessly integrates Rigaya NVEnc console output into the status display for a more comprehensive monitoring experience.
