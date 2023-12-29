@@ -412,6 +412,8 @@ namespace IFME
                 chkVideoDeInterlace.Checked = false;
                 chkAdvTrim.Checked = true;
                 chkAdvTrim.Checked = false;
+                chkAdvCropAuto.Checked = true;
+                chkAdvCropAuto.Checked = false;
             });
         }
 

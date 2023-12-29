@@ -38,6 +38,7 @@ namespace IFME
 		public MediaContainer OutputFormat { get; set; }
 		public int ProfileId { get; set; } = -1;
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();
+		public MediaQueueCrop Crop { get; set; } = new MediaQueueCrop();
 		public List<MediaQueueAudio> Audio { get; set; } = new List<MediaQueueAudio>();
 		public List<MediaQueueVideo> Video { get; set; } = new List<MediaQueueVideo>();
 		public List<MediaQueueSubtitle> Subtitle { get; set; } = new List<MediaQueueSubtitle>();
@@ -58,8 +59,15 @@ namespace IFME
 	public class MediaQueueTrim
 	{
 		public bool Enable { get; set; } = false;
-		public string Start { get; set; } = "00:00:00";
-		public string End { get; set; } = "00:00:00";
-		public string Duration { get; set; } = "00:00:00";
+		public string Start { get; set; } = "00:00:00.000";
+		public string End { get; set; } = "00:00:00.000";
+		public string Duration { get; set; } = "00:00:00.000";
+	}
+
+	public class MediaQueueCrop
+	{
+		public bool Enable { get; set; } = false;
+		public string Start { get; set; } = "00:00:10.000";
+		public string Duration { get; set; } = "00:00:30.000";
 	}
 }

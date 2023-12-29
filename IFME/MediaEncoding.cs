@@ -127,7 +127,7 @@ namespace IFME
                     var md = item.Encoder.Mode;
                     var en = ac.Encoder;
 
-                    var trim = (queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty);
+                    var trim = queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty;
 
                     var qu = string.IsNullOrEmpty(ac.Mode[md].Args) ? string.Empty : $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
                     var hz = item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}";
@@ -363,6 +363,38 @@ namespace IFME
 
                         frmMain.PrintLog($"[WARN] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
                         File.Delete(Path.Combine(tempDir, tempName));
+                    }
+
+                    // Auto detect crop
+                    if (queue.Crop.Enable)
+                    {
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -ss \"{queue.Crop.Start}\" -t \"{queue.Crop.Duration}\" -i \"{item.File}\" -vf cropdetect -f null - 2> crop.log");
+
+                        if (File.Exists(Path.Combine(tempDir, "crop.log")))
+                        {
+                            var crop = IFME.FFmpeg.AutoDetect.Crop.Get(Path.Combine(tempDir, "crop.log"));
+
+                            if (!string.IsNullOrEmpty(crop))
+                            {
+                                int oldVideoRes = ff_vf.FindIndex(rs => rs.StartsWith("scale="));
+
+                                if (oldVideoRes != -1)
+                                {
+                                    ff_vf.RemoveAt(oldVideoRes);
+                                }
+
+                                int oldCropIndex = ff_vf.FindIndex(vf => vf.StartsWith("crop="));
+
+                                if (oldCropIndex != -1)
+                                {
+                                    ff_vf[oldCropIndex] = $"crop={crop}";
+                                }
+                                else
+                                {
+                                    ff_vf.Add($"crop={crop}");
+                                }
+                            }
+                        }
                     }
 
                     // Begin encoding

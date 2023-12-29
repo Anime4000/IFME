@@ -354,6 +354,13 @@ namespace IFME
                     lstAttach.Items[0].Selected = true;
 
                 chkAdvTrim.Checked = data.Trim.Enable;
+                txtAdvTrimStart.Text = data.Trim.Start;
+                txtAdvTrimEnd.Text = data.Trim.End;
+                txtAdvTrimDuration.Text = data.Trim.Duration;
+
+                chkAdvCropAuto.Checked = data.Crop.Enable;
+                txtAdvCropStart.Text = data.Crop.Start;
+                txtAdvCropDuration.Text = data.Crop.Duration;
 
                 // Media Info
                 txtMediaInfo.Text = FFmpeg.MediaInfo.Print(data.Info);
@@ -1937,32 +1944,32 @@ namespace IFME
         {
             var ctrl = sender as TextBox;
 
-            var bTimeStart = TimeSpan.TryParse(txtTrimStart.Text, out var timeStart);
-            var bTimeEnd = TimeSpan.TryParse(txtTrimEnd.Text, out var timeEnd);
-            var bTimeSpan = TimeSpan.TryParse(txtTrimDuration.Text, out var timeSpan);
+            var bTimeStart = TimeSpan.TryParse(txtAdvTrimStart.Text, out var timeStart);
+            var bTimeEnd = TimeSpan.TryParse(txtAdvTrimEnd.Text, out var timeEnd);
+            var bTimeSpan = TimeSpan.TryParse(txtAdvTrimDuration.Text, out var timeSpan);
 
             if (bTimeStart && bTimeEnd && bTimeSpan)
             {
                 if (ctrl.Focused)
                 {
-                    if (ctrl == txtTrimStart)
+                    if (ctrl == txtAdvTrimStart)
                     {
                         timeSpan = timeEnd - timeStart;
                     }
 
-                    if (ctrl == txtTrimEnd)
+                    if (ctrl == txtAdvTrimEnd)
                     {
                         timeSpan = timeEnd - timeStart;
                     }
 
-                    if (ctrl == txtTrimDuration)
+                    if (ctrl == txtAdvTrimDuration)
                     {
                         timeEnd = timeStart + timeSpan;
                     }
 
-                    txtTrimStart.Text = $"{timeStart:hh\\:mm\\:ss\\.fff}";
-                    txtTrimEnd.Text = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
-                    txtTrimDuration.Text = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
+                    txtAdvTrimStart.Text = $"{timeStart:hh\\:mm\\:ss\\.fff}";
+                    txtAdvTrimEnd.Text = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
+                    txtAdvTrimDuration.Text = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
                 }
 
                 foreach (ListViewItem item in lstFile.SelectedItems)
@@ -1971,6 +1978,35 @@ namespace IFME
                     (item.Tag as MediaQueue).Trim.End = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
                     (item.Tag as MediaQueue).Trim.Duration = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
                 }
+            }
+        }
+
+        private void chkAdvCropAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            grpAdvCrop.Enabled = chkAdvCropAuto.Checked;
+
+            chkVideoMP4Compt.Enabled = !chkAdvCropAuto.Checked;
+            lblVideoRes.Enabled = !chkAdvCropAuto.Checked;
+            cboVideoRes.Enabled = !chkAdvCropAuto.Checked;
+
+            if ((sender as Control).Focused)
+            {
+                if (lstFile.SelectedItems.Count > 0)
+                {
+                    foreach (ListViewItem item in lstFile.SelectedItems)
+                    {
+                        (item.Tag as MediaQueue).Crop.Enable = chkAdvCropAuto.Checked;
+                    }
+                }
+            }
+        }
+
+        private void txtCrop_Event(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lstFile.SelectedItems)
+            {
+                (item.Tag as MediaQueue).Crop.Start = txtAdvCropStart.Text;
+                (item.Tag as MediaQueue).Crop.Duration = txtAdvCropDuration.Text;
             }
         }
 

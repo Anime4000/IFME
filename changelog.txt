@@ -1,4 +1,8 @@
-﻿Version 8.0 beta 12 (Luminar Spectrum)
+﻿Version 8.0 beta 13 (Kaze no Kizuna)
+------------------------------------
+[New] Embrace the Breeze: Introducing automatic cropping and letterbox removal. This feature, independent of stream copy and video resolution, ensures a seamless cropping experience without resizing.
+
+Version 8.0 beta 12 (Luminar Spectrum)
 ---------------------------------------
 [Fixed] Precision Polishing: Corrected a minor typo in the Chroma Subsample Pixel (CSP) handling. The issue involved incorrectly appending the Bit Depth for non-YUV formats. Special thanks to Shiniori-raws for bringing this to our attention.
 [Optimization] Cutting-Edge Performance: IFME now ships with AVX2-enabled encoders (x265, x264) for optimal utilization of modern processors such as AMD Ryzen, Threadripper, Epyc, or their Intel equivalents. Please note that this change may render IFME incompatible with non-AVX2 processors.

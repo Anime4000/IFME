@@ -100,9 +100,9 @@
             this.tabConfigAdvance = new System.Windows.Forms.TabPage();
             this.grpAdvHdr = new System.Windows.Forms.GroupBox();
             this.grpAdvTrim = new System.Windows.Forms.GroupBox();
-            this.txtTrimDuration = new System.Windows.Forms.TextBox();
-            this.txtTrimEnd = new System.Windows.Forms.TextBox();
-            this.txtTrimStart = new System.Windows.Forms.TextBox();
+            this.txtAdvTrimDuration = new System.Windows.Forms.TextBox();
+            this.txtAdvTrimEnd = new System.Windows.Forms.TextBox();
+            this.txtAdvTrimStart = new System.Windows.Forms.TextBox();
             this.lblAdvTimeEqual = new System.Windows.Forms.Label();
             this.lblAdvTimeUntil = new System.Windows.Forms.Label();
             this.lblAdvTimeEnd = new System.Windows.Forms.Label();
@@ -190,6 +190,14 @@
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
             this.PbxBanner = new System.Windows.Forms.PictureBox();
+            this.grpAdvCrop = new System.Windows.Forms.GroupBox();
+            this.chkAdvCropAuto = new System.Windows.Forms.CheckBox();
+            this.txtAdvCropStart = new System.Windows.Forms.TextBox();
+            this.lblAdvCropStart = new System.Windows.Forms.Label();
+            this.txtAdvCropDuration = new System.Windows.Forms.TextBox();
+            this.lblAdvCropDuration = new System.Windows.Forms.Label();
+            this.lblAdvCropNote = new System.Windows.Forms.Label();
+            this.lblAdvTrimNote = new System.Windows.Forms.Label();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -211,6 +219,7 @@
             this.cmsFileAddSubs.SuspendLayout();
             this.cmsFileAddAttach.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).BeginInit();
+            this.grpAdvCrop.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboSubLang
@@ -910,14 +919,16 @@
             this.chkAdvTrim.AutoSize = true;
             this.chkAdvTrim.Location = new System.Drawing.Point(15, 6);
             this.chkAdvTrim.Name = "chkAdvTrim";
-            this.chkAdvTrim.Size = new System.Drawing.Size(266, 17);
+            this.chkAdvTrim.Size = new System.Drawing.Size(115, 17);
             this.chkAdvTrim.TabIndex = 0;
-            this.chkAdvTrim.Text = "&Trim Video && Audio (Copy stream wont effect this)";
+            this.chkAdvTrim.Text = "&Trim Video && Audio";
             this.chkAdvTrim.UseVisualStyleBackColor = true;
             this.chkAdvTrim.CheckedChanged += new System.EventHandler(this.chkAdvTrim_CheckedChanged);
             // 
             // tabConfigAdvance
             // 
+            this.tabConfigAdvance.Controls.Add(this.chkAdvCropAuto);
+            this.tabConfigAdvance.Controls.Add(this.grpAdvCrop);
             this.tabConfigAdvance.Controls.Add(this.grpAdvHdr);
             this.tabConfigAdvance.Controls.Add(this.chkAdvTrim);
             this.tabConfigAdvance.Controls.Add(this.grpAdvTrim);
@@ -934,9 +945,9 @@
             this.grpAdvHdr.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpAdvHdr.Location = new System.Drawing.Point(6, 112);
+            this.grpAdvHdr.Location = new System.Drawing.Point(6, 128);
             this.grpAdvHdr.Name = "grpAdvHdr";
-            this.grpAdvHdr.Size = new System.Drawing.Size(980, 146);
+            this.grpAdvHdr.Size = new System.Drawing.Size(980, 130);
             this.grpAdvHdr.TabIndex = 2;
             this.grpAdvHdr.TabStop = false;
             this.grpAdvHdr.Text = "HDR";
@@ -945,9 +956,10 @@
             // 
             this.grpAdvTrim.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpAdvTrim.Controls.Add(this.txtTrimDuration);
-            this.grpAdvTrim.Controls.Add(this.txtTrimEnd);
-            this.grpAdvTrim.Controls.Add(this.txtTrimStart);
+            this.grpAdvTrim.Controls.Add(this.lblAdvTrimNote);
+            this.grpAdvTrim.Controls.Add(this.txtAdvTrimDuration);
+            this.grpAdvTrim.Controls.Add(this.txtAdvTrimEnd);
+            this.grpAdvTrim.Controls.Add(this.txtAdvTrimStart);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeEqual);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeUntil);
             this.grpAdvTrim.Controls.Add(this.lblAdvTimeEnd);
@@ -956,50 +968,53 @@
             this.grpAdvTrim.Enabled = false;
             this.grpAdvTrim.Location = new System.Drawing.Point(6, 6);
             this.grpAdvTrim.Name = "grpAdvTrim";
-            this.grpAdvTrim.Size = new System.Drawing.Size(980, 100);
-            this.grpAdvTrim.TabIndex = 1;
+            this.grpAdvTrim.Size = new System.Drawing.Size(487, 116);
+            this.grpAdvTrim.TabIndex = 0;
             this.grpAdvTrim.TabStop = false;
             // 
-            // txtTrimDuration
+            // txtAdvTrimDuration
             // 
-            this.txtTrimDuration.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.txtTrimDuration.Location = new System.Drawing.Point(574, 51);
-            this.txtTrimDuration.Name = "txtTrimDuration";
-            this.txtTrimDuration.Size = new System.Drawing.Size(100, 22);
-            this.txtTrimDuration.TabIndex = 10;
-            this.txtTrimDuration.Text = "00:01:00.000";
-            this.txtTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtTrimDuration.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAdvTrimDuration.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtAdvTrimDuration.Location = new System.Drawing.Point(327, 53);
+            this.txtAdvTrimDuration.Name = "txtAdvTrimDuration";
+            this.txtAdvTrimDuration.Size = new System.Drawing.Size(100, 22);
+            this.txtAdvTrimDuration.TabIndex = 10;
+            this.txtAdvTrimDuration.Text = "00:01:00.000";
+            this.txtAdvTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtAdvTrimDuration.Leave += new System.EventHandler(this.txtTrim_Event);
+            this.txtAdvTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
-            // txtTrimEnd
+            // txtAdvTrimEnd
             // 
-            this.txtTrimEnd.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.txtTrimEnd.Location = new System.Drawing.Point(440, 52);
-            this.txtTrimEnd.Name = "txtTrimEnd";
-            this.txtTrimEnd.Size = new System.Drawing.Size(100, 22);
-            this.txtTrimEnd.TabIndex = 9;
-            this.txtTrimEnd.Text = "00:10:05.000";
-            this.txtTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtTrimEnd.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAdvTrimEnd.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtAdvTrimEnd.Location = new System.Drawing.Point(193, 54);
+            this.txtAdvTrimEnd.Name = "txtAdvTrimEnd";
+            this.txtAdvTrimEnd.Size = new System.Drawing.Size(100, 22);
+            this.txtAdvTrimEnd.TabIndex = 9;
+            this.txtAdvTrimEnd.Text = "00:10:05.000";
+            this.txtAdvTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtAdvTrimEnd.Leave += new System.EventHandler(this.txtTrim_Event);
+            this.txtAdvTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
-            // txtTrimStart
+            // txtAdvTrimStart
             // 
-            this.txtTrimStart.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.txtTrimStart.Location = new System.Drawing.Point(306, 52);
-            this.txtTrimStart.Name = "txtTrimStart";
-            this.txtTrimStart.Size = new System.Drawing.Size(100, 22);
-            this.txtTrimStart.TabIndex = 8;
-            this.txtTrimStart.Text = "00:09:45.500";
-            this.txtTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtTrimStart.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAdvTrimStart.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtAdvTrimStart.Location = new System.Drawing.Point(59, 54);
+            this.txtAdvTrimStart.Name = "txtAdvTrimStart";
+            this.txtAdvTrimStart.Size = new System.Drawing.Size(100, 22);
+            this.txtAdvTrimStart.TabIndex = 8;
+            this.txtAdvTrimStart.Text = "00:09:45.500";
+            this.txtAdvTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtAdvTrimStart.Leave += new System.EventHandler(this.txtTrim_Event);
+            this.txtAdvTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // lblAdvTimeEqual
             // 
             this.lblAdvTimeEqual.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeEqual.Location = new System.Drawing.Point(546, 51);
+            this.lblAdvTimeEqual.Location = new System.Drawing.Point(299, 53);
             this.lblAdvTimeEqual.Name = "lblAdvTimeEqual";
             this.lblAdvTimeEqual.Size = new System.Drawing.Size(22, 22);
             this.lblAdvTimeEqual.TabIndex = 7;
@@ -1009,7 +1024,7 @@
             // lblAdvTimeUntil
             // 
             this.lblAdvTimeUntil.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeUntil.Location = new System.Drawing.Point(412, 51);
+            this.lblAdvTimeUntil.Location = new System.Drawing.Point(165, 53);
             this.lblAdvTimeUntil.Name = "lblAdvTimeUntil";
             this.lblAdvTimeUntil.Size = new System.Drawing.Size(22, 22);
             this.lblAdvTimeUntil.TabIndex = 6;
@@ -1019,7 +1034,7 @@
             // lblAdvTimeEnd
             // 
             this.lblAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeEnd.Location = new System.Drawing.Point(440, 26);
+            this.lblAdvTimeEnd.Location = new System.Drawing.Point(193, 28);
             this.lblAdvTimeEnd.Name = "lblAdvTimeEnd";
             this.lblAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeEnd.TabIndex = 2;
@@ -1029,7 +1044,7 @@
             // lblAdvTimeDuration
             // 
             this.lblAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeDuration.Location = new System.Drawing.Point(574, 26);
+            this.lblAdvTimeDuration.Location = new System.Drawing.Point(327, 28);
             this.lblAdvTimeDuration.Name = "lblAdvTimeDuration";
             this.lblAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeDuration.TabIndex = 4;
@@ -1039,7 +1054,7 @@
             // lblAdvTimeStart
             // 
             this.lblAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblAdvTimeStart.Location = new System.Drawing.Point(306, 26);
+            this.lblAdvTimeStart.Location = new System.Drawing.Point(59, 28);
             this.lblAdvTimeStart.Name = "lblAdvTimeStart";
             this.lblAdvTimeStart.Size = new System.Drawing.Size(100, 22);
             this.lblAdvTimeStart.TabIndex = 0;
@@ -1933,6 +1948,97 @@
             this.PbxBanner.TabIndex = 27;
             this.PbxBanner.TabStop = false;
             // 
+            // grpAdvCrop
+            // 
+            this.grpAdvCrop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpAdvCrop.Controls.Add(this.lblAdvCropNote);
+            this.grpAdvCrop.Controls.Add(this.txtAdvCropDuration);
+            this.grpAdvCrop.Controls.Add(this.lblAdvCropDuration);
+            this.grpAdvCrop.Controls.Add(this.txtAdvCropStart);
+            this.grpAdvCrop.Controls.Add(this.lblAdvCropStart);
+            this.grpAdvCrop.Enabled = false;
+            this.grpAdvCrop.Location = new System.Drawing.Point(499, 6);
+            this.grpAdvCrop.Name = "grpAdvCrop";
+            this.grpAdvCrop.Size = new System.Drawing.Size(487, 116);
+            this.grpAdvCrop.TabIndex = 1;
+            this.grpAdvCrop.TabStop = false;
+            // 
+            // chkAdvCropAuto
+            // 
+            this.chkAdvCropAuto.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.chkAdvCropAuto.AutoSize = true;
+            this.chkAdvCropAuto.Location = new System.Drawing.Point(509, 6);
+            this.chkAdvCropAuto.Name = "chkAdvCropAuto";
+            this.chkAdvCropAuto.Size = new System.Drawing.Size(292, 17);
+            this.chkAdvCropAuto.TabIndex = 0;
+            this.chkAdvCropAuto.Text = "&Automatically Remove Letterbox from All Video Streams";
+            this.chkAdvCropAuto.UseVisualStyleBackColor = true;
+            this.chkAdvCropAuto.CheckedChanged += new System.EventHandler(this.chkAdvCropAuto_CheckedChanged);
+            // 
+            // txtAdvCropStart
+            // 
+            this.txtAdvCropStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAdvCropStart.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtAdvCropStart.Location = new System.Drawing.Point(140, 54);
+            this.txtAdvCropStart.Name = "txtAdvCropStart";
+            this.txtAdvCropStart.Size = new System.Drawing.Size(100, 22);
+            this.txtAdvCropStart.TabIndex = 10;
+            this.txtAdvCropStart.Text = "00:00:05.000";
+            this.txtAdvCropStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtAdvCropStart.Leave += new System.EventHandler(this.txtCrop_Event);
+            this.txtAdvCropStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            // 
+            // lblAdvCropStart
+            // 
+            this.lblAdvCropStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblAdvCropStart.Location = new System.Drawing.Point(140, 28);
+            this.lblAdvCropStart.Name = "lblAdvCropStart";
+            this.lblAdvCropStart.Size = new System.Drawing.Size(100, 22);
+            this.lblAdvCropStart.TabIndex = 9;
+            this.lblAdvCropStart.Text = "&Start Scene:";
+            this.lblAdvCropStart.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // txtAdvCropDuration
+            // 
+            this.txtAdvCropDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtAdvCropDuration.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.txtAdvCropDuration.Location = new System.Drawing.Point(246, 54);
+            this.txtAdvCropDuration.Name = "txtAdvCropDuration";
+            this.txtAdvCropDuration.Size = new System.Drawing.Size(100, 22);
+            this.txtAdvCropDuration.TabIndex = 12;
+            this.txtAdvCropDuration.Text = "00:00:09.000";
+            this.txtAdvCropDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
+            this.txtAdvCropDuration.Leave += new System.EventHandler(this.txtCrop_Event);
+            this.txtAdvCropDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            // 
+            // lblAdvCropDuration
+            // 
+            this.lblAdvCropDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblAdvCropDuration.Location = new System.Drawing.Point(246, 29);
+            this.lblAdvCropDuration.Name = "lblAdvCropDuration";
+            this.lblAdvCropDuration.Size = new System.Drawing.Size(100, 22);
+            this.lblAdvCropDuration.TabIndex = 11;
+            this.lblAdvCropDuration.Text = "Scan D&uration:";
+            this.lblAdvCropDuration.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // lblAdvCropNote
+            // 
+            this.lblAdvCropNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblAdvCropNote.Location = new System.Drawing.Point(6, 97);
+            this.lblAdvCropNote.Name = "lblAdvCropNote";
+            this.lblAdvCropNote.Size = new System.Drawing.Size(475, 16);
+            this.lblAdvCropNote.TabIndex = 13;
+            this.lblAdvCropNote.Text = "Note: This option will exclude stream copying and resolution adjustments.";
+            // 
+            // lblAdvTrimNote
+            // 
+            this.lblAdvTrimNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblAdvTrimNote.Location = new System.Drawing.Point(6, 97);
+            this.lblAdvTrimNote.Name = "lblAdvTrimNote";
+            this.lblAdvTrimNote.Size = new System.Drawing.Size(475, 16);
+            this.lblAdvTrimNote.TabIndex = 14;
+            this.lblAdvTrimNote.Text = "Note: This option will exclude stream copying";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1991,6 +2097,8 @@
             this.cmsFileAddSubs.ResumeLayout(false);
             this.cmsFileAddAttach.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PbxBanner)).EndInit();
+            this.grpAdvCrop.ResumeLayout(false);
+            this.grpAdvCrop.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2151,13 +2259,21 @@
         private System.Windows.Forms.ColumnHeader colVideoPixFmt;
         private System.Windows.Forms.ColumnHeader colAudioSampleRate;
         private System.Windows.Forms.ColumnHeader colAudioChannel;
-        private System.Windows.Forms.TextBox txtTrimDuration;
-        private System.Windows.Forms.TextBox txtTrimEnd;
-        private System.Windows.Forms.TextBox txtTrimStart;
+        private System.Windows.Forms.TextBox txtAdvTrimDuration;
+        private System.Windows.Forms.TextBox txtAdvTrimEnd;
+        private System.Windows.Forms.TextBox txtAdvTrimStart;
         private System.Windows.Forms.GroupBox grpAdvHdr;
         private System.Windows.Forms.CheckBox chkAudioMP4Compt;
         private System.Windows.Forms.CheckBox chkVideoMP4Compt;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tsmiUseAsIngestStation;
+        private System.Windows.Forms.GroupBox grpAdvCrop;
+        private System.Windows.Forms.CheckBox chkAdvCropAuto;
+        private System.Windows.Forms.TextBox txtAdvCropDuration;
+        private System.Windows.Forms.Label lblAdvCropDuration;
+        private System.Windows.Forms.TextBox txtAdvCropStart;
+        private System.Windows.Forms.Label lblAdvCropStart;
+        private System.Windows.Forms.Label lblAdvCropNote;
+        private System.Windows.Forms.Label lblAdvTrimNote;
     }
 }
