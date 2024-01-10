@@ -244,5 +244,8 @@
   <ItemGroup>
     <None Include="Resources\SplashScreen9.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SplashScreen10.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
