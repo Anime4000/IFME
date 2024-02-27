@@ -99,7 +99,7 @@ namespace IFME
                         Opacity += 0.02;
                     });
 
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
                 }
             }
             else
@@ -111,7 +111,7 @@ namespace IFME
                         Opacity -= 0.02;
                     });
 
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
                 }
             }
         }

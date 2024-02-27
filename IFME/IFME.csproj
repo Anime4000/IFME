@@ -40,6 +40,9 @@
     <ApplicationIcon>Resources\ifme-zenui.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -162,6 +165,7 @@
     <None Include="Mime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Profiles\Profile_0000-00-00_00-00-00_0002.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -191,10 +195,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
-      <Project>{71c4e9db-8418-4615-a6f6-83adde5979b3}</Project>
-      <Name>Newtonsoft.Json</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IFME.FFmpeg\IFME.FFmpeg.csproj">
       <Project>{d31b6614-24c4-4b23-9690-4111706ce61b}</Project>
       <Name>IFME.FFmpeg</Name>

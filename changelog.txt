@@ -1,4 +1,12 @@
-﻿Version 8.0 beta 13 (Eternal Descent)
+﻿Version 8.1 (Celestial Equations)
+--------------------------------
+[New] Implemented a method to permanently embed subtitles into videos without requiring `fonts.conf`.
+[Fixed] Resolved an issue with incorrect usage of `Newtonsoft.Json.dll` from NuGet, ensuring compatibility across systems and preventing JSON-related bugs.
+[Fixed] Adjusted the default splash screen fade duration from 1ms to 5ms to accommodate faster computers where the quick fade was too abrupt.
+
+Note: After many years in beta, IFME is now out of beta thanks to the discovery of a method for correctly embedding styled subtitles without the need for `fonts.conf`. This method was uncovered while examining Jellyfin FFmpeg Encoding logs. It may seem trivial, but previous search results often suggested using `fonts.conf`.
+
+Version 8.0 beta 13 (Eternal Descent)
 -------------------------------------
 [New] Embrace the Breeze: Introducing automatic cropping and letterbox removal. This feature, independent of stream copy and video resolution, ensures a seamless cropping experience without resizing.
 

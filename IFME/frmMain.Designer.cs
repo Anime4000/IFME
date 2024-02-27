@@ -303,7 +303,7 @@
             this.chkSubHard.Name = "chkSubHard";
             this.chkSubHard.Size = new System.Drawing.Size(250, 24);
             this.chkSubHard.TabIndex = 5;
-            this.chkSubHard.Text = "&Burn Subtitle (Hard Sub)";
+            this.chkSubHard.Text = "&Burn Subtitle (first stream is default)";
             this.chkSubHard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkSubHard.UseVisualStyleBackColor = true;
             this.chkSubHard.CheckedChanged += new System.EventHandler(this.chkSubHard_CheckedChanged);

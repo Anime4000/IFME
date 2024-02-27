@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFME", "IFME\IFME.csproj", "{DEB81CED-49B4-4DD9-9D7B-F41073504352}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFME.FFmpeg", "IFME.FFmpeg\IFME.FFmpeg.csproj", "{D31B6614-24C4-4B23-9690-4111706CE61B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newtonsoft.Json", "..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{71C4E9DB-8418-4615-A6F6-83ADDE5979B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFME.OSManager", "IFME.OSManager\IFME.OSManager.csproj", "{3C1EA604-DEDE-42C2-B0D4-A07DFB0A14B1}"
 EndProject
@@ -25,10 +23,6 @@ Global
 		{D31B6614-24C4-4B23-9690-4111706CE61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D31B6614-24C4-4B23-9690-4111706CE61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D31B6614-24C4-4B23-9690-4111706CE61B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71C4E9DB-8418-4615-A6F6-83ADDE5979B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71C4E9DB-8418-4615-A6F6-83ADDE5979B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71C4E9DB-8418-4615-A6F6-83ADDE5979B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71C4E9DB-8418-4615-A6F6-83ADDE5979B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C1EA604-DEDE-42C2-B0D4-A07DFB0A14B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C1EA604-DEDE-42C2-B0D4-A07DFB0A14B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C1EA604-DEDE-42C2-B0D4-A07DFB0A14B1}.Release|Any CPU.ActiveCfg = Release|Any CPU

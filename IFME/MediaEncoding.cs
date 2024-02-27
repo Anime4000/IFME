@@ -266,7 +266,7 @@ namespace IFME
                             }
                             else if (ext.IsOneOf(".ass", ".ssa"))
                             {
-                                ff_vf.Add($"ass={file}");
+                                ff_vf.Add($"subtitles=f={file}:fontsdir=attachment");
                             }
                         }
                     }
