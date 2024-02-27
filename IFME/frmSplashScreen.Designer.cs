@@ -101,7 +101,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen10;
+            this.BackgroundImage = global::IFME.Properties.Resources.SplashScreen11;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1066, 600);
             this.Controls.Add(this.lblLog);
