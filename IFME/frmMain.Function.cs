@@ -272,13 +272,22 @@ namespace IFME
 
         private void MediaSubtitleListAdd(string path)
         {
+            var fileData = new FFmpeg.MediaInfo(path);
+
             foreach (ListViewItem lst in lstFile.SelectedItems)
             {
+                var id = -1;
+
+                if (fileData.Video.Count > 0 && fileData.Subtitle.Count > 0)
+                {
+                    id = -2;
+                }
+
                 (lst.Tag as MediaQueue).Subtitle.Add(new MediaQueueSubtitle
                 {
                     Enable = true,
                     File = path,
-                    Id = -1,
+                    Id = id,
                     Lang = "und",
                     Codec = string.Empty
                 });
@@ -287,49 +296,34 @@ namespace IFME
             DisplayProperties_Subtitle();
         }
 
-        private void MediaSubtitleListAddEmbed(string path)
+        private void MediaAttachmentListAdd(string path)
         {
             var fileData = new FFmpeg.MediaInfo(path);
 
             foreach (ListViewItem lst in lstFile.SelectedItems)
             {
-                foreach (var item in fileData.Subtitle)
+                var id = -1;
+                var name = Path.GetFileName(path);
+                var mime = Mime.GetType(path);
+
+                if (fileData.Video.Count > 0 && fileData.Attachment.Count > 0)
                 {
-                    (lst.Tag as MediaQueue).Subtitle.Add(MediaQueueParse.Subtitle(path, item));
+                    id = -2;
+                    name = $"(embed) {name}";
+                    mime = "application/octet-stream";
                 }
-            }
 
-            DisplayProperties_Subtitle();
-        }
-
-        private void MediaAttachmentListAdd(string path)
-        {
-            foreach (ListViewItem lst in lstFile.SelectedItems)
-            {
                 (lst.Tag as MediaQueue).Attachment.Add(new MediaQueueAttachment
                 {
                     Enable = true,
                     File = path,
-                    Id = -1,
-                    Name = Path.GetFileName(path),
-                    Mime = Mime.GetType(path)
+                    Id = id,
+                    Name = name,
+                    Mime = mime
                 });
             }
 
             DisplayProperties_Attachment();
-        }
-
-        private void MediaAttachmentListAddEmbed(string path)
-        {
-            var fileData = new FFmpeg.MediaInfo(path);
-
-            foreach (ListViewItem lst in lstFile.SelectedItems)
-            {
-                foreach (var item in fileData.Attachment)
-                {
-                    (lst.Tag as MediaQueue).Attachment.Add(MediaQueueParse.Attachment(path, item));
-                }
-            }
         }
 
         private void DisplayProperties_Video()

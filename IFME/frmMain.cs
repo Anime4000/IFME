@@ -1777,8 +1777,8 @@ namespace IFME
         private void tsmiFileAddSubsEmbed_Click(object sender, EventArgs e)
         {
             if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video | MediaType.Subtitle))
-                    MediaSubtitleListAddEmbed(item);
+                foreach (var item in OpenFiles(MediaType.Video))
+                    MediaSubtitleListAdd(item);
 
             ListViewItem_RefreshSubtitle();
         }
@@ -1890,8 +1890,8 @@ namespace IFME
         private void tsmiFileAddAttachEmbed_Click(object sender, EventArgs e)
         {
             if (lstFile.SelectedItems.Count > 0)
-                foreach (var item in OpenFiles(MediaType.Video | MediaType.Attachment))
-                    MediaAttachmentListAddEmbed(item);
+                foreach (var item in OpenFiles(MediaType.Video))
+                    MediaAttachmentListAdd(item);
 
             ListViewItem_RefreshAttachment();
         }

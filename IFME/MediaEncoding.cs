@@ -64,13 +64,26 @@ namespace IFME
                 var lang = queue.Subtitle[i].Lang;
                 var fext = Path.GetExtension(file);
 
-                if (id < 0)
+                if (id >= 0)
                 {
-                    File.Copy(file, Path.Combine(tempDir, $"subtitle{i:D4}_{lang}{fext}"));
+                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle0000_{i:D4}_{lang}.{fmt}");
                 }
-                else
+                else if (id == -1)
                 {
-                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{i:D4}_{lang}.{fmt}");
+                    File.Copy(file, Path.Combine(tempDir, $"subtitle0000_{i:D4}_{lang}{fext}"));
+                }
+                else if (id == -2)
+                {
+                    var embed = new FFmpeg.MediaInfo(file);
+
+                    for (int e = 0; i < embed.Subtitle.Count; i++)
+                    {
+                        var e_id = embed.Subtitle[e].Id;
+                        var e_fmt = embed.Subtitle[e].Codec;
+                        var e_lang = embed.Subtitle[e].Language;
+
+                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{e_id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{i:D4}_{e:D4}_{e_lang}.{e_fmt}");
+                    }
                 }
             }
 
@@ -84,14 +97,26 @@ namespace IFME
 
                 if (!Directory.Exists(tempDirFont))
                     Directory.CreateDirectory(tempDirFont);
-                
-                if (id < 0)
+
+                if (id > 0)
+                {
+                    ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} \"{name}\" -i \"{file}\" -y");
+                }
+                else if (id == -1)
                 {
                     File.Copy(file, Path.Combine(tempDirFont, Path.GetFileName(file)));
                 }
-                else
+                else if (id == -2)
                 {
-                    ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{id} \"{name}\" -i \"{file}\" -y");
+                    var embed = new FFmpeg.MediaInfo(file);
+
+                    for (int e = 0; i < embed.Attachment.Count; i++)
+                    {
+                        var e_id = embed.Attachment[e].Id;
+                        var e_name = embed.Attachment[e].FileName;
+
+                        ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{e_id} \"{e_name}\" -i \"{file}\" -y");
+                    }
                 }
             }
 
@@ -309,11 +334,13 @@ namespace IFME
                     // Encoder Mode
                     if (!string.IsNullOrEmpty(vc.Mode[mode].Args))
                     {
-                        en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
+                        if (vc.Mode[mode].Args.HasFormatSpecifiers())
+                            en_mode = string.Format(vc.Mode[mode].Args, item.Encoder.Value);
+                        else
+                            en_mode = $"{vc.Mode[mode].Args} {vc.Mode[mode].Prefix}{item.Encoder.Value}{vc.Mode[mode].Postfix}";
                     }
 
                     // Encoder Mode (Native)
-
 
                     // Encoder Frame Count
                     if (!string.IsNullOrEmpty(vc.Args.FrameCount))

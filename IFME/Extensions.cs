@@ -1,17 +1,31 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
+using System.Text.RegularExpressions;
 
 static class Extensions
 {
-	/// <summary>
-	/// Check if item is exists
-	/// </summary>
-	/// <typeparam name="T">Type</typeparam>
-	/// <param name="value">Item to check</param>
-	/// <param name="items">Items to check</param>
-	/// <returns>Return true if item is exist, false otherwise.</returns>
-	internal static bool IsOneOf<T>(this T value, params T[] items)
+    /// <summary>
+    /// Checks whether the input string contains format specifiers like {0}, {1}, {2}, up to {n}.
+    /// </summary>
+    /// <param name="format">The string to check for format specifiers.</param>
+    /// <returns>True if the string contains format specifiers, otherwise false.</returns>
+    internal static bool HasFormatSpecifiers(this string format)
+    {
+        // Regular expression pattern to match format specifiers like {0}, {1}, {2}, etc.
+        string pattern = @"\{\d+\}";
+
+        // Returns true if the string contains any format specifier matching the pattern.
+        return Regex.IsMatch(format, pattern);
+    }
+
+    /// <summary>
+    /// Check if item is exists
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    /// <param name="value">Item to check</param>
+    /// <param name="items">Items to check</param>
+    /// <returns>Return true if item is exist, false otherwise.</returns>
+    internal static bool IsOneOf<T>(this T value, params T[] items)
 	{
 		for (int i = 0; i < items.Length; ++i)
 		{

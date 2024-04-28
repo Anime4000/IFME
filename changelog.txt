@@ -1,4 +1,9 @@
-﻿Version 8.1 (Celestial Equations)
+﻿Version 8.2 (Mondscheinmärchen)
+-------------------------------
+[Fixed] Resolved GitHub issue #226: "Unrecognized option 'cqp'" error encountered when utilizing H.265 FFmpeg AMD AMF with Constant Quantization Parameter.
+[Fixed] Corrected encoding extraction when importing video files into subtitle/attachment, ensuring accurate remuxing without compromising existing subtitle/attachment data from other videos.
+
+Version 8.1 (Celestial Equations)
 --------------------------------
 [New] Implemented a method to permanently embed subtitles into videos without requiring `fonts.conf`.
 [Fixed] Resolved an issue with incorrect usage of `Newtonsoft.Json.dll` from NuGet, ensuring compatibility across systems and preventing JSON-related bugs.
