@@ -2,6 +2,8 @@
 -------------------------------
 [Fixed] Resolved GitHub issue #226: "Unrecognized option 'cqp'" error encountered when utilizing H.265 FFmpeg AMD AMF with Constant Quantization Parameter.
 [Fixed] Corrected encoding extraction when importing video files into subtitle/attachment, ensuring accurate remuxing without compromising existing subtitle/attachment data from other videos.
+[Update] Updated Rigaya Nvidia Encoder to version 7.50.
+[Update] Updated AVX2 x265 Encoder to version 3.5+119-e112940bb (GCC 13.2).
 
 Version 8.1 (Celestial Equations)
 --------------------------------
