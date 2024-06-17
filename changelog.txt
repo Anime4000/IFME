@@ -1,4 +1,13 @@
-﻿Version 8.2 (Mondscheinmärchen)
+﻿Version 8.2.1 (Himmelsreise)
+----------------------------
+[New] Added VVC Encoder (uvg266 version 0.8.0) for experimental requests, issue #227
+[Dev] MKV container currently gives an incorrect VVC FourCC to the player (shows as V_QUICKTIME), causing video playback issues. MP4, TS, and M2TS are working correctly for now.
+[Update] Updated FFmpeg to 2024-06-16 to support VVC bitstream
+[Update] Updated MP4Box to 2.4.0 to support VVC bitstream
+[Update] Updated Rigaya NVEnc to 7.54
+
+
+Version 8.2 (Mondscheinmärchen)
 -------------------------------
 [Fixed] Resolved GitHub issue #226: "Unrecognized option 'cqp'" error encountered when utilizing H.265 FFmpeg AMD AMF with Constant Quantization Parameter.
 [Fixed] Corrected encoding extraction when importing video files into subtitle/attachment, ensuring accurate remuxing without compromising existing subtitle/attachment data from other videos.

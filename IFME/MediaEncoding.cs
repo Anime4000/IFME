@@ -571,7 +571,7 @@ namespace IFME
             }
 
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
-            var command = $"\"{FFmpeg}\" -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
     }
