@@ -65,7 +65,7 @@
             this.lblVersion.ForeColor = System.Drawing.Color.White;
             this.lblVersion.Location = new System.Drawing.Point(16, 171);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(400, 46);
+            this.lblVersion.Size = new System.Drawing.Size(600, 46);
             this.lblVersion.TabIndex = 0;
             this.lblVersion.Text = "Version";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

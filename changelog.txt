@@ -1,4 +1,10 @@
-﻿Version 8.2.1 (Himmelsreise)
+﻿Version 8.3 (天空の旅, Tenkuu no Tabi - Journey of the Sky)
+----------------------------------------------------------
+[Fixed] Media files no longer default to MKV upon import; they now follow the currently selected output format container.
+[Fixed] Non-MP4 and non-MKV format containers (e.g., AVI) always burning subtitles by default
+[Update] Added subtitle support for MP4 containers (SRT, VTT)
+
+Version 8.2.1 (Himmelsreise)
 ----------------------------
 [New] Added VVC Encoder (uvg266 version 0.8.0) for experimental requests, issue #227
 [Dev] MKV container currently gives an incorrect VVC FourCC to the player (shows as V_QUICKTIME), causing video playback issues. MP4, TS, and M2TS are working correctly for now.

@@ -542,7 +542,7 @@ namespace IFME
                 x++;
             }
 
-            if (queue.OutputFormat == MediaContainer.MKV)
+            if (queue.OutputFormat == MediaContainer.MKV || queue.OutputFormat == MediaContainer.MP4)
             {
                 if (!queue.HardSub)
                 {
@@ -554,6 +554,13 @@ namespace IFME
                         map += $" -map {x}:0";
                         x++;
                         d++;
+
+                        if (queue.OutputFormat == MediaContainer.MP4)
+                        {
+                            var ext = Path.GetExtension(subtitle).ToLower();
+                            if (ext.EndsWith(".srt") || ext.EndsWith(".vtt"))
+                                metadata += $" -c:s mov_text ";
+                        }
                     }
 
                     var tempDirFont = Path.Combine(tempDir, "attachment");

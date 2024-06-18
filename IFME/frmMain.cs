@@ -331,6 +331,7 @@ namespace IFME
 
                 // Sub Burn
                 chkSubHard.Checked = data.HardSub;
+                chkSubHard.Enabled = data.OutputFormat != MediaContainer.MKV || data.OutputFormat != MediaContainer.MP4;
 
                 // Video
                 ListViewItem_RefreshVideo(data);
@@ -2049,6 +2050,8 @@ namespace IFME
             EnableTab(tabConfigSubtitle, btnStart.Enabled);
             EnableTab(tabConfigAttachment, btnStart.Enabled);
             EnableTab(tabConfigAdvance, btnStart.Enabled);
+
+            tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)

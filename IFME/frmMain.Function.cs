@@ -13,11 +13,11 @@ namespace IFME
     [Flags]
     public enum MediaType
     {
-        Video = 1,
-        Audio = 2,
-        Image = 4,
-        Subtitle = 8,
-        Attachment = 16
+        Video = 0x1,
+        Audio = 0x2,
+        Image = 0x4,
+        Subtitle = 0x8,
+        Attachment = 0x10
     }
 
     class VSDesignerBugFixA { }
@@ -134,7 +134,8 @@ namespace IFME
             var extsVideo = "All video types|*.mkv;*.mp4;*.m4v;*.ts;*.mts;*.m2ts;*.flv;*.webm;*.ogv;*.avi;*.divx;*.wmv;*.mpg;*.mpeg;*.mpv;*.m1v;*.dat;*.vob;*.avs|";
             var extsAudio = "All audio types|*.mp2;*.mp3;*.mp4;*.m4a;*.aac;*.ogg;*.opus;*.flac;*.wav|";
             var extsImg = "All image types|*.bmp;*.png;*.jpg;*.jpe;*.jpeg;*.tiff;*.gif|";
-            var extsSub = "All subtitle types|*.ssa;*.ass;*.srt|";
+            var extsSub = "All subtitle types|*.ssa;*.ass;*.srt;*.vtt;*.sub;*.idx;*.sup;*.slt;*.sst;*.ttml|";
+            var extsSub2 = "MPEG subtitle types|*.srt;*.vtt;*.ttml|";
             var extsAtt = "All font types|*.ttf;*.otf;*.woff;*.woff2;*.eot|";
 
             string exts = string.Empty;
@@ -156,7 +157,10 @@ namespace IFME
 
             if (type.HasFlag(MediaType.Subtitle))
             {
-                exts += extsSub;
+                if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MP4)
+                    exts = extsSub2;
+                else
+                    exts += extsSub;
             }
 
             if (type.HasFlag(MediaType.Attachment))
@@ -194,7 +198,7 @@ namespace IFME
                 FileSize = fileData.FileSize,
                 Duration = fileData.Duration,
                 InputFormat = fileData.FormatNameFull,
-                OutputFormat = MediaContainer.MKV,
+                OutputFormat = (MediaContainer)cboFormat.SelectedIndex,
                 Info = fileData
             };
 
@@ -209,6 +213,14 @@ namespace IFME
             
             foreach (var item in fileData.Attachment)
                 fileQueue.Attachment.Add(MediaQueueParse.Attachment(path, item));
+
+            // Enable HardSub (Burn Subtitle) when using incompatible container, make sure disable control
+            if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV)
+                fileQueue.HardSub = false;
+            else if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MP4)
+                fileQueue.HardSub = false;
+            else
+                fileQueue.HardSub = true;
 
             var lst = new ListViewItem(new[]
             {
