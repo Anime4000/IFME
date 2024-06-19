@@ -76,7 +76,7 @@ namespace IFME
                 {
                     var embed = new FFmpeg.MediaInfo(file);
 
-                    for (int e = 0; i < embed.Subtitle.Count; i++)
+                    for (int e = 0; e < embed.Subtitle.Count; e++)
                     {
                         var e_id = embed.Subtitle[e].Id;
                         var e_fmt = embed.Subtitle[e].Codec;
