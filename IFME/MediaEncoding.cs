@@ -556,11 +556,7 @@ namespace IFME
                         d++;
 
                         if (queue.OutputFormat == MediaContainer.MP4)
-                        {
-                            var ext = Path.GetExtension(subtitle).ToLower();
-                            if (ext.EndsWith(".srt") || ext.EndsWith(".vtt"))
                                 metadata += $" -c:s mov_text ";
-                        }
                     }
 
                     var tempDirFont = Path.Combine(tempDir, "attachment");
