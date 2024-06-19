@@ -1,8 +1,10 @@
-﻿Version 8.3 (天空の旅, Tenkuu no Tabi - Journey of the Sky)
-----------------------------------------------------------
+﻿Version 8.2.2 (Mondnachtmelodie)
+--------------------------------
 [Fixed] Media files no longer default to MKV upon import; they now follow the currently selected output format container.
 [Fixed] Non-MP4 and non-MKV format containers (e.g., AVI) always burning subtitles by default
-[Update] Added subtitle support for MP4 containers (SRT, VTT)
+[Fixed] Bug fix on multiple subs from another video that only extract once
+[Update] Added subtitle support for MP4 containers (SRT, VTT). Issue #228 found by @longwu9t
+[Update] Updated x265 to 3.6+27-8787e8702 (master branch)
 
 Version 8.2.1 (Himmelsreise)
 ----------------------------
@@ -11,7 +13,6 @@ Version 8.2.1 (Himmelsreise)
 [Update] Updated FFmpeg to 2024-06-16 to support VVC bitstream
 [Update] Updated MP4Box to 2.4.0 to support VVC bitstream
 [Update] Updated Rigaya NVEnc to 7.54
-
 
 Version 8.2 (Mondscheinmärchen)
 -------------------------------
