@@ -1,4 +1,8 @@
-﻿Version 8.2.2 (Mondnachtmelodie)
+Version 8.2.3 (Luminous Horizon)
+--------------------------------
+[Fixed] Multipass encoding was halting at the 2nd pass due to an incorrect frame count. Now, Multipass encoding will ignore the frame count, resulting in no ETA. (Note: This issue might be resolved in the future by indexing video frames first to determine the actual frame count.)
+
+Version 8.2.2 (Mondnachtmelodie)
 --------------------------------
 [Fixed] Media files no longer default to MKV upon import; they now follow the currently selected output format container.
 [Fixed] Non-MP4 and non-MKV format containers (e.g., AVI) always burning subtitles by default
