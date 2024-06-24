@@ -1,4 +1,4 @@
-![Splash Screen](IFME/Resources/SplashScreen11.png)
+![Splash Screen](IFME/Resources/SplashScreen12.png)
 
 # Internet Friendly Media Encoder
 ![GUI](IFME.png)
