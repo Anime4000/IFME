@@ -29,7 +29,8 @@ namespace IFME.FFmpeg
                 {
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    RedirectStandardOutput = true
+                    RedirectStandardOutput = true,
+                    StandardOutputEncoding = Encoding.UTF8 // make Unicode aware
                 }
             };
 

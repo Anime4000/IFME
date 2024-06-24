@@ -54,6 +54,7 @@ namespace IFME
 		public string Lang { get; set; }
 		public string File { get; set; }
 		public string Codec { get; set; }
+		public string Title { get; set; }
 	}
 
 	public class MediaQueueTrim

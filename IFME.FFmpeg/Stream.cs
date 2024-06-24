@@ -10,6 +10,7 @@
 		public int Id { get; internal set; }
 		public string Language { get; internal set; }
 		public string Codec { get; internal set; }
+		public string Title { get; internal set; }
 	}
 
 	public partial class StreamVideo : StreamCommon
