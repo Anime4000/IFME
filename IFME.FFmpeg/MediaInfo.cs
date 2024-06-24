@@ -40,7 +40,7 @@ namespace IFME.FFmpeg
 			try
 			{
                 // General info
-                FilePath = (string)json.format.filename;
+                FilePath = filePath;
                 FileSize = ulong.TryParse((string)json.format.size, out ulong fs) ? fs : 0;
                 BitRate = ulong.TryParse((string)json.format.bit_rate, out ulong br) ? br : 0;
                 Duration = float.TryParse((string)json.format.duration, out float d) ? d : 0;

@@ -1,3 +1,7 @@
+Version 8.2.4 (Eclipsed Radiance)
+---------------------------------
+[Fixed] FFmpeg MediaInfo "File Path" print wrong character due to Windows Console in ANSI
+
 Version 8.2.3 (Luminous Horizon)
 --------------------------------
 [Fixed] Multipass encoding was halting at the 2nd pass due to an incorrect frame count. Now, Multipass encoding will ignore the frame count, resulting in no ETA. (Note: This issue might be resolved in the future by indexing video frames first to determine the actual frame count.)
