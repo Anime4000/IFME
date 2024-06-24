@@ -1,6 +1,7 @@
 Version 8.2.4 (Eclipsed Radiance)
 ---------------------------------
 [Fixed] FFmpeg MediaInfo "File Path" print wrong character due to Windows Console in ANSI
+[Fixed] Resolved an issue with ffprobe output parsing where Unicode characters in the JSON output were incorrectly encoded. This was achieved by setting the StandardOutputEncoding property to Encoding.UTF8 in the ProcessStartInfo configuration.
 
 Version 8.2.3 (Luminous Horizon)
 --------------------------------
