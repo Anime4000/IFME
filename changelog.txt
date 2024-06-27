@@ -1,3 +1,7 @@
+Version 8.2.5 (Aurora Serenade)
+-------------------------------
+[Fixed] Controls were not reflecting changes in the GUI when modifying encoding settings. This issue has been resolved by adding the missing function call DisplayProperties_Video(); DisplayProperties_Audio();.
+
 Version 8.2.4 (Eclipsed Radiance)
 ---------------------------------
 [Fixed] FFmpeg MediaInfo "File Path" print wrong character due to Windows Console in ANSI
