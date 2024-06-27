@@ -1075,6 +1075,8 @@ namespace IFME
                         }
                     }
                 }
+
+                DisplayProperties_Video();
             }
         }
 
@@ -1101,6 +1103,8 @@ namespace IFME
                         }
                     }
                 }
+
+                DisplayProperties_Video();
             }
         }
 
@@ -1452,6 +1456,8 @@ namespace IFME
                         }
                     }
                 }
+
+                DisplayProperties_Audio();
             }
         }
 
@@ -1489,6 +1495,8 @@ namespace IFME
                         }
                     }
                 }
+
+                DisplayProperties_Audio();
             }
         }
 
@@ -1515,6 +1523,8 @@ namespace IFME
                         }
                     }
                 }
+
+                DisplayProperties_Audio();
             }
         }
 
