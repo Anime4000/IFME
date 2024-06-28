@@ -478,7 +478,7 @@ namespace IFME
             BeginInvoke((Action)delegate ()
             {
                 cboAudioQuality.SelectedItem = data.Encoder.Quality;
-                cboAudioSampleRate.SelectedItem = data.Encoder.SampleRate;
+                cboAudioSampleRate.SelectedValue = data.Encoder.SampleRate;
                 cboAudioChannel.SelectedValue = data.Encoder.Channel;
 
                 foreach (ListViewItem item in lstAudio.SelectedItems)

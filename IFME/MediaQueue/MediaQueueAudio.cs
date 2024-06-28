@@ -17,7 +17,7 @@ namespace IFME
     {
         public Guid Id { get; set; }
         public int Mode { get; set; }
-        public decimal Quality { get; set; }
+        public string Quality { get; set; }
         public int SampleRate { get; set; }
         public int Channel { get; set; }
         public string Command { get; set; }

@@ -213,14 +213,17 @@ namespace IFME
 
             var qu = ac.Mode[0].Args.IsDisable() ? "" : $"{ac.Mode[0].Args} {ac.Mode[0].QualityPrefix}{ac.Mode[0].Default}{ac.Mode[0].QualityPostfix}";
 
+            var sampleRate = ac.SampleRateDefault == 0 ? "" : $"-ar {ac.SampleRateDefault}";
+            var channel = ac.ChannelDefault == 0 ? "" : $"-ac {ac.ChannelDefault}";
+
             int exitCode;
             if (ac.Args.Pipe)
             {
-                exitCode = ProcessManager.Start(outTempFolder, $"\"{ff}\" -hide_banner -v error -i \"{sampleFile}\" -ar {ac.SampleRateDefault} -ac {ac.ChannelDefault} -f wav - | \"{en}\" {qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{outTempFile}\"");
+                exitCode = ProcessManager.Start(outTempFolder, $"\"{ff}\" -hide_banner -v error -i \"{sampleFile}\" {sampleRate} {channel} -f wav - | \"{en}\" {qu} {ac.Args.Command} {ac.Args.Input} {ac.Args.Output} \"{outTempFile}\"");
             }
             else
             {
-                exitCode = ProcessManager.Start(outTempFolder, $"\"{en}\" {ac.Args.Input} \"{sampleFile}\" {ac.Args.Codec} {qu} -ar {ac.SampleRateDefault} -ac {ac.ChannelDefault} {ac.Args.Output} \"{outTempFile}\"");
+                exitCode = ProcessManager.Start(outTempFolder, $"\"{en}\" {ac.Args.Input} \"{sampleFile}\" {ac.Args.Codec} {qu} {sampleRate} {channel} {ac.Args.Output} \"{outTempFile}\"");
             }
 
             return !IsExitError(exitCode);
@@ -309,8 +312,8 @@ namespace IFME
                         {
                             Name = "Level",
                             Args = "-compression_level",
-                            Quality = new decimal[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
-                            Default = 12
+                            Quality = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" },
+                            Default = "12"
                         }
                     }
                 }

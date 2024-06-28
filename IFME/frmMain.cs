@@ -1387,10 +1387,23 @@ namespace IFME
                     cboAudioQuality.Items.Add(item);
                 cboAudioQuality.SelectedItem = audio.Mode[0].Default;
 
+                // Sample Rate
+                cboAudioSampleRate.DataSource = null;
                 cboAudioSampleRate.Items.Clear();
+
+                var hz = new Dictionary<int, string>();
                 foreach (var item in audio.SampleRate)
-                    cboAudioSampleRate.Items.Add(item);
-                cboAudioSampleRate.SelectedItem = audio.SampleRateDefault;
+                {
+                    if (item == 0)
+                        hz.Add(0, "Auto");
+                    else
+                        hz.Add(item, $"{item} Hz");
+                }
+                cboAudioSampleRate.DisplayMember = "Value";
+                cboAudioSampleRate.ValueMember = "Key";
+                cboAudioSampleRate.DataSource = new BindingSource(hz, null);
+
+                cboAudioSampleRate.SelectedValue = audio.SampleRateDefault;
 
                 // Channel
                 cboAudioChannel.DataSource = null;
@@ -1476,9 +1489,6 @@ namespace IFME
                 cboAudioQuality.SelectedItem = mode.Default;
             }
 
-            decimal.TryParse(cboAudioQuality.Text, out decimal q);
-            int.TryParse(cboAudioSampleRate.Text, out int hz);
-
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1486,8 +1496,8 @@ namespace IFME
                     foreach (ListViewItem item in lstAudio.SelectedItems)
                     {
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Mode = cboAudioMode.SelectedIndex;
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Quality = q;
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.SampleRate = hz;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Quality = cboAudioQuality.Text;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.SampleRate = (int)cboAudioSampleRate.SelectedValue;
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Channel = (int)cboAudioChannel.SelectedValue;
                     }
                 }
@@ -1498,8 +1508,8 @@ namespace IFME
                         foreach (var item in (queue.Tag as MediaQueue).Audio)
                         {
                             item.Encoder.Mode = cboAudioMode.SelectedIndex;
-                            item.Encoder.Quality = q;
-                            item.Encoder.SampleRate = hz;
+                            item.Encoder.Quality = cboAudioQuality.Text;
+                            item.Encoder.SampleRate = (int)cboAudioSampleRate.SelectedValue;
                             item.Encoder.Channel = (int)cboAudioChannel.SelectedValue;
                         }
                     }
@@ -1511,15 +1521,13 @@ namespace IFME
 
         private void cboAudioQuality_SelectedIndexChanged(object sender, EventArgs e)
         {
-            decimal.TryParse(cboAudioQuality.Text, out decimal q);
-
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
                     foreach (ListViewItem item in lstAudio.SelectedItems)
                     {
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Quality = q;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Quality = cboAudioQuality.Text;
                     }
                 }
                 else if (lstFile.SelectedItems.Count > 1)
@@ -1528,7 +1536,7 @@ namespace IFME
                     {
                         foreach (var item in (queue.Tag as MediaQueue).Audio)
                         {
-                            item.Encoder.Quality = q;
+                            item.Encoder.Quality = cboAudioQuality.Text;
                         }
                     }
                 }
@@ -1539,15 +1547,13 @@ namespace IFME
 
         private void cboAudioSampleRate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int.TryParse(cboAudioSampleRate.Text, out int hz);
-
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
                     foreach (ListViewItem item in lstAudio.SelectedItems)
                     {
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.SampleRate = hz;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.SampleRate = (int)cboAudioSampleRate.SelectedValue;
                     }
                 }
                 else if (lstFile.SelectedItems.Count > 1)
@@ -1556,7 +1562,7 @@ namespace IFME
                     {
                         foreach (var item in (queue.Tag as MediaQueue).Audio)
                         {
-                            item.Encoder.SampleRate = hz;
+                            item.Encoder.SampleRate = (int)cboAudioSampleRate.SelectedValue;
                         }
                     }
                 }

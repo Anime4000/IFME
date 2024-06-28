@@ -116,7 +116,7 @@ namespace IFME
 					{
 						Id = new Guid(),
 						Mode = 0,
-						Quality = 128,
+						Quality = "128",
 						SampleRate = 44100,
 						Channel = 2,
 						Command = "",
