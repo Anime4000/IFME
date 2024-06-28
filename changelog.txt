@@ -1,3 +1,8 @@
+Version 8.2.7 (Leuchtendes Echo)
+--------------------------------
+[New] Introduced support for USAC (Unified Speech and Audio Coding)!
+[Fixed] Added support for "Auto" audio sample rate in Plugin Definition File. Using the value 0 now means Auto, and no arguments are passed.
+
 Version 8.2.6 (Luminous Echo)
 -----------------------------
 [Fixed] The audio mode selection controls `cboAudioMode_SelectedIndexChanged();` were not updating other audio properties correctly when the audio mode was changed. Now, when the audio mode is changed, the quality, sample rate, and channel selections are properly updated and reflected in the encoding settings.
