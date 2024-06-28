@@ -1476,6 +1476,9 @@ namespace IFME
                 cboAudioQuality.SelectedItem = mode.Default;
             }
 
+            decimal.TryParse(cboAudioQuality.Text, out decimal q);
+            int.TryParse(cboAudioSampleRate.Text, out int hz);
+
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1483,6 +1486,9 @@ namespace IFME
                     foreach (ListViewItem item in lstAudio.SelectedItems)
                     {
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Mode = cboAudioMode.SelectedIndex;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Quality = q;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.SampleRate = hz;
+                        (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Channel = (int)cboAudioChannel.SelectedValue;
                     }
                 }
                 else if (lstFile.SelectedItems.Count > 1)
@@ -1492,6 +1498,9 @@ namespace IFME
                         foreach (var item in (queue.Tag as MediaQueue).Audio)
                         {
                             item.Encoder.Mode = cboAudioMode.SelectedIndex;
+                            item.Encoder.Quality = q;
+                            item.Encoder.SampleRate = hz;
+                            item.Encoder.Channel = (int)cboAudioChannel.SelectedValue;
                         }
                     }
                 }

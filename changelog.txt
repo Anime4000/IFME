@@ -1,6 +1,10 @@
+Version 8.2.6 (Luminous Echo)
+-----------------------------
+[Fixed] The audio mode selection controls `cboAudioMode_SelectedIndexChanged();` were not updating other audio properties correctly when the audio mode was changed. Now, when the audio mode is changed, the quality, sample rate, and channel selections are properly updated and reflected in the encoding settings.
+
 Version 8.2.5 (Aurora Serenade)
 -------------------------------
-[Fixed] Controls were not reflecting changes in the GUI when modifying encoding settings. This issue has been resolved by adding the missing function call DisplayProperties_Video(); DisplayProperties_Audio();.
+[Fixed] Controls were not reflecting changes in the GUI when modifying encoding settings. This issue has been resolved by adding the missing function call DisplayProperties_Video(); DisplayProperties_Audio();. Thanks to @longwu9t
 
 Version 8.2.4 (Eclipsed Radiance)
 ---------------------------------
