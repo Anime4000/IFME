@@ -1,9 +1,15 @@
+Version 8.2.8 (Ätherisches Licht)
+---------------------------------
+[New] Introduced support for USAC (Unified Speech and Audio Coding)!
+[Fixed] Audio encoders that don't support multi-channel will now automatically downmix to stereo.
+[Fixed] Added support for "Auto" audio sample rate in the Plugin Definition File. Setting it to 0 now means Auto.
+[Fixed] Ensured default audio sample rate and channel values are always included in their lists. This helps avoid issues with missing default values and improves the reliability of audio settings.
+[Change] Updated to use FFmpeg from Anim Mouse (build git-2024-06-26-1080116), which includes non-free encoders.
+[Info] Special thanks to GitHub user @longwu9t for reporting these bugs and suggesting USAC support for Internet Friendly Media Encoder (IFME).
+
 Version 8.2.7 (Leuchtendes Echo)
 --------------------------------
-[New] Introduced support for USAC (Unified Speech and Audio Coding)!
-[Fixed] Some Audio encoder not support multi-channel, however, it will downmix to stereo automatically.
-[Fixed] Added support for "Auto" audio sample rate in Plugin Definition File. Using the value 0 now means Auto, and no arguments are passed.
-[Fixed] Ensured default audio sample rate and channel values are included in their respective lists if not already present. This fix prevents issues where default values might be missing, improving the robustness of audio configuration.
+[Info] This is beta/pre-relase was mistaken for public when fixing
 
 Version 8.2.6 (Luminous Echo)
 -----------------------------
