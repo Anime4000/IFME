@@ -164,7 +164,7 @@ namespace IFME
 
                     if (!ac.Mode[md].MultiChannelSupport) // Mode didn't support MultiChannel, for example eSBR on exhale. Down-mixing to stereo
                     {
-                        frmMain.PrintLog($"[INFO] {codec.Name} doesn't support Multi Channel...");
+                        frmMain.PrintLog($"[INFO] {codec.Name}, {codec.Audio.Mode[md].Name} doesn't support Multi Channel...");
 
                         if (item.Info.Channel == 1)
                             ch = $"-ac 1";
