@@ -24,6 +24,18 @@ namespace IFME
 
 				IsImageSeq = isImageSeq,
 
+				Info = new MediaQueueVideoInfo
+				{
+                    Width = data.Width,
+                    Height = data.Height,
+                    FrameRate = (float)Math.Round(data.FrameRateAvg, 3),
+                    FrameRateAvg = data.FrameRateAvg,
+                    FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
+                    IsVFR = !data.FrameRateConstant,
+                    BitDepth = data.BitDepth,
+                    PixelFormat = data.Chroma
+                },
+
 				Encoder = new MediaQueueVideoEncoder
 				{
 					Id = CurrentId_Video,
@@ -39,9 +51,6 @@ namespace IFME
 				{
 					Width = data.Width,
 					Height = data.Height,
-					OriginalWidth = data.Width,
-					OriginalHeight = data.Height,
-					OriginalFrameRate = data.FrameRateAvg,
 					FrameRate = (float)Math.Round(data.FrameRateAvg, 3),
 					FrameRateAvg = data.FrameRateAvg,
 					FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
@@ -73,6 +82,12 @@ namespace IFME
 				Id = data.Id,
 				Lang = data.Language,
 				Codec = data.Codec,
+
+				Info = new MediaQueueAudioInfo
+				{
+					SampleRate = Plugins.Items.Audio[CurrentId_Audio].Audio.SampleRateDefault,
+                    Channel = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault,
+                },
 
 				Encoder = new MediaQueueAudioEncoder
 				{

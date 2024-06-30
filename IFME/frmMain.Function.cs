@@ -540,8 +540,8 @@ namespace IFME
             lstVideo.Items.Clear();
             foreach (var item in data.Video)
             {
-                var res = $"{item.Quality.OriginalWidth}x{item.Quality.OriginalHeight}";
-                var fps = item.Quality.OriginalFrameRate.ToString();
+                var res = $"{item.Info.Width}x{item.Info.Height}";
+                var fps = item.Info.FrameRate.ToString();
 
                 if (item.Quality.Width != 0 && item.Quality.Height != 0)
                     res = $"{item.Quality.Width}x{item.Quality.Height}";

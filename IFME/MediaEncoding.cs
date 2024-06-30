@@ -163,7 +163,14 @@ namespace IFME
                     var af = string.Empty;
 
                     if (!ac.Mode[md].MultiChannelSupport) // Mode didn't support MultiChannel, for example eSBR on exhale. Down-mixing to stereo
-                        ch = $"-ac 2";
+                    {
+                        frmMain.PrintLog($"[INFO] {codec.Name} doesn't support Multi Channel...");
+
+                        if (item.Info.Channel == 1)
+                            ch = $"-ac 1";
+                        else
+                            ch = $"-ac 2";
+                    }
 
                     if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
@@ -255,7 +262,7 @@ namespace IFME
                         ff_rawcodec = "-strict -1 -f yuv4mpegpipe";
 
                     // FFmpeg Frame Rate (Input) for Image Sequence
-                    ff_infps = item.IsImageSeq ? $"-framerate {item.Quality.OriginalFrameRate}" : string.Empty;
+                    ff_infps = item.IsImageSeq ? $"-framerate {item.Info.FrameRate}" : string.Empty;
 
                     // FFmpeg Resolution
                     if (item.Quality.Width >= 128 || item.Quality.Height >= 128)

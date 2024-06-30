@@ -963,8 +963,8 @@ namespace IFME
                     {
                         if (original)
                         {
-                            w = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalWidth;
-                            h = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalHeight;
+                            w = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width;
+                            h = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height;
                         }
                         else if (auto)
                         {
@@ -984,8 +984,8 @@ namespace IFME
                         {
                             if (original)
                             {
-                                w = item.Quality.OriginalWidth;
-                                h = item.Quality.OriginalHeight;
+                                w = item.Info.Width;
+                                h = item.Info.Height;
                             }
                             else if (auto)
                             {
@@ -1029,7 +1029,7 @@ namespace IFME
                     foreach (ListViewItem item in lstVideo.SelectedItems)
                     {
                         if (fps == 0.0)
-                            fps = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.OriginalFrameRate;
+                            fps = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.FrameRate;
 
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.FrameRate = fps;
                     }
@@ -1041,7 +1041,7 @@ namespace IFME
                         foreach (var item in (queue.Tag as MediaQueue).Video)
                         {
                             if (fps == 0.0)
-                                fps = item.Quality.OriginalFrameRate;
+                                fps = item.Info.FrameRate;
 
                             item.Quality.FrameRate = fps;
                         }

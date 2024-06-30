@@ -12,6 +12,19 @@ namespace IFME
         public MediaQueueVideoEncoder Encoder { get; set; } = new MediaQueueVideoEncoder();
         public MediaQueueVideoQuality Quality { get; set; } = new MediaQueueVideoQuality();
         public MediaQueueVideoDeInterlace DeInterlace { get; set; } = new MediaQueueVideoDeInterlace();
+        public MediaQueueVideoInfo Info { get; set; } = new MediaQueueVideoInfo();
+    }
+
+    public class MediaQueueVideoInfo
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public bool IsVFR { get; set; }
+        public float FrameRate { get; set; }
+        public float FrameRateAvg { get; set; }
+        public int FrameCount { get; set; }
+        public int BitDepth { get; set; }
+        public int PixelFormat { get; set; }
     }
 
     public class MediaQueueVideoEncoder
@@ -25,19 +38,8 @@ namespace IFME
         public string Command { get; set; }
     }
 
-    public class MediaQueueVideoQuality
+    public class MediaQueueVideoQuality : MediaQueueVideoInfo
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int OriginalWidth { get; set; }
-        public int OriginalHeight { get; set; }
-        public float OriginalFrameRate { get; set; }
-        public bool IsVFR { get; set; }
-        public float FrameRate { get; set; }
-        public float FrameRateAvg { get; set; }
-        public int FrameCount { get; set; }
-        public int BitDepth { get; set; }
-        public int PixelFormat { get; set; }
         public string Command { get; set; }
         public string CommandFilter { get; set; }
     }
