@@ -61,13 +61,14 @@ namespace IFME
                         continue;
                     }
 
-                    // Check array if contain 0 in the list, if not, add 0 at first list
+                    // Ensure default sample rate is included
                     if (!plugin.Audio.SampleRate.Contains(plugin.Audio.SampleRateDefault))
                     {
                         var hz = new[] { plugin.Audio.SampleRateDefault }.Concat(plugin.Audio.SampleRate).ToArray();
                         plugin.Audio.SampleRate = hz;
                     }
 
+                    // Ensure default channel is included
                     if (!plugin.Audio.Channel.Contains(plugin.Audio.ChannelDefault))
                     {
                         var ch = new[] { plugin.Audio.ChannelDefault }.Concat(plugin.Audio.Channel).ToArray();
