@@ -162,6 +162,9 @@ namespace IFME
 
                     var af = string.Empty;
 
+                    if (!ac.Mode[md].MultiChannelSupport) // Mode didn't support MultiChannel, for example eSBR on exhale. Down-mixing to stereo
+                        ch = $"-ac 2";
+
                     if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
                         frmMain.PrintStatus($"Fast Remux, Audio #{i}");

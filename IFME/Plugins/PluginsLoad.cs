@@ -216,6 +216,9 @@ namespace IFME
             var sampleRate = ac.SampleRateDefault == 0 ? "" : $"-ar {ac.SampleRateDefault}";
             var channel = ac.ChannelDefault == 0 ? "" : $"-ac {ac.ChannelDefault}";
 
+            if (!ac.Mode[0].MultiChannelSupport)
+                channel = "-ac 2";
+
             int exitCode;
             if (ac.Args.Pipe)
             {
@@ -312,6 +315,7 @@ namespace IFME
                         {
                             Name = "Level",
                             Args = "-compression_level",
+                            MultiChannelSupport = true,
                             Quality = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" },
                             Default = "12"
                         }
