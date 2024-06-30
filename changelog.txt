@@ -1,6 +1,7 @@
 Version 8.2.7 (Leuchtendes Echo)
 --------------------------------
 [New] Introduced support for USAC (Unified Speech and Audio Coding)!
+[Fixed] Some Audio encoder not support multi-channel, however, it will downmix to stereo automatically.
 [Fixed] Added support for "Auto" audio sample rate in Plugin Definition File. Using the value 0 now means Auto, and no arguments are passed.
 
 Version 8.2.6 (Luminous Echo)
