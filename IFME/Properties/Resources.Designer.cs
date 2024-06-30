@@ -133,9 +133,9 @@ namespace IFME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SplashScreen12 {
+        internal static System.Drawing.Bitmap SplashScreen13 {
             get {
-                object obj = ResourceManager.GetObject("SplashScreen12", resourceCulture);
+                object obj = ResourceManager.GetObject("SplashScreen13", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
