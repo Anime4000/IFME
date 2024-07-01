@@ -52,6 +52,12 @@ namespace IFME
 
         internal static void Extract(MediaQueue queue, string tempDir)
         {
+            if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
+                return;
+
+            if (queue.Video.Count == 0)
+                return;
+
             frmMain.PrintStatus("Extracting...");
 
             frmMain.PrintLog("[INFO] Extracting subtitle file...");
