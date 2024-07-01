@@ -74,28 +74,42 @@ namespace IFME
 
 			if (!string.IsNullOrEmpty(e.Data))
 			{
-				var tf = @"(?<=encoded\s) ?\d+(?=> frames in \d+.\d+)?"; //x265 encoded total frame
-				var tfm = Regex.Matches(e.Data, tf, RegexOptions.IgnoreCase);
-				if (tfm.Count > 0)
+                var tf = @"(?<=encoded\s) ?\d+(?=> frames in \d+.\d+)?"; //x265 encoded total frame
+                var tfm = Regex.Matches(e.Data, tf, RegexOptions.IgnoreCase);
+                if (tfm.Count > 0)
                 {
-					if (tfm.Count > 0)
-					{
-						if (!int.TryParse(tfm[0].Value, out int rfc))
-							MediaEncoding.RealFrameCount = rfc;
-					}
+                    if (tfm.Count > 0)
+                    {
+                        if (!int.TryParse(tfm[0].Value, out int rfc))
+                            MediaEncoding.RealFrameCount = rfc;
+                    }
 
-					return;
+                    return;
                 }
 
-				var p = @"(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kbps)|(\d+.\d+[ ]{1,}fps)";
-				var x = Regex.Matches(e.Data, p, RegexOptions.IgnoreCase);
-				if (x.Count >= 3)
-                {
-					int.TryParse(x[0].ToString().Substring(6), out int cf);
+                var patterns = new[]
+				{
+                    @"vvenc \[info\]: stats:  frame=\s*(\d+) .* avg_fps=\s*([\d\.]+) .* avg_bitrate=\s*([\d\.]+) kbps", // Fraunhofer VVC
+					@"\[\d+\.\d+%\] (\d+)/\d+ frames, ([\d\.]+) fps, ([\d\.]+) kb/s", // x264 & x265
+					@"(\d+) frames: ([\d\.]+) fps, ([\d\.]+) kb/s", // Rigaya NVEnc
+					@"frame=\s*(\d+) fps=\s*([\d\.]+) .* bitrate=\s*([\d\.]+)kbits/s", // FFmpeg
+					@"Encoding frame\s*(\d+)\s* ([\d\.]+) kbps\s* ([\d\.]+) fps" // SVT-AV1
+                };
 
-					frmMain.PrintProgress($"[{(float)cf / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {cf}, Bitrate: {x[1]}, Speed: {x[2]}");
-					return;
-				}
+				foreach (var pattern in patterns) 
+				{
+                    var match = Regex.Match(e.Data, pattern);
+                    if (match.Success)
+                    {
+						int.TryParse(match.Groups[1].Value, out int cf);
+						double.TryParse(match.Groups[2].Value, out double speed);
+						double.TryParse(match.Groups[3].Value, out double bitrate);
+
+                        frmMain.PrintProgress($"[{(float)cf / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {cf}, Bitrate: {bitrate} kb/s, Speed: {speed} fps");
+
+						return;
+                    }
+                }
 				
 				var regexPattern = @"( \d+ bits )|( \d+ seconds)|(\d+/\d{3})|(size=[ ]{1,}\d+)|(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kb/s)|(\d+.\d+[ ]{1,}fps)|(\d+[ ]{1,}frames:\s\d+.\d+[ ]{1,}fps,\s\d+.\d+[ ]{1,}kb/s,\sGPU\s\d+%,\sVE\s\d+%)";
 				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
