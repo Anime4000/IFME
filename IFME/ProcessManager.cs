@@ -101,11 +101,27 @@ namespace IFME
                     var match = Regex.Match(e.Data, pattern);
                     if (match.Success)
                     {
-						int.TryParse(match.Groups[1].Value, out int cf);
-						double.TryParse(match.Groups[2].Value, out double bitrate);
-						double.TryParse(match.Groups[3].Value, out double speed);
+						int frame;
+						double bitrate, speed;
 
-                        frmMain.PrintProgress($"[{(float)cf / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {cf}, Bitrate: {bitrate} kb/s, Speed: {speed} fps");
+						int.TryParse(match.Groups[1].Value, out int a);
+						double.TryParse(match.Groups[2].Value, out double b);
+						double.TryParse(match.Groups[3].Value, out double c);
+
+						frame = a;
+
+						if (pattern.EndsWith("fps")) // SVT-AV1 position fps last compared with others encoder
+						{
+							bitrate = b;
+							speed = c;
+						}
+						else
+						{
+                            bitrate = c;
+                            speed = b;
+                        }
+
+                        frmMain.PrintProgress($"[{(float)frame / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {frame}, Bitrate: {bitrate} kb/s, Speed: {speed} fps");
 
 						return;
                     }
