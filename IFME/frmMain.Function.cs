@@ -225,7 +225,7 @@ namespace IFME
             var lst = new ListViewItem(new[]
             {
                 Path.GetFileName(path),
-                $"{Path.GetExtension(path).Substring(1).ToUpperInvariant()} ► {Enum.GetName(typeof(MediaContainer), MediaContainer.MKV)}",
+                $"{Path.GetExtension(path).Substring(1).ToUpperInvariant()} ► {Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex)}",
                 TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
                 OS.PrintFileSize(fileData.FileSize),
                 fileQueue.Enable ? "Ready" : "Done",
