@@ -178,6 +178,14 @@ namespace IFME
                             ch = $"-ac 2";
                     }
 
+                    if (!ac.Mode[md].MonoSupport) // Some audio encode mode doesn't support Mono, so, need to up-mixing to stereo
+                    {
+                        frmMain.PrintLog($"[INFO] {codec.Name}, {codec.Audio.Mode[md].Name} doesn't support Mono Channel...");
+
+                        if (item.Info.Channel == 1)
+                            ch = $"-ac 2";
+                    }
+
                     if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
                         frmMain.PrintStatus($"Fast Remux, Audio #{i}");
