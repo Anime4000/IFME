@@ -102,8 +102,8 @@ namespace IFME
                     if (match.Success)
                     {
 						int.TryParse(match.Groups[1].Value, out int cf);
-						double.TryParse(match.Groups[2].Value, out double speed);
-						double.TryParse(match.Groups[3].Value, out double bitrate);
+						double.TryParse(match.Groups[2].Value, out double bitrate);
+						double.TryParse(match.Groups[3].Value, out double speed);
 
                         frmMain.PrintProgress($"[{(float)cf / MediaEncoding.RealFrameCount * 100:0.0} %] Frame: {cf}, Bitrate: {bitrate} kb/s, Speed: {speed} fps");
 

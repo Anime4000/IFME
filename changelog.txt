@@ -1,3 +1,8 @@
+Version 8.3.0 
+-------------
+[Fixed] Progress reported wrong info (misplaced)
+[Update] SVT-AV1 to 2.1.2-15-gb8d2f2b4
+
 Version 8.2.9 (Stellar Harmony)
 -------------------------------
 [New] You can now set Format Output, Video, and Audio settings before importing media files. These settings will be used as the default when importing.
