@@ -8,9 +8,45 @@ namespace IFME
 {
     public static class MediaQueueParse
     {
-		public static Guid CurrentId_Video { get; set; } = new Guid("deadbeef-0265-0265-0265-026502650265");
-		public static Guid CurrentId_Audio { get; set; } = new Guid("deadbeef-1aac-1aac-1aac-1aac2aac3aac");
+		public static class Gui
+		{
+			public static class Video
+			{
+				public static Guid Id { get; set; } = new Guid("deadbeef-0265-0265-0265-026502650265");
+				public static string Preset { get; set; } = Plugins.Items.Video[Id].Video.PresetDefault;
+				public static string Tune { get; set; } = Plugins.Items.Video[Id].Video.TuneDefault;
+				public static int Mode { get; set; } = 0;
+				public static decimal Value { get; set; } = Plugins.Items.Video[Id].Video.Mode[0].Value.Default;
+				public static int MultiPass { get; set; } = 2;
+                public static bool DeInterlace { get; set; } = false;
+				public static int DeInterlaceMode { get; set; } = 1;
+				public static int DeInterlaceField { get; set; } = 0;
+			}
 
+			public static class Audio
+			{
+				public static Guid Id { get; set; } = new Guid("deadbeef-1aac-1aac-1aac-1aac2aac3aac");
+				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
+                public static int Mode { get; set; } = 0;
+			}
+
+			public static void SetDefault(Guid videoId, Guid audioId)
+			{
+                Video.Id = videoId;
+                Video.DeInterlace = false;
+                Video.Preset = Plugins.Items.Video[videoId].Video.PresetDefault;
+                Video.Tune = Plugins.Items.Video[videoId].Video.TuneDefault;
+				Video.Mode = 0;
+				Video.Value = Plugins.Items.Video[videoId].Video.Mode[0].Value.Default;
+				Video.MultiPass = 2;
+                Video.DeInterlaceMode = 1;
+				Video.DeInterlaceField = 0;
+
+                Audio.Id = audioId;
+				Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
+                Audio.Mode = 0;
+            }
+		}
 
 		public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data, bool isImageSeq = false)
         {
@@ -38,11 +74,11 @@ namespace IFME
 
 				Encoder = new MediaQueueVideoEncoder
 				{
-					Id = CurrentId_Video,
-					Preset = Plugins.Items.Video[CurrentId_Video].Video.PresetDefault,
-					Tune = Plugins.Items.Video[CurrentId_Video].Video.TuneDefault,
+					Id = Gui.Video.Id,
+					Preset = Plugins.Items.Video[Gui.Video.Id].Video.PresetDefault,
+					Tune = Plugins.Items.Video[Gui.Video.Id].Video.TuneDefault,
 					Mode = 0,
-					Value = Plugins.Items.Video[CurrentId_Video].Video.Mode[0].Value.Default,
+					Value = Plugins.Items.Video[Gui.Video.Id].Video.Mode[0].Value.Default,
 					MultiPass = 2,
 					Command = string.Empty
 				},
@@ -70,7 +106,7 @@ namespace IFME
 
         public static MediaQueueAudio Audio(string path, FFmpeg.StreamAudio data)
         {
-			var ch = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault;
+			var ch = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault;
 
 			if (ch == 0)
 				ch = data.Channel;
@@ -85,17 +121,17 @@ namespace IFME
 
 				Info = new MediaQueueAudioInfo
 				{
-					SampleRate = Plugins.Items.Audio[CurrentId_Audio].Audio.SampleRateDefault,
-                    Channel = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault,
+					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
+                    Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
                 },
 
 				Encoder = new MediaQueueAudioEncoder
 				{
-					Id = CurrentId_Audio,
-					Mode = 0,
-					Quality = Plugins.Items.Audio[CurrentId_Audio].Audio.Mode[0].Default,
-					SampleRate = Plugins.Items.Audio[CurrentId_Audio].Audio.SampleRateDefault,
-					Channel = Plugins.Items.Audio[CurrentId_Audio].Audio.ChannelDefault,
+					Id = Gui.Audio.Id,
+					Mode = Gui.Audio.Mode,
+					Quality = Plugins.Items.Audio[Gui.Audio.Id].Audio.Mode[0].Default,
+					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
+					Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
 					Command = string.Empty
 				}
 			};

@@ -580,8 +580,8 @@ namespace IFME
 
             try
             {
-                if (MediaQueueParse.CurrentId_Video == null)
-                    MediaQueueParse.CurrentId_Video = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                if (MediaQueueParse.Gui.Video.Id == null)
+                    MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
             {
@@ -687,6 +687,8 @@ namespace IFME
                         }
                     }
 
+                    MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+
                     // Display predefine and default value
                     DisplayProperties_Video();
                 }
@@ -714,6 +716,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
             }
         }
 
@@ -738,6 +742,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
             }
         }
 
@@ -783,6 +789,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
             }
         }
 
@@ -805,6 +813,8 @@ namespace IFME
                     }
                 }
             }
+
+            MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
         }
 
         private void nudVideoMultiPass_Leave(object sender, EventArgs e)
@@ -826,6 +836,8 @@ namespace IFME
                     }
                 }
             }
+
+            MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
         }
 
         private void btnVideoDec_Click(object sender, EventArgs e)
@@ -1129,6 +1141,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
             }
 
             grpVideoInterlace.Enabled = chkVideoDeInterlace.Checked;
@@ -1155,6 +1169,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
             }
         }
 
@@ -1179,6 +1195,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
             }
         }
 
@@ -1359,8 +1377,8 @@ namespace IFME
                 if (cboAudioEncoder.SelectedItem == null)
                     cboAudioEncoder.SelectedIndex = 0;
 
-                if (MediaQueueParse.CurrentId_Audio == null)
-                    MediaQueueParse.CurrentId_Audio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                if (MediaQueueParse.Gui.Audio.Id == null)
+                    MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
             }
             catch (Exception ex)
             {
@@ -1470,6 +1488,8 @@ namespace IFME
                     }
                 }
 
+                MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+
                 DisplayProperties_Audio();
             }
         }
@@ -1515,6 +1535,8 @@ namespace IFME
                     }
                 }
 
+                MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
+
                 DisplayProperties_Audio();
             }
         }
@@ -1540,6 +1562,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
 
                 DisplayProperties_Audio();
             }
@@ -2077,6 +2101,11 @@ namespace IFME
             EnableTab(tabConfigAdvance, btnStart.Enabled);
 
             tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
+
+            // Change default
+            var v = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+            var a = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            MediaQueueParse.Gui.SetDefault(v, a);
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)

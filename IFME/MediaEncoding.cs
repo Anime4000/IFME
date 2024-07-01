@@ -52,10 +52,10 @@ namespace IFME
 
         internal static void Extract(MediaQueue queue, string tempDir)
         {
-            if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
+            if (queue.Video.Count == 0)
                 return;
 
-            if (queue.Video.Count == 0)
+            if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
                 return;
 
             frmMain.PrintStatus("Extracting...");
@@ -172,9 +172,7 @@ namespace IFME
                     {
                         frmMain.PrintLog($"[INFO] {codec.Name}, {codec.Audio.Mode[md].Name} doesn't support Multi Channel...");
 
-                        if (item.Info.Channel == 1)
-                            ch = $"-ac 1";
-                        else
+                        if (item.Info.Channel >= 2)
                             ch = $"-ac 2";
                     }
 
