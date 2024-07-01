@@ -1,8 +1,10 @@
 Version 8.2.9 (Stellar Harmony)
 -------------------------------
 [New] You can now set Format Output, Video, and Audio settings before importing media files. These settings will be used as the default when importing.
+[New] Added Fraunhofer H.266/VVC Encoder for experimental (mp4 only)
 [Fixed] The GUI now correctly shows MP4 when MP4 is selected as the Format Output, instead of incorrectly showing MKV.
 [Fixed] FDK AAC HE_v2 now properly handles audio channels: it only supports stereo, so mono audio will be up-mixed to stereo and multi-channel audio will be down-mixed to stereo.
+[Update] Improve video encoding progress
 
 Version 8.2.8 (Ätherisches Licht)
 ---------------------------------
