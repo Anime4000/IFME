@@ -4,11 +4,18 @@
 ![GUI](IFME.png)
 
 ## Introduction
-Back on 2012 as college student, I originally developed IFME for compressing FRAPS game recordings by using x264 for archiving, my friends showing that IFME simple and lightweight, from that IFME was born.
+Back in 2012, as a college student, I originally developed IFME to compress FRAPS game recordings using x264 for archiving. My friends appreciated IFME for its simplicity and lightweight design, which led to the birth of Internet Friendly Media Encoder (IFME).
+
+## About
+A versatile, future-proof, and expandable multimedia encoder designed for ease of use. Internet Friendly Media Encoder supports adding subtitles and attachments, and can function as a remuxing tool with a Copy Stream option. It allows you to combine multiple video, audio, subtitle, and attachment streams into a single file, remove unwanted streams, or incorporate subtitles from another video without extracting. The software also supports AviSynth for advanced video processing.
+
+The video and audio encoders are implemented in a plug-in style, enabling users to add their own compiled, optimized CPU architectures for increased speed. This modular design ensures that the encoder remains adaptable and expandable, allowing for the addition of new and future encoding technologies.
 
 ## License
-IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).<br>However you are not allowed to sell either **Source Code** or **Binaries**.
+### Source Code & Binary
+IFME Source Code under license [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).
 
+### Mascot & Artwork
 Artwork drawn by [53C](http://53c.deviantart.com/) and [adeq](https://www.facebook.com/liyana.0426) are property of IFME Project and under license [Attribution-NonCommercial 4.0 International](http://creativecommons.org/licenses/by-nc/4.0/)
 
 ## Donation
@@ -18,12 +25,12 @@ You can donate via [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xcli
 
 ## You
 ### System Requirement
-For Windows 7, you need:
-* Microsoft Visual C++ (ALL)
-* Microsoft .NET Framework 4.8
+* [Microsoft Visual C++ (ALL)](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)
+* [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) *<sup>Windows 7 Only</sup>*
 
-For Ubuntu, Linux, you need:
+For Ubuntu (Linux) you need:
 * `mono-complete` (Mono Runtime)
+* *Technically, IFME can run on Linux; however, the `Plugins` folder is built only for Windows. You might need to build your own versions of `FFmpeg`, `x264`, `x265`, etc., and replace the Windows binaries for now.*
 
 #### 32-bit
 *IFME no longer support 32-bit since High Resolution (QHD, UHD), High BitDepth require very large RAM*
@@ -35,60 +42,17 @@ For Ubuntu, Linux, you need:
 * RAM: 16GB DDR4 (UHD and above)
 * HDD: 70GB (UHD, HDR temp disk)
 
-```
-IFME was build and compiled under Zen 2 Architecture, likely run very poor on non-Ryzen system, I strongly advice you to compile own x265 aginst own processor for maximum performance
-```
-
 ### Downloads
 You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Build from Source)](https://github.com/Anime4000/IFME/releases/latest)
-
-#### Hardware Acceleration
-You can get Hardware Acceleration plugin [here!](https://sourceforge.net/projects/ifme/files/plugin/plugin-hwenc_2017-06-27.7z/download) simply extract to plugin folder.
-
-Using Hardware Acceleration/Fixed Encoder **NEVER** gives you better compression quality like x264 & x265 do, they are aimed for Live Streaming or Broadcasting or anything needing very fast encoding with decent quality.
 
 ### Run
 Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `ifme.sh` via Terminal Emulator
 
-*IFME require Console or Terminal (tty), please run with it.*
+## Hardware Acceleration
+Internet Friendly Media Encoder includes built-in hardware acceleration for H264, H265, and AV1 using FFmpeg and [Rigaya](https://github.com/rigaya).
+
+> [!WARNING]
+> For high-efficiency encoding (high quality + low bit rate), it is recommended to use CPU-based encoders. Hardware acceleration offers faster encoding speeds but may compromise on quality and bit rate efficiency.
 
 ## Developer
-### Do this before opening project
-
-* [Clone](https://github.com/JamesNK/Newtonsoft.Json) Json.NET
-* [Download](https://sourceforge.net/projects/ifme/files/plugin/) Plugin
-
-Make sure clone these in same folder with `ifme`, so it will look like:
-```
-GitHub
-  `-|
-    |
-    |`- IFME
-    |
-     `- Newtonsoft.Json
-```
-Then you can open `ifme.sln`. Have fun!
-
-### Compiling
-```
-mkdir ~/GitHub
-cd ~/GitHub
-git clone https://github.com/Anime4000/IFME
-cd IFME
-./configure
-make
-```
-Simple as that, if show an error, try download and install then run again.
-
-## Version History
-### Version 7
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme7.7) or change `master` to `ifme7.7`.
-
-### Version 6
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme6`.
-
-### Version 5
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme6) or change `master` to `ifme5`.
-
-### Version 4
-You can find [here](https://github.com/Anime4000/IFME/tree/ifme4) or change `master` to `ifme4`.
+Clone this project and open `ifme.sln` via Visual Studio 2022, by default VS2022 will download `Newtonsoft.Json` from nuget automatically.
