@@ -24,7 +24,8 @@
 		public float FrameRateAvg { get; internal set; }
 		public int FrameCount { get; internal set; }
 		public float Duration { get; internal set; }
-	}
+		public bool Disposition_AttachedPic { get; internal set; } = false;
+    }
 
 	public partial class StreamAudio : StreamCommon
 	{

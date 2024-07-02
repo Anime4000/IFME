@@ -25,6 +25,7 @@ namespace IFME
         public int FrameCount { get; set; }
         public int BitDepth { get; set; }
         public int PixelFormat { get; set; }
+        public bool Disposition_AttachedPic { get; internal set; } = false;
     }
 
     public class MediaQueueVideoEncoder

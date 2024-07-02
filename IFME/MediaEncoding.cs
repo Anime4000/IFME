@@ -229,6 +229,21 @@ namespace IFME
                 if (item.Encoder.Id.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
                     continue; // skip encode video when choosing audio only
 
+                if (item.Info.Disposition_AttachedPic)
+                {
+                    frmMain.PrintStatus($"Extracting Thumbnail #{i}");
+                    frmMain.PrintLog($"[INFO] Extracting Thumbnail...");
+
+                    var exts = item.Codec;
+
+                    if (exts.Equals("mjpeg", StringComparison.CurrentCultureIgnoreCase))
+                        exts = "jpeg";
+
+                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -vcodec copy -y \"album_art{i:D4}.{exts}\"");
+
+                    return;
+                }
+
                 if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
                 {
                     var vc = codec.Video;
@@ -535,6 +550,7 @@ namespace IFME
             var argAudio = string.Empty;
             var argSubtitle = string.Empty;
             var argEmbed = string.Empty;
+            var argArt = string.Empty;
 
             var outFile = Path.Combine(saveDir, saveFile);
 
@@ -593,6 +609,17 @@ namespace IFME
                         }
                     }
                 }
+            }
+
+            foreach (var art in Directory.GetFiles(tempDir, "album_art*"))
+            {
+                var file = Path.GetFileName(art);
+                var exts = Path.GetExtension(art);
+
+                argArt = $"-attach \"{file}\" ";
+                metadata += $"-metadata:s:t mimetype=\"image/{exts.Replace(".", "")}\" -metadata:s:t:{x} filename=\"cover{exts}\"";
+                x++;
+                break;
             }
 
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";

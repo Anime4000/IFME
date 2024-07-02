@@ -132,7 +132,11 @@ namespace IFME.FFmpeg
 						}
 						catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-						Video.Add(new StreamVideo
+						bool dap = false;
+						try { dap = stream.disposition.attached_pic; }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+                        Video.Add(new StreamVideo
 						{
 							Id = id,
 							Language = lang,
@@ -147,6 +151,7 @@ namespace IFME.FFmpeg
 							FrameRateAvg = afps,
 							FrameCount = (int)(Duration * afps),
 							Duration = Duration,
+							Disposition_AttachedPic = dap,
 						});
 					}
 

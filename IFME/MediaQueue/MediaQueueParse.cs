@@ -75,7 +75,8 @@ namespace IFME
                     FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
                     IsVFR = !data.FrameRateConstant,
                     BitDepth = data.BitDepth,
-                    PixelFormat = data.Chroma
+                    PixelFormat = data.Chroma,
+					Disposition_AttachedPic = data.Disposition_AttachedPic
                 },
 
 				Encoder = new MediaQueueVideoEncoder
