@@ -1,9 +1,10 @@
 Version 8.3.0 (Radiant Dawn)
 ----------------------------
-[Fixed] Progress reported wrong info (misplaced)
-[Fixed] Nero AAC no longer as default audio, FFmpeg AAC will be as default
-[Fixed] Crash when selecting Output Format
-[Update] SVT-AV1 to 2.1.2-15-gb8d2f2b4
+[Fixed] Corrected the display of progress information (previously misplaced)
+[Fixed] Changed default audio encoder from Nero AAC to FFmpeg AAC
+[Fixed] Resolved crash issue when selecting Output Format
+[Fixed] Ensured media information is correctly set from the original media file
+[Update] Updated SVT-AV1 to version 2.1.2-15-gb8d2f2b4
 
 Version 8.2.9 (Stellar Harmony)
 -------------------------------
