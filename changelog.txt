@@ -1,6 +1,7 @@
 Version 8.3.0 (Radiant Dawn)
 ----------------------------
 [Fixed] Progress reported wrong info (misplaced)
+[Fixed] Nero AAC no longer as default audio, FFmpeg AAC will be as default
 [Update] SVT-AV1 to 2.1.2-15-gb8d2f2b4
 
 Version 8.2.9 (Stellar Harmony)

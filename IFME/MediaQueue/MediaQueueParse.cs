@@ -25,7 +25,7 @@ namespace IFME
 
 			public static class Audio
 			{
-				public static Guid Id { get; set; } = new Guid("deadbeef-1aac-1aac-1aac-1aac2aac3aac");
+				public static Guid Id { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
 				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
                 public static int Mode { get; set; } = 0;
 			}
