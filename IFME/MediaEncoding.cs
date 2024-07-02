@@ -52,13 +52,17 @@ namespace IFME
 
         internal static void Extract(MediaQueue queue, string tempDir)
         {
+            // Dump Metadata
+            frmMain.PrintStatus("Extracting...");
+
+            frmMain.PrintLog("[INFO] Extracting metadata...");
+            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
+
             if (queue.Video.Count == 0)
                 return;
 
             if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
                 return;
-
-            frmMain.PrintStatus("Extracting...");
 
             frmMain.PrintLog("[INFO] Extracting subtitle file...");
 
@@ -137,9 +141,6 @@ namespace IFME
                 Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
                 Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
             }
-
-            // Chapters
-            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
         }
 
         internal static void Audio(MediaQueue queue, string tempDir)

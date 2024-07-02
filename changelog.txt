@@ -1,5 +1,5 @@
-Version 8.3.1 (Radiant Dawn)
-----------------------------
+Version 8.3.1 (Stellar Dreamscape)
+----------------------------------
 [Fixed] When add audio file with MKV as output, change to Audio only (eg: MP3) cause a crash
 [Fixed] Properly process Album Art and re-mux at final output process
 
