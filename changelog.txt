@@ -1,3 +1,8 @@
+Version 8.3.1 (Radiant Dawn)
+----------------------------
+[Fixed] When add audio file with MKV as output, change to Audio only (eg: MP3) cause a crash
+[Fixed] Properly process Album Art and re-mux at final output process
+
 Version 8.3.0 (Radiant Dawn)
 ----------------------------
 [Fixed] Corrected the display of progress information (previously misplaced)
