@@ -127,8 +127,8 @@ namespace IFME
 
 				Info = new MediaQueueAudioInfo
 				{
-					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
-                    Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
+					SampleRate = data.SampleRate,
+                    Channel = data.Channel
                 },
 
 				Encoder = new MediaQueueAudioEncoder

@@ -419,16 +419,16 @@ namespace IFME
             }
         }
 
-        private void lstFile_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
-
         private void lstFile_DragDrop(object sender, DragEventArgs e)
         {
             foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
                 MediaFileListAdd(file, false);
+        }
+
+        private void lstFile_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
         }
 
         private void lstFile_KeyDown(object sender, KeyEventArgs e)
