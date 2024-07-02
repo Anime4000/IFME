@@ -4,7 +4,7 @@ Version 8.3.0 (Radiant Dawn)
 [Fixed] Changed default audio encoder from Nero AAC to FFmpeg AAC
 [Fixed] Resolved crash issue when selecting Output Format
 [Fixed] Ensured media information is correctly set from the original media file
-[Update] Updated SVT-AV1 to version 2.1.2-15-gb8d2f2b4
+[Update] Updated SVT-AV1 to version 2.1.2-15-gb8d2f2b4, using GCC 14.1.0 instead of VS2022
 
 Version 8.2.9 (Stellar Harmony)
 -------------------------------
