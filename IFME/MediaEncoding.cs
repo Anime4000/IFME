@@ -226,9 +226,6 @@ namespace IFME
             {
                 var item = queue.Video[i];
 
-                if (item.Encoder.Id.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
-                    continue; // skip encode video when choosing audio only
-
                 if (item.Info.Disposition_AttachedPic)
                 {
                     frmMain.PrintStatus($"Extracting Thumbnail #{i}");
@@ -243,6 +240,9 @@ namespace IFME
 
                     return;
                 }
+
+                if (item.Encoder.Id.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+                    continue; // skip encode video when choosing audio only
 
                 if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
                 {
@@ -551,6 +551,7 @@ namespace IFME
             var argSubtitle = string.Empty;
             var argEmbed = string.Empty;
             var argArt = string.Empty;
+            var copy = " -c copy";
 
             var outFile = Path.Combine(saveDir, saveFile);
 
@@ -611,19 +612,25 @@ namespace IFME
                 }
             }
 
-            foreach (var art in Directory.GetFiles(tempDir, "album_art*"))
-            {
-                var file = Path.GetFileName(art);
-                var exts = Path.GetExtension(art);
 
-                argArt = $"-attach \"{file}\" ";
-                metadata += $"-metadata:s:t mimetype=\"image/{exts.Replace(".", "")}\" -metadata:s:t:{x} filename=\"cover{exts}\"";
-                x++;
-                break;
+            if (queue.OutputFormat == MediaContainer.MKV || 
+                queue.OutputFormat == MediaContainer.MP4 ||
+                queue.OutputFormat == MediaContainer.M4A ||
+                queue.OutputFormat == MediaContainer.MP3 ||
+                queue.OutputFormat == MediaContainer.FLAC)
+            {
+                foreach (var art in Directory.GetFiles(tempDir, "album_art*"))
+                {
+                    argArt = $"-i \"{Path.GetFileName(art)}\" ";
+                    metadata += $"-disposition:{x} attached_pic";
+                    map += $" -map {x}:0";
+                    x++;
+                    break;
+                }
             }
 
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
-            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map}{copy} -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
     }

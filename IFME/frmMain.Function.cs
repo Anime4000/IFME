@@ -340,6 +340,9 @@ namespace IFME
 
         private void DisplayProperties_Video()
         {
+            if ((MediaContainer)cboFormat.SelectedIndex >= MediaContainer.MP2)
+                return;
+
             if (lstVideo.SelectedItems.Count > 0)
             {
                 try
