@@ -2103,10 +2103,21 @@ namespace IFME
             tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
 
             // Change default
-            cboVideoEncoder.SelectedIndex = 0;
-            cboAudioEncoder.SelectedIndex = 0;
-            var v = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-            var a = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            var v = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
+            var a = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
+
+            if (cboVideoEncoder.SelectedItem != null)
+            {
+                cboVideoEncoder.SelectedIndex = 0;
+                v = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+            }
+
+            if (cboAudioEncoder.SelectedItem != null)
+            {
+                cboAudioEncoder.SelectedIndex = 0;
+                a = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            }
+
             MediaQueueParse.Gui.SetDefault(v, a);
         }
 

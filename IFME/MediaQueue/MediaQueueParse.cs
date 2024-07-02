@@ -32,19 +32,25 @@ namespace IFME
 
 			public static void SetDefault(Guid videoId, Guid audioId)
 			{
-                Video.Id = videoId;
-                Video.DeInterlace = false;
-                Video.Preset = Plugins.Items.Video[videoId].Video.PresetDefault;
-                Video.Tune = Plugins.Items.Video[videoId].Video.TuneDefault;
-				Video.Mode = 0;
-				Video.Value = Plugins.Items.Video[videoId].Video.Mode[0].Value.Default;
-				Video.MultiPass = 2;
-                Video.DeInterlaceMode = 1;
-				Video.DeInterlaceField = 0;
-
-                Audio.Id = audioId;
-				Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
-                Audio.Mode = 0;
+                if (!videoId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+				{
+                    Video.Id = videoId;
+                    Video.DeInterlace = false;
+                    Video.Preset = Plugins.Items.Video[videoId].Video.PresetDefault;
+                    Video.Tune = Plugins.Items.Video[videoId].Video.TuneDefault;
+                    Video.Mode = 0;
+                    Video.Value = Plugins.Items.Video[videoId].Video.Mode[0].Value.Default;
+                    Video.MultiPass = 2;
+                    Video.DeInterlaceMode = 1;
+                    Video.DeInterlaceField = 0;
+                }
+                
+				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+				{
+					Audio.Id = audioId;
+					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
+					Audio.Mode = 0;
+				}
             }
 		}
 
