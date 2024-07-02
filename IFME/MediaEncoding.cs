@@ -552,7 +552,6 @@ namespace IFME
             var argSubtitle = string.Empty;
             var argEmbed = string.Empty;
             var argArt = string.Empty;
-            var copy = " -c copy";
 
             var outFile = Path.Combine(saveDir, saveFile);
 
@@ -560,11 +559,6 @@ namespace IFME
             frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
 
             Thread.Sleep(1500); // Wait NTFS finish updating the content
-
-            if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
-            {
-                metafile = "-f ffmetadata -i metadata.ini ";
-            }
 
             foreach (var video in Directory.GetFiles(tempDir, "video*"))
             {
@@ -630,8 +624,13 @@ namespace IFME
                 }
             }
 
+            if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
+            {
+                metafile = $"-f ffmetadata -i metadata.ini -map_metadata {x}";
+            }
+
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
-            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map}{copy} -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
     }
