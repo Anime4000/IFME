@@ -134,9 +134,9 @@ namespace IFME.FFmpeg
 
 						bool dap = false;
 						try { dap = stream.disposition.attached_pic; }
-                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+						catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-                        Video.Add(new StreamVideo
+						Video.Add(new StreamVideo
 						{
 							Id = id,
 							Language = lang,
@@ -299,8 +299,8 @@ namespace IFME.FFmpeg
 					$"Sampling rate               : {item.SampleRate} Hz{Environment.NewLine}" +
 					$"Bit Depth                   : {item.BitDepth} bits{Environment.NewLine}" +
 					$"Language                    : {item.Language}{Environment.NewLine}" +
-                    $"Title                       : {item.Title}{Environment.NewLine}";
-            }
+					$"Title                       : {item.Title}{Environment.NewLine}";
+			}
 
 			var s = 0;
 			var subtitle = string.Empty;
@@ -310,8 +310,8 @@ namespace IFME.FFmpeg
 					$"ID                          : {item.Id}{Environment.NewLine}" +
 					$"Format                      : {item.Codec}{Environment.NewLine}" +
 					$"Language                    : {item.Language}{Environment.NewLine}" +
-                    $"Title                       : {item.Title}{Environment.NewLine}";
-            }
+					$"Title                       : {item.Title}{Environment.NewLine}";
+			}
 
 			var t = 0;
 			var attach = string.Empty;

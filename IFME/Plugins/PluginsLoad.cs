@@ -42,6 +42,8 @@ namespace IFME
                     // Parse into fully qualified path
                     if (Path.IsPathRooted(plugin.Audio.Encoder))
                         plugin.Audio.Encoder = Path.GetFullPath(plugin.Audio.Encoder);
+                    if (OSManager.OS.IsProgramInPath(plugin.Audio.Encoder))
+                        plugin.Version = "<PATH>"; // tell the plugins in in PATH Environment
                     else
                         plugin.Audio.Encoder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), plugin.Audio.Encoder));
 
@@ -138,6 +140,8 @@ namespace IFME
                     {
                         if (Path.IsPathRooted(p.Binary))
                             p.Binary = Path.GetFullPath(p.Binary);
+                        if (OSManager.OS.IsProgramInPath(p.Binary))
+                            plugin.Version = "<PATH>"; // tell the plugins in in PATH Environment
                         else
                             p.Binary = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(item), p.Binary));
                     }
