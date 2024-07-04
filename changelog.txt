@@ -1,8 +1,10 @@
 Version 8.3.1 (Stellar Dreamscape)
 ----------------------------------
-[Fixed] When add audio file with MKV as output, change to Audio only (eg: MP3) cause a crash
-[Fixed] Properly process Album Art and re-mux at final output process
-[Fixed] Properly process and forward to encoded file
+[Fixed] Fixed a crash that occurred when adding an audio file with MKV as the output format and then changing to an audio-only format (e.g., MP3).
+[Fixed] Album art is now properly processed and re-muxed during the final output process.
+[Fixed] Properly process and forward metadata to the encoded file.
+[Update] Plug-ins can now use executables from the system PATH by default. For example, if x265.exe exists in both the PATH and the Plugins folder, the PATH version will be used.
+[Update] FFmpeg and MP4Box will use the system PATH by default if found, and fall back to the bundled program if not found in the PATH.
 
 Version 8.3.0 (Radiant Dawn)
 ----------------------------

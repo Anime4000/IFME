@@ -14,8 +14,6 @@ namespace IFME.FFmpeg
 	{
 		private static StringComparison IgnoreCase { get { return StringComparison.InvariantCultureIgnoreCase; } }
 
-		public static string FFmpegProbe { get; set; } = Path.Combine("Plugins", "ffmpeg64", "ffprobe");
-
 		public string FilePath { get; internal set; } = string.Empty;
 		public ulong FileSize { get; internal set; } = 0;
 		public ulong BitRate { get; internal set; } = 0;
@@ -29,7 +27,18 @@ namespace IFME.FFmpeg
 		public List<StreamSubtitle> Subtitle { get; internal set; } = new List<StreamSubtitle>();
 		public List<StreamAttachment> Attachment { get; internal set; } = new List<StreamAttachment>();
 
-		public MediaInfo()
+        public static string FFmpegProbe
+		{ 
+			get 
+			{
+                if (OSManager.OS.IsProgramInPath("ffprobe"))
+                    return "ffprobe";
+                else
+                    return Path.Combine("Plugins", "ffmpeg64", "ffprobe");
+			} 
+		}
+
+        public MediaInfo()
 		{
 
 		}

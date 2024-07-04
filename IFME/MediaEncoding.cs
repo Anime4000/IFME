@@ -9,11 +9,32 @@ namespace IFME
 {
     internal class MediaEncoding
     {
-        private static int Arch = OS.Is64bit ? 64 : 32;
-        internal static string FFmpeg = Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
-        internal static string MP4Box = Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
+        private static readonly int Arch = OS.Is64bit ? 64 : 32;
         internal static int CurrentIndex = 0;
         internal static int RealFrameCount = 0;
+
+        internal static string FFmpeg
+        {
+            get
+            {
+                if (OS.IsProgramInPath("ffmpeg"))
+                    return "ffmpeg";
+                else
+                    return Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
+
+            }
+        }
+
+        internal static string MP4Box
+        {
+            get
+            {
+                if (OS.IsProgramInPath("mp4box"))
+                    return "mp4box";
+                else
+                    return Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
+            }
+        }
 
         private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
 
