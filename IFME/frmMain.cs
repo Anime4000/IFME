@@ -1437,30 +1437,7 @@ namespace IFME
                 cboAudioChannel.DataSource = null;
                 cboAudioChannel.Items.Clear();
 
-                var ch = new Dictionary<int, string>();
-                foreach (var item in audio.Channel)
-                {
-                    switch (item)
-                    {
-                        case 0:
-                            ch.Add(0, "Auto");
-                            break;
-                        case 1:
-                            ch.Add(1, "Mono");
-                            break;
-                        case 2:
-                            ch.Add(2, "Stereo");
-                            break;
-                        case 6:
-                            ch.Add(6, "5.1 Surround");
-                            break;
-                        case 8:
-                            ch.Add(8, "7.1 Surround");
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                var ch = audio.Channels;
                 cboAudioChannel.DisplayMember = "Value";
                 cboAudioChannel.ValueMember = "Key";
                 cboAudioChannel.DataSource = new BindingSource(ch, null);

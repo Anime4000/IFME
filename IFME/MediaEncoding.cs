@@ -183,19 +183,23 @@ namespace IFME
                     var trim = queue.Trim.Enable ? $"-ss {queue.Trim.Start} -t {queue.Trim.Duration}" : string.Empty;
 
                     var qu = $"{ac.Mode[md].Args} {ac.Mode[md].QualityPrefix}{item.Encoder.Quality}{ac.Mode[md].QualityPostfix}";
-                    var hz = item.Encoder.SampleRate == 0 ? string.Empty : $"-ar {item.Encoder.SampleRate}";
-                    var ch = item.Encoder.Channel == 0 ? string.Empty : $"-ac {item.Encoder.Channel}";
-
+                    var hz = string.Empty;
+                    var ch = string.Empty;
                     var outfmtfile = $"audio{i:D4}_{item.Lang}.{ac.Extension}";
-
                     var af = string.Empty;
+
+                    if (item.Encoder.SampleRate != 0)
+                        hz = $"{ac.SampleRateArgs} {item.Encoder.SampleRate}";
+
+                    if (ac.Channels.IndexOfKey(item.Encoder.Channel) != 0)
+                        ch = $"{ac.ChannelArgs} {item.Encoder.Channel}";
 
                     if (!ac.Mode[md].MultiChannelSupport) // Mode didn't support MultiChannel, for example eSBR on exhale. Down-mixing to stereo
                     {
                         frmMain.PrintLog($"[WARN] {codec.Name}, {codec.Audio.Mode[md].Name} doesn't support Multi Channel...");
 
                         if (item.Info.Channel >= 2)
-                            ch = $"-ac 2";
+                            ch = $"{ac.ChannelArgs} 2";
                     }
 
                     if (!ac.Mode[md].MonoSupport) // Some audio encode mode doesn't support Mono, so, need to up-mixing to stereo
@@ -203,7 +207,7 @@ namespace IFME
                         frmMain.PrintLog($"[WARN] {codec.Name}, {codec.Audio.Mode[md].Name} doesn't support Mono Channel...");
 
                         if (item.Info.Channel == 1)
-                            ch = $"-ac 2";
+                            ch = $"{ac.ChannelArgs} 2";
                     }
 
                     if(queue.FastMuxAudio && !queue.Trim.Enable)

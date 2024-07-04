@@ -71,10 +71,9 @@ namespace IFME
                     }
 
                     // Ensure default channel is included
-                    if (!plugin.Audio.Channel.Contains(plugin.Audio.ChannelDefault))
+                    if (!plugin.Audio.Channels.ContainsKey(plugin.Audio.ChannelDefault))
                     {
-                        var ch = new[] { plugin.Audio.ChannelDefault }.Concat(plugin.Audio.Channel).ToArray();
-                        plugin.Audio.Channel = ch;
+                        plugin.Audio.Channels.Add(plugin.Audio.ChannelDefault, "Default");
                     }
 
                     // Add List
@@ -231,11 +230,11 @@ namespace IFME
 
             var qu = ac.Mode[0].Args.IsDisable() ? "" : $"{ac.Mode[0].Args} {ac.Mode[0].QualityPrefix}{ac.Mode[0].Default}{ac.Mode[0].QualityPostfix}";
 
-            var sampleRate = ac.SampleRateDefault == 0 ? "" : $"-ar {ac.SampleRateDefault}";
-            var channel = ac.ChannelDefault == 0 ? "" : $"-ac {ac.ChannelDefault}";
+            var sampleRate = ac.SampleRateDefault == 0 ? "" : $"{ac.SampleRateArgs} {ac.SampleRateDefault}";
+            var channel = ac.ChannelDefault == 0 ? "" : $"{ac.ChannelArgs} {ac.ChannelDefault}";
 
             if (!ac.Mode[0].MultiChannelSupport)
-                channel = "-ac 2";
+                channel = $"{ac.ChannelArgs} 2";
 
             int exitCode;
             if (ac.Args.Pipe)
@@ -305,7 +304,7 @@ namespace IFME
         {
             var Temp = new PluginsAudio
             {
-                GUID = Guid.Parse("deadbeef-faac-faac-faac-faacfaacfaac"),
+                GUID = Guid.Parse("deadbeef-faac-faac-faac-faacfaacfaa1"),
                 Name = "Test",
                 Version = "10.1.1",
                 X64 = true,
@@ -317,8 +316,17 @@ namespace IFME
                     Extension = "flac",
                     Encoder = "../../decoder/ffmpeg64/ffmpeg",
                     SampleRate = new int[] { 8000, 12000, 16000, 22050, 24000, 32000, 44100, 48000 },
+                    SampleRateArgs = "-ar",
                     SampleRateDefault = 44100,
-                    Channel = new int[] { 1, 2 },
+                    Channels = new SortedList<int, string>
+                    {
+                        { -1, "auto" },
+                        { 0, "stereo" },
+                        { 1, "joint stereo" },
+                        { 2, "dual_channel" },
+                        { 3, "mono" }
+                    },
+                    ChannelArgs = "--mode",
                     ChannelDefault = 2,
                     Args = new PluginsAudioArgs
                     {

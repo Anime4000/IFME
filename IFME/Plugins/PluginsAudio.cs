@@ -16,8 +16,10 @@ namespace IFME
         public string Extension { get; set; }
         public string Encoder { get; set; }
         public int[] SampleRate { get; set; }
+        public string SampleRateArgs { get; set; } = "-ar";
         public int SampleRateDefault { get; set; }
-        public int[] Channel { get; set; }
+        public SortedList<int, string> Channels { get; set; }
+        public string ChannelArgs { get; set; } = "-ac";
         public int ChannelDefault { get; set; }
         public PluginsAudioArgs Args { get; set; } = new PluginsAudioArgs();
         public List<PluginsAudioMode> Mode { get; set; } = new List<PluginsAudioMode>();
