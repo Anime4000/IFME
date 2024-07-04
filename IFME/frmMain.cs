@@ -688,6 +688,15 @@ namespace IFME
                     }
 
                     MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                    MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
+                    MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
+                    MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
+                    MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
+                    MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
+                    MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
+                    MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
+                    MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
+                    MediaQueueParse.Gui.Video.CommandLine = temp.Video.Args.Command;
 
                     // Display predefine and default value
                     DisplayProperties_Video();
@@ -791,6 +800,7 @@ namespace IFME
                 }
 
                 MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
+                MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
             }
         }
 
@@ -1489,6 +1499,9 @@ namespace IFME
                 }
 
                 MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
+                MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
+                MediaQueueParse.Gui.Audio.CommandLine = temp.Audio.Args.Command;
 
                 DisplayProperties_Audio();
             }

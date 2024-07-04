@@ -241,12 +241,14 @@ namespace IFME
             {
                 Invoke(new MethodInvoker(delegate
                 {
+                    lstFile.SelectedIndices.Clear();
                     lstFile.Focus();
                     lstFile.Items.Add(lst);
                 }));
             }
             else
             {
+                lstFile.SelectedIndices.Clear();
                 lstFile.Focus();
                 lstFile.Items.Add(lst);
             }

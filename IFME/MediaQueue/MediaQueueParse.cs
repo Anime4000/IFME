@@ -21,6 +21,7 @@ namespace IFME
                 public static bool DeInterlace { get; set; } = false;
 				public static int DeInterlaceMode { get; set; } = 1;
 				public static int DeInterlaceField { get; set; } = 0;
+				public static string CommandLine { get; set; } = string.Empty;
 			}
 
 			public static class Audio
@@ -28,6 +29,7 @@ namespace IFME
 				public static Guid Id { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
 				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
                 public static int Mode { get; set; } = 0;
+				public static string CommandLine { get; set; } = string.Empty;
 			}
 
 			public static void SetDefault(Guid videoId, Guid audioId)
@@ -43,6 +45,7 @@ namespace IFME
                     Video.MultiPass = 2;
                     Video.DeInterlaceMode = 1;
                     Video.DeInterlaceField = 0;
+					Video.CommandLine = Plugins.Items.Video[videoId].Video.Args.Command;
                 }
                 
 				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
@@ -50,6 +53,7 @@ namespace IFME
 					Audio.Id = audioId;
 					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
 					Audio.Mode = 0;
+					Audio.CommandLine = Plugins.Items.Audio[audioId].Audio.Args.Command;
 				}
             }
 		}
@@ -82,12 +86,12 @@ namespace IFME
 				Encoder = new MediaQueueVideoEncoder
 				{
 					Id = Gui.Video.Id,
-					Preset = Plugins.Items.Video[Gui.Video.Id].Video.PresetDefault,
-					Tune = Plugins.Items.Video[Gui.Video.Id].Video.TuneDefault,
-					Mode = 0,
-					Value = Plugins.Items.Video[Gui.Video.Id].Video.Mode[0].Value.Default,
-					MultiPass = 2,
-					Command = string.Empty
+					Preset = Gui.Video.Preset,
+					Tune = Gui.Video.Tune,
+					Mode = Gui.Video.Mode,
+					Value = Gui.Video.Value,
+					MultiPass = Gui.Video.MultiPass,
+					Command = Gui.Video.CommandLine
 				},
 
 				Quality = new MediaQueueVideoQuality
@@ -136,10 +140,10 @@ namespace IFME
 				{
 					Id = Gui.Audio.Id,
 					Mode = Gui.Audio.Mode,
-					Quality = Plugins.Items.Audio[Gui.Audio.Id].Audio.Mode[0].Default,
+					Quality = Gui.Audio.Quality,
 					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
 					Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
-					Command = string.Empty
+					Command = Gui.Audio.CommandLine
 				}
 			};
 		}
