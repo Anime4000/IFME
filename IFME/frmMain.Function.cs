@@ -441,6 +441,8 @@ namespace IFME
                 cboVideoTune.SelectedItem = data.Encoder.Tune;
                 cboVideoRateControl.SelectedIndex = data.Encoder.Mode;
 
+                nudVideoRateFactor.Minimum = Plugins.Items.Video[data.Encoder.Id].Video.Mode[data.Encoder.Mode].Value.Min;
+                nudVideoRateFactor.Maximum = Plugins.Items.Video[data.Encoder.Id].Video.Mode[data.Encoder.Mode].Value.Max;
                 nudVideoRateFactor.Value = data.Encoder.Value;
                 nudVideoMultiPass.Value = data.Encoder.MultiPass;
 
@@ -562,7 +564,7 @@ namespace IFME
                         fps,
                         $"{item.Quality.BitDepth}",
                         $"{item.Quality.PixelFormat}"
-                    })
+                })
                 {
                     Checked = true,
                     Tag = item
