@@ -21,7 +21,9 @@ namespace IFME
                 public static bool DeInterlace { get; set; } = false;
 				public static int DeInterlaceMode { get; set; } = 1;
 				public static int DeInterlaceField { get; set; } = 0;
-				public static string CommandLine { get; set; } = string.Empty;
+				public static string CmdFilter { get; set; } = string.Empty;
+				public static string CmdDecoder { get; set; } = string.Empty;
+				public static string CmdEncoder { get; set; } = string.Empty;
 			}
 
 			public static class Audio
@@ -29,7 +31,9 @@ namespace IFME
 				public static Guid Id { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
 				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
                 public static int Mode { get; set; } = 0;
-				public static string CommandLine { get; set; } = string.Empty;
+				public static string CmdFilter { get; set; } = string.Empty;
+				public static string CmdDecoder { get; set; } = string.Empty;
+				public static string CmdEncoder { get; set; } = string.Empty;
 			}
 
 			public static void SetDefault(Guid videoId, Guid audioId)
@@ -45,7 +49,7 @@ namespace IFME
                     Video.MultiPass = 2;
                     Video.DeInterlaceMode = 1;
                     Video.DeInterlaceField = 0;
-					Video.CommandLine = Plugins.Items.Video[videoId].Video.Args.Command;
+					Video.CmdDecoder = Plugins.Items.Video[videoId].Video.Args.Command;
                 }
                 
 				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
@@ -53,7 +57,7 @@ namespace IFME
 					Audio.Id = audioId;
 					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
 					Audio.Mode = 0;
-					Audio.CommandLine = Plugins.Items.Audio[audioId].Audio.Args.Command;
+					Audio.CmdDecoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
 				}
             }
 		}
@@ -91,7 +95,7 @@ namespace IFME
 					Mode = Gui.Video.Mode,
 					Value = Gui.Video.Value,
 					MultiPass = Gui.Video.MultiPass,
-					Command = Gui.Video.CommandLine
+					Command = Gui.Video.CmdEncoder
 				},
 
 				Quality = new MediaQueueVideoQuality
@@ -103,7 +107,9 @@ namespace IFME
 					FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
 					IsVFR = !data.FrameRateConstant,
 					BitDepth = data.BitDepth,
-					PixelFormat = data.Chroma
+					PixelFormat = data.Chroma,
+					CommandFilter = Gui.Video.CmdFilter,
+					Command = Gui.Video.CmdDecoder
 				},
 
 				DeInterlace = new MediaQueueVideoDeInterlace
@@ -143,8 +149,11 @@ namespace IFME
 					Quality = Gui.Audio.Quality,
 					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
 					Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
-					Command = Gui.Audio.CommandLine
-				}
+					Command = Gui.Audio.CmdEncoder
+				},
+
+				CommandFilter = Gui.Audio.CmdFilter,
+				Command = Gui.Audio.CmdDecoder
 			};
 		}
 

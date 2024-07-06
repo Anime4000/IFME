@@ -849,9 +849,9 @@ namespace IFME
             cboVideoDeInterMode.SelectedIndex = value.Video.DeInterlace.Mode;
             cboVideoDeInterField.SelectedIndex = value.Video.DeInterlace.Field;
 
-            MediaEncoding.VideoFiArgs = value.Video.Quality.CommandFilter;
-            MediaEncoding.VideoDeArgs = value.Video.Quality.Command;
-            MediaEncoding.VideoEnArgs = value.Video.Encoder.Command;
+            MediaQueueParse.Gui.Video.CmdFilter = value.Video.Quality.CommandFilter;
+            MediaQueueParse.Gui.Video.CmdDecoder = value.Video.Quality.Command;
+            MediaQueueParse.Gui.Video.CmdEncoder = value.Video.Encoder.Command;
 
             cboAudioEncoder.SelectedValue = value.Audio.Encoder.Id;
             cboAudioMode.SelectedIndex = value.Audio.Encoder.Mode;
@@ -859,9 +859,9 @@ namespace IFME
             cboAudioSampleRate.SelectedValue = value.Audio.Encoder.SampleRate;
             cboAudioChannel.SelectedValue = value.Audio.Encoder.Channel;
 
-            MediaEncoding.AudioFiArgs = value.Audio.CommandFilter;
-            MediaEncoding.AudioDeArgs = value.Audio.Command;
-            MediaEncoding.AudioEnArgs = value.Audio.Encoder.Command;
+            MediaQueueParse.Gui.Audio.CmdFilter = value.Audio.CommandFilter;
+            MediaQueueParse.Gui.Audio.CmdDecoder = value.Audio.Command;
+            MediaQueueParse.Gui.Audio.CmdEncoder = value.Audio.Encoder.Command;
 
             chkVideoMP4Compt.Checked = value.TryRemuxVideo;
             chkAudioMP4Compt.Checked = value.TryRemuxAudio;
@@ -890,7 +890,7 @@ namespace IFME
                             Mode = cboVideoRateControl.SelectedIndex,
                             Value = nudVideoRateFactor.Value,
                             MultiPass = (int)nudVideoMultiPass.Value,
-                            Command = MediaEncoding.VideoEnArgs
+                            Command = MediaQueueParse.Gui.Video.CmdEncoder
                         };
                         media.Video[i].Quality = new MediaQueueVideoQuality
                         {
@@ -899,8 +899,8 @@ namespace IFME
                             FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : 0,
                             BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
                             PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
-                            Command = MediaEncoding.VideoDeArgs,
-                            CommandFilter = MediaEncoding.VideoFiArgs,
+                            Command = MediaQueueParse.Gui.Video.CmdDecoder,
+                            CommandFilter = MediaQueueParse.Gui.Video.CmdFilter,
                         };
                         media.Video[i].DeInterlace = new MediaQueueVideoDeInterlace
                         {
@@ -920,10 +920,10 @@ namespace IFME
                             Quality = cboAudioQuality.SelectedText,
                             SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
                             Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
-                            Command = MediaEncoding.AudioEnArgs
+                            Command = MediaQueueParse.Gui.Audio.CmdEncoder
                         };
-                        media.Audio[x].Command = MediaEncoding.AudioDeArgs;
-                        media.Audio[x].CommandFilter = MediaEncoding.AudioDeArgs;
+                        media.Audio[x].Command = MediaQueueParse.Gui.Audio.CmdDecoder;
+                        media.Audio[x].CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter;
                     }
                 }
 

@@ -686,20 +686,19 @@ namespace IFME
                         }
                     }
 
-                    MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-                    MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
-                    MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
-                    MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
-                    MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
-                    MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
-                    MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
-                    MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
-                    MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
-                    MediaQueueParse.Gui.Video.CommandLine = temp.Video.Args.Command;
-
                     // Display predefine and default value
                     DisplayProperties_Video();
                 }
+
+                MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
+                MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
+                MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
+                MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
+                MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
+                MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
+                MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
+                MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
             }
         }
 
@@ -855,21 +854,25 @@ namespace IFME
             {
                 if (lstVideo.SelectedItems.Count > 0)
                 {
-                    MediaEncoding.VideoDeArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.Command;
-                    MediaEncoding.VideoFiArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.CommandFilter;
+                    MediaQueueParse.Gui.Video.CmdDecoder = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.Command;
+                    MediaQueueParse.Gui.Video.CmdFilter = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality.CommandFilter;
                 }
             }
 
-            var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-vf) command with comma separated.\nExample: yadif=0:-1:0,scale=iw/2:-1", MediaEncoding.VideoDeArgs, MediaEncoding.VideoFiArgs);
+            var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-vf) command with comma separated.\nExample: yadif=0:-1:0,scale=iw/2:-1", MediaQueueParse.Gui.Video.CmdDecoder, MediaQueueParse.Gui.Video.CmdFilter);
             if (ib2.ShowDialog() == DialogResult.OK)
             {
-                MediaEncoding.VideoDeArgs = ib2.ReturnValue1;
-                MediaEncoding.VideoFiArgs = ib2.ReturnValue2;
+                MediaQueueParse.Gui.Video.CmdDecoder = ib2.ReturnValue1;
+                MediaQueueParse.Gui.Video.CmdFilter = ib2.ReturnValue2;
             }
 
-            var auto = MediaEncoding.VideoFiArgs.Contains("crop"); // ToDo: add more function that resolution changed
-            if (auto)
-                cboVideoRes.Text = "auto";
+            var auto = false;
+            if (!string.IsNullOrEmpty(MediaQueueParse.Gui.Video.CmdDecoder))
+            {                
+                auto = MediaQueueParse.Gui.Video.CmdDecoder.Contains("crop"); // ToDo: add more function that resolution changed
+                if (auto)
+                    cboVideoRes.Text = "auto";
+            }
 
             if (lstFile.SelectedItems.Count == 1)
             {
@@ -881,8 +884,8 @@ namespace IFME
                         (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Height = 0;
                     }
 
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Command = MediaEncoding.VideoDeArgs;
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.CommandFilter = MediaEncoding.VideoFiArgs;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Command = MediaQueueParse.Gui.Video.CmdDecoder;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.CommandFilter = MediaQueueParse.Gui.Video.CmdFilter;
                 }
             }
             else if (lstFile.SelectedItems.Count > 1)
@@ -897,8 +900,8 @@ namespace IFME
                             item.Quality.Height = 0;
                         }
 
-                        item.Quality.Command = MediaEncoding.VideoDeArgs;
-                        item.Quality.CommandFilter = MediaEncoding.VideoFiArgs;
+                        item.Quality.Command = MediaQueueParse.Gui.Video.CmdDecoder;
+                        item.Quality.CommandFilter = MediaQueueParse.Gui.Video.CmdFilter;
                     }
                 }
             }
@@ -912,21 +915,21 @@ namespace IFME
             {
                 if (lstVideo.SelectedItems.Count > 0)
                 {
-                    MediaEncoding.VideoEnArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
+                    MediaQueueParse.Gui.Video.CmdEncoder = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder.Command;
                 }
             }
 
-            var ib = new InputBox($"{cboVideoEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", MediaEncoding.VideoEnArgs);
+            var ib = new InputBox($"{cboVideoEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", MediaQueueParse.Gui.Video.CmdEncoder);
             if (ib.ShowDialog() == DialogResult.OK)
             {
-                MediaEncoding.VideoEnArgs = ib.ReturnValue;
+                MediaQueueParse.Gui.Video.CmdEncoder = ib.ReturnValue;
             }
 
             if (lstFile.SelectedItems.Count == 1)
             {
                 foreach (ListViewItem item in lstVideo.SelectedItems)
                 {
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Command = MediaEncoding.VideoEnArgs;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Encoder.Command = MediaQueueParse.Gui.Video.CmdEncoder;
                 }
             }
             else if (lstFile.SelectedItems.Count > 1)
@@ -935,7 +938,7 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Video)
                     {
-                        item.Encoder.Command = MediaEncoding.VideoEnArgs;
+                        item.Encoder.Command = MediaQueueParse.Gui.Video.CmdEncoder;
                     }
                 }
             }
@@ -1471,13 +1474,13 @@ namespace IFME
                     }
                 }
 
-                MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
-                MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
-                MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
-                MediaQueueParse.Gui.Audio.CommandLine = temp.Audio.Args.Command;
-
                 DisplayProperties_Audio();
             }
+
+            MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
+            MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
+            MediaQueueParse.Gui.Audio.CmdDecoder = temp.Audio.Args.Command;
         }
 
         private void cboAudioMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -1613,24 +1616,24 @@ namespace IFME
             {
                 if (lstAudio.SelectedItems.Count > 0)
                 {
-                    MediaEncoding.AudioDeArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
-                    MediaEncoding.AudioFiArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
+                    MediaQueueParse.Gui.Audio.CmdDecoder = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
+                    MediaQueueParse.Gui.Audio.CmdFilter = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
                 }
             }
 
-            var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-af) command with comma separated.\nExample: highpass=f=200, lowpass=f=3000", MediaEncoding.AudioDeArgs, MediaEncoding.AudioFiArgs);
+            var ib2 = new InputBox2("FFmpeg Decoder and Filter Command-Line", "Enter FFmepg advanced decoder command here", "Enter FFmpeg filter (-af) command with comma separated.\nExample: highpass=f=200, lowpass=f=3000", MediaQueueParse.Gui.Audio.CmdDecoder, MediaQueueParse.Gui.Audio.CmdFilter);
             if (ib2.ShowDialog() == DialogResult.OK)
             {
-                MediaEncoding.AudioDeArgs = ib2.ReturnValue1;
-                MediaEncoding.AudioFiArgs = ib2.ReturnValue2;
+                MediaQueueParse.Gui.Audio.CmdDecoder = ib2.ReturnValue1;
+                MediaQueueParse.Gui.Audio.CmdFilter = ib2.ReturnValue2;
             }
 
             if (lstFile.SelectedItems.Count == 1)
             {
                 foreach (ListViewItem item in lstAudio.SelectedItems)
                 {
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Command = MediaEncoding.AudioDeArgs;
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].CommandFilter = MediaEncoding.AudioFiArgs;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Command = MediaQueueParse.Gui.Audio.CmdDecoder;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter;
                 }
             }
             else if (lstFile.SelectedItems.Count > 1)
@@ -1639,8 +1642,8 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Audio)
                     {
-                        item.Command = MediaEncoding.AudioDeArgs;
-                        item.CommandFilter = MediaEncoding.AudioFiArgs;
+                        item.Command = MediaQueueParse.Gui.Audio.CmdDecoder;
+                        item.CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter;
                     }
                 }
             }
@@ -1652,21 +1655,21 @@ namespace IFME
             {
                 if (lstAudio.SelectedItems.Count > 0)
                 {
-                    MediaEncoding.AudioEnArgs = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
+                    MediaQueueParse.Gui.Audio.CmdEncoder = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder.Command;
                 }
             }
 
-            var ib = new InputBox($"{cboAudioEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", MediaEncoding.AudioEnArgs);
+            var ib = new InputBox($"{cboAudioEncoder.Text} Command-Line", "Enter encoder advanced command-line and performance tuning.", MediaQueueParse.Gui.Audio.CmdEncoder);
             if (ib.ShowDialog() == DialogResult.OK)
             {
-                MediaEncoding.AudioEnArgs = ib.ReturnValue;
+                MediaQueueParse.Gui.Audio.CmdEncoder = ib.ReturnValue;
             }
 
             if (lstFile.SelectedItems.Count == 1)
             {
                 foreach (ListViewItem item in lstAudio.SelectedItems)
                 {
-                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Command = MediaEncoding.AudioEnArgs;
+                    (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[item.Index].Encoder.Command = MediaQueueParse.Gui.Audio.CmdEncoder;
                 }
             }
             else if (lstFile.SelectedItems.Count > 1)
@@ -1675,7 +1678,7 @@ namespace IFME
                 {
                     foreach (var item in (queue.Tag as MediaQueue).Audio)
                     {
-                        item.Encoder.Command = MediaEncoding.AudioEnArgs;
+                        item.Encoder.Command = MediaQueueParse.Gui.Audio.CmdEncoder;
                     }
                 }
             }
@@ -2137,7 +2140,7 @@ namespace IFME
                         Mode = cboVideoRateControl.SelectedIndex,
                         Value = nudVideoRateFactor.Value,
                         MultiPass = (int)nudVideoMultiPass.Value,
-                        Command = MediaEncoding.VideoEnArgs
+                        Command = MediaQueueParse.Gui.Video.CmdEncoder
                     },
                     Quality = new MediaQueueVideoQuality
                     {
@@ -2146,8 +2149,8 @@ namespace IFME
                         FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : 0,
                         BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
                         PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
-                        Command = MediaEncoding.VideoDeArgs,
-                        CommandFilter = MediaEncoding.VideoFiArgs,
+                        Command = MediaQueueParse.Gui.Video.CmdDecoder,
+                        CommandFilter = MediaQueueParse.Gui.Video.CmdFilter,
                     },
                     DeInterlace = new MediaQueueVideoDeInterlace
                     {
@@ -2166,8 +2169,10 @@ namespace IFME
                         Quality = cboAudioQuality.SelectedText,
                         SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
                         Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
-                        Command = MediaEncoding.AudioEnArgs
+                        Command = MediaQueueParse.Gui.Audio.CmdEncoder
                     },
+                    CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter,
+                    Command = MediaQueueParse.Gui.Audio.CmdDecoder
                 };
                 
                 ProfilesManager.Save(input.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, v, a, chkVideoMP4Compt.Checked, chkAudioMP4Compt.Checked);

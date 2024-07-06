@@ -5,8 +5,8 @@ namespace IFME.OSManager
 {
 	public partial class InputBox2 : Form
 	{
-		public string ReturnValue1 { get; set; }
-		public string ReturnValue2 { get; set; }
+		public string ReturnValue1 { get; set; } = string.Empty;
+		public string ReturnValue2 { get; set; } = string.Empty;
 		private int MinChar { get; set; }
 
 		/// <summary>
