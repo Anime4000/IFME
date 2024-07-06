@@ -56,7 +56,7 @@ namespace IFME
 		public int Id { get; set; }
 		public float Duration { get; set; }
 		public string Lang { get; set; }
-		public string File { get; set; }
+		public string FilePath { get; set; }
 		public string Codec { get; set; }
 		public string Title { get; set; }
 	}

@@ -99,7 +99,7 @@ namespace IFME
             {
                 var id = queue.Subtitle[i].Id;
                 var fmt = queue.Subtitle[i].Codec;
-                var file = queue.Subtitle[i].File;
+                var file = queue.Subtitle[i].FilePath;
                 var lang = queue.Subtitle[i].Lang;
                 var fext = Path.GetExtension(file);
 
@@ -131,7 +131,7 @@ namespace IFME
             for (int i = 0; i < queue.Attachment.Count; i++)
             {
                 var id = queue.Attachment[i].Id;
-                var file = queue.Attachment[i].File;
+                var file = queue.Attachment[i].FilePath;
                 var name = queue.Attachment[i].Name;
 
                 if (!Directory.Exists(tempDirFont))
@@ -225,7 +225,7 @@ namespace IFME
 
                         var tempName = $"audio{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
 
-                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:a copy -y {tempName}");
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:a copy -y {tempName}");
 
                         if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 1024)
                             exitCode = 1;
@@ -244,11 +244,11 @@ namespace IFME
 
                     if (ac.Args.Pipe)
                     {
-                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{en}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
+                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" {trim} -map 0:{item.Id} -acodec pcm_s16le {hz} {ch} {af} -f wav {item.Command} - | \"{en}\" {ac.Args.Input} {ac.Args.Command} {qu} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
                     }
                     else
                     {
-                        ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.File}\" {trim} -map 0:{item.Id} {ac.Args.Command} {ac.Args.Codec} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
+                        ProcessManager.Start(tempDir, $"\"{en}\" {ac.Args.Input} \"{item.FilePath}\" {trim} -map 0:{item.Id} {ac.Args.Command} {ac.Args.Codec} {qu} {hz} {ch} {af} {item.Encoder.Command} {ac.Args.Output} \"{outfmtfile}\"");
                     }
                 }
             }
@@ -270,7 +270,7 @@ namespace IFME
                     if (exts.Equals("mjpeg", StringComparison.CurrentCultureIgnoreCase))
                         exts = "jpeg";
 
-                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -vcodec copy -y \"album_art{i:D4}.{exts}\"");
+                    ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -vcodec copy -y \"album_art{i:D4}.{exts}\"");
 
                     return;
                 }
@@ -433,7 +433,7 @@ namespace IFME
                         frmMain.PrintStatus($"Copying, Video #{i}");
                         frmMain.PrintLog($"[INFO] Copying video stream...");
 
-                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.File}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
+                        ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.FilePath}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
                         continue;
                     }
 
@@ -445,7 +445,7 @@ namespace IFME
 
                         var tempName = $"video{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
 
-                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.File}\" -map 0:{item.Id} -c:v copy -y {tempName}");
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:v copy -y {tempName}");
 
                         if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 8192)
                         {
@@ -466,7 +466,7 @@ namespace IFME
                     // Auto detect crop
                     if (queue.Crop.Enable)
                     {
-                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -ss \"{queue.Crop.Start}\" -t \"{queue.Crop.Duration}\" -i \"{item.File}\" -vf cropdetect -f null - 2> crop.log");
+                        var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -ss \"{queue.Crop.Start}\" -t \"{queue.Crop.Duration}\" -i \"{item.FilePath}\" -vf cropdetect -f null - 2> crop.log");
 
                         if (File.Exists(Path.Combine(tempDir, "crop.log")))
                         {
@@ -527,9 +527,9 @@ namespace IFME
                             frmMain.PrintLog($"[INFO] Multi-pass encoding: {p} of {item.Encoder.MultiPass}");
 
                             if (vc.Args.Pipe)
-                                ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
+                                ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.FilePath}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
                             else
-                                ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
+                                ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.FilePath : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
 
                             if (p == 1)
                                 en_framecount = $"{vc.Args.FrameCount} {RealFrameCount}";
@@ -543,9 +543,9 @@ namespace IFME
                     else
                     {
                         if (vc.Args.Pipe)
-                            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.File}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
+                            ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.FilePath}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
                         else
-                            ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.File : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+                            ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.FilePath : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 
                         Thread.Sleep(1500);
                     }

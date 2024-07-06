@@ -63,7 +63,7 @@ namespace IFME
 			return new MediaQueueVideo
 			{
 				Enable = true,
-				File = path,
+				FilePath = path,
 				Id = data.Id,
 				Lang = data.Language,
 				Codec = data.Codec,
@@ -125,7 +125,7 @@ namespace IFME
 			return new MediaQueueAudio
 			{
 				Enable = true,
-				File = path,
+				FilePath = path,
 				Id = data.Id,
 				Lang = data.Language,
 				Codec = data.Codec,
@@ -153,7 +153,7 @@ namespace IFME
 			return new MediaQueueSubtitle
 			{
 				Enable = true,
-				File = path,
+				FilePath = path,
 				Id = data.Id,
 				Lang = data.Language,
 				Codec = data.Codec,
@@ -165,7 +165,7 @@ namespace IFME
 			return new MediaQueueAttachment
 			{
 				Enable = true,
-				File = path,
+				FilePath = path,
 				Id = data.Id,
 				Name = data.FileName,
 				Mime = data.MimeType
