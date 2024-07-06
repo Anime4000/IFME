@@ -46,11 +46,13 @@ static class Extensions
 	internal static bool IsDisable(this string value)
 	{
 		if (string.Equals("disabled", value, StringComparison.InvariantCultureIgnoreCase) ||
-			string.Equals("disable", value, StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals("disable", value, StringComparison.InvariantCultureIgnoreCase) ||
 			string.Equals("blank", value, StringComparison.InvariantCultureIgnoreCase) ||
 			string.Equals("none", value, StringComparison.InvariantCultureIgnoreCase) ||
-			string.Equals("non", value, StringComparison.InvariantCultureIgnoreCase) ||
-			string.Equals("off", value, StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals("null", value, StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals("nan", value, StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals("non", value, StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals("off", value, StringComparison.InvariantCultureIgnoreCase) ||
 			string.Equals("no", value, StringComparison.InvariantCultureIgnoreCase) ||
 			string.Equals("0", value, StringComparison.InvariantCultureIgnoreCase))
 		{

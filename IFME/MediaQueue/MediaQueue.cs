@@ -8,16 +8,20 @@ public enum MediaContainer
 	AVI,
 	MP4,
 	MKV,
-	WEBM,
 	TS,
 	M2TS,
+	MPG,
+	MPEG,
+	WEBM,
+	WMV,
 
 	MP2,
 	MP3,
 	M4A,
 	OGG,
 	OPUS,
-	FLAC
+	FLAC,
+	WMA
 }
 
 namespace IFME

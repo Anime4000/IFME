@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 
 using IFME.OSManager;
+using System.Net.Http.Headers;
 
 namespace IFME
 {
@@ -833,6 +834,42 @@ namespace IFME
 
         private void SetProfileData(Profiles value)
         {
+            cboVideoEncoder.SelectedValue = value.Video.Encoder.Id;
+            cboVideoPreset.SelectedItem = value.Video.Encoder.Preset;
+            cboVideoTune.SelectedItem = value.Video.Encoder.Tune;
+            cboVideoRateControl.SelectedIndex = value.Video.Encoder.Mode;
+
+            nudVideoRateFactor.Minimum = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.Min;
+            nudVideoRateFactor.Maximum = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.Max;
+            nudVideoRateFactor.Value = value.Video.Encoder.Value;
+            nudVideoMultiPass.Value = value.Video.Encoder.MultiPass;
+
+            cboVideoRes.Text = $"{(value.Video.Quality.Width == 0 || value.Video.Quality.Height == 0 ? "auto" : $"{value.Video.Quality.Width}x{value.Video.Quality.Height}")}";
+            cboVideoFps.Text = $"{Math.Round(value.Video.Quality.FrameRate, 3)}";
+            cboVideoBitDepth.Text = $"{value.Video.Quality.BitDepth}";
+            cboVideoPixFmt.Text = $"{value.Video.Quality.PixelFormat}";
+
+            chkVideoDeInterlace.Checked = value.Video.DeInterlace.Enable;
+            cboVideoDeInterMode.SelectedIndex = value.Video.DeInterlace.Mode;
+            cboVideoDeInterField.SelectedIndex = value.Video.DeInterlace.Field;
+
+            MediaEncoding.VideoFiArgs = value.Video.Quality.CommandFilter;
+            MediaEncoding.VideoDeArgs = value.Video.Quality.Command;
+            MediaEncoding.VideoEnArgs = value.Video.Encoder.Command;
+
+            cboAudioEncoder.SelectedValue = value.Audio.Encoder.Id;
+            cboAudioMode.SelectedIndex = value.Audio.Encoder.Mode;
+            cboAudioQuality.SelectedValue = value.Audio.Encoder.Quality;
+            cboAudioSampleRate.SelectedValue = value.Audio.Encoder.SampleRate;
+            cboAudioChannel.SelectedValue = value.Audio.Encoder.Channel;
+
+            MediaEncoding.AudioFiArgs = value.Audio.CommandFilter;
+            MediaEncoding.AudioDeArgs = value.Audio.Command;
+            MediaEncoding.AudioEnArgs = value.Audio.Encoder.Command;
+
+            chkVideoMP4Compt.Checked = value.TryRemuxVideo;
+            chkAudioMP4Compt.Checked = value.TryRemuxAudio;
+
             if (lstFile.SelectedItems.Count > 0)
             {
                 foreach (ListViewItem queue in lstFile.SelectedItems)
@@ -840,29 +877,64 @@ namespace IFME
                     (queue.Tag as MediaQueue).OutputFormat = value.Container;
                     (queue.Tag as MediaQueue).ProfileId = cboProfile.SelectedIndex;
 
-                    foreach (var item in (queue.Tag as MediaQueue).Video)
+                    var media = queue.Tag as MediaQueue;
+                    if (media == null) continue;
+
+                    media.FastMuxVideo = chkVideoMP4Compt.Checked;
+                    media.FastMuxAudio = chkAudioMP4Compt.Checked;
+
+                    // modify video collection
+                    for (int i = 0; i < media.Video.Count; i++)
                     {
-                        item.Encoder = value.Video.Encoder;
-
-                        if (value.Video.Quality.Width > 0) { item.Quality.Width = value.Video.Quality.Width; }
-                        if (value.Video.Quality.Height > 0) { item.Quality.Height = value.Video.Quality.Height; }
-                        if (value.Video.Quality.FrameRate > 0) { item.Quality.FrameRate = value.Video.Quality.FrameRate; }
-                        //item.Quality.FrameRateAvg = value.Video.Quality.FrameRateAvg;
-                        //item.Quality.FrameCount = value.Video.Quality.FrameCount;
-                        //item.Quality.IsVFR = value.Video.Quality.IsVFR;
-                        item.Quality.BitDepth = value.Video.Quality.BitDepth;
-                        item.Quality.PixelFormat = value.Video.Quality.PixelFormat;
-                        item.Quality.Command = value.Video.Quality.Command;
-                        item.Quality.CommandFilter = value.Video.Quality.CommandFilter;
-
-                        item.DeInterlace = value.Video.DeInterlace;
+                        var v = new MediaQueueVideo
+                        {
+                            Encoder = new MediaQueueVideoEncoder
+                            {
+                                Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key,
+                                Preset = cboVideoPreset.Text,
+                                Tune = cboVideoTune.Text,
+                                Mode = cboVideoRateControl.SelectedIndex,
+                                Value = nudVideoRateFactor.Value,
+                                MultiPass = (int)nudVideoMultiPass.Value,
+                                Command = MediaEncoding.VideoEnArgs
+                            },
+                            Quality = new MediaQueueVideoQuality
+                            {
+                                Width = value.Video.Quality.Width,
+                                Height = value.Video.Quality.Height,
+                                FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : 0,
+                                BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
+                                PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
+                                Command = MediaEncoding.VideoDeArgs,
+                                CommandFilter = MediaEncoding.VideoFiArgs,
+                            },
+                            DeInterlace = new MediaQueueVideoDeInterlace
+                            {
+                                Enable = chkVideoDeInterlace.Checked,
+                                Mode = cboVideoDeInterMode.SelectedIndex,
+                                Field = cboVideoDeInterField.SelectedIndex
+                            }
+                        };
+                        media.Video[i] = v;
                     }
 
-                    foreach (var item in (queue.Tag as MediaQueue).Audio)
+                    // modify audio collection
+                    for (int x = 0; x < media.Audio.Count; x++)
                     {
-                        item.Encoder = value.Audio.Encoder;
-                        item.Command = value.Audio.Command;
-                        item.CommandFilter = value.Audio.CommandFilter;
+                        var a = new MediaQueueAudio
+                        {
+                            Encoder = new MediaQueueAudioEncoder
+                            {
+                                Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
+                                Mode = cboAudioMode.SelectedIndex,
+                                Quality = cboAudioQuality.SelectedText,
+                                SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
+                                Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
+                                Command = MediaEncoding.AudioEnArgs
+                            },
+                            Command = MediaEncoding.AudioDeArgs,
+                            CommandFilter = MediaEncoding.AudioFiArgs
+                        };
                     }
                 }
 

@@ -1,0 +1,47 @@
+{
+  "ProfileName": "Windows Media Video for Microsoft Office PowerPoint",
+  "ProfileAuthor": "longwu9t",
+  "ProfilePath": "https://github.com/longwu9t",
+  "TryRemuxVideo": false,
+  "TryRemuxAudio": false,
+  "Container": "WMV",
+  "Video": {
+    "Encoder": {
+      "Id": "deadbeef-9000-9000-9000-100920093009",
+      "Preset": "",
+      "Tune": "",
+      "Mode": 0,
+      "Value": 3.0,
+      "MultiPass": 2,
+      "Command": ""
+    },
+    "Quality": {
+      "Command": "",
+      "CommandFilter": "",
+      "Width": 0,
+      "Height": 0,
+      "IsVFR": false,
+      "FrameRate": 0.0,
+      "FrameRateAvg": 0.0,
+      "BitDepth": 8,
+      "PixelFormat": 420
+    },
+    "DeInterlace": {
+      "Enable": false,
+      "Field": 0,
+      "Mode": 1
+    }
+  },
+  "Audio": {
+    "Encoder": {
+      "Id": "deadbeef-0009-0009-0009-900190029003",
+      "Mode": 0,
+      "Quality": "",
+      "Command": "",
+      "SampleRate": 44100,
+      "Channel": 0
+    },
+    "Command": null,
+    "CommandFilter": null
+  }
+}

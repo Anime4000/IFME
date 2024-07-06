@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using IFME.OSManager;
+using Newtonsoft.Json.Linq;
 
 namespace IFME
 {
@@ -80,7 +81,7 @@ namespace IFME
             var c = 0;
             foreach (var item in Format)
             {
-                cboFormat.Items.Add($"{item}{(c >= 6 ? " (Audio only)" : "")}");
+                cboFormat.Items.Add($"{item}{(c >= (int)MediaContainer.MP2 ? " (Audio only)" : "")}");
                 c++;
             }
             cboFormat.SelectedIndex = 2;
@@ -2119,67 +2120,68 @@ namespace IFME
 
         private void btnProfileSaveLoad_Click(object sender, EventArgs e)
         {
-            var message = "Please choose item that has both video and audio in order to save profile preset";
-            var title = "Unable to save profile preset";
+            int[] res = new int[] { 0, 0 };
 
-            if (lstFile.SelectedItems.Count > 0)
+            if (cboVideoRes.Text.Length > 0)
             {
-                MediaQueueVideoEncoder videoEnc;
-                MediaQueueVideoQuality videoPix;
-                MediaQueueVideoDeInterlace videoDei;
-                if ((lstFile.SelectedItems[0].Tag as MediaQueue).Video.Count > 0)
+                if (cboVideoRes.Text.Contains('x'))
                 {
-                    videoEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Encoder;
-                    videoPix = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].Quality;
-                    videoDei = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[0].DeInterlace;
-                }
-                else
-                {
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                MediaQueueAudioEncoder audioEnc;
-                string audioCmd;
-                string audioFil;
-                if ((lstFile.SelectedItems[0].Tag as MediaQueue).Audio.Count > 0)
-                {
-                    audioEnc = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Encoder;
-                    audioCmd = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].Command;
-                    audioFil = (lstFile.SelectedItems[0].Tag as MediaQueue).Audio[0].CommandFilter;
-                }
-                else
-                {
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var ib = new InputBox("Save encoding configuration profile", "Enter new profile name:", 4);
-                if (ib.ShowDialog() == DialogResult.OK)
-                {
-                    var proVideo = new ProfilesVideo
-                    {
-                        Encoder = videoEnc,
-                        Quality = videoPix,
-                        DeInterlace = videoDei
-                    };
-
-                    var proAudio = new ProfilesAudio
-                    {
-                        Encoder = audioEnc,
-                        Command = audioCmd,
-                        CommandFilter = audioFil
-                    };
-
-                    ProfilesManager.Save(ib.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, proVideo, proAudio);
-
-                    // Reload new listing
-                    InitializeProfiles();
+                    var temp = cboVideoRes.Text.Split('x');
+                    res[0] = int.TryParse(temp[0], out int w) ? res[0] = w : res[0] = 0;
+                    res[1] = int.TryParse(temp[1], out int h) ? res[1] = h : res[1] = 0;
                 }
             }
-            else
+
+            var input = new InputBox("Save encoding configuration profile", "Enter new profile name:", 4);
+            if (input.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                var v = new ProfilesVideo
+                {
+                    Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key,
+                        Preset = cboVideoPreset.Text,
+                        Tune = cboVideoTune.Text,
+                        Mode = cboVideoRateControl.SelectedIndex,
+                        Value = nudVideoRateFactor.Value,
+                        MultiPass = (int)nudVideoMultiPass.Value,
+                        Command = MediaEncoding.VideoEnArgs
+                    },
+                    Quality = new MediaQueueVideoQuality
+                    {
+                        Width = res[0],
+                        Height = res[1],
+                        FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : 0,
+                        BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
+                        PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
+                        Command = MediaEncoding.VideoDeArgs,
+                        CommandFilter = MediaEncoding.VideoFiArgs,
+                    },
+                    DeInterlace = new MediaQueueVideoDeInterlace
+                    {
+                        Enable = chkVideoDeInterlace.Checked,
+                        Mode = cboVideoDeInterMode.SelectedIndex,
+                        Field = cboVideoDeInterField.SelectedIndex
+                    }
+                };
+
+                var a = new ProfilesAudio
+                {
+                    Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
+                        Mode = cboAudioMode.SelectedIndex,
+                        Quality = cboAudioQuality.SelectedText,
+                        SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
+                        Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
+                        Command = MediaEncoding.AudioEnArgs
+                    },
+                };
+                
+                ProfilesManager.Save(input.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, v, a, chkVideoMP4Compt.Checked, chkAudioMP4Compt.Checked);
+
+                // Reload new listing
+                InitializeProfiles();
             }
         }
 

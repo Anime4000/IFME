@@ -4,6 +4,7 @@ using System.Threading;
 using System.Collections.Generic;
 
 using IFME.OSManager;
+using System.Windows.Forms;
 
 namespace IFME
 {
@@ -12,6 +13,13 @@ namespace IFME
         private static readonly int Arch = OS.Is64bit ? 64 : 32;
         internal static int CurrentIndex = 0;
         internal static int RealFrameCount = 0;
+
+        internal static string VideoFiArgs = string.Empty;
+        internal static string VideoDeArgs = string.Empty;
+        internal static string VideoEnArgs = string.Empty;
+        internal static string AudioFiArgs = string.Empty;
+        internal static string AudioDeArgs = string.Empty;
+        internal static string AudioEnArgs = string.Empty;
 
         internal static string FFmpeg
         {

@@ -1,0 +1,47 @@
+{
+  "ProfileName": "MPEG-2 for Legacy Operating System (Windows 98, Me, 2000, XP)",
+  "ProfileAuthor": "longwu9t",
+  "ProfilePath": "https://github.com/longwu9t",
+  "TryRemuxVideo": false,
+  "TryRemuxAudio": false,
+  "Container": "MPEG",
+  "Video": {
+    "Encoder": {
+      "Id": "deadbeef-8000-8000-8000-100820083008",
+      "Preset": "",
+      "Tune": "",
+      "Mode": 0,
+      "Value": 3.0,
+      "MultiPass": 2,
+      "Command": ""
+    },
+    "Quality": {
+      "Command": "",
+      "CommandFilter": "",
+      "Width": 0,
+      "Height": 0,
+      "IsVFR": false,
+      "FrameRate": 0.0,
+      "FrameRateAvg": 0.0,
+      "BitDepth": 8,
+      "PixelFormat": 420
+    },
+    "DeInterlace": {
+      "Enable": false,
+      "Field": 0,
+      "Mode": 1
+    }
+  },
+  "Audio": {
+    "Encoder": {
+      "Id": "deadbeef-2002-d002-d002-d002d002d002",
+      "Mode": 0,
+      "Quality": "",
+      "Command": "",
+      "SampleRate": 48000,
+      "Channel": 2
+    },
+    "Command": null,
+    "CommandFilter": null
+  }
+}

@@ -37,13 +37,15 @@ namespace IFME
 			}
 		}
 
-		public static void Save(string name, MediaContainer container, ProfilesVideo video, ProfilesAudio audio)
+		public static void Save(string name, MediaContainer container, ProfilesVideo video, ProfilesAudio audio, bool mux_v = false, bool mux_a = false)
 		{
 			var data = new Profiles
 			{
 				ProfileName = name,
 				ProfileAuthor = Properties.Settings.Default.Username,
 				Container = container,
+				TryRemuxVideo = mux_v,
+				TryRemuxAudio = mux_a,
 				Video = video,
 				Audio = audio
 			};
