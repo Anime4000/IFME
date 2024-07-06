@@ -42,8 +42,15 @@ For Ubuntu (Linux) you need:
 * RAM: 16GB DDR4 (UHD and above)
 * HDD: 70GB (UHD, HDR temp disk)
 
-### Downloads
-You can download it via [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download) or [GitHub (Build from Source)](https://github.com/Anime4000/IFME/releases/latest)
+## Downloads
+You can download it @
+* [SourceForge (Release)](https://sourceforge.net/projects/ifme/files/latest/download)
+* [GitHub (Release)](https://github.com/Anime4000/IFME/releases/latest)
+* [VideoHelp](https://www.videohelp.com/software/Internet-Friendly-Media-Encoder)
+* [SoftPedia](https://www.softpedia.com/get/Multimedia/Video/Encoders-Converter-DIVX-Related/Internet-Friendly-Media-Encoder.shtml)
+
+> [!NOTE]
+> VideoHelp & SoftPedia might take time to have latest version, since I not manage the page, however SourceForge is always have latest version, sometime I forgot to release on GitHub Release
 
 ### Run
 Windows users simply execute `ifme.exe`, meanwhile Linux users simply execute `ifme.sh` via Terminal Emulator
