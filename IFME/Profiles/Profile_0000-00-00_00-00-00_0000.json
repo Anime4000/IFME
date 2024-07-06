@@ -1,6 +1,7 @@
 ﻿{
 	"ProfileName": "High Compression & Quality (AV1 OGG)",
 	"ProfileAuthor": "Anime4000",
+	"ProfileWebUrl": "https://www.hitoha.moe",
 	"Container": "webm",
 	"Video": {
 		"Encoder": {

@@ -1,6 +1,7 @@
 ﻿{
 	"ProfileName": "High Compression & Quality (x265 AAC)",
 	"ProfileAuthor": "Anime4000",
+	"ProfileWebUrl": "https://www.hitoha.moe",
 	"Container": "mkv",
 	"Video": {
 		"Encoder": {

@@ -122,7 +122,7 @@ namespace IFME
             foreach (var item in Profiles.Items)
                 cboProfile.Items.Add(item.ProfileName);
 
-            cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
+            cboProfile.SelectedIndex = -1;
         }
 
         private void InitializeTab()
@@ -424,6 +424,9 @@ namespace IFME
                 chkAdvTrim.Checked = false;
                 chkAdvCropAuto.Checked = true;
                 chkAdvCropAuto.Checked = false;
+
+                cboProfile.Focus();
+                cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
             });
         }
 
