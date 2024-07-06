@@ -12,6 +12,7 @@ namespace IFME
 
         public string ProfileName { get; set; }
         public string ProfileAuthor { get; set; }
+        public string ProfileWebUrl { get; set; }
         public string ProfilePath { get; set; }
         public bool TryRemuxVideo { get; set; } = false;
         public bool TryRemuxAudio { get; set; } = false;

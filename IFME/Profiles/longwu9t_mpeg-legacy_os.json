@@ -1,7 +1,7 @@
 {
   "ProfileName": "MPEG-2 for Legacy Operating System (Windows 98, Me, 2000, XP)",
   "ProfileAuthor": "longwu9t",
-  "ProfilePath": "https://github.com/longwu9t",
+  "ProfileWebUrl": "https://github.com/longwu9t",
   "TryRemuxVideo": false,
   "TryRemuxAudio": false,
   "Container": "MPEG",

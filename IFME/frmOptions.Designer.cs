@@ -32,6 +32,7 @@ namespace IFME
             this.tabSetting = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.grpFileName = new System.Windows.Forms.GroupBox();
+            this.lblFileNameEx = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtPostfix = new System.Windows.Forms.TextBox();
             this.rdoPostfixCustom = new System.Windows.Forms.RadioButton();
@@ -60,8 +61,13 @@ namespace IFME
             this.colPluginsAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.lblFileNameEx = new System.Windows.Forms.Label();
             this.btnFactoryReset = new System.Windows.Forms.Button();
+            this.tabProfiles = new System.Windows.Forms.TabPage();
+            this.lstProfiles = new System.Windows.Forms.ListView();
+            this.colProfileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colProfileFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colProfileAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colProfileAuthorWeb = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
@@ -70,6 +76,7 @@ namespace IFME
             this.grpTempFolder.SuspendLayout();
             this.grpLanguage.SuspendLayout();
             this.tabPlugins.SuspendLayout();
+            this.tabProfiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabSetting
@@ -80,6 +87,7 @@ namespace IFME
             this.tabSetting.Controls.Add(this.tabGeneral);
             this.tabSetting.Controls.Add(this.tabProcessing);
             this.tabSetting.Controls.Add(this.tabPlugins);
+            this.tabSetting.Controls.Add(this.tabProfiles);
             this.tabSetting.Location = new System.Drawing.Point(12, 12);
             this.tabSetting.Name = "tabSetting";
             this.tabSetting.Padding = new System.Drawing.Point(16, 4);
@@ -113,6 +121,21 @@ namespace IFME
             this.grpFileName.TabIndex = 2;
             this.grpFileName.TabStop = false;
             this.grpFileName.Text = "&New Filename";
+            // 
+            // lblFileNameEx
+            // 
+            this.lblFileNameEx.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFileNameEx.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblFileNameEx.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.lblFileNameEx.Location = new System.Drawing.Point(6, 16);
+            this.lblFileNameEx.Name = "lblFileNameEx";
+            this.lblFileNameEx.Size = new System.Drawing.Size(744, 24);
+            this.lblFileNameEx.TabIndex = 1;
+            this.lblFileNameEx.Text = "Mysteries Of Legendary Worlds.mkv";
+            this.lblFileNameEx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblFileNameEx.Click += new System.EventHandler(this.lblFileNameEx_Click);
             // 
             // groupBox1
             // 
@@ -429,21 +452,6 @@ namespace IFME
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // lblFileNameEx
-            // 
-            this.lblFileNameEx.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFileNameEx.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblFileNameEx.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.lblFileNameEx.Location = new System.Drawing.Point(6, 16);
-            this.lblFileNameEx.Name = "lblFileNameEx";
-            this.lblFileNameEx.Size = new System.Drawing.Size(744, 24);
-            this.lblFileNameEx.TabIndex = 1;
-            this.lblFileNameEx.Text = "Mysteries Of Legendary Worlds.mkv";
-            this.lblFileNameEx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblFileNameEx.Click += new System.EventHandler(this.lblFileNameEx_Click);
-            // 
             // btnFactoryReset
             // 
             this.btnFactoryReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -454,6 +462,53 @@ namespace IFME
             this.btnFactoryReset.Text = "Factory &Reset";
             this.btnFactoryReset.UseVisualStyleBackColor = true;
             this.btnFactoryReset.Click += new System.EventHandler(this.btnFactoryReset_Click);
+            // 
+            // tabProfiles
+            // 
+            this.tabProfiles.Controls.Add(this.lstProfiles);
+            this.tabProfiles.Location = new System.Drawing.Point(4, 24);
+            this.tabProfiles.Name = "tabProfiles";
+            this.tabProfiles.Size = new System.Drawing.Size(768, 518);
+            this.tabProfiles.TabIndex = 3;
+            this.tabProfiles.Text = "Profiles";
+            this.tabProfiles.UseVisualStyleBackColor = true;
+            // 
+            // lstProfiles
+            // 
+            this.lstProfiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colProfileName,
+            this.colProfileFileName,
+            this.colProfileAuthor,
+            this.colProfileAuthorWeb});
+            this.lstProfiles.FullRowSelect = true;
+            this.lstProfiles.HideSelection = false;
+            this.lstProfiles.Location = new System.Drawing.Point(6, 6);
+            this.lstProfiles.MultiSelect = false;
+            this.lstProfiles.Name = "lstProfiles";
+            this.lstProfiles.Size = new System.Drawing.Size(756, 506);
+            this.lstProfiles.TabIndex = 0;
+            this.lstProfiles.UseCompatibleStateImageBehavior = false;
+            this.lstProfiles.View = System.Windows.Forms.View.Details;
+            // 
+            // colProfileName
+            // 
+            this.colProfileName.Text = "Name";
+            this.colProfileName.Width = 256;
+            // 
+            // colProfileFileName
+            // 
+            this.colProfileFileName.Text = "File Name";
+            this.colProfileFileName.Width = 200;
+            // 
+            // colProfileAuthor
+            // 
+            this.colProfileAuthor.Text = "Author";
+            this.colProfileAuthor.Width = 96;
+            // 
+            // colProfileAuthorWeb
+            // 
+            this.colProfileAuthorWeb.Text = "Website";
+            this.colProfileAuthorWeb.Width = 180;
             // 
             // frmOptions
             // 
@@ -482,6 +537,7 @@ namespace IFME
             this.grpTempFolder.PerformLayout();
             this.grpLanguage.ResumeLayout(false);
             this.tabPlugins.ResumeLayout(false);
+            this.tabProfiles.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -521,5 +577,11 @@ namespace IFME
         private System.Windows.Forms.ComboBox cboLanguage;
         private System.Windows.Forms.Label lblFileNameEx;
         private System.Windows.Forms.Button btnFactoryReset;
+        private System.Windows.Forms.TabPage tabProfiles;
+        private System.Windows.Forms.ListView lstProfiles;
+        private System.Windows.Forms.ColumnHeader colProfileName;
+        private System.Windows.Forms.ColumnHeader colProfileFileName;
+        private System.Windows.Forms.ColumnHeader colProfileAuthor;
+        private System.Windows.Forms.ColumnHeader colProfileAuthorWeb;
     }
 }

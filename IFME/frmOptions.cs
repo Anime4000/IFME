@@ -88,6 +88,21 @@ namespace IFME
                 tabSetting.SelectedTab = tabPlugins;
                 chkSkipTest.ForeColor = Color.Red;
             }
+
+            // show profile lists
+            foreach (var item in Profiles.Items)
+            {
+                lstProfiles.Items.Add(new ListViewItem(new[]
+                {
+                    item.ProfileName,
+                    Path.GetFileName(item.ProfilePath),
+                    item.ProfileAuthor,
+                    item.ProfileWebUrl
+                })
+                {
+                    Tag = item.ProfileWebUrl
+                });
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)

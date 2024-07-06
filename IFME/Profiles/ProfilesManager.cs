@@ -19,7 +19,7 @@ namespace IFME
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
-			foreach (var item in Directory.EnumerateFiles(folder, "Profile_*.json", SearchOption.AllDirectories).OrderBy(file => file))
+			foreach (var item in Directory.EnumerateFiles(folder, "*.json", SearchOption.AllDirectories).OrderBy(file => file))
 			{
 				try
 				{
@@ -79,7 +79,9 @@ namespace IFME
 			{
 				ProfileName = "Example to test",
 				ProfileAuthor = "Example Inc.",
-				Container = MediaContainer.MKV,
+                ProfileWebUrl = "http://example.com",
+
+                Container = MediaContainer.MKV,
 				Video = new ProfilesVideo
 				{
 					Encoder = new MediaQueueVideoEncoder

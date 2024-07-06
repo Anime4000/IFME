@@ -1,7 +1,7 @@
 {
   "ProfileName": "Windows Media Video for Microsoft Office PowerPoint",
   "ProfileAuthor": "longwu9t",
-  "ProfilePath": "https://github.com/longwu9t",
+  "ProfileWebUrl": "https://github.com/longwu9t",
   "TryRemuxVideo": false,
   "TryRemuxAudio": false,
   "Container": "WMV",
