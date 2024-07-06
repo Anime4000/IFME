@@ -422,6 +422,8 @@ namespace IFME
 
         private void lstFile_DragDrop(object sender, DragEventArgs e)
         {
+            lstFile.SelectedIndices.Clear(); // clear last selected items
+
             foreach (var file in (string[])e.Data.GetData(DataFormats.FileDrop))
                 MediaFileListAdd(file, false);
         }
@@ -2237,6 +2239,8 @@ namespace IFME
 
         private void tsmiImportFiles_Click(object sender, EventArgs e)
         {
+            lstFile.SelectedIndices.Clear(); // clear last selected items
+
             foreach (var item in OpenFiles(MediaType.Video | MediaType.Audio))
                 MediaFileListAdd(item, false);
         }
@@ -2248,6 +2252,8 @@ namespace IFME
 
             if (files.Count == 0)
                 return;
+
+            lstFile.SelectedIndices.Clear(); // clear last selected items
 
             frm.Show();
             frm.Text = "Importing Media...";
@@ -2289,6 +2295,8 @@ namespace IFME
 
             if (files.Length <= 0)
                 return;
+
+            lstFile.SelectedIndices.Clear(); // clear last selected items
 
             using (var formImgSeq = new frmImportImageSeq(files[0]))
             {
