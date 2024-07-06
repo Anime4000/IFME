@@ -835,6 +835,8 @@ namespace IFME
 
         private void SetProfileData(Profiles value)
         {
+            cboFormat.SelectedIndex = (int)value.Container;
+
             cboVideoEncoder.SelectedValue = value.Video.Encoder.Id;
             cboVideoPreset.SelectedItem = value.Video.Encoder.Preset;
             cboVideoTune.SelectedItem = value.Video.Encoder.Tune;
