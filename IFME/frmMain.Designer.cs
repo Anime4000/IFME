@@ -1744,7 +1744,7 @@
             // colFileName
             // 
             this.colFileName.Text = "Name";
-            this.colFileName.Width = 250;
+            this.colFileName.Width = 240;
             // 
             // colFileType
             // 
@@ -1759,17 +1759,17 @@
             // colFileSize
             // 
             this.colFileSize.Text = "Size";
-            this.colFileSize.Width = 80;
+            this.colFileSize.Width = 64;
             // 
             // colFileStatus
             // 
             this.colFileStatus.Text = "Status";
-            this.colFileStatus.Width = 130;
+            this.colFileStatus.Width = 110;
             // 
             // colFileProgress
             // 
             this.colFileProgress.Text = "Progress";
-            this.colFileProgress.Width = 354;
+            this.colFileProgress.Width = 400;
             // 
             // btnDonate
             // 
@@ -2070,6 +2070,7 @@
             this.Controls.Add(this.btnFileAdd);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MinimumSize = new System.Drawing.Size(1024, 600);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IFME 2020";

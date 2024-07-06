@@ -416,10 +416,13 @@ namespace IFME
                         float fps = 0;
                         float numFrames = 0;
 
-                        if (item.Quality.FrameRate == 0)
+                        if (item.Quality.FrameRate > 0)
                             fps = item.Info.FrameRate;
                         else
                             fps = item.Quality.FrameRate;
+
+                        if (item.Info.FrameRateAvg > 0)
+                            fps = item.Info.FrameRateAvg;
 
                         numFrames = (int)(queue.Duration * fps);
 

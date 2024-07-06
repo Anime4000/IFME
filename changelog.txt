@@ -1,5 +1,6 @@
 Version 8.3.2 (Astral Reverie)
 ------------------------------
+[New] Added ETA in Progress status
 [Fixed] Select a profile will cause a crash due to null value
 [Fixed] Custom FFmpeg Command and Encoder Command not survive when select profile
 [Fixed] Encoding crash when using Auto Resolution, Auto FPS and Auto Frame Count

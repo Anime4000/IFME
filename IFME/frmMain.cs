@@ -142,6 +142,18 @@ namespace IFME
 
                     PbxBanner.BackgroundImage = new Bitmap(png);
                 }
+
+                if (lstFile.Width > 1005)
+                {
+                    var pWidthInc = (((float)lstFile.Width - 1005) / 1005);
+
+                    colFileName.Width = (int)Math.Ceiling((250 * pWidthInc) + 250);
+                    colFileType.Width = (int)(80 * pWidthInc) + 80;
+                    colFileDuration.Width = (int)(80 * pWidthInc) + 80;
+                    colFileSize.Width = (int)(64 * pWidthInc) + 64;
+                    colFileStatus.Width = (int)(110 * pWidthInc) + 110;
+                    colFileProgress.Width = (int)Math.Ceiling((400 * pWidthInc) + 400);
+                }
             }
             catch (Exception)
             {
