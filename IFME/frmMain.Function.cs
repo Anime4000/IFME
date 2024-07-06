@@ -418,13 +418,6 @@ namespace IFME
 
                 tabConfig.SelectedTab = tabConfigMediaInfo;
 
-                chkVideoDeInterlace.Checked = true;
-                chkVideoDeInterlace.Checked = false;
-                chkAdvTrim.Checked = true;
-                chkAdvTrim.Checked = false;
-                chkAdvCropAuto.Checked = true;
-                chkAdvCropAuto.Checked = false;
-
                 cboProfile.Focus();
                 cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
             });

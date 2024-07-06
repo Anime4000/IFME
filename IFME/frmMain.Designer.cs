@@ -1396,6 +1396,7 @@
             this.grpVideoInterlace.Controls.Add(this.lblVideoDeInterField);
             this.grpVideoInterlace.Controls.Add(this.cboVideoDeInterMode);
             this.grpVideoInterlace.Controls.Add(this.lblVideoDeInterMode);
+            this.grpVideoInterlace.Enabled = false;
             this.grpVideoInterlace.Location = new System.Drawing.Point(739, 136);
             this.grpVideoInterlace.Name = "grpVideoInterlace";
             this.grpVideoInterlace.Size = new System.Drawing.Size(247, 122);

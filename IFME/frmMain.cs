@@ -628,10 +628,6 @@ namespace IFME
                 if (cboVideoPixFmt.SelectedIndex == -1)
                     cboVideoPixFmt.SelectedIndex = 0;
 
-                var dei = temp.Video.Args.Pipe;
-                chkVideoDeInterlace.Enabled = dei;
-                grpVideoInterlace.Enabled = dei;
-
                 cboVideoPreset.Enabled = cboVideoPreset.Items.Count > 0;
                 cboVideoTune.Enabled = cboVideoTune.Items.Count > 0;
 
