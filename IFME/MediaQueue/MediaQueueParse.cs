@@ -80,7 +80,7 @@ namespace IFME
                     Height = data.Height,
                     FrameRate = (float)Math.Round(data.FrameRateAvg, 3),
                     FrameRateAvg = data.FrameRateAvg,
-                    FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRate),
+                    FrameCount = (int)Math.Ceiling(data.Duration * data.FrameRateAvg),
                     IsVFR = !data.FrameRateConstant,
                     BitDepth = data.BitDepth,
                     PixelFormat = data.Chroma,

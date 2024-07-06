@@ -894,13 +894,18 @@ namespace IFME
                         };
                         media.Video[i].Quality = new MediaQueueVideoQuality
                         {
-                            Width = value.Video.Quality.Width,
-                            Height = value.Video.Quality.Height,
-                            FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : 0,
+                            Width = value.Video.Quality.Width == 0 ? media.Video[i].Info.Width : value.Video.Quality.Width,
+                            Height = value.Video.Quality.Height == 0 ? media.Video[i].Info.Height : value.Video.Quality.Height,
+                            FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : media.Video[i].Info.FrameRate,
+                            FrameRateAvg = float.TryParse(cboVideoFps.Text, out float fpa) ? fpa : media.Video[i].Info.FrameRateAvg,
                             BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
                             PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
                             Command = MediaQueueParse.Gui.Video.CmdDecoder,
                             CommandFilter = MediaQueueParse.Gui.Video.CmdFilter,
+                            
+                            IsVFR = media.Video[i].Info.IsVFR,
+                            FrameCount = media.Video[i].Info.FrameCount,
+                            Disposition_AttachedPic = media.Video[i].Info.Disposition_AttachedPic
                         };
                         media.Video[i].DeInterlace = new MediaQueueVideoDeInterlace
                         {
@@ -917,7 +922,7 @@ namespace IFME
                         {
                             Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
                             Mode = cboAudioMode.SelectedIndex,
-                            Quality = cboAudioQuality.SelectedText,
+                            Quality = cboAudioQuality.Text,
                             SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
                             Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
                             Command = MediaQueueParse.Gui.Audio.CmdEncoder

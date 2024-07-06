@@ -59,8 +59,15 @@ namespace IFME
             Properties.Settings.Default.Save();
 
             // Temp folder
-            if (Directory.Exists(Properties.Settings.Default.FolderTemporary))
-                Directory.Delete(Properties.Settings.Default.FolderTemporary, true);
+            try
+            {
+                if (Directory.Exists(Properties.Settings.Default.FolderTemporary))
+                    Directory.Delete(Properties.Settings.Default.FolderTemporary, true);
+            }
+            catch (Exception ex)
+            {
+                lblStatusUpdate(ex.Message);
+            }
 
             Directory.CreateDirectory(Properties.Settings.Default.FolderTemporary);
 

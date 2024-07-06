@@ -364,10 +364,14 @@ namespace IFME
                     // Encoder Resolution
                     if (!string.IsNullOrEmpty(vc.Args.Resolution))
                         en_res = string.Format(vc.Args.Resolution, val_w, val_h);
+                    if (val_w <= 128 || val_h <= 128)
+                        en_res = string.Empty;
 
                     // Encoder Frame Rate
                     if (!string.IsNullOrEmpty(vc.Args.FrameRate))
                         en_fps = $"{vc.Args.FrameRate} {item.Quality.FrameRate}";
+                    if (item.Quality.FrameRate == 0)
+                        en_fps = string.Empty;
 
                     // Encoder BitDepth Input
                     if (!string.IsNullOrEmpty(vc.Args.BitDepthIn))
@@ -409,15 +413,25 @@ namespace IFME
                     // Encoder Frame Count
                     if (!string.IsNullOrEmpty(vc.Args.FrameCount))
                     {
-                        var numFrames = (int)(queue.Duration * item.Quality.FrameRate);
+                        float fps = 0;
+                        float numFrames = 0;
+
+                        if (item.Quality.FrameRate == 0)
+                            fps = item.Info.FrameRate;
+                        else
+                            fps = item.Quality.FrameRate;
+
+                        numFrames = (int)(queue.Duration * fps);
 
                         if (item.Quality.FrameCount > 0)
                             numFrames = item.Quality.FrameCount;
 
                         if (queue.Trim.Enable)
-                            numFrames = (int)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / item.Quality.FrameRate));
+                            numFrames = (int)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / fps));
 
                         en_framecount = $"{vc.Args.FrameCount} {numFrames}";
+
+                        RealFrameCount = (int)numFrames;
                     }
 
                     // Copy Streams
@@ -497,8 +511,6 @@ namespace IFME
                     var cmd_en = $"{en_res} {en_fps} {en_bit} {en_csp}";
 
                     var cmd_ff_en = ff ? cmd_ff : cmd_en;
-
-                    RealFrameCount = item.Quality.FrameCount;
 
                     if (vc.Mode[item.Encoder.Mode].MultiPass)
                     {
