@@ -154,7 +154,15 @@ namespace IFME
                             int remainingFrames = MediaEncoding.RealFrameCount - frame;
                             double remainingTime = remainingFrames * averageFrameTime;
 
-                            eta = TimeSpan.FromSeconds(remainingTime);
+							try
+							{
+                                eta = TimeSpan.FromSeconds(remainingTime);
+                            }
+							catch (Exception ex)
+							{
+								frmMain.PrintLog($"[WARN] ETA Logic is crashed: {ex.Message}");
+
+                            }
                         }
 
                         frmMain.PrintProgress($"[{percentage:0.0} %] Frame: {frame}, Bitrate: {bitrate} kb/s, Speed: {speed} fps, ETA: {eta:hh\\:mm\\:ss}");
