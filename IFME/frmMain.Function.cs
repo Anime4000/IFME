@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using IFME.OSManager;
 using System.Net.Http.Headers;
+using System.Collections;
 
 namespace IFME
 {
@@ -758,6 +759,8 @@ namespace IFME
             MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
             MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
             MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
+            MediaQueueParse.Gui.Audio.SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key;
+            MediaQueueParse.Gui.Audio.Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key;
         }
 
         private void SetDefinedData(Guid videoId, Guid audioId)
@@ -893,6 +896,25 @@ namespace IFME
             chkVideoMP4Compt.Checked = value.TryRemuxVideo;
             chkAudioMP4Compt.Checked = value.TryRemuxAudio;
 
+            // Make sure ComboBox are not in -1 Index
+            Control ctrl = this;
+            do
+            {
+                ctrl = GetNextControl(ctrl, true);
+
+                if (ctrl != null)
+                {
+                    if (ctrl is ComboBox comboBox)
+                    {
+                        if (comboBox.SelectedIndex == -1 && comboBox.Items.Count > 0)
+                        {
+                            comboBox.SelectedIndex = comboBox.Items.Count - 1;
+                        }
+                    }
+                }
+            } while (ctrl != null);
+
+            // Modify selected item data
             if (lstFile.SelectedItems.Count > 0)
             {
                 foreach (ListViewItem queue in lstFile.SelectedItems)
@@ -909,54 +931,46 @@ namespace IFME
                     // modify video collection
                     for (int i = 0; i < media.Video.Count; i++)
                     {
-                        media.Video[i].Encoder = new MediaQueueVideoEncoder
-                        {
-                            Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key,
-                            Preset = cboVideoPreset.Text,
-                            Tune = cboVideoTune.Text,
-                            Mode = cboVideoRateControl.SelectedIndex,
-                            Value = nudVideoRateFactor.Value,
-                            MultiPass = (int)nudVideoMultiPass.Value,
-                            Command = MediaQueueParse.Gui.Video.CmdEncoder
-                        };
-                        media.Video[i].Quality = new MediaQueueVideoQuality
-                        {
-                            Width = value.Video.Quality.Width == 0 ? media.Video[i].Info.Width : value.Video.Quality.Width,
-                            Height = value.Video.Quality.Height == 0 ? media.Video[i].Info.Height : value.Video.Quality.Height,
-                            FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : media.Video[i].Info.FrameRate,
-                            FrameRateAvg = float.TryParse(cboVideoFps.Text, out float fpa) ? fpa : media.Video[i].Info.FrameRateAvg,
-                            BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8,
-                            PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420,
-                            Command = MediaQueueParse.Gui.Video.CmdDecoder,
-                            CommandFilter = MediaQueueParse.Gui.Video.CmdFilter,
-                            
-                            IsVFR = media.Video[i].Info.IsVFR,
-                            FrameCount = media.Video[i].Info.FrameCount,
-                            Disposition_AttachedPic = media.Video[i].Info.Disposition_AttachedPic
-                        };
-                        media.Video[i].DeInterlace = new MediaQueueVideoDeInterlace
-                        {
-                            Enable = chkVideoDeInterlace.Checked,
-                            Mode = cboVideoDeInterMode.SelectedIndex,
-                            Field = cboVideoDeInterField.SelectedIndex
-                        };
+                        media.Video[i].Encoder.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                        media.Video[i].Encoder.Preset = cboVideoPreset.Text;
+                        media.Video[i].Encoder.Tune = cboVideoTune.Text;
+                        media.Video[i].Encoder.Mode = cboVideoRateControl.SelectedIndex;
+                        media.Video[i].Encoder.Value = nudVideoRateFactor.Value;
+                        media.Video[i].Encoder.MultiPass = (int)nudVideoMultiPass.Value;
+                        media.Video[i].Encoder.Command = MediaQueueParse.Gui.Video.CmdEncoder;
+
+                        media.Video[i].Quality.Width = value.Video.Quality.Width == 0 ? media.Video[i].Info.Width : value.Video.Quality.Width;
+                        media.Video[i].Quality.Height = value.Video.Quality.Height == 0 ? media.Video[i].Info.Height : value.Video.Quality.Height;
+                        media.Video[i].Quality.FrameRate = float.TryParse(cboVideoFps.Text, out float fps) ? fps : media.Video[i].Info.FrameRate;
+                        media.Video[i].Quality.FrameRateAvg = float.TryParse(cboVideoFps.Text, out float fpa) ? fpa : media.Video[i].Info.FrameRateAvg;
+                        media.Video[i].Quality.BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8;
+                        media.Video[i].Quality.PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420;
+                        media.Video[i].Quality.Command = MediaQueueParse.Gui.Video.CmdDecoder;
+                        media.Video[i].Quality.CommandFilter = MediaQueueParse.Gui.Video.CmdFilter;
+
+                        media.Video[i].DeInterlace.Enable = chkVideoDeInterlace.Checked;
+                        media.Video[i].DeInterlace.Mode = cboVideoDeInterMode.SelectedIndex;
+                        media.Video[i].DeInterlace.Field = cboVideoDeInterField.SelectedIndex;
                     }
 
                     // modify audio collection
                     for (int x = 0; x < media.Audio.Count; x++)
                     {
-                        media.Audio[x].Encoder = new MediaQueueAudioEncoder
-                        {
-                            Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
-                            Mode = cboAudioMode.SelectedIndex,
-                            Quality = cboAudioQuality.Text,
-                            SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
-                            Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
-                            Command = MediaQueueParse.Gui.Audio.CmdEncoder
-                        };
+                        media.Audio[x].Encoder.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                        media.Audio[x].Encoder.Mode = cboAudioMode.SelectedIndex;
+                        media.Audio[x].Encoder.Quality = cboAudioQuality.Text;
+                        media.Audio[x].Encoder.SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key;
+                        media.Audio[x].Encoder.Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key;
+                        media.Audio[x].Encoder.Command = MediaQueueParse.Gui.Audio.CmdEncoder;
+
                         media.Audio[x].Command = MediaQueueParse.Gui.Audio.CmdDecoder;
                         media.Audio[x].CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter;
                     }
+
+                    // update main list
+                    var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
+                    var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
+                    queue.SubItems[1].Text = $"{inExt} ► {outExt}";
                 }
 
                 DisplayProperties_Video();

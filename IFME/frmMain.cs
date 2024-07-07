@@ -149,8 +149,8 @@ namespace IFME
                     var pWidthInc = (((float)lstFile.Width - 1005) / 1005);
 
                     colFileName.Width = (int)Math.Ceiling((250 * pWidthInc) + 250);
-                    colFileType.Width = (int)(80 * pWidthInc) + 80;
-                    colFileDuration.Width = (int)(80 * pWidthInc) + 80;
+                    colFileType.Width = (int)(90 * pWidthInc) + 90;
+                    colFileDuration.Width = (int)(72 * pWidthInc) + 72;
                     colFileSize.Width = (int)(64 * pWidthInc) + 64;
                     colFileStatus.Width = (int)(110 * pWidthInc) + 110;
                     colFileProgress.Width = (int)Math.Ceiling((400 * pWidthInc) + 400);
@@ -1583,6 +1583,8 @@ namespace IFME
                     }
                 }
 
+                MediaQueueParse.Gui.Audio.SampleRate = (int?)(cboAudioSampleRate.SelectedValue) ?? 0;
+
                 DisplayProperties_Audio();
             }
         }
@@ -1608,6 +1610,8 @@ namespace IFME
                         }
                     }
                 }
+
+                MediaQueueParse.Gui.Audio.Channel = (int?)(cboAudioChannel.SelectedValue) ?? 0;
 
                 DisplayProperties_Audio();
             }

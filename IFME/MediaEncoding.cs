@@ -409,31 +409,27 @@ namespace IFME
                     }
 
                     // Encoder Mode (Native)
-
                     // Encoder Frame Count
+                    float fps = 0;
+                    float numFrames = 0;
+
+                    if (item.Quality.FrameRate == 0)
+                        fps = item.Info.FrameRateAvg;
+                    else
+                        fps = item.Quality.FrameRate;
+
+                    numFrames = queue.Duration * fps;
+
+                    if (queue.Trim.Enable)
+                        numFrames = (float)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / fps));
+
+                    var framecount = (int)Math.Ceiling(numFrames);
+
                     if (!string.IsNullOrEmpty(vc.Args.FrameCount))
-                    {
-                        float fps = 0;
-                        float numFrames = 0;
+                        en_framecount = $"{vc.Args.FrameCount} {framecount}";
 
-                        if (item.Quality.FrameRate == 0)
-                            fps = item.Info.FrameRateAvg;
-                        else
-                            fps = item.Quality.FrameRate;
-
-                        numFrames = queue.Duration * fps;
-
-                        if (queue.Trim.Enable)
-                            numFrames = (float)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / fps));
-
-                        var framecount = (int)Math.Ceiling(numFrames);
-
-                        if (numFrames > 0)
-                            en_framecount = $"{vc.Args.FrameCount} {framecount}";
-
-                        RealFrameCount = framecount;
-                        item.Quality.FrameCount = framecount;
-                    }
+                    RealFrameCount = framecount;
+                    item.Quality.FrameCount = framecount;
 
                     // Copy Streams
                     if (codec.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))

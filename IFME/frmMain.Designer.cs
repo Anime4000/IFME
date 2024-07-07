@@ -1749,12 +1749,12 @@
             // colFileType
             // 
             this.colFileType.Text = "Type";
-            this.colFileType.Width = 80;
+            this.colFileType.Width = 90;
             // 
             // colFileDuration
             // 
             this.colFileDuration.Text = "Duration";
-            this.colFileDuration.Width = 80;
+            this.colFileDuration.Width = 72;
             // 
             // colFileSize
             // 

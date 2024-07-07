@@ -1,7 +1,7 @@
 {
   "ProfileName": "Ultra Compression SDR YUV420 8bit (Fraunhofer H.266/VVC & xHE-AAC with eSBR)",
-  "ProfileAuthor": "",
-  "ProfileWebUrl": null,
+  "ProfileAuthor": "Anime4000",
+  "ProfileWebUrl": "https://www.hitoha.moe",
   "Container": "MP4",
   "Video": {
     "Encoder": {

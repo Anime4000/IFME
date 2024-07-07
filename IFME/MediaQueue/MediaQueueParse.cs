@@ -29,9 +29,11 @@ namespace IFME
 			public static class Audio
 			{
 				public static Guid Id { get; set; } = new Guid("deadbeef-0aac-0aac-0aac-0aac0aac0aac");
-				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
                 public static int Mode { get; set; } = 0;
-				public static string CmdFilter { get; set; } = string.Empty;
+				public static string Quality { get; set; } = Plugins.Items.Audio[Id].Audio.Mode[0].Default;
+				public static int SampleRate { get; set;  } = Plugins.Items.Audio[Id].Audio.SampleRateDefault;
+				public static int Channel { get; set; } = Plugins.Items.Audio[Id].Audio.ChannelDefault;
+                public static string CmdFilter { get; set; } = string.Empty;
 				public static string CmdDecoder { get; set; } = string.Empty;
 				public static string CmdEncoder { get; set; } = string.Empty;
 			}
@@ -55,8 +57,10 @@ namespace IFME
 				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
 				{
 					Audio.Id = audioId;
-					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
 					Audio.Mode = 0;
+					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
+					Audio.Channel = Plugins.Items.Audio[audioId].Audio.ChannelDefault;
+					Audio.SampleRate = Plugins.Items.Audio[audioId].Audio.SampleRateDefault;
 					Audio.CmdEncoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
 				}
             }
@@ -147,8 +151,8 @@ namespace IFME
 					Id = Gui.Audio.Id,
 					Mode = Gui.Audio.Mode,
 					Quality = Gui.Audio.Quality,
-					SampleRate = Plugins.Items.Audio[Gui.Audio.Id].Audio.SampleRateDefault,
-					Channel = Plugins.Items.Audio[Gui.Audio.Id].Audio.ChannelDefault,
+					SampleRate = Gui.Audio.SampleRate,
+					Channel = Gui.Audio.Channel,
 					Command = Gui.Audio.CmdEncoder
 				},
 

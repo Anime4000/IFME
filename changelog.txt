@@ -4,6 +4,7 @@ Version 8.3.2 (Astral Reverie)
 [Fixed] Select a profile will cause a crash due to null value
 [Fixed] Custom FFmpeg Command and Encoder Command not survive when select profile
 [Fixed] Encoding crash when using Auto Resolution, Auto FPS and Auto Frame Count
+[Update] Rigaya H264/265 NVENC updated to version 7.57
 
 Version 8.3.1 (Stellar Dreamscape)
 ----------------------------------

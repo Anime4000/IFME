@@ -1,5 +1,5 @@
 ﻿{
-	"ProfileName": "High Compression & Quality (AV1 OGG)",
+	"ProfileName": "High Compression & Quality (AV1 OPUS)",
 	"ProfileAuthor": "Anime4000",
 	"ProfileWebUrl": "https://www.hitoha.moe",
 	"Container": "webm",
@@ -30,12 +30,12 @@
 	},
 	"Audio": {
 		"Encoder": {
-			"Id": "deadface-f154-f154-f154-f154f154f154",
+			"Id": "deadface-f00d-f00d-f00d-f00df00df00d",
 			"Mode": 0,
 			"Quality": 128,
-			"SampleRate": 44100,
-			"Channel": 2,
-			"Command": ""
+			"SampleRate": 48000,
+			"Channel": 0,
+			"Command": "-apply_phase_inv 0"
 		},
 		"Copy": false,
 		"Command": "",
