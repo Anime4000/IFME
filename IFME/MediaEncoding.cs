@@ -416,25 +416,23 @@ namespace IFME
                         float fps = 0;
                         float numFrames = 0;
 
-                        if (item.Quality.FrameRate > 0)
-                            fps = item.Info.FrameRate;
+                        if (item.Quality.FrameRate == 0)
+                            fps = item.Info.FrameRateAvg;
                         else
                             fps = item.Quality.FrameRate;
 
-                        if (item.Info.FrameRateAvg > 0)
-                            fps = item.Info.FrameRateAvg;
-
-                        numFrames = (int)(queue.Duration * fps);
-
-                        if (item.Quality.FrameCount > 0)
-                            numFrames = item.Quality.FrameCount;
+                        numFrames = queue.Duration * fps;
 
                         if (queue.Trim.Enable)
-                            numFrames = (int)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / fps));
+                            numFrames = (float)(TimeSpan.Parse(queue.Trim.Duration).TotalMilliseconds / (1000 / fps));
 
-                        en_framecount = $"{vc.Args.FrameCount} {numFrames}";
+                        var framecount = (int)Math.Ceiling(numFrames);
 
-                        RealFrameCount = (int)numFrames;
+                        if (numFrames > 0)
+                            en_framecount = $"{vc.Args.FrameCount} {framecount}";
+
+                        RealFrameCount = framecount;
+                        item.Quality.FrameCount = framecount;
                     }
 
                     // Copy Streams

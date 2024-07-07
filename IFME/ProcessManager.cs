@@ -96,6 +96,13 @@ namespace IFME
                     return;
                 }
 
+                var regexPattern = @"( \d+ bits )|( \d+ seconds)|(\d+/\d{3})|(size=[ ]{1,}\d+)|(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kb/s)|(\d+.\d+[ ]{1,}fps)|(\d+[ ]{1,}frames:\s\d+.\d+[ ]{1,}fps,\s\d+.\d+[ ]{1,}kb/s,\sGPU\s\d+%,\sVE\s\d+%)";
+                Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
+                if (m.Success)
+                    frmMain.PrintProgress(e.Data);
+                else
+                    frmMain.PrintLog(e.Data);
+
                 var patterns = new[]
 				{
                     @"vvenc \[info\]: stats:  frame=\s*(\d+) .* avg_fps=\s*([\d\.]+) .* avg_bitrate=\s*([\d\.]+) kbps", // Fraunhofer VVC
@@ -181,13 +188,6 @@ namespace IFME
                         return;
                     }
                 }
-				
-				var regexPattern = @"( \d+ bits )|( \d+ seconds)|(\d+/\d{3})|(size=[ ]{1,}\d+)|(frame[ ]{1,}\d+)|(\d+.\d+[ ]{1,}kb/s)|(\d+.\d+[ ]{1,}fps)|(\d+[ ]{1,}frames:\s\d+.\d+[ ]{1,}fps,\s\d+.\d+[ ]{1,}kb/s,\sGPU\s\d+%,\sVE\s\d+%)";
-				Match m = Regex.Match(e.Data, regexPattern, RegexOptions.IgnoreCase);
-				if (m.Success)
-					frmMain.PrintProgress(e.Data);
-				else
-					frmMain.PrintLog(e.Data);
 			}
 		}
 
