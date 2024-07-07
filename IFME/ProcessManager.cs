@@ -13,12 +13,12 @@ namespace IFME
 		internal static bool IsPause = false;
 
 		private TimeSpan eta = new TimeSpan(0, 0, 0);
-        private List<Tuple<int, DateTime>> recentFrames;
+        private List<double> recentFps;
         private const int sampleSize = 5;
 
         public ProcessManager()
         {
-            recentFrames = new List<Tuple<int, DateTime>>();
+            recentFps = new List<double>();
         }
 
         internal static int Start(string Command)
@@ -132,40 +132,51 @@ namespace IFME
 
                         double percentage = (double)frame / MediaEncoding.RealFrameCount * 100;
 
-                        // Update recent frames list
-                        DateTime currentTime = DateTime.Now;
-                        recentFrames.Add(new Tuple<int, DateTime>(frame, currentTime));
-                        if (recentFrames.Count > sampleSize)
+                        // Update recent fps list
+                        recentFps.Add(speed);
+                        if (recentFps.Count > sampleSize)
                         {
-                            recentFrames.RemoveAt(0);
+                            recentFps.RemoveAt(0);
                         }
 
                         // Calculate ETA
-                        if (recentFrames.Count == sampleSize)
+                        if (recentFps.Count == sampleSize)
                         {
-                            double totalFrameTime = 0;
-                            for (int i = 1; i < recentFrames.Count; i++)
+                            double averageFps = 0;
+                            foreach (var fps in recentFps)
                             {
-                                int frameDiff = recentFrames[i].Item1 - recentFrames[i - 1].Item1;
-                                TimeSpan timeDiff = recentFrames[i].Item2 - recentFrames[i - 1].Item2;
-                                totalFrameTime += timeDiff.TotalSeconds / frameDiff;
+                                averageFps += fps;
                             }
-                            double averageFrameTime = totalFrameTime / (sampleSize - 1);
-                            int remainingFrames = MediaEncoding.RealFrameCount - frame;
-                            double remainingTime = remainingFrames * averageFrameTime;
+                            averageFps /= sampleSize;
+                            averageFps = Math.Round(averageFps); // Round to the nearest whole number
 
-							try
-							{
-                                eta = TimeSpan.FromSeconds(remainingTime);
-                            }
-							catch (Exception ex)
-							{
-								frmMain.PrintLog($"[WARN] ETA Logic is crashed: {ex.Message}");
+                            if (averageFps > 0)
+                            {
+                                int remainingFrames = MediaEncoding.RealFrameCount - frame;
+                                double remainingTime = remainingFrames / averageFps;
 
+                                if (remainingTime > TimeSpan.MaxValue.TotalSeconds)
+                                {
+                                    remainingTime = TimeSpan.MaxValue.TotalSeconds;
+                                }
+                                else if (remainingTime < TimeSpan.MinValue.TotalSeconds)
+                                {
+                                    remainingTime = TimeSpan.MinValue.TotalSeconds;
+                                }
+
+                                try
+                                {
+                                    eta = TimeSpan.FromSeconds(remainingTime);
+                                }
+                                catch (Exception ex)
+                                {
+                                    frmMain.PrintLog($"[WARN] ETA Logic is crashed: {ex.Message}");
+
+                                }
                             }
                         }
 
-                        frmMain.PrintProgress($"[{percentage:0.0} %] Frame: {frame}, Bitrate: {bitrate} kb/s, Speed: {speed} fps, ETA: {eta:hh\\:mm\\:ss}");
+                        frmMain.PrintProgress($"[{percentage:0.00} %] Frame: {frame}, Bitrate: {bitrate:0} kb/s, Speed: {speed:0.00} fps, ETA: {eta:hh\\:mm\\:ss}");
 
                         return;
                     }
