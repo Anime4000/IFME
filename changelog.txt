@@ -5,6 +5,8 @@ Version 8.3.2 (Astral Reverie)
 [Fixed] Custom FFmpeg Command and Encoder Command not survive when select profile
 [Fixed] Encoding crash when using Auto Resolution, Auto FPS and Auto Frame Count
 [Update] Rigaya H264/265 NVENC updated to version 7.57
+[Update] FFmpeg (Non-Free build) updated to version git-2024-07-07-cd2f8a2
+[Update] x265 (AVX2) updated to version 3.6+33-ad1a30a8a
 
 Version 8.3.1 (Stellar Dreamscape)
 ----------------------------------
