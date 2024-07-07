@@ -49,7 +49,7 @@ namespace IFME
                     Video.MultiPass = 2;
                     Video.DeInterlaceMode = 1;
                     Video.DeInterlaceField = 0;
-					Video.CmdDecoder = Plugins.Items.Video[videoId].Video.Args.Command;
+					Video.CmdEncoder = Plugins.Items.Video[videoId].Video.Args.Command;
                 }
                 
 				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
@@ -57,7 +57,7 @@ namespace IFME
 					Audio.Id = audioId;
 					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
 					Audio.Mode = 0;
-					Audio.CmdDecoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
+					Audio.CmdEncoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
 				}
             }
 		}

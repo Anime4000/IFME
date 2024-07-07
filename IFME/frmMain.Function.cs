@@ -200,6 +200,7 @@ namespace IFME
                 Duration = fileData.Duration,
                 InputFormat = fileData.FormatNameFull,
                 OutputFormat = (MediaContainer)cboFormat.SelectedIndex,
+                ProfileId = cboProfile.SelectedIndex,
                 Info = fileData
             };
 
@@ -739,6 +740,26 @@ namespace IFME
             SetDefinedData(videoId, audioId);
         }
 
+        private void SetGuiDataVideo()
+        {
+            MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+            MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
+            MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
+            MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
+            MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
+            MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
+            MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
+            MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
+            MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
+        }
+
+        private void SetGuiDataAudio()
+        {
+            MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+            MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
+            MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
+        }
+
         private void SetDefinedData(Guid videoId, Guid audioId)
         {
             if (lstFile.Focused)
@@ -828,6 +849,9 @@ namespace IFME
 
         private void SetProfileData(Profiles value)
         {
+            cboVideoEncoder.SelectedIndex = -1;
+            cboAudioEncoder.SelectedIndex = -1;
+
             cboFormat.SelectedIndex = (int)value.Container;
 
             cboVideoEncoder.SelectedValue = value.Video.Encoder.Id;
@@ -835,9 +859,12 @@ namespace IFME
             cboVideoTune.SelectedItem = value.Video.Encoder.Tune;
             cboVideoRateControl.SelectedIndex = value.Video.Encoder.Mode;
 
+            nudVideoRateFactor.DecimalPlaces = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.DecimalPlace;
             nudVideoRateFactor.Minimum = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.Min;
             nudVideoRateFactor.Maximum = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.Max;
-            nudVideoRateFactor.Value = value.Video.Encoder.Value;
+            nudVideoRateFactor.Value = nudVideoRateFactor.DecimalPlaces > 0 ? value.Video.Encoder.Value : Math.Ceiling(value.Video.Encoder.Value);
+            nudVideoRateFactor.Increment = Plugins.Items.Video[value.Video.Encoder.Id].Video.Mode[value.Video.Encoder.Mode].Value.Step;
+
             nudVideoMultiPass.Value = value.Video.Encoder.MultiPass;
 
             cboVideoRes.Text = $"{(value.Video.Quality.Width == 0 || value.Video.Quality.Height == 0 ? "auto" : $"{value.Video.Quality.Width}x{value.Video.Quality.Height}")}";
@@ -937,6 +964,9 @@ namespace IFME
                 DisplayProperties_Subtitle();
                 DisplayProperties_Attachment();
             }
+
+            SetGuiDataVideo();
+            SetGuiDataAudio();
         }
     }
 }
