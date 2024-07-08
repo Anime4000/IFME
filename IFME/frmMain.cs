@@ -333,14 +333,17 @@ namespace IFME
                 var data = lstFile.SelectedItems[0].Tag as MediaQueue;
                 var isImgSq = false;
 
+                // Profile
+                if (data.ProfileId >= 0)
+                {
+                    if (Profiles.Items[data.ProfileId].Container == data.OutputFormat)
+                        cboProfile.SelectedIndex = data.ProfileId;
+                    else
+                        cboProfile.SelectedIndex = -1;
+                }
+
                 // Format
                 cboFormat.SelectedIndex = (int)data.OutputFormat;
-
-                // Profile
-                if (Profiles.Items[data.ProfileId].Container == data.OutputFormat)
-                    cboProfile.SelectedIndex = data.ProfileId;
-                else
-                    cboProfile.SelectedIndex = -1;
 
                 // MP4 Remux Test
                 chkVideoMP4Compt.Checked = data.FastMuxVideo;
