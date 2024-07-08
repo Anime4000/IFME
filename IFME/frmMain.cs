@@ -341,6 +341,10 @@ namespace IFME
                     else
                         cboProfile.SelectedIndex = -1;
                 }
+                else
+                {
+                    cboProfile.SelectedIndex = -1;
+                }
 
                 // Format
                 cboFormat.SelectedIndex = (int)data.OutputFormat;
