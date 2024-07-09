@@ -52,5 +52,16 @@ namespace IFME
             var file = Path.GetFileNameWithoutExtension(filePath);
             return TryParseCode(file.Substring(file.Length - 3));
         }
+
+        public static string FromFileNameCode(string filePath, object lastChoice)
+        {
+            var file = Path.GetFileNameWithoutExtension(filePath);
+            var lang = TryParseCode(file.Substring(file.Length - 3));
+
+            if (string.Equals(lang, "und"))
+                return lastChoice.ToString();
+
+            return lang;
+        }
     }
 }

@@ -1,6 +1,7 @@
 Version 8.3.4 (Celestial Rhapsody)
 ----------------------------------
 [Fixed] Check Queue Consistency code cause invalid index crash, such old code is removed
+[Fixed] When add subtitle, it will use selected language if language code in file name not found
 
 Version 8.3.3 (Luminous Veil)
 -----------------------------

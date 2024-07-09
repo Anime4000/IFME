@@ -303,7 +303,7 @@ namespace IFME
                     Enable = true,
                     FilePath = path,
                     Id = id,
-                    Lang = "und",
+                    Lang = Language.FromFileNameCode(path, cboSubLang.SelectedValue),
                     Codec = string.Empty
                 });
             }
