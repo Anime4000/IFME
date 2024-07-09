@@ -403,44 +403,6 @@ namespace IFME
                 chkSubHard.Checked = false;
                 chkAdvTrim.Checked = false;
             }
-
-            // Check queue consistency
-            if (lstFile.SelectedItems.Count > 1)
-            {
-                var fmt = (lstFile.SelectedItems[0].Tag as MediaQueue).OutputFormat;
-                var pro = (lstFile.SelectedItems[0].Tag as MediaQueue).ProfileId;
-
-                var fmtFail = false;
-                var proFail = false;
-
-                foreach (ListViewItem item in lstFile.SelectedItems)
-                {
-                    var of = (item.Tag as MediaQueue).OutputFormat;
-                    var pi = (item.Tag as MediaQueue).ProfileId;
-
-                    if (Equals(fmt, of))
-                    {
-                        if (!fmtFail)
-                            fmt = of;
-                    }
-                    else
-                    {
-                        cboFormat.SelectedIndex = -1;
-                        fmtFail = true;
-                    }
-
-                    if (Equals(pro, pi))
-                    {
-                        if (!proFail)
-                            pro = pi;
-                    }
-                    else
-                    {
-                        cboProfile.SelectedIndex = -1;
-                        proFail = true;
-                    }
-                }
-            }
         }
 
         private void lstFile_DragDrop(object sender, DragEventArgs e)

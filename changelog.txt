@@ -1,3 +1,7 @@
+Version 8.3.4 (Celestial Rhapsody)
+----------------------------------
+[Fixed] Check Queue Consistency code cause invalid index crash, such old code is removed
+
 Version 8.3.3 (Luminous Veil)
 -----------------------------
 [Fixed] Add another file when selected profile is blank cause a crash 
