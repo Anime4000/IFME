@@ -1,3 +1,7 @@
+Version 8.3.5 (Resilient Journey)
+---------------------------------
+[Fixed] #242: Bug on creating and loading profile
+
 Version 8.3.4 (Celestial Rhapsody)
 ----------------------------------
 [Fixed] Queue consistency check code caused an invalid index crash; the outdated code has been removed.
