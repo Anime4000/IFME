@@ -2141,7 +2141,7 @@ namespace IFME
                     {
                         Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
                         Mode = cboAudioMode.SelectedIndex,
-                        Quality = cboAudioQuality.SelectedText,
+                        Quality = cboAudioQuality.Text,
                         SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
                         Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
                         Command = MediaQueueParse.Gui.Audio.CmdEncoder

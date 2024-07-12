@@ -885,7 +885,7 @@ namespace IFME
 
             cboAudioEncoder.SelectedValue = value.Audio.Encoder.Id;
             cboAudioMode.SelectedIndex = value.Audio.Encoder.Mode;
-            cboAudioQuality.SelectedValue = value.Audio.Encoder.Quality;
+            cboAudioQuality.Text = value.Audio.Encoder.Quality;
             cboAudioSampleRate.SelectedValue = value.Audio.Encoder.SampleRate;
             cboAudioChannel.SelectedValue = value.Audio.Encoder.Channel;
 
