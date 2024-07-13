@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using IFME.OSManager;
 using System.Net.Http.Headers;
 using System.Collections;
+using Newtonsoft.Json;
 
 namespace IFME
 {
@@ -684,8 +685,8 @@ namespace IFME
             var videoCodec = new Dictionary<Guid, PluginsVideo>();
             var audioCodec = new Dictionary<Guid, PluginsAudio>();
 
-            var videoId = new Guid();
-            var audioId = new Guid();
+            SaveControlVideo();
+            SaveControlAudio();
 
             foreach (var item in Plugins.Items.Video)
             {
@@ -698,7 +699,6 @@ namespace IFME
                 if (item.Value.Format.Contains(value))
                 {
                     videoCodec.Add(item.Key, item.Value);
-                    videoId = item.Key;
                 }
             }
 
@@ -712,15 +712,41 @@ namespace IFME
                 if (item.Value.Format.Contains(exts))
                 {
                     audioCodec.Add(item.Key, item.Value);
-                    audioId = item.Key;
                 }
             }
 
+            // Compare current and new dict array, if hash not same then load new dict and use default
             if (videoCodec.Count > 0)
             {
-                cboVideoEncoder.DataSource = new BindingSource(videoCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
-                cboVideoEncoder.DisplayMember = "Value";
-                cboVideoEncoder.ValueMember = "Key";
+                var newDataSource = videoCodec.ToDictionary(p => p.Key, p => p.Value.Name);
+
+                var currentDataSource = cboVideoEncoder.DataSource as BindingSource;
+                var currentDataSourceDict = currentDataSource?.DataSource as Dictionary<Guid, string>;
+
+                var newDataSourceJson = JsonConvert.SerializeObject(newDataSource);
+                var currentDataSourceJson = currentDataSourceDict != null ? JsonConvert.SerializeObject(currentDataSourceDict) : string.Empty;
+
+                var newDataSourceHash = OS.ComputeSHA256(newDataSourceJson);
+                var currentDataSourceHash = OS.ComputeSHA256(currentDataSourceJson);
+
+                if (newDataSourceHash != currentDataSourceHash)
+                {
+                    cboVideoEncoder.DataSource = new BindingSource(newDataSource, null);
+                    cboVideoEncoder.DisplayMember = "Value";
+                    cboVideoEncoder.ValueMember = "Key";
+                }
+
+                if (newDataSource.ContainsKey(MediaQueueParse.Gui.Video.Id))
+                {
+                    LoadControlVideo();
+                }
+                else
+                {
+                    cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
+                    MediaQueueParse.Gui.UseDefaultVideo(((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key);
+                    LoadControlVideo();
+
+                }
             }
             else
             {
@@ -729,20 +755,68 @@ namespace IFME
 
             if (audioCodec.Count > 0)
             {
-                cboAudioEncoder.DataSource = new BindingSource(audioCodec.ToDictionary(p => p.Key, p => p.Value.Name), null);
-                cboAudioEncoder.DisplayMember = "Value";
-                cboAudioEncoder.ValueMember = "Key";
+                var newDataSource = audioCodec.ToDictionary(p => p.Key, p => p.Value.Name);
+
+                var currentDataSource = cboAudioEncoder.DataSource as BindingSource;
+                var currentDataSourceDict = currentDataSource?.DataSource as Dictionary<Guid, string>;
+
+                var newDataSourceJson = JsonConvert.SerializeObject(newDataSource);
+                var currentDataSourceJson = currentDataSourceDict != null ? JsonConvert.SerializeObject(currentDataSourceDict) : string.Empty;
+
+                var newDataSourceHash = OS.ComputeSHA256(newDataSourceJson);
+                var currentDataSourceHash = OS.ComputeSHA256(currentDataSourceJson);
+
+                if (newDataSourceHash != currentDataSourceHash)
+                {
+                    cboAudioEncoder.DataSource = new BindingSource(newDataSource, null);
+                    cboAudioEncoder.DisplayMember = "Value";
+                    cboAudioEncoder.ValueMember = "Key";
+                }
+
+                if (newDataSource.ContainsKey(MediaQueueParse.Gui.Audio.Id))
+                {
+                    LoadControlAudio();
+                }
+                else
+                {
+                    cboAudioEncoder.SelectedIndex = cboAudioEncoder.Items.Count - 1;
+                    MediaQueueParse.Gui.UseDefaultAudio(((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key);
+                    LoadControlAudio();
+                }
             }
             else
             {
                 cboAudioEncoder.DataSource = null;
             }
-
-            SetDefinedData(videoId, audioId);
         }
 
-        private void SetGuiDataVideo()
+        private void LoadControlVideo()
         {
+            cboVideoEncoder.SelectedValue = MediaQueueParse.Gui.Video.Id;
+            cboVideoPreset.Text = MediaQueueParse.Gui.Video.Preset;
+            cboVideoTune.Text = MediaQueueParse.Gui.Video.Tune;
+            cboVideoRateControl.SelectedIndex = MediaQueueParse.Gui.Video.Mode;
+            nudVideoRateFactor.Value = MediaQueueParse.Gui.Video.Value;
+            nudVideoMultiPass.Value = MediaQueueParse.Gui.Video.MultiPass;
+            chkVideoDeInterlace.Checked = MediaQueueParse.Gui.Video.DeInterlace;
+            cboVideoDeInterMode.SelectedIndex = MediaQueueParse.Gui.Video.DeInterlaceMode;
+            cboVideoDeInterField.SelectedIndex = MediaQueueParse.Gui.Video.DeInterlaceField;
+        }
+
+        private void LoadControlAudio()
+        {
+            cboAudioEncoder.SelectedValue = MediaQueueParse.Gui.Audio.Id;
+            cboAudioMode.SelectedIndex = MediaQueueParse.Gui.Audio.Mode;
+            cboAudioQuality.Text = MediaQueueParse.Gui.Audio.Quality;
+            cboAudioSampleRate.SelectedValue = MediaQueueParse.Gui.Audio.SampleRate;
+            cboAudioChannel.SelectedValue = MediaQueueParse.Gui.Audio.Channel;
+        }
+
+        private void SaveControlVideo()
+        {
+            if (cboVideoEncoder.SelectedItem == null)
+                return;
+
             MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
             MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
             MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
@@ -754,100 +828,16 @@ namespace IFME
             MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
         }
 
-        private void SetGuiDataAudio()
+        private void SaveControlAudio()
         {
+            if (cboAudioEncoder.SelectedItem == null)
+                return;
+
             MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
             MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
             MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
             MediaQueueParse.Gui.Audio.SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key;
             MediaQueueParse.Gui.Audio.Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key;
-        }
-
-        private void SetDefinedData(Guid videoId, Guid audioId)
-        {
-            if (lstFile.Focused)
-                return;
-
-            if (cboProfile.Focused)
-                return;
-
-            if (Plugins.Items.Video.TryGetValue(videoId, out PluginsVideo vData))
-            {
-
-            }
-
-            if (Plugins.Items.Audio.TryGetValue(audioId, out PluginsAudio aData))
-            {
-
-            }
-
-            if (lstFile.SelectedItems.Count > 0)
-            {
-                foreach (ListViewItem queue in lstFile.SelectedItems)
-                {
-                    foreach (var item in (queue.Tag as MediaQueue).Video)
-                    {
-                        var matchVideo = cboVideoEncoder.Items.Cast<KeyValuePair<Guid, string>>().Any(index => Equals(item.Encoder.Id, index.Key));
-                        if (matchVideo) break;
-
-                        if (vData != null)
-                        {
-                            if (Guid.TryParse($"{vData.GUID}", out Guid guid))
-                            {
-                                if (Equals(guid, item.Encoder.Id))
-                                    continue;
-
-                                item.Encoder = new MediaQueueVideoEncoder
-                                {
-                                    Id = guid,
-                                    Preset = vData.Video.PresetDefault,
-                                    Tune = vData.Video.TuneDefault,
-                                    Mode = 0,
-                                    Value = vData.Video.Mode[0].Value.Default,
-                                    MultiPass = 2,
-                                    Command = string.Empty
-                                };
-                                item.Quality.Command = string.Empty;
-                            }
-                        }
-                        else
-                        {
-                            item.Encoder = new MediaQueueVideoEncoder
-                            {
-                                Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff") // GUID do not encode video
-                            };
-                        }
-                    }
-
-                    foreach (var item in (queue.Tag as MediaQueue).Audio)
-                    {
-                        var matchAudio = cboAudioEncoder.Items.Cast<KeyValuePair<Guid, string>>().Any(index => Equals(item.Encoder.Id, index.Key));
-                        if (matchAudio) break;
-
-                        if (aData != null)
-                        {
-                            if (Guid.TryParse($"{aData.GUID}", out Guid guid))
-                            {
-                                item.Encoder = new MediaQueueAudioEncoder
-                                {
-                                    Id = guid,
-                                    Mode = 0,
-                                    Quality = aData.Audio.Mode[0].Default,
-                                    SampleRate = aData.Audio.SampleRateDefault,
-                                    Channel = aData.Audio.ChannelDefault,
-                                    Command = string.Empty,
-                                };
-                                item.Command = string.Empty;
-                            }
-                        }
-                    }
-                }
-            }
-
-            DisplayProperties_Video();
-            DisplayProperties_Audio();
-            DisplayProperties_Subtitle();
-            DisplayProperties_Attachment();
         }
 
         private void SetProfileData(Profiles value)
@@ -979,8 +969,8 @@ namespace IFME
                 DisplayProperties_Attachment();
             }
 
-            SetGuiDataVideo();
-            SetGuiDataAudio();
+            SaveControlVideo();
+            SaveControlAudio();
         }
     }
 }

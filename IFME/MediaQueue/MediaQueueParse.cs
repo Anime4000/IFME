@@ -38,9 +38,9 @@ namespace IFME
 				public static string CmdEncoder { get; set; } = string.Empty;
 			}
 
-			public static void SetDefault(Guid videoId, Guid audioId)
+			public static void UseDefaultVideo(Guid videoId)
 			{
-                if (!videoId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+				if (Plugins.Items.Video.ContainsKey(videoId))
 				{
                     Video.Id = videoId;
                     Video.DeInterlace = false;
@@ -51,19 +51,21 @@ namespace IFME
                     Video.MultiPass = 2;
                     Video.DeInterlaceMode = 1;
                     Video.DeInterlaceField = 0;
-					Video.CmdEncoder = Plugins.Items.Video[videoId].Video.Args.Command;
+                    Video.CmdEncoder = Plugins.Items.Video[videoId].Video.Args.Command;
                 }
-                
-				if (!audioId.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
+			}
+
+			public static void UseDefaultAudio(Guid audioId)
+			{
+				if (Plugins.Items.Audio.ContainsKey(audioId))
 				{
-					Audio.Id = audioId;
-					Audio.Mode = 0;
-					Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
-					Audio.Channel = Plugins.Items.Audio[audioId].Audio.ChannelDefault;
-					Audio.SampleRate = Plugins.Items.Audio[audioId].Audio.SampleRateDefault;
-					Audio.CmdEncoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
-				}
-            }
+                    Audio.Mode = 0;
+                    Audio.Quality = Plugins.Items.Audio[audioId].Audio.Mode[0].Default;
+                    Audio.Channel = Plugins.Items.Audio[audioId].Audio.ChannelDefault;
+                    Audio.SampleRate = Plugins.Items.Audio[audioId].Audio.SampleRateDefault;
+                    Audio.CmdEncoder = Plugins.Items.Audio[audioId].Audio.Args.Command;
+                }
+			}
 		}
 
 		public static MediaQueueVideo Video(string path, FFmpeg.StreamVideo data, bool isImageSeq = false)

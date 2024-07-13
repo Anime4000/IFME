@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using IFME.OSManager;
 using Newtonsoft.Json.Linq;
 using System.CodeDom.Compiler;
+using static IFME.MediaQueueParse.Gui;
 
 namespace IFME
 {
@@ -671,7 +672,7 @@ namespace IFME
                         }
                     }
 
-                    SetGuiDataVideo();
+                    SaveControlVideo();
                     DisplayProperties_Video();
                 }
             }
@@ -1449,7 +1450,7 @@ namespace IFME
                     }
                 }
 
-                SetGuiDataAudio();
+                SaveControlAudio();
                 DisplayProperties_Audio();
             }
         }
@@ -2024,12 +2025,29 @@ namespace IFME
 
         private void cboFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var v = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
-            var a = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
+            var videoId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
+            var audioId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff");
+            var videoCmd = string.Empty;
+            var audioCmd = string.Empty;
+
+            if (cboFormat.SelectedIndex > -1)
+                ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
 
             if ((sender as Control).Focused)
             {
                 cboProfile.SelectedIndex = -1;
+
+                if (cboVideoEncoder.SelectedIndex >= 0)
+                {
+                    videoId = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+                    videoCmd = Plugins.Items.Video[videoId].Video.Args.Command;
+                }
+
+                if (cboAudioEncoder.SelectedIndex >= 0)
+                {
+                    audioId = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
+                    audioCmd = Plugins.Items.Audio[audioId].Audio.Args.Command;
+                }                
 
                 if (lstFile.SelectedItems.Count > 0)
                 {
@@ -2040,12 +2058,36 @@ namespace IFME
 
                         queue.SubItems[1].Text = $"{inExt} ► {outExt}";
                         (queue.Tag as MediaQueue).OutputFormat = (MediaContainer)cboFormat.SelectedIndex;
+
+                        foreach (var item in (queue.Tag as MediaQueue).Video)
+                        {
+                            item.Encoder = new MediaQueueVideoEncoder
+                            {
+                                Id = videoId,
+                                Preset = cboVideoPreset.Text,
+                                Tune = cboVideoTune.Text,
+                                Mode = cboVideoRateControl.SelectedIndex,
+                                Value = nudVideoRateFactor.Value,
+                                MultiPass = (int)nudVideoMultiPass.Value,
+                                Command = videoCmd
+                            };
+                        }
+
+                        foreach (var item in (queue.Tag as MediaQueue).Audio)
+                        {
+                            item.Encoder = new MediaQueueAudioEncoder
+                            {
+                                Id = audioId,
+                                Mode = cboAudioMode.SelectedIndex,
+                                Quality = cboAudioQuality.Text,
+                                SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
+                                Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
+                                Command = audioCmd
+                            };
+                        }
                     }
                 }
             }
-
-            if (cboFormat.SelectedIndex > -1)
-                ShowSupportedCodec(cboFormat.Text.ToLowerInvariant());
 
             if (string.IsNullOrEmpty(cboFormat.Text))
             {
@@ -2067,19 +2109,10 @@ namespace IFME
 
             tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
 
-            if (cboVideoEncoder.SelectedItem != null)
-            {
-                cboVideoEncoder.SelectedIndex = 0;
-                v = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-            }
-
-            if (cboAudioEncoder.SelectedItem != null)
-            {
-                cboAudioEncoder.SelectedIndex = 0;
-                a = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
-            }
-
-            MediaQueueParse.Gui.SetDefault(v, a);
+            DisplayProperties_Video();
+            DisplayProperties_Audio();
+            DisplayProperties_Subtitle();
+            DisplayProperties_Attachment();
         }
 
         private void cboProfile_SelectedIndexChanged(object sender, EventArgs e)
