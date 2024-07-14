@@ -428,6 +428,8 @@ namespace IFME
 
         private void Thread_LoadPropertiesVideo(object obj)
         {
+            Thread.Sleep(50);
+
             var data = obj as MediaQueueVideo;
 
             BeginInvoke((Action)delegate ()
@@ -469,6 +471,8 @@ namespace IFME
 
         private void Thread_LoadPropertiesAudio(object obj)
         {
+            Thread.Sleep(50);
+
             var data = obj as MediaQueueAudio;
 
             BeginInvoke((Action)delegate ()
@@ -498,6 +502,8 @@ namespace IFME
 
         private void Thread_LoadPropertiesSubtitle(object obj)
         {
+            Thread.Sleep(50);
+
             var data = obj as MediaQueueSubtitle;
 
             BeginInvoke((Action)delegate ()
@@ -513,6 +519,8 @@ namespace IFME
 
         private void Thread_LoadPropertiesAttachment(object obj)
         {
+            Thread.Sleep(50);
+
             var data = obj as MediaQueueAttachment;
 
             BeginInvoke((Action)delegate ()
