@@ -166,6 +166,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Profiles\Profile_1000-00-00_00-00-00_0002.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Profiles\Profile_0000-00-00_00-00-00_0002.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -187,10 +190,10 @@
     <None Include="Profiles\longwu9t_mpeg-legacy_os.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Profiles\Profile_9000-00-00_00-00-00_0000.json">
+    <None Include="Profiles\Profile_1000-00-00_00-00-00_0000.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Profiles\Profile_9000-00-00_00-00-00_0001.json">
+    <None Include="Profiles\Profile_1000-00-00_00-00-00_0001.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
