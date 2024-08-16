@@ -660,7 +660,7 @@ namespace IFME
 
             if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
             {
-                metafile = $"-f ffmetadata -i metadata.ini -map_metadata {x}";
+                metafile = $"-f ffmetadata -i metadata.ini -map_metadata 0";
             }
 
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
