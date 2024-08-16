@@ -650,6 +650,8 @@ namespace IFME
 
                                 d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
                                 d.Quality.PixelFormat = d.Quality.PixelFormat <= topPixelFmt ? d.Quality.PixelFormat : topPixelFmt;
+
+                                d.Encoder.Command = string.Empty;
                             }
 
                             break;
@@ -668,6 +670,8 @@ namespace IFME
 
                                 d.Quality.BitDepth = d.Quality.BitDepth <= topBitDepth ? d.Quality.BitDepth : topBitDepth;
                                 d.Quality.PixelFormat = d.Quality.PixelFormat <= topPixelFmt ? d.Quality.PixelFormat : topPixelFmt;
+
+                                d.Encoder.Command = string.Empty;
                             }
                         }
                     }
