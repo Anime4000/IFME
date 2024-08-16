@@ -530,7 +530,7 @@ namespace IFME
                             if (vc.Args.Pipe)
                                 ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.FilePath}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {pass} {vc.Args.Output} {outencfile}");
                             else
-                                ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.FilePath : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
+                                ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{item.FilePath}\" {cmd_ff_en} {en_preset} {en_tune} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {pass} {vc.Args.Output} {outencfile}");
 
                             if (p == 1)
                                 en_framecount = $"{vc.Args.FrameCount} {RealFrameCount}";
@@ -546,7 +546,7 @@ namespace IFME
                         if (vc.Args.Pipe)
                             ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {ff_infps} -i \"{item.FilePath}\" {cmd_ff} {ff_rawcodec} {item.Quality.Command} - | \"{en}\" {vc.Args.Y4M} {vc.Args.Input} {en_framecount} {cmd_en} {en_preset} {en_tune} {en_mode} {vc.Args.Command} {item.Encoder.Command} {vc.Args.Output} {outencfile}");
                         else
-                            ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{(string.IsNullOrEmpty(vc.Args.Y4M) ? item.FilePath : vc.Args.Y4M)}\" {cmd_ff_en} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
+                            ProcessManager.Start(tempDir, $"\"{en}\" {ff_infps} {vc.Args.Input} \"{item.FilePath}\" {cmd_ff_en} {en_preset} {en_tune} {en_mode} {vc.Args.UnPipe} {item.Encoder.Command} {vc.Args.Command} {vc.Args.Output} {outencfile}");
 
                         Thread.Sleep(1500);
                     }

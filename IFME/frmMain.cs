@@ -626,6 +626,8 @@ namespace IFME
                 var topBitDepth = Convert.ToInt32(cboVideoBitDepth.Items[cboVideoBitDepth.Items.Count - 1]);
                 var topPixelFmt = Convert.ToInt32(cboVideoPixFmt.Items[cboVideoPixFmt.Items.Count - 1]);
 
+                chkSubHard.Enabled = video.Args.Pipe;
+
                 if ((sender as Control).Focused)
                 {
                     var enc = new MediaQueueVideoEncoder
