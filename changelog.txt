@@ -1,3 +1,12 @@
+Version 8.3.7 ( -KIZUGUCHI- )
+-----------------------------
+[New] Add Rigaya Intel Quick Sync Hardware Encoder (h264, hevc, mpeg2, vp9, av1)
+[Fixed] FFmpeg Metadata file must be at index 0
+[Fixed] Clear encoder args when user change encoder after selecting Profile
+[Fixed] Slow encoding performance on Rigaya NVEnc when pipe from FFmpeg, now Rigaya NVEnc decode and encode (no pipe)
+[Update] Improve performance on removing items
+[Update] Rigaya NVEnc to 7.64
+
 Version 8.3.6 (Enduring Fortitude)
 ----------------------------------
 [Fixed] GUI crashed when trying to display settings due to race condition between threads

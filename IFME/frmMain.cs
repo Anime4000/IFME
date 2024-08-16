@@ -10,9 +10,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using IFME.OSManager;
-using Newtonsoft.Json.Linq;
-using System.CodeDom.Compiler;
-using static IFME.MediaQueueParse.Gui;
+
 
 namespace IFME
 {
@@ -181,8 +179,12 @@ namespace IFME
 
         private void btnFileDelete_Click(object sender, EventArgs e)
         {
+            lstFile.SelectedIndexChanged -= lstFile_SelectedIndexChanged;
+
             foreach (ListViewItem item in lstFile.SelectedItems)
                 item.Remove();
+
+            lstFile.SelectedIndexChanged += lstFile_SelectedIndexChanged;
         }
 
         private void btnOptions_Click(object sender, EventArgs e)
@@ -458,11 +460,15 @@ namespace IFME
 
         private void btnVideoDel_Click(object sender, EventArgs e)
         {
+            lstVideo.SelectedIndexChanged -= lstVideo_SelectedIndexChanged;
+
             foreach (ListViewItem item in lstVideo.SelectedItems)
             {
                 (lstFile.SelectedItems[0].Tag as MediaQueue).Video.RemoveAt(item.Index);
                 item.Remove();
             }
+
+            lstVideo.SelectedIndexChanged += lstVideo_SelectedIndexChanged;
         }
 
         private void btnVideoMoveUp_Click(object sender, EventArgs e)
@@ -631,6 +637,9 @@ namespace IFME
                         Value = nudVideoRateFactor.Value,
                         MultiPass = (int)nudVideoMultiPass.Value
                     };
+
+                    MediaQueueParse.Gui.Video.CmdEncoder = string.Empty;
+                    MediaQueueParse.Gui.Video.CmdDecoder = string.Empty;
 
                     foreach (ListViewItem queue in lstFile.SelectedItems)
                     {
@@ -1255,11 +1264,15 @@ namespace IFME
 
         private void btnAudioDel_Click(object sender, EventArgs e)
         {
+            lstAudio.SelectedIndexChanged -= lstAudio_SelectedIndexChanged;
+
             foreach (ListViewItem item in lstAudio.SelectedItems)
             {
                 (lstFile.SelectedItems[0].Tag as MediaQueue).Audio.RemoveAt(item.Index);
                 item.Remove();
             }
+
+            lstAudio.SelectedIndexChanged += lstAudio_SelectedIndexChanged;
         }
 
         private void btnAudioMoveUp_Click(object sender, EventArgs e)
@@ -1435,6 +1448,9 @@ namespace IFME
                     Channel = temp.Audio.ChannelDefault,
                     Command = string.Empty
                 };
+
+                MediaQueueParse.Gui.Audio.CmdDecoder = string.Empty;
+                MediaQueueParse.Gui.Audio.CmdEncoder = string.Empty;
 
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1675,11 +1691,15 @@ namespace IFME
 
         private void btnSubDel_Click(object sender, EventArgs e)
         {
+            lstSub.SelectedIndexChanged -= lstSub_SelectedIndexChanged;
+
             foreach (ListViewItem item in lstSub.SelectedItems)
             {
                 (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(item.Index);
                 item.Remove();
             }
+
+            lstSub.SelectedIndexChanged += lstSub_SelectedIndexChanged;
         }
 
         private void btnSubMoveUp_Click(object sender, EventArgs e)
@@ -1836,11 +1856,15 @@ namespace IFME
 
         private void btnAttachDel_Click(object sender, EventArgs e)
         {
+            lstAttach.SelectedIndexChanged -= lstAttach_SelectedIndexChanged;
+
             foreach (ListViewItem item in lstAttach.SelectedItems)
             {
                 (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment.RemoveAt(item.Index);
                 item.Remove();
             }
+
+            lstAttach.SelectedIndexChanged += lstAttach_SelectedIndexChanged;
         }
 
         private void lstAttach_SelectedIndexChanged(object sender, EventArgs e)
