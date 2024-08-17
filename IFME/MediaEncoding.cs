@@ -389,8 +389,9 @@ namespace IFME
                     }
 
                     // Encoder Pixel Format BitDepth (only to YUV)
-                    if (en_csp.Contains("yuv"))
-                        en_csp += yuv_bit_enc;
+                    if (!vc.Args.Pipe)
+                        if (en_csp.Contains("yuv"))
+                            en_csp += yuv_bit_enc;
 
                     // Encoder Preset
                     en_preset = ArgsParser.Parse(vc.Args.Preset, item.Encoder.Preset);
@@ -504,7 +505,7 @@ namespace IFME
 
                     var cmd_ff = $"-map 0:{item.Id} {ff_trim} {ff_yuv} -vf {string.Join(",", ff_vf)}";
 
-                    var cmd_en = $"{en_res} {en_fps} {en_bit} {en_csp}";
+                    var cmd_en = ff ? cmd_ff : $"{en_res} {en_fps} {en_bit} {en_csp}";
 
                     var cmd_ff_en = ff ? cmd_ff : cmd_en;
 
@@ -626,21 +627,23 @@ namespace IFME
                         if (queue.OutputFormat == MediaContainer.MP4)
                                 metadata += $" -c:s mov_text ";
                     }
-
-                    var tempDirFont = Path.Combine(tempDir, "attachment");
-                    if (Directory.Exists(tempDirFont))
-                    {
-                        var files = Directory.GetFiles(tempDirFont, "*");
-                        for (int i = 0; i < files.Length; i++)
-                        {
-                            argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
-                            metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
-                            x++;
-                        }
-                    }
                 }
             }
 
+            if (queue.OutputFormat == MediaContainer.MKV)
+            {
+                var tempDirFont = Path.Combine(tempDir, "attachment");
+                if (Directory.Exists(tempDirFont))
+                {
+                    var files = Directory.GetFiles(tempDirFont, "*");
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+                        metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+                        x++;
+                    }
+                }
+            }
 
             if (queue.OutputFormat == MediaContainer.MKV || 
                 queue.OutputFormat == MediaContainer.MP4 ||

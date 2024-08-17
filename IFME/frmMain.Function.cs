@@ -184,12 +184,6 @@ namespace IFME
             return Array.Empty<string>();
         }
 
-        public static void EnableTab(TabPage page, bool enable)
-        {
-            foreach (Control ctrl in page.Controls)
-                ctrl.Enabled = enable;
-        }
-
         private void MediaFileListAdd(string path, bool isImages, string frameRate = "")
         {
             var fileData = new FFmpeg.MediaInfo(path, frameRate);

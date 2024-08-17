@@ -285,8 +285,6 @@ namespace IFME
             var ff_cmd = $"-pix_fmt yuv420p -vf \"scale={val_w}:{val_h}:flags=lanczos,fps={val_fps}\"";
             var en_cmd = $"{en_res} {en_fps} {en_bit} {vc.Chroma[0].Command} {vc.Args.Preset} {vc.PresetDefault} {vc.Args.Tune} {vc.TuneDefault} {en_frameCount}";
 
-            var ff_enc = string.Equals(Path.GetFileNameWithoutExtension(en).ToLowerInvariant(), "ffmpeg") ? ff_cmd : en_cmd;
-
             int exitCode;
             if (codec.Video.Args.Pipe)
             {
@@ -294,7 +292,7 @@ namespace IFME
             }
             else
             {
-                exitCode = ProcessManager.Start(outTempFolder, $"\"{en}\" {vc.Args.Input} \"{sampleFile}\" {ff_enc} {vc.Args.UnPipe} {vc.Args.Output} {outTempFile}");
+                exitCode = ProcessManager.Start(outTempFolder, $"\"{en}\" {vc.Args.Input} \"{sampleFile}\" {vc.Args.UnPipe} {vc.Args.Output} {outTempFile}");
             }
 
             return !IsExitError(exitCode);

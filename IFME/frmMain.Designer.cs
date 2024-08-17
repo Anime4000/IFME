@@ -348,6 +348,7 @@
             this.tabConfigSubtitle.TabIndex = 2;
             this.tabConfigSubtitle.Text = "Subtitle";
             this.tabConfigSubtitle.UseVisualStyleBackColor = true;
+            this.tabConfigSubtitle.Enter += new System.EventHandler(this.tabConfigSubtitle_Enter);
             // 
             // btnSubMoveUp
             // 
@@ -939,12 +940,13 @@
             this.tabConfigAdvance.TabIndex = 4;
             this.tabConfigAdvance.Text = "Advanced";
             this.tabConfigAdvance.UseVisualStyleBackColor = true;
+            this.tabConfigAdvance.Enter += new System.EventHandler(this.tabConfigAdvance_Enter);
             // 
             // chkAdvCropAuto
             // 
             this.chkAdvCropAuto.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.chkAdvCropAuto.AutoSize = true;
-            this.chkAdvCropAuto.Location = new System.Drawing.Point(509, 6);
+            this.chkAdvCropAuto.Location = new System.Drawing.Point(509, 5);
             this.chkAdvCropAuto.Name = "chkAdvCropAuto";
             this.chkAdvCropAuto.Size = new System.Drawing.Size(292, 17);
             this.chkAdvCropAuto.TabIndex = 0;
@@ -1425,6 +1427,7 @@
             this.tabConfigVideo.TabIndex = 0;
             this.tabConfigVideo.Text = "Video";
             this.tabConfigVideo.UseVisualStyleBackColor = true;
+            this.tabConfigVideo.Enter += new System.EventHandler(this.tabConfigVideo_Enter);
             // 
             // chkVideoMP4Compt
             // 

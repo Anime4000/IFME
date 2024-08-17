@@ -434,6 +434,11 @@ namespace IFME
             }
         }
 
+        private void tabConfigVideo_Enter(object sender, EventArgs e)
+        {
+            grpVideoInterlace.Enabled = chkVideoDeInterlace.Checked;
+        }
+
         private void lstVideo_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -584,8 +589,18 @@ namespace IFME
                 return;
             }
 
-            foreach (Control ctl in tabConfigVideo.Controls)
-                ctl.Enabled = true;
+            if (!cboProfile.Focused || !cboFormat.Focused)
+            {
+                foreach (Control ctrl in tabConfigVideo.Controls)
+                {
+                    if (ctrl is GroupBox groupBox)
+                    {
+                        continue;
+                    }
+
+                    ctrl.Enabled = true;
+                }
+            }
 
             var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
 
@@ -625,8 +640,6 @@ namespace IFME
 
                 var topBitDepth = Convert.ToInt32(cboVideoBitDepth.Items[cboVideoBitDepth.Items.Count - 1]);
                 var topPixelFmt = Convert.ToInt32(cboVideoPixFmt.Items[cboVideoPixFmt.Items.Count - 1]);
-
-                chkSubHard.Enabled = video.Args.Pipe;
 
                 if ((sender as Control).Focused)
                 {
@@ -1202,8 +1215,6 @@ namespace IFME
 
         private void chkVideoMP4Compt_CheckedChanged(object sender, EventArgs e)
         {
-            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
-
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1222,8 +1233,6 @@ namespace IFME
 
         private void chkAudioMP4Compt_CheckedChanged(object sender, EventArgs e)
         {
-            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
-
             if ((sender as Control).Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
@@ -1683,6 +1692,24 @@ namespace IFME
             }
         }
 
+        private void tabConfigSubtitle_Enter(object sender, EventArgs e)
+        {
+            if (cboVideoEncoder.SelectedIndex < 0)
+                return;
+
+            var key = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+
+            if (Plugins.Items.Video.TryGetValue(key, out var temp))
+            {
+                var video = temp.Video;
+
+                var isFFmpeg = string.Equals(Path.GetFileNameWithoutExtension(video.Encoder[0].Binary).ToLowerInvariant(), "ffmpeg");
+                var isPipe = video.Args.Pipe;
+
+                chkSubHard.Enabled = isPipe || isFFmpeg; // check if selected video encoder is pipe or not for burning subs
+            }
+        }
+
         private void btnSubAdd_Click(object sender, EventArgs e)
         {
             var btnSender = (Button)sender;
@@ -1939,6 +1966,15 @@ namespace IFME
             ListViewItem_RefreshAttachment();
         }
 
+        private void tabConfigAdvance_Enter(object sender, EventArgs e)
+        {
+            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
+            chkAdvCropAuto.Enabled = !chkVideoMP4Compt.Checked; // prevent user crop when do Fast Remux
+
+            grpAdvTrim.Enabled = chkAdvTrim.Checked;
+            grpAdvCrop.Enabled = chkAdvCropAuto.Checked;
+        }
+
         private void chkAdvTrim_CheckedChanged(object sender, EventArgs e)
         {
             grpAdvTrim.Enabled = chkAdvTrim.Checked;
@@ -2130,14 +2166,12 @@ namespace IFME
                 btnStart.Enabled = true;
             }
 
-            EnableTab(tabConfigMediaInfo, btnStart.Enabled);
-            EnableTab(tabConfigVideo, cboVideoEncoder.Items.Count > 0);
-            EnableTab(tabConfigAudio, cboAudioEncoder.Items.Count > 0);
-            EnableTab(tabConfigSubtitle, btnStart.Enabled);
-            EnableTab(tabConfigAttachment, btnStart.Enabled);
-            EnableTab(tabConfigAdvance, btnStart.Enabled);
-
+            tabConfigMediaInfo.Enabled = btnStart.Enabled;
+            tabConfigVideo.Enabled = cboVideoEncoder.Items.Count > 0;
+            tabConfigAudio.Enabled = cboAudioEncoder.Items.Count > 0;
+            tabConfigSubtitle.Enabled = (MediaContainer)cboFormat.SelectedIndex < MediaContainer.WMV;
             tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
+            tabConfigAdvance.Enabled = btnStart.Enabled;
 
             DisplayProperties_Video();
             DisplayProperties_Audio();
