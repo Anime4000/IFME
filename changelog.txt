@@ -1,3 +1,7 @@
+Version 8.3.8 ( -KIZUGUCHI- )
+-----------------------------
+[Fixed] Parser input output CSP
+
 Version 8.3.7 ( -KIZUGUCHI- )
 -----------------------------
 [New] Add Rigaya Intel Quick Sync Hardware Encoder (h264, hevc, av1)

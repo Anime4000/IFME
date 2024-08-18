@@ -389,7 +389,7 @@ namespace IFME
                     }
 
                     // Encoder Pixel Format BitDepth (only to YUV)
-                    if (!vc.Args.Pipe)
+                    if (vc.Args.Pipe)
                         if (en_csp.Contains("yuv"))
                             en_csp += yuv_bit_enc;
 
