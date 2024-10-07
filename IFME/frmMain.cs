@@ -381,7 +381,9 @@ namespace IFME
                 if (data.Attachment.Count > 0)
                     lstAttach.Items[0].Selected = true;
 
-                chkAdvTrim.Checked = data.Trim.Enable;
+                refreshTrimFieldsEnabled();
+                chkAdvTrim.Checked = chkAdvTrim.Enabled && data.Trim.Enable;
+                grpAdvTrim.Enabled = chkAdvTrim.Checked;
                 txtAdvTrimStart.Text = data.Trim.Start;
                 txtAdvTrimEnd.Text = data.Trim.End;
                 txtAdvTrimDuration.Text = data.Trim.Duration;
@@ -389,6 +391,17 @@ namespace IFME
                 chkAdvCropAuto.Checked = data.Crop.Enable;
                 txtAdvCropStart.Text = data.Crop.Start;
                 txtAdvCropDuration.Text = data.Crop.Duration;
+
+                // Advanced Trim and Cut
+                if (txtAdvTrimEnd.TimeSpan.TotalMilliseconds == 0 && txtAdvTrimDuration.TimeSpan.TotalMilliseconds == 0)
+                {
+                    TimeSpan auxValue = TimeSpan.FromSeconds((double)(new decimal(data.Duration)));
+                    txtAdvTrimEnd.TimeSpan = auxValue;
+                    txtAdvTrimDuration.TimeSpan = auxValue;
+                    txtAdvTrimEnd.MaxValue = auxValue;
+                    txtAdvTrimDuration.MaxValue = auxValue;
+                    txtAdvTrimStart.MaxValue = auxValue;
+                }
 
                 // Media Info
                 txtMediaInfo.Text = FFmpeg.MediaInfo.Print(data.Info);
@@ -405,6 +418,7 @@ namespace IFME
                 chkAudioMP4Compt.Checked = false;
                 chkSubHard.Checked = false;
                 chkAdvTrim.Checked = false;
+                refreshTrimFieldsEnabled();
             }
         }
 
@@ -1968,7 +1982,12 @@ namespace IFME
 
         private void tabConfigAdvance_Enter(object sender, EventArgs e)
         {
-            chkAdvTrim.Enabled = !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
+            refreshTrimFieldsEnabled();
+        }
+
+        private void refreshTrimFieldsEnabled()
+        {
+            chkAdvTrim.Enabled = lstFile.SelectedItems.Count > 0 && !(chkAudioMP4Compt.Checked || chkVideoMP4Compt.Checked); // prevent user trim when do Fast Remux
             chkAdvCropAuto.Enabled = !chkVideoMP4Compt.Checked; // prevent user crop when do Fast Remux
 
             grpAdvTrim.Enabled = chkAdvTrim.Checked;
@@ -1994,69 +2013,43 @@ namespace IFME
             }
         }
 
-        private void txtTrim_Validating(object sender, CancelEventArgs e)
-        {
-            var rTime = new Regex(@"[0-9][0-9]\:[0-6][0-9]\:[0-6][0-9]\.[0-9]{1,}");
-
-            if ((sender as TextBox).Text.Length > 0)
-            {
-                if (!rTime.IsMatch((sender as TextBox).Text))
-                {
-                    MessageBox.Show("Please provide the time in hh:mm:ss.xxx format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void txtTrim_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar) || (e.KeyChar.ToString() == ":") || (e.KeyChar.ToString() == "."))
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
         private void txtTrim_Event(object sender, EventArgs e)
         {
             var ctrl = sender as TextBox;
 
-            var bTimeStart = TimeSpan.TryParse(txtAdvTrimStart.Text, out var timeStart);
-            var bTimeEnd = TimeSpan.TryParse(txtAdvTrimEnd.Text, out var timeEnd);
-            var bTimeSpan = TimeSpan.TryParse(txtAdvTrimDuration.Text, out var timeSpan);
+            var timeStart = txtAdvTrimStart.TimeSpan;
+            var timeEnd = txtAdvTrimEnd.TimeSpan;
+            var timeSpan = txtAdvTrimDuration.TimeSpan;
 
-            if (bTimeStart && bTimeEnd && bTimeSpan)
+            
+            if (ctrl == txtAdvTrimStart || ctrl == txtAdvTrimEnd)
             {
-                if (ctrl.Focused)
-                {
-                    if (ctrl == txtAdvTrimStart)
-                    {
-                        timeSpan = timeEnd - timeStart;
-                    }
+                timeSpan = timeEnd - timeStart;
+            }
 
-                    if (ctrl == txtAdvTrimEnd)
-                    {
-                        timeSpan = timeEnd - timeStart;
-                    }
+            if (ctrl == txtAdvTrimDuration)
+            {
+                timeEnd = timeStart + timeSpan;
+            }
 
-                    if (ctrl == txtAdvTrimDuration)
-                    {
-                        timeEnd = timeStart + timeSpan;
-                    }
+            if (timeSpan.TotalMilliseconds == 0 && timeEnd.TotalMilliseconds == 0 && (lstFile.SelectedItems.Count > 0))
+            {
+                var data = lstFile.SelectedItems[0].Tag as MediaQueue;
+                txtAdvTrimEnd.setValueSeconds(data.Duration);
+                txtAdvTrimDuration.setValueSeconds(data.Duration);
+                timeEnd = txtAdvTrimEnd.TimeSpan;
+                timeSpan = txtAdvTrimDuration.TimeSpan;
+            }
 
-                    txtAdvTrimStart.Text = $"{timeStart:hh\\:mm\\:ss\\.fff}";
-                    txtAdvTrimEnd.Text = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
-                    txtAdvTrimDuration.Text = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
-                }
+            txtAdvTrimStart.TimeSpan = timeStart;
+            txtAdvTrimEnd.TimeSpan = timeEnd;
+            txtAdvTrimDuration.TimeSpan = timeSpan;
 
-                foreach (ListViewItem item in lstFile.SelectedItems)
-                {
-                    (item.Tag as MediaQueue).Trim.Start = $"{timeStart:hh\\:mm\\:ss\\.fff}";
-                    (item.Tag as MediaQueue).Trim.End = $"{timeEnd:hh\\:mm\\:ss\\.fff}";
-                    (item.Tag as MediaQueue).Trim.Duration = $"{timeSpan:hh\\:mm\\:ss\\.fff}";
-                }
+            foreach (ListViewItem item in lstFile.SelectedItems)
+            {
+                (item.Tag as MediaQueue).Trim.Start = txtAdvTrimStart.Text;
+                (item.Tag as MediaQueue).Trim.End = txtAdvTrimEnd.Text;
+                (item.Tag as MediaQueue).Trim.Duration = txtAdvTrimDuration.Text;
             }
         }
 
