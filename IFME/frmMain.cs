@@ -950,23 +950,32 @@ namespace IFME
 
         private void cboVideoRes_TextChanged(object sender, EventArgs e)
         {
+            // avoid this event to call itself recursively, add the event again at the end of every return cause
+            cboVideoRes.TextChanged -= cboVideoRes_TextChanged;
+
             if (cboVideoRes.Text.Length > 0)
             {
-                if (cboVideoRes.Text[0] == 'a')
-                    cboVideoRes.Text = "auto";
-
-                if (cboVideoRes.Text[0] == '0')
+                if (cboVideoRes.Text[0] == 'a' || cboVideoRes.Text[0] == '0')
                     cboVideoRes.Text = "auto";
 
                 if (cboVideoRes.Text[0] == 'o')
                     cboVideoRes.Text = "original";
             }
 
-            Regex regex = new Regex(@"(^\d{1,5}x\d{1,5}$)|^auto$|^original$");
+            Regex regex = new Regex(@"(^-?\d{1,5}x-?\d{1,5}$)|^auto$|^original$");
             MatchCollection matches = regex.Matches(cboVideoRes.Text);
 
-            if (matches.Count == 0)
+            if (matches.Count == 0 || cboVideoRes.Text.Count(c => c == '-') > 1)
+            {
                 cboVideoRes.Text = "auto";
+            }
+            else if (cboVideoRes.Text.Count(c => c == '-') == 1)
+            {
+                // replaces every negative number with -1, leaves -2 as it is, since those are the two cases we need
+                cboVideoRes.Text = Regex.Replace(cboVideoRes.Text, @"-(\d+)", match => {
+                    return (match.Value == "-2") ? match.Value : "-1";
+                });
+            }
 
             var w = 0;
             var h = 0;
@@ -1026,6 +1035,8 @@ namespace IFME
 
                 DisplayProperties_Video();
             }
+
+            cboVideoRes.TextChanged += cboVideoRes_TextChanged;
         }
 
         private void cboVideoFps_TextChanged(object sender, EventArgs e)
