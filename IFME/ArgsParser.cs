@@ -8,29 +8,15 @@ namespace IFME
 {
     class ArgsParser
     {
+        private static readonly HashSet<string> invalidValues = new HashSet<string>
+        {
+            "0", "no", "off", "non", "none", "blank", "disable", "disabled"
+        };
+
         internal static string Parse(string arg, string value)
         {
-            if (string.IsNullOrEmpty(arg) || string.IsNullOrWhiteSpace(arg))
+            if (string.IsNullOrWhiteSpace(arg) || string.IsNullOrWhiteSpace(value) || invalidValues.Contains(value.ToLowerInvariant()))
                 return string.Empty;
-
-            if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-                return string.Empty;
-
-            switch (value.ToLowerInvariant())
-            {
-                case "0":
-                case "no":
-                case "off":
-                case "non":
-                case "none":
-                case "blank":
-                case "disable":
-                case "disabled":
-                    return string.Empty;
-
-                default:
-                    break;
-            }
 
             return $"{arg} {value}";
         }
