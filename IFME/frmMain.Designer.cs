@@ -101,16 +101,16 @@
             this.chkAdvCropAuto = new System.Windows.Forms.CheckBox();
             this.grpAdvCrop = new System.Windows.Forms.GroupBox();
             this.lblAdvCropNote = new System.Windows.Forms.Label();
-            this.txtAdvCropDuration = new System.Windows.Forms.TextBox();
+            this.txtAdvCropDuration = new TimespanTextBox();
             this.lblAdvCropDuration = new System.Windows.Forms.Label();
-            this.txtAdvCropStart = new System.Windows.Forms.TextBox();
+            this.txtAdvCropStart = new TimespanTextBox();
             this.lblAdvCropStart = new System.Windows.Forms.Label();
             this.grpAdvHdr = new System.Windows.Forms.GroupBox();
             this.grpAdvTrim = new System.Windows.Forms.GroupBox();
             this.lblAdvTrimNote = new System.Windows.Forms.Label();
-            this.txtAdvTrimDuration = new System.Windows.Forms.TextBox();
-            this.txtAdvTrimEnd = new System.Windows.Forms.TextBox();
-            this.txtAdvTrimStart = new System.Windows.Forms.TextBox();
+            this.txtAdvTrimDuration = new TimespanTextBox();
+            this.txtAdvTrimEnd = new TimespanTextBox();
+            this.txtAdvTrimStart = new TimespanTextBox();
             this.lblAdvTimeEqual = new System.Windows.Forms.Label();
             this.lblAdvTimeUntil = new System.Windows.Forms.Label();
             this.lblAdvTimeEnd = new System.Windows.Forms.Label();
@@ -988,9 +988,7 @@
             this.txtAdvCropDuration.Size = new System.Drawing.Size(100, 22);
             this.txtAdvCropDuration.TabIndex = 12;
             this.txtAdvCropDuration.Text = "00:00:09.000";
-            this.txtAdvCropDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
             this.txtAdvCropDuration.Leave += new System.EventHandler(this.txtCrop_Event);
-            this.txtAdvCropDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // lblAdvCropDuration
             // 
@@ -1011,9 +1009,7 @@
             this.txtAdvCropStart.Size = new System.Drawing.Size(100, 22);
             this.txtAdvCropStart.TabIndex = 10;
             this.txtAdvCropStart.Text = "00:00:05.000";
-            this.txtAdvCropStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
             this.txtAdvCropStart.Leave += new System.EventHandler(this.txtCrop_Event);
-            this.txtAdvCropStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
             // 
             // lblAdvCropStart
             // 
@@ -1076,9 +1072,7 @@
             this.txtAdvTrimDuration.Size = new System.Drawing.Size(100, 22);
             this.txtAdvTrimDuration.TabIndex = 10;
             this.txtAdvTrimDuration.Text = "00:01:00.000";
-            this.txtAdvTrimDuration.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtAdvTrimDuration.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtAdvTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimDuration.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Event);
             // 
             // txtAdvTrimEnd
             // 
@@ -1089,9 +1083,7 @@
             this.txtAdvTrimEnd.Size = new System.Drawing.Size(100, 22);
             this.txtAdvTrimEnd.TabIndex = 9;
             this.txtAdvTrimEnd.Text = "00:10:05.000";
-            this.txtAdvTrimEnd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtAdvTrimEnd.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtAdvTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimEnd.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Event);
             // 
             // txtAdvTrimStart
             // 
@@ -1102,9 +1094,7 @@
             this.txtAdvTrimStart.Size = new System.Drawing.Size(100, 22);
             this.txtAdvTrimStart.TabIndex = 8;
             this.txtAdvTrimStart.Text = "00:09:45.500";
-            this.txtAdvTrimStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrim_KeyPress);
-            this.txtAdvTrimStart.Leave += new System.EventHandler(this.txtTrim_Event);
-            this.txtAdvTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Validating);
+            this.txtAdvTrimStart.Validating += new System.ComponentModel.CancelEventHandler(this.txtTrim_Event);
             // 
             // lblAdvTimeEqual
             // 
@@ -2266,9 +2256,9 @@
         private System.Windows.Forms.ColumnHeader colVideoPixFmt;
         private System.Windows.Forms.ColumnHeader colAudioSampleRate;
         private System.Windows.Forms.ColumnHeader colAudioChannel;
-        private System.Windows.Forms.TextBox txtAdvTrimDuration;
-        private System.Windows.Forms.TextBox txtAdvTrimEnd;
-        private System.Windows.Forms.TextBox txtAdvTrimStart;
+        private TimespanTextBox txtAdvTrimDuration;
+        private TimespanTextBox txtAdvTrimEnd;
+        private TimespanTextBox txtAdvTrimStart;
         private System.Windows.Forms.GroupBox grpAdvHdr;
         private System.Windows.Forms.CheckBox chkAudioMP4Compt;
         private System.Windows.Forms.CheckBox chkVideoMP4Compt;
@@ -2276,9 +2266,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiUseAsIngestStation;
         private System.Windows.Forms.GroupBox grpAdvCrop;
         private System.Windows.Forms.CheckBox chkAdvCropAuto;
-        private System.Windows.Forms.TextBox txtAdvCropDuration;
+        private TimespanTextBox txtAdvCropDuration;
         private System.Windows.Forms.Label lblAdvCropDuration;
-        private System.Windows.Forms.TextBox txtAdvCropStart;
+        private TimespanTextBox txtAdvCropStart;
         private System.Windows.Forms.Label lblAdvCropStart;
         private System.Windows.Forms.Label lblAdvCropNote;
         private System.Windows.Forms.Label lblAdvTrimNote;
