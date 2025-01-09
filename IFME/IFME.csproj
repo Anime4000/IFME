@@ -60,9 +60,6 @@
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomForms\TimespanTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts\FontAwesome.cs" />
     <Compile Include="Fonts\Fonts.cs" />
