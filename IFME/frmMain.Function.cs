@@ -957,12 +957,14 @@ namespace IFME
                     cboVideoEncoder.ValueMember = "Key";
                 }
 
-                if (!newDataSource.ContainsKey(idVideo))
+                if (newDataSource.ContainsKey(idVideo))
+                {
+                    cboVideoEncoder.SelectedValue = idVideo;
+                }
+                else
                 {
                     cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
                 }
-
-                DisplayProperties_Video();
             }
             else
             {
@@ -989,12 +991,14 @@ namespace IFME
                     cboAudioEncoder.ValueMember = "Key";
                 }
 
-                if (!newDataSource.ContainsKey(idAudio))
+                if (newDataSource.ContainsKey(idAudio))
+                {
+                    cboAudioEncoder.SelectedValue = idAudio;
+                }
+                else
                 {
                     cboAudioEncoder.SelectedIndex = cboAudioEncoder.Items.Count - 1;
                 }
-
-                DisplayProperties_Audio();
             }
             else
             {
