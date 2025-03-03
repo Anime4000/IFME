@@ -1,3 +1,25 @@
+Version 8.4.0 (Kintsugi Radiance)
+---------------------------------
+[Fixed] Corrected video/audio encoding settings to ensure correct preset, quality, and filter application.
+[Fixed] Addressed potential issues with missing codec selections.
+[Fixed] Improved UI handling of encoding settings when changing presets.
+[Fixed] Drag n Drop now support reads from folders.
+[Update] Refactored video and audio queue handling to directly initialize objects instead of relying on MediaQueueParse.
+[Update] Optimized encoder settings management for video and audio, reducing unnecessary assignments.
+[Update] Removed unused using directives (System.Net.Http.Headers, System.Collections).
+[Update] Enhanced display logic for supported codecs with better dictionary handling.
+[Update] Improved how FFmpeg filter and encoder commands are stored and applied.
+[Update] Introduced ImportFiles function to streamline file imports with a progress bar.
+[Update] Updated drag-and-drop and menu-based file import to use the new ImportFiles function, improving performance and UI responsiveness.
+[Update] Refactored how codec selection and UI updates handle missing or unsupported codecs.
+[Update] Removed redundant functions such as LoadControlVideo, LoadControlAudio, SaveControlVideo, and SaveControlAudio.
+[Update] FFmpeg updated to git-2025-03-02-dede00f, GCC 10.2.
+[Update] Rigaya NVEnc updated to 7.82.
+[Update] Rigaya QSVEnc updated to 7.82.
+[Update] x265 AVX2 updated to 4.1+1-32e25ff, GCC 14.2.
+[Update] uvg266 updated to 0.8.1-cf31e82, GCC 14.2.
+[Update] vvenc updated to 1.13.0, GCC 14.2.
+
 Version 8.3.8 ( -KIZUGUCHI- )
 -----------------------------
 [Fixed] Parser input output CSP

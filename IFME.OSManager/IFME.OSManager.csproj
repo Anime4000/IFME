@@ -82,6 +82,9 @@
     <EmbeddedResource Include="InputBox2.resx">
       <DependentUpon>InputBox2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProgressBar.resx">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

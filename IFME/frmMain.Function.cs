@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 
 using IFME.OSManager;
-using System.Net.Http.Headers;
-using System.Collections;
 using Newtonsoft.Json;
+using System.Windows.Forms.VisualStyles;
+using System.ComponentModel;
 
 namespace IFME
 {
@@ -184,6 +184,47 @@ namespace IFME
             return Array.Empty<string>();
         }
 
+        private void ImportFiles(string[] files)
+        {
+            var frm = new frmProgressBar();
+
+            lstFile.SelectedIndices.Clear();
+
+            frm.Show();
+            frm.Text = "Importing Media...";
+            frm.Status = "Indexing...";
+
+            var thread = new BackgroundWorker();
+
+            thread.DoWork += delegate (object o, DoWorkEventArgs r)
+            {
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (InvokeRequired)
+                    {
+                        if (frm.Visible)
+                        {
+                            Invoke(new MethodInvoker(delegate
+                            {
+                                MediaFileListAdd(files[i], false);
+                                frm.Progress = (int)(((float)(i + 1) / files.Length) * 100.0);
+                                frm.Status = $"Reading {i + 1} of {files.Length} file\n{files[i]}";
+                                frm.Title = $"Importing: {frm.Progress}%";
+                            }));
+                        }
+                    }
+                }
+            };
+
+            thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
+            {
+                Thread.Sleep(1000);
+                frm.Close();
+            };
+
+            thread.RunWorkerAsync();
+        }
+
         private void MediaFileListAdd(string path, bool isImages, string frameRate = "")
         {
             var fileData = new FFmpeg.MediaInfo(path, frameRate);
@@ -201,16 +242,110 @@ namespace IFME
             };
 
             foreach (var item in fileData.Video)
-                fileQueue.Video.Add(MediaQueueParse.Video(path, item, isImages));
+                fileQueue.Video.Add(new MediaQueueVideo
+                {
+                    Enable = true,
+                    FilePath = path,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Codec = item.Codec,
+
+                    IsImageSeq = isImages,
+
+                    Info = new MediaQueueVideoInfo
+                    {
+                        Width = item.Width,
+                        Height = item.Height,
+                        FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+                        FrameRateAvg = item.FrameRateAvg,
+                        FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRateAvg),
+                        IsVFR = !item.FrameRateConstant,
+                        BitDepth = item.BitDepth,
+                        PixelFormat = item.Chroma,
+                        Disposition_AttachedPic = item.Disposition_AttachedPic
+                    },
+
+                    Encoder = new MediaQueueVideoEncoder
+                    {
+                        Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key,
+                        Preset = cboVideoPreset.Text,
+                        Tune = cboVideoTune.Text,
+                        Mode = cboVideoRateControl.SelectedIndex,
+                        Value = nudVideoRateFactor.Value,
+                        MultiPass = (int)nudVideoMultiPass.Value,
+                        Command = string.Empty
+                    },
+
+                    Quality = new MediaQueueVideoQuality
+                    {
+                        Width = item.Width,
+                        Height = item.Height,
+                        FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+                        FrameRateAvg = item.FrameRateAvg,
+                        FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
+                        IsVFR = !item.FrameRateConstant,
+                        BitDepth = item.BitDepth,
+                        PixelFormat = item.Chroma,
+                        CommandFilter = string.Empty,
+                        Command = string.Empty
+                    },
+
+                    DeInterlace = new MediaQueueVideoDeInterlace
+                    {
+                        Enable = chkVideoDeInterlace.Checked,
+                        Mode = cboVideoDeInterMode.SelectedIndex,
+                        Field = cboVideoDeInterField.SelectedIndex
+                    }
+                });
 
             foreach (var item in fileData.Audio)
-                fileQueue.Audio.Add(MediaQueueParse.Audio(path, item));	
+                fileQueue.Audio.Add(new MediaQueueAudio
+                {
+                    Enable = true,
+                    FilePath = path,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Codec = item.Codec,
+
+                    Info = new MediaQueueAudioInfo
+                    {
+                        SampleRate = item.SampleRate,
+                        Channel = item.Channel
+                    },
+
+                    Encoder = new MediaQueueAudioEncoder
+                    {
+                        Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
+                        Mode = cboAudioMode.SelectedIndex,
+                        Quality = cboAudioQuality.Text,
+                        SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
+                        Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
+                        Command = string.Empty
+                    },
+
+                    CommandFilter = string.Empty,
+                    Command = string.Empty
+                });	
 
             foreach (var item in fileData.Subtitle)
-                fileQueue.Subtitle.Add(MediaQueueParse.Subtitle(path, item));
+                fileQueue.Subtitle.Add(new MediaQueueSubtitle
+                {
+                    Enable = true,
+                    FilePath = path,
+                    Id = item.Id,
+                    Lang = item.Language,
+                    Codec = item.Codec,
+                });
             
             foreach (var item in fileData.Attachment)
-                fileQueue.Attachment.Add(MediaQueueParse.Attachment(path, item));
+                fileQueue.Attachment.Add(new MediaQueueAttachment
+                {
+                    Enable = true,
+                    FilePath = path,
+                    Id = item.Id,
+                    Name = item.FileName,
+                    Mime = item.MimeType
+                });
 
             // Enable HardSub (Burn Subtitle) when using incompatible container, make sure disable control
             if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV)
@@ -258,7 +393,61 @@ namespace IFME
             {
                 foreach (var item in fileData.Video)
                 {
-                    (lst.Tag as MediaQueue).Video.Add(MediaQueueParse.Video(path, item));
+                    (lst.Tag as MediaQueue).Video.Add(new MediaQueueVideo
+                    {
+                        Enable = true,
+                        FilePath = path,
+                        Id = item.Id,
+                        Lang = item.Language,
+                        Codec = item.Codec,
+
+                        IsImageSeq = false,
+
+                        Info = new MediaQueueVideoInfo
+                        {
+                            Width = item.Width,
+                            Height = item.Height,
+                            FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+                            FrameRateAvg = item.FrameRateAvg,
+                            FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRateAvg),
+                            IsVFR = !item.FrameRateConstant,
+                            BitDepth = item.BitDepth,
+                            PixelFormat = item.Chroma,
+                            Disposition_AttachedPic = item.Disposition_AttachedPic
+                        },
+
+                        Encoder = new MediaQueueVideoEncoder
+                        {
+                            Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key,
+                            Preset = cboVideoPreset.Text,
+                            Tune = cboVideoTune.Text,
+                            Mode = cboVideoRateControl.SelectedIndex,
+                            Value = nudVideoRateFactor.Value,
+                            MultiPass = (int)nudVideoMultiPass.Value,
+                            Command = string.Empty
+                        },
+
+                        Quality = new MediaQueueVideoQuality
+                        {
+                            Width = item.Width,
+                            Height = item.Height,
+                            FrameRate = (float)Math.Round(item.FrameRateAvg, 3),
+                            FrameRateAvg = item.FrameRateAvg,
+                            FrameCount = (int)Math.Ceiling(item.Duration * item.FrameRate),
+                            IsVFR = !item.FrameRateConstant,
+                            BitDepth = item.BitDepth,
+                            PixelFormat = item.Chroma,
+                            CommandFilter = string.Empty,
+                            Command = string.Empty
+                        },
+
+                        DeInterlace = new MediaQueueVideoDeInterlace
+                        {
+                            Enable = chkVideoDeInterlace.Checked,
+                            Mode = cboVideoDeInterMode.SelectedIndex,
+                            Field = cboVideoDeInterField.SelectedIndex
+                        }
+                    });
                 }
             }
 
@@ -273,7 +462,33 @@ namespace IFME
             {
                 foreach (var item in fileData.Audio)
                 {
-                    (lst.Tag as MediaQueue).Audio.Add(MediaQueueParse.Audio(path, item));
+                    (lst.Tag as MediaQueue).Audio.Add(new MediaQueueAudio
+                    {
+                        Enable = true,
+                        FilePath = path,
+                        Id = item.Id,
+                        Lang = item.Language,
+                        Codec = item.Codec,
+
+                        Info = new MediaQueueAudioInfo
+                        {
+                            SampleRate = item.SampleRate,
+                            Channel = item.Channel
+                        },
+
+                        Encoder = new MediaQueueAudioEncoder
+                        {
+                            Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key,
+                            Mode = cboAudioMode.SelectedIndex,
+                            Quality = cboAudioQuality.Text,
+                            SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key,
+                            Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key,
+                            Command = string.Empty
+                        },
+
+                        CommandFilter = string.Empty,
+                        Command = string.Empty
+                    });
                 }
             }
 
@@ -684,11 +899,10 @@ namespace IFME
 
         private void ShowSupportedCodec(string value, bool imgSeq = false)
         {
-            var videoCodec = new Dictionary<Guid, PluginsVideo>();
-            var audioCodec = new Dictionary<Guid, PluginsAudio>();
-
-            SaveControlVideo();
-            SaveControlAudio();
+            var newVideoCodec = new Dictionary<Guid, PluginsVideo>();
+            var newAudioCodec = new Dictionary<Guid, PluginsAudio>();
+            var idVideo = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
+            var idAudio = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
 
             foreach (var item in Plugins.Items.Video)
             {
@@ -698,9 +912,14 @@ namespace IFME
                         continue;
                 }
 
-                if (item.Value.Format.Contains(value))
+                var exts = value;
+
+                if (value.Contains(' '))
+                    exts = value.Remove(value.IndexOf(' '));
+
+                if (item.Value.Format.Contains(exts))
                 {
-                    videoCodec.Add(item.Key, item.Value);
+                    newVideoCodec.Add(item.Key, item.Value);
                 }
             }
 
@@ -713,14 +932,14 @@ namespace IFME
 
                 if (item.Value.Format.Contains(exts))
                 {
-                    audioCodec.Add(item.Key, item.Value);
+                    newAudioCodec.Add(item.Key, item.Value);
                 }
             }
 
             // Compare current and new dict array, if hash not same then load new dict and use default
-            if (videoCodec.Count > 0)
+            if (newVideoCodec.Count > 0)
             {
-                var newDataSource = videoCodec.ToDictionary(p => p.Key, p => p.Value.Name);
+                var newDataSource = newVideoCodec.ToDictionary(p => p.Key, p => p.Value.Name);
 
                 var currentDataSource = cboVideoEncoder.DataSource as BindingSource;
                 var currentDataSourceDict = currentDataSource?.DataSource as Dictionary<Guid, string>;
@@ -738,26 +957,21 @@ namespace IFME
                     cboVideoEncoder.ValueMember = "Key";
                 }
 
-                if (newDataSource.ContainsKey(MediaQueueParse.Gui.Video.Id))
-                {
-                    LoadControlVideo();
-                }
-                else
+                if (!newDataSource.ContainsKey(idVideo))
                 {
                     cboVideoEncoder.SelectedIndex = cboVideoEncoder.Items.Count - 1;
-                    MediaQueueParse.Gui.UseDefaultVideo(((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key);
-                    LoadControlVideo();
-
                 }
+
+                DisplayProperties_Video();
             }
             else
             {
                 cboVideoEncoder.DataSource = null;
             }
 
-            if (audioCodec.Count > 0)
+            if (newAudioCodec.Count > 0)
             {
-                var newDataSource = audioCodec.ToDictionary(p => p.Key, p => p.Value.Name);
+                var newDataSource = newAudioCodec.ToDictionary(p => p.Key, p => p.Value.Name);
 
                 var currentDataSource = cboAudioEncoder.DataSource as BindingSource;
                 var currentDataSourceDict = currentDataSource?.DataSource as Dictionary<Guid, string>;
@@ -775,71 +989,17 @@ namespace IFME
                     cboAudioEncoder.ValueMember = "Key";
                 }
 
-                if (newDataSource.ContainsKey(MediaQueueParse.Gui.Audio.Id))
-                {
-                    LoadControlAudio();
-                }
-                else
+                if (!newDataSource.ContainsKey(idAudio))
                 {
                     cboAudioEncoder.SelectedIndex = cboAudioEncoder.Items.Count - 1;
-                    MediaQueueParse.Gui.UseDefaultAudio(((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key);
-                    LoadControlAudio();
                 }
+
+                DisplayProperties_Audio();
             }
             else
             {
                 cboAudioEncoder.DataSource = null;
             }
-        }
-
-        private void LoadControlVideo()
-        {
-            cboVideoEncoder.SelectedValue = MediaQueueParse.Gui.Video.Id;
-            cboVideoPreset.Text = MediaQueueParse.Gui.Video.Preset;
-            cboVideoTune.Text = MediaQueueParse.Gui.Video.Tune;
-            cboVideoRateControl.SelectedIndex = MediaQueueParse.Gui.Video.Mode;
-            nudVideoRateFactor.Value = MediaQueueParse.Gui.Video.Value;
-            nudVideoMultiPass.Value = MediaQueueParse.Gui.Video.MultiPass;
-            chkVideoDeInterlace.Checked = MediaQueueParse.Gui.Video.DeInterlace;
-            cboVideoDeInterMode.SelectedIndex = MediaQueueParse.Gui.Video.DeInterlaceMode;
-            cboVideoDeInterField.SelectedIndex = MediaQueueParse.Gui.Video.DeInterlaceField;
-        }
-
-        private void LoadControlAudio()
-        {
-            cboAudioEncoder.SelectedValue = MediaQueueParse.Gui.Audio.Id;
-            cboAudioMode.SelectedIndex = MediaQueueParse.Gui.Audio.Mode;
-            cboAudioQuality.Text = MediaQueueParse.Gui.Audio.Quality;
-            cboAudioSampleRate.SelectedValue = MediaQueueParse.Gui.Audio.SampleRate;
-            cboAudioChannel.SelectedValue = MediaQueueParse.Gui.Audio.Channel;
-        }
-
-        private void SaveControlVideo()
-        {
-            if (cboVideoEncoder.SelectedItem == null)
-                return;
-
-            MediaQueueParse.Gui.Video.Id = ((KeyValuePair<Guid, string>)cboVideoEncoder.SelectedItem).Key;
-            MediaQueueParse.Gui.Video.Preset = cboVideoPreset.Text;
-            MediaQueueParse.Gui.Video.Tune = cboVideoTune.Text;
-            MediaQueueParse.Gui.Video.Mode = cboVideoRateControl.SelectedIndex;
-            MediaQueueParse.Gui.Video.Value = nudVideoRateFactor.Value;
-            MediaQueueParse.Gui.Video.MultiPass = (int)nudVideoMultiPass.Value;
-            MediaQueueParse.Gui.Video.DeInterlace = chkVideoDeInterlace.Checked;
-            MediaQueueParse.Gui.Video.DeInterlaceMode = cboVideoDeInterMode.SelectedIndex;
-            MediaQueueParse.Gui.Video.DeInterlaceField = cboVideoDeInterField.SelectedIndex;
-        }
-
-        private void SaveControlAudio()
-        {
-            if (cboAudioEncoder.SelectedItem == null)
-                return;
-
-            MediaQueueParse.Gui.Audio.Id = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
-            MediaQueueParse.Gui.Audio.Mode = cboAudioMode.SelectedIndex;
-            MediaQueueParse.Gui.Audio.Quality = cboAudioQuality.Text;
-            MediaQueueParse.Gui.Audio.SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key;
-            MediaQueueParse.Gui.Audio.Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key;
         }
 
         private void SetProfileData(Profiles value)
@@ -871,19 +1031,11 @@ namespace IFME
             cboVideoDeInterMode.SelectedIndex = value.Video.DeInterlace.Mode;
             cboVideoDeInterField.SelectedIndex = value.Video.DeInterlace.Field;
 
-            MediaQueueParse.Gui.Video.CmdFilter = value.Video.Quality.CommandFilter;
-            MediaQueueParse.Gui.Video.CmdDecoder = value.Video.Quality.Command;
-            MediaQueueParse.Gui.Video.CmdEncoder = value.Video.Encoder.Command;
-
             cboAudioEncoder.SelectedValue = value.Audio.Encoder.Id;
             cboAudioMode.SelectedIndex = value.Audio.Encoder.Mode;
             cboAudioQuality.Text = value.Audio.Encoder.Quality;
             cboAudioSampleRate.SelectedValue = value.Audio.Encoder.SampleRate;
             cboAudioChannel.SelectedValue = value.Audio.Encoder.Channel;
-
-            MediaQueueParse.Gui.Audio.CmdFilter = value.Audio.CommandFilter;
-            MediaQueueParse.Gui.Audio.CmdDecoder = value.Audio.Command;
-            MediaQueueParse.Gui.Audio.CmdEncoder = value.Audio.Encoder.Command;
 
             chkVideoMP4Compt.Checked = value.TryRemuxVideo;
             chkAudioMP4Compt.Checked = value.TryRemuxAudio;
@@ -929,7 +1081,6 @@ namespace IFME
                         media.Video[i].Encoder.Mode = cboVideoRateControl.SelectedIndex;
                         media.Video[i].Encoder.Value = nudVideoRateFactor.Value;
                         media.Video[i].Encoder.MultiPass = (int)nudVideoMultiPass.Value;
-                        media.Video[i].Encoder.Command = MediaQueueParse.Gui.Video.CmdEncoder;
 
                         media.Video[i].Quality.Width = value.Video.Quality.Width == 0 ? media.Video[i].Info.Width : value.Video.Quality.Width;
                         media.Video[i].Quality.Height = value.Video.Quality.Height == 0 ? media.Video[i].Info.Height : value.Video.Quality.Height;
@@ -937,8 +1088,6 @@ namespace IFME
                         media.Video[i].Quality.FrameRateAvg = float.TryParse(cboVideoFps.Text, out float fpa) ? fpa : media.Video[i].Info.FrameRateAvg;
                         media.Video[i].Quality.BitDepth = int.TryParse(cboVideoBitDepth.Text, out int bpc) ? bpc : 8;
                         media.Video[i].Quality.PixelFormat = int.TryParse(cboVideoPixFmt.Text, out int pix) ? pix : 420;
-                        media.Video[i].Quality.Command = MediaQueueParse.Gui.Video.CmdDecoder;
-                        media.Video[i].Quality.CommandFilter = MediaQueueParse.Gui.Video.CmdFilter;
 
                         media.Video[i].DeInterlace.Enable = chkVideoDeInterlace.Checked;
                         media.Video[i].DeInterlace.Mode = cboVideoDeInterMode.SelectedIndex;
@@ -953,10 +1102,6 @@ namespace IFME
                         media.Audio[x].Encoder.Quality = cboAudioQuality.Text;
                         media.Audio[x].Encoder.SampleRate = ((KeyValuePair<int, string>)cboAudioSampleRate.SelectedItem).Key;
                         media.Audio[x].Encoder.Channel = ((KeyValuePair<int, string>)cboAudioChannel.SelectedItem).Key;
-                        media.Audio[x].Encoder.Command = MediaQueueParse.Gui.Audio.CmdEncoder;
-
-                        media.Audio[x].Command = MediaQueueParse.Gui.Audio.CmdDecoder;
-                        media.Audio[x].CommandFilter = MediaQueueParse.Gui.Audio.CmdFilter;
                     }
 
                     // update main list
@@ -970,9 +1115,6 @@ namespace IFME
                 DisplayProperties_Subtitle();
                 DisplayProperties_Attachment();
             }
-
-            SaveControlVideo();
-            SaveControlAudio();
         }
     }
 }

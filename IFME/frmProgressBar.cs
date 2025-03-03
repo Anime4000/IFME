@@ -29,41 +29,67 @@ namespace IFME
             pbLoading.MarqueeAnimationSpeed = 20;
         }
 
-        private void frmProgressBar_Shown(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            new Thread(() =>
+            Close();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
             {
-                Thread.CurrentThread.IsBackground = true;
+                Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
-                do
+        public string Title
+        {
+            get { return Text; }
+            set
+            {
+                if (InvokeRequired)
                 {
-                    if (pbLoading.Style == ProgressBarStyle.Marquee)
-                        if (pbLoading.Value > 0)
-                            Invoke((MethodInvoker)delegate ()
-                            { pbLoading.Style = ProgressBarStyle.Continuous; });
-
-                } while (pbLoading.Value < 99);
-
-                /*Thread.Sleep(3000);
-
-                Invoke((MethodInvoker)delegate ()
+                    Invoke(new Action(() => Text = value));
+                }
+                else
                 {
-                    Close();
-                });*/
-
-            }).Start();
+                    Text = value;
+                }
+            }
         }
 
         public string Status
         {
             get { return lblStatus.Text; }
-            set { lblStatus.Text = value; }
+            set
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => lblStatus.Text = value));
+                }
+                else
+                {
+                    lblStatus.Text = value;
+                }
+            }
         }
 
         public int Progress
         {
             get { return pbLoading.Value; }
-            set { try { pbLoading.Value = value; } catch { } }
+            set
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => pbLoading.Value = value));
+                }
+                else
+                {
+                    pbLoading.Value = value;
+                }
+            }
         }
     }
 }
