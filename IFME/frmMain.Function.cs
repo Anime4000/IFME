@@ -555,6 +555,20 @@ namespace IFME
             DisplayProperties_Attachment();
         }
 
+        private void DisplayProperties_Clear()
+        {
+            lstVideo.Items.Clear();
+            lstAudio.Items.Clear();
+            lstSub.Items.Clear();
+            lstAttach.Items.Clear();
+            txtMediaInfo.Text = "FFmpeg MediaInfo ♥";
+            chkVideoDeInterlace.Checked = false;
+            chkVideoMP4Compt.Checked = false;
+            chkAudioMP4Compt.Checked = false;
+            chkSubHard.Checked = false;
+            chkAdvTrim.Checked = false;
+        }
+
         private void DisplayProperties_Video()
         {
             if ((MediaContainer)cboFormat.SelectedIndex >= MediaContainer.MP2)

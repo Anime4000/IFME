@@ -69,6 +69,7 @@ namespace IFME
             // 
             this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFFmpeg.AutoSize = true;
+            this.lblFFmpeg.Enabled = false;
             this.lblFFmpeg.Location = new System.Drawing.Point(532, 105);
             this.lblFFmpeg.Name = "lblFFmpeg";
             this.lblFFmpeg.Size = new System.Drawing.Size(96, 13);

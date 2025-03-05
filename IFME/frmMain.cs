@@ -183,6 +183,9 @@ namespace IFME
             foreach (ListViewItem item in lstFile.SelectedItems)
                 item.Remove();
 
+            if (lstFile.Items.Count == 0)
+                DisplayProperties_Clear();
+
             lstFile.SelectedIndexChanged += lstFile_SelectedIndexChanged;
         }
 
@@ -392,18 +395,9 @@ namespace IFME
                 // Media Info
                 txtMediaInfo.Text = FFmpeg.MediaInfo.Print(data.Info);
             }
-            else if (lstFile.SelectedItems.Count == 0)
+            else if (lstFile.SelectedItems.Count == 0 || lstFile.SelectedIndices.Count == 0)
             {
-                lstVideo.Items.Clear();
-                lstAudio.Items.Clear();
-                lstSub.Items.Clear();
-                lstAttach.Items.Clear();
-                txtMediaInfo.Text = "FFmpeg Media Info ♥";
-                chkVideoDeInterlace.Checked = false;
-                chkVideoMP4Compt.Checked = false;
-                chkAudioMP4Compt.Checked = false;
-                chkSubHard.Checked = false;
-                chkAdvTrim.Checked = false;
+                DisplayProperties_Clear();
             }
         }
 

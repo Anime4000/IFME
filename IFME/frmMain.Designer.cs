@@ -1705,6 +1705,7 @@
             // 
             // txtMediaInfo
             // 
+            this.txtMediaInfo.BackColor = System.Drawing.SystemColors.Window;
             this.txtMediaInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMediaInfo.Location = new System.Drawing.Point(0, 0);
             this.txtMediaInfo.Multiline = true;
