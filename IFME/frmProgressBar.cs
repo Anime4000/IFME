@@ -29,11 +29,6 @@ namespace IFME
             pbLoading.MarqueeAnimationSpeed = 20;
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)

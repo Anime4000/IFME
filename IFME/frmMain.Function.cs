@@ -214,11 +214,15 @@ namespace IFME
                         }
                     }
                 }
+
+                if (files.Length == 1)
+                {
+                    Thread.Sleep(1000);
+                }
             };
 
             thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)
             {
-                Thread.Sleep(1000);
                 frm.Close();
             };
 

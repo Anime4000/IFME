@@ -31,7 +31,8 @@ namespace IFME
         {
             this.pbLoading = new System.Windows.Forms.ProgressBar();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.lblSeparator = new System.Windows.Forms.Label();
+            this.lblFFmpeg = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pbLoading
@@ -54,23 +55,34 @@ namespace IFME
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "Found 999 files!";
             // 
-            // btnCancel
+            // lblSeparator
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(548, 92);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(80, 24);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "&Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.lblSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblSeparator.Location = new System.Drawing.Point(12, 111);
+            this.lblSeparator.Name = "lblSeparator";
+            this.lblSeparator.Size = new System.Drawing.Size(514, 2);
+            this.lblSeparator.TabIndex = 2;
+            // 
+            // lblFFmpeg
+            // 
+            this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFFmpeg.AutoSize = true;
+            this.lblFFmpeg.Location = new System.Drawing.Point(532, 105);
+            this.lblFFmpeg.Name = "lblFFmpeg";
+            this.lblFFmpeg.Size = new System.Drawing.Size(96, 13);
+            this.lblFFmpeg.TabIndex = 3;
+            this.lblFFmpeg.Text = "FFmpeg MediaInfo";
+            this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // frmProgressBar
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(640, 128);
             this.ControlBox = false;
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.lblFFmpeg);
+            this.Controls.Add(this.lblSeparator);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pbLoading);
             this.Font = new System.Drawing.Font("Tahoma", 8F);
@@ -83,6 +95,7 @@ namespace IFME
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frmProgressBar_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -90,6 +103,7 @@ namespace IFME
 
         private System.Windows.Forms.ProgressBar pbLoading;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblSeparator;
+        private System.Windows.Forms.Label lblFFmpeg;
     }
 }
