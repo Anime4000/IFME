@@ -81,6 +81,12 @@ namespace IFME
 
             FileNameExample();
 
+            // show muxer options
+            Mp4MuxFlags mp4MuxFlags = (Mp4MuxFlags)Properties.Settings.Default.Mp4MuxFlags;
+            chkMuxMp4FK.Checked = mp4MuxFlags.HasFlag(Mp4MuxFlags.FragKeyframe);
+            chkMuxMp4EM.Checked = mp4MuxFlags.HasFlag(Mp4MuxFlags.EmptyMoov);
+            chkMuxMp4SM.Checked = mp4MuxFlags.HasFlag(Mp4MuxFlags.SeparateMoof);
+
             // in case encoder test failed, show this to user
             int checkedItemCount = lstPlugins.Items.Cast<ListViewItem>().Count(item => item.Checked);
             if (checkedItemCount == 0)
@@ -128,6 +134,16 @@ namespace IFME
 
             if (rdoPostfixCustom.Checked)
                 Properties.Settings.Default.PostfixMode = 2;
+
+            // save muxer options
+            Mp4MuxFlags mp4MuxFlags = Mp4MuxFlags.None;
+            if (chkMuxMp4FK.Checked)
+                mp4MuxFlags |= Mp4MuxFlags.FragKeyframe;
+            if (chkMuxMp4EM.Checked)
+                mp4MuxFlags |= Mp4MuxFlags.EmptyMoov;
+            if (chkMuxMp4SM.Checked)
+                mp4MuxFlags |= Mp4MuxFlags.SeparateMoof;
+            Properties.Settings.Default.Mp4MuxFlags = (int)mp4MuxFlags;
 
             var disabled = new List<Guid>();
             foreach (ListViewItem item in lstPlugins.Items)

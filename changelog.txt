@@ -1,5 +1,6 @@
 Version 8.4.0 (Kintsugi Radiance)
 ---------------------------------
+[New] Add fMP4 Muxing Options for web playback streaming (disabled by default)
 [Fixed] Corrected video/audio encoding settings to ensure correct preset, quality, and filter application.
 [Fixed] Addressed potential issues with missing codec selections.
 [Fixed] Improved UI handling of encoding settings when changing presets.
@@ -13,9 +14,9 @@ Version 8.4.0 (Kintsugi Radiance)
 [Update] Updated drag-and-drop and menu-based file import to use the new ImportFiles function, improving performance and UI responsiveness.
 [Update] Refactored how codec selection and UI updates handle missing or unsupported codecs.
 [Update] Removed redundant functions such as LoadControlVideo, LoadControlAudio, SaveControlVideo, and SaveControlAudio.
-[Update] FFmpeg updated to git-2025-03-02-dede00f, GCC 10.2.
-[Update] Rigaya NVEnc updated to 7.82.
-[Update] Rigaya QSVEnc updated to 7.82.
+[Update] FFmpeg updated to git-2025-04-13-bf327ac, GCC 10.2.
+[Update] Rigaya NVEnc updated to 7.83.
+[Update] Rigaya QSVEnc updated to 7.86.
 [Update] x265 AVX2 updated to 4.1+1-32e25ff, GCC 14.2.
 [Update] uvg266 updated to 0.8.1-cf31e82, GCC 14.2.
 [Update] vvenc updated to 1.13.0, GCC 14.2.

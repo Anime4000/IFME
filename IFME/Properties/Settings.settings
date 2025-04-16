@@ -35,5 +35,8 @@
     <Setting Name="FileNameExample" Type="System.String" Scope="User">
       <Value Profile="(Default)">Erdentempel - S01E13 - Aufbruch Bluray-1080p</Value>
     </Setting>
+    <Setting Name="Mp4MuxFlags" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

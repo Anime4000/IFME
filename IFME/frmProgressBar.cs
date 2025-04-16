@@ -25,8 +25,8 @@ namespace IFME
 
         private void frmProgressBar_Load(object sender, EventArgs e)
         {
-            pbLoading.Style = ProgressBarStyle.Marquee;
-            pbLoading.MarqueeAnimationSpeed = 20;
+            pbLoading.Style = ProgressBarStyle.Continuous;
+            pbLoading.MarqueeAnimationSpeed = 5;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -83,6 +83,22 @@ namespace IFME
                 else
                 {
                     pbLoading.Value = value;
+                }
+            }
+        }
+
+        public ProgressBarStyle ProgBarStyle
+        {
+            get { return pbLoading.Style; }
+            set
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => pbLoading.Style = value));
+                }
+                else
+                {
+                    pbLoading.Style = value;
                 }
             }
         }

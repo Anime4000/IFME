@@ -215,10 +215,9 @@ namespace IFME
                     }
                 }
 
-                if (files.Length == 1)
-                {
-                    Thread.Sleep(1000);
-                }
+                Thread.Sleep(500);
+                frm.ProgBarStyle = ProgressBarStyle.Marquee;
+                Thread.Sleep(999);
             };
 
             thread.RunWorkerCompleted += delegate (object o, RunWorkerCompletedEventArgs r)

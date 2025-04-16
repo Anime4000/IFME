@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -22,6 +23,15 @@ public enum MediaContainer
 	OPUS,
 	FLAC,
 	WMA
+}
+
+[Flags]
+public enum Mp4MuxFlags
+{
+    None = 0,
+    FragKeyframe = 1 << 0,  // 1
+    EmptyMoov = 1 << 1,  // 2
+    SeparateMoof = 1 << 2   // 4
 }
 
 namespace IFME

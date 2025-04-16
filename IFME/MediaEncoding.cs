@@ -577,6 +577,8 @@ namespace IFME
 
         internal static int Muxing(MediaQueue queue, string tempDir, string saveDir, string saveFile)
         {
+            Mp4MuxFlags mp4MuxFlags = (Mp4MuxFlags)Properties.Settings.Default.Mp4MuxFlags;
+
             var x = 0;
             var metadata = string.Empty;
             var metafile = string.Empty;
@@ -587,6 +589,8 @@ namespace IFME
             var argSubtitle = string.Empty;
             var argEmbed = string.Empty;
             var argArt = string.Empty;
+
+            var movflags = string.Empty;
 
             var outFile = Path.Combine(saveDir, saveFile);
 
@@ -664,6 +668,22 @@ namespace IFME
             if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
             {
                 metafile = $"-f ffmetadata -i metadata.ini -map_metadata 0";
+            }
+
+            if (queue.OutputFormat == MediaContainer.MP4)
+            {
+                if (mp4MuxFlags != Mp4MuxFlags.None)
+                {
+                    if (mp4MuxFlags.HasFlag(Mp4MuxFlags.FragKeyframe))
+                        movflags += "+frag_keyframe";
+                    if (mp4MuxFlags.HasFlag(Mp4MuxFlags.EmptyMoov))
+                        movflags += "+empty_moov";
+                    if (mp4MuxFlags.HasFlag(Mp4MuxFlags.SeparateMoof))
+                        movflags += "+separate_moof";
+
+                    // inject movflags
+                    metadata = $"{metadata} -movflags {movflags}";
+                }
             }
 
             var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";

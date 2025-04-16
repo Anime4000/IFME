@@ -49,6 +49,10 @@ namespace IFME
             this.grpLanguage = new System.Windows.Forms.GroupBox();
             this.cboLanguage = new System.Windows.Forms.ComboBox();
             this.tabProcessing = new System.Windows.Forms.TabPage();
+            this.grpMuxMp4 = new System.Windows.Forms.GroupBox();
+            this.chkMuxMp4EM = new System.Windows.Forms.CheckBox();
+            this.chkMuxMp4SM = new System.Windows.Forms.CheckBox();
+            this.chkMuxMp4FK = new System.Windows.Forms.CheckBox();
             this.tabPlugins = new System.Windows.Forms.TabPage();
             this.chkSkipTest = new System.Windows.Forms.CheckBox();
             this.btnNone = new System.Windows.Forms.Button();
@@ -59,15 +63,15 @@ namespace IFME
             this.colPluginsArh = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPluginsVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPluginsAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnFactoryReset = new System.Windows.Forms.Button();
             this.tabProfiles = new System.Windows.Forms.TabPage();
             this.lstProfiles = new System.Windows.Forms.ListView();
             this.colProfileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colProfileFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colProfileAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colProfileAuthorWeb = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.btnFactoryReset = new System.Windows.Forms.Button();
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
@@ -75,6 +79,8 @@ namespace IFME
             this.grpPrefix.SuspendLayout();
             this.grpTempFolder.SuspendLayout();
             this.grpLanguage.SuspendLayout();
+            this.tabProcessing.SuspendLayout();
+            this.grpMuxMp4.SuspendLayout();
             this.tabPlugins.SuspendLayout();
             this.tabProfiles.SuspendLayout();
             this.SuspendLayout();
@@ -320,6 +326,7 @@ namespace IFME
             // 
             // tabProcessing
             // 
+            this.tabProcessing.Controls.Add(this.grpMuxMp4);
             this.tabProcessing.Location = new System.Drawing.Point(4, 24);
             this.tabProcessing.Name = "tabProcessing";
             this.tabProcessing.Padding = new System.Windows.Forms.Padding(3);
@@ -327,6 +334,54 @@ namespace IFME
             this.tabProcessing.TabIndex = 1;
             this.tabProcessing.Text = "Processing";
             this.tabProcessing.UseVisualStyleBackColor = true;
+            // 
+            // grpMuxMp4
+            // 
+            this.grpMuxMp4.Controls.Add(this.chkMuxMp4EM);
+            this.grpMuxMp4.Controls.Add(this.chkMuxMp4SM);
+            this.grpMuxMp4.Controls.Add(this.chkMuxMp4FK);
+            this.grpMuxMp4.Location = new System.Drawing.Point(6, 6);
+            this.grpMuxMp4.Name = "grpMuxMp4";
+            this.grpMuxMp4.Size = new System.Drawing.Size(756, 160);
+            this.grpMuxMp4.TabIndex = 0;
+            this.grpMuxMp4.TabStop = false;
+            this.grpMuxMp4.Text = "MP&4 Muxing Options";
+            // 
+            // chkMuxMp4EM
+            // 
+            this.chkMuxMp4EM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkMuxMp4EM.Location = new System.Drawing.Point(6, 102);
+            this.chkMuxMp4EM.Name = "chkMuxMp4EM";
+            this.chkMuxMp4EM.Size = new System.Drawing.Size(744, 32);
+            this.chkMuxMp4EM.TabIndex = 2;
+            this.chkMuxMp4EM.Text = "&Empty Moov Atom\r\n(Add an empty movie header at the start of the file so streamin" +
+    "g can begin before the whole video is downloaded.)";
+            this.chkMuxMp4EM.UseVisualStyleBackColor = true;
+            // 
+            // chkMuxMp4SM
+            // 
+            this.chkMuxMp4SM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkMuxMp4SM.Location = new System.Drawing.Point(6, 64);
+            this.chkMuxMp4SM.Name = "chkMuxMp4SM";
+            this.chkMuxMp4SM.Size = new System.Drawing.Size(744, 32);
+            this.chkMuxMp4SM.TabIndex = 1;
+            this.chkMuxMp4SM.Text = "&Separate Moof Atom\r\n(Place important streaming info (moof) before the actual vid" +
+    "eo data (mdat). Required for some streaming services.)";
+            this.chkMuxMp4SM.UseVisualStyleBackColor = true;
+            // 
+            // chkMuxMp4FK
+            // 
+            this.chkMuxMp4FK.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkMuxMp4FK.Location = new System.Drawing.Point(6, 26);
+            this.chkMuxMp4FK.Name = "chkMuxMp4FK";
+            this.chkMuxMp4FK.Size = new System.Drawing.Size(744, 32);
+            this.chkMuxMp4FK.TabIndex = 0;
+            this.chkMuxMp4FK.Text = "&Fragmented Keyframes\r\n(Break the video into smaller parts at each keyframe. This" +
+    " helps with faster seeking and smoother streaming.)";
+            this.chkMuxMp4FK.UseVisualStyleBackColor = true;
             // 
             // tabPlugins
             // 
@@ -428,41 +483,6 @@ namespace IFME
             this.colPluginsAuthor.Text = "Developer";
             this.colPluginsAuthor.Width = 256;
             // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(708, 564);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(80, 24);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "&Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnOK
-            // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(622, 564);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(80, 24);
-            this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "&OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
-            // btnFactoryReset
-            // 
-            this.btnFactoryReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFactoryReset.Location = new System.Drawing.Point(12, 565);
-            this.btnFactoryReset.Name = "btnFactoryReset";
-            this.btnFactoryReset.Size = new System.Drawing.Size(150, 23);
-            this.btnFactoryReset.TabIndex = 3;
-            this.btnFactoryReset.Text = "Factory &Reset";
-            this.btnFactoryReset.UseVisualStyleBackColor = true;
-            this.btnFactoryReset.Click += new System.EventHandler(this.btnFactoryReset_Click);
-            // 
             // tabProfiles
             // 
             this.tabProfiles.Controls.Add(this.lstProfiles);
@@ -510,6 +530,41 @@ namespace IFME
             this.colProfileAuthorWeb.Text = "Website";
             this.colProfileAuthorWeb.Width = 180;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(708, 564);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(80, 24);
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "&Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnOK
+            // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(622, 564);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(80, 24);
+            this.btnOK.TabIndex = 1;
+            this.btnOK.Text = "&OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // btnFactoryReset
+            // 
+            this.btnFactoryReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFactoryReset.Location = new System.Drawing.Point(12, 565);
+            this.btnFactoryReset.Name = "btnFactoryReset";
+            this.btnFactoryReset.Size = new System.Drawing.Size(150, 23);
+            this.btnFactoryReset.TabIndex = 3;
+            this.btnFactoryReset.Text = "Factory &Reset";
+            this.btnFactoryReset.UseVisualStyleBackColor = true;
+            this.btnFactoryReset.Click += new System.EventHandler(this.btnFactoryReset_Click);
+            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -536,6 +591,8 @@ namespace IFME
             this.grpTempFolder.ResumeLayout(false);
             this.grpTempFolder.PerformLayout();
             this.grpLanguage.ResumeLayout(false);
+            this.tabProcessing.ResumeLayout(false);
+            this.grpMuxMp4.ResumeLayout(false);
             this.tabPlugins.ResumeLayout(false);
             this.tabProfiles.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -583,5 +640,9 @@ namespace IFME
         private System.Windows.Forms.ColumnHeader colProfileFileName;
         private System.Windows.Forms.ColumnHeader colProfileAuthor;
         private System.Windows.Forms.ColumnHeader colProfileAuthorWeb;
+        private System.Windows.Forms.GroupBox grpMuxMp4;
+        private System.Windows.Forms.CheckBox chkMuxMp4FK;
+        private System.Windows.Forms.CheckBox chkMuxMp4EM;
+        private System.Windows.Forms.CheckBox chkMuxMp4SM;
     }
 }

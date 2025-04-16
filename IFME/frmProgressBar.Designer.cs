@@ -53,14 +53,14 @@ namespace IFME
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(616, 51);
             this.lblStatus.TabIndex = 1;
-            this.lblStatus.Text = "Found 999 files!";
+            this.lblStatus.Text = "Loading...";
             // 
             // lblSeparator
             // 
             this.lblSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSeparator.Location = new System.Drawing.Point(12, 111);
+            this.lblSeparator.Location = new System.Drawing.Point(12, 107);
             this.lblSeparator.Name = "lblSeparator";
             this.lblSeparator.Size = new System.Drawing.Size(514, 2);
             this.lblSeparator.TabIndex = 2;
@@ -68,14 +68,13 @@ namespace IFME
             // lblFFmpeg
             // 
             this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFFmpeg.AutoSize = true;
             this.lblFFmpeg.Enabled = false;
-            this.lblFFmpeg.Location = new System.Drawing.Point(532, 105);
+            this.lblFFmpeg.Location = new System.Drawing.Point(528, 95);
             this.lblFFmpeg.Name = "lblFFmpeg";
-            this.lblFFmpeg.Size = new System.Drawing.Size(96, 13);
+            this.lblFFmpeg.Size = new System.Drawing.Size(100, 24);
             this.lblFFmpeg.TabIndex = 3;
             this.lblFFmpeg.Text = "FFmpeg MediaInfo";
-            this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmProgressBar
             // 
@@ -96,7 +95,6 @@ namespace IFME
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frmProgressBar_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
