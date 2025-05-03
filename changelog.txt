@@ -1,3 +1,9 @@
+Version 8.4.1 (Zero Point Module)
+---------------------------------
+[Fixed] When burn subtitle, proceed font extract for rendering and skip adding back to video.
+[Update] Fragmented MP4 is enabled by default.
+[Update] Change Aero to Acrylic (blur translucent) for Splash Screen and About Form for modern look.
+
 Version 8.4.0 (Kintsugi Radiance)
 ---------------------------------
 [New] Add fMP4 Muxing Options for web playback streaming (disabled by default)

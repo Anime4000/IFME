@@ -875,6 +875,7 @@
             // lblOutputPath
             // 
             this.lblOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblOutputPath.BackColor = System.Drawing.Color.Transparent;
             this.lblOutputPath.Location = new System.Drawing.Point(12, 564);
             this.lblOutputPath.Name = "lblOutputPath";
             this.lblOutputPath.Size = new System.Drawing.Size(130, 24);
@@ -885,6 +886,7 @@
             // lblFormatProfile
             // 
             this.lblFormatProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblFormatProfile.BackColor = System.Drawing.Color.Transparent;
             this.lblFormatProfile.Location = new System.Drawing.Point(12, 534);
             this.lblFormatProfile.Name = "lblFormatProfile";
             this.lblFormatProfile.Size = new System.Drawing.Size(130, 24);

@@ -5,11 +5,49 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO;
+using IFME.OSManager;
 
 namespace IFME
 {
     public partial class frmSplashScreen : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int CS_DROPSHADOW = 0x20000;
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            if (OS.IsWindows)
+            {
+                WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
+                base.OnHandleCreated(e);
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (OS.IsWindows)
+                e.Graphics.Clear(Color.Transparent);
+            else
+                e.Graphics.Clear(Color.Black);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            using (Image img = Image.FromFile(Path.Combine("Resources", "SplashScreen14.png")))
+            {
+                e.Graphics.DrawImage(img, new Rectangle(0, 0, Width, Height));
+            }
+        }
+
         private BackgroundWorker2 bgThread = new BackgroundWorker2();
 
         public frmSplashScreen()

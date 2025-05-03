@@ -82,8 +82,14 @@ namespace IFME
             if (queue.Video.Count == 0)
                 return;
 
-            if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
+            if (queue.HardSub)
+            {
+                frmMain.PrintLog("[INFO] Burn subtitle is enable, thus font extracting is required for proper render");
+            }
+            else if (queue.Subtitle.Count == 0 && queue.Attachment.Count == 0)
+            {
                 return;
+            }
 
             frmMain.PrintLog("[INFO] Extracting subtitle file...");
 
@@ -636,15 +642,18 @@ namespace IFME
 
             if (queue.OutputFormat == MediaContainer.MKV)
             {
-                var tempDirFont = Path.Combine(tempDir, "attachment");
-                if (Directory.Exists(tempDirFont))
+                if (!queue.HardSub)
                 {
-                    var files = Directory.GetFiles(tempDirFont, "*");
-                    for (int i = 0; i < files.Length; i++)
+                    var tempDirFont = Path.Combine(tempDir, "attachment");
+                    if (Directory.Exists(tempDirFont))
                     {
-                        argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
-                        metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
-                        x++;
+                        var files = Directory.GetFiles(tempDirFont, "*");
+                        for (int i = 0; i < files.Length; i++)
+                        {
+                            argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+                            metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
+                            x++;
+                        }
                     }
                 }
             }

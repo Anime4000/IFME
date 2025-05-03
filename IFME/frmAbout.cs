@@ -1,19 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+using System.IO;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
+
+using IFME.OSManager;
 
 namespace IFME
 {
     public partial class frmAbout : Form
     {
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            if (OS.IsWindows)
+            { 
+                WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
+                base.OnHandleCreated(e);            
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (OS.IsWindows)
+                e.Graphics.Clear(Color.Transparent);
+            else
+                e.Graphics.Clear(Color.Black);
+        }
+
         public frmAbout()
         {
             InitializeComponent();
@@ -21,8 +35,6 @@ namespace IFME
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Text = $"{Text} {Version.Title}";
             FormBorderStyle = FormBorderStyle.Sizable;
-
-            
         }
 
         private void frmAbout_Load(object sender, EventArgs e)
@@ -36,10 +48,16 @@ namespace IFME
 
         private void frmAbout_Shown(object sender, EventArgs e)
         {
-            pbCharIchika.Image = Images.Resize(Properties.Resources.Avatar1_Ichika, pbCharIchika.Width, pbCharIchika.Height);
-            pbCharFumiko.Image = Images.Resize(Properties.Resources.Avatar2_Fumiko, pbCharFumiko.Width, pbCharFumiko.Height);
-            pbCharMiho.Image = Images.Resize(Properties.Resources.Avatar3_Miho, pbCharMiho.Width, pbCharMiho.Height);
-            pbCharErika.Image = Images.Resize(Properties.Resources.Avatar4_Erika, pbCharErika.Width, pbCharErika.Height);
+            var ichika = Image.FromFile(Path.Combine("Resources", "Avatar1_Ichika.png"));
+            var fumiko = Image.FromFile(Path.Combine("Resources", "Avatar2_Fumiko.png"));
+            var miho = Image.FromFile(Path.Combine("Resources", "Avatar3_Miho.png"));
+            var erika = Image.FromFile(Path.Combine("Resources", "Avatar4_Erika.png"));
+            pbCharIchika.Image = Images.Resize(ichika, pbCharIchika.Width, pbCharIchika.Height);
+            pbCharFumiko.Image = Images.Resize(fumiko, pbCharFumiko.Width, pbCharFumiko.Height);
+            pbCharMiho.Image = Images.Resize(miho, pbCharMiho.Width, pbCharMiho.Height);
+            pbCharErika.Image = Images.Resize(erika, pbCharErika.Width, pbCharErika.Height);
+
+            banner.BackgroundImage = Image.FromFile(Path.Combine("Resources", "Banner_About.png"));
         }
 
         private void frmAbout_Resize(object sender, EventArgs e)
