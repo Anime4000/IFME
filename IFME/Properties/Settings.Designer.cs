@@ -167,5 +167,17 @@ namespace IFME.Properties {
                 this["Mp4MuxFlags"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("eng")]
+        public string UILanguage {
+            get {
+                return ((string)(this["UILanguage"]));
+            }
+            set {
+                this["UILanguage"] = value;
+            }
+        }
     }
 }

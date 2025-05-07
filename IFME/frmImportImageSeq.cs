@@ -29,7 +29,11 @@ namespace IFME
 
         private void frmImportImageSeq_Load(object sender, EventArgs e)
         {
-
+#if SAVE_LANG
+            LocaliserUI.Save(this, Name);
+#else
+            LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+#endif
         }
 
         private void frmImportImageSeq_Shown(object sender, EventArgs e)

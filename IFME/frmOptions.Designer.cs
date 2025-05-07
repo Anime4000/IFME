@@ -33,7 +33,7 @@ namespace IFME
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.grpFileName = new System.Windows.Forms.GroupBox();
             this.lblFileNameEx = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpPostfix = new System.Windows.Forms.GroupBox();
             this.txtPostfix = new System.Windows.Forms.TextBox();
             this.rdoPostfixCustom = new System.Windows.Forms.RadioButton();
             this.rdoPostfixDateTime = new System.Windows.Forms.RadioButton();
@@ -75,7 +75,7 @@ namespace IFME
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.grpPostfix.SuspendLayout();
             this.grpPrefix.SuspendLayout();
             this.grpTempFolder.SuspendLayout();
             this.grpLanguage.SuspendLayout();
@@ -119,7 +119,7 @@ namespace IFME
             this.grpFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpFileName.Controls.Add(this.lblFileNameEx);
-            this.grpFileName.Controls.Add(this.groupBox1);
+            this.grpFileName.Controls.Add(this.grpPostfix);
             this.grpFileName.Controls.Add(this.grpPrefix);
             this.grpFileName.Location = new System.Drawing.Point(6, 333);
             this.grpFileName.Name = "grpFileName";
@@ -143,20 +143,20 @@ namespace IFME
             this.lblFileNameEx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblFileNameEx.Click += new System.EventHandler(this.lblFileNameEx_Click);
             // 
-            // groupBox1
+            // grpPostfix
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.grpPostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.txtPostfix);
-            this.groupBox1.Controls.Add(this.rdoPostfixCustom);
-            this.groupBox1.Controls.Add(this.rdoPostfixDateTime);
-            this.groupBox1.Controls.Add(this.rdoPostfixNone);
-            this.groupBox1.Location = new System.Drawing.Point(381, 43);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(369, 130);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Postfi&x";
+            this.grpPostfix.Controls.Add(this.txtPostfix);
+            this.grpPostfix.Controls.Add(this.rdoPostfixCustom);
+            this.grpPostfix.Controls.Add(this.rdoPostfixDateTime);
+            this.grpPostfix.Controls.Add(this.rdoPostfixNone);
+            this.grpPostfix.Location = new System.Drawing.Point(381, 43);
+            this.grpPostfix.Name = "grpPostfix";
+            this.grpPostfix.Size = new System.Drawing.Size(369, 130);
+            this.grpPostfix.TabIndex = 0;
+            this.grpPostfix.TabStop = false;
+            this.grpPostfix.Text = "Postfi&x";
             // 
             // txtPostfix
             // 
@@ -316,7 +316,6 @@ namespace IFME
             // cboLanguage
             // 
             this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboLanguage.Enabled = false;
             this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cboLanguage.FormattingEnabled = true;
             this.cboLanguage.Location = new System.Drawing.Point(69, 65);
@@ -584,8 +583,8 @@ namespace IFME
             this.tabSetting.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.grpFileName.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpPostfix.ResumeLayout(false);
+            this.grpPostfix.PerformLayout();
             this.grpPrefix.ResumeLayout(false);
             this.grpPrefix.PerformLayout();
             this.grpTempFolder.ResumeLayout(false);
@@ -618,7 +617,7 @@ namespace IFME
         private System.Windows.Forms.TextBox txtTempPath;
         private System.Windows.Forms.Button btnTempBrowse;
         private System.Windows.Forms.GroupBox grpPrefix;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpPostfix;
         private System.Windows.Forms.TextBox txtPrefix;
         private System.Windows.Forms.RadioButton rdoPrefixCustom;
         private System.Windows.Forms.RadioButton rdoPrefixDateTime;

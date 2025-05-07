@@ -90,6 +90,12 @@ namespace IFME
             InitializeProfiles();
             InitializeFonts();
             InitializeLog();
+
+#if SAVE_LANG
+            LocaliserUI.Save(this, Name);
+#else
+            LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+#endif
         }
 
         private void frmMain_Shown(object sender, EventArgs e)

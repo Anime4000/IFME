@@ -13,11 +13,8 @@ namespace IFME
     {
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (OS.IsWindows)
-            { 
-                WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
-                base.OnHandleCreated(e);            
-            }
+            WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
+            base.OnHandleCreated(e);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -44,6 +41,12 @@ namespace IFME
             lblCopyRight.Text = $"© 2011-{DateTime.Now.Year} Anime4000 && Contributor, Some Right Reserved.";
             lblArtWork.Text = $"Character illustration by Ray-en aka 53C for IFME Project.";
             lblDevs.Text = $"{Version.Contrib}\n\n{Version.TradeMark}";
+
+#if SAVE_LANG
+            LocaliserUI.Save(this, Name);
+#else
+            LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+#endif
         }
 
         private void frmAbout_Shown(object sender, EventArgs e)

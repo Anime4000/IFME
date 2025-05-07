@@ -27,6 +27,12 @@ namespace IFME
         {
             cboLanguage.Items.Add("English");
             cboLanguage.SelectedIndex = 0;
+
+#if SAVE_LANG
+            LocaliserUI.Save(this, Name);
+#else
+            LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+#endif
         }
 
         private void frmOptions_Shown(object sender, EventArgs e)

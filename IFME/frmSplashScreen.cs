@@ -11,24 +11,10 @@ namespace IFME
 {
     public partial class frmSplashScreen : Form
     {
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                const int CS_DROPSHADOW = 0x20000;
-                CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= CS_DROPSHADOW;
-                return cp;
-            }
-        }
-
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (OS.IsWindows)
-            {
-                WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
-                base.OnHandleCreated(e);
-            }
+            WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
+            base.OnHandleCreated(e);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
