@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using IFME;
+using System.ComponentModel;
 
 internal class i18n
 {
@@ -71,6 +72,18 @@ internal class i18n
                 }
             }
         }
+
+        foreach (var cms in GetAllContextMenus((Form)parent))
+        {
+            foreach (ToolStripItem item in cms.Items)
+            {
+                if (item is ToolStripMenuItem menuItem)
+                {
+                    if (formStrings.TryGetValue(menuItem.Name, out string text))
+                        menuItem.Text = text;
+                }
+            }
+        }
     }
 
     public static void Save(Control parent, string formName, string currentLang = "eng")
@@ -106,6 +119,17 @@ internal class i18n
             }
         }
 
+        foreach (var cms in GetAllContextMenus((Form)parent))
+        {
+            foreach (ToolStripItem item in cms.Items)
+            {
+                if (item is ToolStripMenuItem menuItem)
+                {
+                    formSorted.Add(menuItem.Name, menuItem.Text);
+                }
+            }
+        }
+
         try
         {
             data.Forms.Add(formName, formSorted);
@@ -129,6 +153,26 @@ internal class i18n
         }
     }
 
+    private static IEnumerable<ContextMenuStrip> GetAllContextMenus(Form form)
+    {
+        var contextMenus = new List<ContextMenuStrip>();
+
+        var componentsField = form.GetType().GetField("components",
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.Instance);
+
+        if (componentsField?.GetValue(form) is IContainer container)
+        {
+            foreach (var component in container.Components)
+            {
+                if (component is ContextMenuStrip cms)
+                    contextMenus.Add(cms);
+            }
+        }
+
+        return contextMenus;
+    }
+
     private static bool IsLocalisable(Control ctrl)
     {
         return ctrl is Label ||
@@ -137,7 +181,6 @@ internal class i18n
                ctrl is CheckBox ||
                ctrl is RadioButton ||
                ctrl is ListView ||
-               ctrl is ContextMenuStrip ||
                ctrl is GroupBox;
     }
 }

@@ -94,7 +94,7 @@ namespace IFME
 #if SAVE_LANG
             i18n.Save(this, Name);
 #else
-            LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+            i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
         }
 

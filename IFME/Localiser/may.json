@@ -106,7 +106,20 @@
 			"tabConfigLog": " Log",
 			"tabConfigMediaInfo": " Maklumat Media",
 			"tabConfigSubtitle": " Sarikata",
-			"tabConfigVideo": " Video"
+			"tabConfigVideo": " Video",
+			"tsmiFileAddAttach": "Tambah &Fon",
+			"tsmiFileAddAttachEmbed": "Tambah Fon dari &Video",
+			"tsmiFileAddSubs": "Tambah &Sarikata",
+			"tsmiFileAddSubsEmbed": "Tambah Sarikata dari &Video",
+			"tsmiImportFiles": "Import &Fail",
+			"tsmiImportFolder": "Import &Folder",
+			"tsmiImportImgSeq": "Import &Turutan Imej",
+			"tsmiImportYouTube": "Import &YouTube",
+			"tsmiPowerOff": "Matikan komputer setelah selesai",
+			"tsmiProfilesDelete": "&Padam",
+			"tsmiProfilesRename": "&Tukar Nama",
+			"tsmiProfilesSave": "&Simpan Sebagai",
+			"tsmiUseAsIngestStation": "Gunakan sebagai Stesen &Ingest"
 		},
 		"frmOptions": {
 			"btnCancel": "&Batal",

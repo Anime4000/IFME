@@ -106,7 +106,20 @@
 			"tabConfigLog": " Logging",
 			"tabConfigMediaInfo": " Media Info",
 			"tabConfigSubtitle": " Subtitle",
-			"tabConfigVideo": " Video"
+			"tabConfigVideo": " Video",
+			"tsmiFileAddAttach": "Add &Fonts",
+			"tsmiFileAddAttachEmbed": "Add Fonts from a &Video",
+			"tsmiFileAddSubs": "Add &Subtitle",
+			"tsmiFileAddSubsEmbed": "Add Subtitle from a &Video",
+			"tsmiImportFiles": "Import &Files",
+			"tsmiImportFolder": "Import Fol&der",
+			"tsmiImportImgSeq": "Import &Image Sequence",
+			"tsmiImportYouTube": "Import &YouTube",
+			"tsmiPowerOff": "Shutdown when complete",
+			"tsmiProfilesDelete": "&Delete",
+			"tsmiProfilesRename": "&Rename",
+			"tsmiProfilesSave": "&Save As",
+			"tsmiUseAsIngestStation": "Use as Ingest &Station"
 		},
 		"frmOptions": {
 			"btnCancel": "&Cancel",
