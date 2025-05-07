@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using IFME;
 
-internal class LocaliserUI
+internal class i18n
 {
     public static Dictionary<string, string> Installed { get; set; } = new();
 
@@ -30,7 +30,7 @@ internal class LocaliserUI
         if (!File.Exists(langFile))
             return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at Localiser folder" };
 
-        var json = JsonConvert.DeserializeObject<LocaliserData>(File.ReadAllText(langFile));
+        var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
 
         if (json?.Forms == null)
             return new string[] { "// Json object is broken", "// Error 20", "// Please check that Json file formatting is valid" };
@@ -45,7 +45,7 @@ internal class LocaliserUI
         if (!File.Exists(langFile))
             return;
 
-        var json = JsonConvert.DeserializeObject<LocaliserData>(File.ReadAllText(langFile));
+        var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
 
         if (json?.Forms == null || !json.Forms.TryGetValue(formName, out var formStrings))
             return;
@@ -77,14 +77,14 @@ internal class LocaliserUI
     {
         var langFile = Path.Combine("Localiser", $"{currentLang}.json");
 
-        LocaliserData data;
+        i18nObj data;
         try
         {
-            data = JsonConvert.DeserializeObject<LocaliserData>(File.ReadAllText(langFile)) ?? new LocaliserData();
+            data = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile)) ?? new i18nObj();
         }
         catch
         {
-            data = new LocaliserData();
+            data = new i18nObj();
         }
 
         var formSorted = new SortedDictionary<string, string>();

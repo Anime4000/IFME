@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Collections.Generic;
 
-internal class LocaliserData
+internal class i18nObj
 {
     // Metadata
     public string AuthorName { get; set; } = "Anime4000";

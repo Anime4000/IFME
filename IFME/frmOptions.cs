@@ -28,13 +28,13 @@ namespace IFME
         private void frmOptions_Load(object sender, EventArgs e)
         {
 #if SAVE_LANG
-            LocaliserUI.Save(this, Name);
+            i18n.Save(this, Name);
 #else
             LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
             LangAuthorInfo = lblLangAuthor.Text;
 
-            cboLanguage.DataSource = new BindingSource(LocaliserUI.Installed, null);
+            cboLanguage.DataSource = new BindingSource(i18n.Installed, null);
             cboLanguage.DisplayMember = "Value";
             cboLanguage.ValueMember = "Key";
             cboLanguage.SelectedValue = Properties.Settings.Default.UILanguage;
@@ -126,7 +126,7 @@ namespace IFME
         {
             var lang = (KeyValuePair<string, string>)cboLanguage.SelectedItem;
 
-            lblLangAuthor.Text = String.Format(LangAuthorInfo, LocaliserUI.GetLangAuthor(lang.Key));
+            lblLangAuthor.Text = String.Format(LangAuthorInfo, i18n.GetLangAuthor(lang.Key));
         }
 
         private void btnOK_Click(object sender, EventArgs e)

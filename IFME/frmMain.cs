@@ -92,7 +92,7 @@ namespace IFME
             InitializeLog();
 
 #if SAVE_LANG
-            LocaliserUI.Save(this, Name);
+            i18n.Save(this, Name);
 #else
             LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
@@ -203,7 +203,7 @@ namespace IFME
 
             if (currentLang != Properties.Settings.Default.UILanguage)
             {
-                LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+                i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
             }
         }
 

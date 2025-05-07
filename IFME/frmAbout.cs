@@ -43,7 +43,7 @@ namespace IFME
             lblDevs.Text = $"{Version.Contrib}\n\n{Version.TradeMark}";
 
 #if SAVE_LANG
-            LocaliserUI.Save(this, Name);
+            i18n.Save(this, Name);
 #else
             LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif

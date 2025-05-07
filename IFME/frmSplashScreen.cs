@@ -99,7 +99,7 @@ namespace IFME
             new PluginsLoad();
 
             // Load language
-            LocaliserUI.LoadLangFiles();
+            i18n.LoadLangFiles();
 
             // Finished loading, clear status text
             lblStatusUpdate(string.Empty);
