@@ -1,5 +1,5 @@
-Version 8.5
------------
+Version 8.5.0 (Kotoba Schein)
+-----------------------------
 [New] Interface now supporting Multi Language, feature implemented request by @reindex-ot
 [Fixed] Crash when selecting Encoding Profile
 

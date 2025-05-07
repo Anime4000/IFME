@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.ComponentModel;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using IFME;
-using System.ComponentModel;
 
 internal class i18n
 {
@@ -21,7 +20,7 @@ internal class i18n
             var name = Language.FullName(lang);
 
             Installed.Add(code, name);
-            frmSplashScreen.SetStatus($"Language Loading {name}");
+            IFME.frmSplashScreen.SetStatus($"Language Loading {name}");
         }
     }
 

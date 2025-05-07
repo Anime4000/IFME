@@ -5,7 +5,7 @@ internal class i18nObj
 {
     // Metadata
     public string AuthorName { get; set; } = "Anime4000";
-    public string AuthorEmail { get; set; } = "hitoha4000@outlook.com";
+    public string AuthorEmail { get; set; } = "";
     public string AuthorProfile { get; set; } = "https://github.com/Anime4000";
 
     // UI Settings

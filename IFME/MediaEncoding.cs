@@ -74,7 +74,7 @@ namespace IFME
         internal static void Extract(MediaQueue queue, string tempDir)
         {
             // Dump Metadata
-            frmMain.PrintStatus("Extracting...");
+            frmMain.PrintStatus(i18n.UI.Status["Extracting"]);
 
             frmMain.PrintLog("[INFO] Extracting metadata...");
             ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{queue.FilePath}\" -f ffmetadata metadata.ini -y");
@@ -176,7 +176,7 @@ namespace IFME
             {
                 var item = queue.Audio[i];
 
-                frmMain.PrintStatus($"Encoding, Audio #{i}");
+                frmMain.PrintStatus(String.Format(i18n.UI.Status["EncodingAudio"], i));
 
                 if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
                 {
@@ -218,7 +218,7 @@ namespace IFME
 
                     if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
-                        frmMain.PrintStatus($"Fast Remux, Audio #{i}");
+                        frmMain.PrintStatus(String.Format(i18n.UI.Status["EncodingAudioRemux"], i));
                         frmMain.PrintLog($"[INFO] Fast Remuxing Audio...");
 
                         var tempName = $"audio{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
@@ -260,7 +260,7 @@ namespace IFME
 
                 if (item.Info.Disposition_AttachedPic)
                 {
-                    frmMain.PrintStatus($"Extracting Thumbnail #{i}");
+                    frmMain.PrintStatus(String.Format(i18n.UI.Status["ExtractThumb"], i));
                     frmMain.PrintLog($"[INFO] Extracting Thumbnail...");
 
                     var exts = item.Codec;
@@ -440,7 +440,7 @@ namespace IFME
                     // Copy Streams
                     if (codec.GUID.Equals(new Guid("00000000-0000-0000-0000-000000000000")))
                     {
-                        frmMain.PrintStatus($"Copying, Video #{i}");
+                        frmMain.PrintStatus(String.Format(i18n.UI.Status["EncodingVideoCopy"], i));
                         frmMain.PrintLog($"[INFO] Copying video stream...");
 
                         ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error {vc.Args.Input} \"{item.FilePath}\" {vc.Args.UnPipe} {vc.Args.Output} {outencfile}");
@@ -450,7 +450,7 @@ namespace IFME
                     // MP4 Remux Test
                     if (queue.FastMuxVideo && !queue.Trim.Enable)
                     {
-                        frmMain.PrintStatus($"Fast Remux, Video #{i}");
+                        frmMain.PrintStatus(String.Format(i18n.UI.Status["EncodingVideoRemux"], i));
                         frmMain.PrintLog($"[INFO] Fast Remuxing Video...");
 
                         var tempName = $"video{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
@@ -465,7 +465,7 @@ namespace IFME
 
                         if (!IsExitError(exitCode))
                         {
-                            frmMain.PrintLog($"[ OK ] Fast Remux is complete... Exit Code {exitCode}");
+                            frmMain.PrintLog($"[ O K ] Fast Remux is complete... Exit Code {exitCode}");
                             continue;
                         }
 
@@ -506,7 +506,7 @@ namespace IFME
                     }
 
                     // Begin encoding
-                    frmMain.PrintStatus($"Encoding, Video #{i}");
+                    frmMain.PrintStatus(String.Format(i18n.UI.Status["EncodingVideo"], i));
                     frmMain.PrintLog($"[INFO] Encoding video file...");
 
                     var cmd_ff = $"-map 0:{item.Id} {ff_trim} {ff_yuv} -vf {string.Join(",", ff_vf)}";
@@ -559,7 +559,7 @@ namespace IFME
                     }
 
                     // Raw file dont have pts (time), need to remux
-                    frmMain.PrintStatus($"Restructure...");
+                    frmMain.PrintStatus(i18n.UI.Status["Restructuring"]);
                     frmMain.PrintLog($"[INFO] Restructure RAW video file...");
 
                     if (vc.RawOutput)
@@ -600,7 +600,7 @@ namespace IFME
 
             var outFile = Path.Combine(saveDir, saveFile);
 
-            frmMain.PrintStatus("Repacking...");
+            frmMain.PrintStatus(i18n.UI.Status["Repacking"]);
             frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
 
             Thread.Sleep(1500); // Wait NTFS finish updating the content

@@ -46,6 +46,7 @@
 		"ContainerNotSupportAudio": "[INFO] Selected format (container) doesn't support audio: {0}",
 		"ContainerNotSupportVideo": "[INFO] Selected format (container) doesn't support video: {0}",
 		"NotingToEncode": "[INFO] Nothing to encode, please check your input files."
+
 	},
 	"Status": {
 		"AudioOnly": "Audio Only",
@@ -56,7 +57,16 @@
 		"Error": "Error!",
 		"Unsupported": "UNSUPPORTED!",
 		"Waiting": "Waiting...",
-		"Warning": "Warning!"
+		"Warning": "Warning!",
+		"Extracting": "Extracting...",
+		"ExtractThumb": "Extracting Thumbnail #{0}",
+		"EncodingAudio": "Encoding, Audio #{0}",
+		"EncodingAudioRemux": "Fast Remux, Audio #{0}",
+		"EncodingVideoCopy": "Copying, Video #{0}",
+		"EncodingVideoRemux": "Fast Remux, Video #{0}",
+		"EncodingVideo": "Encoding, Video #{0}",
+		"Restructuring": "Restructuring...",
+		"Repacking": "Repacking..."
 	},
 	"Forms": {
 		"frmMain": {

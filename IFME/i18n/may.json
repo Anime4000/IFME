@@ -56,7 +56,16 @@
 		"Error": "Ralat!",
 		"Unsupported": "TIDAK DISOKONG!",
 		"Waiting": "Menunggu...",
-		"Warning": "Amaran!"
+		"Warning": "Amaran!",
+		"Extracting": "Mengekstrak...",
+		"ExtractThumb": "Mengekstrak Thumbnail #{0}",
+		"EncodingAudio": "Menyandikan, Audio #{0}",
+		"EncodingAudioRemux": "Remux Pantas, Audio #{0}",
+		"EncodingVideoCopy": "Menyalin, Video #{0}",
+		"EncodingVideoRemux": "Remux Pantas, Video #{0}",
+		"EncodingVideo": "Menyandikan, Video #{0}",
+		"Restructuring": "Menyusun Semula...",
+		"Repacking": "Membungkus Semula..."
 	},
 	"Forms": {
 		"frmMain": {
