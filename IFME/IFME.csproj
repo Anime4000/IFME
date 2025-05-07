@@ -170,10 +170,10 @@
     <None Include="Language.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Localiser\eng.json">
+    <None Include="i18n\eng.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Localiser\may.json">
+    <None Include="i18n\may.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Mime.json">

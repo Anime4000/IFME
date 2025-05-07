@@ -103,15 +103,15 @@ namespace IFME
         private void InitializeLog()
         {
             rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
-                $"Build: {Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
+                $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
                 "\r\n" +
-                $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\nContributor: {Version.Contrib}\r\n" +
+                $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\n(s) {Version.Contrib}\r\n" +
                 "\r\n" +
-                "Warning, DO NOT close this Terminal/Console, all useful info will be shown here.\r\n" +
+                $"{i18n.UI.Logs["WarningInfo"]}\r\n" +
                 "\r\n";
 
             if (string.IsNullOrEmpty(PluginsLoad.ErrorLog))
-                rtfConsole.AppendText("[INFO] No error during plugins initialising...\r\n");
+                rtfConsole.AppendText(i18n.UI.Logs["PluginLoadOK"]);
             else
                 rtfConsole.AppendText(PluginsLoad.ErrorLog);
         }
@@ -191,8 +191,8 @@ namespace IFME
             lstFile.SelectedIndices.Clear();
 
             frm.Show();
-            frm.Text = "Importing Media...";
-            frm.Status = "Indexing...";
+            frm.Text = i18n.UI.Dialogs["Importing"];
+            frm.Status = i18n.UI.Dialogs["Indexing"];
 
             var thread = new BackgroundWorker();
 
@@ -208,8 +208,8 @@ namespace IFME
                             {
                                 MediaFileListAdd(files[i], false);
                                 frm.Progress = (int)(((float)(i + 1) / files.Length) * 100.0);
-                                frm.Status = $"Reading {i + 1} of {files.Length} file\n{files[i]}";
-                                frm.Title = $"Importing: {frm.Progress}%";
+                                frm.Status = String.Format(i18n.UI.Dialogs["ImportStatus"], i + 1, files.Length, files[i]);
+                                frm.Title = String.Format(i18n.UI.Dialogs["ImportTitle"], frm.Progress);
                             }));
                         }
                     }
@@ -560,7 +560,7 @@ namespace IFME
             lstAudio.Items.Clear();
             lstSub.Items.Clear();
             lstAttach.Items.Clear();
-            txtMediaInfo.Text = "FFmpeg MediaInfo ♥";
+            txtMediaInfo.Text = i18n.UI.Dialogs["MediaInfo"];
             chkVideoDeInterlace.Checked = false;
             chkVideoMP4Compt.Checked = false;
             chkAudioMP4Compt.Checked = false;
@@ -582,7 +582,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog($"[ERRO] DisplayProperties_Video(), {ex.Message}");
+                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Video()", ex.Message));
                 }
             }
         }
@@ -598,7 +598,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog($"[ERRO] ID: DisplayProperties_Audio(), {ex.Message}");
+                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Audio()", ex.Message));
                 }
             }
         }
@@ -614,7 +614,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog($"[ERRO] ID: DisplayProperties_Subtitle(), {ex.Message}");
+                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Subtitle()", ex.Message));
                 }
             }
         }
@@ -631,7 +631,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog($"[ERRO] ID: DisplayProperties_Attachment(), {ex.Message}");
+                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Attachment()", ex.Message));
                 }
             }
         }

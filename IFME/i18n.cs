@@ -9,10 +9,11 @@ using System.ComponentModel;
 internal class i18n
 {
     public static Dictionary<string, string> Installed { get; set; } = new();
+    public static i18nObj UI { get; set; } = new();
 
     public static void LoadLangFiles()
     {
-        var langFiles = Directory.GetFiles("Localiser", "*.json");
+        var langFiles = Directory.GetFiles("i18n", "*.json");
         foreach (var file in langFiles)
         {
             var lang = Path.GetFileNameWithoutExtension(file);
@@ -26,10 +27,10 @@ internal class i18n
 
     public static string[] GetLangAuthor(string currentLang = "eng")
     {
-        var langFile = Path.Combine("Localiser", $"{currentLang}.json");
+        var langFile = Path.Combine("i18n", $"{currentLang}.json");
 
         if (!File.Exists(langFile))
-            return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at Localiser folder" };
+            return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at i18n folder" };
 
         var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
 
@@ -41,7 +42,7 @@ internal class i18n
 
     public static void Apply(Control parent, string formName, string currentLang = "eng")
     {
-        var langFile = Path.Combine("Localiser", $"{currentLang}.json");
+        var langFile = Path.Combine("i18n", $"{currentLang}.json");
 
         if (!File.Exists(langFile))
             return;
@@ -50,6 +51,9 @@ internal class i18n
 
         if (json?.Forms == null || !json.Forms.TryGetValue(formName, out var formStrings))
             return;
+
+        // Store the current UI object in the memory for hidden controls
+        UI = json; 
 
         foreach (Control ctrl in GetAllControls(parent))
         {
@@ -88,7 +92,7 @@ internal class i18n
 
     public static void Save(Control parent, string formName, string currentLang = "eng")
     {
-        var langFile = Path.Combine("Localiser", $"{currentLang}.json");
+        var langFile = Path.Combine("i18n", $"{currentLang}.json");
 
         i18nObj data;
         try
