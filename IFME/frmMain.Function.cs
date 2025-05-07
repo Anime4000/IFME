@@ -1025,10 +1025,10 @@ namespace IFME
 
         private void SetProfileData(Profiles value)
         {
+            cboFormat.SelectedIndex = (int)value.Container;
+
             cboVideoEncoder.SelectedIndex = -1;
             cboAudioEncoder.SelectedIndex = -1;
-
-            cboFormat.SelectedIndex = (int)value.Container;
 
             cboVideoEncoder.SelectedValue = value.Video.Encoder.Id;
             cboVideoPreset.SelectedItem = value.Video.Encoder.Preset;

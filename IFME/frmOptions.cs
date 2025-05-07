@@ -15,6 +15,8 @@ namespace IFME
 {
     public partial class frmOptions : Form
     {
+        private string LangAuthorInfo;
+
         public frmOptions()
         {
             InitializeComponent();
@@ -25,14 +27,17 @@ namespace IFME
 
         private void frmOptions_Load(object sender, EventArgs e)
         {
-            cboLanguage.Items.Add("English");
-            cboLanguage.SelectedIndex = 0;
-
 #if SAVE_LANG
             LocaliserUI.Save(this, Name);
 #else
             LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
+            LangAuthorInfo = lblLangAuthor.Text;
+
+            cboLanguage.DataSource = new BindingSource(LocaliserUI.Installed, null);
+            cboLanguage.DisplayMember = "Value";
+            cboLanguage.ValueMember = "Key";
+            cboLanguage.SelectedValue = Properties.Settings.Default.UILanguage;
         }
 
         private void frmOptions_Shown(object sender, EventArgs e)
@@ -117,8 +122,17 @@ namespace IFME
             }
         }
 
+        private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var lang = (KeyValuePair<string, string>)cboLanguage.SelectedItem;
+
+            lblLangAuthor.Text = String.Format(LangAuthorInfo, LocaliserUI.GetLangAuthor(lang.Key));
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.UILanguage = cboLanguage.SelectedValue.ToString();
+
             Properties.Settings.Default.FolderTemporary = txtTempPath.Text;
             Properties.Settings.Default.PrefixText = txtPrefix.Text;
             Properties.Settings.Default.PostfixText = txtPostfix.Text;

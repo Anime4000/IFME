@@ -197,7 +197,14 @@ namespace IFME
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
+            var currentLang = Properties.Settings.Default.UILanguage;
+
             new frmOptions().ShowDialog();
+
+            if (currentLang != Properties.Settings.Default.UILanguage)
+            {
+                LocaliserUI.Apply(this, Name, Properties.Settings.Default.UILanguage);
+            }
         }
 
         private void btnAbout_Click(object sender, EventArgs e)

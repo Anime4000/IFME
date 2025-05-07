@@ -1,3 +1,8 @@
+Version 8.5
+-----------
+[New] Interface now supporting Multi Language, feature implemented request by @reindex-ot
+[Fixed] Crash when selecting Encoding Profile
+
 Version 8.4.1 (Zero Point Module)
 ---------------------------------
 [Fixed] When burn subtitle, proceed font extract for rendering and skip adding back to video.

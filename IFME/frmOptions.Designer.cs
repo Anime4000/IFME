@@ -72,6 +72,7 @@ namespace IFME
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnFactoryReset = new System.Windows.Forms.Button();
+            this.lblLangAuthor = new System.Windows.Forms.Label();
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
@@ -305,6 +306,7 @@ namespace IFME
             // 
             this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpLanguage.Controls.Add(this.lblLangAuthor);
             this.grpLanguage.Controls.Add(this.cboLanguage);
             this.grpLanguage.Location = new System.Drawing.Point(6, 6);
             this.grpLanguage.Name = "grpLanguage";
@@ -318,10 +320,11 @@ namespace IFME
             this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLanguage.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cboLanguage.FormattingEnabled = true;
-            this.cboLanguage.Location = new System.Drawing.Point(69, 65);
+            this.cboLanguage.Location = new System.Drawing.Point(69, 44);
             this.cboLanguage.Name = "cboLanguage";
             this.cboLanguage.Size = new System.Drawing.Size(618, 24);
             this.cboLanguage.TabIndex = 0;
+            this.cboLanguage.SelectedIndexChanged += new System.EventHandler(this.cboLanguage_SelectedIndexChanged);
             // 
             // tabProcessing
             // 
@@ -564,6 +567,18 @@ namespace IFME
             this.btnFactoryReset.UseVisualStyleBackColor = true;
             this.btnFactoryReset.Click += new System.EventHandler(this.btnFactoryReset_Click);
             // 
+            // lblLangAuthor
+            // 
+            this.lblLangAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblLangAuthor.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.lblLangAuthor.Location = new System.Drawing.Point(69, 71);
+            this.lblLangAuthor.Name = "lblLangAuthor";
+            this.lblLangAuthor.Size = new System.Drawing.Size(618, 50);
+            this.lblLangAuthor.TabIndex = 1;
+            this.lblLangAuthor.Text = "Author: {0}\r\nHomepage: {1}\r\nContact: {2}";
+            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -643,5 +658,6 @@ namespace IFME
         private System.Windows.Forms.CheckBox chkMuxMp4FK;
         private System.Windows.Forms.CheckBox chkMuxMp4EM;
         private System.Windows.Forms.CheckBox chkMuxMp4SM;
+        private System.Windows.Forms.Label lblLangAuthor;
     }
 }

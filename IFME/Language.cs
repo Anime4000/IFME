@@ -6,62 +6,59 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace IFME
+public class Language
 {
-    public class Language
+    public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine("Language.json")));
+
+    public static string FullName(object obj)
     {
-        public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine("Language.json")));
+        return FullName(obj.ToString());
+    }
 
-        public static string FullName(object obj)
+    public static string FullName(string id)
+    {
+        if (Codes.TryGetValue(id, out string name))
         {
-            return FullName(obj.ToString());
+            return name;
         }
-
-        public static string FullName(string id)
+        else
         {
-            if (Codes.TryGetValue(id, out string name))
-            {
-                return name;
-            }
-            else
-            {
-                return "Undetermined";
-            }
+            return "Undetermined";
         }
+    }
 
-        public static string TryParseCode(string id)
+    public static string TryParseCode(string id)
+    {
+        if (Codes.TryGetValue(id, out _))
         {
-            if (Codes.TryGetValue(id, out _))
-            {
-                return id;
-            }
-            else
-            {
-                return "und";
-            }
+            return id;
         }
-
-        public static string FromFileNameFull(string filePath)
+        else
         {
-            var file = Path.GetFileNameWithoutExtension(filePath);
-            return FullName(TryParseCode(file.Substring(file.Length - 3)));
+            return "und";
         }
+    }
 
-        public static string FromFileNameCode(string filePath)
-        {
-            var file = Path.GetFileNameWithoutExtension(filePath);
-            return TryParseCode(file.Substring(file.Length - 3));
-        }
+    public static string FromFileNameFull(string filePath)
+    {
+        var file = Path.GetFileNameWithoutExtension(filePath);
+        return FullName(TryParseCode(file.Substring(file.Length - 3)));
+    }
 
-        public static string FromFileNameCode(string filePath, object lastChoice)
-        {
-            var file = Path.GetFileNameWithoutExtension(filePath);
-            var lang = TryParseCode(file.Substring(file.Length - 3));
+    public static string FromFileNameCode(string filePath)
+    {
+        var file = Path.GetFileNameWithoutExtension(filePath);
+        return TryParseCode(file.Substring(file.Length - 3));
+    }
 
-            if (string.Equals(lang, "und"))
-                return lastChoice.ToString();
+    public static string FromFileNameCode(string filePath, object lastChoice)
+    {
+        var file = Path.GetFileNameWithoutExtension(filePath);
+        var lang = TryParseCode(file.Substring(file.Length - 3));
 
-            return lang;
-        }
+        if (string.Equals(lang, "und"))
+            return lastChoice.ToString();
+
+        return lang;
     }
 }

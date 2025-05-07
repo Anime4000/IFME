@@ -57,24 +57,24 @@ namespace IFME
             // 
             // lblSeparator
             // 
-            this.lblSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSeparator.Location = new System.Drawing.Point(12, 107);
+            this.lblSeparator.Location = new System.Drawing.Point(118, 108);
             this.lblSeparator.Name = "lblSeparator";
-            this.lblSeparator.Size = new System.Drawing.Size(514, 2);
+            this.lblSeparator.Size = new System.Drawing.Size(510, 2);
             this.lblSeparator.TabIndex = 2;
             // 
             // lblFFmpeg
             // 
-            this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFFmpeg.Enabled = false;
-            this.lblFFmpeg.Location = new System.Drawing.Point(528, 95);
+            this.lblFFmpeg.Location = new System.Drawing.Point(12, 95);
             this.lblFFmpeg.Name = "lblFFmpeg";
-            this.lblFFmpeg.Size = new System.Drawing.Size(100, 24);
+            this.lblFFmpeg.Size = new System.Drawing.Size(120, 24);
             this.lblFFmpeg.TabIndex = 3;
             this.lblFFmpeg.Text = "FFmpeg MediaInfo";
-            this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmProgressBar
             // 
