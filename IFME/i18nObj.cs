@@ -5,7 +5,7 @@ internal class i18nObj
 {
     // Metadata
     public string AuthorName { get; set; } = "Anime4000";
-    public string AuthorEmail { get; set; } = "";
+    public string AuthorEmail { get; set; } = "example@example.tld";
     public string AuthorProfile { get; set; } = "https://github.com/Anime4000";
 
     // UI Settings
@@ -20,6 +20,20 @@ internal class i18nObj
 
     // All Status UI strings, dynamically stored
     public Dictionary<string, string> Status { get; set; } = new();
+
+    public Dictionary<int, string> DeInterlaceMode { get; set; } = new()
+    {
+        { 0, "Deinterlace only frame" },
+        { 1, "Deinterlace each field" },
+        { 2, "Skips spatial interlacing frame check" },
+        { 3, "Skips spatial interlacing field check" }
+    };
+
+    public Dictionary<int, string> DeInterlaceField { get; set; } = new()
+    {
+        { 0, "Top Field First" },
+        { 1, "Bottom Field First" }
+    };
 
     // All form UI strings, dynamically stored
     public Dictionary<string, SortedDictionary<string, string>> Forms { get; set; } = new();

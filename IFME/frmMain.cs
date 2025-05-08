@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using IFME.OSManager;
+using System.Threading;
 
 namespace IFME
 {
@@ -81,10 +82,16 @@ namespace IFME
 
             InitializeFonts();
 
+            if (Properties.Settings.Default.UILanguage == "auto")
+            {
+                Properties.Settings.Default.UILanguage = Thread.CurrentThread.CurrentUICulture.Name;
+                Properties.Settings.Default.Save();
+            }
+
 #if SAVE_LANG
             i18n.Save(this, Name);
 #else
-            i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
+            InitializeUI();
 #endif
 
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
@@ -201,7 +208,7 @@ namespace IFME
 
             if (currentLang != Properties.Settings.Default.UILanguage)
             {
-                i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
+                InitializeUI();
             }
         }
 

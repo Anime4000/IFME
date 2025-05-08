@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Globalization;
 using System.ComponentModel;
 using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 internal class i18n
@@ -13,14 +15,23 @@ internal class i18n
     public static void LoadLangFiles()
     {
         var langFiles = Directory.GetFiles("i18n", "*.json");
+
         foreach (var file in langFiles)
         {
             var lang = Path.GetFileNameWithoutExtension(file);
-            var code = Language.TryParseCode(lang);
-            var name = Language.FullName(lang);
 
-            Installed.Add(code, name);
-            IFME.frmSplashScreen.SetStatus($"Language Loading {name}");
+            try
+            {
+                var culture = new CultureInfo(lang);
+                var displayName = culture.DisplayName;
+
+                Installed.Add(lang, displayName);
+                IFME.frmSplashScreen.SetStatus($"Language Loading {displayName}");
+            }
+            catch (CultureNotFoundException)
+            {
+                Installed.Add(lang, $"Unknown Language ({lang})");
+            }
         }
     }
 
@@ -41,10 +52,16 @@ internal class i18n
 
     public static void Apply(Control parent, string formName, string currentLang = "eng")
     {
+        var langDefault = Path.Combine("i18n", "en-US.json");
         var langFile = Path.Combine("i18n", $"{currentLang}.json");
 
-        if (!File.Exists(langFile))
+        // When the default language file is not found, use the WinForm place holder as language
+        if (!File.Exists(langDefault))
             return;
+
+        // When the language file is not found, use the default (en-US) language
+        if (!File.Exists(langFile))
+            langFile = langDefault;
 
         var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
 
@@ -52,7 +69,7 @@ internal class i18n
             return;
 
         // Store the current UI object in the memory for hidden controls
-        i18nUI.Text = json; 
+        i18nUI.Obj = json; 
 
         foreach (Control ctrl in GetAllControls(parent))
         {
@@ -72,6 +89,16 @@ internal class i18n
                     {
                         ctrl.Text = text;
                     }
+                }
+
+                // change font for all controls, delete later if broken
+                if (IFME.OSManager.OS.IsWindows)
+                {
+                    ctrl.Font = json.FontUIWindows;
+                }
+                else
+                {
+                    ctrl.Font = json.FontUILinux;
                 }
             }
         }

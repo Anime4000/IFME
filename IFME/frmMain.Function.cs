@@ -27,27 +27,26 @@ namespace IFME
 
     public partial class frmMain
     {
+        private void InitializeUI()
+        {
+            i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
+
+            var a = cboVideoDeInterMode.SelectedIndex;
+            cboVideoDeInterMode.DataSource = new BindingSource(i18nUI.Obj.DeInterlaceMode, null);
+            cboVideoDeInterMode.DisplayMember = "Value";
+            cboVideoDeInterMode.ValueMember = "Key";
+            cboVideoDeInterMode.SelectedIndex = a;
+
+            var b = cboVideoDeInterField.SelectedIndex;
+            cboVideoDeInterField.DataSource = new BindingSource(i18nUI.Obj.DeInterlaceField, null);
+            cboVideoDeInterField.DisplayMember = "Value";
+            cboVideoDeInterField.ValueMember = "Key";
+            cboVideoDeInterField.SelectedIndex = b;
+        }
+
         private void InitializeFonts()
         {
             Fonts.Initialize();
-
-            Control ctrl = this;
-            do
-            {
-                ctrl = GetNextControl(ctrl, true);
-
-                if (ctrl != null)
-                {
-                    if (ctrl is Button)
-                    {
-                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
-                    }
-                    else
-                    {
-                        ctrl.Font = new Font("Tahoma", 8f);
-                    }
-                }
-            } while (ctrl != null);
 
             txtMediaInfo.Font = Fonts.Uni(12f, FontStyle.Regular);
             rtfConsole.Font = Fonts.Uni(12f, FontStyle.Regular);
@@ -69,15 +68,15 @@ namespace IFME
             btnVideoDel.Text = btnFileDelete.Text;
             btnVideoMoveUp.Text = btnFileUp.Text;
             btnVideoMoveDown.Text = btnFileDown.Text;
-            btnVideoDec.Font = new Font("Tahoma", 8f);
-            btnVideoEnc.Font = new Font("Tahoma", 8f);
+            //btnVideoDec.Font = new Font("Tahoma", 8f);
+            //btnVideoEnc.Font = new Font("Tahoma", 8f);
 
             btnAudioAdd.Text = btnFileAdd.Text;
             btnAudioDel.Text = btnFileDelete.Text;
             btnAudioMoveUp.Text = btnFileUp.Text;
             btnAudioMoveDown.Text = btnFileDown.Text;
-            btnAudioDec.Font = new Font("Tahoma", 8f);
-            btnAudioEnc.Font = new Font("Tahoma", 8f);
+            //btnAudioDec.Font = new Font("Tahoma", 8f);
+            //btnAudioEnc.Font = new Font("Tahoma", 8f);
 
             btnSubAdd.Text = btnFileAdd.Text;
             btnSubDel.Text = btnFileDelete.Text;
@@ -90,7 +89,7 @@ namespace IFME
             btnProfileSaveLoad.Text = Fonts.fa.floppy_o;
             btnOutputBrowse.Text = Fonts.fa.folder;
 
-            tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
+            //tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
             tabConfigMediaInfo.Text = $"{Fonts.fa.info} {tabConfigMediaInfo.Text}";
             tabConfigVideo.Text = $"{Fonts.fa.video_camera} {tabConfigVideo.Text}";
             tabConfigAudio.Text = $"{Fonts.fa.volume_up} {tabConfigAudio.Text}";
@@ -98,6 +97,20 @@ namespace IFME
             tabConfigAttachment.Text = $"{Fonts.fa.paperclip} {tabConfigAttachment.Text}";
             tabConfigAdvance.Text = $"{Fonts.fa.gear} {tabConfigAdvance.Text}";
             tabConfigLog.Text = $"{Fonts.fa.terminal} {tabConfigLog.Text}";
+
+            Control ctrl = this;
+            do
+            {
+                ctrl = GetNextControl(ctrl, true);
+
+                if (ctrl != null)
+                {
+                    if (ctrl is Button)
+                    {
+                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
+                    }
+                }
+            } while (ctrl != null);
         }
 
         private void InitializeLog()

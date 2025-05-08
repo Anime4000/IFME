@@ -170,7 +170,7 @@ namespace IFME.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("eng")]
+        [global::System.Configuration.DefaultSettingValueAttribute("auto")]
         public string UILanguage {
             get {
                 return ((string)(this["UILanguage"]));

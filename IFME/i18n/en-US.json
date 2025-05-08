@@ -68,6 +68,16 @@
 		"Restructuring": "Restructuring...",
 		"Repacking": "Repacking..."
 	},
+	"DeInterlaceMode": {
+		"0": "Deinterlace only frame",
+		"1": "Deinterlace only field",
+		"2": "Skips spatial interlacing frame check",
+		"3": "Skips spatial interlacing field check"
+	},
+	"DeInterlaceField": {
+		"0": "Top field first",
+		"1": "Bottom field first"
+	},
 	"Forms": {
 		"frmMain": {
 			"btnAbout": "",

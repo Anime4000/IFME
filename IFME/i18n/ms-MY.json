@@ -2,7 +2,7 @@
 	"AuthorName": "Anime4000",
 	"AuthorProfile": "https://github.com/Anime4000",
 	"AuthorEmail": "",
-	"FontUIWindows": "Tahoma, 8pt",
+	"FontUIWindows": "Verdana, 8pt",
 	"FontUILinux": "Nimbus Sans L, 8pt",
 	"Dialogs": {
 		"CodecCommandLine1": "{0} Baris Perintah",
@@ -66,6 +66,16 @@
 		"EncodingVideo": "Menyandikan, Video #{0}",
 		"Restructuring": "Menyusun Semula...",
 		"Repacking": "Membungkus Semula..."
+	},
+	"DeInterlaceMode": {
+		"0": "Nyahselang bingkai sahaja",
+		"1": "Nyahselang medan sahaja",
+		"2": "Langkau pemeriksaan bingkai selang ruang",
+		"3": "Langkau pemeriksaan medan selang ruang"
+	},
+	"DeInterlaceField": {
+		"0": "Medan atas dahulu",
+		"1": "Medan bawah dahulu"
 	},
 	"Forms": {
 		"frmMain": {

@@ -124,6 +124,9 @@ namespace IFME
 
         private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cboLanguage.SelectedItem == null)
+                cboLanguage.SelectedIndex = 0;
+
             var lang = (KeyValuePair<string, string>)cboLanguage.SelectedItem;
 
             lblLangAuthor.Text = String.Format(LangAuthorInfo, i18n.GetLangAuthor(lang.Key));
