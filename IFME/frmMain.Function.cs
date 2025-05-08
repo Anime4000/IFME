@@ -107,11 +107,11 @@ namespace IFME
                 "\r\n" +
                 $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\n(s) {Version.Contrib}\r\n" +
                 "\r\n" +
-                $"{i18n.UI.Logs["WarningInfo"]}\r\n" +
+                $"{i18nUI.Log("WarningInfo")}\r\n" +
                 "\r\n";
 
             if (string.IsNullOrEmpty(PluginsLoad.ErrorLog))
-                rtfConsole.AppendText(i18n.UI.Logs["PluginLoadOK"]);
+                rtfConsole.AppendText(i18nUI.Log("PluginLoadOK"));
             else
                 rtfConsole.AppendText(PluginsLoad.ErrorLog);
         }
@@ -191,8 +191,8 @@ namespace IFME
             lstFile.SelectedIndices.Clear();
 
             frm.Show();
-            frm.Text = i18n.UI.Dialogs["Importing"];
-            frm.Status = i18n.UI.Dialogs["Indexing"];
+            frm.Text = i18nUI.Dialog("Importing");
+            frm.Status = i18nUI.Dialog("Indexing");
 
             var thread = new BackgroundWorker();
 
@@ -208,8 +208,8 @@ namespace IFME
                             {
                                 MediaFileListAdd(files[i], false);
                                 frm.Progress = (int)(((float)(i + 1) / files.Length) * 100.0);
-                                frm.Status = String.Format(i18n.UI.Dialogs["ImportStatus"], i + 1, files.Length, files[i]);
-                                frm.Title = String.Format(i18n.UI.Dialogs["ImportTitle"], frm.Progress);
+                                frm.Status = String.Format(i18nUI.Dialog("ImportStatus"), i + 1, files.Length, files[i]);
+                                frm.Title = String.Format(i18nUI.Dialog("ImportTitle"), frm.Progress);
                             }));
                         }
                     }
@@ -560,7 +560,7 @@ namespace IFME
             lstAudio.Items.Clear();
             lstSub.Items.Clear();
             lstAttach.Items.Clear();
-            txtMediaInfo.Text = i18n.UI.Dialogs["MediaInfo"];
+            txtMediaInfo.Text = i18nUI.Dialog("MediaInfo");
             chkVideoDeInterlace.Checked = false;
             chkVideoMP4Compt.Checked = false;
             chkAudioMP4Compt.Checked = false;
@@ -582,7 +582,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Video()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Video()", ex.Message));
                 }
             }
         }
@@ -598,7 +598,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Audio()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Audio()", ex.Message));
                 }
             }
         }
@@ -614,7 +614,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Subtitle()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Subtitle()", ex.Message));
                 }
             }
         }
@@ -631,7 +631,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Attachment()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Attachment()", ex.Message));
                 }
             }
         }

@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 
 internal class i18n
 {
+    // List installed languages
     public static Dictionary<string, string> Installed { get; set; } = new();
-    public static i18nObj UI { get; set; } = new();
 
     public static void LoadLangFiles()
     {
@@ -52,7 +52,7 @@ internal class i18n
             return;
 
         // Store the current UI object in the memory for hidden controls
-        UI = json; 
+        i18nUI.Text = json; 
 
         foreach (Control ctrl in GetAllControls(parent))
         {

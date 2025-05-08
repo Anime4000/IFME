@@ -104,6 +104,7 @@
       <DependentUpon>frmSplashScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplashScreen.Status.cs" />
+    <Compile Include="i18nUI.cs" />
     <Compile Include="Images.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="i18nObj.cs" />

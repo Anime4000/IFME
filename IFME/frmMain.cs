@@ -89,8 +89,8 @@ namespace IFME
 
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
             {
-                var hed = i18n.UI.Dialogs["NoEncoderAvailableTitle"];
-                var msg = i18n.UI.Dialogs["NoEncoderAvailableMsg1"];
+                var hed = i18nUI.Dialog("NoEncoderAvailableTitle");
+                var msg = i18nUI.Dialog("NoEncoderAvailableMsg1");
 
                 MessageBox.Show(msg, hed, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
@@ -99,7 +99,7 @@ namespace IFME
             var c = 0;
             foreach (var item in Format)
             {
-                cboFormat.Items.Add($"{item}{(c >= (int)MediaContainer.MP2 ? $" ({i18n.UI.Status["AudioOnly"]})" : "")}");
+                cboFormat.Items.Add($"{item}{(c >= (int)MediaContainer.MP2 ? $" ({i18nUI.Status("AudioOnly")})" : "")}");
                 c++;
             }
             cboFormat.SelectedIndex = 2;
@@ -261,14 +261,14 @@ namespace IFME
         {
             if (tsmiPowerOff.Checked)
             {
-                var msgBox = MessageBox.Show(i18n.UI.Dialogs["ForcedEncodingShutdown"], i18n.UI.Status["Warning"], MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                var msgBox = MessageBox.Show(i18nUI.Dialog("ForcedEncodingShutdown"), i18nUI.Status("Warning"), MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
                 if (msgBox == DialogResult.Cancel)
                     return;
             }
 
             if (cboFormat.SelectedIndex == -1)
             {
-                MessageBox.Show(i18n.UI.Dialogs["OutputFormatNotSet"], i18n.UI.Status["Warning"], MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(i18nUI.Dialog("OutputFormatNotSet"), i18nUI.Status("Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -299,7 +299,7 @@ namespace IFME
                             continue;
 
                         data.Add(item.Index, item.Tag as MediaQueue);
-                        item.SubItems[4].Text = i18n.UI.Status["Waiting"];
+                        item.SubItems[4].Text = i18nUI.Status("Waiting");
                         item.SubItems[5].Text = string.Empty;
                     }
 
@@ -309,7 +309,7 @@ namespace IFME
                     }
                     else
                     {
-                        frmMain.PrintLog(i18n.UI.Logs["NotingToEncode"]);
+                        frmMain.PrintLog(i18nUI.Log("NotingToEncode"));
                         btnStart.Text = Fonts.fa.play;
                     }
                 }
@@ -603,7 +603,7 @@ namespace IFME
             }
             catch (Exception ex)
             {
-                PrintLog(String.Format(i18n.UI.Logs["ContainerNotSupportVideo"], ex.Message));
+                PrintLog(String.Format(i18nUI.Log("ContainerNotSupportVideo"), ex.Message));
                 return;
             }
 
@@ -679,7 +679,7 @@ namespace IFME
 
                                 if (CheckImageSeqEncoder(d, enc.Id))
                                 {
-                                    MessageBox.Show(i18n.UI.Dialogs["ImageSeqCannotCopy"], i18n.UI.Status["Unsupported"], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(i18nUI.Dialog("ImageSeqCannotCopy"), i18nUI.Status("Unsupported"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     continue;
                                 }
 
@@ -699,7 +699,7 @@ namespace IFME
                             {
                                 if (CheckImageSeqEncoder(d, enc.Id))
                                 {
-                                    MessageBox.Show(i18n.UI.Dialogs["ImageSeqCannotCopy"], i18n.UI.Status["Unsupported"], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(i18nUI.Dialog("ImageSeqCannotCopy"), i18nUI.Status("Unsupported"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     continue;
                                 }
 
@@ -867,7 +867,7 @@ namespace IFME
                 }
             }
 
-            var ib2 = new InputBox2(i18n.UI.Dialogs["VideoDecoderTitle"], i18n.UI.Dialogs["VideoDecoderMsg1"], i18n.UI.Dialogs["VideoDecoderMsg2"], cmd1, cmd2);
+            var ib2 = new InputBox2(i18nUI.Dialog("VideoDecoderTitle"), i18nUI.Dialog("VideoDecoderMsg1"), i18nUI.Dialog("VideoDecoderMsg2"), cmd1, cmd2);
             if (ib2.ShowDialog() == DialogResult.OK)
             {
                 cmd1 = ib2.ReturnValue1;
@@ -929,7 +929,7 @@ namespace IFME
                 }
             }
 
-            var ib = new InputBox(String.Format(i18n.UI.Dialogs["CodecCommandLine1"], cboVideoEncoder.Text), i18n.UI.Dialogs["VideoEncoderMsg1"], cmd1);
+            var ib = new InputBox(String.Format(i18nUI.Dialog("CodecCommandLine1"), cboVideoEncoder.Text), i18nUI.Dialog("VideoEncoderMsg1"), cmd1);
             if (ib.ShowDialog() == DialogResult.OK)
             {
                 cmd1 = ib.ReturnValue;
@@ -1407,7 +1407,7 @@ namespace IFME
             }
             catch (Exception ex)
             {
-                PrintLog(String.Format(i18n.UI.Logs["ContainerNotSupportAudio"], ex.Message));
+                PrintLog(String.Format(i18nUI.Log("ContainerNotSupportAudio"), ex.Message));
                 return;
             }
             
@@ -1629,7 +1629,7 @@ namespace IFME
                 }
             }
 
-            var ib2 = new InputBox2(i18n.UI.Dialogs["AudioDecoderTitle"], i18n.UI.Dialogs["AudioDecoderMsg1"], i18n.UI.Dialogs["AudioDecoderMsg2"], cmd1, cmd2);
+            var ib2 = new InputBox2(i18nUI.Dialog("AudioDecoderTitle"), i18nUI.Dialog("AudioDecoderMsg1"), i18nUI.Dialog("AudioDecoderMsg2"), cmd1, cmd2);
             if (ib2.ShowDialog() == DialogResult.OK)
             {
                 cmd1 = ib2.ReturnValue1;
@@ -1669,7 +1669,7 @@ namespace IFME
                 }
             }
 
-            var ib = new InputBox(String.Format(i18n.UI.Dialogs["CodecCommandLine1"], cboAudioEncoder.Text), i18n.UI.Dialogs["AudioEncoderMsg1"], cmd1);
+            var ib = new InputBox(String.Format(i18nUI.Dialog("CodecCommandLine1"), cboAudioEncoder.Text), i18nUI.Dialog("AudioEncoderMsg1"), cmd1);
             if (ib.ShowDialog() == DialogResult.OK)
             {
                 cmd1 = ib.ReturnValue;
@@ -2004,7 +2004,7 @@ namespace IFME
             {
                 if (!rTime.IsMatch((sender as TextBox).Text))
                 {
-                    MessageBox.Show(i18n.UI.Dialogs["FormatTimeCode"], i18n.UI.Status["Error"], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(i18nUI.Dialog("FormatTimeCode"), i18nUI.Status("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -2201,7 +2201,7 @@ namespace IFME
                 }
             }
 
-            var input = new InputBox(i18n.UI.Dialogs["ProfileSaveTitle"], i18n.UI.Dialogs["ProfileSaveMsg1"], 4);
+            var input = new InputBox(i18nUI.Dialog("ProfileSaveTitle"), i18nUI.Dialog("ProfileSaveMsg1"), 4);
             if (input.ShowDialog() == DialogResult.OK)
             {
                 var v = new ProfilesVideo
@@ -2268,8 +2268,8 @@ namespace IFME
                 ValidateNames = false,
                 CheckFileExists = false,
                 CheckPathExists = false,
-                Title = i18n.UI.Dialogs["OutputLocationTitle"],
-                FileName = i18n.UI.Dialogs["OutputLocationFolder"],
+                Title = i18nUI.Dialog("OutputLocationTitle"),
+                FileName = i18nUI.Dialog("OutputLocationFolder"),
                 InitialDirectory = txtOutputPath.Text
             };
 
@@ -2368,7 +2368,7 @@ namespace IFME
                     var index = cboProfile.SelectedIndex;
                     var oldName = Profiles.Items[index].ProfileName;
 
-                    var ib = new InputBox(i18n.UI.Dialogs["ProfileRenameTitle"], i18n.UI.Dialogs["ProfileRenameMsg1"], oldName, 4);
+                    var ib = new InputBox(i18nUI.Dialog("ProfileRenameTitle"), i18nUI.Dialog("ProfileRenameMsg1"), oldName, 4);
                     if (ib.ShowDialog() == DialogResult.OK)
                     {
                         Profiles.Items[index].ProfileName = ib.ReturnValue;
@@ -2390,7 +2390,7 @@ namespace IFME
             {
                 if (cboProfile.Items.Count == Profiles.Items.Count)
                 {
-                    var msgBox = MessageBox.Show(i18n.UI.Dialogs["ProfileDeleteMsg1"], i18n.UI.Dialogs["ProfileDeleteTitle"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    var msgBox = MessageBox.Show(i18nUI.Dialog("ProfileDeleteMsg1"), i18nUI.Dialog("ProfileDeleteTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (msgBox == DialogResult.Yes)
                     {
                         var index = cboProfile.SelectedIndex;
@@ -2479,13 +2479,13 @@ namespace IFME
                     if (errCodeMux <= -1 || errCodeMux == 1)
                     {
                         Extensions.DirectoryCopy(tempSes, Path.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
-                        PrintLog(i18n.UI.Logs["MuxingFailed"]);
-                        PrintLog(String.Format(i18n.UI.Logs["FFmpegReturnCode"], errCodeMux));
+                        PrintLog(i18nUI.Log("MuxingFailed"));
+                        PrintLog(String.Format(i18nUI.Log("FFmpegReturnCode"), errCodeMux));
                     }
                     else
                     {
-                        PrintLog(i18n.UI.Logs["MuxingSuccess"]);
-                        PrintLog(String.Format(i18n.UI.Logs["FFmpegReturnCode"], errCodeMux));
+                        PrintLog(i18nUI.Log("MuxingSuccess"));
+                        PrintLog(String.Format(i18nUI.Log("FFmpegReturnCode"), errCodeMux));
                     }
 
                     // Delete Temporary Session Folder
@@ -2495,15 +2495,15 @@ namespace IFME
                     lstFile.Invoke((MethodInvoker)delegate
                     {
                         lstFile.Items[id].Checked = false;
-                        lstFile.Items[id].SubItems[4].Text = i18n.UI.Status["Done"];
-                        lstFile.Items[id].SubItems[5].Text = String.Format(i18n.UI.Status["Complete"], $"{DateTime.Now.Subtract(tt):dd\\:hh\\:mm\\:ss}");
+                        lstFile.Items[id].SubItems[4].Text = i18nUI.Status("Done");
+                        lstFile.Items[id].SubItems[5].Text = String.Format(i18nUI.Status("Complete"), $"{DateTime.Now.Subtract(tt):dd\\:hh\\:mm\\:ss}");
                     });
                 }
                 else
                 {
                     lstFile.Invoke((MethodInvoker)delegate
                     {
-                        lstFile.Items[id].SubItems[4].Text = i18n.UI.Status["Skip"];
+                        lstFile.Items[id].SubItems[4].Text = i18nUI.Status("Skip");
                         lstFile.Items[id].SubItems[5].Text = string.Empty;
                     });
                 }
@@ -2523,18 +2523,18 @@ namespace IFME
 
             if (e.Cancelled)
             {
-                frmMain.PrintLog(i18n.UI.Logs["OperationCanceled"]);
+                frmMain.PrintLog(i18nUI.Log("OperationCanceled"));
 
                 foreach (ListViewItem item in lstFile.Items)
                 {
-                    item.SubItems[4].Text = i18n.UI.Status["Abort"];
+                    item.SubItems[4].Text = i18nUI.Status("Abort");
                     item.SubItems[5].Text = "";
                 }
             }
 
             if (!e.Cancelled && tsmiPowerOff.Checked)
             {
-                frmMain.PrintLog(i18n.UI.Logs["OperationCompleteShutdown"]);
+                frmMain.PrintLog(i18nUI.Log("OperationCompleteShutdown"));
                 OS.PowerOff(3);
                 return;
             }
