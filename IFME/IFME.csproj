@@ -174,7 +174,9 @@
     <None Include="i18n\ja-JP.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="i18n\zh-CN.json" />
+    <None Include="i18n\zh-CN.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Language.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
