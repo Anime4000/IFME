@@ -2,7 +2,7 @@
 	"AuthorName": "Anime4000",
 	"AuthorProfile": "https://github.com/Anime4000",
 	"AuthorEmail": "",
-	"FontUIWindows": "Verdana, 8pt",
+	"FontUIWindows": "Tahoma, 8pt",
 	"FontUILinux": "Nimbus Sans L, 8pt",
 	"Dialogs": {
 		"CodecCommandLine1": "{0} Baris Perintah",
@@ -32,7 +32,14 @@
 		"FormatTimeCode": "Sila berikan masa dalam format hh:mm:ss.xxx",
 		"ImageSeqCannotCopy": "Sumber Imej MESTI DISANDIKAN, TIDAK BOLEH MENYALIN STRIM TANPA PERUBAHAN!",
 		"NoEncoderAvailableTitle": "Tiada pengekod tersedia",
-		"NoEncoderAvailableMsg1": "Tiada pengekod yang sesuai ditemui. Ini mungkin disebabkan penggunaan plugin pengekod lapuk dengan versi semasa atau kehilangan Pustaka Runtime yang diperlukan.\r\n\r\nJika anda menggunakan Windows, pastikan Visual C++ Redistributable yang diperlukan dipasang.\r\n\r\nPada Debian Linux, pastikan pustaka libstdc++/libgcc yang diperlukan tersedia.\r\n\r\nSila pertimbangkan untuk memasang semula IFME tanpa sebarang pengubahsuaian untuk menyelesaikan masalah ini."
+		"NoEncoderAvailableMsg1": "Tiada pengekod yang sesuai ditemui. Ini mungkin disebabkan penggunaan plugin pengekod lapuk dengan versi semasa atau kehilangan Pustaka Runtime yang diperlukan.\r\n\r\nJika anda menggunakan Windows, pastikan Visual C++ Redistributable yang diperlukan dipasang.\r\n\r\nPada Debian Linux, pastikan pustaka libstdc++/libgcc yang diperlukan tersedia.\r\n\r\nSila pertimbangkan untuk memasang semula IFME tanpa sebarang pengubahsuaian untuk menyelesaikan masalah ini.",
+		"FactoryResetTitle": "Tetapan Kilang",
+		"FactoryResetMsg1": "Ini akan menetapkan semula semua tetapan kepada nilai lalai. Adakah anda ingin meneruskan?",
+		"CodecSkipTestTitle": "Langkau Ujian Pengekod",
+		"CodecSkipTestMsg1": "Pilihan ini melumpuhkan ujian pengekod, yang mungkin menyebabkan masalah kestabilan. Adakah anda ingin meneruskan?",
+		"FinalWarningTitle": "Amaran Terakhir",
+		"FinalWarningMsg1": "Tindakan ini mungkin menyebabkan masalah dengan pengekod. Adakah anda ingin meneruskan?",
+		"TempBrowseFolder": "Pilih folder kosong untuk fail sementara"
 	},
 	"Logs": {
 		"WarningInfo": "Amaran, JANGAN tutup Terminal/Konsol ini, semua maklumat berguna akan dipaparkan di sini.",
@@ -88,7 +95,7 @@
 			"btnAudioEnc": "P&engekod CLI",
 			"btnAudioMoveDown": "",
 			"btnAudioMoveUp": "",
-			"btnDonate": " &Derma",
+			"btnDonate": "♥ &Derma",
 			"btnFileAdd": "",
 			"btnFileDelete": "",
 			"btnFileDown": "",

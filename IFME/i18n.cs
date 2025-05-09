@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Globalization;
 using System.ComponentModel;
@@ -59,7 +60,7 @@ internal class i18n
         if (!File.Exists(langDefault))
             return;
 
-        // When the language file is not found, use the default (en-US) language
+        // When the choosen language file is not found, use the default (en-US) language
         if (!File.Exists(langFile))
             langFile = langDefault;
 
@@ -91,14 +92,10 @@ internal class i18n
                     }
                 }
 
-                // change font for all controls, delete later if broken
-                if (IFME.OSManager.OS.IsWindows)
+                // change font for all controls except
+                if (ctrl.Text.Length != 1)
                 {
-                    ctrl.Font = json.FontUIWindows;
-                }
-                else
-                {
-                    ctrl.Font = json.FontUILinux;
+                    ctrl.Font = DefaultFont(json);
                 }
             }
         }
@@ -212,5 +209,17 @@ internal class i18n
                ctrl is RadioButton ||
                ctrl is ListView ||
                ctrl is GroupBox;
+    }
+
+    private static Font DefaultFont(i18nObj i18n)
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            return i18n.FontUIWindows;
+        }
+        else
+        {
+            return i18n.FontUILinux;
+        }
     }
 }

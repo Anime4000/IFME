@@ -91,7 +91,7 @@ namespace IFME
 #if SAVE_LANG
             i18n.Save(this, Name);
 #else
-            InitializeUI();
+            Initialize_i18n();
 #endif
 
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
@@ -208,7 +208,7 @@ namespace IFME
 
             if (currentLang != Properties.Settings.Default.UILanguage)
             {
-                InitializeUI();
+                Initialize_i18n();
             }
         }
 

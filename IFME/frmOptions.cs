@@ -198,7 +198,7 @@ namespace IFME
                 ValidateNames = false,
                 CheckFileExists = false,
                 CheckPathExists = false,
-                Title = "Select desire temporary folder (must be empty!)",
+                Title = i18nUI.Dialog("TempBrowseFolder"),
                 FileName = "TEMP",
                 InitialDirectory = txtTempPath.Text,
                 AutoUpgradeEnabled = true
@@ -282,7 +282,7 @@ namespace IFME
         {
             if (!(sender as CheckBox).Checked)
             {
-                var msg = MessageBox.Show("Disable encoder test could lead to broken results, glitch, instability, incompatible host & CPU\n\nUSE AT YOUR OWN RISK, NO SUPPORT AFTER THIS!", "You are about to disable encoder test!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var msg = MessageBox.Show(i18nUI.Dialog("CodecSkipTestMsg1"), i18nUI.Dialog("CodecSkipTestTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (msg == DialogResult.No)
                 {
@@ -290,7 +290,7 @@ namespace IFME
                 }
                 else
                 {
-                    var final = MessageBox.Show("ARE YOU SURE?", "FINAL WARNING!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    var final = MessageBox.Show(i18nUI.Dialog("FinalWarningMsg1"), i18nUI.Dialog("FinalWarningTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
                     if (final == DialogResult.No)
                     {
@@ -333,7 +333,7 @@ namespace IFME
 
         private void btnFactoryReset_Click(object sender, EventArgs e)
         {
-            var msg = MessageBox.Show("This will reset to factory settings, all custom settings will be deleted!\n\nProceed such action?", "Factory Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            var msg = MessageBox.Show(i18nUI.Dialog("FactoryResetMsg1"), i18nUI.Dialog("FactoryResetTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (msg == DialogResult.Yes)
                 Properties.Settings.Default.Reset();

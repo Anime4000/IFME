@@ -27,7 +27,7 @@ namespace IFME
 
     public partial class frmMain
     {
-        private void InitializeUI()
+        private void Initialize_i18n()
         {
             i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
 
@@ -47,6 +47,20 @@ namespace IFME
         private void InitializeFonts()
         {
             Fonts.Initialize();
+
+            Control ctrl = this;
+            do
+            {
+                ctrl = GetNextControl(ctrl, true);
+
+                if (ctrl != null)
+                {
+                    if (ctrl is Button)
+                    {
+                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
+                    }
+                }
+            } while (ctrl != null);
 
             txtMediaInfo.Font = Fonts.Uni(12f, FontStyle.Regular);
             rtfConsole.Font = Fonts.Uni(12f, FontStyle.Regular);
@@ -89,7 +103,7 @@ namespace IFME
             btnProfileSaveLoad.Text = Fonts.fa.floppy_o;
             btnOutputBrowse.Text = Fonts.fa.folder;
 
-            //tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
+            tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
             tabConfigMediaInfo.Text = $"{Fonts.fa.info} {tabConfigMediaInfo.Text}";
             tabConfigVideo.Text = $"{Fonts.fa.video_camera} {tabConfigVideo.Text}";
             tabConfigAudio.Text = $"{Fonts.fa.volume_up} {tabConfigAudio.Text}";
@@ -97,20 +111,6 @@ namespace IFME
             tabConfigAttachment.Text = $"{Fonts.fa.paperclip} {tabConfigAttachment.Text}";
             tabConfigAdvance.Text = $"{Fonts.fa.gear} {tabConfigAdvance.Text}";
             tabConfigLog.Text = $"{Fonts.fa.terminal} {tabConfigLog.Text}";
-
-            Control ctrl = this;
-            do
-            {
-                ctrl = GetNextControl(ctrl, true);
-
-                if (ctrl != null)
-                {
-                    if (ctrl is Button)
-                    {
-                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
-                    }
-                }
-            } while (ctrl != null);
         }
 
         private void InitializeLog()
