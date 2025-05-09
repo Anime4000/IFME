@@ -220,7 +220,7 @@
 			"grpPostfix": "Filename &suffix",
 			"grpTempFolder": "&Working directory",
 			"lblFileNameEx": "Example: Mysteries Of Legendary Worlds.mkv",
-			"lblLangAuthor": "Localization author: {0}\nWebsite: {1}\nContact: {2}",
+			"lblLangAuthor": "Localization by: {0}\nWebsite: {1}\nContact: {2}",
 			"lstPlugins0": "Encoder",
 			"lstPlugins1": "Architecture",
 			"lstPlugins2": "Version",

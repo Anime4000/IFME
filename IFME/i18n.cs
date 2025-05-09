@@ -70,7 +70,9 @@ internal class i18n
             return;
 
         // Store the current UI object in the memory for hidden controls
-        i18nUI.Obj = json; 
+        i18nUI.Obj = json;
+
+        var font = DefaultFont(json);
 
         foreach (Control ctrl in GetAllControls(parent))
         {
@@ -95,7 +97,14 @@ internal class i18n
                 // change font for all controls except
                 if (ctrl.Text.Length != 1)
                 {
-                    ctrl.Font = DefaultFont(json);
+                    if (ctrl.Font.Size > 8)
+                    {
+                        ctrl.Font = new Font(font.FontFamily, ctrl.Font.Size);
+                    }
+                    else
+                    {
+                        ctrl.Font = font;
+                    }
                 }
             }
         }
