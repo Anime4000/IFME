@@ -20,7 +20,7 @@
 		"ImportStatus": "{1} 個のファイル中 {0} 個をインポート中...\r\n{2}",
 		"MediaInfo": "ビデオとオーディオのメディア情報がここに表示されます",
 		"ProfileRenameTitle": "プロファイルの名前を変更",
-		"ProfileRenameMsg1": "新しいプロファイル名を入力してOKを押してください",
+		"ProfileRenameMsg1": "新しいプロファイル名を入力して OK を押してください",
 		"ProfileDeleteTitle": "プロファイルを削除",
 		"ProfileDeleteMsg1": "このプロファイルを削除してもよろしいですか？",
 		"ProfileSaveTitle": "エンコード設定プロファイルを保存",
