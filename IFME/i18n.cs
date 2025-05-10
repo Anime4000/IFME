@@ -83,7 +83,10 @@ internal class i18n
                     foreach (ColumnHeader header in ((ListView)ctrl).Columns)
                     {
                         if (formStrings.TryGetValue($"{ctrl.Name}{header.Index}", out string text))
+                        {
                             header.Text = text;
+                            ctrl.Font = font;
+                        }
                     }
                 }
                 else
@@ -91,21 +94,6 @@ internal class i18n
                     if (formStrings.TryGetValue(ctrl.Name, out string text))
                     {
                         ctrl.Text = text;
-                    }
-                }
-
-                // change font for all controls except
-                if (ctrl.Text.Length != 1)
-                {
-                    if (ctrl.Font.Size > 8)
-                    {
-                        if (ctrl is TabPage)
-                            ctrl.Font = font;
-                        else
-                            ctrl.Font = new Font(font.FontFamily, ctrl.Font.Size);
-                    }
-                    else
-                    {
                         ctrl.Font = font;
                     }
                 }

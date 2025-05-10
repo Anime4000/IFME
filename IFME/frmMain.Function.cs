@@ -74,7 +74,7 @@ namespace IFME
             btnAbout.Text = $"{Fonts.fa.info_circle}";
             btnFileUp.Text = Fonts.fa.chevron_up;
             btnFileDown.Text = Fonts.fa.chevron_down;
-            btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
+            //btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
             btnStart.Text = Fonts.fa.play;
             btnStop.Text = Fonts.fa.stop;
 

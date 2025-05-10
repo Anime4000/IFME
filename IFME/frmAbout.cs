@@ -11,20 +11,6 @@ namespace IFME
 {
     public partial class frmAbout : Form
     {
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
-            base.OnHandleCreated(e);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            if (OS.IsWindows)
-                e.Graphics.Clear(Color.Transparent);
-            else
-                e.Graphics.Clear(Color.Black);
-        }
-
         public frmAbout()
         {
             InitializeComponent();
@@ -47,6 +33,13 @@ namespace IFME
 #else
             i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
+            var font = lblCodeName.Font;
+            lblCodeName.Font = new Font(font.FontFamily, 14f);
+            lblVersion.Font = new Font(font.FontFamily, 14f, FontStyle.Bold);
+            lblCopyRight.Font = new Font(font.FontFamily, 10f);
+            lblArtWork.Font = new Font(font.FontFamily, 10f, FontStyle.Bold);
+            lnkRayEn.Font = new Font(font.FontFamily, 10f);
+            lblDevs.Font = new Font(font.FontFamily, 9f);
         }
 
         private void frmAbout_Shown(object sender, EventArgs e)

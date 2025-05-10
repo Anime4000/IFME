@@ -86,12 +86,14 @@ namespace IFME
                 Properties.Settings.Default.Save();
             }
 
+            
+
 #if SAVE_LANG
             i18n.Save(this, Name);
 #else
             Initialize_i18n();
-            InitializeFonts();
 #endif
+            InitializeFonts();
 
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
             {
@@ -208,6 +210,7 @@ namespace IFME
             if (currentLang != Properties.Settings.Default.UILanguage)
             {
                 Initialize_i18n();
+                InitializeFonts();
             }
         }
 
