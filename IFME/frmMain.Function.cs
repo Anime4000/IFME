@@ -103,14 +103,14 @@ namespace IFME
             btnProfileSaveLoad.Text = Fonts.fa.floppy_o;
             btnOutputBrowse.Text = Fonts.fa.folder;
 
-            tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
-            tabConfigMediaInfo.Text = $"{Fonts.fa.info} {tabConfigMediaInfo.Text}";
-            tabConfigVideo.Text = $"{Fonts.fa.video_camera} {tabConfigVideo.Text}";
-            tabConfigAudio.Text = $"{Fonts.fa.volume_up} {tabConfigAudio.Text}";
-            tabConfigSubtitle.Text = $"{Fonts.fa.subscript} {tabConfigSubtitle.Text}";
-            tabConfigAttachment.Text = $"{Fonts.fa.paperclip} {tabConfigAttachment.Text}";
-            tabConfigAdvance.Text = $"{Fonts.fa.gear} {tabConfigAdvance.Text}";
-            tabConfigLog.Text = $"{Fonts.fa.terminal} {tabConfigLog.Text}";
+            tabConfig.Font = Fonts.Awesome(11f, FontStyle.Regular);/**
+            tabConfigMediaInfo.Text = $"{Fonts.fa.info} MediaInfo";
+            tabConfigVideo.Text = $"{Fonts.fa.video_camera} Video";
+            tabConfigAudio.Text = $"{Fonts.fa.volume_up} Audio";
+            tabConfigSubtitle.Text = $"{Fonts.fa.subscript} Subtitle";
+            tabConfigAttachment.Text = $"{Fonts.fa.paperclip} Attachment";
+            tabConfigAdvance.Text = $"{Fonts.fa.gear} Advanced";
+            tabConfigLog.Text = $"{Fonts.fa.terminal} Logs";**/
         }
 
         private void InitializeLog()

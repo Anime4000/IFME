@@ -99,7 +99,10 @@ internal class i18n
                 {
                     if (ctrl.Font.Size > 8)
                     {
-                        ctrl.Font = new Font(font.FontFamily, ctrl.Font.Size);
+                        if (ctrl is TabPage)
+                            ctrl.Font = font;
+                        else
+                            ctrl.Font = new Font(font.FontFamily, ctrl.Font.Size);
                     }
                     else
                     {

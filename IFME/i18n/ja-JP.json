@@ -31,8 +31,8 @@
 		"ForcedEncodingShutdown": "This computer will shutdown after encoding is complete even with fail!",
 		"FormatTimeCode": "Please provide the time in hh:mm:ss.xxx format",
 		"ImageSeqCannotCopy": "Image Source MUST ENCODE, CANNOT COPY STREAM AS IS!",
-		"NoEncoderAvailableTitle": "No encoder to use",
-		"NoEncoderAvailableMsg1": "No suitable encoder was found. This may be due to using outdated encoder plugins with the current version or missing necessary Runtime Libraries.\r\n\r\nIf you're on Windows, ensure you have the required Visual C++ Redistributable installed.\r\n\r\nOn Debian Linux, make sure to have the necessary libstdc++/libgcc libraries.\r\n\r\nPlease consider reinstalling IFME without any modifications to address this issue.",
+		"NoEncoderAvailableTitle": "エンコーダーが利用できません",
+		"NoEncoderAvailableMsg1": "適切なエンコーダーが見つかりませんでした。原因として考えられるのは:\r\n- エンコーダープラグインが古い\r\n- ランタイムライブラリが不足している\r\n\r\nWindowsユーザー: Visual C++ 再頒布可能パッケージがインストールされていることを確認してください\r\nDebian Linuxユーザー: libstdc++ と libgcc がインストールされていることを確認してください\r\n\r\n解決方法: IFMEを修正せずに再インストールすることを検討してください",
 		"FactoryResetTitle": "工場出荷状態にリセット",
 		"FactoryResetMsg1": "すべての設定をデフォルト値にリセットします。続行しますか？",
 		"CodecSkipTestTitle": "エンコーダーテストをスキップ",
@@ -75,14 +75,14 @@
 		"Repacking": "再パッキング中..."
 	},
 	"DeInterlaceMode": {
-		"0": "Deinterlace only frame",
-		"1": "Deinterlace only field",
-		"2": "Skips spatial interlacing frame check",
-		"3": "Skips spatial interlacing field check"
+		"0": "フレームのみデインターレース",
+		"1": "フィールドのみデインターレース",
+		"2": "空間インターレースフレームチェックをスキップ",
+		"3": "空間インターレースフィールドチェックをスキップ"
 	},
 	"DeInterlaceField": {
-		"0": "Top field first",
-		"1": "Bottom field first"
+		"0": "トップフィールド優先",
+		"1": "ボトムフィールド優先"
 	},
 	"Forms": {
 		"frmMain": {

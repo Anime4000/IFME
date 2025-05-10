@@ -80,8 +80,6 @@ namespace IFME
 
             txtOutputPath.Text = Properties.Settings.Default.FolderOutput;
 
-            InitializeFonts();
-
             if (Properties.Settings.Default.UILanguage == "auto")
             {
                 Properties.Settings.Default.UILanguage = Thread.CurrentThread.CurrentUICulture.Name;
@@ -92,6 +90,7 @@ namespace IFME
             i18n.Save(this, Name);
 #else
             Initialize_i18n();
+            InitializeFonts();
 #endif
 
             if (Plugins.Items.Audio.Count == 0 || Plugins.Items.Video.Count == 0)
