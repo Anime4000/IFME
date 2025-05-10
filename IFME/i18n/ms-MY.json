@@ -32,7 +32,14 @@
 		"FormatTimeCode": "Sila berikan masa dalam format hh:mm:ss.xxx",
 		"ImageSeqCannotCopy": "Sumber Imej MESTI DISANDIKAN, TIDAK BOLEH MENYALIN STRIM TANPA PERUBAHAN!",
 		"NoEncoderAvailableTitle": "Tiada pengekod tersedia",
-		"NoEncoderAvailableMsg1": "Tiada pengekod yang sesuai ditemui. Ini mungkin disebabkan penggunaan plugin pengekod lapuk dengan versi semasa atau kehilangan Pustaka Runtime yang diperlukan.\r\n\r\nJika anda menggunakan Windows, pastikan Visual C++ Redistributable yang diperlukan dipasang.\r\n\r\nPada Debian Linux, pastikan pustaka libstdc++/libgcc yang diperlukan tersedia.\r\n\r\nSila pertimbangkan untuk memasang semula IFME tanpa sebarang pengubahsuaian untuk menyelesaikan masalah ini."
+		"NoEncoderAvailableMsg1": "Tiada pengekod yang sesuai ditemui. Ini mungkin disebabkan penggunaan plugin pengekod lapuk dengan versi semasa atau kehilangan Pustaka Runtime yang diperlukan.\r\n\r\nJika anda menggunakan Windows, pastikan Visual C++ Redistributable yang diperlukan dipasang.\r\n\r\nPada Debian Linux, pastikan pustaka libstdc++/libgcc yang diperlukan tersedia.\r\n\r\nSila pertimbangkan untuk memasang semula IFME tanpa sebarang pengubahsuaian untuk menyelesaikan masalah ini.",
+		"FactoryResetTitle": "Tetapan Kilang",
+		"FactoryResetMsg1": "Ini akan menetapkan semula semua tetapan kepada nilai lalai. Adakah anda ingin meneruskan?",
+		"CodecSkipTestTitle": "Langkau Ujian Pengekod",
+		"CodecSkipTestMsg1": "Pilihan ini melumpuhkan ujian pengekod, yang mungkin menyebabkan masalah kestabilan. Adakah anda ingin meneruskan?",
+		"FinalWarningTitle": "Amaran Terakhir",
+		"FinalWarningMsg1": "Tindakan ini mungkin menyebabkan masalah dengan pengekod. Adakah anda ingin meneruskan?",
+		"TempBrowseFolder": "Pilih folder kosong untuk fail sementara"
 	},
 	"Logs": {
 		"WarningInfo": "Amaran, JANGAN tutup Terminal/Konsol ini, semua maklumat berguna akan dipaparkan di sini.",
@@ -67,6 +74,16 @@
 		"Restructuring": "Menyusun Semula...",
 		"Repacking": "Membungkus Semula..."
 	},
+	"DeInterlaceMode": {
+		"0": "Nyahselang bingkai sahaja",
+		"1": "Nyahselang medan sahaja",
+		"2": "Langkau pemeriksaan bingkai selang ruang",
+		"3": "Langkau pemeriksaan medan selang ruang"
+	},
+	"DeInterlaceField": {
+		"0": "Medan atas dahulu",
+		"1": "Medan bawah dahulu"
+	},
 	"Forms": {
 		"frmMain": {
 			"btnAbout": "",
@@ -78,7 +95,7 @@
 			"btnAudioEnc": "P&engekod CLI",
 			"btnAudioMoveDown": "",
 			"btnAudioMoveUp": "",
-			"btnDonate": " &Derma",
+			"btnDonate": "♥ &Derma",
 			"btnFileAdd": "",
 			"btnFileDelete": "",
 			"btnFileDown": "",
@@ -116,7 +133,7 @@
 			"lblAdvTimeStart": "&Mula:",
 			"lblAdvTrimNote": "Nota: Pilihan ini akan mengecualikan penyalinan strim",
 			"lblAttachMime": "&Jenis MIME:",
-			"lblAudioAdv": "Pilihan &Lanjutan untuk Penyahkod dan Pengekod:",
+			"lblAudioAdv": "&Lanjutan Penyahkod dan Pengekod:",
 			"lblAudioChannel": "&Saluran:",
 			"lblAudioEncoder": "&Pengekod:",
 			"lblAudioLang": "&Bahasa:",
@@ -126,7 +143,7 @@
 			"lblFormatProfile": "Format && &Profil:",
 			"lblOutputPath": "&Folder Output:",
 			"lblSubLang": "&Bahasa:",
-			"lblVideoAdv": "Pilihan &Lanjutan untuk Penyahkod dan Pengekod:",
+			"lblVideoAdv": "&Lanjutan Penyahkod dan Pengekod:",
 			"lblVideoBitDepth": "&Kedalaman bit:",
 			"lblVideoDeInterField": "&Medan:",
 			"lblVideoDeInterMode": "&Mod:",

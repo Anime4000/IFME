@@ -1,26 +1,38 @@
 ﻿using System;
 using System.IO;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Globalization;
 using System.ComponentModel;
 using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 internal class i18n
 {
+    // List installed languages
     public static Dictionary<string, string> Installed { get; set; } = new();
-    public static i18nObj UI { get; set; } = new();
 
     public static void LoadLangFiles()
     {
         var langFiles = Directory.GetFiles("i18n", "*.json");
+
         foreach (var file in langFiles)
         {
             var lang = Path.GetFileNameWithoutExtension(file);
-            var code = Language.TryParseCode(lang);
-            var name = Language.FullName(lang);
 
-            Installed.Add(code, name);
-            IFME.frmSplashScreen.SetStatus($"Language Loading {name}");
+            try
+            {
+                var culture = new CultureInfo(lang);
+                var displayName = culture.DisplayName;
+
+                Installed.Add(lang, displayName);
+                IFME.frmSplashScreen.SetStatus($"Language Loading {displayName}");
+            }
+            catch (CultureNotFoundException)
+            {
+                Installed.Add(lang, $"Unknown Language ({lang})");
+            }
         }
     }
 
@@ -41,10 +53,16 @@ internal class i18n
 
     public static void Apply(Control parent, string formName, string currentLang = "eng")
     {
+        var langDefault = Path.Combine("i18n", "en-US.json");
         var langFile = Path.Combine("i18n", $"{currentLang}.json");
 
-        if (!File.Exists(langFile))
+        // When the default language file is not found, use the WinForm place holder as language
+        if (!File.Exists(langDefault))
             return;
+
+        // When the choosen language file is not found, use the default (en-US) language
+        if (!File.Exists(langFile))
+            langFile = langDefault;
 
         var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
 
@@ -52,7 +70,9 @@ internal class i18n
             return;
 
         // Store the current UI object in the memory for hidden controls
-        UI = json; 
+        i18nUI.Obj = json;
+
+        var font = DefaultFont(json);
 
         foreach (Control ctrl in GetAllControls(parent))
         {
@@ -63,7 +83,10 @@ internal class i18n
                     foreach (ColumnHeader header in ((ListView)ctrl).Columns)
                     {
                         if (formStrings.TryGetValue($"{ctrl.Name}{header.Index}", out string text))
+                        {
                             header.Text = text;
+                            ctrl.Font = font;
+                        }
                     }
                 }
                 else
@@ -71,6 +94,7 @@ internal class i18n
                     if (formStrings.TryGetValue(ctrl.Name, out string text))
                     {
                         ctrl.Text = text;
+                        ctrl.Font = font;
                     }
                 }
             }
@@ -185,5 +209,17 @@ internal class i18n
                ctrl is RadioButton ||
                ctrl is ListView ||
                ctrl is GroupBox;
+    }
+
+    private static Font DefaultFont(i18nObj i18n)
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            return i18n.FontUIWindows;
+        }
+        else
+        {
+            return i18n.FontUILinux;
+        }
     }
 }

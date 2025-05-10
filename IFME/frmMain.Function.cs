@@ -27,6 +27,23 @@ namespace IFME
 
     public partial class frmMain
     {
+        private void Initialize_i18n()
+        {
+            i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
+
+            var a = cboVideoDeInterMode.SelectedIndex;
+            cboVideoDeInterMode.DataSource = new BindingSource(i18nUI.Obj.DeInterlaceMode, null);
+            cboVideoDeInterMode.DisplayMember = "Value";
+            cboVideoDeInterMode.ValueMember = "Key";
+            cboVideoDeInterMode.SelectedIndex = a;
+
+            var b = cboVideoDeInterField.SelectedIndex;
+            cboVideoDeInterField.DataSource = new BindingSource(i18nUI.Obj.DeInterlaceField, null);
+            cboVideoDeInterField.DisplayMember = "Value";
+            cboVideoDeInterField.ValueMember = "Key";
+            cboVideoDeInterField.SelectedIndex = b;
+        }
+
         private void InitializeFonts()
         {
             Fonts.Initialize();
@@ -40,11 +57,8 @@ namespace IFME
                 {
                     if (ctrl is Button)
                     {
-                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
-                    }
-                    else
-                    {
-                        ctrl.Font = new Font("Tahoma", 8f);
+                        if (ctrl.Text.Length == 1)
+                            ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
                     }
                 }
             } while (ctrl != null);
@@ -61,7 +75,7 @@ namespace IFME
             btnAbout.Text = $"{Fonts.fa.info_circle}";
             btnFileUp.Text = Fonts.fa.chevron_up;
             btnFileDown.Text = Fonts.fa.chevron_down;
-            btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
+            //btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
             btnStart.Text = Fonts.fa.play;
             btnStop.Text = Fonts.fa.stop;
 
@@ -69,15 +83,15 @@ namespace IFME
             btnVideoDel.Text = btnFileDelete.Text;
             btnVideoMoveUp.Text = btnFileUp.Text;
             btnVideoMoveDown.Text = btnFileDown.Text;
-            btnVideoDec.Font = new Font("Tahoma", 8f);
-            btnVideoEnc.Font = new Font("Tahoma", 8f);
+            //btnVideoDec.Font = new Font("Tahoma", 8f);
+            //btnVideoEnc.Font = new Font("Tahoma", 8f);
 
             btnAudioAdd.Text = btnFileAdd.Text;
             btnAudioDel.Text = btnFileDelete.Text;
             btnAudioMoveUp.Text = btnFileUp.Text;
             btnAudioMoveDown.Text = btnFileDown.Text;
-            btnAudioDec.Font = new Font("Tahoma", 8f);
-            btnAudioEnc.Font = new Font("Tahoma", 8f);
+            //btnAudioDec.Font = new Font("Tahoma", 8f);
+            //btnAudioEnc.Font = new Font("Tahoma", 8f);
 
             btnSubAdd.Text = btnFileAdd.Text;
             btnSubDel.Text = btnFileDelete.Text;
@@ -90,14 +104,14 @@ namespace IFME
             btnProfileSaveLoad.Text = Fonts.fa.floppy_o;
             btnOutputBrowse.Text = Fonts.fa.folder;
 
-            tabConfig.Font = Fonts.Awesome(10.5f, FontStyle.Regular);
-            tabConfigMediaInfo.Text = $"{Fonts.fa.info} {tabConfigMediaInfo.Text}";
-            tabConfigVideo.Text = $"{Fonts.fa.video_camera} {tabConfigVideo.Text}";
-            tabConfigAudio.Text = $"{Fonts.fa.volume_up} {tabConfigAudio.Text}";
-            tabConfigSubtitle.Text = $"{Fonts.fa.subscript} {tabConfigSubtitle.Text}";
-            tabConfigAttachment.Text = $"{Fonts.fa.paperclip} {tabConfigAttachment.Text}";
-            tabConfigAdvance.Text = $"{Fonts.fa.gear} {tabConfigAdvance.Text}";
-            tabConfigLog.Text = $"{Fonts.fa.terminal} {tabConfigLog.Text}";
+            tabConfig.Font = Fonts.Awesome(11f, FontStyle.Regular);/**
+            tabConfigMediaInfo.Text = $"{Fonts.fa.info} MediaInfo";
+            tabConfigVideo.Text = $"{Fonts.fa.video_camera} Video";
+            tabConfigAudio.Text = $"{Fonts.fa.volume_up} Audio";
+            tabConfigSubtitle.Text = $"{Fonts.fa.subscript} Subtitle";
+            tabConfigAttachment.Text = $"{Fonts.fa.paperclip} Attachment";
+            tabConfigAdvance.Text = $"{Fonts.fa.gear} Advanced";
+            tabConfigLog.Text = $"{Fonts.fa.terminal} Logs";**/
         }
 
         private void InitializeLog()
@@ -107,11 +121,11 @@ namespace IFME
                 "\r\n" +
                 $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\n(s) {Version.Contrib}\r\n" +
                 "\r\n" +
-                $"{i18n.UI.Logs["WarningInfo"]}\r\n" +
+                $"{i18nUI.Log("WarningInfo")}\r\n" +
                 "\r\n";
 
             if (string.IsNullOrEmpty(PluginsLoad.ErrorLog))
-                rtfConsole.AppendText(i18n.UI.Logs["PluginLoadOK"]);
+                rtfConsole.AppendText(i18nUI.Log("PluginLoadOK"));
             else
                 rtfConsole.AppendText(PluginsLoad.ErrorLog);
         }
@@ -191,8 +205,8 @@ namespace IFME
             lstFile.SelectedIndices.Clear();
 
             frm.Show();
-            frm.Text = i18n.UI.Dialogs["Importing"];
-            frm.Status = i18n.UI.Dialogs["Indexing"];
+            frm.Text = i18nUI.Dialog("Importing");
+            frm.Status = i18nUI.Dialog("Indexing");
 
             var thread = new BackgroundWorker();
 
@@ -208,8 +222,8 @@ namespace IFME
                             {
                                 MediaFileListAdd(files[i], false);
                                 frm.Progress = (int)(((float)(i + 1) / files.Length) * 100.0);
-                                frm.Status = String.Format(i18n.UI.Dialogs["ImportStatus"], i + 1, files.Length, files[i]);
-                                frm.Title = String.Format(i18n.UI.Dialogs["ImportTitle"], frm.Progress);
+                                frm.Status = String.Format(i18nUI.Dialog("ImportStatus"), i + 1, files.Length, files[i]);
+                                frm.Title = String.Format(i18nUI.Dialog("ImportTitle"), frm.Progress);
                             }));
                         }
                     }
@@ -560,7 +574,7 @@ namespace IFME
             lstAudio.Items.Clear();
             lstSub.Items.Clear();
             lstAttach.Items.Clear();
-            txtMediaInfo.Text = i18n.UI.Dialogs["MediaInfo"];
+            txtMediaInfo.Text = i18nUI.Dialog("MediaInfo");
             chkVideoDeInterlace.Checked = false;
             chkVideoMP4Compt.Checked = false;
             chkAudioMP4Compt.Checked = false;
@@ -582,7 +596,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Video()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Video()", ex.Message));
                 }
             }
         }
@@ -598,7 +612,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Audio()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Audio()", ex.Message));
                 }
             }
         }
@@ -614,7 +628,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Subtitle()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Subtitle()", ex.Message));
                 }
             }
         }
@@ -631,7 +645,7 @@ namespace IFME
                 }
                 catch (Exception ex)
                 {
-                    PrintLog(String.Format(i18n.UI.Logs["ErrorInfo"], "DisplayProperties_Attachment()", ex.Message));
+                    PrintLog(String.Format(i18nUI.Log("ErrorInfo"), "DisplayProperties_Attachment()", ex.Message));
                 }
             }
         }

@@ -109,11 +109,11 @@ namespace IFME
             lblLoadingUpdate(string.Empty);
 
             // Wait some CPU free
-            Thread.Sleep(500);
+            Thread.Sleep(100);
 
             // If user choose not to test the encoder, wait little longer telling user IFME not test
             if (!Properties.Settings.Default.TestEncoder)
-                Thread.Sleep(2500);
+                Thread.Sleep(1000);
 
             frmFadeInOut(false);
         }

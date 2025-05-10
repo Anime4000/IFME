@@ -71,14 +71,15 @@ namespace IFME
             this.lblFFmpeg.Enabled = false;
             this.lblFFmpeg.Location = new System.Drawing.Point(12, 95);
             this.lblFFmpeg.Name = "lblFFmpeg";
-            this.lblFFmpeg.Size = new System.Drawing.Size(120, 24);
+            this.lblFFmpeg.Size = new System.Drawing.Size(128, 24);
             this.lblFFmpeg.TabIndex = 3;
             this.lblFFmpeg.Text = "FFmpeg MediaInfo";
             this.lblFFmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmProgressBar
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(640, 128);
             this.ControlBox = false;
             this.Controls.Add(this.lblFFmpeg);

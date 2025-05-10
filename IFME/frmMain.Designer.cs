@@ -299,9 +299,9 @@
             // 
             this.chkSubHard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSubHard.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkSubHard.Location = new System.Drawing.Point(736, 6);
+            this.chkSubHard.Location = new System.Drawing.Point(686, 7);
             this.chkSubHard.Name = "chkSubHard";
-            this.chkSubHard.Size = new System.Drawing.Size(250, 24);
+            this.chkSubHard.Size = new System.Drawing.Size(300, 24);
             this.chkSubHard.TabIndex = 5;
             this.chkSubHard.Text = "&Burn Subtitle (first stream is default)";
             this.chkSubHard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1385,9 +1385,9 @@
             // chkVideoDeInterlace
             // 
             this.chkVideoDeInterlace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkVideoDeInterlace.Location = new System.Drawing.Point(748, 136);
+            this.chkVideoDeInterlace.Location = new System.Drawing.Point(748, 131);
             this.chkVideoDeInterlace.Name = "chkVideoDeInterlace";
-            this.chkVideoDeInterlace.Size = new System.Drawing.Size(90, 16);
+            this.chkVideoDeInterlace.Size = new System.Drawing.Size(130, 24);
             this.chkVideoDeInterlace.TabIndex = 10;
             this.chkVideoDeInterlace.Text = "&Deinterlaced";
             this.chkVideoDeInterlace.UseVisualStyleBackColor = true;

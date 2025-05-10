@@ -34,6 +34,7 @@ namespace IFME
 #else
             i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
+            Text = i18nUI.Obj.Forms["frmMain"]["tsmiImportImgSeq"].Replace("&", "");
         }
 
         private void frmImportImageSeq_Shown(object sender, EventArgs e)

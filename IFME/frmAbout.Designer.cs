@@ -43,12 +43,16 @@ namespace IFME
             this.lnkRayEn = new System.Windows.Forms.LinkLabel();
             this.pnlCharErika = new System.Windows.Forms.Panel();
             this.lblCharErika = new System.Windows.Forms.Label();
+            this.pbCharErika = new System.Windows.Forms.PictureBox();
             this.pnlCharMiho = new System.Windows.Forms.Panel();
             this.lblCharMiho = new System.Windows.Forms.Label();
+            this.pbCharMiho = new System.Windows.Forms.PictureBox();
             this.pnlCharFumiko = new System.Windows.Forms.Panel();
             this.lblCharFumiko = new System.Windows.Forms.Label();
+            this.pbCharFumiko = new System.Windows.Forms.PictureBox();
             this.pnlCharIchika = new System.Windows.Forms.Panel();
             this.lblCharIchika = new System.Windows.Forms.Label();
+            this.pbCharIchika = new System.Windows.Forms.PictureBox();
             this.lblArtWork = new System.Windows.Forms.Label();
             this.pnlDevs = new System.Windows.Forms.Panel();
             this.pnlDevsRight = new System.Windows.Forms.Panel();
@@ -56,21 +60,17 @@ namespace IFME
             this.panel1 = new System.Windows.Forms.Panel();
             this.lnkDiscord = new System.Windows.Forms.LinkLabel();
             this.banner = new System.Windows.Forms.Panel();
-            this.pbCharErika = new System.Windows.Forms.PictureBox();
-            this.pbCharMiho = new System.Windows.Forms.PictureBox();
-            this.pbCharFumiko = new System.Windows.Forms.PictureBox();
-            this.pbCharIchika = new System.Windows.Forms.PictureBox();
             this.pnlArtWork.SuspendLayout();
             this.pnlCharErika.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).BeginInit();
             this.pnlCharMiho.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharMiho)).BeginInit();
             this.pnlCharFumiko.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharFumiko)).BeginInit();
             this.pnlCharIchika.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharIchika)).BeginInit();
             this.pnlDevs.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharMiho)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharFumiko)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharIchika)).BeginInit();
             this.SuspendLayout();
             // 
             // lblVersion
@@ -126,7 +126,6 @@ namespace IFME
             // 
             // lnkGithub
             // 
-            this.lnkGithub.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lnkGithub.BackColor = System.Drawing.Color.Transparent;
             this.lnkGithub.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkGithub.Location = new System.Drawing.Point(144, 15);
@@ -140,7 +139,7 @@ namespace IFME
             // 
             // lnkSourceForge
             // 
-            this.lnkSourceForge.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.lnkSourceForge.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lnkSourceForge.BackColor = System.Drawing.Color.Transparent;
             this.lnkSourceForge.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkSourceForge.Location = new System.Drawing.Point(250, 15);
@@ -154,7 +153,6 @@ namespace IFME
             // 
             // lblHome
             // 
-            this.lblHome.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblHome.BackColor = System.Drawing.Color.Transparent;
             this.lblHome.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lblHome.Location = new System.Drawing.Point(38, 15);
@@ -168,7 +166,7 @@ namespace IFME
             // 
             // lnkFacebook
             // 
-            this.lnkFacebook.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.lnkFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkFacebook.BackColor = System.Drawing.Color.Transparent;
             this.lnkFacebook.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkFacebook.Location = new System.Drawing.Point(356, 15);
@@ -259,6 +257,15 @@ namespace IFME
             this.lblCharErika.Text = "Erika";
             this.lblCharErika.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pbCharErika
+            // 
+            this.pbCharErika.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbCharErika.Location = new System.Drawing.Point(0, 0);
+            this.pbCharErika.Name = "pbCharErika";
+            this.pbCharErika.Size = new System.Drawing.Size(100, 150);
+            this.pbCharErika.TabIndex = 0;
+            this.pbCharErika.TabStop = false;
+            // 
             // pnlCharMiho
             // 
             this.pnlCharMiho.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -279,6 +286,15 @@ namespace IFME
             this.lblCharMiho.TabIndex = 0;
             this.lblCharMiho.Text = "Miho";
             this.lblCharMiho.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbCharMiho
+            // 
+            this.pbCharMiho.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbCharMiho.Location = new System.Drawing.Point(0, 0);
+            this.pbCharMiho.Name = "pbCharMiho";
+            this.pbCharMiho.Size = new System.Drawing.Size(100, 150);
+            this.pbCharMiho.TabIndex = 0;
+            this.pbCharMiho.TabStop = false;
             // 
             // pnlCharFumiko
             // 
@@ -301,6 +317,15 @@ namespace IFME
             this.lblCharFumiko.Text = "Fumiko";
             this.lblCharFumiko.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pbCharFumiko
+            // 
+            this.pbCharFumiko.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbCharFumiko.Location = new System.Drawing.Point(0, 0);
+            this.pbCharFumiko.Name = "pbCharFumiko";
+            this.pbCharFumiko.Size = new System.Drawing.Size(100, 150);
+            this.pbCharFumiko.TabIndex = 0;
+            this.pbCharFumiko.TabStop = false;
+            // 
             // pnlCharIchika
             // 
             this.pnlCharIchika.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -321,6 +346,15 @@ namespace IFME
             this.lblCharIchika.TabIndex = 0;
             this.lblCharIchika.Text = "Ichika";
             this.lblCharIchika.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbCharIchika
+            // 
+            this.pbCharIchika.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbCharIchika.Location = new System.Drawing.Point(0, 0);
+            this.pbCharIchika.Name = "pbCharIchika";
+            this.pbCharIchika.Size = new System.Drawing.Size(100, 150);
+            this.pbCharIchika.TabIndex = 0;
+            this.pbCharIchika.TabStop = false;
             // 
             // lblArtWork
             // 
@@ -384,6 +418,7 @@ namespace IFME
             // 
             // lnkDiscord
             // 
+            this.lnkDiscord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkDiscord.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkDiscord.Location = new System.Drawing.Point(462, 15);
             this.lnkDiscord.Name = "lnkDiscord";
@@ -402,42 +437,6 @@ namespace IFME
             this.banner.Name = "banner";
             this.banner.Size = new System.Drawing.Size(600, 64);
             this.banner.TabIndex = 0;
-            // 
-            // pbCharErika
-            // 
-            this.pbCharErika.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbCharErika.Location = new System.Drawing.Point(0, 0);
-            this.pbCharErika.Name = "pbCharErika";
-            this.pbCharErika.Size = new System.Drawing.Size(100, 150);
-            this.pbCharErika.TabIndex = 0;
-            this.pbCharErika.TabStop = false;
-            // 
-            // pbCharMiho
-            // 
-            this.pbCharMiho.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbCharMiho.Location = new System.Drawing.Point(0, 0);
-            this.pbCharMiho.Name = "pbCharMiho";
-            this.pbCharMiho.Size = new System.Drawing.Size(100, 150);
-            this.pbCharMiho.TabIndex = 0;
-            this.pbCharMiho.TabStop = false;
-            // 
-            // pbCharFumiko
-            // 
-            this.pbCharFumiko.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbCharFumiko.Location = new System.Drawing.Point(0, 0);
-            this.pbCharFumiko.Name = "pbCharFumiko";
-            this.pbCharFumiko.Size = new System.Drawing.Size(100, 150);
-            this.pbCharFumiko.TabIndex = 0;
-            this.pbCharFumiko.TabStop = false;
-            // 
-            // pbCharIchika
-            // 
-            this.pbCharIchika.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbCharIchika.Location = new System.Drawing.Point(0, 0);
-            this.pbCharIchika.Name = "pbCharIchika";
-            this.pbCharIchika.Size = new System.Drawing.Size(100, 150);
-            this.pbCharIchika.TabIndex = 0;
-            this.pbCharIchika.TabStop = false;
             // 
             // frmAbout
             // 
@@ -466,15 +465,15 @@ namespace IFME
             this.Resize += new System.EventHandler(this.frmAbout_Resize);
             this.pnlArtWork.ResumeLayout(false);
             this.pnlCharErika.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).EndInit();
             this.pnlCharMiho.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharMiho)).EndInit();
             this.pnlCharFumiko.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharFumiko)).EndInit();
             this.pnlCharIchika.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbCharIchika)).EndInit();
             this.pnlDevs.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharMiho)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharFumiko)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCharIchika)).EndInit();
             this.ResumeLayout(false);
 
         }
