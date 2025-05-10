@@ -28,7 +28,7 @@
 		"OutputLocationTitle": "保存先フォルダを選択してください",
 		"OutputLocationFolder": "フォルダー",
 		"OutputFormatNotSet": "出力形式が設定されていないため、エンコードを続行できません！",
-		"ForcedEncodingShutdown": "エンコード完了後、失敗してもこのコンピューターはシャットダウンします！",
+		"ForcedEncodingShutdown": "エンコードに失敗してもその後にコンピューターをシャットダウンします！",
 		"FormatTimeCode": "時間を hh:mm:ss.xxx の形式で入力してください",
 		"ImageSeqCannotCopy": "画像ソースはエンコードが必須です。ストリームをそのままコピーできません！",
 		"NoEncoderAvailableTitle": "エンコーダーが利用できません",
