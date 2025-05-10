@@ -16,7 +16,7 @@
 		"AudioEncoderMsg1": "エンコーダーの高度なコマンドラインとパフォーマンスチューニングを入力してね",
 		"Importing": "インポートしてる...",
 		"Indexing": "インデックスしてる...",
-		"ImportTitle": "インポートしてる: 今は {0}%",
+		"ImportTitle": "インポートしてる: 今は {0}% だよ",
 		"ImportStatus": "{1} 個のファイル中 {0} 個をインポートしてる...\r\n{2}",
 		"MediaInfo": "ビデオとオーディオのメディア情報がここに表示されるよ",
 		"ProfileRenameTitle": "プロファイルの名前を変える",
@@ -28,7 +28,7 @@
 		"OutputLocationTitle": "保存するところを選んでね",
 		"OutputLocationFolder": "フォルダー",
 		"OutputFormatNotSet": "出力形式が設定されてないからエンコードを続行できないの！",
-		"ForcedEncodingShutdown": "エンコード完了に失敗してもこのコンピューターをシャットダウンするからね！",
+		"ForcedEncodingShutdown": "エンコードに失敗してもこのコンピューターをシャットダウンするからね！",
 		"FormatTimeCode": "時間を hh:mm:ss.xxx の形式で入力してね",
 		"ImageSeqCannotCopy": "画像ソースはエンコードが必要だよ。ストリームをそのままコピーできないの！",
 		"NoEncoderAvailableTitle": "エンコーダーが利用できないの",
@@ -46,12 +46,12 @@
 		"PluginLoadOK": "[情報] プラグインの初期化中にエラーは起きなかったよ\r\n",
 		"ErrorInfo": "[エラー] {0} {1}",
 		"FFmpegReturnCode": "[デバッグ] FFmpeg リターンコード: {0}",
-		"MuxingFailed": "[エラー] FFmpeg が生ファイルの結合に失敗しちゃった... [Muxing Failed] フォルダーを確認して手動で結合してね...",
+		"MuxingFailed": "[エラー] FFmpeg が生ファイルをくっつける作業に失敗しちゃった... [Muxing Failed] フォルダーを確認して手動でくっつけてね...",
 		"MuxingSuccess": "[OK] ファイルの多重化に成功したよ！",
 		"OperationCanceled": "[情報] 操作はユーザーによってキャンセルしたよ",
 		"OperationCompleteShutdown": "[情報] 操作が完了したよ。システムは数秒後に電源を落とすよ～",
-		"ContainerNotSupportAudio": "[情報] 選んだ形式 (コンテナ) はオーディオをサポートしてないよ: {0}",
-		"ContainerNotSupportVideo": "[情報] 選んだ形式 (コンテナ) はビデオをサポートしてないよ: {0}",
+		"ContainerNotSupportAudio": "[情報] 選んだ形式 (コンテナ) はオーディオに対応してないよ: {0}",
+		"ContainerNotSupportVideo": "[情報] 選んだ形式 (コンテナ) はビデオに対応してないよ: {0}",
 		"NotingToEncode": "[情報] エンコードするものがないよ。入力ファイルを確認してね。"
 	},
 	"Status": {
@@ -60,8 +60,8 @@
 		"Skip": "スキップ...",
 		"Complete": "{0} で完了したよ！",
 		"Abort": "中止したよ！",
-		"Error": "失敗！",
-		"Unsupported": "非対応だよ！",
+		"Error": "失敗しちゃった！",
+		"Unsupported": "対応してないよ！",
 		"Waiting": "待ってる...",
 		"Warning": "警告！",
 		"Extracting": "展開してる...",
@@ -81,8 +81,8 @@
 		"3": "空間インターレースフィールドのチェックをスキップ"
 	},
 	"DeInterlaceField": {
-		"0": "トップフィールドを優先",
-		"1": "ボトムフィールドを優先"
+		"0": "トップフィールドが先",
+		"1": "ボトムフィールドが先"
 	},
 	"Forms": {
 		"frmMain": {
@@ -143,7 +143,7 @@
 			"lblFormatProfile": "形式とプロファイル:",
 			"lblOutputPath": "出力するところ(&O):",
 			"lblSubLang": "言語(&L):",
-			"lblVideoAdv": "高度なエンコーダーとデコーダーのオプション(&O):",
+			"lblVideoAdv": "エンコーダーとデコーダーのすごい設定(&O):",
 			"lblVideoBitDepth": "ビット長(&B):",
 			"lblVideoDeInterField": "フィールド(&D):",
 			"lblVideoDeInterMode": "モード(&O):",
@@ -170,7 +170,7 @@
 			"lstFile2": "再生時間",
 			"lstFile3": "大きさ",
 			"lstFile4": "どんな感じ？",
-			"lstFile5": "進捗どうですかー？",
+			"lstFile5": "進捗どうですか～？",
 			"lstSub0": "ID",
 			"lstSub1": "ファイル名",
 			"lstSub2": "言語",
@@ -242,10 +242,10 @@
 		},
 		"frmAbout": {
 			"lblArtWork": "IFME プロジェクトのキャラクターアートワーク: Ray-en (53C)",
-			"lblCharErika": "エリカ",
-			"lblCharFumiko": "フミコ",
-			"lblCharIchika": "イチカ",
-			"lblCharMiho": "ミホ"
+			"lblCharErika": "エリカちゃん",
+			"lblCharFumiko": "フミコちゃん",
+			"lblCharIchika": "イチカちゃん",
+			"lblCharMiho": "ミホちゃん"
 		},
 		"frmImportImageSeq": {
 			"btnAdd": "加える(&A)",
