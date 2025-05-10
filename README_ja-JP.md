@@ -8,23 +8,26 @@
 ## 紹介
 2012 年、当時大学生だった私は FRAPS のゲーム録画を x264 で圧縮してアーカイブにするために IFME を開発しました。友人たちは IFME のシンプルで軽量な設計を高く評価したことで Internet Friendly Media Encoder (IFME) の誕生に繋がりました。
 
-## これについて
+## Internet Friendly Media Encoder (IFME) ついて
 使いやすさを重視して設定された多用途で将来性があり、拡張性に優れたマルチマディアエンコーダーです。Internet Friendly Media Encoder は、字幕や添付ファイルの追加に対応。その他に「ストリームのコピー」のオプションを備えた多重化ツールとしても機能します。複数のビデオとオーディオ、字幕、添付ファイルのストリームを 1 つのファイルに結合や不要なストリームを削除、別のビデオから字幕を抽出せずに組み込みができます。また、高度なビデオ処理を可能にする AviSynth にも対応しています。
 
-ビデオおよびオーディオエンコーダーはプラグイン形式で実装されており、ユーザーは独自のコンパイルされた CPU アーキテクチャを追加することで速度を向上させることができます。このモジュール設計により、エンコーダーの適応性と拡張性が維持され、新しいエンコーディング技術や将来のエンコーディング技術を追加することができます。
+ビデオおよびオーディオエンコーダーはプラグイン形式で実装されており、ユーザーは独自のコンパイルされた CPU アーキテクチャを追加することで速度を向上させることができます。<br>
+このモジュール設計により、エンコーダーの適応性と拡張性が維持され、新しいエンコーディング技術や将来のエンコーディング技術を追加することができます。
 
 ## ライセンス
-### ソースコードとバイナリ
+### ソースコードとバイナリについて
 IFME のソースコードは [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/)
- に基づいています
-### マスコットとアートワーク
-[53C](http://53c.deviantart.com/) と [adeq](https://www.facebook.com/liyana.0426) によって描かれたアートワークは IFME プロジェクトの所有物です。[表示-非営利 4.0 国際](https://creativecommons.org/licenses/by-nc/4.0/deed.ja)の CC ライセンスに基づいています。
+ に基づいています。
+### マスコットとアートワークについて
+[53C](http://53c.deviantart.com/) と [adeq](https://www.facebook.com/liyana.0426) によって描かれたアートワークは IFME プロジェクトの所有物です。<br>
+[表示-非営利 4.0 国際](https://creativecommons.org/licenses/by-nc/4.0/deed.ja)の CC ライセンスに基づいています。
 
 ## 寄付
 このプロジェクトを応援してください！<br>
 ほんの少々の寄付でもこのプロジェクトの活性化と今後の維持に繋がります。
 
-[PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U) から寄付が行えます。寄付をしてくれた方は、[Facebook](https://www.facebook.com/internetfriendlymediaencoder) または [Twitter](https://twitter.com/Anime4000) から報告してください。表彰と殿堂入りおよび、プログラムについてに掲載されます。
+[PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U) から寄付が行えます。寄付をしてくれた方は、[Facebook](https://www.facebook.com/internetfriendlymediaencoder) または [Twitter](https://twitter.com/Anime4000) から報告してください。<br>
+表彰と殿堂入りおよび、プログラムについてに掲載されます。
 
 ## あなたへ
 ### システム要件
