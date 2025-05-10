@@ -62,7 +62,7 @@
 		"Abort": "中止しました！",
 		"Error": "エラー！",
 		"Unsupported": "非対応です！",
-		"Waiting": "お待ちください...",
+		"Waiting": "待機中...",
 		"Warning": "警告！",
 		"Extracting": "展開中...",
 		"ExtractThumb": "サムネイルを展開中 #{0}",
