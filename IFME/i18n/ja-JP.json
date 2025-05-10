@@ -50,8 +50,8 @@
 		"MuxingSuccess": "[OK] ファイルの多重化に成功しました！",
 		"OperationCanceled": "[情報] 操作はユーザーによってキャンセルされました",
 		"OperationCompleteShutdown": "[情報] 操作が完了しました。システムは数秒後にシャットダウンします。",
-		"ContainerNotSupportAudio": "[情報] 選択された形式 (コンテナ) はオーディオを対応していません: {0}",
-		"ContainerNotSupportVideo": "[情報] 選択された形式 (コンテナ) はビデオを対応していません: {0}",
+		"ContainerNotSupportAudio": "[情報] 選択された形式 (コンテナ) はオーディオに対応していません: {0}",
+		"ContainerNotSupportVideo": "[情報] 選択された形式 (コンテナ) はビデオに対応していません: {0}",
 		"NotingToEncode": "[情報] エンコードするものがありません。入力ファイルを確認してください。"
 	},
 	"Status": {
