@@ -3,6 +3,8 @@
 # Internet Friendly Media Encoder
 ![GUI](IFME.png)
 
+**Language:** [English](/README.md)
+
 ## 紹介
 2012 年、当時大学生だった私は FRAPS のゲーム録画を x264 で圧縮してアーカイブにするために IFME を開発しました。友人たちは IFME のシンプルで軽量な設計を高く評価したことで Internet Friendly Media Encoder (IFME) の誕生に繋がりました。
 
@@ -13,7 +15,7 @@
 
 ## ライセンス
 ### ソースコードとバイナリ
-IFME のソースコードは [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/).
+IFME のソースコードは [GPL 2.0](http://choosealicense.com/licenses/gpl-2.0/)
  に基づいています
 ### マスコットとアートワーク
 [53C](http://53c.deviantart.com/) と [adeq](https://www.facebook.com/liyana.0426) によって描かれたアートワークは IFME プロジェクトの所有物です。[表示-非営利 4.0 国際](https://creativecommons.org/licenses/by-nc/4.0/deed.ja)の CC ライセンスに基づいています。
@@ -29,7 +31,7 @@ IFME のソースコードは [GPL 2.0](http://choosealicense.com/licenses/gpl-2
 * [Microsoft Visual C++ (すべて)](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/)
 * [Microsoft .NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) *<sup>Windows 7 のみ</sup>*
 
-Ubuntu (Linux) について:
+Ubuntu (Linux):
 * `mono-complete` (Mono ランタイム)
 * *技術的には、IFME は Linux でも動作しますが`プラグイン`フォルダーは Windows 専用です。`FFmpeg`、`x264`、`x265` などの独自バージョンをビルドして Windows バイナリを置き換える必要があるかもしれません。*
 
