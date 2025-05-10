@@ -199,7 +199,7 @@
 			"tsmiProfilesDelete": "&Delete profile",
 			"tsmiProfilesRename": "&Rename profile",
 			"tsmiProfilesSave": "&Save profile as",
-			"tsmiUseAsIngestStation": "Enable ingest &station mode"
+			"tsmiUseAsIngestStation": "Ingest &station mode"
 		},
 		"frmOptions": {
 			"btnCancel": "&Cancel",

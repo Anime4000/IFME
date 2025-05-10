@@ -57,7 +57,8 @@ namespace IFME
                 {
                     if (ctrl is Button)
                     {
-                        ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
+                        if (ctrl.Text.Length == 1)
+                            ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
                     }
                 }
             } while (ctrl != null);
