@@ -33,6 +33,7 @@ namespace IFME
             i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
 #endif
             LangAuthorInfo = lblLangAuthor.Text;
+            lblFileNameEx.Font = new Font(lblFileNameEx.Font.FontFamily, 9f);
 
             cboLanguage.DataSource = new BindingSource(i18n.Installed, null);
             cboLanguage.DisplayMember = "Value";
