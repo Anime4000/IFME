@@ -46,7 +46,7 @@
 		"PluginLoadOK": "[情報] プラグインの初期化中にエラーは発生しませんでした...\r\n",
 		"ErrorInfo": "[エラー] {0} {1}",
 		"FFmpegReturnCode": "[デバッグ] FFmpeg リターンコード: {0}",
-		"MuxingFailed": "[エラー] FFmpeg が生ファイルの結合に失敗しました... [Muxing Failed] フォルダーを確認して手動で結合してください...",
+		"MuxingFailed": "[エラー] FFmpeg で生ファイルの結合に失敗しました... [Muxing Failed] フォルダーを確認して手動で結合してください...",
 		"MuxingSuccess": "[OK] ファイルの多重化に成功しました！",
 		"OperationCanceled": "[情報] 操作はユーザーによってキャンセルされました",
 		"OperationCompleteShutdown": "[情報] 操作が完了しました。システムは数秒後にシャットダウンします。",
