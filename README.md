@@ -3,7 +3,7 @@
 # Internet Friendly Media Encoder
 ![GUI](IFME/Resources/i18n/IFME_en-US.png)
 
-**Language:** [日本語](/README_ja-JP.md) | [简体中文](/README_zh-CN.md)
+**Language:** [日本語](/README_ja-JP.md) | [简体中文](/README_zh-CN.md) | [Bahasa Malaysia](/README_ms-MY.md)
 
 ## Introduction
 Back in 2012, as a college student, I originally developed IFME to compress FRAPS game recordings using x264 for archiving. My friends appreciated IFME for its simplicity and lightweight design, which led to the birth of Internet Friendly Media Encoder (IFME).
