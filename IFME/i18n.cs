@@ -18,8 +18,6 @@ internal class i18n
     {
         var langFiles = Directory.GetFiles("i18n", "*.json");
 
-        IFME.frmSplashScreen.PrintLogAppend("");
-
         foreach (var file in langFiles)
         {
             var lang = Path.GetFileNameWithoutExtension(file);

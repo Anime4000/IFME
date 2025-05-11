@@ -95,13 +95,13 @@ namespace IFME
 
             Directory.CreateDirectory(Properties.Settings.Default.FolderTemporary);
 
-            // Load config
-            new PluginsLoad();
-
             // Load language
             i18n.LoadLangFiles();
             var lang = Properties.Settings.Default.UILanguage;
             PrintContrib($"i18n: {i18n.Installed[lang]} by {i18n.GetLangAuthor(lang)[0]}\n\n{lblContrib.Text}");
+
+            // Load config
+            new PluginsLoad();
 
             // Finished loading, clear status text
             lblStatusUpdate(string.Empty);
