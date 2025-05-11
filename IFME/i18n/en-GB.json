@@ -212,7 +212,7 @@
 			"chkMuxMp4EM": "&Empty MOOV atom\n(Enables streaming before full download)",
 			"chkMuxMp4FK": "&Fragmented keyframes\n(Improves seeking performance)",
 			"chkMuxMp4SM": "&Separate MOOF atom\n(Required for streaming services)",
-			"chkSkipTest": "Disable encoder verification (faster launch)",
+			"chkSkipTest": "Enable encoder verification (disable make faster startup but may cause stability issues)",
 			"grpFileName": "&Filename format",
 			"grpLanguage": "Interface &language",
 			"grpMuxMp4": "MP4 &options",

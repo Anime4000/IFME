@@ -29,7 +29,8 @@ namespace IFME
     {
         private void Initialize_i18n()
         {
-            i18n.Apply(this, Name, Properties.Settings.Default.UILanguage);
+            var lang = Properties.Settings.Default.UILanguage;
+            i18n.Apply(this, Name, lang);
 
             var a = cboVideoDeInterMode.SelectedIndex;
             cboVideoDeInterMode.DataSource = new BindingSource(i18nUI.Obj.DeInterlaceMode, null);
@@ -42,6 +43,8 @@ namespace IFME
             cboVideoDeInterField.DisplayMember = "Value";
             cboVideoDeInterField.ValueMember = "Key";
             cboVideoDeInterField.SelectedIndex = b;
+
+            PrintLog($"[i18n] {lang} @ {i18n.GetLangAuthor(lang)[0]}");
         }
 
         private void InitializeFonts()
@@ -116,6 +119,8 @@ namespace IFME
 
         private void InitializeLog()
         {
+            var old = rtfConsole.Text;
+
             rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
                 $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
                 "\r\n" +
@@ -128,6 +133,8 @@ namespace IFME
                 rtfConsole.AppendText(i18nUI.Log("PluginLoadOK"));
             else
                 rtfConsole.AppendText(PluginsLoad.ErrorLog);
+
+            rtfConsole.AppendText(old);
         }
 
         private void InitializeProfiles()

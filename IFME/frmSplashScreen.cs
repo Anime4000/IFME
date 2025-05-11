@@ -100,16 +100,18 @@ namespace IFME
 
             // Load language
             i18n.LoadLangFiles();
+            var lang = Properties.Settings.Default.UILanguage;
+            PrintContrib($"i18n: {i18n.Installed[lang]} by {i18n.GetLangAuthor(lang)[0]}\n\n{lblContrib.Text}");
 
             // Finished loading, clear status text
             lblStatusUpdate(string.Empty);
 
-            Thread.Sleep(500);
+            Thread.Sleep(250);
 
             lblLoadingUpdate(string.Empty);
 
             // Wait some CPU free
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
 
             // If user choose not to test the encoder, wait little longer telling user IFME not test
             if (!Properties.Settings.Default.TestEncoder)

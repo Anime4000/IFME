@@ -62,6 +62,16 @@ namespace IFME
             lblLog.Text = string.Join("\n", Log);
         }
 
+        private void lblContrib_Update(string value)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SetStatusUpdate(lblContrib_Update), new object[] { value });
+                return;
+            }
+            lblContrib.Text = value;
+        }
+
         internal static void SetStatusAppend(string value)
         {
             if (frmSplashScreenStatus != null)
@@ -72,6 +82,12 @@ namespace IFME
         {
             if (frmSplashScreenStatus != null)
                 frmSplashScreenStatus.lblStatus_LogAppend(value);
+        }
+
+        internal static void PrintContrib(string value)
+        {
+            if (frmSplashScreenStatus != null)
+                frmSplashScreenStatus.lblContrib_Update(value);
         }
     }
 }

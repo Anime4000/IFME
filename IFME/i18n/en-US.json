@@ -1,7 +1,7 @@
 {
-	"AuthorName": "Anime4000",
-	"AuthorProfile": "https://github.com/Anime4000",
-	"AuthorEmail": "",
+	"AuthorName": "OpenAI ChatGPT",
+	"AuthorProfile": "https://chatgpt.com/",
+	"AuthorEmail": "Using AI to translate from en-MY",
 	"FontUIWindows": "Tahoma, 8pt",
 	"FontUILinux": "Nimbus Sans L, 8pt",
 	"Dialogs": {
@@ -212,7 +212,7 @@
 			"chkMuxMp4EM": "&Empty MOOV atom\n(Enables streaming before full download by placing header at file start)",
 			"chkMuxMp4FK": "&Fragmented keyframes\n(Improves seeking by splitting video at keyframes)",
 			"chkMuxMp4SM": "&Separate MOOF atom\n(Required for streaming services - places metadata before media data)",
-			"chkSkipTest": "Disable encoder testing (faster startup but may cause stability issues)",
+			"chkSkipTest": "Enable encoder testing (disable make faster startup but may cause stability issues)",
 			"grpFileName": "&Filename template",
 			"grpLanguage": "Interface &language",
 			"grpMuxMp4": "MP4 &muxing options",

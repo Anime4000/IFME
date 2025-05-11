@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ internal class i18n
     {
         var langFiles = Directory.GetFiles("i18n", "*.json");
 
+        IFME.frmSplashScreen.PrintLogAppend("");
+
         foreach (var file in langFiles)
         {
             var lang = Path.GetFileNameWithoutExtension(file);
@@ -27,18 +30,34 @@ internal class i18n
                 var displayName = culture.DisplayName;
 
                 Installed.Add(lang, displayName);
-                IFME.frmSplashScreen.SetStatus($"Language Loading {displayName}");
+
+                IFME.frmSplashScreen.PrintLogAppend($"i18n {displayName} by {GetLangAuthor(lang)[0]}");
             }
             catch (CultureNotFoundException)
             {
                 Installed.Add(lang, $"Unknown Language ({lang})");
             }
         }
+
+        // Set the default language to the current UI culture, if not found in the list, set to "en-US"
+        if (IFME.Properties.Settings.Default.UILanguage == "auto")
+        {
+            if (Installed.TryGetValue(Thread.CurrentThread.CurrentUICulture.Name, out var displayName))
+            {
+                IFME.Properties.Settings.Default.UILanguage = Thread.CurrentThread.CurrentUICulture.Name;
+            }
+            else
+            {
+                IFME.Properties.Settings.Default.UILanguage = "en-US";
+            }
+
+            IFME.Properties.Settings.Default.Save();
+        }
     }
 
     public static string[] GetLangAuthor(string currentLang = "eng")
     {
-        var langFile = Path.Combine("i18n", $"{currentLang}.json");
+        var langFile = Path.Combine("i18n", $"{Path.GetFileNameWithoutExtension(currentLang)}.json");
 
         if (!File.Exists(langFile))
             return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at i18n folder" };

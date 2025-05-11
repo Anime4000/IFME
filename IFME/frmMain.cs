@@ -80,14 +80,6 @@ namespace IFME
 
             txtOutputPath.Text = Properties.Settings.Default.FolderOutput;
 
-            if (Properties.Settings.Default.UILanguage == "auto")
-            {
-                Properties.Settings.Default.UILanguage = Thread.CurrentThread.CurrentUICulture.Name;
-                Properties.Settings.Default.Save();
-            }
-
-            
-
 #if SAVE_LANG
             i18n.Save(this, Name);
 #else
