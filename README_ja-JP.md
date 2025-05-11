@@ -1,9 +1,9 @@
 ![Splash Screen](IFME/Resources/SplashScreen14.png)
 
 # Internet Friendly Media Encoder
-![GUI](IFME.png)
+![GUI](IFME/Resources/i18n/IFME_ja-JP.png)
 
-**Language:** [English](/README.md)
+**Language:** [English](/README.md) | [简体中文](/README_zh-CN.md)
 
 ## 紹介
 2012 年、当時大学生だった私は FRAPS のゲーム録画を x264 で圧縮してアーカイブにするために IFME を開発しました。友人たちは IFME のシンプルで軽量な設計を高く評価したことで Internet Friendly Media Encoder (IFME) の誕生に繋がりました。
