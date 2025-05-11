@@ -23,7 +23,7 @@ IFME 源代码采用许可证 [GPL 2.0](http://choosealicense.com/licenses/gpl-2
 ## 捐赠
 请支持这个项目！绵薄之助也能让这个项目保持活力和更新！
 
-你可以爱心捐赠 [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U)。如果你贡献了爱心，请不要忘记在 [Facebook](https://www.facebook.com/internetfriendlymediaencoder) 或 [Twitter](https://twitter.com/Anime4000) 上告诉我们，你将荣列于 **名人堂** 和 **关于程序** 中。
+你可以爱心捐赠 [my paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U)。 如果你贡献了爱心，请不要忘记在 [Facebook](https://www.facebook.com/internetfriendlymediaencoder) 或 [Twitter](https://twitter.com/Anime4000) 上告诉我们，你将荣列于 **名人堂** 和 **关于程序** 中。
 
 ## 需知
 ### 系统要求
