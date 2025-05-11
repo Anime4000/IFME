@@ -51,7 +51,7 @@ Anda boleh memuat turun di:
 * [VideoHelp](https://www.videohelp.com/software/Internet-Friendly-Media-Encoder)
 * [SoftPedia](https://www.softpedia.com/get/Multimedia/Video/Encoders-Converter-DIVX-Related/Internet-Friendly-Media-Encoder.shtml)
 
-> [!NOTA]
+> [!NOTE]
 > *VideoHelp* & *SoftPedia* mungkin lambat mendapat versi terkini kerana saya tidak mengurus laman mereka. *SourceForge* sentiasa mempunyai versi terbaru, kadang-kadang saya lupa muat naik di *GitHub Release*.
 
 ### Jalankan
@@ -60,7 +60,7 @@ Pengguna Windows hanya perlu jalankan `ifme.exe`, manakala pengguna Linux jalank
 ## Pecutan Perkakasan
 *Internet Friendly Media Encoder* menyokong *hardware acceleration* terbina dalam untuk *H264*, *H265*, dan *AV1* menggunakan *FFmpeg* dan [*Rigaya*](https://github.com/rigaya).
 
-> [!AMARAN]
+> [!WARNING]
 > Untuk pengekodan berkecekapan tinggi (kualiti tinggi + bit rate rendah), disarankan guna *CPU-based encoder*. *Hardware acceleration* lebih laju, tetapi mungkin menjejaskan kualiti dan kecekapan bit rate.
 
 ## Pembangun
