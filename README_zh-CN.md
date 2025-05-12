@@ -3,7 +3,7 @@
 # Internet Friendly Media Encoder
 ![GUI](IFME/Resources/i18n/IFME_zh-CN.png)
 
-**Language:** [English](/README.md) | [日本語](/README_ja-JP.md)
+**Language:** [English](/README.md) | [日本語](/README_ja-JP.md) | [Bahasa Malaysia](/README_ms-MY.md)
 
 ## 简介
 早在 2012 年，作为一名大学生，我开发了IFME，最初是为了用 x264 压缩 FRAPS 游戏录像以归档。我的朋友们很欣赏 IFME 设计的简洁与轻便，这促进了 Internet Friendly Media Encoder (IFME) 的诞生。
