@@ -27,7 +27,7 @@ IFME のソースコードは [GPL 2.0](http://choosealicense.com/licenses/gpl-2
 ほんの少々の寄付でもこのプロジェクトの活性化と今後の維持に繋がります。
 
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U) から寄付が行えます。寄付をしてくれた方は、[Facebook](https://www.facebook.com/internetfriendlymediaencoder) または [Twitter](https://twitter.com/Anime4000) から報告してください。<br>
-表彰と殿堂入りおよび、プログラムについてに掲載されます。
+表彰と殿堂入りおよび、**About (バージョン情報)** に掲載されます。
 
 ## あなたへ
 ### システム要件
