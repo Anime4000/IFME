@@ -260,7 +260,7 @@
 			"lblResolution": "Resolusi:"
 		},
 		"frmProgressBar": {
-			"lblFFmpeg": "Maklumat Media FFmpeg",
+			"lblFFmpeg": "FFmpeg MediaInfo",
 			"lblStatus": "Memuatkan..."
 		}
 	}

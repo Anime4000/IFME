@@ -260,7 +260,7 @@
 			"lblResolution": "Resolution:"
 		},
 		"frmProgressBar": {
-			"lblFFmpeg": "Media Analysis",
+			"lblFFmpeg": "FFmpeg MediaInfo",
 			"lblStatus": "Initialising..."
 		}
 	}

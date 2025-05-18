@@ -162,12 +162,6 @@
     <None Include="Fonts\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Fonts\fonts.conf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Fonts\unifont-12.1.04.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="i18n\en-MY.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -66,12 +66,6 @@ namespace IFME
                 }
             } while (ctrl != null);
 
-            txtMediaInfo.Font = Fonts.Uni(12f, FontStyle.Regular);
-            rtfConsole.Font = Fonts.Uni(12f, FontStyle.Regular);
-            cboFormat.Font = new Font("Consolas", 10f);
-            cboProfile.Font = cboFormat.Font;
-            txtOutputPath.Font = cboFormat.Font;
-
             btnFileAdd.Text = Fonts.fa.plus;
             btnFileDelete.Text = Fonts.fa.minus;
             btnOptions.Text = $"{Fonts.fa.gears}";
@@ -115,6 +109,12 @@ namespace IFME
             tabConfigAttachment.Text = $"{Fonts.fa.paperclip} Attachment";
             tabConfigAdvance.Text = $"{Fonts.fa.gear} Advanced";
             tabConfigLog.Text = $"{Fonts.fa.terminal} Logs";**/
+
+            txtMediaInfo.Font = Fonts.Monospace();
+            rtfConsole.Font = Fonts.Monospace();
+            cboFormat.Font = Fonts.Monospace();
+            cboProfile.Font = cboFormat.Font;
+            txtOutputPath.Font = cboFormat.Font;
         }
 
         private void InitializeLog()
