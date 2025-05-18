@@ -15,7 +15,6 @@ namespace IFME
         public static string Release { get { return $"{version[0]}.{version[1]}{(version.Length > 2 ? $".{version[2]}" : "" )}"; } }
         public static string Contrib { get { return "Nemu, Jel42, Robin Lawrie, Ron Mitschke, Project Angel"; } }
         public static string TradeMark { get { return FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).LegalTrademarks; } }
-        public static string March { get { return "znver2"; } }
         public static string OSArch { get { return OS.Is64bit ? "amd64" : "x86"; } }
         public static string OSPlatform { get { return OS.IsWindows ? "windows" : "linux"; } }
     }

@@ -110,6 +110,11 @@ namespace IFME
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
+            if (!CPUFeature.HasAVX2())
+            {
+                MessageBox.Show("AVX2 instruction set not detected. A modern CPU with AVX2 support is required to continue. Please ensure your hardware is compatible. The program will now exit.", i18nUI.Status("Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             InitializeTab(); // need loop all table to make controls respond
         }
 

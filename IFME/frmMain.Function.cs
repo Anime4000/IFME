@@ -122,7 +122,7 @@ namespace IFME
             var old = rtfConsole.Text;
 
             rtfConsole.Text = $"{Version.Title} {Version.Release} ( '{Version.CodeName}' )\n" +
-                $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch} {Version.March} ({MArch.GetArchName[Version.March]})\r\n" +
+                $"{Version.Name} v{Version.Release} {Version.OSPlatform} {Version.OSArch}\r\n" +
                 "\r\n" +
                 $"(c) {DateTime.Now.Year} {Version.TradeMark}\r\n\r\n(s) {Version.Contrib}\r\n" +
                 "\r\n" +

@@ -1,0 +1,26 @@
+
+1 VERSIONINFO
+FILEVERSION 4,0,0,0
+PRODUCTVERSION 4,0,0,0
+FILEOS 0x4
+FILETYPE 0x2
+{
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "040904b0"
+		{
+			VALUE "CompanyName", "Anime4000-Nijika"
+			VALUE "FileDescription", "P/Invoke for .NET to check host system has AVX2, FMA3 or not"
+			VALUE "FileVersion", "4.0.0.0"
+			VALUE "LegalCopyright", "Copyright (C) 2025 Anime4000-Nijika"
+			VALUE "OriginalFilename", "libcpuid.dll"
+			VALUE "ProductName", "IFME"
+			VALUE "ProductVersion", "4.0.0.0"
+		}
+	}
+
+	BLOCK "VarFileInfo"
+	{
+		VALUE "Translation", 0x0409 0x04B0
+	}
+}
