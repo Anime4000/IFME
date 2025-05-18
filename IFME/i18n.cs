@@ -37,20 +37,25 @@ internal class i18n
             }
         }
 
-        // Set the default language to the current UI culture, if not found in the list, set to "en-US"
-        if (IFME.Properties.Settings.Default.UILanguage == "auto")
-        {
-            if (Installed.TryGetValue(Thread.CurrentThread.CurrentUICulture.Name, out var displayName))
-            {
-                IFME.Properties.Settings.Default.UILanguage = Thread.CurrentThread.CurrentUICulture.Name;
-            }
-            else
-            {
-                IFME.Properties.Settings.Default.UILanguage = "en-US";
-            }
+        var langSetting = IFME.Properties.Settings.Default.UILanguage;
+        var langDisplay = Thread.CurrentThread.CurrentUICulture.Name;
+        var langSettingExists = Installed.TryGetValue(langSetting, out _);
+        var langDisplayExists = Installed.TryGetValue(langDisplay, out _);
 
-            IFME.Properties.Settings.Default.Save();
+        if (langSettingExists)
+        {
+            IFME.Properties.Settings.Default.UILanguage = langSetting;
         }
+        else if (langDisplayExists)
+        {
+            IFME.Properties.Settings.Default.UILanguage = langDisplay;
+        }
+        else
+        {
+            IFME.Properties.Settings.Default.UILanguage = "en-US";
+        }
+
+        IFME.Properties.Settings.Default.Save();
     }
 
     public static string[] GetLangAuthor(string currentLang = "eng")

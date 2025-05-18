@@ -168,7 +168,7 @@
     <None Include="Fonts\unifont-12.1.04.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="i18n\en-GB.json">
+    <None Include="i18n\en-MY.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="i18n\ja-JP.json">
