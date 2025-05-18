@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO;
-using IFME.OSManager;
 
 namespace IFME
 {
@@ -19,7 +18,7 @@ namespace IFME
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (OS.IsWindows)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 e.Graphics.Clear(Color.Transparent);
             else
                 e.Graphics.Clear(Color.Black);
