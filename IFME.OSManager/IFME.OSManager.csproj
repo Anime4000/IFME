@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="API\Linux.cs" />
     <Compile Include="API\Windows.cs" />
+    <Compile Include="CPU.cs" />
     <Compile Include="ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,7 +65,6 @@
     <Compile Include="InputBox2.Designer.cs">
       <DependentUpon>InputBox2.cs</DependentUpon>
     </Compile>
-    <Compile Include="MArch.cs" />
     <Compile Include="OS.cs" />
     <Compile Include="ProcessEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

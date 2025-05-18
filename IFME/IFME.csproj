@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgsParser.cs" />
-    <Compile Include="CPUFeature.cs" />
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
