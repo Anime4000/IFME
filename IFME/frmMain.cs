@@ -111,7 +111,7 @@ namespace IFME
         {
             if (!CPU.HasAVX)
             {
-                MessageBox.Show("AVX instruction set not detected. A modern CPU with AVX support is required to continue. Please ensure your hardware is compatible. The program will now exit.", i18nUI.Status("Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("AVX instruction set not detected. A modern CPU with AVX support is required to continue. Please ensure your hardware is compatible. The program will now exit.", i18nUI.Status("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
 
