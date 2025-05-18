@@ -4,7 +4,8 @@ Version 8.5.0 (Kotoba Schein)
 [New] Interface now supporting i18n (internationalisation and localisation), feature implemented request by @reindex-ot
 [New] i18n Japanese by @reindex-ot
 [New] i18n Chinese Simplified by @longwu9t
-[Fixed] Crash when selecting Encoding Profile
+[Fixed] Crash when selecting Encoding Profile.
+[Update] Improved cross-platform Monospace Font rendering.
 
 Version 8.4.1 (Zero Point Module)
 ---------------------------------
