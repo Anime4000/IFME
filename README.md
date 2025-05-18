@@ -27,19 +27,18 @@ The video and audio encoders are implemented in a plug-in style, enabling users 
 | VP8    |      |      | ✅    |     |       |      |       | ✅     |      |
 | VP9    |      |      | ✅    |     |       |      |       | ✅     |      |
 
-| Audio          | .mp2 | .mp3 | .m4a | .ogg | .opus | .flac | .wma |
-|----------------|------|------|------|------|-------|-------|------|
-| MPEG Layer II  | ✅    |      | ✅    |      |       |       |      |
-| MPEG Layer III |      | ✅    | ✅    |      |       |       |      |
-| WMA            |      |      |      |      |       |       | ✅    |
-| AAC            |      |      | ✅    |      |       |       |      |
-| AC-3           |      |      | ✅    |      |       |       |      |
-| OGG            |      |      |      | ✅    | ✅     |       |      |
-| Opus           |      |      |      |      | ✅     |       |      |
-| USAC           |      |      | ✅    |      |       |       |      |
-| FLAC           |      |      |      |      |       | ✅     |      |
-| WAV            |      |      |      |      |       |       |      |
-
+| Audio          | .avi | .mp2 | .mp3 | .m4a | .mp4 | .mkv | .ogg | .opus | .flac | .wma | .wav |
+|----------------|------|------|------|------|------|------|------|-------|-------|------|------|
+| MPEG Layer II  | ✅    | ✅    |      | ✅    | ✅    | ✅    |      |       |       |      |      |
+| MPEG Layer III | ✅    |      | ✅    | ✅    | ✅    | ✅    |      |       |       |      |      |
+| WMA            |      |      |      |      |      | ✅    |      |       |       | ✅    |      |
+| AAC            | ✅    |      |      | ✅    | ✅    | ✅    |      |       |       |      |      |
+| AC-3           |      |      |      | ✅    | ✅    | ✅    |      |       |       |      |      |
+| OGG            |      |      |      |      |      | ✅    | ✅    | ✅     |       |      |      |
+| Opus           |      |      |      |      |      | ✅    |      | ✅     |       |      |      |
+| USAC           |      |      |      | ✅    | ✅    | ✅    |      |       |       |      |      |
+| FLAC           |      |      |      |      |      | ✅    |      |       | ✅     |      |      |
+| WAV            | ✅    |      |      |      |      | ✅    |      |       |       |      | ✅    |
 
 ## License
 ### Source Code & Binary
