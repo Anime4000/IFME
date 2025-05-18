@@ -36,7 +36,7 @@ The video and audio encoders are implemented in a plug-in style, enabling users 
 | AC-3           |      |      | ✅    |      |       |       |      |
 | OGG            |      |      |      | ✅    | ✅     |       |      |
 | Opus           |      |      |      |      | ✅     |       |      |
-| USAC           |      |      |      |      |       |       |      |
+| USAC           |      |      | ✅    |      |       |       |      |
 | FLAC           |      |      |      |      |       | ✅     |      |
 | WAV            |      |      |      |      |       |       |      |
 
