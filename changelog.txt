@@ -1,5 +1,6 @@
 Version 8.5.0 (Kotoba Schein)
 -----------------------------
+[New] Added CPU instruction set detection: AVX, AVX2, and FMA3. Program will exit if AVX is missing and show a warning if AVX2 is not available.
 [New] Interface now supporting i18n (internationalisation and localisation), feature implemented request by @reindex-ot
 [New] i18n Japanese by @reindex-ot
 [New] i18n Chinese Simplified by @longwu9t
