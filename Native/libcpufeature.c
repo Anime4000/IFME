@@ -1,5 +1,5 @@
 /*
- * libcpuid.c - AVX2 CPU feature detection for IFME
+ * libcpufeature.c - CPU feature detection for IFME
  *
  * This file defines a native function to check whether the host CPU
  * supports the AVX2 instruction set (Advanced Vector Extensions 2).
@@ -10,8 +10,8 @@
  * License: GPL-2.0
  *
  * Compile with:
- *     gcc -fPIC -shared -o libcpuid.so libcpuid.c
- *     gcc -fPIC -shared -o libcpuid.dll libcpuid.c
+ *     gcc -fPIC -shared -o libcpufeature.so libcpufeature.c
+ *     gcc -fPIC -shared -o libcpufeature.dll libcpufeature.c
  */
 
 #include <cpuid.h>
