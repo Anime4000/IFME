@@ -42,20 +42,19 @@ DLL_EXPORT const char* get_cpu_brand_string() {
 	return brand;
 }
 
-// Bit 0 = SSE, 1 = SSE2, ..., 5 = SSE4.2
-// Bit 6 = MMX
+// Bit 0 = MMX, 1 = SSE, ..., 5 = SSE4.2, Bit 6 = SSE4.2
 DLL_EXPORT unsigned int get_simd_flags() {
 	unsigned int eax, ebx, ecx, edx;
 	unsigned int flags = 0;
 	__cpuid(1, eax, ebx, ecx, edx);
 
-	if (edx & (1 << 25)) flags |= (1 << 0); // SSE
-	if (edx & (1 << 26)) flags |= (1 << 1); // SSE2
-	if (ecx & (1 << 0))  flags |= (1 << 2); // SSE3
-	if (ecx & (1 << 9))  flags |= (1 << 3); // SSSE3
-	if (ecx & (1 << 19)) flags |= (1 << 4); // SSE4.1
-	if (ecx & (1 << 20)) flags |= (1 << 5); // SSE4.2
-	if (edx & (1 << 23)) flags |= (1 << 6); // MMX
+	if (edx & (1 << 23)) flags |= (1 << 0); // MMX
+	if (edx & (1 << 25)) flags |= (1 << 1); // SSE
+	if (edx & (1 << 26)) flags |= (1 << 2); // SSE2
+	if (ecx & (1 << 0))  flags |= (1 << 3); // SSE3
+	if (ecx & (1 << 9))  flags |= (1 << 4); // SSSE3
+	if (ecx & (1 << 19)) flags |= (1 << 5); // SSE4.1
+	if (ecx & (1 << 20)) flags |= (1 << 6); // SSE4.2
 
 	return flags;
 }

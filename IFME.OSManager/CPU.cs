@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 public enum SIMDFlags : uint
 {
     None = 0,
-    SSE = 1 << 0,
-    SSE2 = 1 << 1,
-    SSE3 = 1 << 2,
-    SSSE3 = 1 << 3,
-    SSE41 = 1 << 4,
-    SSE42 = 1 << 5,
-    MMX = 1 << 6
+    MMX = 1 << 0,
+    SSE = 1 << 1,
+    SSE2 = 1 << 2,
+    SSE3 = 1 << 3,
+    SSSE3 = 1 << 4,
+    SSE41 = 1 << 5,
+    SSE42 = 1 << 6
 }
 
 namespace IFME.OSManager
@@ -63,7 +63,6 @@ namespace IFME.OSManager
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint get_simd_flags();
-
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool is_avx_supported();

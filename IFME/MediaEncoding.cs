@@ -695,7 +695,7 @@ namespace IFME
                 }
             }
 
-            var author = $"{Version.Name} {Version.Release} {Version.OSPlatform} {Version.OSArch}";
+            var author = $"{Version.Name.ToLower()}{Version.Release}/{Version.OSArch}/{Version.OSPlatform} ({CPU.GetCpuBrandString})";
             var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
