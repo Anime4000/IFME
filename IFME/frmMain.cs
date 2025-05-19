@@ -2500,8 +2500,8 @@ namespace IFME
                     }
 
                     // Delete Temporary Session Folder
-                    try { Directory.Delete(tempSes, true); }
-                    catch (Exception ex) { PrintLog($"[ERROR] {ex.Message}"); }
+                    //try { Directory.Delete(tempSes, true); }
+                    //catch (Exception ex) { PrintLog($"[ERROR] {ex.Message}"); }
 
                     lstFile.Invoke((MethodInvoker)delegate
                     {

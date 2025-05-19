@@ -43,7 +43,7 @@ namespace IFME
                     if (Path.IsPathRooted(plugin.Audio.Encoder))
                         plugin.Audio.Encoder = Path.GetFullPath(plugin.Audio.Encoder);
                     if (OSManager.OS.IsProgramInPath(plugin.Audio.Encoder))
-                        plugin.Version = "<PATH>"; // tell the plugins in in PATH Environment
+                        plugin.Version = "$PATH"; // tell the plugins in in PATH Environment
                     else
                         plugin.Audio.Encoder = Path.GetFullPath(AppPath.Combine(Path.GetDirectoryName(item), plugin.Audio.Encoder));
 
@@ -140,7 +140,7 @@ namespace IFME
                         if (Path.IsPathRooted(p.Binary))
                             p.Binary = Path.GetFullPath(p.Binary);
                         if (OSManager.OS.IsProgramInPath(p.Binary))
-                            plugin.Version = "<PATH>"; // tell the plugins in in PATH Environment
+                            plugin.Version = "$PATH"; // tell the plugins in in PATH Environment
                         else
                             p.Binary = Path.GetFullPath(AppPath.Combine(Path.GetDirectoryName(item), p.Binary));
                     }
@@ -224,9 +224,9 @@ namespace IFME
             var ac = codec.Audio;
             var ff = MediaEncoding.FFmpeg;
             var en = ac.Encoder;
-            var sampleFile = AppPath.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.m4a");
-            var outTempFile = AppPath.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{ac.Extension}");
-            var outTempFolder = AppPath.Combine(Path.GetTempPath());
+            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.m4a");
+            var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{ac.Extension}");
+            var outTempFolder = Path.Combine(Path.GetTempPath());
 
             var qu = ac.Mode[0].Args.IsDisable() ? "" : $"{ac.Mode[0].Args} {ac.Mode[0].QualityPrefix}{ac.Mode[0].Default}{ac.Mode[0].QualityPostfix}";
 
@@ -254,9 +254,9 @@ namespace IFME
             var vc = codec.Video;
             var ff = MediaEncoding.FFmpeg;
             var en = vc.Encoder[0].Binary;
-            var sampleFile = AppPath.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.mp4");
-            var outTempFile = AppPath.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{vc.Extension}");
-            var outTempFolder = AppPath.Combine(Path.GetTempPath());
+            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.mp4");
+            var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{vc.Extension}");
+            var outTempFolder = Path.Combine(Path.GetTempPath());
 
             var val_w = 320;
             var val_h = 240;
