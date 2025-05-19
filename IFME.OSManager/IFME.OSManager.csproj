@@ -47,6 +47,7 @@
     <Compile Include="API\Linux.cs" />
     <Compile Include="API\Windows.cs" />
     <Compile Include="CPU.cs" />
+    <Compile Include="AppPath.cs" />
     <Compile Include="ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
