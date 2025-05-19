@@ -13,8 +13,8 @@ namespace IFME
 		{
 			Profiles.Items.Clear();
 
-			var path = Path.Combine("Profiles");
-			var folder = Path.Combine(Directory.GetCurrentDirectory(), path);
+			var path = AppPath.Combine("Profiles");
+			var folder = AppPath.Combine(Directory.GetCurrentDirectory(), path);
 
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
@@ -51,7 +51,7 @@ namespace IFME
 			};
 
 			string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-			File.WriteAllText(Path.Combine("Profiles", $"Profile_{DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss_ffff", CultureInfo.InvariantCulture)}.json"), json);
+			File.WriteAllText(AppPath.Combine("Profiles", $"Profile_{DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss_ffff", CultureInfo.InvariantCulture)}.json"), json);
 		}
 
 		public static void Rename(int index)

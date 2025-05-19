@@ -1,3 +1,8 @@
+Version 8.5.1 (Nijika Melody)
+-----------------------------
+[Fixed] Rebuild full path instead of relaying Working Folder
+[Fixed] Splash Screen image will cache for improved OnPaint()
+
 Version 8.5.0 (Kotoba Schein)
 -----------------------------
 [New] Added CPU instruction set detection: AVX, AVX2, and FMA3. Program will exit if AVX is missing and show a warning if AVX2 is not available.

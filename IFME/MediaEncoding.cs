@@ -20,7 +20,7 @@ namespace IFME
                 if (OS.IsProgramInPath("ffmpeg"))
                     return "ffmpeg";
                 else
-                    return Path.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
+                    return AppPath.Combine(Environment.CurrentDirectory, "Plugins", $"ffmpeg{Arch}", "ffmpeg");
 
             }
         }
@@ -32,7 +32,7 @@ namespace IFME
                 if (OS.IsProgramInPath("mp4box"))
                     return "mp4box";
                 else
-                    return Path.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
+                    return AppPath.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
             }
         }
 
@@ -107,7 +107,7 @@ namespace IFME
                 }
                 else if (id == -1)
                 {
-                    File.Copy(file, Path.Combine(tempDir, $"subtitle0000_{i:D4}_{lang}{fext}"));
+                    File.Copy(file, AppPath.Combine(tempDir, $"subtitle0000_{i:D4}_{lang}{fext}"));
                 }
                 else if (id == -2)
                 {
@@ -125,7 +125,7 @@ namespace IFME
             }
 
             frmMain.PrintLog("[INFO] Extracting embeded attachment...");
-            var tempDirFont = Path.Combine(tempDir, "attachment");
+            var tempDirFont = AppPath.Combine(tempDir, "attachment");
             for (int i = 0; i < queue.Attachment.Count; i++)
             {
                 var id = queue.Attachment[i].Id;
@@ -141,7 +141,7 @@ namespace IFME
                 }
                 else if (id == -1)
                 {
-                    File.Copy(file, Path.Combine(tempDirFont, Path.GetFileName(file)));
+                    File.Copy(file, AppPath.Combine(tempDirFont, Path.GetFileName(file)));
                 }
                 else if (id == -2)
                 {
@@ -160,13 +160,13 @@ namespace IFME
             // Hard Sub
             if (queue.HardSub)
             {
-                var fontConfigFile = File.ReadAllText(Path.Combine("Fonts", "fonts.conf"));
+                var fontConfigFile = File.ReadAllText(AppPath.Combine("Fonts", "fonts.conf"));
                 var fontConfigData = string.Format(fontConfigFile, tempDirFont);
-                File.WriteAllText(Path.Combine(tempDir, "fonts.conf"), fontConfigData);
+                File.WriteAllText(AppPath.Combine(tempDir, "fonts.conf"), fontConfigData);
 
                 Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDirFont);
                 Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
-                Environment.SetEnvironmentVariable("FONTCONFIG_FILE", Path.Combine(tempDir, "fonts.conf"));
+                Environment.SetEnvironmentVariable("FONTCONFIG_FILE", AppPath.Combine(tempDir, "fonts.conf"));
             }
         }
 
@@ -225,14 +225,14 @@ namespace IFME
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:a copy -y {tempName}");
 
-                        if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 1024)
+                        if (new FileInfo(AppPath.Combine(tempDir, tempName)).Length <= 1024)
                             exitCode = 1;
 
                         if (!IsExitError(exitCode))
                             continue;
 
                         frmMain.PrintLog($"[INFO] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
-                        File.Delete(Path.Combine(tempDir, tempName));
+                        File.Delete(AppPath.Combine(tempDir, tempName));
                     }
 
                     if (!item.CommandFilter.IsDisable())
@@ -457,7 +457,7 @@ namespace IFME
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:v copy -y {tempName}");
 
-                        if (new FileInfo(Path.Combine(tempDir, tempName)).Length <= 8192)
+                        if (new FileInfo(AppPath.Combine(tempDir, tempName)).Length <= 8192)
                         {
                             frmMain.PrintLog($"[ERR ] Fast Remux is complete but remuxed file is corrupted... Exit Code {exitCode}");
                             exitCode = 1;
@@ -470,7 +470,7 @@ namespace IFME
                         }
 
                         frmMain.PrintLog($"[WARN] Remuxing incompatible codec require to re-encode to compatible one... Exit Code {exitCode}");
-                        File.Delete(Path.Combine(tempDir, tempName));
+                        File.Delete(AppPath.Combine(tempDir, tempName));
                     }
 
                     // Auto detect crop
@@ -478,9 +478,9 @@ namespace IFME
                     {
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -ss \"{queue.Crop.Start}\" -t \"{queue.Crop.Duration}\" -i \"{item.FilePath}\" -vf cropdetect -f null - 2> crop.log");
 
-                        if (File.Exists(Path.Combine(tempDir, "crop.log")))
+                        if (File.Exists(AppPath.Combine(tempDir, "crop.log")))
                         {
-                            var crop = IFME.FFmpeg.AutoDetect.Crop.Get(Path.Combine(tempDir, "crop.log"));
+                            var crop = IFME.FFmpeg.AutoDetect.Crop.Get(AppPath.Combine(tempDir, "crop.log"));
 
                             if (!string.IsNullOrEmpty(crop))
                             {
@@ -564,17 +564,17 @@ namespace IFME
 
                     if (vc.RawOutput)
                     {
-                        if (File.Exists(Path.Combine(tempDir, outrawfile)))
+                        if (File.Exists(AppPath.Combine(tempDir, outrawfile)))
                         {
                             ProcessManager.Start(tempDir, $"\"{MP4Box}\" -add \"{outrawfile}#video:name=\" -itags tool=\"IFME MP4\" \"{outfmtfile}\" ");
-                            File.Delete(Path.Combine(tempDir, outrawfile));
+                            File.Delete(AppPath.Combine(tempDir, outrawfile));
                         }
                     }
                     else
                     {
-                        if (File.Exists(Path.Combine(tempDir, outrawfile)))
+                        if (File.Exists(AppPath.Combine(tempDir, outrawfile)))
                         {
-                            File.Move(Path.Combine(tempDir, outrawfile), Path.Combine(tempDir, outfmtfile));
+                            File.Move(AppPath.Combine(tempDir, outrawfile), AppPath.Combine(tempDir, outfmtfile));
                         }
                     }
                 }
@@ -598,7 +598,7 @@ namespace IFME
 
             var movflags = string.Empty;
 
-            var outFile = Path.Combine(saveDir, saveFile);
+            var outFile = AppPath.Combine(saveDir, saveFile);
 
             frmMain.PrintStatus(i18nUI.Status("Repacking"));
             frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
@@ -644,13 +644,13 @@ namespace IFME
             {
                 if (!queue.HardSub)
                 {
-                    var tempDirFont = Path.Combine(tempDir, "attachment");
+                    var tempDirFont = AppPath.Combine(tempDir, "attachment");
                     if (Directory.Exists(tempDirFont))
                     {
                         var files = Directory.GetFiles(tempDirFont, "*");
                         for (int i = 0; i < files.Length; i++)
                         {
-                            argEmbed += $"-attach \"{Path.Combine("attachment", Path.GetFileName(files[i]))}\" ";
+                            argEmbed += $"-attach \"{AppPath.Combine("attachment", Path.GetFileName(files[i]))}\" ";
                             metadata += $"-metadata:s:{x} filename=\"{Path.GetFileName(files[i])}\" -metadata:s:{x} \"mimetype={queue.Attachment[i].Mime}\" ";
                             x++;
                         }
@@ -674,7 +674,7 @@ namespace IFME
                 }
             }
 
-            if (File.Exists(Path.Combine(tempDir, "metadata.ini")))
+            if (File.Exists(AppPath.Combine(tempDir, "metadata.ini")))
             {
                 metafile = $"-f ffmetadata -i metadata.ini -map_metadata 0";
             }

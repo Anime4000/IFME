@@ -103,7 +103,7 @@ static class Extensions
 		FileInfo[] files = dir.GetFiles();
 		foreach (FileInfo file in files)
 		{
-			string tempPath = Path.Combine(destDirName, file.Name);
+			string tempPath = AppPath.Combine(destDirName, file.Name);
 			file.CopyTo(tempPath, true);
 		}
 
@@ -112,7 +112,7 @@ static class Extensions
 		{
 			foreach (DirectoryInfo subdir in dirs)
 			{
-				string tempPath = Path.Combine(destDirName, subdir.Name);
+				string tempPath = AppPath.Combine(destDirName, subdir.Name);
 				DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
 			}
 		}

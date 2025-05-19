@@ -13,7 +13,7 @@ namespace IFME
 
         internal static void Initialize()
         {
-            Library.AddFontFile(Path.Combine("Fonts", "fontawesome-webfont.ttf"));
+            Library.AddFontFile(AppPath.Combine("Fonts", "fontawesome-webfont.ttf"));
         }
 
         internal static Font Awesome(float size, FontStyle style)

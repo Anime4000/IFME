@@ -234,7 +234,7 @@ namespace IFME
 					else
 						d = $"%0{intCount}d";
 
-					return Path.Combine(filePath, fileName.Replace($"{x[0]}", $"{d}") + fileExts);
+					return AppPath.Combine(filePath, fileName.Replace($"{x[0]}", $"{d}") + fileExts);
                 }
 			}
 

@@ -10,6 +10,22 @@ namespace IFME
 {
     public partial class frmSplashScreen : Form
     {
+        private Image splashImage;
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            try
+            {
+                splashImage = Image.FromFile(AppPath.Combine("Resources", "SplashScreen14.png"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load splash image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                splashImage = null;
+            }
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             WindowUtils.EnableAcrylic(this, Color.FromArgb(127, 20, 20, 20));
@@ -27,11 +43,19 @@ namespace IFME
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            using (Image img = Image.FromFile(Path.Combine("Resources", "SplashScreen14.png")))
+
+            if (splashImage != null)
             {
-                e.Graphics.DrawImage(img, new Rectangle(0, 0, Width, Height));
+                e.Graphics.DrawImage(splashImage, new Rectangle(0, 0, Width, Height));
             }
         }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            splashImage?.Dispose();
+            base.OnFormClosed(e);
+        }
+
 
         private BackgroundWorker2 bgThread = new BackgroundWorker2();
 
@@ -73,11 +97,11 @@ namespace IFME
 
             // Load settings
             if (Properties.Settings.Default.FolderOutput.IsDisable())
-                Properties.Settings.Default.FolderOutput = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+                Properties.Settings.Default.FolderOutput = AppPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
             
 
             if (Properties.Settings.Default.FolderTemporary.IsDisable())
-                Properties.Settings.Default.FolderTemporary = Path.Combine(Path.GetTempPath(), "IFME");
+                Properties.Settings.Default.FolderTemporary = AppPath.Combine(Path.GetTempPath(), "IFME");
 
             Properties.Settings.Default.Save();
 

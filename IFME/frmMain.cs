@@ -128,8 +128,8 @@ namespace IFME
             var w = PbxBanner.Width;
             var h = PbxBanner.Height;
 
-            var b1 = Image.FromFile(Path.Combine("Resources", "Banner_4a.png"));
-            var b2 = Image.FromFile(Path.Combine("Resources", "Banner_2b.png"));
+            var b1 = Image.FromFile(AppPath.Combine("Resources", "Banner_4a.png"));
+            var b2 = Image.FromFile(AppPath.Combine("Resources", "Banner_2b.png"));
             var iW = b1.Width;
             var iH = b1.Height;
 
@@ -2463,13 +2463,13 @@ namespace IFME
                     var saveFileName = $"{outFileName}.{outFileExts}";
                     var r = 1;
 
-                    while (File.Exists(Path.Combine(txtOutputPath.Text, saveFileName)))
+                    while (File.Exists(AppPath.Combine(txtOutputPath.Text, saveFileName)))
                     {
                         saveFileName = $"{outFileName}_{++r}.{outFileExts}";
                     }
 
                     // Create Temporary Session Folder
-                    var tempSes = Path.Combine(Properties.Settings.Default.FolderTemporary, $"{Guid.NewGuid()}");
+                    var tempSes = AppPath.Combine(Properties.Settings.Default.FolderTemporary, $"{Guid.NewGuid()}");
                     Directory.CreateDirectory(tempSes);
 
 
@@ -2489,7 +2489,7 @@ namespace IFME
                     // Check FFmpeg Muxing is failed (negative) or 1 or sucess/warning (positive)
                     if (errCodeMux <= -1 || errCodeMux == 1)
                     {
-                        Extensions.DirectoryCopy(tempSes, Path.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
+                        Extensions.DirectoryCopy(tempSes, AppPath.Combine(txtOutputPath.Text, "[Muxing Failed]", $"{saveFileName}"), true);
                         PrintLog(i18nUI.Log("MuxingFailed"));
                         PrintLog(String.Format(i18nUI.Log("FFmpegReturnCode"), errCodeMux));
                     }

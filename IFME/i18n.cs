@@ -60,7 +60,7 @@ internal class i18n
 
     public static string[] GetLangAuthor(string currentLang = "eng")
     {
-        var langFile = Path.Combine("i18n", $"{Path.GetFileNameWithoutExtension(currentLang)}.json");
+        var langFile = AppPath.Combine("i18n", $"{Path.GetFileNameWithoutExtension(currentLang)}.json");
 
         if (!File.Exists(langFile))
             return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at i18n folder" };
@@ -75,8 +75,8 @@ internal class i18n
 
     public static void Apply(Control parent, string formName, string currentLang = "eng")
     {
-        var langDefault = Path.Combine("i18n", "en-US.json");
-        var langFile = Path.Combine("i18n", $"{currentLang}.json");
+        var langDefault = AppPath.Combine("i18n", "en-US.json");
+        var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
 
         // When the default language file is not found, use the WinForm place holder as language
         if (!File.Exists(langDefault))
@@ -137,7 +137,7 @@ internal class i18n
 
     public static void Save(Control parent, string formName, string currentLang = "eng")
     {
-        var langFile = Path.Combine("i18n", $"{currentLang}.json");
+        var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
 
         i18nObj data;
         try

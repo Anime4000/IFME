@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 public class Language
 {
-    public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine("Language.json")));
+    public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(AppPath.Combine("Language.json")));
 
     public static string FullName(object obj)
     {
