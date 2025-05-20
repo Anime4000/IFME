@@ -2,6 +2,9 @@ Version 8.5.1 (Nijika Melody)
 -----------------------------
 [Fixed] Rebuild full path instead of relaying Working Folder
 [Fixed] Splash Screen image will cache for improved OnPaint()
+[Update] H.266 vvenc to 1.13.1
+[Update] H.266 uvg266 to 0.8.1-391a564
+[Update] USAC exhale to 1.2.1.2 
 
 Version 8.5.0 (Kotoba Schein)
 -----------------------------

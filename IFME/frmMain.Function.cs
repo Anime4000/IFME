@@ -664,9 +664,10 @@ namespace IFME
                 foreach (TabPage item in tabConfig.TabPages)
                 {
                     tabConfig.SelectedTab = item;
+                    Thread.Sleep(100); // GDI+ is slow, so we need to wait for it to finish.
                 }
 
-                tabConfig.SelectedTab = tabConfigMediaInfo;
+                tabConfig.SelectedTab = tabConfigLog;
 
                 cboProfile.Focus();
                 cboProfile.SelectedIndex = cboProfile.Items.Count - 1;

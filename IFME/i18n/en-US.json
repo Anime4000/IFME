@@ -207,7 +207,7 @@
 			"btnFactoryReset": "&Reset to defaults",
 			"btnNone": "&Deselect all",
 			"btnOK": "&OK",
-			"btnOnly265": "H.26&5 only",
+			"btnOnly265": "x26&5 only",
 			"btnTempBrowse": "&Browse...",
 			"chkMuxMp4EM": "&Empty MOOV atom\n(Enables streaming before full download by placing header at file start)",
 			"chkMuxMp4FK": "&Fragmented keyframes\n(Improves seeking by splitting video at keyframes)",
