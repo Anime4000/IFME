@@ -17,7 +17,7 @@ namespace IFME
 
         internal PluginsLoad()
         {
-            var folder = Path.GetFullPath("Plugins");
+            var folder = AppPath.Combine("Plugins");
 
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
@@ -42,7 +42,7 @@ namespace IFME
                     // Parse into fully qualified path
                     if (Path.IsPathRooted(plugin.Audio.Encoder))
                         plugin.Audio.Encoder = Path.GetFullPath(plugin.Audio.Encoder);
-                    if (OSManager.OS.IsProgramInPath(plugin.Audio.Encoder))
+                    if (OS.IsProgramInPath(plugin.Audio.Encoder))
                         plugin.Version = "$PATH"; // tell the plugins in in PATH Environment
                     else
                         plugin.Audio.Encoder = Path.GetFullPath(AppPath.Combine(Path.GetDirectoryName(item), plugin.Audio.Encoder));
@@ -57,7 +57,7 @@ namespace IFME
                     frmSplashScreen.SetStatus($"{plugin.Name}");
 
                     // Skip wrong cpu arch
-                    if (OSManager.OS.Is64bit != plugin.X64)
+                    if (OS.Is64bit != plugin.X64)
                     {
                         frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
                         continue;
@@ -139,7 +139,7 @@ namespace IFME
                     {
                         if (Path.IsPathRooted(p.Binary))
                             p.Binary = Path.GetFullPath(p.Binary);
-                        if (OSManager.OS.IsProgramInPath(p.Binary))
+                        if (OS.IsProgramInPath(p.Binary))
                             plugin.Version = "$PATH"; // tell the plugins in in PATH Environment
                         else
                             p.Binary = Path.GetFullPath(AppPath.Combine(Path.GetDirectoryName(item), p.Binary));
@@ -155,7 +155,7 @@ namespace IFME
                     frmSplashScreen.SetStatus($"{plugin.Name}");
 
                     // Skip wrong cpu arch
-                    if (OSManager.OS.Is64bit != plugin.X64)
+                    if (OS.Is64bit != plugin.X64)
                     {
                         frmSplashScreen.SetStatusAppend(" (incompatible architecture, skipping...)");
                         continue;

@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
-/// <summary>
-/// Provides a method to enable Windows acrylic blur behind a window on supported Windows 10+ systems.
-/// Automatically skips execution on non-Windows platforms (e.g., Linux via Mono).
-/// </summary>
 public static class WindowUtils
 {
-    /// <summary>
-    /// Enables acrylic blur behind the given window with a specified color tint.
-    /// Skips execution on non-Windows platforms or unsupported Windows versions.
-    /// </summary>
-    /// <param name="window">The window to apply the effect to.</param>
-    /// <param name="blurColor">The tint color (used in ABGR).</param>
     public static void EnableAcrylic(IWin32Window window, Color blurColor)
     {
         if (!IsWindowsPlatform())
@@ -40,18 +30,19 @@ public static class WindowUtils
 
         try
         {
-            unsafe
+            int accentStructSize = Marshal.SizeOf<AccentPolicy>();
+            IntPtr accentPtr = Marshal.AllocHGlobal(accentStructSize);
+            Marshal.StructureToPtr(accentPolicy, accentPtr, false);
+
+            var data = new WindowCompositionAttributeData
             {
-                var accentStructSize = Marshal.SizeOf<AccentPolicy>();
-                SetWindowCompositionAttribute(
-                    new HandleRef(window, window.Handle),
-                    new WindowCompositionAttributeData
-                    {
-                        Attribute = WCA.ACCENT_POLICY,
-                        Data = &accentPolicy,
-                        DataLength = accentStructSize
-                    });
-            }
+                Attribute = WCA.ACCENT_POLICY,
+                Data = accentPtr,
+                DataLength = accentStructSize
+            };
+
+            SetWindowCompositionAttribute(new HandleRef(window, window.Handle), data);
+            Marshal.FreeHGlobal(accentPtr);
         }
         catch (Exception ex)
         {
@@ -66,7 +57,6 @@ public static class WindowUtils
 
     private static bool IsAcrylicSupported()
     {
-        // Windows 10 version 1803 (build 17134) or newer
         return Environment.OSVersion.Version >= new Version(10, 0, 17134);
     }
 
@@ -79,12 +69,13 @@ public static class WindowUtils
     }
 
     [DllImport("user32.dll")]
-    private static extern int SetWindowCompositionAttribute(HandleRef hWnd, in WindowCompositionAttributeData data);
+    private static extern int SetWindowCompositionAttribute(HandleRef hWnd, WindowCompositionAttributeData data);
 
-    private unsafe struct WindowCompositionAttributeData
+    [StructLayout(LayoutKind.Sequential)]
+    private struct WindowCompositionAttributeData
     {
         public WCA Attribute;
-        public void* Data;
+        public IntPtr Data;
         public int DataLength;
     }
 
@@ -103,6 +94,7 @@ public static class WindowUtils
         INVALID_STATE = 5
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     private struct AccentPolicy
     {
         public ACCENT AccentState;

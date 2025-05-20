@@ -157,3 +157,34 @@ DLL_EXPORT bool is_fma3_supported() {
 	return (ecx & (1 << 12)) != 0;
 }
 
+// Check if running on VM or not
+DLL_EXPORT bool is_running_in_vm() {
+    unsigned int eax, ebx, ecx, edx;
+
+    if (!__get_cpuid_max(0, NULL) || __get_cpuid_max(0, NULL) < 1)
+        return false;
+
+    __cpuid(1, eax, ebx, ecx, edx);
+
+    // Bit 31 of ECX indicates presence of hypervisor
+    return (ecx & (1U << 31)) != 0;
+}
+
+// Which VM being used
+DLL_EXPORT const char* get_hypervisor_vendor() {
+    static char vendor[13] = {0};
+    unsigned int eax, ebx, ecx, edx;
+
+    if (!is_running_in_vm())
+        return "";
+
+    __cpuid(0x40000000, eax, ebx, ecx, edx);
+
+    // Vendor ID is in EBX, ECX, EDX (12 ASCII chars)
+    memcpy(&vendor[0], &ebx, 4);
+    memcpy(&vendor[4], &ecx, 4);
+    memcpy(&vendor[8], &edx, 4);
+    vendor[12] = '\0';
+
+    return vendor;
+}

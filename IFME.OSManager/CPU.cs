@@ -14,8 +14,7 @@ public enum SIMDFlags : uint
     SSE42 = 1 << 6
 }
 
-namespace IFME.OSManager
-{
+
     public class CPU
     {
         public static string GetCpuBrandString
@@ -23,6 +22,22 @@ namespace IFME.OSManager
             get
             {
                 return Marshal.PtrToStringAnsi(get_cpu_brand_string()).Trim();
+            }
+        }
+
+        public static string GetHypervisorVendor
+        {
+            get
+            {
+                return Marshal.PtrToStringAnsi(get_hypervisor_vendor()).Trim();
+            }
+        }
+
+        public static bool IsRunningInVM
+        {
+            get
+            {
+                return is_running_in_vm();
             }
         }
 
@@ -62,6 +77,12 @@ namespace IFME.OSManager
         private static extern IntPtr get_cpu_brand_string();
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr get_hypervisor_vendor();
+
+        [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool is_running_in_vm();
+
+        [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint get_simd_flags();
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
@@ -73,4 +94,3 @@ namespace IFME.OSManager
         [DllImport("libcpufeature", CallingConvention = CallingConvention.StdCall)]
         private static extern bool is_fma3_supported();
     }
-}

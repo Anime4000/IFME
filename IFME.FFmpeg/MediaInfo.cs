@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+
 
 namespace IFME.FFmpeg
 {
@@ -31,7 +29,7 @@ namespace IFME.FFmpeg
 		{ 
 			get 
 			{
-                if (OSManager.OS.IsProgramInPath("ffprobe"))
+                if (OS.IsProgramInPath("ffprobe"))
                     return "ffprobe";
                 else
                     return Path.Combine("Plugins", "ffmpeg64", "ffprobe");
