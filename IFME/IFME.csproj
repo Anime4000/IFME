@@ -65,8 +65,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Fonts\FontAwesome.cs" />
-    <Compile Include="Fonts\Fonts.cs" />
+    <Compile Include="Fonts.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,9 +159,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <None Include="Fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="i18n\en-MY.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

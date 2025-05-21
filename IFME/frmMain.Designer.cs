@@ -1447,8 +1447,7 @@
             // 
             // grpVideoCodec
             // 
-            this.grpVideoCodec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpVideoCodec.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.grpVideoCodec.Controls.Add(this.btnVideoEnc);
             this.grpVideoCodec.Controls.Add(this.lblVideoAdv);
             this.grpVideoCodec.Controls.Add(this.btnVideoDec);
@@ -1473,6 +1472,7 @@
             // 
             // btnVideoEnc
             // 
+            this.btnVideoEnc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVideoEnc.Location = new System.Drawing.Point(127, 216);
             this.btnVideoEnc.Name = "btnVideoEnc";
             this.btnVideoEnc.Size = new System.Drawing.Size(114, 23);
@@ -1483,7 +1483,7 @@
             // 
             // lblVideoAdv
             // 
-            this.lblVideoAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblVideoAdv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVideoAdv.Location = new System.Drawing.Point(6, 195);
             this.lblVideoAdv.Name = "lblVideoAdv";
@@ -1494,6 +1494,8 @@
             // 
             // btnVideoDec
             // 
+            this.btnVideoDec.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVideoDec.Location = new System.Drawing.Point(6, 216);
             this.btnVideoDec.Name = "btnVideoDec";
             this.btnVideoDec.Size = new System.Drawing.Size(115, 23);
@@ -1504,6 +1506,7 @@
             // 
             // nudVideoMultiPass
             // 
+            this.nudVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.nudVideoMultiPass.Location = new System.Drawing.Point(127, 172);
             this.nudVideoMultiPass.Name = "nudVideoMultiPass";
             this.nudVideoMultiPass.Size = new System.Drawing.Size(114, 20);
@@ -1512,6 +1515,8 @@
             // 
             // nudVideoRateFactor
             // 
+            this.nudVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.nudVideoRateFactor.Location = new System.Drawing.Point(6, 172);
             this.nudVideoRateFactor.Name = "nudVideoRateFactor";
             this.nudVideoRateFactor.Size = new System.Drawing.Size(115, 20);
@@ -1520,8 +1525,7 @@
             // 
             // lblVideoMultiPass
             // 
-            this.lblVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVideoMultiPass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVideoMultiPass.Location = new System.Drawing.Point(127, 151);
             this.lblVideoMultiPass.Name = "lblVideoMultiPass";
             this.lblVideoMultiPass.Size = new System.Drawing.Size(114, 18);
@@ -1531,7 +1535,7 @@
             // 
             // lblVideoRateFactor
             // 
-            this.lblVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblVideoRateFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVideoRateFactor.Location = new System.Drawing.Point(6, 151);
             this.lblVideoRateFactor.Name = "lblVideoRateFactor";
@@ -1542,7 +1546,7 @@
             // 
             // cboVideoRateControl
             // 
-            this.cboVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cboVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cboVideoRateControl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboVideoRateControl.FormattingEnabled = true;
@@ -1554,6 +1558,8 @@
             // 
             // lblVideoRateControl
             // 
+            this.lblVideoRateControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVideoRateControl.Location = new System.Drawing.Point(6, 106);
             this.lblVideoRateControl.Name = "lblVideoRateControl";
             this.lblVideoRateControl.Size = new System.Drawing.Size(235, 18);

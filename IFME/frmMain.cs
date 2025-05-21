@@ -290,17 +290,17 @@ namespace IFME
                     if (ProcessManager.IsPause)
                     {
                         ProcessManager.Resume();
-                        btnStart.Text = Fonts.fa.pause;
+                        btnStart.Text = "Pause";
                     }
                     else
                     {
                         ProcessManager.Pause();
-                        btnStart.Text = Fonts.fa.play;
+                        btnStart.Text = "Start";
                     }
                 }
                 else
                 {
-                    btnStart.Text = Fonts.fa.pause;
+                    btnStart.Text = "Pause";
                     tabConfig.SelectedTab = tabConfigLog;
 
                     var data = new Dictionary<int, MediaQueue>();
@@ -321,7 +321,7 @@ namespace IFME
                     else
                     {
                         frmMain.PrintLog(i18nUI.Log("NotingToEncode"));
-                        btnStart.Text = Fonts.fa.play;
+                        btnStart.Text = "Start";
                     }
                 }
             }
@@ -2528,7 +2528,7 @@ namespace IFME
 
         private void bgThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnStart.Text = Fonts.fa.play;
+            btnStart.Text = "Start";
 
             ProcessManager.Clear();
 

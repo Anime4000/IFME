@@ -49,67 +49,6 @@ namespace IFME
 
         private void InitializeFonts()
         {
-            Fonts.Initialize();
-
-            Control ctrl = this;
-            do
-            {
-                ctrl = GetNextControl(ctrl, true);
-
-                if (ctrl != null)
-                {
-                    if (ctrl is Button)
-                    {
-                        if (ctrl.Text.Length == 1)
-                            ctrl.Font = Fonts.Awesome(10f, FontStyle.Regular);
-                    }
-                }
-            } while (ctrl != null);
-
-            btnFileAdd.Text = Fonts.fa.plus;
-            btnFileDelete.Text = Fonts.fa.minus;
-            btnOptions.Text = $"{Fonts.fa.gears}";
-            btnAbout.Text = $"{Fonts.fa.info_circle}";
-            btnFileUp.Text = Fonts.fa.chevron_up;
-            btnFileDown.Text = Fonts.fa.chevron_down;
-            //btnDonate.Text = $"{Fonts.fa.money} {btnDonate.Text}";
-            btnStart.Text = Fonts.fa.play;
-            btnStop.Text = Fonts.fa.stop;
-
-            btnVideoAdd.Text = btnFileAdd.Text;
-            btnVideoDel.Text = btnFileDelete.Text;
-            btnVideoMoveUp.Text = btnFileUp.Text;
-            btnVideoMoveDown.Text = btnFileDown.Text;
-            //btnVideoDec.Font = new Font("Tahoma", 8f);
-            //btnVideoEnc.Font = new Font("Tahoma", 8f);
-
-            btnAudioAdd.Text = btnFileAdd.Text;
-            btnAudioDel.Text = btnFileDelete.Text;
-            btnAudioMoveUp.Text = btnFileUp.Text;
-            btnAudioMoveDown.Text = btnFileDown.Text;
-            //btnAudioDec.Font = new Font("Tahoma", 8f);
-            //btnAudioEnc.Font = new Font("Tahoma", 8f);
-
-            btnSubAdd.Text = btnFileAdd.Text;
-            btnSubDel.Text = btnFileDelete.Text;
-            btnSubMoveUp.Text = btnFileUp.Text;
-            btnSubMoveDown.Text = btnFileDown.Text;
-
-            btnAttachAdd.Text = btnFileAdd.Text;
-            btnAttachDel.Text = btnFileDelete.Text;
-
-            btnProfileSaveLoad.Text = Fonts.fa.floppy_o;
-            btnOutputBrowse.Text = Fonts.fa.folder;
-
-            tabConfig.Font = Fonts.Awesome(11f, FontStyle.Regular);/**
-            tabConfigMediaInfo.Text = $"{Fonts.fa.info} MediaInfo";
-            tabConfigVideo.Text = $"{Fonts.fa.video_camera} Video";
-            tabConfigAudio.Text = $"{Fonts.fa.volume_up} Audio";
-            tabConfigSubtitle.Text = $"{Fonts.fa.subscript} Subtitle";
-            tabConfigAttachment.Text = $"{Fonts.fa.paperclip} Attachment";
-            tabConfigAdvance.Text = $"{Fonts.fa.gear} Advanced";
-            tabConfigLog.Text = $"{Fonts.fa.terminal} Logs";**/
-
             txtMediaInfo.Font = Fonts.Monospace();
             rtfConsole.Font = Fonts.Monospace();
             cboFormat.Font = Fonts.Monospace();
