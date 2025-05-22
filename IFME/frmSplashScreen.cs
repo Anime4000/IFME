@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Drawing;
 using System.Threading;
 using System.Reflection;
 using System.Windows.Forms;
 using System.ComponentModel;
-using System.IO;
 
 namespace IFME
 {
@@ -17,7 +17,7 @@ namespace IFME
             base.OnLoad(e);
             try
             {
-                splashImage = Image.FromFile(AppPath.Combine("Resources", "SplashScreen14.png"));
+                splashImage = WAD.Resource.LoadImage("SplashScreen14.png");
             }
             catch (Exception ex)
             {

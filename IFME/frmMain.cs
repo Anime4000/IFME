@@ -128,8 +128,8 @@ namespace IFME
             var w = PbxBanner.Width;
             var h = PbxBanner.Height;
 
-            var b1 = Image.FromFile(AppPath.Combine("Resources", "Banner_4a.png"));
-            var b2 = Image.FromFile(AppPath.Combine("Resources", "Banner_2b.png"));
+            var b1 = WAD.Resource.LoadImage("Banner_4a.png");
+            var b2 = WAD.Resource.LoadImage("Banner_2b.png");
             var iW = b1.Width;
             var iH = b1.Height;
 

@@ -44,16 +44,16 @@ namespace IFME
 
         private void frmAbout_Shown(object sender, EventArgs e)
         {
-            var ichika = Image.FromFile(AppPath.Combine("Resources", "Avatar1_Ichika.png"));
-            var fumiko = Image.FromFile(AppPath.Combine("Resources", "Avatar2_Fumiko.png"));
-            var miho = Image.FromFile(AppPath.Combine("Resources", "Avatar3_Miho.png"));
-            var erika = Image.FromFile(AppPath.Combine("Resources", "Avatar4_Erika.png"));
+            var ichika = WAD.Resource.LoadImage("Avatar1_Ichika.png");
+            var fumiko = WAD.Resource.LoadImage("Avatar2_Fumiko.png");
+            var miho = WAD.Resource.LoadImage("Avatar3_Miho.png");
+            var erika = WAD.Resource.LoadImage("Avatar4_Erika.png");
             pbCharIchika.Image = Images.Resize(ichika, pbCharIchika.Width, pbCharIchika.Height);
             pbCharFumiko.Image = Images.Resize(fumiko, pbCharFumiko.Width, pbCharFumiko.Height);
             pbCharMiho.Image = Images.Resize(miho, pbCharMiho.Width, pbCharMiho.Height);
             pbCharErika.Image = Images.Resize(erika, pbCharErika.Width, pbCharErika.Height);
 
-            banner.BackgroundImage = Image.FromFile(AppPath.Combine("Resources", "Banner_About.png"));
+            banner.BackgroundImage = WAD.Resource.LoadImage("Banner_About.png");
         }
 
         private void frmAbout_Resize(object sender, EventArgs e)

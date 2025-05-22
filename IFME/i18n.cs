@@ -9,239 +9,242 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-internal class i18n
+namespace IFME
 {
-    // List installed languages
-    public static Dictionary<string, string> Installed { get; set; } = new();
-
-    public static void LoadLangFiles()
+    internal class i18n
     {
-        var langFiles = Directory.GetFiles("i18n", "*.json");
+        // List installed languages
+        public static Dictionary<string, string> Installed { get; set; } = new();
 
-        foreach (var file in langFiles)
+        public static void LoadLangFiles()
         {
-            var lang = Path.GetFileNameWithoutExtension(file);
+            var langFiles = Directory.GetFiles("i18n", "*.json");
 
-            try
+            foreach (var file in langFiles)
             {
-                var culture = new CultureInfo(lang);
-                var displayName = culture.DisplayName;
+                var lang = Path.GetFileNameWithoutExtension(file);
 
-                Installed.Add(lang, displayName);
-
-                IFME.frmSplashScreen.PrintLogAppend($"i18n {displayName} by {GetLangAuthor(lang)[0]}");
-            }
-            catch (CultureNotFoundException)
-            {
-                Installed.Add(lang, $"Unknown Language ({lang})");
-            }
-        }
-
-        var langSetting = IFME.Properties.Settings.Default.UILanguage;
-        var langDisplay = Thread.CurrentThread.CurrentUICulture.Name;
-        var langSettingExists = Installed.TryGetValue(langSetting, out _);
-        var langDisplayExists = Installed.TryGetValue(langDisplay, out _);
-
-        if (langSettingExists)
-        {
-            IFME.Properties.Settings.Default.UILanguage = langSetting;
-        }
-        else if (langDisplayExists)
-        {
-            IFME.Properties.Settings.Default.UILanguage = langDisplay;
-        }
-        else
-        {
-            IFME.Properties.Settings.Default.UILanguage = "en-US";
-        }
-
-        IFME.Properties.Settings.Default.Save();
-    }
-
-    public static string[] GetLangAuthor(string currentLang = "eng")
-    {
-        var langFile = AppPath.Combine("i18n", $"{Path.GetFileNameWithoutExtension(currentLang)}.json");
-
-        if (!File.Exists(langFile))
-            return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at i18n folder" };
-
-        var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
-
-        if (json?.Forms == null)
-            return new string[] { "// Json object is broken", "// Error 20", "// Please check that Json file formatting is valid" };
-
-        return new string[] { json.AuthorName, json.AuthorProfile, json.AuthorEmail };
-    }
-
-    public static void Apply(Control parent, string formName, string currentLang = "eng")
-    {
-        var langDefault = AppPath.Combine("i18n", "en-US.json");
-        var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
-
-        // When the default language file is not found, use the WinForm place holder as language
-        if (!File.Exists(langDefault))
-            return;
-
-        // When the choosen language file is not found, use the default (en-US) language
-        if (!File.Exists(langFile))
-            langFile = langDefault;
-
-        var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
-
-        if (json?.Forms == null || !json.Forms.TryGetValue(formName, out var formStrings))
-            return;
-
-        // Store the current UI object in the memory for hidden controls
-        i18nUI.Obj = json;
-
-        var font = DefaultFont(json);
-
-        foreach (Control ctrl in GetAllControls(parent))
-        {
-            if (IsLocalisable(ctrl))
-            {
-                if (ctrl is ListView)
+                try
                 {
-                    foreach (ColumnHeader header in ((ListView)ctrl).Columns)
+                    var culture = new CultureInfo(lang);
+                    var displayName = culture.DisplayName;
+
+                    Installed.Add(lang, displayName);
+
+                    IFME.frmSplashScreen.PrintLogAppend($"i18n {displayName} by {GetLangAuthor(lang)[0]}");
+                }
+                catch (CultureNotFoundException)
+                {
+                    Installed.Add(lang, $"Unknown Language ({lang})");
+                }
+            }
+
+            var langSetting = IFME.Properties.Settings.Default.UILanguage;
+            var langDisplay = Thread.CurrentThread.CurrentUICulture.Name;
+            var langSettingExists = Installed.TryGetValue(langSetting, out _);
+            var langDisplayExists = Installed.TryGetValue(langDisplay, out _);
+
+            if (langSettingExists)
+            {
+                IFME.Properties.Settings.Default.UILanguage = langSetting;
+            }
+            else if (langDisplayExists)
+            {
+                IFME.Properties.Settings.Default.UILanguage = langDisplay;
+            }
+            else
+            {
+                IFME.Properties.Settings.Default.UILanguage = "en-US";
+            }
+
+            IFME.Properties.Settings.Default.Save();
+        }
+
+        public static string[] GetLangAuthor(string currentLang = "eng")
+        {
+            var langFile = AppPath.Combine("i18n", $"{Path.GetFileNameWithoutExtension(currentLang)}.json");
+
+            if (!File.Exists(langFile))
+                return new string[] { "// Language File is Not Found", "// Error 19", "// Please check Json file exist at i18n folder" };
+
+            var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
+
+            if (json?.Forms == null)
+                return new string[] { "// Json object is broken", "// Error 20", "// Please check that Json file formatting is valid" };
+
+            return new string[] { json.AuthorName, json.AuthorProfile, json.AuthorEmail };
+        }
+
+        public static void Apply(Control parent, string formName, string currentLang = "eng")
+        {
+            var langDefault = AppPath.Combine("i18n", "en-US.json");
+            var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
+
+            // When the default language file is not found, use the WinForm place holder as language
+            if (!File.Exists(langDefault))
+                return;
+
+            // When the choosen language file is not found, use the default (en-US) language
+            if (!File.Exists(langFile))
+                langFile = langDefault;
+
+            var json = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile));
+
+            if (json?.Forms == null || !json.Forms.TryGetValue(formName, out var formStrings))
+                return;
+
+            // Store the current UI object in the memory for hidden controls
+            i18nUI.Obj = json;
+
+            var font = DefaultFont(json);
+
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                if (IsLocalisable(ctrl))
+                {
+                    if (ctrl is ListView)
                     {
-                        if (formStrings.TryGetValue($"{ctrl.Name}{header.Index}", out string text))
+                        foreach (ColumnHeader header in ((ListView)ctrl).Columns)
                         {
-                            header.Text = text;
+                            if (formStrings.TryGetValue($"{ctrl.Name}{header.Index}", out string text))
+                            {
+                                header.Text = text;
+                                ctrl.Font = font;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (formStrings.TryGetValue(ctrl.Name, out string text))
+                        {
+                            ctrl.Text = text;
                             ctrl.Font = font;
                         }
                     }
                 }
-                else
+            }
+
+            foreach (var cms in GetAllContextMenus((Form)parent))
+            {
+                foreach (ToolStripItem item in cms.Items)
                 {
-                    if (formStrings.TryGetValue(ctrl.Name, out string text))
+                    if (item is ToolStripMenuItem menuItem)
                     {
-                        ctrl.Text = text;
-                        ctrl.Font = font;
+                        if (formStrings.TryGetValue(menuItem.Name, out string text))
+                            menuItem.Text = text;
                     }
                 }
             }
         }
 
-        foreach (var cms in GetAllContextMenus((Form)parent))
+        public static void Save(Control parent, string formName, string currentLang = "eng")
         {
-            foreach (ToolStripItem item in cms.Items)
+            var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
+
+            i18nObj data;
+            try
             {
-                if (item is ToolStripMenuItem menuItem)
-                {
-                    if (formStrings.TryGetValue(menuItem.Name, out string text))
-                        menuItem.Text = text;
-                }
+                data = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile)) ?? new i18nObj();
             }
-        }
-    }
-
-    public static void Save(Control parent, string formName, string currentLang = "eng")
-    {
-        var langFile = AppPath.Combine("i18n", $"{currentLang}.json");
-
-        i18nObj data;
-        try
-        {
-            data = JsonConvert.DeserializeObject<i18nObj>(File.ReadAllText(langFile)) ?? new i18nObj();
-        }
-        catch
-        {
-            data = new i18nObj();
-        }
-
-        var formSorted = new SortedDictionary<string, string>();
-        foreach (Control ctrl in GetAllControls(parent))
-        {
-            if (IsLocalisable(ctrl))
+            catch
             {
-                if (ctrl is ListView)
+                data = new i18nObj();
+            }
+
+            var formSorted = new SortedDictionary<string, string>();
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                if (IsLocalisable(ctrl))
                 {
-                    foreach (ColumnHeader header in ((ListView)ctrl).Columns)
+                    if (ctrl is ListView)
                     {
-                        formSorted.Add($"{ctrl.Name}{header.Index}", header.Text);
+                        foreach (ColumnHeader header in ((ListView)ctrl).Columns)
+                        {
+                            formSorted.Add($"{ctrl.Name}{header.Index}", header.Text);
+                        }
+                    }
+                    else
+                    {
+                        formSorted.Add(ctrl.Name, ctrl.Text);
                     }
                 }
-                else
+            }
+
+            foreach (var cms in GetAllContextMenus((Form)parent))
+            {
+                foreach (ToolStripItem item in cms.Items)
                 {
-                    formSorted.Add(ctrl.Name, ctrl.Text);
+                    if (item is ToolStripMenuItem menuItem)
+                    {
+                        formSorted.Add(menuItem.Name, menuItem.Text);
+                    }
                 }
             }
+
+            try
+            {
+                data.Forms.Add(formName, formSorted);
+            }
+            catch
+            {
+                data.Forms[formName] = formSorted;
+            }
+
+            File.WriteAllText(langFile, JsonConvert.SerializeObject(data, Formatting.Indented));
         }
 
-        foreach (var cms in GetAllContextMenus((Form)parent))
+        private static IEnumerable<Control> GetAllControls(Control parent)
         {
-            foreach (ToolStripItem item in cms.Items)
+            foreach (Control ctrl in parent.Controls)
             {
-                if (item is ToolStripMenuItem menuItem)
+                foreach (Control child in GetAllControls(ctrl))
+                    yield return child;
+
+                yield return ctrl;
+            }
+        }
+
+        private static IEnumerable<ContextMenuStrip> GetAllContextMenus(Form form)
+        {
+            var contextMenus = new List<ContextMenuStrip>();
+
+            var componentsField = form.GetType().GetField("components",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance);
+
+            if (componentsField?.GetValue(form) is IContainer container)
+            {
+                foreach (var component in container.Components)
                 {
-                    formSorted.Add(menuItem.Name, menuItem.Text);
+                    if (component is ContextMenuStrip cms)
+                        contextMenus.Add(cms);
                 }
             }
+
+            return contextMenus;
         }
 
-        try
+        private static bool IsLocalisable(Control ctrl)
         {
-            data.Forms.Add(formName, formSorted);
+            return ctrl is Label ||
+                   ctrl is Button ||
+                   ctrl is TabPage ||
+                   ctrl is CheckBox ||
+                   ctrl is RadioButton ||
+                   ctrl is ListView ||
+                   ctrl is GroupBox;
         }
-        catch
+
+        private static Font DefaultFont(i18nObj i18n)
         {
-            data.Forms[formName] = formSorted;
-        }
-
-        File.WriteAllText(langFile, JsonConvert.SerializeObject(data, Formatting.Indented));
-    }
-
-    private static IEnumerable<Control> GetAllControls(Control parent)
-    {
-        foreach (Control ctrl in parent.Controls)
-        {
-            foreach (Control child in GetAllControls(ctrl))
-                yield return child;
-
-            yield return ctrl;
-        }
-    }
-
-    private static IEnumerable<ContextMenuStrip> GetAllContextMenus(Form form)
-    {
-        var contextMenus = new List<ContextMenuStrip>();
-
-        var componentsField = form.GetType().GetField("components",
-            System.Reflection.BindingFlags.NonPublic |
-            System.Reflection.BindingFlags.Instance);
-
-        if (componentsField?.GetValue(form) is IContainer container)
-        {
-            foreach (var component in container.Components)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                if (component is ContextMenuStrip cms)
-                    contextMenus.Add(cms);
+                return i18n.FontUIWindows;
             }
-        }
-
-        return contextMenus;
-    }
-
-    private static bool IsLocalisable(Control ctrl)
-    {
-        return ctrl is Label ||
-               ctrl is Button ||
-               ctrl is TabPage ||
-               ctrl is CheckBox ||
-               ctrl is RadioButton ||
-               ctrl is ListView ||
-               ctrl is GroupBox;
-    }
-
-    private static Font DefaultFont(i18nObj i18n)
-    {
-        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-        {
-            return i18n.FontUIWindows;
-        }
-        else
-        {
-            return i18n.FontUILinux;
+            else
+            {
+                return i18n.FontUILinux;
+            }
         }
     }
 }
