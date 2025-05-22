@@ -318,6 +318,10 @@ cd Resources
 cd ..
 rmdir /s /q Resources
 
+del /f /q jason.wad
+7za a -tzip -mx=0 jason.wad *.json
+del /f /q *.json
+
 copy /y $(SolutionDir)Native\libcpufeature.dll .\
 copy /y $(SolutionDir)Native\libcpufeature.so .\
 </PostBuildEvent>

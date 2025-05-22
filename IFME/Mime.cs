@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 namespace IFME
 {
     public class Mime
     {
-        public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(AppPath.Combine("Mime.json")));
+        public static Dictionary<string, string> Codes = JsonConvert.DeserializeObject<Dictionary<string, string>>(WAD.Jason.LoadText("Mime.json"));
 
         public static string GetType(string value)
         {
