@@ -139,7 +139,6 @@ namespace IFME
             // 
             // lnkSourceForge
             // 
-            this.lnkSourceForge.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lnkSourceForge.BackColor = System.Drawing.Color.Transparent;
             this.lnkSourceForge.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkSourceForge.Location = new System.Drawing.Point(250, 15);
@@ -166,7 +165,6 @@ namespace IFME
             // 
             // lnkFacebook
             // 
-            this.lnkFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkFacebook.BackColor = System.Drawing.Color.Transparent;
             this.lnkFacebook.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkFacebook.Location = new System.Drawing.Point(356, 15);
@@ -180,7 +178,6 @@ namespace IFME
             // 
             // lnkHitoha
             // 
-            this.lnkHitoha.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lnkHitoha.BackColor = System.Drawing.Color.Transparent;
             this.lnkHitoha.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkHitoha.Location = new System.Drawing.Point(197, 45);
@@ -194,7 +191,6 @@ namespace IFME
             // 
             // lnkSoraIro
             // 
-            this.lnkSoraIro.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lnkSoraIro.BackColor = System.Drawing.Color.Transparent;
             this.lnkSoraIro.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkSoraIro.Location = new System.Drawing.Point(303, 45);
@@ -238,7 +234,6 @@ namespace IFME
             // 
             // pnlCharErika
             // 
-            this.pnlCharErika.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pnlCharErika.Controls.Add(this.lblCharErika);
             this.pnlCharErika.Controls.Add(this.pbCharErika);
             this.pnlCharErika.Location = new System.Drawing.Point(409, 59);
@@ -268,7 +263,6 @@ namespace IFME
             // 
             // pnlCharMiho
             // 
-            this.pnlCharMiho.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pnlCharMiho.Controls.Add(this.lblCharMiho);
             this.pnlCharMiho.Controls.Add(this.pbCharMiho);
             this.pnlCharMiho.Location = new System.Drawing.Point(303, 59);
@@ -298,7 +292,6 @@ namespace IFME
             // 
             // pnlCharFumiko
             // 
-            this.pnlCharFumiko.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pnlCharFumiko.Controls.Add(this.lblCharFumiko);
             this.pnlCharFumiko.Controls.Add(this.pbCharFumiko);
             this.pnlCharFumiko.Location = new System.Drawing.Point(197, 59);
@@ -328,7 +321,6 @@ namespace IFME
             // 
             // pnlCharIchika
             // 
-            this.pnlCharIchika.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pnlCharIchika.Controls.Add(this.lblCharIchika);
             this.pnlCharIchika.Controls.Add(this.pbCharIchika);
             this.pnlCharIchika.Location = new System.Drawing.Point(91, 59);
@@ -418,7 +410,6 @@ namespace IFME
             // 
             // lnkDiscord
             // 
-            this.lnkDiscord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkDiscord.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lnkDiscord.Location = new System.Drawing.Point(462, 15);
             this.lnkDiscord.Name = "lnkDiscord";

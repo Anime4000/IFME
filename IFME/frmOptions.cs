@@ -22,7 +22,7 @@ namespace IFME
             InitializeComponent();
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-            FormBorderStyle = FormBorderStyle.Sizable;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void frmOptions_Load(object sender, EventArgs e)

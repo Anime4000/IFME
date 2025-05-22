@@ -47,6 +47,7 @@ namespace IFME
             this.btnTempBrowse = new System.Windows.Forms.Button();
             this.txtTempPath = new System.Windows.Forms.TextBox();
             this.grpLanguage = new System.Windows.Forms.GroupBox();
+            this.lblLangAuthor = new System.Windows.Forms.Label();
             this.cboLanguage = new System.Windows.Forms.ComboBox();
             this.tabProcessing = new System.Windows.Forms.TabPage();
             this.grpMuxMp4 = new System.Windows.Forms.GroupBox();
@@ -72,7 +73,6 @@ namespace IFME
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnFactoryReset = new System.Windows.Forms.Button();
-            this.lblLangAuthor = new System.Windows.Forms.Label();
             this.tabSetting.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.grpFileName.SuspendLayout();
@@ -117,8 +117,6 @@ namespace IFME
             // 
             // grpFileName
             // 
-            this.grpFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpFileName.Controls.Add(this.lblFileNameEx);
             this.grpFileName.Controls.Add(this.grpPostfix);
             this.grpFileName.Controls.Add(this.grpPrefix);
@@ -131,9 +129,6 @@ namespace IFME
             // 
             // lblFileNameEx
             // 
-            this.lblFileNameEx.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFileNameEx.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblFileNameEx.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblFileNameEx.Location = new System.Drawing.Point(6, 16);
@@ -146,8 +141,6 @@ namespace IFME
             // 
             // grpPostfix
             // 
-            this.grpPostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPostfix.Controls.Add(this.txtPostfix);
             this.grpPostfix.Controls.Add(this.rdoPostfixCustom);
             this.grpPostfix.Controls.Add(this.rdoPostfixDateTime);
@@ -161,8 +154,6 @@ namespace IFME
             // 
             // txtPostfix
             // 
-            this.txtPostfix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPostfix.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtPostfix.Location = new System.Drawing.Point(120, 83);
             this.txtPostfix.Name = "txtPostfix";
@@ -172,7 +163,6 @@ namespace IFME
             // 
             // rdoPostfixCustom
             // 
-            this.rdoPostfixCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPostfixCustom.Location = new System.Drawing.Point(14, 83);
             this.rdoPostfixCustom.Name = "rdoPostfixCustom";
             this.rdoPostfixCustom.Size = new System.Drawing.Size(100, 24);
@@ -183,7 +173,6 @@ namespace IFME
             // 
             // rdoPostfixDateTime
             // 
-            this.rdoPostfixDateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPostfixDateTime.Location = new System.Drawing.Point(14, 53);
             this.rdoPostfixDateTime.Name = "rdoPostfixDateTime";
             this.rdoPostfixDateTime.Size = new System.Drawing.Size(340, 24);
@@ -194,7 +183,6 @@ namespace IFME
             // 
             // rdoPostfixNone
             // 
-            this.rdoPostfixNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPostfixNone.Checked = true;
             this.rdoPostfixNone.Location = new System.Drawing.Point(14, 23);
             this.rdoPostfixNone.Name = "rdoPostfixNone";
@@ -207,8 +195,6 @@ namespace IFME
             // 
             // grpPrefix
             // 
-            this.grpPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.grpPrefix.Controls.Add(this.txtPrefix);
             this.grpPrefix.Controls.Add(this.rdoPrefixCustom);
             this.grpPrefix.Controls.Add(this.rdoPrefixDateTime);
@@ -222,8 +208,6 @@ namespace IFME
             // 
             // txtPrefix
             // 
-            this.txtPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPrefix.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtPrefix.Location = new System.Drawing.Point(120, 83);
             this.txtPrefix.Name = "txtPrefix";
@@ -233,7 +217,6 @@ namespace IFME
             // 
             // rdoPrefixCustom
             // 
-            this.rdoPrefixCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPrefixCustom.Checked = true;
             this.rdoPrefixCustom.Location = new System.Drawing.Point(14, 83);
             this.rdoPrefixCustom.Name = "rdoPrefixCustom";
@@ -246,7 +229,6 @@ namespace IFME
             // 
             // rdoPrefixDateTime
             // 
-            this.rdoPrefixDateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPrefixDateTime.Location = new System.Drawing.Point(14, 53);
             this.rdoPrefixDateTime.Name = "rdoPrefixDateTime";
             this.rdoPrefixDateTime.Size = new System.Drawing.Size(340, 24);
@@ -257,7 +239,6 @@ namespace IFME
             // 
             // rdoPrefixNone
             // 
-            this.rdoPrefixNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rdoPrefixNone.Location = new System.Drawing.Point(14, 23);
             this.rdoPrefixNone.Name = "rdoPrefixNone";
             this.rdoPrefixNone.Size = new System.Drawing.Size(340, 24);
@@ -268,9 +249,6 @@ namespace IFME
             // 
             // grpTempFolder
             // 
-            this.grpTempFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpTempFolder.Controls.Add(this.btnTempBrowse);
             this.grpTempFolder.Controls.Add(this.txtTempPath);
             this.grpTempFolder.Location = new System.Drawing.Point(6, 177);
@@ -282,7 +260,6 @@ namespace IFME
             // 
             // btnTempBrowse
             // 
-            this.btnTempBrowse.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnTempBrowse.Location = new System.Drawing.Point(587, 63);
             this.btnTempBrowse.Name = "btnTempBrowse";
             this.btnTempBrowse.Size = new System.Drawing.Size(100, 24);
@@ -293,7 +270,6 @@ namespace IFME
             // 
             // txtTempPath
             // 
-            this.txtTempPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTempPath.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtTempPath.Location = new System.Drawing.Point(69, 63);
             this.txtTempPath.Name = "txtTempPath";
@@ -304,8 +280,6 @@ namespace IFME
             // 
             // grpLanguage
             // 
-            this.grpLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpLanguage.Controls.Add(this.lblLangAuthor);
             this.grpLanguage.Controls.Add(this.cboLanguage);
             this.grpLanguage.Location = new System.Drawing.Point(6, 6);
@@ -314,6 +288,15 @@ namespace IFME
             this.grpLanguage.TabIndex = 0;
             this.grpLanguage.TabStop = false;
             this.grpLanguage.Text = "Interface &Language";
+            // 
+            // lblLangAuthor
+            // 
+            this.lblLangAuthor.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.lblLangAuthor.Location = new System.Drawing.Point(69, 71);
+            this.lblLangAuthor.Name = "lblLangAuthor";
+            this.lblLangAuthor.Size = new System.Drawing.Size(618, 50);
+            this.lblLangAuthor.TabIndex = 1;
+            this.lblLangAuthor.Text = "Author: {0}\r\nHomepage: {1}\r\nContact: {2}";
             // 
             // cboLanguage
             // 
@@ -402,7 +385,8 @@ namespace IFME
             // 
             // chkSkipTest
             // 
-            this.chkSkipTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkSkipTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSkipTest.Location = new System.Drawing.Point(264, 488);
             this.chkSkipTest.Name = "chkSkipTest";
             this.chkSkipTest.Size = new System.Drawing.Size(498, 24);
@@ -497,6 +481,9 @@ namespace IFME
             // 
             // lstProfiles
             // 
+            this.lstProfiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstProfiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colProfileName,
             this.colProfileFileName,
@@ -566,18 +553,6 @@ namespace IFME
             this.btnFactoryReset.Text = "Factory &Reset";
             this.btnFactoryReset.UseVisualStyleBackColor = true;
             this.btnFactoryReset.Click += new System.EventHandler(this.btnFactoryReset_Click);
-            // 
-            // lblLangAuthor
-            // 
-            this.lblLangAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLangAuthor.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.lblLangAuthor.Location = new System.Drawing.Point(69, 71);
-            this.lblLangAuthor.Name = "lblLangAuthor";
-            this.lblLangAuthor.Size = new System.Drawing.Size(618, 50);
-            this.lblLangAuthor.TabIndex = 1;
-            this.lblLangAuthor.Text = "Author: {0}\r\nHomepage: {1}\r\nContact: {2}";
             // 
             // frmOptions
             // 

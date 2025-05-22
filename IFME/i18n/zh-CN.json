@@ -3,7 +3,7 @@
 	"AuthorProfile": "",
 	"AuthorEmail": "",
 	"FontUIWindows": "Tahoma, 8pt",
-	"FontUILinux": "Nimbus Sans L, 8pt",
+	"FontUILinux": "Liberation Sans, 8pt",
 	"Dialogs": {
 		"CodecCommandLine1": "{0} 命令行",
 		"VideoDecoderTitle": "FFmpeg 解码器与滤镜命令行",

@@ -3,7 +3,7 @@
 	"AuthorProfile": "https://github.com/Anime4000",
 	"AuthorEmail": "",
 	"FontUIWindows": "Tahoma, 8pt",
-	"FontUILinux": "Nimbus Sans L, 8pt",
+	"FontUILinux": "Liberation Sans, 8pt",
 	"Dialogs": {
 		"CodecCommandLine1": "{0} Command Line",
 		"VideoDecoderTitle": "FFmpeg Decoder and Filter Command Line",

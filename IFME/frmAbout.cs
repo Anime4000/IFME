@@ -17,7 +17,7 @@ namespace IFME
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Text = $"{Text} {Version.Title}";
-            FormBorderStyle = FormBorderStyle.Sizable;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void frmAbout_Load(object sender, EventArgs e)
