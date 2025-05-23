@@ -385,8 +385,6 @@ namespace IFME
             // 
             // chkSkipTest
             // 
-            this.chkSkipTest.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSkipTest.Location = new System.Drawing.Point(264, 488);
             this.chkSkipTest.Name = "chkSkipTest";
             this.chkSkipTest.Size = new System.Drawing.Size(498, 24);
@@ -398,7 +396,6 @@ namespace IFME
             // 
             // btnNone
             // 
-            this.btnNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnNone.Location = new System.Drawing.Point(178, 488);
             this.btnNone.Name = "btnNone";
             this.btnNone.Size = new System.Drawing.Size(80, 24);
@@ -409,7 +406,6 @@ namespace IFME
             // 
             // btnOnly265
             // 
-            this.btnOnly265.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnOnly265.Location = new System.Drawing.Point(92, 488);
             this.btnOnly265.Name = "btnOnly265";
             this.btnOnly265.Size = new System.Drawing.Size(80, 24);
@@ -420,7 +416,6 @@ namespace IFME
             // 
             // btnCheckAll
             // 
-            this.btnCheckAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCheckAll.Location = new System.Drawing.Point(6, 488);
             this.btnCheckAll.Name = "btnCheckAll";
             this.btnCheckAll.Size = new System.Drawing.Size(80, 24);
@@ -431,9 +426,6 @@ namespace IFME
             // 
             // lstPlugins
             // 
-            this.lstPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstPlugins.CheckBoxes = true;
             this.lstPlugins.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colPluginsName,
@@ -481,9 +473,6 @@ namespace IFME
             // 
             // lstProfiles
             // 
-            this.lstProfiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstProfiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colProfileName,
             this.colProfileFileName,

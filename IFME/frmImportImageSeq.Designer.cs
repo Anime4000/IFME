@@ -69,9 +69,6 @@ namespace IFME
             // 
             // lblInformation
             // 
-            this.lblInformation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblInformation.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblInformation.Location = new System.Drawing.Point(436, 184);
             this.lblInformation.Name = "lblInformation";
@@ -83,8 +80,6 @@ namespace IFME
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.lblSourceFile);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -95,8 +90,6 @@ namespace IFME
             // 
             // lblSourceFile
             // 
-            this.lblSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSourceFile.Location = new System.Drawing.Point(6, 16);
             this.lblSourceFile.Name = "lblSourceFile";
             this.lblSourceFile.Size = new System.Drawing.Size(764, 56);
@@ -106,8 +99,6 @@ namespace IFME
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.lblSourceFileParse);
             this.groupBox2.Location = new System.Drawing.Point(12, 98);
             this.groupBox2.Name = "groupBox2";
@@ -118,9 +109,6 @@ namespace IFME
             // 
             // lblSourceFileParse
             // 
-            this.lblSourceFileParse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSourceFileParse.Location = new System.Drawing.Point(6, 16);
             this.lblSourceFileParse.Name = "lblSourceFileParse";
             this.lblSourceFileParse.Size = new System.Drawing.Size(764, 56);
@@ -130,8 +118,6 @@ namespace IFME
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox3.Controls.Add(this.lblPixelFormat);
             this.groupBox3.Controls.Add(this.txtPixelFormat);
             this.groupBox3.Controls.Add(this.txtBitDepth);
@@ -203,7 +189,6 @@ namespace IFME
             // 
             // btnAdd
             // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnAdd.Location = new System.Drawing.Point(632, 310);
             this.btnAdd.Name = "btnAdd";
@@ -215,7 +200,6 @@ namespace IFME
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.btnCancel.Location = new System.Drawing.Point(713, 310);
             this.btnCancel.Name = "btnCancel";

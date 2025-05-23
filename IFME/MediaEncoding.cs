@@ -29,10 +29,10 @@ namespace IFME
         {
             get
             {
-                if (OS.IsProgramInPath("mp4box"))
-                    return "mp4box";
+                if (OS.IsProgramInPath("MP4Box"))
+                    return "MP4Box";
                 else
-                    return AppPath.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "mp4box");
+                    return AppPath.Combine(Environment.CurrentDirectory, "Plugins", "mp4box", "MP4Box");
             }
         }
 

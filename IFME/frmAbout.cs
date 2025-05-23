@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 
 using IFME.OSManager;
+using System.Security.Policy;
+using System.Runtime.InteropServices;
 
 namespace IFME
 {
@@ -38,7 +40,6 @@ namespace IFME
             lblVersion.Font = new Font(font.FontFamily, 14f, FontStyle.Bold);
             lblCopyRight.Font = new Font(font.FontFamily, 10f);
             lblArtWork.Font = new Font(font.FontFamily, 10f, FontStyle.Bold);
-            lnkRayEn.Font = new Font(font.FontFamily, 10f);
             lblDevs.Font = new Font(font.FontFamily, 9f);
         }
 
@@ -56,54 +57,46 @@ namespace IFME
             banner.BackgroundImage = WAD.Resource.LoadImage("Banner_About.png");
         }
 
-        private void frmAbout_Resize(object sender, EventArgs e)
-        {
-
-        }
-
         private void lblArtWork_Click(object sender, EventArgs e)
         {
-            Process.Start("http://pixiv.me/ray53c");
+            OpenURL("http://pixiv.me/ray53c");
         }
 
-        private void lnkRayEn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lblGithub_Click(object sender, EventArgs e)
         {
-            Process.Start("http://pixiv.me/ray53c");
+            OpenURL("https://github.com/Anime4000/IFME");
         }
 
-        private void lblHome_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lblDiscord_Click(object sender, EventArgs e)
         {
-            Process.Start("https://x265.github.io/");
+            OpenURL("https://discord.gg/4f6MDpfug2");
         }
 
-        private void lnkGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void OpenURL(string url)
         {
-            Process.Start("https://github.com/Anime4000/IFME");
-        }
-
-        private void lnkSourceForge_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://sourceforge.net/projects/ifme/");
-        }
-
-        private void lnkFacebook_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://www.facebook.com/internetfriendlymediaencoder");
-        }
-
-        private void lnkDiscord_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://discord.gg/4f6MDpfug2");
-        }
-
-        private void lnkHitoha_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://hitoha.ga/");
-        }
-
-        private void lnkSoraIro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://sora-iro.nippombashi.net/");
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    throw new PlatformNotSupportedException("Unsupported OS");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to open URL: " + ex.Message);
+            }
         }
     }
 }

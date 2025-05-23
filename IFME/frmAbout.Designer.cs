@@ -33,14 +33,7 @@ namespace IFME
             this.lblCopyRight = new System.Windows.Forms.Label();
             this.lblDevs = new System.Windows.Forms.Label();
             this.lblCodeName = new System.Windows.Forms.Label();
-            this.lnkGithub = new System.Windows.Forms.LinkLabel();
-            this.lnkSourceForge = new System.Windows.Forms.LinkLabel();
-            this.lblHome = new System.Windows.Forms.LinkLabel();
-            this.lnkFacebook = new System.Windows.Forms.LinkLabel();
-            this.lnkHitoha = new System.Windows.Forms.LinkLabel();
-            this.lnkSoraIro = new System.Windows.Forms.LinkLabel();
             this.pnlArtWork = new System.Windows.Forms.Panel();
-            this.lnkRayEn = new System.Windows.Forms.LinkLabel();
             this.pnlCharErika = new System.Windows.Forms.Panel();
             this.lblCharErika = new System.Windows.Forms.Label();
             this.pbCharErika = new System.Windows.Forms.PictureBox();
@@ -58,8 +51,9 @@ namespace IFME
             this.pnlDevsRight = new System.Windows.Forms.Panel();
             this.pnlDevsLeft = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lnkDiscord = new System.Windows.Forms.LinkLabel();
             this.banner = new System.Windows.Forms.Panel();
+            this.lblGithub = new System.Windows.Forms.Label();
+            this.lblDiscord = new System.Windows.Forms.Label();
             this.pnlArtWork.SuspendLayout();
             this.pnlCharErika.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).BeginInit();
@@ -124,88 +118,9 @@ namespace IFME
             this.lblCodeName.Text = "Imagine Chip";
             this.lblCodeName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lnkGithub
-            // 
-            this.lnkGithub.BackColor = System.Drawing.Color.Transparent;
-            this.lnkGithub.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkGithub.Location = new System.Drawing.Point(144, 15);
-            this.lnkGithub.Name = "lnkGithub";
-            this.lnkGithub.Size = new System.Drawing.Size(100, 30);
-            this.lnkGithub.TabIndex = 1;
-            this.lnkGithub.TabStop = true;
-            this.lnkGithub.Text = "GitHub";
-            this.lnkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGithub_LinkClicked);
-            // 
-            // lnkSourceForge
-            // 
-            this.lnkSourceForge.BackColor = System.Drawing.Color.Transparent;
-            this.lnkSourceForge.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkSourceForge.Location = new System.Drawing.Point(250, 15);
-            this.lnkSourceForge.Name = "lnkSourceForge";
-            this.lnkSourceForge.Size = new System.Drawing.Size(100, 30);
-            this.lnkSourceForge.TabIndex = 2;
-            this.lnkSourceForge.TabStop = true;
-            this.lnkSourceForge.Text = "SourceForge";
-            this.lnkSourceForge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkSourceForge.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSourceForge_LinkClicked);
-            // 
-            // lblHome
-            // 
-            this.lblHome.BackColor = System.Drawing.Color.Transparent;
-            this.lblHome.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lblHome.Location = new System.Drawing.Point(38, 15);
-            this.lblHome.Name = "lblHome";
-            this.lblHome.Size = new System.Drawing.Size(100, 30);
-            this.lblHome.TabIndex = 0;
-            this.lblHome.TabStop = true;
-            this.lblHome.Text = "Homepage";
-            this.lblHome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblHome.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblHome_LinkClicked);
-            // 
-            // lnkFacebook
-            // 
-            this.lnkFacebook.BackColor = System.Drawing.Color.Transparent;
-            this.lnkFacebook.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkFacebook.Location = new System.Drawing.Point(356, 15);
-            this.lnkFacebook.Name = "lnkFacebook";
-            this.lnkFacebook.Size = new System.Drawing.Size(100, 30);
-            this.lnkFacebook.TabIndex = 3;
-            this.lnkFacebook.TabStop = true;
-            this.lnkFacebook.Text = "Facebook";
-            this.lnkFacebook.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkFacebook.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkFacebook_LinkClicked);
-            // 
-            // lnkHitoha
-            // 
-            this.lnkHitoha.BackColor = System.Drawing.Color.Transparent;
-            this.lnkHitoha.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkHitoha.Location = new System.Drawing.Point(197, 45);
-            this.lnkHitoha.Name = "lnkHitoha";
-            this.lnkHitoha.Size = new System.Drawing.Size(100, 30);
-            this.lnkHitoha.TabIndex = 5;
-            this.lnkHitoha.TabStop = true;
-            this.lnkHitoha.Text = "Hitoha が";
-            this.lnkHitoha.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkHitoha.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHitoha_LinkClicked);
-            // 
-            // lnkSoraIro
-            // 
-            this.lnkSoraIro.BackColor = System.Drawing.Color.Transparent;
-            this.lnkSoraIro.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkSoraIro.Location = new System.Drawing.Point(303, 45);
-            this.lnkSoraIro.Name = "lnkSoraIro";
-            this.lnkSoraIro.Size = new System.Drawing.Size(100, 30);
-            this.lnkSoraIro.TabIndex = 6;
-            this.lnkSoraIro.TabStop = true;
-            this.lnkSoraIro.Text = "Sora Iro";
-            this.lnkSoraIro.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkSoraIro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSoraIro_LinkClicked);
-            // 
             // pnlArtWork
             // 
             this.pnlArtWork.BackColor = System.Drawing.Color.Transparent;
-            this.pnlArtWork.Controls.Add(this.lnkRayEn);
             this.pnlArtWork.Controls.Add(this.pnlCharErika);
             this.pnlArtWork.Controls.Add(this.pnlCharMiho);
             this.pnlArtWork.Controls.Add(this.pnlCharFumiko);
@@ -217,20 +132,6 @@ namespace IFME
             this.pnlArtWork.Name = "pnlArtWork";
             this.pnlArtWork.Size = new System.Drawing.Size(600, 293);
             this.pnlArtWork.TabIndex = 14;
-            // 
-            // lnkRayEn
-            // 
-            this.lnkRayEn.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lnkRayEn.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.lnkRayEn.LinkColor = System.Drawing.Color.White;
-            this.lnkRayEn.Location = new System.Drawing.Point(0, 236);
-            this.lnkRayEn.Name = "lnkRayEn";
-            this.lnkRayEn.Size = new System.Drawing.Size(600, 57);
-            this.lnkRayEn.TabIndex = 5;
-            this.lnkRayEn.TabStop = true;
-            this.lnkRayEn.Text = "http://pixiv.me/ray53c";
-            this.lnkRayEn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkRayEn.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRayEn_LinkClicked);
             // 
             // pnlCharErika
             // 
@@ -395,30 +296,13 @@ namespace IFME
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(14)))), ((int)(((byte)(14)))));
-            this.panel1.Controls.Add(this.lnkDiscord);
-            this.panel1.Controls.Add(this.lnkSoraIro);
-            this.panel1.Controls.Add(this.lnkGithub);
-            this.panel1.Controls.Add(this.lnkSourceForge);
-            this.panel1.Controls.Add(this.lblHome);
-            this.panel1.Controls.Add(this.lnkHitoha);
-            this.panel1.Controls.Add(this.lnkFacebook);
+            this.panel1.Controls.Add(this.lblDiscord);
+            this.panel1.Controls.Add(this.lblGithub);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 610);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(600, 90);
             this.panel1.TabIndex = 4;
-            // 
-            // lnkDiscord
-            // 
-            this.lnkDiscord.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lnkDiscord.Location = new System.Drawing.Point(462, 15);
-            this.lnkDiscord.Name = "lnkDiscord";
-            this.lnkDiscord.Size = new System.Drawing.Size(100, 30);
-            this.lnkDiscord.TabIndex = 4;
-            this.lnkDiscord.TabStop = true;
-            this.lnkDiscord.Text = "Discord";
-            this.lnkDiscord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkDiscord.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDiscord_LinkClicked);
             // 
             // banner
             // 
@@ -428,6 +312,34 @@ namespace IFME
             this.banner.Name = "banner";
             this.banner.Size = new System.Drawing.Size(600, 64);
             this.banner.TabIndex = 0;
+            // 
+            // lblGithub
+            // 
+            this.lblGithub.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblGithub.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblGithub.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Underline);
+            this.lblGithub.ForeColor = System.Drawing.Color.White;
+            this.lblGithub.Location = new System.Drawing.Point(0, 0);
+            this.lblGithub.Name = "lblGithub";
+            this.lblGithub.Size = new System.Drawing.Size(297, 90);
+            this.lblGithub.TabIndex = 0;
+            this.lblGithub.Text = "GitHub Project";
+            this.lblGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblGithub.Click += new System.EventHandler(this.lblGithub_Click);
+            // 
+            // lblDiscord
+            // 
+            this.lblDiscord.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblDiscord.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblDiscord.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Underline);
+            this.lblDiscord.ForeColor = System.Drawing.Color.White;
+            this.lblDiscord.Location = new System.Drawing.Point(303, 0);
+            this.lblDiscord.Name = "lblDiscord";
+            this.lblDiscord.Size = new System.Drawing.Size(297, 90);
+            this.lblDiscord.TabIndex = 1;
+            this.lblDiscord.Text = "Discord Server";
+            this.lblDiscord.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDiscord.Click += new System.EventHandler(this.lblDiscord_Click);
             // 
             // frmAbout
             // 
@@ -453,7 +365,6 @@ namespace IFME
             this.Text = "About";
             this.Load += new System.EventHandler(this.frmAbout_Load);
             this.Shown += new System.EventHandler(this.frmAbout_Shown);
-            this.Resize += new System.EventHandler(this.frmAbout_Resize);
             this.pnlArtWork.ResumeLayout(false);
             this.pnlCharErika.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbCharErika)).EndInit();
@@ -474,12 +385,6 @@ namespace IFME
         private System.Windows.Forms.Label lblCopyRight;
         private System.Windows.Forms.Label lblDevs;
         private System.Windows.Forms.Label lblCodeName;
-        private System.Windows.Forms.LinkLabel lnkGithub;
-        private System.Windows.Forms.LinkLabel lnkSourceForge;
-        private System.Windows.Forms.LinkLabel lblHome;
-        private System.Windows.Forms.LinkLabel lnkFacebook;
-        private System.Windows.Forms.LinkLabel lnkHitoha;
-        private System.Windows.Forms.LinkLabel lnkSoraIro;
         private System.Windows.Forms.Panel pnlArtWork;
         private System.Windows.Forms.Label lblArtWork;
         private System.Windows.Forms.Panel pnlCharIchika;
@@ -494,12 +399,12 @@ namespace IFME
         private System.Windows.Forms.Panel pnlCharFumiko;
         private System.Windows.Forms.Label lblCharFumiko;
         private System.Windows.Forms.PictureBox pbCharFumiko;
-        private System.Windows.Forms.LinkLabel lnkRayEn;
         private System.Windows.Forms.Panel pnlDevs;
         private System.Windows.Forms.Panel pnlDevsRight;
         private System.Windows.Forms.Panel pnlDevsLeft;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel banner;
-        private System.Windows.Forms.LinkLabel lnkDiscord;
+        private System.Windows.Forms.Label lblGithub;
+        private System.Windows.Forms.Label lblDiscord;
     }
 }

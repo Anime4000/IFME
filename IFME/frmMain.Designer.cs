@@ -41,6 +41,7 @@
             this.chkSubHard = new System.Windows.Forms.CheckBox();
             this.lstSub = new System.Windows.Forms.ListView();
             this.tabConfigSubtitle = new System.Windows.Forms.TabPage();
+            this.Seperator9 = new System.Windows.Forms.Label();
             this.btnSubMoveUp = new System.Windows.Forms.Button();
             this.colAudioId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cboAudioLang = new System.Windows.Forms.ComboBox();
@@ -66,6 +67,7 @@
             this.cboAudioEncoder = new System.Windows.Forms.ComboBox();
             this.lblAudioEncoder = new System.Windows.Forms.Label();
             this.tabConfigAudio = new System.Windows.Forms.TabPage();
+            this.Seperator8 = new System.Windows.Forms.Label();
             this.chkAudioMP4Compt = new System.Windows.Forms.CheckBox();
             this.lstAudio = new System.Windows.Forms.ListView();
             this.colAudioLang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -134,6 +136,7 @@
             this.chkVideoDeInterlace = new System.Windows.Forms.CheckBox();
             this.grpVideoInterlace = new System.Windows.Forms.GroupBox();
             this.tabConfigVideo = new System.Windows.Forms.TabPage();
+            this.Seperator7 = new System.Windows.Forms.Label();
             this.chkVideoMP4Compt = new System.Windows.Forms.CheckBox();
             this.grpVideoCodec = new System.Windows.Forms.GroupBox();
             this.btnVideoEnc = new System.Windows.Forms.Button();
@@ -198,9 +201,6 @@
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
             this.PbxBanner = new System.Windows.Forms.PictureBox();
-            this.Seperator8 = new System.Windows.Forms.Label();
-            this.Seperator7 = new System.Windows.Forms.Label();
-            this.Seperator9 = new System.Windows.Forms.Label();
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -347,6 +347,14 @@
             this.tabConfigSubtitle.Text = "Subtitle";
             this.tabConfigSubtitle.UseVisualStyleBackColor = true;
             this.tabConfigSubtitle.Enter += new System.EventHandler(this.tabConfigSubtitle_Enter);
+            // 
+            // Seperator9
+            // 
+            this.Seperator9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Seperator9.Location = new System.Drawing.Point(134, 6);
+            this.Seperator9.Name = "Seperator9";
+            this.Seperator9.Size = new System.Drawing.Size(2, 24);
+            this.Seperator9.TabIndex = 9;
             // 
             // btnSubMoveUp
             // 
@@ -601,6 +609,14 @@
             this.tabConfigAudio.TabIndex = 1;
             this.tabConfigAudio.Text = "Audio";
             this.tabConfigAudio.UseVisualStyleBackColor = true;
+            // 
+            // Seperator8
+            // 
+            this.Seperator8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Seperator8.Location = new System.Drawing.Point(134, 6);
+            this.Seperator8.Name = "Seperator8";
+            this.Seperator8.Size = new System.Drawing.Size(2, 24);
+            this.Seperator8.TabIndex = 14;
             // 
             // chkAudioMP4Compt
             // 
@@ -935,10 +951,10 @@
             this.grpAdvCrop.Size = new System.Drawing.Size(487, 116);
             this.grpAdvCrop.TabIndex = 1;
             this.grpAdvCrop.TabStop = false;
+            this.grpAdvCrop.Text = "  ";
             // 
             // lblAdvCropNote
             // 
-            this.lblAdvCropNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAdvCropNote.Location = new System.Drawing.Point(6, 97);
             this.lblAdvCropNote.Name = "lblAdvCropNote";
             this.lblAdvCropNote.Size = new System.Drawing.Size(475, 16);
@@ -948,7 +964,6 @@
             // 
             // txtAdvCropDuration
             // 
-            this.txtAdvCropDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtAdvCropDuration.Font = new System.Drawing.Font("Tahoma", 9F);
             this.txtAdvCropDuration.Location = new System.Drawing.Point(246, 54);
             this.txtAdvCropDuration.Name = "txtAdvCropDuration";
@@ -961,7 +976,6 @@
             // 
             // lblAdvCropDuration
             // 
-            this.lblAdvCropDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvCropDuration.Location = new System.Drawing.Point(246, 29);
             this.lblAdvCropDuration.Name = "lblAdvCropDuration";
             this.lblAdvCropDuration.Size = new System.Drawing.Size(100, 22);
@@ -971,7 +985,6 @@
             // 
             // txtAdvCropStart
             // 
-            this.txtAdvCropStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtAdvCropStart.Font = new System.Drawing.Font("Tahoma", 9F);
             this.txtAdvCropStart.Location = new System.Drawing.Point(140, 54);
             this.txtAdvCropStart.Name = "txtAdvCropStart";
@@ -984,7 +997,6 @@
             // 
             // lblAdvCropStart
             // 
-            this.lblAdvCropStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvCropStart.Location = new System.Drawing.Point(140, 28);
             this.lblAdvCropStart.Name = "lblAdvCropStart";
             this.lblAdvCropStart.Size = new System.Drawing.Size(100, 22);
@@ -1018,10 +1030,10 @@
             this.grpAdvTrim.Size = new System.Drawing.Size(487, 116);
             this.grpAdvTrim.TabIndex = 0;
             this.grpAdvTrim.TabStop = false;
+            this.grpAdvTrim.Text = "  ";
             // 
             // lblAdvTrimNote
             // 
-            this.lblAdvTrimNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAdvTrimNote.Location = new System.Drawing.Point(6, 97);
             this.lblAdvTrimNote.Name = "lblAdvTrimNote";
             this.lblAdvTrimNote.Size = new System.Drawing.Size(475, 16);
@@ -1031,7 +1043,6 @@
             // 
             // txtAdvTrimDuration
             // 
-            this.txtAdvTrimDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtAdvTrimDuration.Font = new System.Drawing.Font("Tahoma", 9F);
             this.txtAdvTrimDuration.Location = new System.Drawing.Point(327, 53);
             this.txtAdvTrimDuration.Name = "txtAdvTrimDuration";
@@ -1044,7 +1055,6 @@
             // 
             // txtAdvTrimEnd
             // 
-            this.txtAdvTrimEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtAdvTrimEnd.Font = new System.Drawing.Font("Tahoma", 9F);
             this.txtAdvTrimEnd.Location = new System.Drawing.Point(193, 54);
             this.txtAdvTrimEnd.Name = "txtAdvTrimEnd";
@@ -1057,7 +1067,6 @@
             // 
             // txtAdvTrimStart
             // 
-            this.txtAdvTrimStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtAdvTrimStart.Font = new System.Drawing.Font("Tahoma", 9F);
             this.txtAdvTrimStart.Location = new System.Drawing.Point(59, 54);
             this.txtAdvTrimStart.Name = "txtAdvTrimStart";
@@ -1070,7 +1079,6 @@
             // 
             // lblAdvTimeEqual
             // 
-            this.lblAdvTimeEqual.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvTimeEqual.Location = new System.Drawing.Point(299, 53);
             this.lblAdvTimeEqual.Name = "lblAdvTimeEqual";
             this.lblAdvTimeEqual.Size = new System.Drawing.Size(22, 22);
@@ -1080,7 +1088,6 @@
             // 
             // lblAdvTimeUntil
             // 
-            this.lblAdvTimeUntil.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvTimeUntil.Location = new System.Drawing.Point(165, 53);
             this.lblAdvTimeUntil.Name = "lblAdvTimeUntil";
             this.lblAdvTimeUntil.Size = new System.Drawing.Size(22, 22);
@@ -1090,7 +1097,6 @@
             // 
             // lblAdvTimeEnd
             // 
-            this.lblAdvTimeEnd.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvTimeEnd.Location = new System.Drawing.Point(193, 28);
             this.lblAdvTimeEnd.Name = "lblAdvTimeEnd";
             this.lblAdvTimeEnd.Size = new System.Drawing.Size(100, 22);
@@ -1100,7 +1106,6 @@
             // 
             // lblAdvTimeDuration
             // 
-            this.lblAdvTimeDuration.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvTimeDuration.Location = new System.Drawing.Point(327, 28);
             this.lblAdvTimeDuration.Name = "lblAdvTimeDuration";
             this.lblAdvTimeDuration.Size = new System.Drawing.Size(100, 22);
@@ -1110,7 +1115,6 @@
             // 
             // lblAdvTimeStart
             // 
-            this.lblAdvTimeStart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblAdvTimeStart.Location = new System.Drawing.Point(59, 28);
             this.lblAdvTimeStart.Name = "lblAdvTimeStart";
             this.lblAdvTimeStart.Size = new System.Drawing.Size(100, 22);
@@ -1360,6 +1364,7 @@
             this.grpVideoInterlace.Size = new System.Drawing.Size(247, 122);
             this.grpVideoInterlace.TabIndex = 11;
             this.grpVideoInterlace.TabStop = false;
+            this.grpVideoInterlace.Text = "  ";
             // 
             // tabConfigVideo
             // 
@@ -1385,6 +1390,14 @@
             this.tabConfigVideo.Text = "Video";
             this.tabConfigVideo.UseVisualStyleBackColor = true;
             this.tabConfigVideo.Enter += new System.EventHandler(this.tabConfigVideo_Enter);
+            // 
+            // Seperator7
+            // 
+            this.Seperator7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Seperator7.Location = new System.Drawing.Point(134, 6);
+            this.Seperator7.Name = "Seperator7";
+            this.Seperator7.Size = new System.Drawing.Size(2, 24);
+            this.Seperator7.TabIndex = 13;
             // 
             // chkVideoMP4Compt
             // 
@@ -1766,6 +1779,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStop.Font = new System.Drawing.Font("Tahoma", 20F);
             this.btnStop.Location = new System.Drawing.Point(980, 76);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(32, 32);
@@ -2001,30 +2015,6 @@
             this.PbxBanner.Size = new System.Drawing.Size(1024, 64);
             this.PbxBanner.TabIndex = 27;
             this.PbxBanner.TabStop = false;
-            // 
-            // Seperator8
-            // 
-            this.Seperator8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Seperator8.Location = new System.Drawing.Point(134, 6);
-            this.Seperator8.Name = "Seperator8";
-            this.Seperator8.Size = new System.Drawing.Size(2, 24);
-            this.Seperator8.TabIndex = 14;
-            // 
-            // Seperator7
-            // 
-            this.Seperator7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Seperator7.Location = new System.Drawing.Point(134, 6);
-            this.Seperator7.Name = "Seperator7";
-            this.Seperator7.Size = new System.Drawing.Size(2, 24);
-            this.Seperator7.TabIndex = 13;
-            // 
-            // Seperator9
-            // 
-            this.Seperator9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Seperator9.Location = new System.Drawing.Point(134, 6);
-            this.Seperator9.Name = "Seperator9";
-            this.Seperator9.Size = new System.Drawing.Size(2, 24);
-            this.Seperator9.TabIndex = 9;
             // 
             // frmMain
             // 

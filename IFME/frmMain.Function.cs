@@ -49,6 +49,7 @@ namespace IFME
 
         private void InitializeFonts()
         {
+            btnStop.Font = new Font(btnStop.Font.FontFamily, 14f);
             txtMediaInfo.Font = Fonts.Monospace();
             rtfConsole.Font = Fonts.Monospace();
             cboFormat.Font = Fonts.Monospace();

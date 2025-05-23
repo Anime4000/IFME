@@ -21,7 +21,7 @@ namespace IFME
             InitializeComponent();
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-            FormBorderStyle = FormBorderStyle.Sizable;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
 
             lblSourceFile.Text = filePath;
             lblSourceFileParse.Text = Images.GetImageSeq(filePath);

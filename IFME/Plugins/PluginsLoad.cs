@@ -13,7 +13,7 @@ namespace IFME
         internal static string ErrorLog = string.Empty;
         private static readonly List<Guid> Disabled = Properties.Settings.Default.PluginsDisabled.Split(',').Select(Guid.Parse).ToList();
 
-        private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
+        private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1 || ExitCode == 127; // bash error code 127 for 'No such file or directory'
 
         internal PluginsLoad()
         {
