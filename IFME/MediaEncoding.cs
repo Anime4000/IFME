@@ -695,8 +695,9 @@ namespace IFME
                 }
             }
 
-            var author = $"{Version.Name.ToLower()}{Version.Release}/{Version.OSArch}/{Version.OSPlatform}/{(CPU.IsRunningInVM ? "vm" : "baremetal")} ({CPU.GetCpuBrandString}{(CPU.IsRunningInVM ? $"/{CPU.GetHypervisorVendor}" : "")})";
-            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" {argEmbed}{metadata} -y \"{outFile}\"";
+            var author = $"{Version.Name.ToLower()}{Version.Release}/{Version.OSArch}/{Version.OSPlatform}/{(CPU.IsRunningInVM ? "vm" : "baremetal")}";
+            var comment = $"{CPU.GetCpuBrandString}{(CPU.IsRunningInVM ? $"/{CPU.GetHypervisorVendor}" : "")}";
+            var command = $"\"{FFmpeg}\" -strict -2 -hide_banner -v error -stats {argVideo}{argAudio}{argSubtitle}{argArt}{metafile}{map} -c copy -metadata:g \"encoding_tool={author}\" -metadata:g \"comment={comment}\" {argEmbed}{metadata} -y \"{outFile}\"";
             return ProcessManager.Start(tempDir, command);
         }
     }
