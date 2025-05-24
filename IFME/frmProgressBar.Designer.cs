@@ -37,7 +37,7 @@ namespace IFME
             // 
             // pbLoading
             // 
-            this.pbLoading.Location = new System.Drawing.Point(12, 63);
+            this.pbLoading.Location = new System.Drawing.Point(12, 52);
             this.pbLoading.Name = "pbLoading";
             this.pbLoading.Size = new System.Drawing.Size(616, 23);
             this.pbLoading.TabIndex = 0;
@@ -46,14 +46,14 @@ namespace IFME
             // 
             this.lblStatus.Location = new System.Drawing.Point(12, 9);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(616, 51);
+            this.lblStatus.Size = new System.Drawing.Size(616, 40);
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "Loading...";
             // 
             // lblSeparator
             // 
             this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSeparator.Location = new System.Drawing.Point(118, 108);
+            this.lblSeparator.Location = new System.Drawing.Point(118, 93);
             this.lblSeparator.Name = "lblSeparator";
             this.lblSeparator.Size = new System.Drawing.Size(510, 2);
             this.lblSeparator.TabIndex = 2;
@@ -61,7 +61,7 @@ namespace IFME
             // lblFFmpeg
             // 
             this.lblFFmpeg.Enabled = false;
-            this.lblFFmpeg.Location = new System.Drawing.Point(12, 95);
+            this.lblFFmpeg.Location = new System.Drawing.Point(12, 80);
             this.lblFFmpeg.Name = "lblFFmpeg";
             this.lblFFmpeg.Size = new System.Drawing.Size(128, 24);
             this.lblFFmpeg.TabIndex = 3;
