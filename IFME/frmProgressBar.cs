@@ -20,7 +20,7 @@ namespace IFME
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Text = string.Empty;
-            FormBorderStyle = FormBorderStyle.Sizable;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void frmProgressBar_Load(object sender, EventArgs e)

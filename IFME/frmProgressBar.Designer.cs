@@ -37,8 +37,6 @@ namespace IFME
             // 
             // pbLoading
             // 
-            this.pbLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbLoading.Location = new System.Drawing.Point(12, 63);
             this.pbLoading.Name = "pbLoading";
             this.pbLoading.Size = new System.Drawing.Size(616, 23);
@@ -46,9 +44,6 @@ namespace IFME
             // 
             // lblStatus
             // 
-            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.Location = new System.Drawing.Point(12, 9);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(616, 51);
@@ -57,7 +52,6 @@ namespace IFME
             // 
             // lblSeparator
             // 
-            this.lblSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSeparator.Location = new System.Drawing.Point(118, 108);
             this.lblSeparator.Name = "lblSeparator";
@@ -66,8 +60,6 @@ namespace IFME
             // 
             // lblFFmpeg
             // 
-            this.lblFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFFmpeg.Enabled = false;
             this.lblFFmpeg.Location = new System.Drawing.Point(12, 95);
             this.lblFFmpeg.Name = "lblFFmpeg";
