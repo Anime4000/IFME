@@ -1,5 +1,7 @@
-Version 8.5.1 (Nijika Melody)
+Version 8.6.0 (Nijika Melody)
 -----------------------------
+[New] Glad to announce IFME v8 now supporting Linux once again (Ubuntu derivatives)
+[Fixed] Visual Inheritance that render incorrect via Mono Runtime
 [Fixed] Rebuild full path instead of relaying Working Folder
 [Fixed] Splash Screen image will cache for improved OnPaint()
 [Update] H.266 vvenc to 1.13.1
