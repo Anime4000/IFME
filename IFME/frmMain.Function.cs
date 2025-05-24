@@ -50,6 +50,7 @@ namespace IFME
         private void InitializeFonts()
         {
             btnStop.Font = new Font(btnStop.Font.FontFamily, 14f);
+            btnStart.Font = new Font(btnStart.Font.FontFamily, 10f);
             txtMediaInfo.Font = Fonts.Monospace();
             rtfConsole.Font = Fonts.Monospace();
             cboFormat.Font = Fonts.Monospace();
@@ -610,7 +611,17 @@ namespace IFME
                 tabConfig.SelectedTab = tabConfigLog;
 
                 cboProfile.Focus();
-                cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
+
+                if (OS.IsLinux)
+                {
+                    cboProfile.SelectedIndex = -1; // no profile for Linux
+                    cboVideoEncoder.SelectedValue = new Guid("deadbeef-0011-0011-0011-001100110011");
+                    cboAudioEncoder.SelectedValue = new Guid("deadface-f00d-f00d-f00d-f00df00df00d");
+                }
+                else
+                {
+                    cboProfile.SelectedIndex = cboProfile.Items.Count - 1;
+                }    
             });
         }
 

@@ -1836,6 +1836,7 @@
             // 
             // btnFileAdd
             // 
+            this.btnFileAdd.Font = new System.Drawing.Font("Tahoma", 8F);
             this.btnFileAdd.Location = new System.Drawing.Point(12, 76);
             this.btnFileAdd.Name = "btnFileAdd";
             this.btnFileAdd.Size = new System.Drawing.Size(32, 32);
