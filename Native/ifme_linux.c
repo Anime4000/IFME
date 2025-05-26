@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 
 	// Check if mono is installed
 	if (!is_command_available("mono")) {
-		show_dialog("Mono Missing", "Mono runtime is not installed. Please install Mono to run IFME.");
+		show_dialog("Mono Missing", "Mono Runtime is not installed. Please install 'mono-complete' to run IFME.");
 		return 1;
 	}
 
