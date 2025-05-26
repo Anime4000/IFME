@@ -1,3 +1,9 @@
+Version 8.6.1 (Nijika Chocolate)
+--------------------------------
+[Fixed] Linux encoder did not start due to .exe extension issue
+[Fixed] Linux encoder will strip any file extension
+[Fixed] Encoding progress cap at 100% instead go beyond
+
 Version 8.6.0 (Nijika Melody)
 -----------------------------
 [New] Glad to announce IFME v8 now supporting Linux once again (Ubuntu derivatives)

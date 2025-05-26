@@ -139,6 +139,9 @@ namespace IFME
 
                         double percentage = (double)frame / MediaEncoding.RealFrameCount * 100;
 
+                        if (percentage > 100)
+                            percentage = 100; // Cap percentage at 100%
+
                         // Update recent fps list
                         recentFps.Add(speed);
                         if (recentFps.Count > sampleSize)
