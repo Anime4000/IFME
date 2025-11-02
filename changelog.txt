@@ -3,6 +3,9 @@ Version 8.6.1 (Nijika Chocolate)
 [Fixed] Linux encoder did not start due to .exe extension issue
 [Fixed] Linux encoder will strip any file extension
 [Fixed] Encoding progress cap at 100% instead go beyond
+[Update] (Windows) FFmpeg nonfree git-a677b382981a599f85943c14d6b0b5f253de7ec7
+[Update] (Windows) Rigaya NVEncC 9.06
+[Update] (Windows) Rigaya QSVEncC 8.02
 
 Version 8.6.0 (Nijika Melody)
 -----------------------------

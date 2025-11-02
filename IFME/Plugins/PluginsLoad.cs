@@ -232,7 +232,7 @@ namespace IFME
             var ac = codec.Audio;
             var ff = MediaEncoding.FFmpeg;
             var en = ac.Encoder;
-            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.m4a");
+            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online_south_island.ogg");
             var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{ac.Extension}");
             var outTempFolder = Path.Combine(Path.GetTempPath());
 
@@ -262,7 +262,7 @@ namespace IFME
             var vc = codec.Video;
             var ff = MediaEncoding.FFmpeg;
             var en = vc.Encoder[0].Binary;
-            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "ballz.mp4");
+            var sampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Samples", "wonderland_online_dungeon.mp4");
             var outTempFile = Path.Combine(Path.GetTempPath(), $"test_{DateTime.Now:yyyy-MM-dd_HH-mm-ss_ffff}.{vc.Extension}");
             var outTempFolder = Path.Combine(Path.GetTempPath());
 
