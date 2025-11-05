@@ -201,6 +201,7 @@
             this.tsmiFileAddAttachEmbed = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.Button();
             this.PbxBanner = new System.Windows.Forms.PictureBox();
+            this.timerVideoResInputFix = new System.Windows.Forms.Timer(this.components);
             this.tabConfigSubtitle.SuspendLayout();
             this.grpAudioCodec.SuspendLayout();
             this.tabConfigAudio.SuspendLayout();
@@ -1250,6 +1251,7 @@
             this.cboVideoRes.Items.AddRange(new object[] {
             "auto",
             "original",
+            "flip ratio",
             "640x480",
             "640x360",
             "720x404",
@@ -2017,6 +2019,11 @@
             this.PbxBanner.TabIndex = 27;
             this.PbxBanner.TabStop = false;
             // 
+            // timerVideoResInputFix
+            // 
+            this.timerVideoResInputFix.Interval = 1000;
+            this.timerVideoResInputFix.Tick += new System.EventHandler(this.timerVideoResInputFix_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -2257,5 +2264,6 @@
         private System.Windows.Forms.Label Seperator8;
         private System.Windows.Forms.Label Seperator7;
         private System.Windows.Forms.Label Seperator9;
+        private System.Windows.Forms.Timer timerVideoResInputFix;
     }
 }

@@ -1,8 +1,10 @@
-Version 8.6.1 (Nijika Chocolate)
---------------------------------
+Version 8.6.1 (Reflection of the Moon)
+--------------------------------------
 [Fixed] Linux encoder did not start due to .exe extension issue
-[Fixed] Linux encoder will strip any file extension
+[Fixed] Linux encoder will strip any binary file extension
 [Fixed] Encoding progress cap at 100% instead go beyond
+[Fixed] Video resolution input no longer janky, wrong input/format will show as red
+[Update] Removed i18n en-MY, no required as en-US is enough
 [Update] (Windows) FFmpeg nonfree git-a677b382981a599f85943c14d6b0b5f253de7ec7
 [Update] (Windows) Rigaya NVEncC 9.06
 [Update] (Windows) Rigaya QSVEncC 8.02

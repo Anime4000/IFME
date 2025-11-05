@@ -967,93 +967,123 @@ namespace IFME
 
         private void cboVideoRes_TextChanged(object sender, EventArgs e)
         {
-            // avoid this event to call itself recursively, add the event again at the end of every return cause
-            cboVideoRes.TextChanged -= cboVideoRes_TextChanged;
+            var index = cboVideoRes.SelectedIndex;
+            var width = 0;
+            var height = 0;
 
-            if (cboVideoRes.Text.Length > 0)
+            // user defined resolution, make sure input is valid
+            Regex regex = new Regex(@"^(?:\d{2,5}x\d{2,5}|auto|original|flip ratio)$");
+            if (regex.IsMatch(cboVideoRes.Text) || cboVideoRes.Text.Count(c => c == '-') > 1)
             {
-                if (cboVideoRes.Text[0] == 'a' || cboVideoRes.Text[0] == '0')
-                    cboVideoRes.Text = "auto";
-
-                if (cboVideoRes.Text[0] == 'o')
-                    cboVideoRes.Text = "original";
-            }
-
-            Regex regex = new Regex(@"(^-?\d{1,5}x-?\d{1,5}$)|^auto$|^original$");
-            MatchCollection matches = regex.Matches(cboVideoRes.Text);
-
-            if (matches.Count == 0 || cboVideoRes.Text.Count(c => c == '-') > 1)
-            {
-                cboVideoRes.Text = "auto";
-            }
-            else if (cboVideoRes.Text.Count(c => c == '-') == 1)
-            {
-                // replaces every negative number with -1, leaves -2 as it is, since those are the two cases we need
-                cboVideoRes.Text = Regex.Replace(cboVideoRes.Text, @"-(\d+)", match => {
-                    return (match.Value == "-2") ? match.Value : "-1";
-                });
-            }
-
-            var w = 0;
-            var h = 0;
-            var x = cboVideoRes.Text;
-            var auto = string.Equals(cboVideoRes.Text, "auto", StringComparison.OrdinalIgnoreCase);
-            var original = string.Equals(cboVideoRes.Text, "original", StringComparison.OrdinalIgnoreCase);
-
-            if (x.Contains('x'))
-            {
-                int.TryParse(x.Split('x')[0], out w);
-                int.TryParse(x.Split('x')[1], out h);
-            }
-
-            if ((sender as Control).Focused)
-            {
-                if (lstFile.SelectedItems.Count == 1)
+                if (string.Equals(cboVideoRes.Text, "auto", StringComparison.OrdinalIgnoreCase))
                 {
-                    foreach (ListViewItem item in lstVideo.SelectedItems)
-                    {
-                        if (original)
-                        {
-                            w = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width;
-                            h = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height;
-                        }
-                        else if (auto)
-                        {
-                            w = 0;
-                            h = 0;
-                        }
-
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Width = w;
-                        (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Height = h;
-                    }
+                    index = 0;
                 }
-                else if (lstFile.SelectedItems.Count > 1)
+                else if (string.Equals(cboVideoRes.Text, "original", StringComparison.OrdinalIgnoreCase))
                 {
-                    foreach (ListViewItem queue in lstFile.SelectedItems)
-                    {
-                        foreach (var item in (queue.Tag as MediaQueue).Video)
-                        {
-                            if (original)
-                            {
-                                w = item.Info.Width;
-                                h = item.Info.Height;
-                            }
-                            else if (auto)
-                            {
-                                w = 0;
-                                h = 0;
-                            }
-
-                            item.Quality.Width = w;
-                            item.Quality.Height = h;
-                        }
-                    }
+                    index = 1;
+                }
+                else if (string.Equals(cboVideoRes.Text, "flip ratio", StringComparison.OrdinalIgnoreCase))
+                {
+                    index = 2;
                 }
 
-                DisplayProperties_Video();
-            }
+                if (cboVideoRes.Text.Contains('x'))
+                {
+                    int.TryParse(cboVideoRes.Text.Split('x')[0], out width);
+                    int.TryParse(cboVideoRes.Text.Split('x')[1], out height);
+                }
 
-            cboVideoRes.TextChanged += cboVideoRes_TextChanged;
+                if ((sender as Control).Focused)
+                {
+                    if (lstFile.SelectedItems.Count == 1)
+                    {
+                        foreach (ListViewItem item in lstVideo.SelectedItems)
+                        {
+                            switch (index)
+                            {
+                                case 0:
+                                    width = 0;
+                                    height = 0;
+                                    break;
+                                case 1:
+                                    width = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width;
+                                    height = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height;
+                                    break;
+                                case 2:
+                                    width = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height;
+                                    height = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Width = width;
+                            (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Quality.Height = height;
+                        }
+                    }
+                    else if (lstFile.SelectedItems.Count > 1)
+                    {
+                        foreach (ListViewItem queue in lstFile.SelectedItems)
+                        {
+                            foreach (var item in (queue.Tag as MediaQueue).Video)
+                            {
+                                switch (index)
+                                {
+                                    case 0:
+                                        width = 0;
+                                        height = 0;
+                                        break;
+                                    case 1:
+                                        width = item.Info.Width;
+                                        height = item.Info.Height;
+                                        break;
+                                    case 2:
+                                        width = item.Info.Height;
+                                        height = item.Info.Width;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                item.Quality.Width = width;
+                                item.Quality.Height = height;
+                            }
+                        }
+                    }
+
+                    if (cboVideoRes.SelectedIndex > 0)
+                        cboVideoRes.Text = $"{width}x{height}";
+
+                    DisplayProperties_Video();
+                }
+
+                if (cboVideoRes.BackColor != SystemColors.Window)
+                {
+                    cboVideoRes.BackColor = SystemColors.Window;
+                    cboVideoRes.ForeColor = SystemColors.WindowText;
+                }
+            }
+            else
+            {
+                if (cboVideoRes.Text.Length == 0)
+                {
+                    timerVideoResInputFix.Interval = 1000;
+                    timerVideoResInputFix.Start();
+                }            
+
+                if (cboVideoRes.BackColor != Color.MistyRose)
+                {
+                    cboVideoRes.BackColor = Color.MistyRose;
+                    cboVideoRes.ForeColor = Color.DarkRed;
+                }
+            }
+        }
+
+        private void timerVideoResInputFix_Tick(object sender, EventArgs e)
+        {
+            timerVideoResInputFix.Stop();
+            cboVideoRes.Text = "original";
         }
 
         private void cboVideoFps_TextChanged(object sender, EventArgs e)

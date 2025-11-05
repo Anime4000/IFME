@@ -161,9 +161,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <None Include="i18n\en-MY.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="i18n\ja-JP.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
