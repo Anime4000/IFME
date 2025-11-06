@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +66,7 @@
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Container.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts.cs" />
     <Compile Include="frmAbout.cs">

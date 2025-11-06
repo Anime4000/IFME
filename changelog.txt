@@ -1,3 +1,9 @@
+Version 8.6.2 (The Love That Lasts The Longest)
+-----------------------------------------------
+[New] Added 3GP Video format for who have mid-2005 smartphone, such as Nokia S60, N-Gage
+[New] Video Resolution input now accept percent, eg: 50% of the original resolution.
+[Fixed] Switching output container did not update the selected encoder default parameter.
+
 Version 8.6.1 (Reflection of the Moon)
 --------------------------------------
 [Fixed] Linux encoder did not start due to .exe extension issue

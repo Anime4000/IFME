@@ -4,12 +4,11 @@ using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using System.ComponentModel;
 using System.Collections.Generic;
 
-using IFME.OSManager;
 using Newtonsoft.Json;
-using System.Windows.Forms.VisualStyles;
-using System.ComponentModel;
+using Newtonsoft.Json.Converters;
 
 namespace IFME
 {
@@ -27,6 +26,16 @@ namespace IFME
 
     public partial class frmMain
     {
+        public string[] ContainerList()
+        {
+            var formats = JsonConvert.DeserializeObject<string[]>(
+                JsonConvert.SerializeObject(Enum.GetValues(typeof(MediaContainer)),
+                new StringEnumConverter())
+            );
+
+            return formats;
+        }
+
         private void Initialize_i18n()
         {
             var lang = Properties.Settings.Default.UILanguage;
@@ -92,6 +101,27 @@ namespace IFME
         private void InitializeTab()
         {
             new Thread(Thread_InitializedTabs).Start();
+        }
+
+        private void UpdateComboBoxItems(ComboBox combo, string[] newItems, ComboBoxStyle style)
+        {
+            // Null safety
+            newItems ??= Array.Empty<string>();
+
+            // Check if items differ (same order and content)
+            bool isDifferent = combo.Items.Count != newItems.Length ||
+                               !combo.Items.Cast<string>().SequenceEqual(newItems);
+
+            if (isDifferent)
+            {
+                combo.BeginUpdate();
+                combo.Items.Clear();
+                combo.Items.AddRange(newItems);
+                combo.EndUpdate();
+            }
+
+            if (combo.DropDownStyle != style)
+                combo.DropDownStyle = style;
         }
 
         private string[] OpenFiles(MediaType type, bool multiSelect = true)
@@ -645,7 +675,10 @@ namespace IFME
                 nudVideoRateFactor.Value = data.Encoder.Value;
                 nudVideoMultiPass.Value = data.Encoder.MultiPass;
 
+                cboVideoRes.TextChanged -= cboVideoRes_TextChanged;
                 cboVideoRes.Text = $"{(data.Quality.Width == 0 || data.Quality.Height == 0 ? "auto" : $"{data.Quality.Width}x{data.Quality.Height}" )}";
+                cboVideoRes.TextChanged += cboVideoRes_TextChanged;
+
                 cboVideoFps.Text = $"{Math.Round(data.Quality.FrameRate, 3)}";
                 cboVideoBitDepth.Text = $"{data.Quality.BitDepth}";
                 cboVideoPixFmt.Text = $"{data.Quality.PixelFormat}";

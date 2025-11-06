@@ -16,7 +16,7 @@ namespace IFME
     public partial class frmMain : Form
     {
         private BackgroundWorker2 bgThread = new BackgroundWorker2();
-        private Array Format = Enum.GetValues(typeof(MediaContainer));
+        private string[] videoResolution;
 
         public frmMain()
         {
@@ -33,6 +33,8 @@ namespace IFME
             bgThread.DoWork += bgThread_DoWork;
             bgThread.ProgressChanged += bgThread_ProgressChanged;
             bgThread.RunWorkerCompleted += bgThread_RunWorkerCompleted;
+
+            videoResolution = cboVideoRes.Items.Cast<string>().ToArray();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -95,13 +97,15 @@ namespace IFME
                 Application.Exit();
             }
 
+
+
             var c = 0;
-            foreach (var item in Format)
+            foreach (var item in ContainerList())
             {
                 cboFormat.Items.Add($"{item}{(c >= (int)MediaContainer.MP2 ? $" ({i18nUI.Status("AudioOnly")})" : "")}");
                 c++;
             }
-            cboFormat.SelectedIndex = 2;
+            cboFormat.SelectedIndex = 3;
 
             InitializeProfiles();
             InitializeLog();
@@ -668,7 +672,19 @@ namespace IFME
                 var topBitDepth = Convert.ToInt32(cboVideoBitDepth.Items[cboVideoBitDepth.Items.Count - 1]);
                 var topPixelFmt = Convert.ToInt32(cboVideoPixFmt.Items[cboVideoPixFmt.Items.Count - 1]);
 
-                if ((sender as Control).Focused)
+                // some video codec has fixed resolution, so we check first
+                if (video.Resolution == null)
+                {
+                    UpdateComboBoxItems(cboVideoRes, videoResolution, ComboBoxStyle.DropDown);
+                    cboVideoRes.Text = "original";
+                }
+                else
+                {
+                    UpdateComboBoxItems(cboVideoRes, video.Resolution, ComboBoxStyle.DropDownList);
+                    cboVideoRes.SelectedIndex = video.ResolutionDefault;
+                }
+
+                if ((sender as Control).Focused || cboFormat.Focused)
                 {
                     var enc = new MediaQueueVideoEncoder
                     {
@@ -731,7 +747,7 @@ namespace IFME
 
         private void cboVideoPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -755,7 +771,7 @@ namespace IFME
 
         private void cboVideoTune_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -798,7 +814,7 @@ namespace IFME
                 nudVideoMultiPass.Value = 2;
             }
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -970,9 +986,10 @@ namespace IFME
             var index = cboVideoRes.SelectedIndex;
             var width = 0;
             var height = 0;
+            var scale = 1.0;
 
             // user defined resolution, make sure input is valid
-            Regex regex = new Regex(@"^(?:\d{2,5}x\d{2,5}|auto|original|flip ratio)$");
+            Regex regex = new Regex(@"^(?:\d{2,5}x\d{2,5}|auto|original|flip ratio|[1-9]\d?%)$");
             if (regex.IsMatch(cboVideoRes.Text) || cboVideoRes.Text.Count(c => c == '-') > 1)
             {
                 if (string.Equals(cboVideoRes.Text, "auto", StringComparison.OrdinalIgnoreCase))
@@ -987,6 +1004,15 @@ namespace IFME
                 {
                     index = 2;
                 }
+                else if (cboVideoRes.Text.Contains('%') && cboVideoRes.Text.Length >= 2 && cboVideoRes.Text.Length <= 3) //eg: 1% or 99%
+                {
+                    index = 3;
+                    scale = double.Parse(cboVideoRes.Text.TrimEnd('%')) / 100;
+                }
+                else if (cboVideoRes.DropDownStyle == ComboBoxStyle.DropDownList)
+                {
+                    index = 6;
+                }
 
                 if (cboVideoRes.Text.Contains('x'))
                 {
@@ -994,7 +1020,7 @@ namespace IFME
                     int.TryParse(cboVideoRes.Text.Split('x')[1], out height);
                 }
 
-                if ((sender as Control).Focused)
+                if ((sender as Control).Focused || cboFormat.Focused)
                 {
                     if (lstFile.SelectedItems.Count == 1)
                     {
@@ -1013,6 +1039,12 @@ namespace IFME
                                 case 2:
                                     width = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height;
                                     height = (lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width;
+                                    break;
+                                case 3:
+                                case 4:
+                                case 5:
+                                    width = (int)((lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Width * scale / 2.0) * 2;
+                                    height = (int)((lstFile.SelectedItems[0].Tag as MediaQueue).Video[item.Index].Info.Height * scale / 2.0) * 2;
                                     break;
                                 default:
                                     break;
@@ -1042,6 +1074,12 @@ namespace IFME
                                         width = item.Info.Height;
                                         height = item.Info.Width;
                                         break;
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                        width = (int)(item.Info.Width * scale / 2.0) * 2;
+                                        height = (int)(item.Info.Height * scale / 2.0) * 2;
+                                        break;
                                     default:
                                         break;
                                 }
@@ -1051,12 +1089,9 @@ namespace IFME
                             }
                         }
                     }
-
-                    if (cboVideoRes.SelectedIndex > 0)
-                        cboVideoRes.Text = $"{width}x{height}";
-
-                    DisplayProperties_Video();
                 }
+
+                DisplayProperties_Video();
 
                 if (cboVideoRes.BackColor != SystemColors.Window)
                 {
@@ -1083,7 +1118,9 @@ namespace IFME
         private void timerVideoResInputFix_Tick(object sender, EventArgs e)
         {
             timerVideoResInputFix.Stop();
-            cboVideoRes.Text = "original";
+            
+            if (cboVideoRes.Text.Length == 0)
+                cboVideoRes.Text = "original";
         }
 
         private void cboVideoFps_TextChanged(object sender, EventArgs e)
@@ -1100,7 +1137,7 @@ namespace IFME
             Regex regex = new Regex(@"(^\d+$)|(^\d+.\d+$)|(^auto$)");
             MatchCollection matches = regex.Matches(cboVideoFps.Text);
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (matches.Count == 0)
                     cboVideoFps.Text = "0";
@@ -1139,7 +1176,7 @@ namespace IFME
         {
             int.TryParse((sender as Control).Text, out int x);
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1167,7 +1204,7 @@ namespace IFME
         {
             int.TryParse((sender as Control).Text, out int x);
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1499,7 +1536,7 @@ namespace IFME
                 cboAudioChannel.SelectedValue = audio.ChannelDefault;
             }
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 var enc = new MediaQueueAudioEncoder
                 {
@@ -1548,7 +1585,7 @@ namespace IFME
                 cboAudioQuality.SelectedItem = mode.Default;
             }
 
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1580,7 +1617,7 @@ namespace IFME
 
         private void cboAudioQuality_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1606,7 +1643,7 @@ namespace IFME
 
         private void cboAudioSampleRate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -1632,7 +1669,7 @@ namespace IFME
 
         private void cboAudioChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as Control).Focused)
+            if ((sender as Control).Focused || cboFormat.Focused)
             {
                 if (lstFile.SelectedItems.Count == 1)
                 {
@@ -2156,7 +2193,7 @@ namespace IFME
                 {
                     audioId = ((KeyValuePair<Guid, string>)cboAudioEncoder.SelectedItem).Key;
                     audioCmd = Plugins.Items.Audio[audioId].Audio.Args.Command;
-                }                
+                }
 
                 if (lstFile.SelectedItems.Count > 0)
                 {
@@ -2165,7 +2202,7 @@ namespace IFME
                         var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
                         var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
 
-                        queue.SubItems[1].Text = $"{inExt} ► {outExt}";
+                        queue.SubItems[1].Text = $"{inExt} ► {cboFormat.Text}";
                         (queue.Tag as MediaQueue).OutputFormat = (MediaContainer)cboFormat.SelectedIndex;
 
                         foreach (var item in (queue.Tag as MediaQueue).Video)
@@ -2489,7 +2526,7 @@ namespace IFME
                     }
 
                     var outFileName = $"{prefix}{Path.GetFileNameWithoutExtension(mq.FilePath)}{postfix}";
-                    var outFileExts = $"{mq.OutputFormat.ToString().ToLowerInvariant()}";
+                    var outFileExts = mq.OutputFormat == MediaContainer.ThreeGP ? "3gp" : mq.OutputFormat.ToString().ToLowerInvariant();
                     var saveFileName = $"{outFileName}.{outFileExts}";
                     var r = 1;
 

@@ -39,6 +39,7 @@ namespace IFME
         public string Name { get; set; }
         public string Args { get; set; }
         public bool MultiChannelSupport { get; set; } = true;
+        public bool SingleChannelOnly { get; set; } = false;
         public bool MonoSupport { get; set; } = true;
         public string[] Quality { get; set; }
         public string QualityPrefix { get; set; } = string.Empty;

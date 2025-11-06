@@ -21,6 +21,8 @@ namespace IFME
         public string PresetDefault { get; set; }
         public string[] Tune { get; set; }
         public string TuneDefault { get; set; }
+        public string[] Resolution { get; set; }
+        public int ResolutionDefault { get; set; } = -1;
         public PluginsVideoArgs Args { get; set; } = new PluginsVideoArgs();
         public List<PluginsVideoMode> Mode { get; set; } = new List<PluginsVideoMode>();
     }

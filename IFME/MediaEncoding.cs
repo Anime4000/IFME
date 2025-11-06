@@ -216,6 +216,13 @@ namespace IFME
                             ch = $"{ac.ChannelArgs} 2";
                     }
 
+                    if (ac.Mode[md].SingleChannelOnly)
+                    {
+                        frmMain.PrintLog($"[WARN] {codec.Name}, {codec.Audio.Mode[md].Name} only support Mono Channel...");
+
+                        ch = $"-ac 1";
+                    }
+
                     if(queue.FastMuxAudio && !queue.Trim.Enable)
                     {
                         frmMain.PrintStatus(String.Format(i18nUI.Status("EncodingAudioRemux"), i));
