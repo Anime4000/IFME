@@ -6,7 +6,7 @@
 **Language:** [日本語](/README_ja-JP.md) | [简体中文](/README_zh-CN.md) | [Bahasa Malaysia](/README_ms-MY.md)
 
 ## Introduction
-Back in 2012, as a college student, I originally developed IFME to compress FRAPS game recordings using x264 for archiving. My friends appreciated IFME for its simplicity and lightweight design, which led to the birth of Internet Friendly Media Encoder (IFME).
+Back in 2011, as a college student, I originally developed IFME to compress FRAPS game recordings using x264 for archiving. My friends appreciated IFME for its simplicity and lightweight design, which led to the birth of Internet Friendly Media Encoder (IFME).
 
 ## About
 A versatile, future-proof, and expandable multimedia encoder designed for ease of use. Internet Friendly Media Encoder supports adding subtitles and attachments, and can function as a remuxing tool with a Copy Stream option. It allows you to combine multiple video, audio, subtitle, and attachment streams into a single file, remove unwanted streams, or incorporate subtitles from another video without extracting. The software also supports AviSynth for advanced video processing.
