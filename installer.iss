@@ -34,9 +34,9 @@ LicenseFile=..\..\..\LICENSE.md
 InfoBeforeFile=..\..\..\PATENTS.md
 InfoAfterFile=..\..\..\changelog.txt
 
-SetupIconFile=..\..\..\IFME\Resources\Installer\SetupIcon.ico
-WizardImageFile=..\..\..\IFME\Resources\Installer\WizModernImage-IS.png
-WizardSmallImageFile=..\..\..\IFME\Resources\Installer\WizModernSmallImage-IS.png
+SetupIconFile=..\..\..\IFME\Resources\InnoSetup\SetupIcon.ico
+WizardImageFile=..\..\..\IFME\Resources\InnoSetup\WizModernImage-IS.png
+WizardSmallImageFile=..\..\..\IFME\Resources\InnoSetup\WizModernSmallImage-IS.png
 
 OutputDir=..\
 OutputBaseFilename=IFME-{#MyAppVersion}_release-win64
