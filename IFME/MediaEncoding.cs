@@ -3,8 +3,6 @@ using System.IO;
 using System.Threading;
 using System.Collections.Generic;
 
-using IFME.OSManager;
-
 namespace IFME
 {
     internal class MediaEncoding
@@ -123,18 +121,6 @@ namespace IFME
                         ProcessManager.Start(tempDirFont, $"\"{FFmpeg}\" -hide_banner -v panic -stats -dump_attachment:{e_id} \"{e_name}\" -i \"{file}\" -y");
                     }
                 }
-            }
-
-            // Hard Sub
-            if (queue.HardSub)
-            {
-                var fontConfigFile = File.ReadAllText(AppPath.Combine("Fonts", "fonts.conf"));
-                var fontConfigData = string.Format(fontConfigFile, tempDirFont);
-                File.WriteAllText(AppPath.Combine(tempDir, "fonts.conf"), fontConfigData);
-
-                Environment.SetEnvironmentVariable("FC_CONFIG_DIR", tempDirFont);
-                Environment.SetEnvironmentVariable("FONTCONFIG_PATH", tempDir);
-                Environment.SetEnvironmentVariable("FONTCONFIG_FILE", AppPath.Combine(tempDir, "fonts.conf"));
             }
         }
 
