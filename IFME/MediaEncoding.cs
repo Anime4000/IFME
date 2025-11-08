@@ -37,39 +37,7 @@ namespace IFME
         }
 
         private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
-
-        private static string FileContainerCompact(MediaContainer Cont)
-        {
-            switch (Cont)
-            {
-                case MediaContainer.AVI:
-                    return "avi";
-                case MediaContainer.MP4:
-                    return "mov";
-                case MediaContainer.MKV:
-                    return "mp4";
-                case MediaContainer.WEBM:
-                    return "webm";
-                case MediaContainer.TS:
-                    return "m4v";
-                case MediaContainer.M2TS:
-                    return "m4v";
-                case MediaContainer.MP2:
-                    return "mp2";
-                case MediaContainer.MP3:
-                    return "mp3";
-                case MediaContainer.M4A:
-                    return "m4a";
-                case MediaContainer.OGG:
-                    return "ogg";
-                case MediaContainer.OPUS:
-                    return "opus";
-                case MediaContainer.FLAC:
-                    return "flac";
-                default:
-                    return "mkv";
-            }
-        }
+        private static string IsCompatible(FileContainer value) => value.GetEnumMemberValue().ToLower();
 
         internal static void Extract(MediaQueue queue, string tempDir)
         {
@@ -228,7 +196,7 @@ namespace IFME
                         frmMain.PrintStatus(String.Format(i18nUI.Status("EncodingAudioRemux"), i));
                         frmMain.PrintLog($"[INFO] Fast Remuxing Audio...");
 
-                        var tempName = $"audio{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
+                        var tempName = $"audio{i:D4}_{item.Lang}.{IsCompatible(queue.OutputFormat)}";
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:a copy -y {tempName}");
 
@@ -460,7 +428,7 @@ namespace IFME
                         frmMain.PrintStatus(String.Format(i18nUI.Status("EncodingVideoRemux"), i));
                         frmMain.PrintLog($"[INFO] Fast Remuxing Video...");
 
-                        var tempName = $"video{i:D4}_{item.Lang}.{FileContainerCompact(queue.OutputFormat)}";
+                        var tempName = $"video{i:D4}_{item.Lang}.{IsCompatible(queue.OutputFormat)}";
 
                         var exitCode = ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -i \"{item.FilePath}\" -map 0:{item.Id} -c:v copy -y {tempName}");
 
@@ -628,7 +596,7 @@ namespace IFME
                 x++;
             }
 
-            if (queue.OutputFormat == MediaContainer.MKV || queue.OutputFormat == MediaContainer.MP4)
+            if (queue.OutputFormat == FileContainer.MKV || queue.OutputFormat == FileContainer.MP4)
             {
                 if (!queue.HardSub)
                 {
@@ -641,13 +609,13 @@ namespace IFME
                         x++;
                         d++;
 
-                        if (queue.OutputFormat == MediaContainer.MP4)
+                        if (queue.OutputFormat == FileContainer.MP4)
                                 metadata += $" -c:s mov_text ";
                     }
                 }
             }
 
-            if (queue.OutputFormat == MediaContainer.MKV)
+            if (queue.OutputFormat == FileContainer.MKV)
             {
                 if (!queue.HardSub)
                 {
@@ -665,11 +633,11 @@ namespace IFME
                 }
             }
 
-            if (queue.OutputFormat == MediaContainer.MKV || 
-                queue.OutputFormat == MediaContainer.MP4 ||
-                queue.OutputFormat == MediaContainer.M4A ||
-                queue.OutputFormat == MediaContainer.MP3 ||
-                queue.OutputFormat == MediaContainer.FLAC)
+            if (queue.OutputFormat == FileContainer.MKV || 
+                queue.OutputFormat == FileContainer.MP4 ||
+                queue.OutputFormat == FileContainer.M4A ||
+                queue.OutputFormat == FileContainer.MP3 ||
+                queue.OutputFormat == FileContainer.FLAC)
             {
                 foreach (var art in Directory.GetFiles(tempDir, "album_art*"))
                 {
@@ -686,7 +654,7 @@ namespace IFME
                 metafile = $"-f ffmetadata -i metadata.ini -map_metadata 0";
             }
 
-            if (queue.OutputFormat == MediaContainer.MP4)
+            if (queue.OutputFormat == FileContainer.MP4)
             {
                 if (mp4MuxFlags != Mp4MuxFlags.None)
                 {

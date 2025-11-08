@@ -66,7 +66,7 @@
     <Compile Include="BackgroundWorker2.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Container.cs" />
+    <Compile Include="MediaContainer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fonts.cs" />
     <Compile Include="frmAbout.cs">

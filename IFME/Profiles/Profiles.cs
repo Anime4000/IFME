@@ -16,7 +16,7 @@ namespace IFME
         public string ProfilePath { get; set; }
         public bool TryRemuxVideo { get; set; } = false;
         public bool TryRemuxAudio { get; set; } = false;
-        public MediaContainer Container { get; set; } = new MediaContainer();
+        public FileContainer Container { get; set; } = new FileContainer();
         public ProfilesVideo Video { get; set; } = new ProfilesVideo();
         public ProfilesAudio Audio { get; set; } = new ProfilesAudio();
     }

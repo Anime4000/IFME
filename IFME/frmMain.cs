@@ -100,9 +100,9 @@ namespace IFME
 
 
             var c = 0;
-            foreach (var item in ContainerList())
+            foreach (var item in MediaContainer.List)
             {
-                cboFormat.Items.Add($"{item}{(c >= (int)MediaContainer.MP2 ? $" ({i18nUI.Status("AudioOnly")})" : "")}");
+                cboFormat.Items.Add($"{item}{(c >= (int)FileContainer.MP2 ? $" ({i18nUI.Status("AudioOnly")})" : "")}");
                 c++;
             }
             cboFormat.SelectedIndex = 3;
@@ -386,7 +386,7 @@ namespace IFME
 
                 // Sub Burn
                 chkSubHard.Checked = data.HardSub;
-                chkSubHard.Enabled = data.OutputFormat != MediaContainer.MKV || data.OutputFormat != MediaContainer.MP4;
+                chkSubHard.Enabled = data.OutputFormat != FileContainer.MKV || data.OutputFormat != FileContainer.MP4;
 
                 // Video
                 ListViewItem_RefreshVideo(data);
@@ -2200,10 +2200,10 @@ namespace IFME
                     foreach (ListViewItem queue in lstFile.SelectedItems)
                     {
                         var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
-                        var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
+                        var outExt = Enum.GetName(typeof(FileContainer), cboFormat.SelectedIndex);
 
                         queue.SubItems[1].Text = $"{inExt} ► {cboFormat.Text}";
-                        (queue.Tag as MediaQueue).OutputFormat = (MediaContainer)cboFormat.SelectedIndex;
+                        (queue.Tag as MediaQueue).OutputFormat = (FileContainer)cboFormat.SelectedIndex;
 
                         foreach (var item in (queue.Tag as MediaQueue).Video)
                         {
@@ -2249,8 +2249,8 @@ namespace IFME
             tabConfigMediaInfo.Enabled = btnStart.Enabled;
             tabConfigVideo.Enabled = cboVideoEncoder.Items.Count > 0;
             tabConfigAudio.Enabled = cboAudioEncoder.Items.Count > 0;
-            tabConfigSubtitle.Enabled = (MediaContainer)cboFormat.SelectedIndex < MediaContainer.WMV;
-            tabConfigAttachment.Enabled = (MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV;
+            tabConfigSubtitle.Enabled = (FileContainer)cboFormat.SelectedIndex < FileContainer.WMV;
+            tabConfigAttachment.Enabled = (FileContainer)cboFormat.SelectedIndex == FileContainer.MKV;
             tabConfigAdvance.Enabled = btnStart.Enabled;
 
             DisplayProperties_Video();
@@ -2321,7 +2321,7 @@ namespace IFME
                     }
                 };
                 
-                ProfilesManager.Save(input.ReturnValue, (MediaContainer)cboFormat.SelectedIndex, v, a, chkVideoMP4Compt.Checked, chkAudioMP4Compt.Checked);
+                ProfilesManager.Save(input.ReturnValue, (FileContainer)cboFormat.SelectedIndex, v, a, chkVideoMP4Compt.Checked, chkAudioMP4Compt.Checked);
 
                 // Reload new listing
                 InitializeProfiles();
@@ -2526,7 +2526,7 @@ namespace IFME
                     }
 
                     var outFileName = $"{prefix}{Path.GetFileNameWithoutExtension(mq.FilePath)}{postfix}";
-                    var outFileExts = mq.OutputFormat == MediaContainer.ThreeGP ? "3gp" : mq.OutputFormat.ToString().ToLowerInvariant();
+                    var outFileExts = mq.OutputFormat == FileContainer.ThreeGP ? "3gp" : mq.OutputFormat.ToString().ToLowerInvariant();
                     var saveFileName = $"{outFileName}.{outFileExts}";
                     var r = 1;
 

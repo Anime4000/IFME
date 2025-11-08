@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum MediaContainer
+public enum FileContainer
 {
     [EnumMember(Value = "3GP")]
     ThreeGP,
@@ -37,3 +38,16 @@ public enum Mp4MuxFlags
     SeparateMoof = 1 << 2   // 4
 }
 
+public class MediaContainer
+{
+    public static string[] List
+    {
+        get
+        {
+            return JsonConvert.DeserializeObject<string[]>(
+                JsonConvert.SerializeObject(Enum.GetValues(typeof(FileContainer)),
+                new StringEnumConverter())
+            );
+        }
+    }
+}

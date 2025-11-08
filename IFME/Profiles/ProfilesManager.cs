@@ -37,7 +37,7 @@ namespace IFME
 			}
 		}
 
-		public static void Save(string name, MediaContainer container, ProfilesVideo video, ProfilesAudio audio, bool mux_v = false, bool mux_a = false)
+		public static void Save(string name, FileContainer container, ProfilesVideo video, ProfilesAudio audio, bool mux_v = false, bool mux_a = false)
 		{
 			var data = new Profiles
 			{
@@ -81,7 +81,7 @@ namespace IFME
 				ProfileAuthor = "Example Inc.",
                 ProfileWebUrl = "http://example.com",
 
-                Container = MediaContainer.MKV,
+                Container = FileContainer.MKV,
 				Video = new ProfilesVideo
 				{
 					Encoder = new MediaQueueVideoEncoder

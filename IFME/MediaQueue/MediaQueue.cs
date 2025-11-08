@@ -15,7 +15,7 @@ namespace IFME
 		public ulong BitRate { get; set; }
 		public float Duration { get; set; }
 		public string InputFormat { get; set; }
-		public MediaContainer OutputFormat { get; set; }
+		public FileContainer OutputFormat { get; set; }
 		public int ProfileId { get; set; } = -1;
 		public MediaQueueTrim Trim { get; set; } = new MediaQueueTrim();
 		public MediaQueueCrop Crop { get; set; } = new MediaQueueCrop();

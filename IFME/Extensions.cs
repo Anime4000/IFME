@@ -1,9 +1,39 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 static class Extensions
 {
+    /// <summary>
+    /// Retrieves the string value associated with the <see cref="EnumMemberAttribute"/> of an enum value. 
+    /// If the attribute is not present, the default string representation of the enum value is returned.
+    /// </summary>
+    /// <param name="value">The enum value.</param>
+    /// <returns>The attributed string value, or the default string if the attribute is missing.</returns>
+    public static string GetEnumMemberValue(this Enum value)
+    {
+        Type type = value.GetType();
+        // Get the field info for the specific enum value
+        FieldInfo field = type.GetField(value.ToString());
+
+        if (field != null)
+        {
+            // Try to retrieve the EnumMemberAttribute
+            var attribute = (EnumMemberAttribute)Attribute.GetCustomAttribute(field, typeof(EnumMemberAttribute), false);
+
+            if (attribute != null)
+            {
+                // Return the Value from the attribute
+                return attribute.Value;
+            }
+        }
+
+        // If no EnumMemberAttribute is found, return the field name as a string (default behavior)
+        return value.ToString();
+    }
+
     /// <summary>
     /// Checks whether the input string contains format specifiers like {0}, {1}, {2}, up to {n}.
     /// </summary>

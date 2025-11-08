@@ -26,16 +26,6 @@ namespace IFME
 
     public partial class frmMain
     {
-        public string[] ContainerList()
-        {
-            var formats = JsonConvert.DeserializeObject<string[]>(
-                JsonConvert.SerializeObject(Enum.GetValues(typeof(MediaContainer)),
-                new StringEnumConverter())
-            );
-
-            return formats;
-        }
-
         private void Initialize_i18n()
         {
             var lang = Properties.Settings.Default.UILanguage;
@@ -152,7 +142,7 @@ namespace IFME
 
             if (type.HasFlag(MediaType.Subtitle))
             {
-                if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MP4)
+                if ((FileContainer)cboFormat.SelectedIndex == FileContainer.MP4)
                     exts = extsSub2;
                 else
                     exts += extsSub;
@@ -231,7 +221,7 @@ namespace IFME
                 FileSize = fileData.FileSize,
                 Duration = fileData.Duration,
                 InputFormat = fileData.FormatNameFull,
-                OutputFormat = (MediaContainer)cboFormat.SelectedIndex,
+                OutputFormat = (FileContainer)cboFormat.SelectedIndex,
                 ProfileId = cboProfile.SelectedIndex,
                 Info = fileData
             };
@@ -343,9 +333,9 @@ namespace IFME
                 });
 
             // Enable HardSub (Burn Subtitle) when using incompatible container, make sure disable control
-            if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MKV)
+            if ((FileContainer)cboFormat.SelectedIndex == FileContainer.MKV)
                 fileQueue.HardSub = false;
-            else if ((MediaContainer)cboFormat.SelectedIndex == MediaContainer.MP4)
+            else if ((FileContainer)cboFormat.SelectedIndex == FileContainer.MP4)
                 fileQueue.HardSub = false;
             else
                 fileQueue.HardSub = true;
@@ -353,7 +343,7 @@ namespace IFME
             var lst = new ListViewItem(new[]
             {
                 Path.GetFileName(path),
-                $"{Path.GetExtension(path).Substring(1).ToUpperInvariant()} ► {Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex)}",
+                $"{Path.GetExtension(path).Substring(1).ToUpperInvariant()} ► {Enum.GetName(typeof(FileContainer), cboFormat.SelectedIndex)}",
                 TimeSpan.FromSeconds(fileData.Duration).ToString("hh\\:mm\\:ss"),
                 OS.PrintFileSize(fileData.FileSize),
                 fileQueue.Enable ? "Ready" : "Done",
@@ -562,7 +552,7 @@ namespace IFME
 
         private void DisplayProperties_Video()
         {
-            if ((MediaContainer)cboFormat.SelectedIndex >= MediaContainer.MP2)
+            if ((FileContainer)cboFormat.SelectedIndex >= FileContainer.MP2)
                 return;
 
             if (lstVideo.SelectedItems.Count > 0)
@@ -1133,7 +1123,7 @@ namespace IFME
 
                     // update main list
                     var inExt = Path.GetExtension((queue.Tag as MediaQueue).FilePath).Substring(1).ToUpperInvariant();
-                    var outExt = Enum.GetName(typeof(MediaContainer), cboFormat.SelectedIndex);
+                    var outExt = Enum.GetName(typeof(FileContainer), cboFormat.SelectedIndex);
                     queue.SubItems[1].Text = $"{inExt} ► {outExt}";
                 }
 
