@@ -4,6 +4,7 @@ Version 8.6.2 (The Love That Lasts The Longest)
 [New] Video Resolution input now accept percent, eg: 50% of the original resolution.
 [Fixed] Switching output container did not update the selected encoder and it's default parameter.
 [Fixed] Encoding failed when use Burn Subtitle due to old code still exist.
+[Update] (Windows) Rigaya QSVEncC 8.03
 
 Version 8.6.1 (Reflection of the Moon)
 --------------------------------------
