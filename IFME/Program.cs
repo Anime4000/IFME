@@ -24,8 +24,8 @@ namespace IFME
             {
                 { "h|?|help", "Show this message and exit", h => ArgsHelp = h != null },
 
-                { "skip-avx", $"Bypass AVX instruction set checks", sa => ArgsSkipAVX = sa != null },
-                { "skip-avx2", $"Bypass AVX2 instruction set checks", sa2 => ArgsSkipAVX2 = sa2 != null },
+                { "skip-avx", "Bypass AVX instruction set checks", x => ArgsSkipAVX = x != null },
+                { "skip-avx2", "Bypass AVX2 instruction set checks", x => ArgsSkipAVX2 = x != null },
             };
 
             try
@@ -45,7 +45,6 @@ namespace IFME
                 Console.Error.WriteLine("\nOptions:");
                 o.WriteOptionDescriptions(Console.Error);
                 Console.Error.WriteLine();
-                Console.Error.WriteLine("(c) Copyright 2018 Anime4000");
 
                 return;
             }
