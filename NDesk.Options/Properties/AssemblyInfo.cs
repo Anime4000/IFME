@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Internet Friendly Media Encoder")]
-[assembly: AssemblyDescription("Allow user to compress raw media")]
+[assembly: AssemblyTitle("NDesk.Options")]
+[assembly: AssemblyDescription("NDesk.Options is a callback-based program option parser for C#.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anime4000")]
-[assembly: AssemblyProduct("Sorry for Being Cute")]
-[assembly: AssemblyCopyright("© 2025 Anime4000")]
-[assembly: AssemblyTrademark("Anime4000, Rigaya, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")]
+[assembly: AssemblyCompany("NDesk")]
+[assembly: AssemblyProduct("NDesk.Options")]
+[assembly: AssemblyCopyright("MIT/X11")]
+[assembly: AssemblyTrademark("Jonathan Pryor")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("00000000-1234-abcd-1234-000000000000")]
+[assembly: Guid("37d9fcde-4496-40a9-9442-c3e9342896a2")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,8 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("8.6.3")]
-[assembly: AssemblyFileVersion("8.6.3")]
+[assembly: AssemblyVersion("0.2.*")]
+[assembly: AssemblyFileVersion("0.2.1")]

@@ -234,6 +234,10 @@
       <Project>{3c1ea604-dede-42c2-b0d4-a07dfb0a14b1}</Project>
       <Name>IFME.OSManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NDesk.Options\NDesk.Options.csproj">
+      <Project>{37d9fcde-4496-40a9-9442-c3e9342896a2}</Project>
+      <Name>NDesk.Options</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Banner_2a.png" />
