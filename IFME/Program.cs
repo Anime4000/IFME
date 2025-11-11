@@ -4,16 +4,52 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 
+using NDesk.Options;
+
 namespace IFME
 {
     static class Program
     {
+        public static bool ArgsHelp = false;
+        public static bool ArgsSkipAVX = false;
+        public static bool ArgsSkipAVX2 = false;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            var o = new OptionSet()
+            {
+                { "h|?|help", "Show this message and exit", h => ArgsHelp = h != null },
+
+                { "skip-avx", $"Bypass AVX instruction set checks", sa => ArgsSkipAVX = sa != null },
+                { "skip-avx2", $"Bypass AVX2 instruction set checks", sa2 => ArgsSkipAVX2 = sa2 != null },
+            };
+
+            try
+            {
+                o.Parse(args);
+            }
+            catch (OptionException e)
+            {
+                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine($"Try `IFME.exe --help' for more information.");
+            }
+
+            if (ArgsHelp)
+            {
+                Console.Error.WriteLine($"Usage: IFME.exe [OPTIONS]+");
+                Console.Error.WriteLine("Mandatory arguments to long option are mandatory for short options too.");
+                Console.Error.WriteLine("\nOptions:");
+                o.WriteOptionDescriptions(Console.Error);
+                Console.Error.WriteLine();
+                Console.Error.WriteLine("(c) Copyright 2018 Anime4000");
+
+                return;
+            }
+
             var culture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
