@@ -28,7 +28,7 @@ namespace IFME
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            WindowUtils.EnableAcrylic(this, Color.FromArgb(63, 20, 20, 20));
+            WindowUtils.EnableAcrylic(this, Color.FromArgb(71, 18, 18, 18));
             base.OnHandleCreated(e);
         }
 

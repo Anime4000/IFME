@@ -1,5 +1,6 @@
 Version 8.6.3 (Lettersong)
 --------------------------
+[Fixed] Create output folder if not exist.
 [Update] Added --skip-avx argument to bypass AVX instruction set checks.
 [Update] Added --skip-avx2 argument to bypass AVX2 instruction set checks.
 [Update] Improved subtitle sanitization: invalid characters are now replaced with spaces.

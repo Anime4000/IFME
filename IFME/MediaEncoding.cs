@@ -111,7 +111,6 @@ namespace IFME
                     File.Delete(subtitleFile);
                     File.Move(tmpFile, subtitleFile);
                 }
-
             }
 
             frmMain.PrintLog("[INFO] Extracting embeded attachment...");
@@ -594,7 +593,12 @@ namespace IFME
             frmMain.PrintStatus(i18nUI.Status("Repacking"));
             frmMain.PrintLog($"[INFO] Multiplexing encoded files into single file...");
 
-            Thread.Sleep(1500); // Wait NTFS finish updating the content
+            if (!Directory.Exists(saveDir))
+            {
+                Directory.CreateDirectory(saveDir);
+            }
+
+            Thread.Sleep(500); // Wait NTFS finish updating the content
 
             foreach (var video in Directory.GetFiles(tempDir, "video*"))
             {
