@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Threading;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace IFME
 {
@@ -88,6 +89,26 @@ namespace IFME
                         ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{e_id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle{i:D4}_{e:D4}_{e_lang}.{e_fmt}");
                     }
                 }
+
+                frmMain.PrintLog("[INFO] Formalizing Subtitle File...");
+
+                if (string.Equals("ass", fmt, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var subtitleFile = Path.Combine(tempDir, $"subtitle0000_{i:D4}_{lang}.{fmt}");
+
+                    using var reader = new StreamReader(subtitleFile, Encoding.UTF8);
+                    using var writer = new StreamWriter(subtitleFile + ".tmp", false, new UTF8Encoding(false));
+
+                    int cur;
+                    while ((cur = reader.Read()) != -1)
+                    {
+                        writer.Write(cur == '\0' ? ' ' : (char)cur);
+                    }
+
+                    File.Delete(subtitleFile);
+                    File.Move(subtitleFile + ".tmp", subtitleFile);
+                }
+
             }
 
             frmMain.PrintLog("[INFO] Extracting embeded attachment...");
@@ -135,6 +156,9 @@ namespace IFME
                 if (Plugins.Items.Audio.TryGetValue(item.Encoder.Id, out PluginsAudio codec))
                 {
                     frmMain.PrintLog("[INFO] Encoding audio file...");
+
+                    if (queue.Trim.Enable)
+                        frmMain.PrintStatus($"Seeking audio file to {queue.Trim.Start}");
 
                     var ac = codec.Audio;
                     var md = item.Encoder.Mode;
@@ -236,6 +260,9 @@ namespace IFME
 
                 if (item.Encoder.Id.Equals(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")))
                     continue; // skip encode video when choosing audio only
+
+                if (queue.Trim.Enable)
+                    frmMain.PrintStatus($"Seeking video file to {queue.Trim.Start}");
 
                 if (Plugins.Items.Video.TryGetValue(item.Encoder.Id, out PluginsVideo codec))
                 {

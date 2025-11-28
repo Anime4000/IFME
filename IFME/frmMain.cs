@@ -502,13 +502,26 @@ namespace IFME
         private void btnVideoDel_Click(object sender, EventArgs e)
         {
             lstVideo.SelectedIndexChanged -= lstVideo_SelectedIndexChanged;
+            lstVideo.BeginUpdate();
 
             foreach (ListViewItem item in lstVideo.SelectedItems)
             {
-                (lstFile.SelectedItems[0].Tag as MediaQueue).Video.RemoveAt(item.Index);
+                foreach (ListViewItem queue in lstFile.SelectedItems)
+                {
+                    try
+                    {
+                        (queue.Tag as MediaQueue).Video.RemoveAt(item.Index);
+                    }
+                    catch (Exception gg)
+                    {
+                        PrintLog($"[WARN] {gg.Message}");
+                    }
+                }
+
                 item.Remove();
             }
 
+            lstVideo.EndUpdate();
             lstVideo.SelectedIndexChanged += lstVideo_SelectedIndexChanged;
         }
 
@@ -1369,13 +1382,26 @@ namespace IFME
         private void btnAudioDel_Click(object sender, EventArgs e)
         {
             lstAudio.SelectedIndexChanged -= lstAudio_SelectedIndexChanged;
+            lstAudio.BeginUpdate();
 
             foreach (ListViewItem item in lstAudio.SelectedItems)
             {
-                (lstFile.SelectedItems[0].Tag as MediaQueue).Audio.RemoveAt(item.Index);
+                foreach (ListViewItem queue in lstFile.SelectedItems)
+                {
+                    try
+                    {
+                        (queue.Tag as MediaQueue).Audio.RemoveAt(item.Index);
+                    }
+                    catch (Exception gg)
+                    {
+                        PrintLog($"[WARN] {gg.Message}");
+                    }
+                }
+
                 item.Remove();
             }
 
+            lstAudio.EndUpdate();
             lstAudio.SelectedIndexChanged += lstAudio_SelectedIndexChanged;
         }
 
@@ -1805,13 +1831,26 @@ namespace IFME
         private void btnSubDel_Click(object sender, EventArgs e)
         {
             lstSub.SelectedIndexChanged -= lstSub_SelectedIndexChanged;
+            lstSub.BeginUpdate();
 
             foreach (ListViewItem item in lstSub.SelectedItems)
             {
-                (lstFile.SelectedItems[0].Tag as MediaQueue).Subtitle.RemoveAt(item.Index);
+                foreach (ListViewItem queue in lstFile.SelectedItems)
+                {
+                    try
+                    {
+                        (queue.Tag as MediaQueue).Subtitle.RemoveAt(item.Index);
+                    }
+                    catch (Exception gg)
+                    {
+                        PrintLog($"[WARN] {gg.Message}");
+                    }
+                }
+
                 item.Remove();
             }
 
+            lstSub.EndUpdate();
             lstSub.SelectedIndexChanged += lstSub_SelectedIndexChanged;
         }
 
@@ -1970,13 +2009,26 @@ namespace IFME
         private void btnAttachDel_Click(object sender, EventArgs e)
         {
             lstAttach.SelectedIndexChanged -= lstAttach_SelectedIndexChanged;
+            lstAttach.BeginUpdate();
 
             foreach (ListViewItem item in lstAttach.SelectedItems)
             {
-                (lstFile.SelectedItems[0].Tag as MediaQueue).Attachment.RemoveAt(item.Index);
+                foreach (ListViewItem queue in lstFile.SelectedItems)
+                {
+                    try
+                    {
+                        (queue.Tag as MediaQueue).Attachment.RemoveAt(item.Index);
+                    }
+                    catch (Exception gg)
+                    {
+                        PrintLog($"[WARN] {gg.Message}");
+                    }
+                }
+
                 item.Remove();
             }
 
+            lstAttach.EndUpdate();
             lstAttach.SelectedIndexChanged += lstAttach_SelectedIndexChanged;
         }
 

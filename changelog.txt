@@ -1,3 +1,10 @@
+Version 8.6.3 (Lettersong)
+--------------------------
+[Update] Added --skip-avx argument to bypass AVX instruction set checks.
+[Update] Added --skip-avx2 argument to bypass AVX2 instruction set checks.
+[Update] Improved subtitle sanitization: invalid characters are now replaced with spaces.
+[Update] Added batch stream deletion, useful for removing unwanted languages (e.g., non-English audio/subtitles) across multiple files at once.
+
 Version 8.6.2 (The Love That Lasts The Longest)
 -----------------------------------------------
 [New] Added 3GP Video format for who have mid-2005 smartphone, such as Nokia S60, N-Gage
