@@ -68,6 +68,11 @@ namespace IFME
                 var lang = queue.Subtitle[i].Lang;
                 var fext = Path.GetExtension(file);
 
+                if (string.Equals("dvd_subtitle", fmt, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    fmt = "mkv";
+                }
+
                 if (id >= 0)
                 {
                     ProcessManager.Start(tempDir, $"\"{FFmpeg}\" -hide_banner -v error -stats -i \"{file}\" -map 0:{id} -map_metadata -1 -map_chapters -1 -vn -an -dn -scodec copy -y subtitle0000_{i:D4}_{lang}.{fmt}");
