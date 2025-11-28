@@ -95,18 +95,21 @@ namespace IFME
                 if (string.Equals("ass", fmt, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var subtitleFile = Path.Combine(tempDir, $"subtitle0000_{i:D4}_{lang}.{fmt}");
+                    var tmpFile = subtitleFile + ".tmp";
 
-                    using var reader = new StreamReader(subtitleFile, Encoding.UTF8);
-                    using var writer = new StreamWriter(subtitleFile + ".tmp", false, new UTF8Encoding(false));
-
-                    int cur;
-                    while ((cur = reader.Read()) != -1)
+                    using (var reader = new StreamReader(subtitleFile, Encoding.UTF8))
+                    using (var writer = new StreamWriter(tmpFile, false, new UTF8Encoding(false)))
                     {
-                        writer.Write(cur == '\0' ? ' ' : (char)cur);
+                        int cur;
+                        while ((cur = reader.Read()) != -1)
+                        {
+                            writer.Write(cur == '\0' ? ' ' : (char)cur);
+                        }
                     }
 
+                    // Streams are now closed
                     File.Delete(subtitleFile);
-                    File.Move(subtitleFile + ".tmp", subtitleFile);
+                    File.Move(tmpFile, subtitleFile);
                 }
 
             }
