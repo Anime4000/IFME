@@ -318,7 +318,11 @@ uses, so replacing an image inside it changes it without rebuilding; the wad may
 be stored (as IFME 8's build makes it) or deflated (any zip tool). Only the icon
 is built in, from `../IFME/Resources`. Without `resources.wad` the windows show
 no artwork and the splash screen says so.
-Not yet: file name prefix/postfix, the C# "shut down when done" option,
+Output names get IFME 8's prefix and suffix (Preferences > File name: none,
+the date and time, or custom text; by default the prefix `[IFME] `), applied
+when encoding starts.
+
+Not yet: the C# "shut down when done" option,
 a macOS `.icns` app icon and a Linux `.desktop` file.
 
 ### Translations

@@ -2,6 +2,7 @@
 // containers and small JSON helpers.
 #pragma once
 
+#include <QDateTime>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QSettings>
@@ -86,6 +87,22 @@ QJsonValue jget(const QJsonObject &o, const QString &key);
 QString jstr(const QJsonValue &v);           // strings and numbers as text
 double jnum(const QJsonValue &v, double fallback = 0);
 QStringList jstrings(const QJsonValue &arr);
+
+// Output file names: prefix + source name + suffix (C#: frmOptions, the
+// PrefixMode / PostfixMode settings). Mode 0 none, 1 "[yyyy-MM-dd_HH-mm-ss]",
+// 2 custom text. IFME 8's defaults: the prefix "[IFME] ", no suffix.
+struct NameStyle {
+	int prefixMode = 2;
+	QString prefix = QStringLiteral("[IFME] ");
+	int suffixMode = 0;
+	QString suffix;
+};
+NameStyle nameStyle();                          // from the settings
+void setNameStyle(const NameStyle &style);
+// `base` with the prefix and suffix; the date and time are `when` (encoding
+// starts). Characters Windows does not allow in file names are left out.
+QString decorateName(const QString &base, const NameStyle &style,
+                     const QDateTime &when = QDateTime::currentDateTime());
 
 // ISO 639-2 languages (code, name), sorted by name: Language.json from
 // jason.wad in the IFME folder, as C# reads it (a built-in copy otherwise).

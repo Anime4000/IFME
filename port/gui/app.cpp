@@ -251,6 +251,41 @@ QStringList jstrings(const QJsonValue &arr)
 	return out;
 }
 
+NameStyle nameStyle()
+{
+	QSettings &s = settings();
+	NameStyle n;
+	n.prefixMode = qBound(0, s.value(QStringLiteral("naming/prefix_mode"), n.prefixMode).toInt(), 2);
+	n.prefix = s.value(QStringLiteral("naming/prefix"), n.prefix).toString();
+	n.suffixMode = qBound(0, s.value(QStringLiteral("naming/suffix_mode"), n.suffixMode).toInt(), 2);
+	n.suffix = s.value(QStringLiteral("naming/suffix"), n.suffix).toString();
+	return n;
+}
+
+void setNameStyle(const NameStyle &n)
+{
+	QSettings &s = settings();
+	s.setValue(QStringLiteral("naming/prefix_mode"), n.prefixMode);
+	s.setValue(QStringLiteral("naming/prefix"), n.prefix);
+	s.setValue(QStringLiteral("naming/suffix_mode"), n.suffixMode);
+	s.setValue(QStringLiteral("naming/suffix"), n.suffix);
+}
+
+QString decorateName(const QString &base, const NameStyle &n, const QDateTime &when)
+{
+	const QString stamp = when.toString(QStringLiteral("yyyy-MM-dd_HH-mm-ss"));
+	auto clean = [](QString s) {
+		static const QString bad = QStringLiteral("<>:\"/\\|?*");
+		s.removeIf([](QChar c) { return c.unicode() < 32 || bad.contains(c); });
+		return s;
+	};
+	const QString prefix = n.prefixMode == 1 ? QStringLiteral("[%1] ").arg(stamp)
+	                     : n.prefixMode == 2 ? clean(n.prefix) : QString();
+	const QString suffix = n.suffixMode == 1 ? QStringLiteral(" [%1]").arg(stamp)
+	                     : n.suffixMode == 2 ? clean(n.suffix) : QString();
+	return prefix + base + suffix;
+}
+
 static QVector<LanguageCode> g_languages;
 
 const QVector<LanguageCode> &languages()
