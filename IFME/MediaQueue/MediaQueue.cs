@@ -35,6 +35,8 @@ namespace IFME
 		public string FilePath { get; set; }
 		public string Codec { get; set; }
 		public string Title { get; set; }
+		public bool Default { get; set; } = false;   // the source's default flag (audio, subtitles)
+		public bool Forced { get; set; } = false;    // the source's forced flag (subtitles)
 	}
 
 	public class MediaQueueTrim

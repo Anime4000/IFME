@@ -429,6 +429,7 @@ namespace IFME
                     Id = item.Id,
                     Lang = item.Language,
                     Codec = item.Codec,
+                    Default = item.Default,
 
                     Info = new MediaQueueAudioInfo
                     {
@@ -458,6 +459,8 @@ namespace IFME
                     Id = item.Id,
                     Lang = item.Language,
                     Codec = item.Codec,
+                    Default = item.Default,
+                    Forced = item.Forced,
                 });
             
             foreach (var item in fileData.Attachment)

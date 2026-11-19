@@ -2,10 +2,23 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Internet Friendly Media Encoder"
-#define MyAppVersion "8.7.0"
+#define MyAppVersion "8.7.1"
 #define MyAppPublisher "Anime4000"
 #define MyAppURL "https://github.com/Anime4000/IFME"
 #define MyAppExeName "ifme.exe"
+
+; IFME 9 alpha (Qt) ships in the same installer, beside IFME.exe.
+; Stage it first from the port folder (MSYS2 UCRT64 shell):
+;   cmake --build build --target deploy      -> IFME\bin\Qt
+; Compile with /DNoQt to build an installer without it.
+#define QtAppName "IFME 9 alpha (Qt)"
+#define QtAppExeName "ifme9.exe"
+#define QtDir "IFME\bin\Qt"
+#ifndef NoQt
+  #if !FileExists(AddBackslash(SourcePath) + QtDir + "\" + QtAppExeName)
+    #error IFME\bin\Qt\ifme9.exe not found: run the deploy target in port/ first, or compile with /DNoQt
+  #endif
+#endif
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -47,6 +60,9 @@ Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
+#ifndef NoQt
+Name: "desktopiconqt"; Description: "Create a desktop shortcut for {#QtAppName}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+#endif
 
 [Dirs]
 Name: "{app}"; Permissions: everyone-full
@@ -55,10 +71,18 @@ Name: "{app}"; Permissions: everyone-full
 Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "..\Debug\Plugins\*"; DestDir: "{app}\Plugins"; Flags: ignoreversion recursesubdirs
 Source: "..\Debug\Samples\*"; DestDir: "{app}\Samples"; Flags: ignoreversion recursesubdirs
+#ifndef NoQt
+; ifme9.exe, ifmecli.exe, Qt/MinGW DLLs and Qt plugin folders; the .wad files come from Release above.
+Source: "..\Qt\*"; DestDir: "{app}"; Excludes: "*.wad"; Flags: ignoreversion recursesubdirs
+#endif
 
 [Icons]
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "Open a powerful GUI Encoder"; Tasks: desktopicon
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Comment: "GUI Encoder with Internet Friendly Media Encoder!"
+#ifndef NoQt
+Name: "{commondesktop}\{#QtAppName}"; Filename: "{app}\{#QtAppExeName}"; WorkingDir: "{app}"; Comment: "Try the native IFME 9 alpha"; Tasks: desktopiconqt
+Name: "{group}\{#QtAppName}"; Filename: "{app}\{#QtAppExeName}"; WorkingDir: "{app}"; Comment: "Try the native IFME 9 alpha"
+#endif
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"; Comment: "Visit Internet Friendly Media Encoder!"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Comment: "Remove Internet Friendly Media Encoder, but please :( try contact me, I'll try to fix!"
 

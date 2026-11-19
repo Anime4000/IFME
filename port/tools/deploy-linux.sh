@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+# deploy-linux.sh - make a portable copy of the Qt build on Linux, runnable on
+# other distributions of the same age or newer (glibc not bundled).
+#
+#   deploy-linux.sh <ifme9> <ifmecli> <dest dir> <IFME folder with the .wad files> [<translations dir>] [<a Qt plugin file>]
+#
+# Run through:  cmake --build build --target deploy
+#
+# Layout:
+#   ifme9, ifmecli          the programs (RPATH $ORIGIN/lib)
+#   lib/                    Qt and the libraries it needs that a desktop may lack
+#   lib/qt6/plugins/        Qt plugins (xcb, wayland, image formats, input methods)
+#   qt.conf                 points Qt at those plugins
+#   i18n_qt/                interface translations (+ Qt's qtbase_*.qm)
+#   jason.wad, resources.wad
+set -euo pipefail
+
+gui=$1 cli=$2 dest=$3 from=$4 i18n=${5:-} plugin_hint=${6:-}
+
+# Interface translations (i18n_qt/*.json; IFME 8 has i18n/) and, for those languages, Qt's
+# own strings (qtbase_*.qm: standard buttons) when Qt's translations are installed.
+copy_translations() {   # <qt translations dir>
+    # The sources' i18n/ (next to this script's folder) when none was given.
+    if [[ -z $i18n || ! -d $i18n ]]; then
+        i18n=$(cd "$(dirname "${BASH_SOURCE[0]}")/../i18n" 2>/dev/null && pwd || true)
+    fi
+    if [[ -z $i18n ]] || ! compgen -G "$i18n/*.json" >/dev/null; then
+        echo "deploy: no translations found (port/i18n/*.json), i18n_qt/ left out" >&2
+        return 0
+    fi
+    rm -rf "$dest/i18n_qt" "$dest/translations"   # (the old name)
+    mkdir -p "$dest/i18n_qt"
+    cp -f "$i18n"/*.json "$dest/i18n_qt/" 2>/dev/null || true
+    local j code q
+    for j in "$dest/i18n_qt"/*.json; do
+        [[ -f $j ]] || continue
+        code=$(basename "$j" .json)
+        for q in "$1/qtbase_${code/-/_}.qm" "$1/qtbase_${code%%-*}.qm"; do
+            if [[ -f $q ]]; then cp -f "$q" "$dest/i18n_qt/"; break; fi
+        done
+    done
+}
+
+# ---- where Qt keeps its plugins ----
+plugins=
+if [[ -n $plugin_hint && -f $plugin_hint ]]; then
+    plugins=$(dirname "$(dirname "$plugin_hint")")
+fi
+for q in qtpaths6 qtpaths qmake6 qmake; do
+    [[ -n $plugins && -d $plugins ]] && break
+    if command -v "$q" >/dev/null 2>&1; then
+        if [[ $q == qtpaths* ]]; then
+            plugins=$("$q" --query QT_INSTALL_PLUGINS 2>/dev/null || true)
+        else
+            plugins=$("$q" -query QT_INSTALL_PLUGINS 2>/dev/null || true)
+        fi
+    fi
+done
+if [[ -z $plugins || ! -d $plugins/platforms ]]; then
+    echo "deploy: cannot find the Qt plugins folder (tried qtpaths6/qmake6)" >&2
+    exit 1
+fi
+
+rm -rf "$dest/lib"
+mkdir -p "$dest/lib/qt6/plugins"
+cp -f "$gui" "$cli" "$dest/"
+
+# ---- Qt plugins: the platform ones and what a desktop session uses ----
+copy_plugin() {   # <group> [file pattern]
+    local group=$1 pattern=${2:-*.so}
+    [[ -d $plugins/$group ]] || return 0
+    mkdir -p "$dest/lib/qt6/plugins/$group"
+    find "$plugins/$group" -maxdepth 1 -name "$pattern" -exec cp -fL {} "$dest/lib/qt6/plugins/$group/" \;
+}
+copy_plugin platforms 'libqxcb.so'
+copy_plugin platforms 'libqwayland*.so'
+copy_plugin platforms 'libqoffscreen.so'
+copy_plugin xcbglintegrations
+copy_plugin platforminputcontexts
+copy_plugin imageformats 'libqico.so'
+copy_plugin imageformats 'libqjpeg.so'
+copy_plugin imageformats 'libqgif.so'
+# Desktop look: the GTK3 theme (Cinnamon, GNOME, Xfce: colours incl. dark mode,
+# fonts, file dialogs), the portal, qt6ct and any style plugins installed.
+copy_plugin platformthemes
+copy_plugin styles
+for g in wayland-shell-integration wayland-decoration-client wayland-graphics-integration-client; do
+    copy_plugin "$g"
+done
+find "$dest/lib/qt6/plugins" -type d -empty -delete
+
+# ---- libraries: everything they load, except what every desktop has ----
+# (glibc, the compiler runtime, OpenGL/DRM, X11/xcb core, fontconfig and the
+# libraries those share with the system; bundling them breaks more than it fixes.)
+excluded() {
+    case $1 in
+        ld-linux*|libc.so*|libm.so*|libdl.so*|libpthread.so*|librt.so*|libresolv.so*|libutil.so*|\
+        libanl.so*|libnsl.so*|libmvec.so*|libBrokenLocale.so*|libgcc_s.so*|libstdc++.so*|\
+        libGL.so*|libGLX*.so*|libGLdispatch.so*|libOpenGL.so*|libEGL*.so*|libGLES*.so*|libdrm*.so*|libgbm.so*|\
+        libX11.so*|libX11-xcb.so*|libxcb.so*|libxcb-dri*.so*|libxcb-glx.so*|libxcb-present.so*|libXau.so*|libXdmcp.so*|\
+        libxshmfence.so*|libfontconfig.so*|libfreetype.so*|libharfbuzz.so*|libexpat.so*|libz.so*|\
+        libdbus-1.so*|libsystemd.so*|libudev.so*|libglib-2.0.so*|libgobject-2.0.so*|libgio-2.0.so*|\
+        libgmodule-2.0.so*|libgthread-2.0.so*|libffi.so*|libpcre2-8.so*|libselinux.so*|libmount.so*|libblkid.so*|\
+        libuuid.so*|libcap.so*|libgcrypt.so*|libgpg-error.so*|liblzma.so*|libzstd.so*|liblz4.so*|libbsd.so*|libmd.so*|\
+        libpng16.so*|libbz2.so*|libbrotli*.so*|libgraphite2.so*|libwayland-*.so*|libvulkan.so*)
+            return 0 ;;
+    esac
+    return 1
+}
+
+deps() {   # libraries the given files (NUL-separated on stdin) load
+    xargs -0 -n1 ldd 2>/dev/null | awk '$2 == "=>" && $3 ~ /^\// { print $3 }'
+}
+themes=("$dest/lib/qt6/plugins/platformthemes" "$dest/lib/qt6/plugins/styles")
+
+needed() {
+    {
+        find "$dest" -maxdepth 1 -type f \( -name ifme9 -o -name ifmecli \) -print0
+        find "$dest/lib" -type f -name '*.so*' -not -path "${themes[0]}/*" -not -path "${themes[1]}/*" -print0
+    } | deps
+    # Theme and style plugins use the desktop's own GTK, KDE or qt6ct
+    # libraries: only their Qt libraries are bundled. Where the desktop lacks
+    # the rest, Qt skips the plugin and keeps its default look.
+    find "${themes[@]}" -type f -name '*.so' -print0 2>/dev/null | deps | grep -E '/lib(Qt6|qt6ct)[^/]*$' || true
+}
+
+while :; do
+    added=0
+    while IFS= read -r path; do
+        name=$(basename "$path")
+        excluded "$name" && continue
+        if [[ ! -e $dest/lib/$name ]]; then
+            cp -fL "$path" "$dest/lib/$name"
+            added=1
+        fi
+    done < <(needed | sort -u)
+    [[ $added == 0 ]] && break
+done
+
+# ---- make the programs find lib/ ----
+# The build links them with DT_RPATH $ORIGIN/lib (inherited by Qt and its
+# plugins); patchelf, when installed, makes sure of it.
+for exe in "$dest/ifme9" "$dest/ifmecli"; do
+    if command -v patchelf >/dev/null 2>&1; then
+        patchelf --force-rpath --set-rpath '$ORIGIN/lib' "$exe"
+    fi
+    if ! readelf -d "$exe" | grep -q 'RPATH.*\$ORIGIN/lib'; then
+        echo "deploy: $(basename "$exe") has no RPATH \$ORIGIN/lib; install patchelf or rebuild" >&2
+    fi
+done
+
+cat > "$dest/qt.conf" <<'EOF'
+[Paths]
+Prefix = .
+Plugins = lib/qt6/plugins
+Translations = i18n_qt
+EOF
+
+qt_tr=
+for q in qtpaths6 qtpaths qmake6 qmake; do
+    command -v "$q" >/dev/null 2>&1 || continue
+    if [[ $q == qtpaths* ]]; then qt_tr=$("$q" --query QT_INSTALL_TRANSLATIONS 2>/dev/null || true)
+    else qt_tr=$("$q" -query QT_INSTALL_TRANSLATIONS 2>/dev/null || true); fi
+    [[ -n $qt_tr ]] && break
+done
+copy_translations "$qt_tr"
+
+# ---- data the .NET build ships as .wad files (Language.json lives in jason.wad) ----
+for wad in jason.wad resources.wad; do
+    if [[ -f $from/$wad ]]; then
+        cp -f "$from/$wad" "$dest/"
+    else
+        echo "deploy: $from/$wad not found, skipped" >&2
+    fi
+done
+
+echo "deploy: $(find "$dest/lib" -maxdepth 1 -name '*.so*' | wc -l) libraries, $(find "$dest/lib/qt6/plugins" -name '*.so' | wc -l) plugins, $(find "$dest/i18n_qt" -name '*.json' 2>/dev/null | wc -l) translations, $(du -sh "$dest" | cut -f1) in $dest"
