@@ -41,6 +41,13 @@ This fills `../IFME/bin/Qt` (next to the .NET `Release` folder) with
 DLL they import from UCRT64) and the `.wad` files from `../IFME/bin/Debug`.
 For a combined release put its contents beside `IFME.exe`, `Plugins/` and
 `Samples/`. Run from `bin/Qt` itself, it uses `bin/Debug`'s `Plugins/`.
+
+On Linux the same target (`tools/deploy-linux.sh`) puts `ifme9`, `ifmecli`,
+Qt and the libraries a desktop may lack in `lib/`, its plugins in
+`lib/qt6/plugins/`, a `qt.conf` and the `.wad` files in `../IFME/bin/Qt`.
+glibc, OpenGL, X11/xcb core and fontconfig come from the system, so the copy
+runs on distributions as new as the build machine or newer. The programs are
+linked with RPATH `$ORIGIN/lib`; `patchelf`, when installed, re-applies it.
 The version is `9.0.0-alpha` (the .NET release is 8.x).
 
 Every executable embeds [`res/ifme.manifest`](res/ifme.manifest), which makes

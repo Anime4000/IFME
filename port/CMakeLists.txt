@@ -125,11 +125,28 @@ if(IFME_BUILD_GUI)
         OUTPUT_NAME ifme9)   # ifme9.exe, beside the .NET IFME.exe in a combined release
 
     # Portable copy for a combined release: cmake --build build --target deploy
-    # puts ifme9.exe, ifmecli.exe, the Qt and MinGW DLLs and the .wad files in
+    # puts ifme9, ifmecli, the Qt libraries and plugins and the .wad files in
     # IFME/bin/Qt (the .NET Release folder's neighbour).
-    if(WIN32)
-        set(IFME_DEPLOY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Qt" CACHE PATH "Where the deploy target copies the portable build")
-        set(IFME_DEPLOY_FROM "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Debug" CACHE PATH "IFME folder the .wad files are copied from")
+    set(IFME_DEPLOY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Qt" CACHE PATH "Where the deploy target copies the portable build")
+    set(IFME_DEPLOY_FROM "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Debug" CACHE PATH "IFME folder the .wad files are copied from")
+    if(UNIX AND NOT APPLE)
+        # Linux: look in ./lib first. DT_RPATH (not RUNPATH) so Qt and its
+        # plugins find their bundled libraries too.
+        foreach(t ifme ifmecli)
+            set_target_properties(${t} PROPERTIES BUILD_RPATH "$ORIGIN/lib")
+            target_link_options(${t} PRIVATE "LINKER:--disable-new-dtags")
+        endforeach()
+        set(IFME_QT_PLUGIN_HINT "")
+        if(TARGET Qt6::QXcbIntegrationPlugin)
+            set(IFME_QT_PLUGIN_HINT "$<TARGET_FILE:Qt6::QXcbIntegrationPlugin>")
+        endif()
+        add_custom_target(deploy
+            COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy-linux.sh"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_PLUGIN_HINT}"
+            DEPENDS ifme ifmecli
+            COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
+            VERBATIM)
+    elseif(WIN32)
         find_program(IFME_BASH bash REQUIRED)
         get_target_property(IFME_QMAKE Qt6::qmake IMPORTED_LOCATION)
         get_filename_component(IFME_QT_BIN "${IFME_QMAKE}" DIRECTORY)
