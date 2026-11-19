@@ -91,18 +91,40 @@ Behaviour compared with `PluginsLoad.cs`:
 - Not yet: the user's disabled-plugin list and remembering test failures
   (needs the settings file, a later milestone).
 
+### Media information
+
+```bash
+./build/ifmecli --root "/d/Program Files/IFME" movie.mkv other.mp4     # same layout as IFME's MediaInfo
+./build/ifmecli --root "/d/Program Files/IFME" --json movie.mkv        # add -v for the raw ffprobe output
+./build/ifmecli -p --framerate 24 "frames/img%04d.png"                 # image sequence
+```
+
+In the GUI, drop files onto the window (or pass them on the command line).
+
+ffprobe comes from `PATH`, else `<root>/Plugins/ffmpeg64`. Compared with
+`MediaInfo.cs` the fields and defaults are the same, except:
+
+- **Audio bit depth** is real: C# assigned `sample_fmt` (e.g. `"fltp"`) to an
+  int, which always threw, so every stream showed 16 bits. C#'s rule that
+  32-bit/float sources count as 24 is kept.
+- **Tags are matched case-insensitively**, so Matroska's `ENCODER` (writing
+  application) and other upper-case tags are found.
+- A `0/0` frame rate is `0`, not NaN; a failure reports ffprobe's reason.
+
 ## Layout
 
 ```
 core/include/ifme.h          public C API (extern "C", UTF-8, opaque handles)
 core/src/core.c              context lifetime, string helpers
 core/src/plugins.c           manifest loading, self-test
+core/src/probe.c             media information from ffprobe
 core/src/argv.c              argument lists built from manifest templates
 core/src/json_relax.c        accept comments / trailing commas
 core/src/platform/paths.c    executable folder, per-user config folder
 core/src/platform/fs.c       files, folders, PATH lookup (UTF-16 APIs on Windows)
-core/src/platform/proc_*.c   run "a | b" pipelines: Job Objects (Windows),
-                             process groups + fork/exec (Linux, macOS)
+core/src/platform/proc_*.c   run "a | b" pipelines and capture stdout/stderr:
+                             Job Objects (Windows), process groups +
+                             fork/exec + poll (Linux, macOS)
 core/src/platform/cpu_*.c    CPU model and SIMD flags (x86 / everything else)
 core/third_party/cjson/      cJSON 1.7.18 (MIT)
 cli/ifmecli.c                command-line front-end
@@ -115,7 +137,7 @@ res/                         Windows manifest and resource script
 - [x] 0. Skeleton: core library, CLI and GUI build on Windows; paths and CPU detection
 - [x] 1. `--list-plugins` / `--self-test`: read the existing plugin manifests (cJSON),
       run `ffmpeg | encoder` pipelines without a shell
-- [ ] 2. `--probe FILE`: run ffprobe, parse its JSON
+- [x] 2. `--probe FILE`: run ffprobe, parse its JSON; GUI accepts dropped files
 - [ ] 3. Process layer: live progress from stderr, pause/resume/stop on demand
       (Job Objects on Windows, process groups on Linux/macOS)
 - [ ] 4. Video encode (single and multi-pass) with progress and ETA

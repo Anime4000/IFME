@@ -545,17 +545,17 @@ char *ifme_plugins_json(const ifme_ctx *ctx)
 
 /* ---- self-test ------------------------------------------------------------- */
 
-static char *find_ffmpeg(const ifme_ctx *ctx)
+char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name)
 {
 	/* Same order as MediaEncoding.FFmpeg: PATH first, then the bundled copy. */
-	char *found = ifme_find_in_path("ffmpeg");
+	char *found = ifme_find_in_path(name);
 	if (found)
 		return found;
 
 	const char *folder = strcmp(ctx->cpu.arch, "x86") == 0 ? "ffmpeg32" : "ffmpeg64";
 	char *plugins = ifme_path_join(ctx->root_dir, "Plugins");
 	char *dir = plugins ? ifme_path_join(plugins, folder) : NULL;
-	char *bin = dir ? ifme_path_join(dir, "ffmpeg") : NULL;
+	char *bin = dir ? ifme_path_join(dir, name) : NULL;
 	char *resolved = bin ? ifme_resolve_program(bin) : NULL;
 
 	free(bin);
@@ -844,7 +844,7 @@ int ifme_plugins_selftest(ifme_ctx *ctx, bool test_all, const ifme_selftest_call
 	if (!ctx || !ctx->plugins_loaded)
 		return -1;
 
-	char *ffmpeg = find_ffmpeg(ctx);
+	char *ffmpeg = ifme_find_ff_tool(ctx, "ffmpeg");
 	char *sample_audio = sample_path(ctx, SAMPLE_AUDIO);
 	char *sample_video = sample_path(ctx, SAMPLE_VIDEO);
 
@@ -901,14 +901,19 @@ int ifme_plugins_selftest(ifme_ctx *ctx, bool test_all, const ifme_selftest_call
 
 			ifme_clear_dir(work);
 
-			int code = -1;
-			char err[512];
-			int rc = ifme_run_pipeline(stages, n, work, log_path, TEST_TIMEOUT_MS, &code, err, sizeof(err));
+			ifme_run_opts ro = { 0 };
+			ro.cwd = work;
+			ro.timeout_ms = TEST_TIMEOUT_MS;
+			ro.stderr_path = log_path;
+
+			ifme_run_result run;
+			int rc = ifme_run(stages, n, &ro, &run);
+			int code = run.exit_code;
 			long long size = out_path ? ifme_file_size(out_path) : -1;
 
 			if (rc != IFME_RUN_OK) {
 				outcome = IFME_TEST_FAIL;
-				detail = with_tail(ifme_strdup(err), log_path);
+				detail = with_tail(ifme_strdup(run.message), log_path);
 			} else if (code != 0) {
 				outcome = IFME_TEST_FAIL;
 				detail = with_tail(ifme_strdupf("exit code %d", code), log_path);
@@ -933,6 +938,7 @@ int ifme_plugins_selftest(ifme_ctx *ctx, bool test_all, const ifme_selftest_call
 				}
 			}
 
+			ifme_run_result_free(&run);
 			ifme_argv_free(&stages[0]);
 			ifme_argv_free(&stages[1]);
 			free(out_path);

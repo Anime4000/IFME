@@ -21,15 +21,19 @@ static bool verbose = false;
 static void print_usage(FILE *out)
 {
 	fprintf(out,
-		"Usage: ifmecli [OPTIONS]\n"
+		"Usage: ifmecli [OPTIONS] [FILE...]\n"
 		"\n"
 		"Options:\n"
 		"  -i, --info           Show system information (paths, CPU features)\n"
+		"  -p, --probe          Show media information for each FILE (ffprobe)\n"
+		"      --framerate N    With --probe: frame rate for image sequences\n"
+		"                       (e.g. ifmecli -p --framerate 24 img%%04d.png)\n"
 		"  -l, --list-plugins   List encoder plugins and their status\n"
 		"  -t, --self-test      Encode the sample files with each plugin that asks\n"
 		"                       for a test (\"TestRequired\")\n"
 		"  -a, --all            With --self-test: test every usable plugin\n"
-		"      --json           With --list-plugins: print JSON instead of a table\n"
+		"      --json           Print JSON instead of text (--probe, --list-plugins);\n"
+		"                       with --verbose, --probe adds the raw ffprobe output\n"
 		"  -r, --root DIR       IFME folder holding Plugins/ and Samples/\n"
 		"                       (default: the folder of this program)\n"
 		"  -v, --verbose        More detail (paths, full failure output)\n"
@@ -124,6 +128,102 @@ static void print_plugin_table(const ifme_ctx *ctx)
 	printf("%d of %zu plugins usable\n", usable, n);
 }
 
+/* Same layout as MediaInfo.Print() in the C# version. */
+#define ROW "%-28s: "
+
+static void print_media(const ifme_media *m)
+{
+	printf("General\n");
+	printf(ROW "%s\n", "Complete name", m->path);
+	printf(ROW "%s (%s)\n", "Format", m->format_name, m->format_long_name);
+	printf(ROW "%llu bytes\n", "File size", m->file_size);
+	printf(ROW "%.3f seconds\n", "Duration", m->duration);
+	printf(ROW "%llu bps\n", "Overall bit rate", m->bit_rate);
+	printf(ROW "%s\n", "Writing Application", m->encoder);
+
+	for (size_t i = 0; i < m->video_count; i++) {
+		const ifme_stream_video *v = &m->video[i];
+		printf("\nVideo #%zu%s\n", i, v->attached_pic ? " (cover art)" : "");
+		printf(ROW "%d\n", "ID", v->id);
+		printf(ROW "%s\n", "Format", v->codec);
+		printf(ROW "%d\n", "Width", v->width);
+		printf(ROW "%d\n", "Height", v->height);
+		printf(ROW "%s\n", "Frame rate mode", v->frame_rate_constant ? "Constant" : "Variable");
+		printf(ROW "%.3f fps (%.3f fps)\n", "Frame rate", v->frame_rate, v->frame_rate_avg);
+		printf(ROW "%lld (estimated)\n", "Frame count", v->frame_count);
+		printf(ROW "%d (%s)\n", "Chroma subsampling", v->chroma, v->pix_fmt);
+		printf(ROW "%d bits\n", "Bit depth", v->bit_depth);
+		printf(ROW "%s\n", "Language", v->language);
+		printf(ROW "%s\n", "Title", v->title);
+	}
+
+	for (size_t i = 0; i < m->audio_count; i++) {
+		const ifme_stream_audio *a = &m->audio[i];
+		printf("\nAudio #%zu\n", i);
+		printf(ROW "%d\n", "ID", a->id);
+		printf(ROW "%s\n", "Format", a->codec);
+		printf(ROW "%d\n", "Channel(s)", a->channels);
+		printf(ROW "%d Hz\n", "Sampling rate", a->sample_rate);
+		printf(ROW "%d bits\n", "Bit Depth", a->bit_depth);
+		printf(ROW "%s\n", "Language", a->language);
+		printf(ROW "%s\n", "Title", a->title);
+	}
+
+	for (size_t i = 0; i < m->subtitle_count; i++) {
+		const ifme_stream_subtitle *s = &m->subtitle[i];
+		printf("\nSubtitles #%zu\n", i);
+		printf(ROW "%d\n", "ID", s->id);
+		printf(ROW "%s\n", "Format", s->codec);
+		printf(ROW "%s\n", "Language", s->language);
+		printf(ROW "%s\n", "Title", s->title);
+	}
+
+	for (size_t i = 0; i < m->attachment_count; i++) {
+		const ifme_stream_attachment *t = &m->attachment[i];
+		printf("\nAttachments #%zu\n", i);
+		printf(ROW "%d\n", "ID", t->id);
+		printf(ROW "%s\n", "Name", t->filename);
+		printf(ROW "%s\n", "MIME", t->mime_type);
+	}
+}
+
+/* Probe every file; returns the number of failures. */
+static int probe_files(ifme_ctx *ctx, char **files, int count, const char *frame_rate, bool json)
+{
+	int failures = 0;
+
+	if (json && count > 1)
+		printf("[\n");
+
+	for (int i = 0; i < count; i++) {
+		char err[512];
+		ifme_media *m = ifme_probe(ctx, files[i], frame_rate, err, sizeof(err));
+
+		if (!m) {
+			fprintf(stderr, "ifmecli: %s: %s\n", files[i], err);
+			failures++;
+			continue;
+		}
+
+		if (json) {
+			char *text = ifme_media_json(m, verbose);
+			if (text)
+				printf("%s%s\n", text, (count > 1 && i + 1 < count) ? "," : "");
+			ifme_free(text);
+		} else {
+			if (i > 0)
+				printf("\n\n");
+			print_media(m);
+		}
+
+		ifme_media_free(m);
+	}
+
+	if (json && count > 1)
+		printf("]\n");
+	return failures;
+}
+
 static void on_test_start(void *user, const ifme_plugin_info *p)
 {
 	(void)user;
@@ -163,9 +263,11 @@ int main(int argc, char *argv[])
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-	enum { OPT_JSON = 1000 };
+	enum { OPT_JSON = 1000, OPT_FRAMERATE };
 	static const struct option long_opts[] = {
 		{ "info",         no_argument,       NULL, 'i' },
+		{ "probe",        no_argument,       NULL, 'p' },
+		{ "framerate",    required_argument, NULL, OPT_FRAMERATE },
 		{ "list-plugins", no_argument,       NULL, 'l' },
 		{ "self-test",    no_argument,       NULL, 't' },
 		{ "all",          no_argument,       NULL, 'a' },
@@ -177,13 +279,16 @@ int main(int argc, char *argv[])
 		{ NULL, 0, NULL, 0 }
 	};
 
-	bool want_info = false, want_list = false, want_test = false, test_all = false, json = false;
-	const char *root = NULL;
+	bool want_info = false, want_list = false, want_test = false, want_probe = false;
+	bool test_all = false, json = false;
+	const char *root = NULL, *frame_rate = NULL;
 	int opt;
 
-	while ((opt = getopt_long(argc, argv, "iltar:vVh", long_opts, NULL)) != -1) {
+	while ((opt = getopt_long(argc, argv, "ipltar:vVh", long_opts, NULL)) != -1) {
 		switch (opt) {
 		case 'i': want_info = true; break;
+		case 'p': want_probe = true; break;
+		case OPT_FRAMERATE: frame_rate = optarg; break;
 		case 'l': want_list = true; break;
 		case 't': want_test = true; break;
 		case 'a': test_all = true; break;
@@ -202,7 +307,16 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (!want_info && !want_list && !want_test) {
+	/* Bare files mean --probe. */
+	if (optind < argc && !want_list && !want_test && !want_info)
+		want_probe = true;
+
+	if (want_probe && optind >= argc) {
+		fprintf(stderr, "ifmecli: --probe needs at least one FILE\n");
+		return 2;
+	}
+
+	if (!want_info && !want_list && !want_test && !want_probe) {
 		print_usage(stdout);
 		return 0;
 	}
@@ -223,6 +337,13 @@ int main(int argc, char *argv[])
 
 	if (want_info) {
 		print_info(ctx);
+		if (want_list || want_test || want_probe)
+			printf("\n");
+	}
+
+	if (want_probe) {
+		if (probe_files(ctx, argv + optind, argc - optind, frame_rate, json) > 0)
+			rc = 1;
 		if (want_list || want_test)
 			printf("\n");
 	}

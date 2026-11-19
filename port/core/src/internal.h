@@ -95,6 +95,10 @@ char    *ifme_wide_to_utf8(const wchar_t *w);
 /* ---- plugins.c ------------------------------------------------------------ */
 void ifme_plugins_clear(ifme_ctx *ctx);
 
+/* An FFmpeg tool ("ffmpeg", "ffprobe"): PATH first, then the bundled copy in
+ * <root>/Plugins/ffmpeg64 (ffmpeg32 on 32-bit x86). Caller frees. */
+char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name);
+
 /* ---- platform/proc_*.c ---------------------------------------------------- */
 enum {
 	IFME_RUN_OK = 0,          /* every stage ran to completion          */
@@ -102,12 +106,38 @@ enum {
 	IFME_RUN_TIMEOUT = -2     /* killed after timeout_ms                */
 };
 
-/* Run stages[0] | stages[1] | ... without a shell. stdin of the first stage
- * and stdout of the last are the null device; stderr of every stage is
- * appended to log_path (or discarded when NULL). *exit_code receives the
- * last stage's status (128+signal when killed by a signal). */
-int ifme_run_pipeline(const ifme_argv *stages, size_t count, const char *cwd,
-                      const char *log_path, int timeout_ms, int *exit_code,
-                      char *err, size_t err_len);
+typedef struct ifme_run_opts {
+	const char *cwd;          /* NULL: inherit                                   */
+	int timeout_ms;           /* <= 0: no limit                                  */
+	bool capture_stdout;      /* last stage's stdout -> result.out (else null)   */
+	bool capture_stderr;      /* every stage's stderr -> result.err              */
+	const char *stderr_path;  /* if not capturing: append stderr here (NULL: drop) */
+	size_t capture_limit;     /* per buffer; 0 = 64 MiB. Excess is read and dropped */
+} ifme_run_opts;
+
+typedef struct ifme_run_result {
+	int status;               /* IFME_RUN_*                                       */
+	int exit_code;            /* last stage; 128+signal when killed by a signal   */
+	char *out;                /* NUL-terminated, may contain NULs; NULL if none   */
+	size_t out_len;
+	char *err;
+	size_t err_len;
+	char message[512];        /* why it could not start / timed out               */
+} ifme_run_result;
+
+/* Run stages[0] | stages[1] | ... without a shell. stdin of the first stage is
+ * the null device. Always fills *res; free it with ifme_run_result_free(). */
+int  ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
+              ifme_run_result *res);
+void ifme_run_result_free(ifme_run_result *res);
+
+/* proc_common.c: growable capture buffer shared by both platforms */
+typedef struct ifme_capture {
+	char *data;
+	size_t len, cap, limit;
+} ifme_capture;
+
+void ifme_capture_append(ifme_capture *c, const char *buf, size_t n);
+void ifme_capture_finish(ifme_capture *c, char **out, size_t *out_len);
 
 #endif /* IFME_INTERNAL_H */

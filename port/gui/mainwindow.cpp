@@ -1,8 +1,12 @@
 #include "mainwindow.h"
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QFontDatabase>
+#include <QMimeData>
 #include <QPlainTextEdit>
 #include <QStatusBar>
+#include <QUrl>
 
 MainWindow::MainWindow(const QString &rootDir, QWidget *parent)
 	: QMainWindow(parent)
@@ -14,7 +18,9 @@ MainWindow::MainWindow(const QString &rootDir, QWidget *parent)
 	m_log = new QPlainTextEdit(this);
 	m_log->setReadOnly(true);
 	m_log->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+	m_log->setAcceptDrops(false);   // let the window handle drops
 	setCentralWidget(m_log);
+	setAcceptDrops(true);
 
 	if (m_ctx && !rootDir.isEmpty() && !ifme_set_root_dir(m_ctx.get(), rootDir.toUtf8().constData()))
 		m_log->appendPlainText(tr("Folder not found: %1").arg(rootDir));
@@ -73,5 +79,72 @@ void MainWindow::showPlugins()
 			.arg(QString::fromUtf8(p->name), QString::fromUtf8(p->version)));
 	}
 
-	statusBar()->showMessage(tr("%1 of %2 plugins usable").arg(usable).arg(count));
+	statusBar()->showMessage(tr("%1 of %2 plugins usable - drop media files here to inspect them")
+		.arg(usable).arg(count));
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	if (event->mimeData()->hasUrls())
+		event->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+	for (const QUrl &url : event->mimeData()->urls()) {
+		if (url.isLocalFile())
+			probeFile(url.toLocalFile());
+	}
+}
+
+void MainWindow::probeFile(const QString &path)
+{
+	if (!m_ctx)
+		return;
+
+	m_log->appendPlainText(QString());
+
+	char err[512];
+	ifme_media *m = ifme_probe(m_ctx.get(), path.toUtf8().constData(), nullptr, err, sizeof(err));
+	if (!m) {
+		m_log->appendPlainText(tr("%1: %2").arg(path, QString::fromUtf8(err)));
+		return;
+	}
+
+	auto row = [this](const char *label, const QString &value) {
+		m_log->appendPlainText(QStringLiteral("%1: %2").arg(QString::fromUtf8(label), -28).arg(value));
+	};
+	auto s = [](const char *v) { return QString::fromUtf8(v); };
+
+	m_log->appendPlainText(QStringLiteral("General"));
+	row("Complete name", s(m->path));
+	row("Format", QStringLiteral("%1 (%2)").arg(s(m->format_name), s(m->format_long_name)));
+	row("File size", QStringLiteral("%1 bytes").arg(m->file_size));
+	row("Duration", QStringLiteral("%1 seconds").arg(m->duration, 0, 'f', 3));
+
+	for (size_t i = 0; i < m->video_count; i++) {
+		const ifme_stream_video &v = m->video[i];
+		m_log->appendPlainText(QStringLiteral("Video #%1  %2 %3x%4 %5 fps %6-bit %7 [%8] %9")
+			.arg(i).arg(s(v.codec)).arg(v.width).arg(v.height)
+			.arg(v.frame_rate_avg, 0, 'f', 3).arg(v.bit_depth).arg(v.chroma)
+			.arg(s(v.language), s(v.title)));
+	}
+	for (size_t i = 0; i < m->audio_count; i++) {
+		const ifme_stream_audio &a = m->audio[i];
+		m_log->appendPlainText(QStringLiteral("Audio #%1  %2 %3 Hz %4 ch %5-bit [%6] %7")
+			.arg(i).arg(s(a.codec)).arg(a.sample_rate).arg(a.channels).arg(a.bit_depth)
+			.arg(s(a.language), s(a.title)));
+	}
+	for (size_t i = 0; i < m->subtitle_count; i++) {
+		const ifme_stream_subtitle &t = m->subtitle[i];
+		m_log->appendPlainText(QStringLiteral("Subtitle #%1  %2 [%3] %4")
+			.arg(i).arg(s(t.codec), s(t.language), s(t.title)));
+	}
+	for (size_t i = 0; i < m->attachment_count; i++) {
+		const ifme_stream_attachment &t = m->attachment[i];
+		m_log->appendPlainText(QStringLiteral("Attachment #%1  %2 (%3)")
+			.arg(i).arg(s(t.filename), s(t.mime_type)));
+	}
+
+	ifme_media_free(m);
 }

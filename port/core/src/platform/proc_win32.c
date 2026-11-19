@@ -184,19 +184,66 @@ static bool spawn(const ifme_argv *stage, const wchar_t *wcwd, HANDLE in, HANDLE
 	return true;
 }
 
-int ifme_run_pipeline(const ifme_argv *stages, size_t count, const char *cwd,
-                      const char *log_path, int timeout_ms, int *exit_code,
-                      char *err, size_t err_len)
+/* Read whatever is waiting in an anonymous pipe without blocking. Anonymous
+ * pipes cannot be poll()ed on Windows, but PeekNamedPipe works on them.
+ * Closes the handle and sets it to NULL at end-of-file. */
+static bool drain(HANDLE *h, ifme_capture *c)
 {
-	if (err && err_len)
-		err[0] = '\0';
-	if (exit_code)
-		*exit_code = -1;
-	if (count == 0)
-		return IFME_RUN_START_FAILED;
+	char buf[65536];
+	bool got = false;
 
-	int rc = IFME_RUN_START_FAILED;
+	while (*h) {
+		DWORD avail = 0, n = 0;
+
+		if (!PeekNamedPipe(*h, NULL, 0, NULL, &avail, NULL)) {
+			CloseHandle(*h);           /* ERROR_BROKEN_PIPE: writer gone */
+			*h = NULL;
+			break;
+		}
+		if (avail == 0)
+			break;
+
+		if (!ReadFile(*h, buf, avail < sizeof(buf) ? avail : (DWORD)sizeof(buf), &n, NULL) || n == 0) {
+			CloseHandle(*h);
+			*h = NULL;
+			break;
+		}
+
+		ifme_capture_append(c, buf, n);
+		got = true;
+	}
+	return got;
+}
+
+static bool make_pipe(HANDLE *read_end, HANDLE *write_end, SECURITY_ATTRIBUTES *sa)
+{
+	if (!CreatePipe(read_end, write_end, sa, 0))
+		return false;
+
+	/* Only the write end is meant for children. */
+	SetHandleInformation(*read_end, HANDLE_FLAG_INHERIT, 0);
+	return true;
+}
+
+int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
+             ifme_run_result *res)
+{
+	static const ifme_run_opts defaults;
+	if (!opts)
+		opts = &defaults;
+
+	memset(res, 0, sizeof(*res));
+	res->status = IFME_RUN_START_FAILED;
+	res->exit_code = -1;
+
+	if (count == 0) {
+		snprintf(res->message, sizeof(res->message), "nothing to run");
+		return res->status;
+	}
+
 	SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };   /* inheritable */
+	ifme_capture cap_out = { 0 }, cap_err = { 0 };
+	cap_out.limit = cap_err.limit = opts->capture_limit;
 
 	HANDLE job = CreateJobObjectW(NULL, NULL);
 	JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits;
@@ -209,49 +256,62 @@ int ifme_run_pipeline(const ifme_argv *stages, size_t count, const char *cwd,
 	                             &sa, OPEN_EXISTING, 0, NULL);
 	HANDLE null_out = CreateFileW(L"NUL", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
 	                              &sa, OPEN_EXISTING, 0, NULL);
-	HANDLE log = INVALID_HANDLE_VALUE;
 
-	if (log_path) {
-		wchar_t *wlog = ifme_utf8_to_wide(log_path);
-		if (wlog)
-			log = CreateFileW(wlog, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-			                  &sa, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-		free(wlog);
-	}
-
-	wchar_t *wcwd = (cwd && *cwd) ? ifme_utf8_to_wide(cwd) : NULL;
+	HANDLE out_read = NULL, out_write = null_out;
+	HANDLE err_read = NULL, err_write = null_out;
+	wchar_t *wcwd = (opts->cwd && *opts->cwd) ? ifme_utf8_to_wide(opts->cwd) : NULL;
 	HANDLE *procs = calloc(count, sizeof(HANDLE));
 	size_t started = 0;
 
 	if (!job || null_in == INVALID_HANDLE_VALUE || null_out == INVALID_HANDLE_VALUE || !procs) {
-		set_error(err, err_len, "cannot prepare", "pipeline", GetLastError());
+		set_error(res->message, sizeof(res->message), "cannot prepare", "pipeline", GetLastError());
 		goto done;
 	}
 
-	HANDLE errh = log != INVALID_HANDLE_VALUE ? log : null_out;
+	if (opts->capture_stdout && !make_pipe(&out_read, &out_write, &sa)) {
+		set_error(res->message, sizeof(res->message), "cannot create", "stdout pipe", GetLastError());
+		goto done;
+	}
+
+	if (opts->capture_stderr) {
+		if (!make_pipe(&err_read, &err_write, &sa)) {
+			set_error(res->message, sizeof(res->message), "cannot create", "stderr pipe", GetLastError());
+			goto done;
+		}
+	} else if (opts->stderr_path) {
+		wchar_t *wlog = ifme_utf8_to_wide(opts->stderr_path);
+		HANDLE log = wlog ? CreateFileW(wlog, FILE_APPEND_DATA,
+		                                FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+		                                &sa, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)
+		                  : INVALID_HANDLE_VALUE;
+		free(wlog);
+		if (log != INVALID_HANDLE_VALUE)
+			err_write = log;
+	}
+
 	HANDLE prev_read = null_in;
 
 	for (size_t i = 0; i < count; i++) {
-		HANDLE next_read = NULL, out = null_out;
+		HANDLE next_read = NULL, out = (i + 1 == count) ? out_write : NULL;
 
 		if (i + 1 < count && !CreatePipe(&next_read, &out, &sa, 0)) {
-			set_error(err, err_len, "cannot create pipe for", stages[i].v[0], GetLastError());
+			set_error(res->message, sizeof(res->message), "cannot create pipe for", stages[i].v[0], GetLastError());
 			if (prev_read != null_in)
 				CloseHandle(prev_read);
 			goto kill;
 		}
 
 		DWORD le = 0;
-		bool ok = spawn(&stages[i], wcwd, prev_read, out, errh, job, &procs[i], &le);
+		bool ok = spawn(&stages[i], wcwd, prev_read, out, err_write, job, &procs[i], &le);
 
-		/* Our copies of the pipe ends are no longer needed. */
+		/* Our copies of the inter-stage pipe ends are no longer needed. */
 		if (prev_read != null_in)
 			CloseHandle(prev_read);
-		if (out != null_out)
+		if (i + 1 < count)
 			CloseHandle(out);
 
 		if (!ok) {
-			set_error(err, err_len, "cannot start", stages[i].v[0], le);
+			set_error(res->message, sizeof(res->message), "cannot start", stages[i].v[0], le);
 			if (next_read)
 				CloseHandle(next_read);
 			goto kill;
@@ -261,20 +321,56 @@ int ifme_run_pipeline(const ifme_argv *stages, size_t count, const char *cwd,
 		prev_read = next_read;
 	}
 
-	DWORD wait = WaitForMultipleObjects((DWORD)count, procs, TRUE,
-	                                    timeout_ms > 0 ? (DWORD)timeout_ms : INFINITE);
-	if (wait == WAIT_TIMEOUT) {
-		TerminateJobObject(job, 1);
-		WaitForMultipleObjects((DWORD)count, procs, TRUE, 5000);
-		snprintf(err, err_len, "timed out after %d s", timeout_ms / 1000);
-		rc = IFME_RUN_TIMEOUT;
-	} else {
-		rc = IFME_RUN_OK;
+	/* Every child has its copy now; keeping ours would hide end-of-file. */
+	if (out_write != null_out) {
+		CloseHandle(out_write);
+		out_write = null_out;
+	}
+	if (err_write != null_out) {
+		CloseHandle(err_write);
+		err_write = null_out;
 	}
 
+	uint64_t deadline = opts->timeout_ms > 0 ? ifme_now_ms() + (uint64_t)opts->timeout_ms : 0;
+	bool timed_out = false, stragglers_killed = false;
+
+	for (;;) {
+		bool got = drain(&out_read, &cap_out);
+		got = drain(&err_read, &cap_err) || got;
+
+		bool exited = WaitForMultipleObjects((DWORD)count, procs, TRUE, 0) == WAIT_OBJECT_0;
+
+		if (exited) {
+			if (!out_read && !err_read)
+				break;
+
+			/* A grandchild may still hold our pipe open; the stages are done,
+			 * so end it to get end-of-file. Buffered data stays readable. */
+			if (!stragglers_killed) {
+				TerminateJobObject(job, 0);
+				stragglers_killed = true;
+			}
+		}
+
+		if (deadline && !timed_out && ifme_now_ms() >= deadline) {
+			TerminateJobObject(job, 1);
+			timed_out = true;
+			snprintf(res->message, sizeof(res->message), "timed out after %d s", opts->timeout_ms / 1000);
+		}
+
+		if (!got) {
+			if (out_read || err_read)
+				Sleep(5);
+			else
+				WaitForMultipleObjects((DWORD)count, procs, TRUE, 100);
+		}
+	}
+
+	res->status = timed_out ? IFME_RUN_TIMEOUT : IFME_RUN_OK;
+
 	DWORD code = 0;
-	if (exit_code && GetExitCodeProcess(procs[count - 1], &code))
-		*exit_code = (int)code;
+	if (GetExitCodeProcess(procs[count - 1], &code))
+		res->exit_code = (int)code;
 	goto done;
 
 kill:
@@ -282,19 +378,29 @@ kill:
 		TerminateJobObject(job, 1);
 
 done:
+	if (out_read)
+		CloseHandle(out_read);
+	if (err_read)
+		CloseHandle(err_read);
+	if (out_write && out_write != null_out)
+		CloseHandle(out_write);
+	if (err_write && err_write != null_out)
+		CloseHandle(err_write);
+
+	ifme_capture_finish(&cap_out, &res->out, &res->out_len);
+	ifme_capture_finish(&cap_err, &res->err, &res->err_len);
+
 	for (size_t i = 0; procs && i < started; i++)
 		CloseHandle(procs[i]);
 	free(procs);
 	free(wcwd);
-	if (log != INVALID_HANDLE_VALUE)
-		CloseHandle(log);
 	if (null_in != INVALID_HANDLE_VALUE)
 		CloseHandle(null_in);
 	if (null_out != INVALID_HANDLE_VALUE)
 		CloseHandle(null_out);
 	if (job)
 		CloseHandle(job);
-	return rc;
+	return res->status;
 }
 
 #endif /* _WIN32 */

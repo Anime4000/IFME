@@ -125,6 +125,79 @@ typedef struct ifme_selftest_callbacks {
 int ifme_plugins_selftest(ifme_ctx *ctx, bool test_all,
                           const ifme_selftest_callbacks *cb);
 
+/* ------------------------------------------------------------------------ */
+/* Media information (ffprobe)                                              */
+/* ------------------------------------------------------------------------ */
+
+typedef struct ifme_stream_video {
+	int id;                      /* ffprobe stream index (-map 0:id)             */
+	const char *language;        /* "und" when untagged                          */
+	const char *codec;           /* "h264", "hevc", ... or "unknown"             */
+	const char *title;           /* may be ""                                    */
+	const char *pix_fmt;         /* raw ffprobe value, may be ""                 */
+	int width, height;
+	int chroma;                  /* 420, 422, 444 (420 when unknown)             */
+	int bit_depth;               /* 8, 10, 12, ...                               */
+	double frame_rate;           /* r_frame_rate, 0 when unknown                 */
+	double frame_rate_avg;       /* avg_frame_rate, 0 when unknown               */
+	bool frame_rate_constant;    /* r_frame_rate == avg_frame_rate               */
+	long long frame_count;       /* estimate: duration x average frame rate      */
+	double duration;             /* seconds (container duration)                 */
+	bool attached_pic;           /* cover art, not a real video track            */
+} ifme_stream_video;
+
+typedef struct ifme_stream_audio {
+	int id;
+	const char *language;
+	const char *codec;
+	const char *title;
+	int sample_rate;             /* Hz                                           */
+	int channels;
+	int bit_depth;               /* 8, 16 or 24 (float/32-bit sources -> 24)     */
+	double duration;
+} ifme_stream_audio;
+
+typedef struct ifme_stream_subtitle {
+	int id;
+	const char *language;
+	const char *codec;           /* file extension style: "srt", "ass", "sup"... */
+	const char *title;
+} ifme_stream_subtitle;
+
+typedef struct ifme_stream_attachment {
+	int id;
+	const char *filename;        /* "unknown" when untagged                      */
+	const char *mime_type;       /* "application/octet-stream" when untagged     */
+} ifme_stream_attachment;
+
+typedef struct ifme_media {
+	const char *path;
+	const char *format_name;     /* e.g. "matroska,webm"                         */
+	const char *format_long_name;
+	const char *encoder;         /* writing application, may be ""               */
+	unsigned long long file_size;   /* bytes                                     */
+	unsigned long long bit_rate;    /* bits per second                           */
+	double duration;                /* seconds                                   */
+
+	size_t video_count, audio_count, subtitle_count, attachment_count;
+	const ifme_stream_video      *video;
+	const ifme_stream_audio      *audio;
+	const ifme_stream_subtitle   *subtitle;
+	const ifme_stream_attachment *attachment;
+} ifme_media;
+
+/* Run ffprobe on `path` (ffprobe from PATH, else <root>/Plugins/ffmpeg64).
+ * frame_rate may be NULL; set it for image sequences ("img%04d.png").
+ * Returns NULL on failure and writes a reason into err (if given).
+ * Free the result with ifme_media_free(). */
+ifme_media *ifme_probe(ifme_ctx *ctx, const char *path, const char *frame_rate,
+                       char *err, size_t err_len);
+void ifme_media_free(ifme_media *media);
+
+/* The media as JSON; with include_raw the untouched ffprobe output is added
+ * under "ffprobe". Caller frees with ifme_free(). */
+char *ifme_media_json(const ifme_media *media, bool include_raw);
+
 /* Free memory returned by functions documented as "caller frees". */
 void ifme_free(void *ptr);
 

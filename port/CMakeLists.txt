@@ -38,8 +38,10 @@ add_library(ifmecore STATIC
     core/src/argv.c
     core/src/json_relax.c
     core/src/plugins.c
+    core/src/probe.c
     core/src/platform/paths.c
     core/src/platform/fs.c
+    core/src/platform/proc_common.c
     core/src/platform/proc_win32.c
     core/src/platform/proc_posix.c
     core/src/platform/cpu_x86.c
