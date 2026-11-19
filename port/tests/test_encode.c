@@ -11,7 +11,10 @@
  *   4. audio: the default plugin follows the container, an A/V encode with
  *      the audio from a separate file (language, title, trim), and "copy"
  *      falling back to encoding when the container refuses the codec
- *   5. bad jobs give clear errors (unknown plugin, mode, bit depth, input)
+ *   5. subtitles from external SRT/ASS files cut to the trim (read back),
+ *      an attachment, cover art from a video frame, and burning a subtitle
+ *      into a .ts (plus the error when the video is only copied)
+ *   6. bad jobs give clear errors (unknown plugin, mode, bit depth, input)
  */
 
 #include <pthread.h>
@@ -314,7 +317,140 @@ int main(int argc, char **argv)
 		remove(webm_out);
 	}
 
-	/* ---- 5. bad jobs -------------------------------------------------------------- */
+	/* ---- 5. subtitles, attachments, cover art, burning ---------------------------- */
+	char *srt = join(work, "test sub.srt");
+	char *ass = join(work, "test sub.ass");
+	char *notes = join(work, "notes.txt");
+	char *x_out = join(work, "test extras 字幕.mkv");
+	char *back = join(work, "back.srt");
+	char *ts_out = join(work, "test burn.ts");
+	char *bad_burn = NULL;
+	{
+		FILE *f = fopen(srt, "wb");
+		fputs("1\r\n00:00:00,500 --> 00:00:02,000\r\none\r\n\r\n2\r\n00:00:03,000 --> 00:00:06,000\r\ntwo\r\n", f);
+		fclose(f);
+		f = fopen(ass, "wb");
+		fputs("[Script Info]\nScriptType: v4.00+\n\n[V4+ Styles]\n"
+		      "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, "
+		      "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, "
+		      "Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
+		      "Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,1,0,2,10,10,10,1\n\n"
+		      "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
+		      "Dialogue: 0,0:00:00.00,0:00:09.00,Default,,0,0,0,,sign\n", f);
+		fclose(f);
+		f = fopen(notes, "wb");
+		fputs("attached by test_encode\n", f);
+		fclose(f);
+
+		/* Video 1..4 s, an external SRT and ASS, a text attachment, and the
+		 * first frame of the sample as cover art (converted to PNG). */
+		remove(x_out);
+		char *jt = ifme_job_new(ctx, sample, x_out, "x265", "none", err, sizeof(err));
+		cJSON *jx = jt ? cJSON_Parse(jt) : NULL;
+		cJSON *vx = cJSON_GetArrayItem(cJSON_GetObjectItem(jx, "video"), 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(vx, "width", cJSON_CreateNumber(320));
+		cJSON_ReplaceItemInObjectCaseSensitive(vx, "height", cJSON_CreateNumber(200));
+		cJSON_ReplaceItemInObjectCaseSensitive(vx, "preset", cJSON_CreateString("ultrafast"));
+		cJSON *subs = cJSON_AddArrayToObject(jx, "subtitles");
+		cJSON *s1 = cJSON_CreateObject();
+		cJSON_AddStringToObject(s1, "input", srt);
+		cJSON_AddStringToObject(s1, "language", "eng");
+		cJSON_AddBoolToObject(s1, "default", true);
+		cJSON_AddItemToArray(subs, s1);
+		cJSON *s2 = cJSON_CreateObject();
+		cJSON_AddStringToObject(s2, "input", ass);
+		cJSON_AddStringToObject(s2, "language", "jpn");
+		cJSON_AddStringToObject(s2, "title", "Signs");
+		cJSON_AddItemToArray(subs, s2);
+		cJSON *at = cJSON_CreateObject();
+		cJSON_AddStringToObject(at, "file", notes);
+		cJSON_AddItemToArray(cJSON_AddArrayToObject(jx, "attachments"), at);
+		cJSON_AddStringToObject(cJSON_AddObjectToObject(jx, "cover"), "input", sample);
+		cJSON *tr = cJSON_AddObjectToObject(jx, "trim");
+		cJSON_AddStringToObject(tr, "start", "1");
+		cJSON_AddStringToObject(tr, "duration", "3");
+		char *x_job = cJSON_Print(jx);
+
+		CHECK(encode_now(ctx, x_job, err, sizeof(err)) == IFME_TASK_DONE);
+		if (err[0])
+			printf("  error: %s\n", err);
+		m = ifme_probe(ctx, x_out, NULL, err, sizeof(err));
+		CHECK(m != NULL);
+		if (m) {
+			CHECK(m->subtitle_count == 2);
+			CHECK(m->subtitle_count == 2 && strcmp(m->subtitle[0].language, "eng") == 0 &&
+			      strcmp(m->subtitle[1].language, "jpn") == 0 && strcmp(m->subtitle[1].title, "Signs") == 0 &&
+			      strcmp(m->subtitle[1].codec, "ass") == 0);
+			CHECK(m->attachment_count == 1 && strcmp(m->attachment[0].filename, "notes.txt") == 0 &&
+			      strcmp(m->attachment[0].mime_type, "text/plain") == 0);
+			CHECK(m->video_count == 2 && m->video[1].attached_pic);   /* MKV cover = attachment */
+			CHECK(m->duration > 2.9 && m->duration < 3.2);            /* subtitles do not stretch it */
+			printf("extras:   %zu subtitles, %zu attachment, cover %s, %.3f s\n", m->subtitle_count,
+			       m->attachment_count, m->video_count == 2 ? m->video[1].codec : "none", m->duration);
+		}
+		ifme_media_free(m);
+
+		/* The SRT read back: cut to 1..4 s and shifted (FFmpeg alone dropped
+		 * the cue that starts before the cut). */
+		remove(back);
+		const char *ex[] = { "ffmpeg", "-v", "error", "-i", x_out, "-map", "0:s:0", "-y", back };
+		ifme_task *et = ifme_task_create();
+		int code = -1;
+		CHECK(ifme_task_exec(et, ctx, ex, sizeof(ex) / sizeof(ex[0]), NULL, 0, NULL, &code, err, sizeof(err))
+		      == IFME_TASK_DONE);
+		ifme_task_destroy(et);
+		FILE *bf = fopen(back, "rb");
+		char text[512] = "";
+		if (bf) {
+			text[fread(text, 1, sizeof(text) - 1, bf)] = '\0';
+			fclose(bf);
+		}
+		CHECK(strstr(text, "00:00:00,000 --> 00:00:01,000") && strstr(text, "one"));
+		CHECK(strstr(text, "00:00:02,000 --> 00:00:03,000") && strstr(text, "two"));
+		if (!strstr(text, "00:00:02,000 --> 00:00:03,000"))
+			printf("  srt read back:\n%s\n", text);
+
+		/* A .ts cannot hold the subtitles: burned into the picture instead. */
+		remove(ts_out);
+		char *jb = ifme_job_new(ctx, sample, ts_out, "x265", "none", err, sizeof(err));
+		cJSON *jbj = jb ? cJSON_Parse(jb) : NULL;
+		cJSON *vb = cJSON_GetArrayItem(cJSON_GetObjectItem(jbj, "video"), 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(vb, "preset", cJSON_CreateString("ultrafast"));
+		cJSON_AddItemToObject(jbj, "subtitles", cJSON_Duplicate(subs, true));
+		cJSON_AddBoolToObject(jbj, "burn_subtitle", true);
+		cJSON *tb = cJSON_AddObjectToObject(jbj, "trim");
+		cJSON_AddStringToObject(tb, "duration", "2");
+		char *b_job = cJSON_Print(jbj);
+		CHECK(encode_now(ctx, b_job, err, sizeof(err)) == IFME_TASK_DONE);
+		if (err[0])
+			printf("  error: %s\n", err);
+		m = ifme_probe(ctx, ts_out, NULL, err, sizeof(err));
+		CHECK(m && m->video_count == 1 && m->subtitle_count == 0);
+		printf("burned:   %s, %zu subtitle streams left\n", m ? "ok" : "?", m ? m->subtitle_count : 99);
+		ifme_media_free(m);
+
+		/* Burning needs a video that is encoded. */
+		cJSON_ReplaceItemInObjectCaseSensitive(vb, "plugin", cJSON_CreateString("copy"));
+		bad_burn = cJSON_Print(jbj);
+		CHECK(encode_now(ctx, bad_burn, err, sizeof(err)) == IFME_TASK_ERROR);
+		printf("bad burn:      %s\n", err);
+		CHECK(strstr(err, "burn") != NULL);
+
+		cJSON_free(x_job);
+		cJSON_free(b_job);
+		cJSON_Delete(jx);
+		cJSON_Delete(jbj);
+		ifme_free(jt);
+		ifme_free(jb);
+		remove(x_out);
+		remove(ts_out);
+		remove(back);
+		remove(srt);
+		remove(ass);
+		remove(notes);
+	}
+
+	/* ---- 6. bad jobs -------------------------------------------------------------- */
 	char *b1 = edit_job(job, "video", "plugin", "no-such-encoder", 0);
 	CHECK(encode_now(ctx, b1, err, sizeof(err)) == IFME_TASK_ERROR);
 	printf("bad plugin:    %s\n", err);
@@ -338,6 +474,7 @@ int main(int argc, char **argv)
 	remove(out);
 	cJSON_free(b1); cJSON_free(b2); cJSON_free(b3); cJSON_free(b4); cJSON_free(bad_audio);
 	free(m4a); free(av_out); free(webm_out);
+	free(srt); free(ass); free(notes); free(x_out); free(back); free(ts_out); cJSON_free(bad_burn);
 	cJSON_free(s1); cJSON_free(s2); cJSON_free(slow);
 	cJSON_free(j2); cJSON_free(j3); cJSON_free(j4); cJSON_free(j5); cJSON_free(short_job);
 	ifme_free(job);

@@ -303,16 +303,32 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
  * Any entry may have "enable": false. Audio "sample_rate"/"channels" 0 keep
  * the source; "copy": true tries the stream as it is first and encodes only
  * when the output container refuses it. An audio entry may add
- * "input": "other file" to take its stream from there (a separate dub). */
+ * "input": "other file" to take its stream from there (a separate dub).
+ *
+ * Everything else the output keeps (only keys that apply are written):
+ *     "subtitles":   [ { "stream": 2, "language": "eng", "title": "",
+ *                        "default": true, "input": "(optional) other.srt" } ],
+ *     "burn_subtitle": false,      burn the first subtitle into the video
+ *     "attachments": [ { "stream": 4, "filename": "font.ttf",
+ *                        "mime_type": "...", "input": "(optional)" },
+ *                      { "file": "C:/fonts/extra.ttf" } ],
+ *     "cover":       { "stream": 5, "input": "(optional) art.jpg" },
+ *     "metadata": true, "chapters": true,   the input's global tags / chapters
+ *     "movflags": ""                         MP4 only, e.g. "+faststart"
+ * Subtitles and attachments are only defaulted with video (as in C#).
+ * MKV takes every subtitle and attachment; MP4 and WebM take text subtitles
+ * (written as mov_text / WebVTT); other containers drop them with a log
+ * line, so the default for those is to burn the first text subtitle in.
+ * With a trim, chapters and text subtitles are cut to the same part. */
 char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
                    const char *video_plugin, const char *audio_plugin,
                    char *err, size_t err_len);
 
 /* Run a job and block until it ends. Progress, output lines and stages are
  * reported through cb; pause/resume/stop through `task` as with
- * ifme_task_exec(). Encodes the video and audio tracks, then writes them to
- * "output" (container chosen by its extension) with language/title tags.
- * Subtitles, attachments and metadata come in a later milestone. */
+ * ifme_task_exec(). Extracts subtitles, attachments, cover art, tags and
+ * chapters, encodes the video and audio tracks, then writes everything to
+ * "output" (container chosen by its extension). */
 ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_json,
                              const ifme_task_callbacks *cb, char *err, size_t err_len);
 

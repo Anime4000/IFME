@@ -407,6 +407,30 @@ char *ifme_read_file(const char *path, size_t *len)
 	return buf;
 }
 
+bool ifme_write_file(const char *path, const void *data, size_t len)
+{
+#ifdef _WIN32
+	wchar_t *w = ifme_utf8_to_wide(path);
+	FILE *f = w ? _wfopen(w, L"wb") : NULL;
+	free(w);
+#else
+	FILE *f = fopen(path, "wb");
+#endif
+	if (!f)
+		return false;
+	bool ok = fwrite(data, 1, len, f) == len;
+	return fclose(f) == 0 && ok;
+}
+
+bool ifme_copy_file(const char *from, const char *to)
+{
+	size_t len = 0;
+	char *data = ifme_read_file(from, &len);
+	bool ok = data && ifme_write_file(to, data, len);
+	free(data);
+	return ok;
+}
+
 char *ifme_find_in_path(const char *name)
 {
 	if (!name || !*name || strchr(name, '/') || strchr(name, '\\'))

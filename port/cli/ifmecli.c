@@ -49,6 +49,13 @@ static void print_usage(FILE *out)
 		"      --audio-copy     Copy audio as it is when the container takes it, else encode\n"
 		"      --audio-args S   --audio-filter S    extra encoder arguments / ffmpeg -af\n"
 		"      --add-audio FILE Also take the audio tracks of FILE (repeatable, up to 8)\n"
+		"      --add-subtitle FILE    Also take the subtitles of FILE (.srt, .ass, or a video)\n"
+		"      --add-attachment FILE  Attach FILE, e.g. a font (MKV)\n"
+		"      --burn-subtitle  Burn the first subtitle into the video (text formats)\n"
+		"      --cover IMAGE    Cover art (MKV, MP4, M4A, MP3, FLAC); default: the input's\n"
+		"      --no-subtitles   --no-attachments   --no-cover   leave those out\n"
+		"      --no-metadata    --no-chapters      drop the input's tags / chapters\n"
+		"      --movflags F     MP4 -movflags, e.g. +faststart or +frag_keyframe+empty_moov\n"
 		"      --temp-dir DIR   --keep-temp     where intermediate files go / keep them\n"
 		"      --print-job      Print the job as JSON instead of running it\n"
 		"      --job FILE       Run a job file (as printed by --print-job, then edited)\n"
@@ -290,6 +297,19 @@ static void on_test_result(void *user, const ifme_plugin_info *p, ifme_test_outc
 	}
 }
 
+#define ARRAY_LEN(a) ((int)(sizeof(a) / sizeof((a)[0])))
+
+/* A repeatable --add-* option. */
+static bool add_file(const char **list, int *count, int max, const char *what, const char *file)
+{
+	if (*count >= max) {
+		fprintf(stderr, "ifmecli: at most %d --add-%s files\n", max, what);
+		return false;
+	}
+	list[(*count)++] = file;
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef _WIN32
@@ -302,7 +322,9 @@ int main(int argc, char *argv[])
 		OPT_VALUE, OPT_PASSES, OPT_SIZE, OPT_FPS, OPT_BITS, OPT_CHROMA, OPT_START, OPT_DURATION,
 		OPT_ENC_ARGS, OPT_FILTER, OPT_TEMP, OPT_KEEP_TEMP, OPT_PRINT_JOB, OPT_JOB,
 		OPT_AUDIO, OPT_AUDIO_MODE, OPT_AUDIO_QUALITY, OPT_SAMPLE_RATE, OPT_CHANNELS,
-		OPT_AUDIO_COPY, OPT_AUDIO_ARGS, OPT_AUDIO_FILTER, OPT_ADD_AUDIO
+		OPT_AUDIO_COPY, OPT_AUDIO_ARGS, OPT_AUDIO_FILTER, OPT_ADD_AUDIO,
+		OPT_ADD_SUB, OPT_ADD_ATT, OPT_COVER, OPT_MOVFLAGS, OPT_NO_SUBS, OPT_NO_ATT, OPT_NO_COVER,
+		OPT_NO_META, OPT_NO_CHAPTERS, OPT_BURN
 	};
 	static const struct option long_opts[] = {
 		{ "info",         no_argument,       NULL, 'i' },
@@ -333,6 +355,16 @@ int main(int argc, char *argv[])
 		{ "audio-args",   required_argument, NULL, OPT_AUDIO_ARGS },
 		{ "audio-filter", required_argument, NULL, OPT_AUDIO_FILTER },
 		{ "add-audio",    required_argument, NULL, OPT_ADD_AUDIO },
+		{ "add-subtitle", required_argument, NULL, OPT_ADD_SUB },
+		{ "add-attachment", required_argument, NULL, OPT_ADD_ATT },
+		{ "cover",        required_argument, NULL, OPT_COVER },
+		{ "movflags",     required_argument, NULL, OPT_MOVFLAGS },
+		{ "no-subtitles", no_argument,       NULL, OPT_NO_SUBS },
+		{ "no-attachments", no_argument,     NULL, OPT_NO_ATT },
+		{ "no-cover",     no_argument,       NULL, OPT_NO_COVER },
+		{ "no-metadata",  no_argument,       NULL, OPT_NO_META },
+		{ "no-chapters",  no_argument,       NULL, OPT_NO_CHAPTERS },
+		{ "burn-subtitle", no_argument,      NULL, OPT_BURN },
 		{ "temp-dir",     required_argument, NULL, OPT_TEMP },
 		{ "keep-temp",    no_argument,       NULL, OPT_KEEP_TEMP },
 		{ "print-job",    no_argument,       NULL, OPT_PRINT_JOB },
@@ -392,13 +424,26 @@ int main(int argc, char *argv[])
 		case OPT_AUDIO_ARGS: eo.audio_args = optarg; break;
 		case OPT_AUDIO_FILTER: eo.audio_filter = optarg; break;
 		case OPT_ADD_AUDIO:
-			if (eo.add_audio_count >= (int)(sizeof(eo.add_audio) / sizeof(eo.add_audio[0]))) {
-				fprintf(stderr, "ifmecli: at most %d --add-audio files\n",
-				        (int)(sizeof(eo.add_audio) / sizeof(eo.add_audio[0])));
+			if (!add_file(eo.add_audio, &eo.add_audio_count, ARRAY_LEN(eo.add_audio), "audio", optarg))
 				return 2;
-			}
-			eo.add_audio[eo.add_audio_count++] = optarg;
 			break;
+		case OPT_ADD_SUB:
+			if (!add_file(eo.add_subtitle, &eo.add_subtitle_count, ARRAY_LEN(eo.add_subtitle), "subtitle", optarg))
+				return 2;
+			break;
+		case OPT_ADD_ATT:
+			if (!add_file(eo.add_attachment, &eo.add_attachment_count, ARRAY_LEN(eo.add_attachment),
+			              "attachment", optarg))
+				return 2;
+			break;
+		case OPT_COVER: eo.cover = optarg; break;
+		case OPT_MOVFLAGS: eo.movflags = optarg; break;
+		case OPT_NO_SUBS: eo.no_subtitles = true; break;
+		case OPT_NO_ATT: eo.no_attachments = true; break;
+		case OPT_NO_COVER: eo.no_cover = true; break;
+		case OPT_NO_META: eo.no_metadata = true; break;
+		case OPT_NO_CHAPTERS: eo.no_chapters = true; break;
+		case OPT_BURN: eo.burn_subtitle = true; break;
 		case OPT_TEMP: eo.temp_dir = optarg; break;
 		case OPT_KEEP_TEMP: eo.keep_temp = true; break;
 		case OPT_PRINT_JOB: eo.print_job = true; break;

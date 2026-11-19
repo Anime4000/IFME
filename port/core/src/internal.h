@@ -67,6 +67,8 @@ char *ifme_json_relax(const char *in);
 
 /* ---- platform/fs.c -------------------------------------------------------- */
 char     *ifme_read_file(const char *path, size_t *len);   /* NUL-terminated */
+bool      ifme_write_file(const char *path, const void *data, size_t len);
+bool      ifme_copy_file(const char *from, const char *to); /* whole file in memory */
 bool      ifme_file_exists(const char *path);               /* regular file  */
 bool      ifme_dir_exists(const char *path);
 long long ifme_file_size(const char *path);                 /* -1 if missing */
@@ -92,6 +94,15 @@ void ifme_walk_files(const char *root, ifme_file_cb cb, void *user);
 wchar_t *ifme_utf8_to_wide(const char *s);
 char    *ifme_wide_to_utf8(const wchar_t *w);
 #endif
+
+/* ---- subtime.c: cut text subtitles and chapters to a trimmed part ----------- */
+/* Shift a text subtitle (format "srt", "vtt", "ass" or "ssa") by -start, clip
+ * every event to [0, duration] and drop events outside it. *kept: events
+ * left. Caller frees; NULL when out of memory. */
+char *ifme_subtitle_cut(const char *text, size_t len, const char *format,
+                        double start, double duration, size_t *kept);
+/* An ffmetadata text without zero-length chapters (left by a trim). */
+char *ifme_chapters_drop_empty(const char *text, size_t len, size_t *dropped);
 
 /* ---- plugins.c ------------------------------------------------------------ */
 struct cJSON;

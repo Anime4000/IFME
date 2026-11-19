@@ -187,6 +187,63 @@ static void test_time_progress(void)
 	feed(&pp, "Input #0, wav, from 'pipe:': time=00:00:01.00", IFME_LINE_LOG);
 }
 
+/* Cutting text subtitles and chapters to a trim (subtime.c). */
+static void test_subtitle_cut(void)
+{
+	size_t kept;
+
+	/* SubRip, cut to 3..7 s: the cue overlapping the start is clipped to 0
+	 * (FFmpeg dropped it), the one past the end is clipped to the length,
+	 * the one outside goes, and cues are renumbered. CRLF is kept. */
+	const char *srt =
+		"1\r\n00:00:01,000 --> 00:00:04,000\r\nfirst\r\n\r\n"
+		"2\r\n00:00:05,000 --> 00:00:09,000\r\nsecond\r\nline two\r\n\r\n"
+		"3\r\n00:00:20,000 --> 00:00:21,000\r\nlater\r\n";
+	char *out = ifme_subtitle_cut(srt, strlen(srt), "srt", 3, 4, &kept);
+	CHECK(kept == 2);
+	CHECK(out && strcmp(out,
+		"1\r\n00:00:00,000 --> 00:00:01,000\r\nfirst\r\n\r\n"
+		"2\r\n00:00:02,000 --> 00:00:04,000\r\nsecond\r\nline two\r\n\r\n") == 0);
+	if (out && kept != 2)
+		fprintf(stderr, "srt cut:\n%s\n", out);
+	free(out);
+
+	/* ASS: only Dialogue lines change; centisecond times, commas in text. */
+	const char *ass =
+		"[Script Info]\nTitle: x\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
+		"Dialogue: 0,0:00:00.50,0:00:10.00,Default,,0,0,0,,Hello, world\n"
+		"Comment: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,note\n"
+		"Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,gone\n"
+		"Dialogue: 1,1:00:00.00,1:00:01.25,Default,,0,0,0,,hour\n";
+	out = ifme_subtitle_cut(ass, strlen(ass), "ass", 3, 3600, &kept);
+	CHECK(kept == 2);
+	CHECK(out && strstr(out, "Dialogue: 0,0:00:00.00,0:00:07.00,Default,,0,0,0,,Hello, world\n"));
+	CHECK(out && strstr(out, "Dialogue: 1,0:59:57.00,0:59:58.25,Default,,0,0,0,,hour\n"));
+	CHECK(out && !strstr(out, "gone") && strstr(out, "Comment: 0,0:00:00.00") && strstr(out, "[Script Info]"));
+	free(out);
+
+	/* WebVTT: header kept, MM:SS.mmm times, cue settings kept. */
+	const char *vtt = "WEBVTT\n\n00:04.000 --> 00:06.500 align:start\nhi\n";
+	out = ifme_subtitle_cut(vtt, strlen(vtt), "vtt", 5, 10, &kept);
+	CHECK(kept == 1);
+	CHECK(out && strcmp(out, "WEBVTT\n\n00:00:00.000 --> 00:00:01.500 align:start\nhi\n\n") == 0);
+	free(out);
+
+	/* Nothing left. */
+	out = ifme_subtitle_cut(srt, strlen(srt), "srt", 30, 5, &kept);
+	CHECK(kept == 0);
+	free(out);
+
+	/* Chapters FFmpeg cut to nothing are dropped. */
+	const char *ini = ";FFMETADATA1\ntitle=t\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=4000\ntitle=a\n"
+	                  "[CHAPTER]\nTIMEBASE=1/1000\nSTART=4000\nEND=4000\ntitle=b\n[STREAM]\nx=1\n";
+	size_t dropped;
+	out = ifme_chapters_drop_empty(ini, strlen(ini), &dropped);
+	CHECK(dropped == 1);
+	CHECK(out && strstr(out, "title=a") && !strstr(out, "title=b") && strstr(out, "[STREAM]\nx=1"));
+	free(out);
+}
+
 static void test_clean_line(void)
 {
 	char *s = ifme_clean_line("  \x1b[33mhello\x1b[0m\tworld\b  ");
@@ -261,6 +318,7 @@ int main(void)
 	test_progress_formats();
 	test_eta();
 	test_time_progress();
+	test_subtitle_cut();
 	test_clean_line();
 	test_linebuf_split();
 	test_argv_and_json();

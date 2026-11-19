@@ -30,43 +30,19 @@
  *  - Scaling is only added when the size actually changes.
  *  - Frame rates such as 24000/1001 are kept exact (C# printed a rounded float).
  *  - When MP4Box is missing, ffmpeg wraps the raw stream instead.
- * Not ported yet: video fast remux, auto-crop, hard subtitles, thumbnails,
- * subtitle/attachment tracks, metadata.ini, MP4 movflags (later milestones).
+ * Subtitles, attachments, cover art, tags and chapters: extras.c.
+ * Not ported yet: video fast remux, auto-crop.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "internal.h"
-#include "cJSON.h"
-
-#define VIDEO_COPY_GUID "00000000-0000-0000-0000-000000000000"
-#define AUDIO_COPY_GUID "aaaaaaaa-0000-0000-0000-000000000000"
-#define LOG_KEEP 8
-
-typedef struct enc {
-	ifme_ctx *ctx;
-	ifme_control *control;
-	const ifme_task_callbacks *cb;
-	char *ffmpeg;
-	char *input;               /* absolute */
-	char *output;              /* absolute */
-	char *temp;
-	const cJSON *job;
-	ifme_media *media;
-	double trim_seconds;       /* 0: no trim */
-	char *err;
-	size_t err_len;
-
-	ifme_progress_parser parser;
-	char recent[LOG_KEEP][256];   /* last log lines, for error messages */
-	int recent_count, recent_pos;
-} enc;
+#include "encode_int.h"
 
 /* ---- small helpers --------------------------------------------------------- */
 
-static void fail(enc *E, const char *fmt, ...)
+void enc_fail(enc *E, const char *fmt, ...)
 {
 	if (!E->err || !E->err_len)
 		return;
@@ -76,7 +52,7 @@ static void fail(enc *E, const char *fmt, ...)
 	va_end(ap);
 }
 
-static void stage(enc *E, const char *fmt, ...)
+void enc_stage(enc *E, const char *fmt, ...)
 {
 	if (!E->cb || !E->cb->on_stage)
 		return;
@@ -89,7 +65,7 @@ static void stage(enc *E, const char *fmt, ...)
 	free(s);
 }
 
-static void log_line(enc *E, const char *line)
+void enc_log(enc *E, const char *line)
 {
 	if (E->cb && E->cb->on_output)
 		E->cb->on_output(E->cb->user, line, false);
@@ -251,7 +227,7 @@ static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total
 		if (cmd) {
 			char *line = ifme_strdupf("%s %s", i ? "|" : "$", cmd);
 			if (line)
-				log_line(E, line);
+				enc_log(E, line);
 			free(line);
 		}
 		free(cmd);
@@ -274,10 +250,10 @@ static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total
 	ifme_task_result result;
 
 	if (rc == IFME_RUN_STOPPED) {
-		fail(E, "stopped");
+		enc_fail(E, "stopped");
 		result = IFME_TASK_STOPPED;
 	} else if (rc != IFME_RUN_OK) {
-		fail(E, "%s", r.message);
+		enc_fail(E, "%s", r.message);
 		result = IFME_TASK_ERROR;
 	} else if (r.exit_code != 0) {
 		/* Name the program that failed, plus its last words. */
@@ -298,20 +274,20 @@ static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total
 	return result;
 }
 
-static ifme_task_result run1(enc *E, ifme_argv *a, double total_sec)
+ifme_task_result enc_run1(enc *E, ifme_argv *a, double total_sec)
 {
 	return run(E, a, 1, 0, total_sec);
 }
 
 /* Seconds this job covers: the trim, else the whole input. */
-static double job_seconds(const enc *E)
+double enc_job_seconds(const enc *E)
 {
 	return E->trim_seconds > 0 ? E->trim_seconds : E->media->duration;
 }
 
 /* "-ss START -t DURATION" after the input, as C# did (accurate seeking, and
  * audio and video cut at the same points). */
-static void push_trim(enc *E, ifme_argv *a)
+void enc_push_trim(enc *E, ifme_argv *a)
 {
 	if (E->trim_seconds <= 0)
 		return;
@@ -322,17 +298,26 @@ static void push_trim(enc *E, ifme_argv *a)
 	ifme_argv_push(a, ifme_jstr(trim, "duration"));
 }
 
-static bool is_copy(const char *plugin, const char *builtin_guid)
+static bool enc_is_copy(const char *plugin, const char *builtin_guid)
 {
 	return plugin && (ifme_strcasecmp(plugin, "copy") == 0 || ifme_strcasecmp(plugin, builtin_guid) == 0);
 }
 
 /* Extension of the output file ("mkv" when it has none). */
-static const char *output_ext(const char *path)
+const char *enc_output_ext(const char *path)
 {
 	const char *base = ifme_basename(path);
 	const char *dot = strrchr(base, '.');
 	return (dot && dot[1]) ? dot + 1 : "mkv";
+}
+
+bool enc_ext_is(const char *path, const char *const *exts)
+{
+	const char *ext = enc_output_ext(path);
+	for (; *exts; exts++)
+		if (ifme_strcasecmp(ext, *exts) == 0)
+			return true;
+	return false;
 }
 
 /* ---- video ------------------------------------------------------------------ */
@@ -370,7 +355,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	int stream = ifme_jint(item, "stream", first_video_stream(E->media));
 	const ifme_stream_video *src = source_video(E->media, stream);
 	if (!src) {
-		fail(E, "video %zu: input has no video stream %d", idx + 1, stream);
+		enc_fail(E, "video %zu: input has no video stream %d", idx + 1, stream);
 		return IFME_TASK_ERROR;
 	}
 
@@ -378,20 +363,20 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	const char *plugin_query = ifme_jstr(item, "plugin");
 
 	/* Built-in "copy" entry: keep the stream as it is. */
-	if (is_copy(plugin_query, VIDEO_COPY_GUID)) {
+	if (enc_is_copy(plugin_query, VIDEO_COPY_GUID)) {
 		char *out = ifme_strdupf("video%04zu_%s.mkv", idx, lang);
 		ifme_argv a = { 0 };
 		ifme_argv_push(&a, E->ffmpeg);
 		ifme_argv_split(&a, "-hide_banner -v error -stats -i");
 		ifme_argv_push(&a, E->input);
-		push_trim(E, &a);
+		enc_push_trim(E, &a);
 		ifme_argv_push(&a, "-map");
 		ifme_argv_pushf(&a, "0:%d", stream);
 		ifme_argv_split(&a, "-c:v copy -y");
 		ifme_argv_push(&a, out);
 
-		stage(E, "Video %zu/%zu: copying stream", idx + 1, count);
-		ifme_task_result r = run1(E, &a, job_seconds(E));
+		enc_stage(E, "Video %zu/%zu: copying stream", idx + 1, count);
+		ifme_task_result r = enc_run1(E, &a, enc_job_seconds(E));
 		ifme_argv_free(&a);
 		if (r == IFME_TASK_DONE)
 			*result = out;
@@ -403,7 +388,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	char why[512];
 	int pi = ifme_plugin_find(E->ctx, IFME_PLUGIN_VIDEO, plugin_query ? plugin_query : "", why, sizeof(why));
 	if (pi < 0) {
-		fail(E, "video %zu: %s", idx + 1, why[0] ? why : "no \"plugin\" given");
+		enc_fail(E, "video %zu: %s", idx + 1, why[0] ? why : "no \"plugin\" given");
 		return IFME_TASK_ERROR;
 	}
 
@@ -416,7 +401,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	int mode_count = cJSON_GetArraySize(ifme_jget(vc, "Mode"));
 	int mode = ifme_jint(item, "mode", 0);
 	if (mode < 0 || mode >= mode_count) {
-		fail(E, "video %zu: %s has modes 0..%d, job asks for %d", idx + 1, plugin_name, mode_count - 1, mode);
+		enc_fail(E, "video %zu: %s has modes 0..%d, job asks for %d", idx + 1, plugin_name, mode_count - 1, mode);
 		return IFME_TASK_ERROR;
 	}
 	const cJSON *m = ifme_jitem(vc, "Mode", mode);
@@ -468,7 +453,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 			en = ifme_jstr(e, "Binary");
 	}
 	if (!en) {
-		fail(E, "video %zu: %s has no %d-bit encoder (available: %s)", idx + 1, plugin_name, bits, depths);
+		enc_fail(E, "video %zu: %s has no %d-bit encoder (available: %s)", idx + 1, plugin_name, bits, depths);
 		return IFME_TASK_ERROR;
 	}
 
@@ -484,7 +469,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	const char *out_file = raw_output ? raw_file : fmt_file;
 
 	/* Frame count: (trim or full) duration x frame rate, rounded up. */
-	double seconds = job_seconds(E);
+	double seconds = enc_job_seconds(E);
 	long long frames = (long long)(seconds * fps_value);
 	if ((double)frames < seconds * fps_value)
 		frames++;
@@ -505,13 +490,16 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 		                       ifme_jint(deint, "mode", 0), ifme_jint(deint, "field", 1));
 	if (!ifme_is_disabled(filter))
 		vl += (size_t)snprintf(vf + vl, sizeof(vf) - vl, "%s,", filter);
+	if (E->burn)
+		vl += (size_t)snprintf(vf + vl, sizeof(vf) - vl, "subtitles=f=%s%s,", E->burn,
+		                       E->fonts ? ":fontsdir=attachment" : "");
 	if (vl > 0 && vl < sizeof(vf))
 		vf[vl - 1] = '\0';
 
 	ifme_argv cmd_ff = { 0 };
 	ifme_argv_push(&cmd_ff, "-map");
 	ifme_argv_pushf(&cmd_ff, "0:%d", stream);
-	push_trim(E, &cmd_ff);
+	enc_push_trim(E, &cmd_ff);
 	ifme_argv_push(&cmd_ff, "-pix_fmt");
 	ifme_argv_push(&cmd_ff, yuv);
 	ifme_argv_push(&cmd_ff, "-vf");
@@ -683,9 +671,9 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 		ifme_argv_push(a, out_file);
 
 		if (passes > 1)
-			stage(E, "Video %zu/%zu: %s, pass %d of %d", idx + 1, count, plugin_name, p, passes);
+			enc_stage(E, "Video %zu/%zu: %s, pass %d of %d", idx + 1, count, plugin_name, p, passes);
 		else
-			stage(E, "Video %zu/%zu: %s", idx + 1, count, plugin_name);
+			enc_stage(E, "Video %zu/%zu: %s", idx + 1, count, plugin_name);
 
 		r = run(E, st, n, frames, seconds);
 		ifme_argv_free(&st[0]);
@@ -698,14 +686,14 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 
 	char *out_path = r == IFME_TASK_DONE ? ifme_path_join(E->temp, out_file) : NULL;
 	if (r == IFME_TASK_DONE && ifme_file_size(out_path) <= 0) {
-		fail(E, "video %zu: %s finished but wrote no %s", idx + 1, plugin_name, out_file);
+		enc_fail(E, "video %zu: %s finished but wrote no %s", idx + 1, plugin_name, out_file);
 		r = IFME_TASK_FAILED;
 	}
 	free(out_path);
 
 	/* ---- raw stream -> container ---------------------------------------------- */
 	if (r == IFME_TASK_DONE && raw_output) {
-		stage(E, "Video %zu/%zu: restructuring raw stream", idx + 1, count);
+		enc_stage(E, "Video %zu/%zu: restructuring raw stream", idx + 1, count);
 
 		char *mp4box = ifme_find_tool(E->ctx, "MP4Box", "mp4box");
 		bool mp4 = !ifme_strcasecmp(container, "mp4") || !ifme_strcasecmp(container, "m4v") ||
@@ -733,7 +721,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 		}
 		free(mp4box);
 
-		r = run1(E, &a, 0);
+		r = enc_run1(E, &a, 0);
 		ifme_argv_free(&a);
 
 		char *raw_path = ifme_path_join(E->temp, raw_file);
@@ -786,7 +774,7 @@ static const char *audio_arg_name(const cJSON *ac, const char *key, const char *
 }
 
 /* Media seconds a track covers: the trim, else its own file's length. */
-static double track_seconds(const enc *E, const ifme_media *m)
+double enc_track_seconds(const enc *E, const ifme_media *m)
 {
 	return E->trim_seconds > 0 ? E->trim_seconds : m->duration;
 }
@@ -795,25 +783,25 @@ static double track_seconds(const enc *E, const ifme_media *m)
 static ifme_task_result copy_audio(enc *E, size_t idx, size_t count, const char *in,
                                    const ifme_media *med, int stream, const char *lang, char **result)
 {
-	char *out = ifme_strdupf("audio%04zu_%s.%s", idx, lang, output_ext(E->output));
+	char *out = ifme_strdupf("audio%04zu_%s.%s", idx, lang, enc_output_ext(E->output));
 	ifme_argv a = { 0 };
 	ifme_argv_push(&a, E->ffmpeg);
 	ifme_argv_split(&a, "-hide_banner -v error -stats -i");
 	ifme_argv_push(&a, in);
-	push_trim(E, &a);
+	enc_push_trim(E, &a);
 	ifme_argv_push(&a, "-map");
 	ifme_argv_pushf(&a, "0:%d", stream);
 	ifme_argv_split(&a, "-c:a copy -y");
 	ifme_argv_push(&a, out);
 
-	stage(E, "Audio %zu/%zu: copying stream", idx + 1, count);
-	ifme_task_result r = run1(E, &a, track_seconds(E, med));
+	enc_stage(E, "Audio %zu/%zu: copying stream", idx + 1, count);
+	ifme_task_result r = enc_run1(E, &a, enc_track_seconds(E, med));
 	ifme_argv_free(&a);
 
 	/* As C#: a file of 1 KiB or less means the container refused the codec. */
 	char *path = ifme_path_join(E->temp, out);
 	if (r == IFME_TASK_DONE && ifme_file_size(path) <= 1024) {
-		fail(E, "audio %zu: the stream cannot be copied into .%s", idx + 1, output_ext(E->output));
+		enc_fail(E, "audio %zu: the stream cannot be copied into .%s", idx + 1, enc_output_ext(E->output));
 		r = IFME_TASK_FAILED;
 	}
 	if (r != IFME_TASK_DONE && path)
@@ -838,7 +826,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	int stream = ifme_jint(item, "stream", med->audio_count ? med->audio[0].id : -1);
 	const ifme_stream_audio *src = source_audio(med, stream);
 	if (!src) {
-		fail(E, "audio %zu: %s has no audio stream %d", idx + 1, ifme_basename(in), stream);
+		enc_fail(E, "audio %zu: %s has no audio stream %d", idx + 1, ifme_basename(in), stream);
 		return IFME_TASK_ERROR;
 	}
 
@@ -848,7 +836,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	*lang_out = ifme_strdup(lang);
 	const char *plugin_query = ifme_jstr(item, "plugin");
 
-	if (is_copy(plugin_query, AUDIO_COPY_GUID))
+	if (enc_is_copy(plugin_query, AUDIO_COPY_GUID))
 		return copy_audio(E, idx, count, in, med, stream, lang, result);
 
 	/* "copy": true tries the stream as it is first and encodes only if the
@@ -859,7 +847,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 			return r;
 		char *note = ifme_strdupf("%s; encoding it instead", E->err ? E->err : "copy failed");
 		if (note)
-			log_line(E, note);
+			enc_log(E, note);
 		free(note);
 		if (E->err && E->err_len)
 			E->err[0] = '\0';
@@ -868,7 +856,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	char why[512];
 	int pi = ifme_plugin_find(E->ctx, IFME_PLUGIN_AUDIO, plugin_query ? plugin_query : "", why, sizeof(why));
 	if (pi < 0) {
-		fail(E, "audio %zu: %s", idx + 1, why[0] ? why : "no \"plugin\" given");
+		enc_fail(E, "audio %zu: %s", idx + 1, why[0] ? why : "no \"plugin\" given");
 		return IFME_TASK_ERROR;
 	}
 
@@ -881,12 +869,12 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	int mode_count = cJSON_GetArraySize(ifme_jget(ac, "Mode"));
 	int mode = ifme_jint(item, "mode", 0);
 	if (mode < 0 || mode >= mode_count) {
-		fail(E, "audio %zu: %s has modes 0..%d, job asks for %d", idx + 1, plugin_name, mode_count - 1, mode);
+		enc_fail(E, "audio %zu: %s has modes 0..%d, job asks for %d", idx + 1, plugin_name, mode_count - 1, mode);
 		return IFME_TASK_ERROR;
 	}
 	const cJSON *m = ifme_jitem(ac, "Mode", mode);
 	const char *mode_name = ifme_jstr(m, "Name") ? ifme_jstr(m, "Name") : "?";
-	stage(E, "Audio %zu/%zu: %s, %s", idx + 1, count, plugin_name, mode_name);
+	enc_stage(E, "Audio %zu/%zu: %s, %s", idx + 1, count, plugin_name, mode_name);
 
 	/* ---- quality, sample rate, channels ---------------------------------------- */
 	char *quality = ifme_jscalar(item, "quality");
@@ -911,14 +899,14 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 
 	if (!ifme_jbool(m, "MultiChannelSupport", true) && effective > 2) {
 		char *w = ifme_strdupf("%s, %s: no multi-channel support, down-mixing to stereo", plugin_name, mode_name);
-		log_line(E, w);
+		enc_log(E, w);
 		free(w);
 		ch = 2;
 		pass_ch = true;
 	}
 	if (!ifme_jbool(m, "MonoSupport", true) && effective == 1) {
 		char *w = ifme_strdupf("%s, %s: no mono support, up-mixing to stereo", plugin_name, mode_name);
-		log_line(E, w);
+		enc_log(E, w);
 		free(w);
 		ch = 2;
 		pass_ch = true;
@@ -953,7 +941,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 		ifme_argv_push(ff, E->ffmpeg);
 		ifme_argv_split(ff, "-hide_banner -v error -stats -i");
 		ifme_argv_push(ff, in);
-		push_trim(E, ff);
+		enc_push_trim(E, ff);
 		ifme_argv_push(ff, "-map");
 		ifme_argv_pushf(ff, "0:%d", stream);
 		ifme_argv_split(ff, "-acodec pcm_s16le");
@@ -979,7 +967,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 		ifme_argv_push(a, en);
 		ifme_argv_split(a, ifme_jstr(args, "Input"));
 		ifme_argv_push(a, in);
-		push_trim(E, a);
+		enc_push_trim(E, a);
 		ifme_argv_push(a, "-map");
 		ifme_argv_pushf(a, "0:%d", stream);
 		ifme_argv_split(a, ifme_jstr(args, "Command"));
@@ -998,7 +986,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	ifme_argv_split(a, ifme_jstr(args, "Output"));
 	ifme_argv_push(a, out_file);
 
-	ifme_task_result r = run(E, st, n, 0, track_seconds(E, med));
+	ifme_task_result r = run(E, st, n, 0, enc_track_seconds(E, med));
 	ifme_argv_free(&st[0]);
 	ifme_argv_free(&st[1]);
 	ifme_argv_free(&qu);
@@ -1007,7 +995,7 @@ static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, cons
 	if (r == IFME_TASK_DONE) {
 		char *path = ifme_path_join(E->temp, out_file);
 		if (ifme_file_size(path) <= 0) {
-			fail(E, "audio %zu: %s finished but wrote no %s", idx + 1, plugin_name, out_file);
+			enc_fail(E, "audio %zu: %s finished but wrote no %s", idx + 1, plugin_name, out_file);
 			r = IFME_TASK_FAILED;
 		}
 		free(path);
@@ -1036,7 +1024,7 @@ static ifme_task_result encode_audio(enc *E, size_t idx, size_t count, const cJS
 	if (m)
 		r = encode_audio_from(E, idx, count, item, path, m, result, lang_out);
 	else
-		fail(E, "audio %zu: %s", idx + 1, path ? why : "out of memory");
+		enc_fail(E, "audio %zu: %s", idx + 1, path ? why : "out of memory");
 	ifme_media_free(m);
 	free(path);
 	return r;
@@ -1054,18 +1042,11 @@ static ifme_task_result encode_audio(enc *E, size_t idx, size_t count, const cJS
 #define IFME_OS_NAME "unix"
 #endif
 
-typedef struct track {
-	char *file;          /* in E->temp */
-	char kind;           /* 'v' or 'a' */
-	char *lang;
-	const char *title;   /* from the job, may be NULL */
-} track;
-
 /* Every track file -> the output container, with language/title per stream
  * and the same encoding_tool/comment tags as C#. */
 static ifme_task_result mux(enc *E, const track *tracks, size_t count)
 {
-	stage(E, "Writing %s", ifme_basename(E->output));
+	enc_stage(E, "Writing %s", ifme_basename(E->output));
 
 	ifme_argv a = { 0 };
 	ifme_argv_push(&a, E->ffmpeg);
@@ -1074,13 +1055,27 @@ static ifme_task_result mux(enc *E, const track *tracks, size_t count)
 		ifme_argv_push(&a, "-i");
 		ifme_argv_push(&a, tracks[i].file);
 	}
+
+	/* Subtitles, cover art, attachments, global tags and chapters. */
+	ifme_argv extra = { 0 };
+	enc_mux_extras(E, &a, &extra, count, count);
+
 	for (size_t i = 0; i < count; i++) {
 		ifme_argv_push(&a, "-map");
 		ifme_argv_pushf(&a, "%zu:%c", i, tracks[i].kind);
 	}
-	/* Chapters arrive by accident otherwise (neroAacEnc writes one, copied
-	 * tracks bring the source's); they are handled on purpose in milestone 6. */
-	ifme_argv_split(&a, "-map_chapters -1 -c copy");
+	ifme_argv_split(&a, "-c copy");
+	for (size_t i = 0; i < extra.n; i++)
+		ifme_argv_push(&a, extra.v[i]);
+	ifme_argv_free(&extra);
+
+	/* C#: Mp4MuxFlags (frag_keyframe, empty_moov, separate_moof). */
+	static const char *const mov[] = { "mp4", "m4v", "m4a", "mov", NULL };
+	const char *movflags = ifme_jstr(E->job, "movflags");
+	if (movflags && *movflags && enc_ext_is(E->output, mov)) {
+		ifme_argv_push(&a, "-movflags");
+		ifme_argv_push(&a, movflags);
+	}
 
 	const ifme_cpu_info *cpu = &E->ctx->cpu;
 	ifme_argv_push(&a, "-metadata:g");
@@ -1091,10 +1086,19 @@ static ifme_task_result mux(enc *E, const track *tracks, size_t count)
 	                cpu->hypervisor ? "/" : "", cpu->hypervisor ? cpu->hypervisor_vendor : "");
 
 	/* MP4-family files keep a track's name in its handler, not a title tag. */
-	static const char *const iso[] = { "mp4", "m4v", "m4a", "mov", "3gp", "3g2" };
-	bool iso_bmff = false;
-	for (size_t i = 0; i < sizeof(iso) / sizeof(iso[0]); i++)
-		iso_bmff |= ifme_strcasecmp(output_ext(E->output), iso[i]) == 0;
+	static const char *const iso[] = { "mp4", "m4v", "m4a", "mov", "3gp", "3g2", NULL };
+	bool iso_bmff = enc_ext_is(E->output, iso);
+
+	/* The first video and the first audio track are the default ones. Set
+	 * explicitly: once any -disposition is given (subtitles, cover art),
+	 * FFmpeg stops choosing defaults itself. */
+	bool seen_v = false, seen_a = false;
+	for (size_t i = 0; i < count; i++) {
+		bool *seen = tracks[i].kind == 'v' ? &seen_v : &seen_a;
+		ifme_argv_pushf(&a, "-disposition:%zu", i);
+		ifme_argv_push(&a, *seen ? "0" : "default");
+		*seen = true;
+	}
 
 	for (size_t i = 0; i < count; i++) {
 		ifme_argv_pushf(&a, "-metadata:s:%zu", i);
@@ -1107,11 +1111,11 @@ static ifme_task_result mux(enc *E, const track *tracks, size_t count)
 
 	ifme_argv_push(&a, "-y");
 	ifme_argv_push(&a, E->output);
-	ifme_task_result r = run1(E, &a, job_seconds(E));
+	ifme_task_result r = enc_run1(E, &a, enc_job_seconds(E));
 	ifme_argv_free(&a);
 
 	if (r == IFME_TASK_DONE && ifme_file_size(E->output) <= 0) {
-		fail(E, "no output written to %s", E->output);
+		enc_fail(E, "no output written to %s", E->output);
 		r = IFME_TASK_FAILED;
 	}
 	if (r != IFME_TASK_DONE)
@@ -1148,15 +1152,15 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 	bool keep_temp = false;
 
 	if (!ctx || !task) {
-		fail(&E, "no context or task");
+		enc_fail(&E, "no context or task");
 		goto out;
 	}
 	if (!job) {
-		fail(&E, "job is not valid JSON");
+		enc_fail(&E, "job is not valid JSON");
 		goto out;
 	}
 	if (E.control && atomic_load(&E.control->want_stop)) {
-		fail(&E, "stopped");
+		enc_fail(&E, "stopped");
 		r = IFME_TASK_STOPPED;
 		goto out;
 	}
@@ -1176,15 +1180,15 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 		audio_count += ifme_jbool(it, "enable", true);
 
 	if (!input || !*input) {
-		fail(&E, "job has no \"input\"");
+		enc_fail(&E, "job has no \"input\"");
 		goto out;
 	}
 	if (!out_rel || !*out_rel) {
-		fail(&E, "job has no \"output\"");
+		enc_fail(&E, "job has no \"output\"");
 		goto out;
 	}
 	if (video_count + audio_count == 0) {
-		fail(&E, "job has no \"video\" or \"audio\" entries");
+		enc_fail(&E, "job has no \"video\" or \"audio\" entries");
 		goto out;
 	}
 
@@ -1194,22 +1198,23 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 	const cJSON *trim = ifme_jget(job, "trim");
 	if (cJSON_IsObject(trim)) {
 		E.trim_seconds = parse_time(ifme_jstr(trim, "duration"));
+		E.trim_start = ifme_jstr(trim, "start") ? parse_time(ifme_jstr(trim, "start")) : 0;
 		if (E.trim_seconds <= 0 || (ifme_jstr(trim, "start") && parse_time(ifme_jstr(trim, "start")) < 0)) {
-			fail(&E, "trim needs \"start\" and \"duration\" as HH:MM:SS(.mmm) or seconds");
+			enc_fail(&E, "trim needs \"start\" and \"duration\" as HH:MM:SS(.mmm) or seconds");
 			goto out;
 		}
 	}
 
 	E.ffmpeg = ifme_find_ff_tool(ctx, "ffmpeg");
 	if (!E.ffmpeg) {
-		fail(&E, "ffmpeg not found (PATH or Plugins/ffmpeg64)");
+		enc_fail(&E, "ffmpeg not found (PATH or Plugins/ffmpeg64)");
 		goto out;
 	}
 
 	char why[512];
 	E.media = ifme_probe(ctx, E.input, NULL, why, sizeof(why));
 	if (!E.media) {
-		fail(&E, "%s", why);
+		enc_fail(&E, "%s", why);
 		goto out;
 	}
 
@@ -1225,7 +1230,7 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 		free(name);
 	}
 	if (!E.temp || !ifme_mkdir(E.temp)) {
-		fail(&E, "cannot create temporary folder %s", E.temp ? E.temp : "");
+		enc_fail(&E, "cannot create temporary folder %s", E.temp ? E.temp : "");
 		goto out;
 	}
 
@@ -1233,6 +1238,12 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 	if (!tracks)
 		goto out;
 	track_cap = video_count + audio_count;
+
+	/* Subtitles, fonts, cover art and metadata first: burning a subtitle
+	 * into the video needs them (C#: Extract before Video). */
+	r = enc_extract(&E);
+	if (r != IFME_TASK_DONE)
+		goto out;
 
 	/* Same order as C#: video, then audio; tracks keep that order in the output. */
 	size_t vi = 0;
@@ -1272,9 +1283,16 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 
 out:
 	if (E.temp && !keep_temp) {
+		char *fonts = ifme_path_join(E.temp, "attachment");
+		if (fonts) {
+			ifme_clear_dir(fonts);
+			ifme_rmdir(fonts);
+		}
+		free(fonts);
 		ifme_clear_dir(E.temp);
 		ifme_rmdir(E.temp);
 	}
+	enc_extras_free(&E);
 	for (size_t i = 0; tracks && i < track_cap; i++) {
 		free(tracks[i].file);
 		free(tracks[i].lang);
@@ -1546,14 +1564,14 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
 	int vpi = -3, api = -3;
 	bool audio_auto = audio_plugin == NULL;
 
-	if (is_copy(video_plugin, VIDEO_COPY_GUID)) {
+	if (enc_is_copy(video_plugin, VIDEO_COPY_GUID)) {
 		vpi = -1;
 	} else if (!is_none(video_plugin)) {
 		vpi = ifme_plugin_find(ctx, IFME_PLUGIN_VIDEO, video_plugin, err, err_len);
 		if (vpi < 0)
 			return NULL;
 	}
-	if (is_copy(audio_plugin, AUDIO_COPY_GUID)) {
+	if (enc_is_copy(audio_plugin, AUDIO_COPY_GUID)) {
 		api = -1;
 	} else if (!audio_auto && !is_none(audio_plugin)) {
 		api = ifme_plugin_find(ctx, IFME_PLUGIN_AUDIO, audio_plugin, err, err_len);
@@ -1575,7 +1593,7 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
 	 * else (audio only) the audio plugin's: Opus for a plain audio file. */
 	const char *container = "mkv";
 	if (output && *output)
-		container = output_ext(output);
+		container = enc_output_ext(output);
 	else if (has_video && vpi >= 0)
 		container = first_format(ifme_plugin_json(ctx, (size_t)vpi), "mkv");
 
@@ -1632,6 +1650,7 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
 	cJSON_AddItemToObject(job, "video", videos);
 	cJSON_AddItemToObject(job, "audio", audios);
 	videos = audios = NULL;
+	enc_job_extras(job, media, container, has_video, vpi == -1);
 
 	char *text = cJSON_Print(job);
 	cJSON_Delete(job);

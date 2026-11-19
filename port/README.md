@@ -169,6 +169,11 @@ and stop are safe from any thread.
 
 # add the audio tracks of other files (a dub, a commentary)
 ./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mp4 -o out.mkv --add-audio dub.m4a
+
+# subtitles, fonts, cover art: the input's are kept by default; add or burn more
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mp4 -o out.mkv     --add-subtitle signs.ass --add-attachment SignFont.ttf --cover poster.jpg
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mp4 --burn-subtitle
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mp4     --no-chapters --no-metadata --movflags +faststart
 ```
 
 `--video` / `--audio` take a GUID, any unique part of a plugin name ("x264",
@@ -182,13 +187,23 @@ This ports `MediaEncoding.Video()`, `.Audio()` and `.Muxing()`: the same
 piped (`ffmpeg | encoder`) and direct command shapes, multi-pass, `{0}` mode
 templates, raw streams wrapped by MP4Box; audio through a 16-bit WAV pipe or
 directly, with the manifest's down-/up-mix rules (`MultiChannelSupport`,
-`MonoSupport`, `SingleChannelOnly`); then every track written to the output
-by ffmpeg with language and title per stream and C#'s `encoding_tool` /
+`MonoSupport`, `SingleChannelOnly`); `.Extract()`: subtitles, attachments
+(fonts), cover art, global tags and chapters (`metadata.ini`), and burning a
+subtitle into the picture; then every track written to the output by ffmpeg
+with language, title and default flag per stream and C#'s `encoding_tool` /
 `comment` tags. Checked on Windows with x264 (10-bit 4:2:2), x265 (CRF,
 2-pass), SVT-AV1, VVenC, VP9 and NVEncC for video, and FFmpeg AAC / Opus,
 Nero AAC and exhale (piped), AMR-NB (mono only) for audio, plus stream copies
-into MKV, MP4 and WebM. Not yet ported: subtitles, attachments, chapters and
-metadata (milestone 6), video fast remux, auto-crop, hard subs, MP4 movflags.
+into MKV, MP4 and WebM; SRT/ASS subtitles, a font and a cover into MKV, MP4
+(`mov_text`), WebM (WebVTT); ASS and SRT burned into MP4 / TS; cover art
+into MP3, FLAC and M4A. Not yet ported: video fast remux, auto-crop.
+
+Where things go: MKV takes every subtitle (pictures too) and attachment, with
+cover art as a `cover.jpg` attachment; MP4 and WebM take text subtitles;
+cover art also goes into MP4, M4A, MP3 and FLAC. A container that cannot hold
+something gets a log line instead of a failed mux, and for containers without
+soft subtitles (TS, AVI, ...) the default is to burn the first text subtitle
+in, as C# did.
 
 Differences from C#:
 
@@ -202,9 +217,22 @@ Differences from C#:
 - `--audio-copy` (C#'s "fast remux") also works on trimmed jobs, and copying
   a video stream now honours the trim.
 - Track titles are written where MP4 players read them (`handler_name`).
-- Chapters are left out until milestone 6 handles them on purpose; before,
-  they came in by accident (neroAacEnc writes one, which became an extra
-  data track in MP4).
+- Trimmed jobs get their chapters and text subtitles cut to the same part:
+  events are shifted, clipped and dropped as needed (C# kept the chapters of
+  the whole file; FFmpeg alone drops subtitle lines that start before the cut
+  and lets lines past the end stretch the file). Chapters the cut empties are
+  removed.
+- The input's global tags (title, artist, ...) really reach the output; C#
+  mapped them from the first encoded track by mistake, so only chapters came
+  through. Chapters only come from the input, never by accident from a track
+  file (neroAacEnc writes one).
+- Attachment names from the source are reduced to a plain file name; in C#
+  a name such as `../../x.ttf` was written outside the temp folder. Every
+  attachment is kept (C# skipped the one with stream index 0).
+- Other text subtitle formats (e.g. `mov_text`) become SRT so they fit MKV;
+  a picture subtitle asked to be burned in is an error, not silently ignored.
+- The first video and audio track are flagged default explicitly (setting a
+  subtitle's default flag otherwise left the audio unflagged).
 
 ### Tests
 
@@ -215,7 +243,8 @@ ctest --test-dir build --output-on-failure
 ```
 
 - `units`: progress parser on real encoder output (frames and FFmpeg's
-  audio `time=`), line splitting, argument templates, relaxed JSON.
+  audio `time=`), cutting SRT/ASS/WebVTT and chapters to a trim, line
+  splitting, argument templates, relaxed JSON.
 - `task`: a real `ffmpeg | x265` encode is paused (no frame may advance for
   2 s), resumed, then stopped while paused (must return within 3 s); plus
   stop-before-start, a failing command and a missing program. Skipped when
@@ -224,8 +253,10 @@ ctest --test-dir build --output-on-failure
   with a Japanese name (checked with ffprobe), stop during an encode (temp
   folder removed, no output left), the default audio plugin per container,
   an x265 + Opus encode taking its audio from a separate file (language,
-  title, length checked), AAC refused by WebM falling back to Opus, and
-  clear errors for bad jobs.
+  title, length checked), AAC refused by WebM falling back to Opus, external
+  SRT/ASS subtitles with an attachment and cover art into MKV (the SRT read
+  back to check the cut), a subtitle burned into a .ts, and clear errors for
+  bad jobs.
 
 ## Layout
 
@@ -238,6 +269,9 @@ core/src/progress.c          frame / fps / bitrate / ETA from encoder output
 core/src/task.c              public task API: exec, pause, resume, stop
 core/src/encode.c            encoding jobs: defaults (ifme_job_new), video and
                              audio encode, muxing into the output
+core/src/extras.c            subtitles, attachments, cover art, tags, chapters,
+                             burning subtitles
+core/src/subtime.c           cut text subtitles and chapters to a trim
 core/src/jsonutil.c          lenient JSON accessors (Newtonsoft-compatible)
 core/src/argv.c              argument lists built from manifest templates
 core/src/json_relax.c        accept comments / trailing commas
@@ -266,5 +300,5 @@ res/                         Windows manifest and resource script
       (Job Objects on Windows, process groups on Linux/macOS); `--exec`; ctest
 - [x] 4. Video encode (single and multi-pass) with progress and ETA; job JSON
 - [x] 5. Audio encode (piped, direct, copy with fallback, extra files) and muxing
-- [ ] 6. Subtitles, fonts, attachments, metadata
+- [x] 6. Subtitles (soft and burned), fonts/attachments, cover art, tags, chapters
 - [ ] 7. GUI on top of the finished core

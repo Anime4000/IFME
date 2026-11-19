@@ -132,6 +132,65 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 		cJSON_Delete(ej);
 	}
 
+	/* Subtitles, attachments, cover art, tags and chapters. */
+	if (o->no_subtitles) {
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "subtitles");
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "burn_subtitle");
+	}
+	if (o->no_attachments)
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "attachments");
+	if (o->no_cover || o->cover)
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "cover");
+	if (o->cover)
+		cJSON_AddStringToObject(cJSON_AddObjectToObject(job, "cover"), "input", o->cover);
+
+	for (int i = 0; i < o->add_subtitle_count; i++) {
+		ifme_media *m = ifme_probe(ctx, o->add_subtitle[i], NULL, err, sizeof(err));
+		if (!m || m->subtitle_count == 0) {
+			fprintf(stderr, "ifmecli: --add-subtitle %s: %s\n", o->add_subtitle[i],
+			        m ? "no subtitle stream in it" : err);
+			ifme_media_free(m);
+			cJSON_Delete(job);
+			return 2;
+		}
+		cJSON *subs = cJSON_GetObjectItem(job, "subtitles");
+		if (!subs)
+			subs = cJSON_AddArrayToObject(job, "subtitles");
+		for (size_t k = 0; k < m->subtitle_count; k++) {
+			cJSON *e = cJSON_CreateObject();
+			cJSON_AddStringToObject(e, "input", m->path);
+			cJSON_AddNumberToObject(e, "stream", m->subtitle[k].id);
+			cJSON_AddStringToObject(e, "language", m->subtitle[k].language);
+			cJSON_AddStringToObject(e, "title", m->subtitle[k].title);
+			cJSON_AddBoolToObject(e, "default", cJSON_GetArraySize(subs) == 0);
+			cJSON_AddItemToArray(subs, e);
+		}
+		ifme_media_free(m);
+	}
+
+	for (int i = 0; i < o->add_attachment_count; i++) {
+		cJSON *atts = cJSON_GetObjectItem(job, "attachments");
+		if (!atts)
+			atts = cJSON_AddArrayToObject(job, "attachments");
+		cJSON *e = cJSON_CreateObject();
+		cJSON_AddStringToObject(e, "file", o->add_attachment[i]);
+		cJSON_AddItemToArray(atts, e);
+	}
+
+	if (o->burn_subtitle) {
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "burn_subtitle");
+		cJSON_AddBoolToObject(job, "burn_subtitle", true);
+	}
+	if (o->no_metadata) {
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "metadata");
+		cJSON_AddBoolToObject(job, "metadata", false);
+	}
+	if (o->no_chapters) {
+		cJSON_DeleteItemFromObjectCaseSensitive(job, "chapters");
+		cJSON_AddBoolToObject(job, "chapters", false);
+	}
+	set_string(job, "movflags", o->movflags);
+
 	/* Video options apply to the first video track (NULL when there is none:
 	 * cJSON ignores edits of NULL). Audio options apply to every audio track. */
 	cJSON *v = cJSON_GetArrayItem(cJSON_GetObjectItem(job, "video"), 0);

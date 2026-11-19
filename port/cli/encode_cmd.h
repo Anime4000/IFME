@@ -15,6 +15,13 @@ typedef struct encode_opts {
 	bool audio_copy;            /* try the source audio as it is first */
 	const char *add_audio[8];   /* --add-audio FILE: audio tracks from other files */
 	int add_audio_count;
+	const char *add_subtitle[8];     /* --add-subtitle FILE (.srt, .ass, or any media) */
+	int add_subtitle_count;
+	const char *add_attachment[16];  /* --add-attachment FILE (fonts) */
+	int add_attachment_count;
+	const char *cover;          /* --cover IMAGE */
+	const char *movflags;
+	bool no_subtitles, no_attachments, no_cover, no_metadata, no_chapters, burn_subtitle;
 	const char *preset, *tune, *value, *size, *fps;
 	const char *trim_start, *trim_duration;
 	const char *encoder_args, *filter, *temp_dir;

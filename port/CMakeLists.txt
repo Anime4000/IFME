@@ -46,6 +46,8 @@ add_library(ifmecore STATIC
     core/src/task.c
     core/src/jsonutil.c
     core/src/encode.c
+    core/src/extras.c
+    core/src/subtime.c
     core/src/platform/paths.c
     core/src/platform/fs.c
     core/src/platform/proc_common.c
