@@ -55,7 +55,10 @@ copy_plugin platforminputcontexts
 copy_plugin imageformats 'libqico.so'
 copy_plugin imageformats 'libqjpeg.so'
 copy_plugin imageformats 'libqgif.so'
-copy_plugin platformthemes 'libqxdgdesktopportal.so'
+# Desktop look: the GTK3 theme (Cinnamon, GNOME, Xfce: colours incl. dark mode,
+# fonts, file dialogs), the portal, qt6ct and any style plugins installed.
+copy_plugin platformthemes
+copy_plugin styles
 for g in wayland-shell-integration wayland-decoration-client wayland-graphics-integration-client; do
     copy_plugin "$g"
 done
@@ -80,6 +83,22 @@ excluded() {
     return 1
 }
 
+deps() {   # libraries the given files (NUL-separated on stdin) load
+    xargs -0 -n1 ldd 2>/dev/null | awk '$2 == "=>" && $3 ~ /^\// { print $3 }'
+}
+themes=("$dest/lib/qt6/plugins/platformthemes" "$dest/lib/qt6/plugins/styles")
+
+needed() {
+    {
+        find "$dest" -maxdepth 1 -type f \( -name ifme9 -o -name ifmecli \) -print0
+        find "$dest/lib" -type f -name '*.so*' -not -path "${themes[0]}/*" -not -path "${themes[1]}/*" -print0
+    } | deps
+    # Theme and style plugins use the desktop's own GTK, KDE or qt6ct
+    # libraries: only their Qt libraries are bundled. Where the desktop lacks
+    # the rest, Qt skips the plugin and keeps its default look.
+    find "${themes[@]}" -type f -name '*.so' -print0 2>/dev/null | deps | grep -E '/lib(Qt6|qt6ct)[^/]*$' || true
+}
+
 while :; do
     added=0
     while IFS= read -r path; do
@@ -89,9 +108,7 @@ while :; do
             cp -fL "$path" "$dest/lib/$name"
             added=1
         fi
-    done < <(find "$dest" -maxdepth 1 -type f \( -name ifme9 -o -name ifmecli \) -print0 |
-             cat - <(find "$dest/lib" -type f -name '*.so*' -print0) |
-             xargs -0 -n1 ldd 2>/dev/null | awk '$2 == "=>" && $3 ~ /^\// { print $3 }' | sort -u)
+    done < <(needed | sort -u)
     [[ $added == 0 ]] && break
 done
 
