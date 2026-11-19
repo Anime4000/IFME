@@ -313,9 +313,41 @@ The same window as IFME today, on the finished core:
 - Settings live in `ifme-qt.ini` in IFME's config folder.
 
 The artwork is used as is from `../IFME/Resources` (one copy in the repository).
-Not yet: translations (i18n), file name prefix/postfix, the C#
-"shut down when done" option, a macOS `.icns` app icon and a Linux
-`.desktop` file.
+Not yet: file name prefix/postfix, the C# "shut down when done" option,
+a macOS `.icns` app icon and a Linux `.desktop` file.
+
+### Translations
+
+The interface language is picked in Preferences (or `--language ja-JP` for
+one run); without a choice IFME uses the system's language when there is a
+translation for it, else English, as IFME 8 does. Translations are
+`i18n/<language>.json` (copied to `i18n_qt/` next to the programs, beside
+IFME 8's `i18n/`):
+
+```json
+{ "Language": "ja-JP", "AuthorName": "...", "AuthorProfile": "...", "AuthorEmail": "...",
+  "Strings": { "&Language:": "言語(&L):", "Rate &control:": "", ... } }
+```
+
+Each key is the English text of a `tr()` string; an empty translation shows
+the English. `&` marks the Alt key letter, `%1`/`%2` and `%n` are filled in by
+the program. `"Drafts"` lists machine-drafted translations nobody has
+reviewed yet (Preferences shows how much of a language that is); a translator
+removes a string from it once it is checked. ja-JP, zh-CN and ms-MY start with
+IFME 8's translations where the English matched and drafts for the rest.
+After changing interface text in the code, run from `port/`:
+
+```bash
+python tools/i18n_update.py                          # add new strings, keep old ones in "Obsolete"
+python tools/i18n_update.py --new ko-KR              # start another language
+python tools/i18n_update.py --seed ../IFME/i18n      # fill gaps from IFME 8's translations
+```
+
+IFME 8's `i18n/*.json` are keyed by WinForms control names, so they cannot be
+used directly; `--seed` copies their translations wherever the English text
+matches, with the translator's name. Qt's own buttons (OK, Cancel) follow the
+language when Qt's translations (`qtbase_*.qm`, the `qt6-translations`
+package) are installed; the deploy step ships them for the languages we have.
 
 ### Tests
 

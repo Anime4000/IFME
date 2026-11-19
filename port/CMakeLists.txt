@@ -113,11 +113,25 @@ if(IFME_BUILD_GUI)
         gui/dialogs.cpp gui/dialogs.h
         gui/mainwindow.cpp gui/mainwindow.h
         gui/profiles.cpp gui/profiles.h
+        gui/i18n.cpp gui/i18n.h
         gui/queueitem.h
         gui/resources.qrc
         ${IFME_APP_RESOURCES})
 
     target_link_libraries(ifme PRIVATE ifmecore Qt6::Widgets)
+
+    # Interface translations (i18n/*.json, see tools/i18n_update.py) go to
+    # i18n_qt/ next to the programs (IFME 8's are in i18n/), read at start-up.
+    file(GLOB IFME_I18N_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/i18n/*.json")
+    set(IFME_I18N_OUT "${CMAKE_CURRENT_BINARY_DIR}/i18n_qt")
+    add_custom_command(OUTPUT "${IFME_I18N_OUT}/.stamp"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${IFME_I18N_OUT}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different ${IFME_I18N_FILES} "${IFME_I18N_OUT}"
+        COMMAND "${CMAKE_COMMAND}" -E touch "${IFME_I18N_OUT}/.stamp"
+        DEPENDS ${IFME_I18N_FILES}
+        COMMENT "Copying translations")
+    add_custom_target(ifme_translations ALL DEPENDS "${IFME_I18N_OUT}/.stamp")
+    add_dependencies(ifme ifme_translations)
 
     set_target_properties(ifme PROPERTIES
         MACOSX_BUNDLE_BUNDLE_NAME "IFME"
@@ -143,7 +157,7 @@ if(IFME_BUILD_GUI)
         endif()
         add_custom_target(deploy
             COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy-linux.sh"
-                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_PLUGIN_HINT}"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_I18N_OUT}" "${IFME_QT_PLUGIN_HINT}"
             DEPENDS ifme ifmecli
             COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
             VERBATIM)
@@ -153,7 +167,7 @@ if(IFME_BUILD_GUI)
         get_filename_component(IFME_QT_BIN "${IFME_QMAKE}" DIRECTORY)
         add_custom_target(deploy
             COMMAND "${IFME_BASH}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy.sh"
-                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_BIN}"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_BIN}" "${IFME_I18N_OUT}"
             DEPENDS ifme ifmecli
             COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
             VERBATIM)
@@ -192,7 +206,8 @@ if(IFME_BUILD_TESTS)
     if(IFME_BUILD_GUI)
         add_executable(test_gui tests/test_gui.cpp
             gui/app.cpp gui/widgets.cpp gui/widgets.h gui/settingstabs.cpp gui/settingstabs.h
-            gui/profiles.cpp gui/profiles.h gui/resources.qrc)
+            gui/profiles.cpp gui/profiles.h gui/i18n.cpp gui/i18n.h gui/resources.qrc)
+        add_dependencies(test_gui ifme_translations)
         target_include_directories(test_gui PRIVATE gui)
         target_link_libraries(test_gui PRIVATE ifmecore Qt6::Widgets)
         add_test(NAME gui COMMAND test_gui "${IFME_TEST_ROOT}")

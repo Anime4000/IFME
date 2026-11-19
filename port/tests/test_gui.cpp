@@ -10,7 +10,10 @@
 #include <QTreeWidget>
 #include <cstdio>
 
+#include <QLabel>
+
 #include "app.h"
+#include "i18n.h"
 #include "profiles.h"
 #include "queueitem.h"
 #include "settingstabs.h"
@@ -166,7 +169,8 @@ static void testProfiles(const QString &root)
 	const QJsonObject v = firstOf(a, "video");
 	CHECK(v.value("plugin").toString() == "deadbeef-0265-0265-0265-026502650265");
 	CHECK(v.value("preset").toString() == "veryslow" && v.value("tune").toString() == "ssim");
-	CHECK(v.value("value").toDouble() == 24.0 && v.value("encoder_args").toString() == "--pme --pmode");
+	CHECK(v.value("value").toDouble() == 24.0 && v.value("passes").toInt() >= 1);
+	CHECK(!v.value("encoder_args").toString().contains("--pme"));   // removed from x265 4.1
 	CHECK(!v.contains("fps") && v.value("width").toInt() > 0);   // 0 in the profile: the source's
 	CHECK(w.isEmpty() || !core.find(QStringLiteral("deadbeef-1aac-1aac-1aac-1aac2aac3aac")));
 
@@ -266,6 +270,26 @@ int main(int argc, char **argv)
 		std::printf("profiles: skipped (no IFME folder with Profiles/)\n");
 	else
 		testProfiles(root);
+
+	// Translations (last: they change the interface text the checks above use).
+	const QVector<i18n::Language> langs = i18n::available();
+	bool hasJa = false;
+	for (const i18n::Language &l : langs)
+		hasJa |= l.code == "ja-JP" && l.translated > 0 && l.translated <= l.total && !l.author.isEmpty();
+	CHECK(langs.value(0).code == "en-US" && hasJa);
+	app::settings().setValue(QStringLiteral("ui/language"), QStringLiteral("zh-CN"));
+	CHECK(i18n::chosen() == "zh-CN");
+	app::settings().setValue(QStringLiteral("ui/language"), QStringLiteral("xx-XX"));   // not installed
+	CHECK(!i18n::chosen().isEmpty() && i18n::chosen() != "xx-XX");
+	i18n::install(qapp, QStringLiteral("ja-JP"));
+	CHECK(QCoreApplication::translate("PreferencesDialog", "&Language:") == QString::fromUtf8("言語(&L):"));
+	CHECK(QCoreApplication::translate("AudioTab", "&Language:") == QString::fromUtf8("言語(&L):"));   // any class
+	CHECK(QCoreApplication::translate("X", "Not a translated string") == "Not a translated string");
+	VideoTab translated(core);
+	bool jaLabel = false;
+	for (QLabel *l : translated.findChildren<QLabel *>())
+		jaLabel |= l->text() == QString::fromUtf8("エンコーダー(&E):");
+	CHECK(jaLabel);
 
 	std::printf("%d checks, %d failed\n", g_checks, g_failed);
 	return g_failed ? 1 : 0;

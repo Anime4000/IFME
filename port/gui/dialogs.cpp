@@ -1,6 +1,7 @@
 #include "dialogs.h"
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QFileDialog>
@@ -16,6 +17,7 @@
 #include <QVBoxLayout>
 
 #include "app.h"
+#include "i18n.h"
 #include "widgets.h"
 
 // ---- Preferences --------------------------------------------------------------
@@ -52,7 +54,35 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 	m_test = new QCheckBox(tr("Test encoders at start-up and disable those that fail (GPU encoders)"), this);
 	m_test->setChecked(s.value(QStringLiteral("startup/test_encoders"), true).toBool());
 
+	// Interface language (C#: frmOptions grpLanguage), with its translators.
+	m_language = new QComboBox(this);
+	auto *credit = new QLabel(this);
+	credit->setOpenExternalLinks(true);
+	credit->setWordWrap(true);
+	const QVector<i18n::Language> langs = i18n::available();
+	for (const i18n::Language &l : langs)
+		m_language->addItem(!l.total ? l.name
+			: l.drafts ? tr("%1 - %2% translated, %3% not yet reviewed").arg(l.name).arg(100 * l.translated / l.total).arg(100 * l.drafts / l.total)
+			           : tr("%1 - %2% translated").arg(l.name).arg(100 * l.translated / l.total), l.code);
+	m_language->setCurrentIndex(qMax(0, m_language->findData(i18n::chosen())));
+	auto showCredit = [=] {
+		const int i = m_language->currentIndex();
+		if (i <= 0 || i >= langs.size()) {
+			credit->setText(tr("Changes take effect the next time IFME starts."));
+			return;
+		}
+		const i18n::Language &l = langs[i];
+		QString who = l.author.toHtmlEscaped();
+		if (!l.profile.isEmpty())
+			who = QStringLiteral("<a href=\"%1\">%2</a>").arg(l.profile.toHtmlEscaped(), who);
+		credit->setText(tr("Translated by %1. Changes take effect the next time IFME starts.").arg(who));
+	};
+	connect(m_language, &QComboBox::currentIndexChanged, this, showCredit);
+	showCredit();
+
 	auto *f = new QFormLayout;
+	f->addRow(tr("Interface &language:"), m_language);
+	f->addRow(QString(), credit);
 	f->addRow(tr("IFME folder (holds Plugins):"), pathRow(this, m_root, tr("IFME folder")));
 	f->addRow(tr("Save encoded files to:"), pathRow(this, m_output, tr("Output folder")));
 	f->addRow(tr("Temporary folder:"), pathRow(this, m_temp, tr("Temporary folder")));
@@ -77,6 +107,9 @@ void PreferencesDialog::accept()
 	s.setValue(QStringLiteral("paths/temp"), m_temp->text().trimmed());
 	s.setValue(QStringLiteral("encode/keep_temp"), m_keepTemp->isChecked());
 	s.setValue(QStringLiteral("startup/test_encoders"), m_test->isChecked());
+	const QString lang = m_language->currentData().toString();
+	m_languageChanged = lang != i18n::chosen();
+	s.setValue(QStringLiteral("ui/language"), lang);
 	QDialog::accept();
 }
 

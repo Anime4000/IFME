@@ -4,6 +4,7 @@
 #include <QDialog>
 
 class QCheckBox;
+class QComboBox;
 class QLabel;
 class QLineEdit;
 class QPushButton;
@@ -17,13 +18,15 @@ class PreferencesDialog : public QDialog
 public:
 	explicit PreferencesDialog(QWidget *parent = nullptr);
 	bool rootChanged() const { return m_rootChanged; }
+	bool languageChanged() const { return m_languageChanged; }
 
 	void accept() override;
 
 private:
 	QLineEdit *m_root, *m_output, *m_temp;
 	QCheckBox *m_keepTemp, *m_test;
-	bool m_rootChanged = false;
+	QComboBox *m_language;
+	bool m_rootChanged = false, m_languageChanged = false;
 };
 
 class PluginsDialog : public QDialog

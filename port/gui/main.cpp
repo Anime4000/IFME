@@ -5,6 +5,7 @@
 #include <QTimer>
 
 #include "app.h"
+#include "i18n.h"
 #include "mainwindow.h"
 #include "splash.h"
 
@@ -27,6 +28,8 @@ int main(int argc, char *argv[])
 		QStringLiteral("Folder to save the encoded files to."), QStringLiteral("dir"));
 	QCommandLineOption profile({ QStringLiteral("p"), QStringLiteral("profile") },
 		QStringLiteral("Encode the files with this profile (its name or file name, see Profiles/)."), QStringLiteral("name"));
+	QCommandLineOption language({ QStringLiteral("l"), QStringLiteral("language") },
+		QStringLiteral("Interface language for this run, e.g. ja-JP (see the translations folder)."), QStringLiteral("code"));
 	QCommandLineOption start(QStringLiteral("start"), QStringLiteral("Start encoding the files at once."));
 	QCommandLineOption quit(QStringLiteral("quit-when-done"),
 		QStringLiteral("Quit after encoding (exit code 0 if every file worked)."));
@@ -37,7 +40,7 @@ int main(int argc, char *argv[])
 	QCommandLineOption settingsFile(QStringLiteral("settings"), QStringLiteral("Use this settings file."),
 		QStringLiteral("file"));
 	settingsFile.setFlags(QCommandLineOption::HiddenFromHelp);
-	for (const QCommandLineOption &o : { root, format, output, profile, start, quit, noSplash, shots, settingsFile })
+	for (const QCommandLineOption &o : { root, format, output, profile, language, start, quit, noSplash, shots, settingsFile })
 		parser.addOption(o);
 	parser.addPositionalArgument(QStringLiteral("files"), QStringLiteral("Media files or folders to add."),
 	                             QStringLiteral("[files...]"));
@@ -58,6 +61,7 @@ int main(int argc, char *argv[])
 			rootDir = QDir::cleanPath(exe.filePath(QStringLiteral("../Debug")));
 	}
 	core.setRoot(rootDir);
+	i18n::install(app, parser.isSet(language) ? parser.value(language) : i18n::chosen());
 	app::loadLanguages(core.root());   // Language.json from jason.wad
 
 	MainWindow *window = nullptr;

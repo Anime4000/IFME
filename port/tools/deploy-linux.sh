@@ -2,7 +2,7 @@
 # deploy-linux.sh - make a portable copy of the Qt build on Linux, runnable on
 # other distributions of the same age or newer (glibc not bundled).
 #
-#   deploy-linux.sh <ifme9> <ifmecli> <dest dir> <IFME folder with the .wad files> [<a Qt plugin file>]
+#   deploy-linux.sh <ifme9> <ifmecli> <dest dir> <IFME folder with the .wad files> [<translations dir>] [<a Qt plugin file>]
 #
 # Run through:  cmake --build build --target deploy
 #
@@ -11,10 +11,28 @@
 #   lib/                    Qt and the libraries it needs that a desktop may lack
 #   lib/qt6/plugins/        Qt plugins (xcb, wayland, image formats, input methods)
 #   qt.conf                 points Qt at those plugins
+#   i18n_qt/                interface translations (+ Qt's qtbase_*.qm)
 #   jason.wad, resources.wad
 set -euo pipefail
 
-gui=$1 cli=$2 dest=$3 from=$4 plugin_hint=${5:-}
+gui=$1 cli=$2 dest=$3 from=$4 i18n=${5:-} plugin_hint=${6:-}
+
+# Interface translations (i18n_qt/*.json; IFME 8 has i18n/) and, for those languages, Qt's
+# own strings (qtbase_*.qm: standard buttons) when Qt's translations are installed.
+copy_translations() {   # <qt translations dir>
+    [[ -n $i18n && -d $i18n ]] || return 0
+    rm -rf "$dest/i18n_qt" "$dest/translations"   # (the old name)
+    mkdir -p "$dest/i18n_qt"
+    cp -f "$i18n"/*.json "$dest/i18n_qt/" 2>/dev/null || true
+    local j code q
+    for j in "$dest/i18n_qt"/*.json; do
+        [[ -f $j ]] || continue
+        code=$(basename "$j" .json)
+        for q in "$1/qtbase_${code/-/_}.qm" "$1/qtbase_${code%%-*}.qm"; do
+            if [[ -f $q ]]; then cp -f "$q" "$dest/i18n_qt/"; break; fi
+        done
+    done
+}
 
 # ---- where Qt keeps its plugins ----
 plugins=
@@ -128,7 +146,17 @@ cat > "$dest/qt.conf" <<'EOF'
 [Paths]
 Prefix = .
 Plugins = lib/qt6/plugins
+Translations = i18n_qt
 EOF
+
+qt_tr=
+for q in qtpaths6 qtpaths qmake6 qmake; do
+    command -v "$q" >/dev/null 2>&1 || continue
+    if [[ $q == qtpaths* ]]; then qt_tr=$("$q" --query QT_INSTALL_TRANSLATIONS 2>/dev/null || true)
+    else qt_tr=$("$q" -query QT_INSTALL_TRANSLATIONS 2>/dev/null || true); fi
+    [[ -n $qt_tr ]] && break
+done
+copy_translations "$qt_tr"
 
 # ---- data the .NET build ships as .wad files (Language.json lives in jason.wad) ----
 for wad in jason.wad resources.wad; do

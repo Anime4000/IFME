@@ -36,6 +36,7 @@
 #include <QTreeWidget>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <iterator>
 
 #include "aboutdialog.h"
 #include "app.h"
@@ -902,6 +903,9 @@ void MainWindow::showPreferences()
 	setOutputDir(m_outDir->text());
 	if (dlg.rootChanged())
 		reloadPlugins();
+	if (dlg.languageChanged())
+		QMessageBox::information(this, tr("Interface language"),
+			tr("The new language is used the next time IFME starts."));
 }
 
 void MainWindow::showAbout()
@@ -950,11 +954,13 @@ void MainWindow::saveScreenshots(const QString &dir)
 		m_queue->setCurrentItem(m_queue->topLevelItem(0));
 		m_queue->topLevelItem(0)->setSelected(true);
 	}
+	// Same file names in every interface language.
+	const char *const names[] = { "mediainfo", "video", "audio", "subtitle", "attachment", "advanced", "logging" };
 	for (int i = 0; i < m_tabs->count(); i++) {
 		m_tabs->setCurrentIndex(i);
 		QCoreApplication::processEvents();
 		grab().save(QDir(dir).filePath(QStringLiteral("main-%1-%2.png").arg(i)
-			.arg(m_tabs->tabText(i).toLower().remove(QLatin1Char(' ')))));
+			.arg(i < static_cast<int>(std::size(names)) ? QLatin1String(names[i]) : QLatin1String("tab"))));
 	}
 	AboutDialog about(this);
 	about.show();
