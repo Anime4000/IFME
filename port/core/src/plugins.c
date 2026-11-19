@@ -439,6 +439,49 @@ static ifme_plugin_kind kind_of(const char *path)
 	return (name[8] | 0x20) == 'a' ? IFME_PLUGIN_AUDIO : IFME_PLUGIN_VIDEO;
 }
 
+static bool is_disabled_guid(const ifme_ctx *ctx, const char *guid)
+{
+	if (!guid)
+		return false;
+	for (size_t i = 0; i < ctx->disabled_count; i++)
+		if (ifme_strcasecmp(ctx->disabled[i], guid) == 0)
+			return true;
+	return false;
+}
+
+/* Usable plugins on the list become DISABLED; ones taken off it are usable
+ * again (DISABLED is only ever set from OK). */
+static void apply_disabled(ifme_ctx *ctx)
+{
+	for (size_t i = 0; i < ctx->plugin_count; i++) {
+		ifme_plugin *p = ctx->plugins[i];
+		bool off = is_disabled_guid(ctx, p->guid);
+		if (off && p->info.status == IFME_PLUGIN_OK)
+			set_status(p, IFME_PLUGIN_DISABLED, NULL);
+		else if (!off && p->info.status == IFME_PLUGIN_DISABLED)
+			set_status(p, IFME_PLUGIN_OK, NULL);
+	}
+}
+
+void ifme_plugins_set_disabled(ifme_ctx *ctx, const char *const *guids, size_t count)
+{
+	if (!ctx)
+		return;
+	for (size_t i = 0; i < ctx->disabled_count; i++)
+		free(ctx->disabled[i]);
+	free(ctx->disabled);
+	ctx->disabled = NULL;
+	ctx->disabled_count = 0;
+
+	if (guids && count) {
+		ctx->disabled = calloc(count, sizeof(char *));
+		for (size_t i = 0; ctx->disabled && i < count; i++)
+			if (guids[i] && (ctx->disabled[ctx->disabled_count] = ifme_strdup(guids[i])) != NULL)
+				ctx->disabled_count++;
+	}
+	apply_disabled(ctx);
+}
+
 int ifme_plugins_load(ifme_ctx *ctx)
 {
 	if (!ctx)
@@ -476,6 +519,7 @@ int ifme_plugins_load(ifme_ctx *ctx)
 	free(list.v);
 
 	ctx->plugins_loaded = true;
+	apply_disabled(ctx);
 
 	int usable = 0;
 	for (size_t i = 0; i < ctx->plugin_count; i++) {
@@ -578,6 +622,7 @@ const char *ifme_plugin_status_name(ifme_plugin_status status)
 	case IFME_PLUGIN_MISSING_BINARY: return "missing";
 	case IFME_PLUGIN_INVALID:        return "invalid";
 	case IFME_PLUGIN_TEST_FAILED:    return "test-failed";
+	case IFME_PLUGIN_DISABLED:       return "disabled";
 	}
 	return "unknown";
 }

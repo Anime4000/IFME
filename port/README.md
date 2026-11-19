@@ -88,8 +88,9 @@ Behaviour compared with `PluginsLoad.cs`:
   exit-code-only check hid both.
 - Optional `"Arch": ["x86_64", "arm64"]` in a manifest overrides `"X64"`, for
   Apple Silicon and ARM Linux builds.
-- Not yet: the user's disabled-plugin list and remembering test failures
-  (needs the settings file, a later milestone).
+- The user's disabled plugins (`ifme_plugins_set_disabled`) are not offered,
+  found by name or tested; the GUI keeps the list and, as C#, adds plugins
+  that fail the start-up test to it.
 
 ### Media information
 
@@ -99,7 +100,7 @@ Behaviour compared with `PluginsLoad.cs`:
 ./build/ifmecli -p --framerate 24 "frames/img%04d.png"                 # image sequence
 ```
 
-In the GUI, drop files onto the window (or pass them on the command line).
+In the GUI, the Media Info tab shows the same for the selected file.
 
 ffprobe comes from `PATH`, else `<root>/Plugins/ffmpeg64`. Compared with
 `MediaInfo.cs` the fields and defaults are the same, except:
@@ -234,6 +235,44 @@ Differences from C#:
 - The first video and audio track are flagged default explicitly (setting a
   subtitle's default flag otherwise left the audio unflagged).
 
+### The GUI
+
+```bash
+./build/ifme --root "/d/Program Files/IFME"        # remembered in Preferences
+./build/ifme movie.mkv other.mp4                    # add files (or folders)
+./build/ifme -f mp4 -o out --start --quit-when-done movie.mkv   # batch, exit code 0 if all worked
+```
+
+The same window as IFME today, on the finished core:
+
+- **Splash screen** (IFME's `SplashScreen14` artwork) while the plugins load
+  and, as C#, the plugins that ask for it (GPU encoders) are tested; the ones
+  that fail are disabled from then on (Preferences can turn the test off,
+  the Plugins window turns plugins back on).
+- **Banner**, queue (name, in ► out format, duration, size, status, progress
+  bar), and the tabs **Video**, **Audio**, **Subtitle**, **Attachment**,
+  **Advanced** (trim, cover art, tags, chapters, MP4 flags), **Media Info**
+  and **Logging**. Drop files or folders onto the window.
+- Settings come from the plugin manifests (presets, tunes, rate-control modes
+  with their ranges, bit depths, chroma; audio modes, qualities, sample rates,
+  channels). Encoder-wide settings apply to every selected file; preset, mode
+  and quality only to files using the same plugin; track edits (on/off,
+  language, title, default) to the file shown. Changing the format swaps
+  encoders the new format cannot hold, as C# did; new files get the encoders
+  chosen last.
+- Extra audio, subtitle and font files can be added per file; cover art can
+  be kept, dropped or replaced.
+- **Start / Pause / Stop** run the queue on a worker thread with live
+  progress and ETA; the log shows every command and encoder line.
+- **About** with the banner and the four characters; IFME's icon on the
+  window and in `ifme.exe` / `ifmecli.exe`.
+- Settings live in `ifme-qt.ini` in IFME's config folder.
+
+The artwork is used as is from `../IFME/Resources` (one copy in the repository).
+Not yet: profiles, translations (i18n), file name prefix/postfix, the C#
+"shut down when done" option, a macOS `.icns` app icon and a Linux
+`.desktop` file.
+
 ### Tests
 
 ```bash
@@ -286,8 +325,15 @@ cli/ifmecli.c                command-line front-end
 cli/exec_ui.c                live progress line, p/r/q keys, Ctrl+C (--exec, --encode)
 cli/encode_cmd.c             --encode / --job / --print-job
 tests/                       ctest: unit tests and a real-pipeline test
-gui/                         Qt front-end
-res/                         Windows manifest and resource script
+gui/main.cpp                 command line, splash, then the main window
+gui/mainwindow.cpp           queue, format / output folder, start / pause / stop
+gui/settingstabs.cpp         Video, Audio, Subtitle, Attachment, Advanced tabs
+gui/encodeworker.cpp         runs ifme_encode() on a worker thread
+gui/splash.cpp, aboutdialog.cpp, dialogs.cpp, widgets.cpp
+                             splash, About, Plugins / Preferences, banner
+gui/app.cpp                  core context, plugin list, settings, JSON helpers
+gui/resources.qrc            IFME's icon and artwork (from ../IFME/Resources)
+res/                         Windows manifest, resource scripts (icon)
 ```
 
 ## Roadmap
@@ -301,4 +347,4 @@ res/                         Windows manifest and resource script
 - [x] 4. Video encode (single and multi-pass) with progress and ETA; job JSON
 - [x] 5. Audio encode (piped, direct, copy with fallback, extra files) and muxing
 - [x] 6. Subtitles (soft and burned), fonts/attachments, cover art, tags, chapters
-- [ ] 7. GUI on top of the finished core
+- [x] 7. GUI on top of the finished core: splash, queue, settings tabs, encoding, plugins, About

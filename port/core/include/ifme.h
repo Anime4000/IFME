@@ -74,7 +74,8 @@ typedef enum ifme_plugin_status {
 	IFME_PLUGIN_DUPLICATE,       /* GUID already provided by an earlier manifest */
 	IFME_PLUGIN_MISSING_BINARY,  /* encoder program not found                    */
 	IFME_PLUGIN_INVALID,         /* manifest could not be parsed                 */
-	IFME_PLUGIN_TEST_FAILED      /* self-test ran and failed                     */
+	IFME_PLUGIN_TEST_FAILED,     /* self-test ran and failed                     */
+	IFME_PLUGIN_DISABLED         /* switched off by the user                     */
 } ifme_plugin_status;
 
 typedef struct ifme_plugin_info {
@@ -99,6 +100,11 @@ int ifme_plugins_load(ifme_ctx *ctx);
 size_t                  ifme_plugin_count(const ifme_ctx *ctx);
 const ifme_plugin_info *ifme_plugin_at(const ifme_ctx *ctx, size_t index);
 const char             *ifme_plugin_status_name(ifme_plugin_status status);
+
+/* The user's disabled plugins (GUIDs; C#: Settings.PluginsDisabled). They get
+ * IFME_PLUGIN_DISABLED now and after every reload: not found by name, not
+ * self-tested, not offered. Replaces the previous list; NULL/0 clears it. */
+void ifme_plugins_set_disabled(ifme_ctx *ctx, const char *const *guids, size_t count);
 
 /* Every plugin as a JSON array, including each resolved manifest under
  * "manifest_json". Caller frees with ifme_free(). */

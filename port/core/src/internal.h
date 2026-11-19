@@ -22,6 +22,8 @@ struct ifme_ctx {
 	struct ifme_plugin **plugins;
 	size_t plugin_count;
 	bool plugins_loaded;
+	char **disabled;             /* user-disabled GUIDs (ifme_plugins_set_disabled) */
+	size_t disabled_count;
 };
 
 /* ---- platform/paths.c ---------------------------------------------------- */

@@ -1,0 +1,15 @@
+<!DOCTYPE RCC>
+<!-- IFME's own artwork, used as is from the C# project (IFME/Resources). -->
+<RCC version="1.0">
+	<qresource prefix="/ifme">
+		<file alias="icon.ico">../../IFME/Resources/ifme-zenui.ico</file>
+		<file alias="splash.png">../../IFME/Resources/SplashScreen14.png</file>
+		<file alias="banner-left.png">../../IFME/Resources/Banner_4a.png</file>
+		<file alias="banner-right.png">../../IFME/Resources/Banner_2b.png</file>
+		<file alias="banner-about.png">../../IFME/Resources/Banner_About.png</file>
+		<file alias="ichika.png">../../IFME/Resources/Avatar1_Ichika.png</file>
+		<file alias="fumiko.png">../../IFME/Resources/Avatar2_Fumiko.png</file>
+		<file alias="miho.png">../../IFME/Resources/Avatar3_Miho.png</file>
+		<file alias="erika.png">../../IFME/Resources/Avatar4_Erika.png</file>
+	</qresource>
+</RCC>

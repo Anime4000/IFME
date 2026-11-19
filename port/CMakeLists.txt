@@ -65,17 +65,28 @@ if(WIN32)
     target_link_libraries(ifmecore PRIVATE shell32 ole32)   # SHGetKnownFolderPath, CoTaskMemFree
 endif()
 
-# Windows: embed the manifest (UTF-8 code page, long paths) in every executable.
+# IFME's artwork (icon, splash, banners, About) is used as is from the C#
+# project next to this folder.
+set(IFME_ART_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/Resources")
+
+# Windows: embed the manifest (UTF-8 code page, long paths) in every executable,
+# and the IFME icon in the two programs.
 if(WIN32)
     set(IFME_MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/res/ifme.manifest")
     configure_file(res/ifme.rc.in "${CMAKE_CURRENT_BINARY_DIR}/ifme.rc" @ONLY)
     set(IFME_WIN_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme.rc")
+    set(IFME_APP_RESOURCES "${IFME_WIN_RESOURCES}")
+    if(EXISTS "${IFME_ART_DIR}/ifme-zenui.ico")
+        set(IFME_ICON "${IFME_ART_DIR}/ifme-zenui.ico")
+        configure_file(res/ifme-app.rc.in "${CMAKE_CURRENT_BINARY_DIR}/ifme-app.rc" @ONLY)
+        set(IFME_APP_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme-app.rc")
+    endif()
 endif()
 
 # ---------------------------------------------------------------------------
 # ifmecli (C)
 # ---------------------------------------------------------------------------
-add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c cli/encode_cmd.c ${IFME_WIN_RESOURCES})
+add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c cli/encode_cmd.c ${IFME_APP_RESOURCES})
 target_link_libraries(ifmecli PRIVATE ifmecore cjson)
 
 # ---------------------------------------------------------------------------
@@ -84,12 +95,24 @@ target_link_libraries(ifmecli PRIVATE ifmecore cjson)
 if(IFME_BUILD_GUI)
     find_package(Qt6 REQUIRED COMPONENTS Widgets)
     set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+    if(NOT EXISTS "${IFME_ART_DIR}/SplashScreen14.png")
+        message(FATAL_ERROR "IFME artwork not found in ${IFME_ART_DIR} (the GUI uses IFME/Resources)")
+    endif()
 
     add_executable(ifme WIN32 MACOSX_BUNDLE
         gui/main.cpp
-        gui/mainwindow.cpp
-        gui/mainwindow.h
-        ${IFME_WIN_RESOURCES})
+        gui/app.cpp gui/app.h
+        gui/splash.cpp gui/splash.h
+        gui/aboutdialog.cpp gui/aboutdialog.h
+        gui/widgets.cpp gui/widgets.h
+        gui/encodeworker.cpp gui/encodeworker.h
+        gui/settingstabs.cpp gui/settingstabs.h
+        gui/dialogs.cpp gui/dialogs.h
+        gui/mainwindow.cpp gui/mainwindow.h
+        gui/queueitem.h
+        gui/resources.qrc
+        ${IFME_APP_RESOURCES})
 
     target_link_libraries(ifme PRIVATE ifmecore Qt6::Widgets)
 

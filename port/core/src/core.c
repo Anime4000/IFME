@@ -54,6 +54,7 @@ void ifme_destroy(ifme_ctx *ctx)
 	if (!ctx)
 		return;
 
+	ifme_plugins_set_disabled(ctx, NULL, 0);
 	ifme_plugins_clear(ctx);
 	free(ctx->app_dir);
 	free(ctx->config_dir);
