@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	QApplication::setApplicationName(QStringLiteral("IFME"));
-	QApplication::setApplicationDisplayName(QStringLiteral("Internet Friendly Media Encoder"));
 	QApplication::setApplicationVersion(QString::fromUtf8(ifme_version()));
 	QApplication::setWindowIcon(QIcon(QStringLiteral(":/ifme/icon.ico")));
 
@@ -47,8 +46,17 @@ int main(int argc, char *argv[])
 	app::Core core;
 	if (parser.isSet(root))
 		app::settings().setValue(QStringLiteral("paths/root"), QDir(parser.value(root)).absolutePath());
-	const QString rootDir = app::settings().value(QStringLiteral("paths/root")).toString();
-	core.setRoot(rootDir.isEmpty() ? QCoreApplication::applicationDirPath() : rootDir);
+	QString rootDir = app::settings().value(QStringLiteral("paths/root")).toString();
+	if (rootDir.isEmpty()) {
+		// Released: next to IFME.exe and Plugins/. Staged in IFME/bin/Qt for
+		// testing: the Plugins/ of IFME/bin/Debug.
+		const QDir exe(QCoreApplication::applicationDirPath());
+		rootDir = exe.path();
+		if (!exe.exists(QStringLiteral("Plugins")) && QDir(exe.filePath(QStringLiteral("../Debug/Plugins"))).exists())
+			rootDir = QDir::cleanPath(exe.filePath(QStringLiteral("../Debug")));
+	}
+	core.setRoot(rootDir);
+	app::loadLanguages(core.root());   // Language.json from jason.wad
 
 	MainWindow *window = nullptr;
 	auto showMain = [&] {

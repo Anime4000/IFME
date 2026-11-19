@@ -10,6 +10,7 @@
 		<file alias="ichika.png">../../IFME/Resources/Avatar1_Ichika.png</file>
 		<file alias="fumiko.png">../../IFME/Resources/Avatar2_Fumiko.png</file>
 		<file alias="miho.png">../../IFME/Resources/Avatar3_Miho.png</file>
+		<file alias="Language.json">../../IFME/Language.json</file>
 		<file alias="erika.png">../../IFME/Resources/Avatar4_Erika.png</file>
 	</qresource>
 </RCC>

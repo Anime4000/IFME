@@ -13,7 +13,12 @@ AboutDialog::AboutDialog(QWidget *parent)
 {
 	setWindowTitle(tr("About IFME"));
 	setFixedSize(600, 700);
-	setStyleSheet(QStringLiteral("AboutDialog { background: white; } QLabel { color: black; }"));
+	// frmAbout: black window, white text, a (14,14,14) strip behind the links.
+	setStyleSheet(QStringLiteral("AboutDialog { background: black; } QLabel { color: white; background: transparent; }"
+	                             " QLabel#footer { background: rgb(14,14,14); }"));
+	auto *footer = new QLabel(this);
+	footer->setObjectName(QStringLiteral("footer"));
+	footer->setGeometry(0, 610, 600, 90);
 
 	auto label = [this](const QRect &r, const QString &text, double pt, bool bold) {
 		auto *l = new QLabel(text, this);
@@ -27,7 +32,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 		return l;
 	};
 	auto link = [&](const QRect &r, const QString &text, const char *url, double pt, bool bold) {
-		QLabel *l = label(r, QStringLiteral("<a href=\"%1\">%2</a>")
+		QLabel *l = label(r, QStringLiteral("<a style=\"color: white;\" href=\"%1\">%2</a>")
 		                     .arg(QLatin1String(url), text.toHtmlEscaped()), pt, bold);
 		l->setTextFormat(Qt::RichText);
 		l->setOpenExternalLinks(true);
@@ -40,7 +45,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 	banner->setPixmap(QPixmap(QStringLiteral(":/ifme/banner-about.png")));
 
 	label({ 0, 64, 600, 48 }, QStringLiteral("'%1'").arg(QLatin1String(app::CodeName)), 14, false);
-	label({ 0, 112, 600, 50 }, tr("Version %1 (native port)").arg(QString::fromUtf8(ifme_version())), 14, true);
+	label({ 0, 112, 600, 50 }, tr("Version %1 (Qt)").arg(QString::fromUtf8(ifme_version())), 14, true);
 	label({ 0, 162, 600, 48 },
 	      tr("© 2011-%1 Anime4000 & Contributor, Some Right Reserved.").arg(QDate::currentDate().year()),
 	      10, false);

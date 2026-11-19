@@ -1,6 +1,7 @@
 // widgets.h - small widgets: the main-window banner and a progress-bar cell.
 #pragma once
 
+#include <QComboBox>
 #include <QPixmap>
 #include <QStyledItemDelegate>
 #include <QWidget>
@@ -18,6 +19,27 @@ protected:
 
 private:
 	QPixmap m_left, m_right;
+};
+
+// Language picker (C#: cboVideoLang etc.): full names shown, ISO 639-2 codes
+// as data. A code missing from the list is added so it is not lost.
+class LanguageCombo : public QComboBox
+{
+public:
+	explicit LanguageCombo(QWidget *parent = nullptr);
+	void setCode(const QString &code);
+	QString code() const;
+};
+
+// Edits a tree column holding a language: shows the name, keeps the code in
+// Qt::UserRole.
+class LanguageDelegate : public QStyledItemDelegate
+{
+public:
+	using QStyledItemDelegate::QStyledItemDelegate;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const override;
+	void setEditorData(QWidget *editor, const QModelIndex &idx) const override;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &idx) const override;
 };
 
 // Draws a progress bar for cells whose Qt::UserRole holds 0..100 (or -1: text).

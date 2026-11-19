@@ -28,6 +28,7 @@ protected:
 private:
 	app::Core &m_core;
 	bool m_test;
+	bool m_blur = false;    // acrylic blur behind the window (Windows)
 	QPixmap m_image;
 	QLabel *m_version, *m_loading, *m_status, *m_log, *m_contrib;
 	QStringList m_logLines;

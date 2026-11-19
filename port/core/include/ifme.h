@@ -32,7 +32,7 @@ typedef struct ifme_cpu_info {
 	char hypervisor_vendor[16];  /* e.g. "KVMKVMKVM", "Microsoft Hv"            */
 } ifme_cpu_info;
 
-/* Library version, e.g. "0.1.0". Never NULL. */
+/* Library version, e.g. "9.0.0-alpha". Never NULL. */
 const char *ifme_version(void);
 
 /* Create / destroy a context. Returns NULL only when out of memory. */

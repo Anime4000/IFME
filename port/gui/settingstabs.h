@@ -18,6 +18,7 @@ class QComboBox;
 class QDoubleSpinBox;
 class QLabel;
 class QLineEdit;
+class LanguageCombo;
 class QPushButton;
 class QSpinBox;
 class QTreeWidget;
@@ -68,7 +69,8 @@ private:
 	QDoubleSpinBox *m_value;
 	QSpinBox *m_passes, *m_width, *m_height;
 	QCheckBox *m_deint;
-	QLineEdit *m_lang, *m_args, *m_filter;
+	QLineEdit *m_args, *m_filter;
+	LanguageCombo *m_lang;
 	QWidget *m_settings;
 
 	const app::Plugin *plugin() const;

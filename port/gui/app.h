@@ -21,6 +21,9 @@ inline constexpr const char *TradeMarks =
 	"Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, "
 	"AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.";
 
+inline constexpr const char *DonateUrl =
+	"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U";
+
 // User settings: an INI file in IFME's config folder (or the file given to
 // setSettingsFile() before the first use, for tests).
 QSettings &settings();
@@ -82,6 +85,15 @@ QJsonValue jget(const QJsonObject &o, const QString &key);
 QString jstr(const QJsonValue &v);           // strings and numbers as text
 double jnum(const QJsonValue &v, double fallback = 0);
 QStringList jstrings(const QJsonValue &arr);
+
+// ISO 639-2 languages (code, name), sorted by name: Language.json from
+// jason.wad in the IFME folder, as C# reads it (a built-in copy otherwise).
+struct LanguageCode {
+	QString code, name;
+};
+void loadLanguages(const QString &root);    // once, before languages()
+const QVector<LanguageCode> &languages();
+QString languageName(const QString &code);   // the code itself when unknown
 
 // "00:01:02.500" / "62.5" -> seconds, -1 when invalid.
 double parseTime(const QString &s);

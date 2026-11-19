@@ -6,7 +6,7 @@ Work-in-progress rewrite of IFME without Mono/.NET:
 |---|---|---|
 | `libifmecore`: plugins, probing, encoding pipeline, process control | C11 | `core/` |
 | `ifmecli`: command-line front-end | C11 | `cli/` |
-| `ifme`: desktop GUI | C++17 + Qt 6 Widgets | `gui/` |
+| `ifme9`: desktop GUI (IFME 9 alpha) | C++17 + Qt 6 Widgets | `gui/` |
 
 Both front-ends use the same C interface, [`core/include/ifme.h`](core/include/ifme.h).
 Encoders stay external programs described by the existing `Plugins/*.json`
@@ -30,7 +30,18 @@ pacman -S --needed mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake m
 ```
 
 Run the programs from the UCRT64 shell (it puts the Qt DLLs on `PATH`), or
-bundle them for distribution with `windeployqt build/ifme.exe`.
+make a portable copy that runs anywhere:
+
+```bash
+cmake --build build --target deploy
+```
+
+This fills `../IFME/bin/Qt` (next to the .NET `Release` folder) with
+`ifme9.exe`, `ifmecli.exe`, the Qt and MinGW DLLs (`windeployqt6` plus every
+DLL they import from UCRT64) and the `.wad` files from `../IFME/bin/Debug`.
+For a combined release put its contents beside `IFME.exe`, `Plugins/` and
+`Samples/`. Run from `bin/Qt` itself, it uses `bin/Debug`'s `Plugins/`.
+The version is `9.0.0-alpha` (the .NET release is 8.x).
 
 Every executable embeds [`res/ifme.manifest`](res/ifme.manifest), which makes
 the process code page UTF-8 (Windows 10 1903+). Plain `char *` APIs (`fopen`,
@@ -56,7 +67,7 @@ brew install cmake ninja qt
 ```
 
 ```
-IFME core   0.1.0
+IFME core   9.0.0-alpha
 App folder  D:\...\port\build
 Config      C:\Users\<you>\AppData\Roaming\IFME
 CPU         AMD Ryzen 9 3950X 16-Core Processor (x86_64)
@@ -73,7 +84,7 @@ manifests as IFME today. Point it at an existing install with `--root`:
 ./build/ifmecli --root "/d/Program Files/IFME" --self-test          # plugins with "TestRequired"
 ./build/ifmecli --root "/d/Program Files/IFME" --self-test --all -v # every usable plugin, full detail
 ./build/ifmecli --root "/d/Program Files/IFME" --list-plugins --json
-./build/ifme --root "/d/Program Files/IFME"                          # GUI
+./build/ifme9 --root "/d/Program Files/IFME"                          # GUI
 ```
 
 Behaviour compared with `PluginsLoad.cs`:
@@ -238,9 +249,9 @@ Differences from C#:
 ### The GUI
 
 ```bash
-./build/ifme --root "/d/Program Files/IFME"        # remembered in Preferences
-./build/ifme movie.mkv other.mp4                    # add files (or folders)
-./build/ifme -f mp4 -o out --start --quit-when-done movie.mkv   # batch, exit code 0 if all worked
+./build/ifme9 --root "/d/Program Files/IFME"        # remembered in Preferences
+./build/ifme9 movie.mkv other.mp4                    # add files (or folders)
+./build/ifme9 -f mp4 -o out --start --quit-when-done movie.mkv   # batch, exit code 0 if all worked
 ```
 
 The same window as IFME today, on the finished core:
@@ -249,10 +260,14 @@ The same window as IFME today, on the finished core:
   and, as C#, the plugins that ask for it (GPU encoders) are tested; the ones
   that fail are disabled from then on (Preferences can turn the test off,
   the Plugins window turns plugins back on).
-- **Banner**, queue (name, in ► out format, duration, size, status, progress
-  bar), and the tabs **Video**, **Audio**, **Subtitle**, **Attachment**,
-  **Advanced** (trim, cover art, tags, chapters, MP4 flags), **Media Info**
-  and **Logging**. Drop files or folders onto the window.
+- **Banner** on top (the right image fades over the left one), the toolbar
+  under it with **Donate** on the right, the queue (name, in ► out format,
+  duration, size, status, progress bar), and the tabs **Media Info**,
+  **Video**, **Audio**, **Subtitle**, **Attachment**, **Advanced** (trim,
+  cover art, tags, chapters, MP4 flags) and **Logging**. Drop files or
+  folders onto the window.
+- Languages are picked by name from `Language.json` in `jason.wad`, as C#
+  does (a built-in copy of `../IFME/Language.json` when there is no wad).
 - Settings come from the plugin manifests (presets, tunes, rate-control modes
   with their ranges, bit depths, chroma; audio modes, qualities, sample rates,
   channels). Encoder-wide settings apply to every selected file; preset, mode
@@ -264,8 +279,9 @@ The same window as IFME today, on the finished core:
   be kept, dropped or replaced.
 - **Start / Pause / Stop** run the queue on a worker thread with live
   progress and ETA; the log shows every command and encoder line.
-- **About** with the banner and the four characters; IFME's icon on the
-  window and in `ifme.exe` / `ifmecli.exe`.
+- **About** (black, as frmAbout) with the banner and the four characters;
+  the splash has the acrylic blur of C# on Windows 10 1803 and later; IFME's
+  icon on the window and in `ifme9.exe` / `ifmecli.exe`.
 - Settings live in `ifme-qt.ini` in IFME's config folder.
 
 The artwork is used as is from `../IFME/Resources` (one copy in the repository).

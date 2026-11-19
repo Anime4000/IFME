@@ -3,6 +3,7 @@
 #include <QElapsedTimer>
 #include <QGuiApplication>
 #include <QLabel>
+#include <QOperatingSystemVersion>
 #include <QPainter>
 #include <QPropertyAnimation>
 #include <QScreen>
@@ -10,6 +11,29 @@
 #include <QTimer>
 
 #include "app.h"
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+
+// C#'s WindowUtils.EnableAcrylic: acrylic blur behind the window through the
+// undocumented SetWindowCompositionAttribute (Windows 10 1803 and later).
+static bool enableAcrylic(HWND hwnd, QColor tint)
+{
+	if (QOperatingSystemVersion::current() < QOperatingSystemVersion(QOperatingSystemVersion::Windows, 10, 0, 17134))
+		return false;
+	struct AccentPolicy { int state; DWORD flags; DWORD color; DWORD animation; };
+	struct CompositionData { int attribute; void *data; SIZE_T size; };
+	using SetWca = BOOL(WINAPI *)(HWND, CompositionData *);
+	auto set = reinterpret_cast<SetWca>(reinterpret_cast<void *>(
+		GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetWindowCompositionAttribute")));
+	if (!set)
+		return false;
+	AccentPolicy accent{ 4 /* ACCENT_ENABLE_ACRYLICBLURBEHIND */, 0x20 | 0x40 | 0x80 | 0x100,
+		(DWORD(tint.alpha()) << 24) | (DWORD(tint.blue()) << 16) | (DWORD(tint.green()) << 8) | DWORD(tint.red()), 0 };
+	CompositionData data{ 19 /* WCA_ACCENT_POLICY */, &accent, sizeof(accent) };
+	return set(hwnd, &data) != FALSE;
+}
+#endif
 
 // Layout of C#'s frmSplashScreen (1066 x 600, labels in white).
 static constexpr int BaseW = 1066, BaseH = 600;
@@ -22,6 +46,15 @@ SplashScreen::SplashScreen(app::Core &core, bool testEncoders, QWidget *parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(QStringLiteral("IFME"));
+#ifdef Q_OS_WIN
+	// The transparent parts of the artwork show the blurred desktop, as in C#.
+	if (QGuiApplication::platformName() == QLatin1String("windows")) {
+		setAttribute(Qt::WA_TranslucentBackground);
+		m_blur = enableAcrylic(reinterpret_cast<HWND>(winId()), QColor(18, 18, 18, 71));
+		if (!m_blur)
+			setAttribute(Qt::WA_TranslucentBackground, false);
+	}
+#endif
 
 	// Smaller screens get a smaller splash, same proportions.
 	double k = 1.0;
@@ -50,7 +83,7 @@ SplashScreen::SplashScreen(app::Core &core, bool testEncoders, QWidget *parent)
 	m_log = label(17, 280, 439, 160, "Tahoma", 7, false, Qt::AlignLeft | Qt::AlignBottom);
 	m_contrib = label(16, 450, 440, 133, "Segoe UI", 9, false, Qt::AlignLeft | Qt::AlignBottom);
 
-	m_version->setText(tr("Release Version %1 (%2)")
+	m_version->setText(tr("Alpha Version %1 (%2)")
 		.arg(QString::fromUtf8(ifme_version()), QString::fromLatin1(app::CodeName)));
 	m_loading->setText(tr("Initializing..."));
 	m_status->setText(tr("Loading..."));
@@ -61,7 +94,13 @@ SplashScreen::SplashScreen(app::Core &core, bool testEncoders, QWidget *parent)
 void SplashScreen::paintEvent(QPaintEvent *)
 {
 	QPainter p(this);
-	p.fillRect(rect(), Qt::black);
+	if (m_blur) {
+		p.setCompositionMode(QPainter::CompositionMode_Source);
+		p.fillRect(rect(), Qt::transparent);
+		p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+	} else {
+		p.fillRect(rect(), Qt::black);
+	}
 	p.setRenderHint(QPainter::SmoothPixmapTransform);
 	p.drawPixmap(rect(), m_image);
 }

@@ -1,6 +1,10 @@
 #include "app.h"
 
+#include <QCoreApplication>
 #include <QDir>
+#include <QFile>
+#include <QtEndian>
+#include <algorithm>
 #include <QJsonDocument>
 
 namespace app {
@@ -245,6 +249,76 @@ QStringList jstrings(const QJsonValue &arr)
 		if (v.isString() || v.isDouble())
 			out << jstr(v);
 	return out;
+}
+
+// Reads one stored (uncompressed) entry from a zip, as the .wad files are made
+// (7za -mx=0). Returns an empty array for anything else.
+static QByteArray zipStoredEntry(const QString &zipPath, const QByteArray &name)
+{
+	QFile f(zipPath);
+	if (!f.open(QIODevice::ReadOnly))
+		return {};
+	const QByteArray zip = f.readAll();
+	const char sig[] = { 'P', 'K', 3, 4 };
+	qsizetype at = 0;
+	while ((at = zip.indexOf(QByteArray(sig, 4), at)) >= 0 && at + 30 <= zip.size()) {
+		const auto *h = reinterpret_cast<const uchar *>(zip.constData() + at);
+		const quint16 flags = qFromLittleEndian<quint16>(h + 6);
+		const quint16 method = qFromLittleEndian<quint16>(h + 8);
+		const quint32 size = qFromLittleEndian<quint32>(h + 18);
+		const quint16 nameLen = qFromLittleEndian<quint16>(h + 26);
+		const quint16 extraLen = qFromLittleEndian<quint16>(h + 28);
+		const qsizetype data = at + 30 + nameLen + extraLen;
+		if (zip.mid(at + 30, nameLen) == name) {
+			if (method != 0 || (flags & 8) || data + size > zip.size())
+				return {};
+			return zip.mid(data, size);
+		}
+		at = data + size;
+	}
+	return {};
+}
+
+static QVector<LanguageCode> g_languages;
+
+const QVector<LanguageCode> &languages()
+{
+	if (g_languages.isEmpty())
+		loadLanguages(QString());
+	return g_languages;
+}
+
+void loadLanguages(const QString &root)
+{
+	QVector<LanguageCode> &list = g_languages;
+	list.clear();
+
+	QByteArray json;
+	for (const QString &dir : { root, QCoreApplication::applicationDirPath() }) {
+		if (!dir.isEmpty() && json.isEmpty())
+			json = zipStoredEntry(QDir(dir).filePath(QStringLiteral("jason.wad")), "Language.json");
+	}
+	if (json.isEmpty()) {
+		QFile f(QStringLiteral(":/ifme/Language.json"));
+		if (f.open(QIODevice::ReadOnly))
+			json = f.readAll();
+	}
+	if (json.startsWith("\xEF\xBB\xBF"))   // UTF-8 BOM
+		json.remove(0, 3);
+	const QJsonObject o = QJsonDocument::fromJson(json).object();
+	for (auto i = o.constBegin(); i != o.constEnd(); ++i)
+		list.push_back({ i.key(), i.value().toString() });
+	std::sort(list.begin(), list.end(), [](const LanguageCode &a, const LanguageCode &b) {
+		return QString::localeAwareCompare(a.name, b.name) < 0;
+	});
+}
+
+QString languageName(const QString &code)
+{
+	for (const LanguageCode &l : languages())
+		if (l.code == code)
+			return l.name;
+	return code;
 }
 
 double parseTime(const QString &s)

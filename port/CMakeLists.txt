@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(ifme
-    VERSION 0.1.0
+    VERSION 9.0.0
     DESCRIPTION "Internet Friendly Media Encoder"
     LANGUAGES C CXX)
 
@@ -57,7 +57,9 @@ add_library(ifmecore STATIC
     core/src/platform/cpu_other.c)
 
 target_include_directories(ifmecore PUBLIC core/include)
-target_compile_definitions(ifmecore PRIVATE IFME_VERSION="${PROJECT_VERSION}")
+# IFME 9 alpha (the .NET release is 8.x).
+set(IFME_VERSION_STRING "${PROJECT_VERSION}-alpha")
+target_compile_definitions(ifmecore PRIVATE IFME_VERSION="${IFME_VERSION_STRING}")
 target_link_libraries(ifmecore PRIVATE cjson)
 
 if(WIN32)
@@ -119,7 +121,25 @@ if(IFME_BUILD_GUI)
     set_target_properties(ifme PROPERTIES
         MACOSX_BUNDLE_BUNDLE_NAME "IFME"
         MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.anime4000.ifme"
-        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+        OUTPUT_NAME ifme9)   # ifme9.exe, beside the .NET IFME.exe in a combined release
+
+    # Portable copy for a combined release: cmake --build build --target deploy
+    # puts ifme9.exe, ifmecli.exe, the Qt and MinGW DLLs and the .wad files in
+    # IFME/bin/Qt (the .NET Release folder's neighbour).
+    if(WIN32)
+        set(IFME_DEPLOY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Qt" CACHE PATH "Where the deploy target copies the portable build")
+        set(IFME_DEPLOY_FROM "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/bin/Debug" CACHE PATH "IFME folder the .wad files are copied from")
+        find_program(IFME_BASH bash REQUIRED)
+        get_target_property(IFME_QMAKE Qt6::qmake IMPORTED_LOCATION)
+        get_filename_component(IFME_QT_BIN "${IFME_QMAKE}" DIRECTORY)
+        add_custom_target(deploy
+            COMMAND "${IFME_BASH}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy.sh"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_BIN}"
+            DEPENDS ifme ifmecli
+            COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
+            VERBATIM)
+    endif()
 endif()
 
 # ---------------------------------------------------------------------------

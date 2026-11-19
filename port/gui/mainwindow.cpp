@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QDirIterator>
 #include <QDragEnterEvent>
@@ -139,7 +140,8 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	setWindowTitle(QStringLiteral("Internet Friendly Media Encoder %1").arg(QString::fromUtf8(ifme_version())));
 	setAcceptDrops(true);
 
-	// ---- toolbar ----
+	// ---- banner on top, toolbar under it (as frmMain) ----
+	setMenuWidget(new BannerWidget(this));
 	QToolBar *tb = addToolBar(tr("Queue"));
 	tb->setMovable(false);
 	tb->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -172,13 +174,19 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	act(QStyle::SP_FileDialogDetailedView, tr("&Plugins"), &MainWindow::showPlugins, false);
 	act(QStyle::SP_FileDialogInfoView, tr("Pr&eferences"), &MainWindow::showPreferences);
 	act(QStyle::SP_MessageBoxInformation, tr("A&bout"), &MainWindow::showAbout, false);
+	auto *spacer = new QWidget(tb);
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	tb->addWidget(spacer);
+	QAction *donate = tb->addAction(tr("&Donate"));   // text only, as frmMain
+	connect(donate, &QAction::triggered, this, [] {
+		QDesktopServices::openUrl(QUrl(QString::fromLatin1(app::DonateUrl)));
+	});
 
 	// ---- banner, queue, tabs ----
 	auto *central = new QWidget(this);
 	auto *v = new QVBoxLayout(central);
 	v->setContentsMargins(0, 0, 0, 0);
 	v->setSpacing(0);
-	v->addWidget(new BannerWidget(central));
 
 	auto *body = new QWidget(central);
 	auto *bv = new QVBoxLayout(body);
@@ -199,6 +207,10 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	m_queue->setColumnWidth(ColProgress, 160);
 
 	m_tabs = new QTabWidget(split);
+	m_info = new QPlainTextEdit(m_tabs);   // first tab, as in frmMain
+	m_info->setReadOnly(true);
+	m_info->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+	m_tabs->addTab(m_info, tr("Media Info"));
 	auto addTab = [&](SettingsTab *t, const QString &name) {
 		m_settingsTabs << t;
 		m_tabs->addTab(t, name);
@@ -209,10 +221,6 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	addTab(new SubtitleTab(m_core, m_tabs), tr("Subtitle"));
 	addTab(new AttachmentTab(m_core, m_tabs), tr("Attachment"));
 	addTab(new AdvancedTab(m_core, m_tabs), tr("Advanced"));
-	m_info = new QPlainTextEdit(m_tabs);
-	m_info->setReadOnly(true);
-	m_info->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-	m_tabs->addTab(m_info, tr("Media Info"));
 	m_log = new QPlainTextEdit(m_tabs);
 	m_log->setReadOnly(true);
 	m_log->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
