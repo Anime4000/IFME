@@ -14,7 +14,7 @@
 namespace app {
 
 // Shown on the splash screen and in About, as in the C# release.
-inline constexpr const char *CodeName = "Mezame no Uta";
+inline constexpr const char *CodeName = "Yoake no Shirabe";   // same as the .NET 8.7.1 release
 inline constexpr const char *Contributors = "Nemu, Jel42, Robin Lawrie, Ron Mitschke, Project Angel";
 inline constexpr const char *TradeMarks =
 	"Anime4000, Rigaya, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, "

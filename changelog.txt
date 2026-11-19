@@ -1,3 +1,14 @@
+Version 8.7.1 (Yoake no Shirabe)
+--------------------------------
+[New] Alpha release of IFME 9 (ifme9.exe), a new Qt 6 interface on a native C core, shipped beside IFME 8 for testing. It needs no .NET or Mono, uses the same Plugins folder, and includes ifmecli.exe, a command line encoder. IFME 8 (IFME.exe) remains the main program; please report any IFME 9 problems on GitHub.
+[New] IFME 9 alpha was built by Claude Opus 5.5 (Anthropic) as a port of IFME 8: the C core, the command line encoder and the Qt interface.
+[Fixed] Changing the output format could crash with a NullReferenceException, the encoder list was read while it was still being rebound.
+[Fixed] Switching to an audio-only format (MP2, MP3, M4A, OGG, OPUS, FLAC, WMA) and then to another format crashed with a NullReferenceException.
+[Fixed] Settings panel could refresh in the middle of rebuilding the encoder options, re-entering its own update.
+[Fixed] Startup crash under Mono (Linux): the main window used Control.DeviceDpi, which Mono does not implement.
+[Fixed] Plugins whose encoder is set to an absolute path were looked up on $PATH and combined into a wrong path.
+[Update] Main window labels can hold longer text.
+
 Version 8.7.0 (Mezame no Uta)
 -----------------------------
 [Fixed] Pressing Stop then Start again did nothing, the encoding worker was disposed by Stop and could never be reused. Start now works after a Stop.
