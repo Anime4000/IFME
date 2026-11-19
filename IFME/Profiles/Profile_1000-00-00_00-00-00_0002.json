@@ -11,7 +11,7 @@
 			"Mode": 0,
 			"Value": 24.0,
 			"MultiPass": 2,
-			"Command": "--pme --pmode"
+			"Command": ""
 		},
 		"Quality": {
 			"Command": "",
