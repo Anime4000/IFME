@@ -609,6 +609,8 @@ void MainWindow::startEncoding(bool askOverwrite)
 
 	QSettings &s = app::settings();
 	const QString tempRoot = s.value(QStringLiteral("paths/temp")).toString();
+	const app::Existing whenExists = app::existingFiles();
+	QSet<QString> taken;   // outputs of this batch (lower case)
 	QVector<EncodeJob> jobs;
 	int existing = 0;
 	for (int i = 0; i < m_queue->topLevelItemCount(); i++) {
@@ -617,7 +619,14 @@ void MainWindow::startEncoding(bool askOverwrite)
 		if (!it || row->checkState(ColName) != Qt::Checked || it->state == QueueItem::Done)
 			continue;
 		QJsonObject job = it->job;
-		job[QStringLiteral("output")] = outputFor(it->input, it->container());
+		QString out = outputFor(it->input, it->container());
+		// As IFME 8: name_2.mkv, name_3.mkv... instead of overwriting, so a
+		// batch never waits for an answer; also when two queued files would
+		// write the same name.
+		if (whenExists == app::Existing::Number)
+			out = app::numberedPath(out, taken);
+		taken.insert(out.toLower());
+		job[QStringLiteral("output")] = out;
 		job[QStringLiteral("keep_temp")] = s.value(QStringLiteral("encode/keep_temp"), false).toBool();
 		if (!tempRoot.isEmpty())
 			job[QStringLiteral("temp_dir")] = QDir(tempRoot).filePath(
@@ -632,7 +641,7 @@ void MainWindow::startEncoding(bool askOverwrite)
 			QTimer::singleShot(0, qApp, [] { QCoreApplication::exit(1); });
 		return;
 	}
-	if (askOverwrite && existing &&
+	if (askOverwrite && whenExists == app::Existing::Ask && existing &&
 	    QMessageBox::question(this, tr("Overwrite?"),
 	        tr("%n output file(s) already exist. Overwrite them?", nullptr, existing)) != QMessageBox::Yes)
 		return;

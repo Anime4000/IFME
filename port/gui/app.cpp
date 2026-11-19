@@ -4,6 +4,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <algorithm>
 #include <QJsonDocument>
 
@@ -284,6 +285,31 @@ QString decorateName(const QString &base, const NameStyle &n, const QDateTime &w
 	const QString suffix = n.suffixMode == 1 ? QStringLiteral(" [%1]").arg(stamp)
 	                     : n.suffixMode == 2 ? clean(n.suffix) : QString();
 	return prefix + base + suffix;
+}
+
+Existing existingFiles()
+{
+	const QString v = settings().value(QStringLiteral("naming/existing"), QStringLiteral("number")).toString();
+	return v == QLatin1String("ask") ? Existing::Ask : v == QLatin1String("overwrite") ? Existing::Overwrite : Existing::Number;
+}
+
+void setExistingFiles(Existing mode)
+{
+	settings().setValue(QStringLiteral("naming/existing"), mode == Existing::Ask ? QStringLiteral("ask")
+		: mode == Existing::Overwrite ? QStringLiteral("overwrite") : QStringLiteral("number"));
+}
+
+QString numberedPath(const QString &path, const QSet<QString> &taken)
+{
+	auto used = [&](const QString &p) { return QFileInfo::exists(p) || taken.contains(p.toLower()); };
+	if (!used(path))
+		return path;
+	const QFileInfo fi(path);
+	const QString ext = fi.suffix().isEmpty() ? QString() : QLatin1Char('.') + fi.suffix();
+	const QString stem = QDir(fi.path()).filePath(fi.completeBaseName());
+	QString p;
+	for (int n = 2; used(p = QDir::toNativeSeparators(QStringLiteral("%1_%2%3").arg(stem).arg(n).arg(ext))); n++) {}
+	return p;
 }
 
 static QVector<LanguageCode> g_languages;

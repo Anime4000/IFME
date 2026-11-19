@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QSet>
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -103,6 +104,16 @@ void setNameStyle(const NameStyle &style);
 // starts). Characters Windows does not allow in file names are left out.
 QString decorateName(const QString &base, const NameStyle &style,
                      const QDateTime &when = QDateTime::currentDateTime());
+
+// When an output file already exists (and for two queued files that would
+// write the same name): add a number as IFME 8 does (name_2.mkv, name_3.mkv...,
+// so a batch never stops to ask), ask once before starting, or overwrite.
+enum class Existing { Number, Ask, Overwrite };
+Existing existingFiles();                       // from the settings (default Number)
+void setExistingFiles(Existing mode);
+// `path`, or the first free "<name>_<n>.<ext>" (n = 2, 3...) that neither
+// exists nor is in `taken` (paths compared case-insensitively).
+QString numberedPath(const QString &path, const QSet<QString> &taken);
 
 // ISO 639-2 languages (code, name), sorted by name: Language.json from
 // jason.wad in the IFME folder, as C# reads it (a built-in copy otherwise).

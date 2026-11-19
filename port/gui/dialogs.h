@@ -33,6 +33,7 @@ private:
 	QRadioButton *m_prefix[3], *m_suffix[3];
 	QLineEdit *m_prefixText, *m_suffixText;
 	QLabel *m_namePreview;
+	QComboBox *m_existing;
 	bool m_rootChanged = false, m_languageChanged = false;
 
 	app::NameStyle nameStyle() const;
