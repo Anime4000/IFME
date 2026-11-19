@@ -272,6 +272,26 @@ int main(int argc, char **argv)
 	else
 		testProfiles(root);
 
+	// Output names: IFME 8's prefix / suffix rules.
+	const QDateTime when(QDate(2026, 11, 20), QTime(1, 2, 3));
+	app::NameStyle n;   // IFME 8's defaults
+	CHECK(app::decorateName(QStringLiteral("Show - S01E13"), n, when) == "[IFME] Show - S01E13");
+	n.prefixMode = 1;
+	CHECK(app::decorateName(QStringLiteral("x"), n, when) == "[2026-11-20_01-02-03] x");
+	n = {};
+	n.prefixMode = 0;
+	n.suffixMode = 1;
+	CHECK(app::decorateName(QStringLiteral("x"), n, when) == "x [2026-11-20_01-02-03]");
+	n.suffixMode = 2;
+	n.suffix = QStringLiteral(" (v2: final?)");   // ':' and '?' are not allowed in Windows names
+	CHECK(app::decorateName(QStringLiteral("x"), n, when) == "x (v2 final)");
+	n.prefixMode = 2;
+	n.prefix = QStringLiteral("[IFME] ");
+	n.suffixMode = 0;
+	CHECK(app::decorateName(QStringLiteral("x"), n, when) == "[IFME] x");
+	app::setNameStyle(n);
+	CHECK(app::nameStyle().prefixMode == 2 && app::nameStyle().prefix == "[IFME] " && app::nameStyle().suffixMode == 0);
+
 	// .wad files: a deflated one made by a zip tool (tests/data), and IFME 8's
 	// own stored ones with the artwork the GUI reads.
 	wad::Archive z;

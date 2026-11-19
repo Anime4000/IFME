@@ -373,7 +373,8 @@ QString MainWindow::outputFor(const QString &input, const QString &ext) const
 {
 	const QFileInfo fi(input);
 	const QString dir = m_outDir->text().trimmed().isEmpty() ? fi.absolutePath() : m_outDir->text().trimmed();
-	QString out = QDir(dir).filePath(fi.completeBaseName() + QLatin1Char('.') + ext);
+	// Prefix and suffix as set in Preferences (C#'s PrefixMode / PostfixMode).
+	QString out = QDir(dir).filePath(app::decorateName(fi.completeBaseName(), app::nameStyle()) + QLatin1Char('.') + ext);
 	if (QFileInfo(out).absoluteFilePath().compare(fi.absoluteFilePath(), Qt::CaseInsensitive) == 0)
 		out = QDir(dir).filePath(fi.completeBaseName() + QStringLiteral(".ifme.") + ext);
 	return QDir::toNativeSeparators(out);

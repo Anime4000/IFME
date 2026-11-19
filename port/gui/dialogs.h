@@ -3,8 +3,11 @@
 
 #include <QDialog>
 
+#include "app.h"
+
 class QCheckBox;
 class QComboBox;
+class QRadioButton;
 class QLabel;
 class QLineEdit;
 class QPushButton;
@@ -26,7 +29,14 @@ private:
 	QLineEdit *m_root, *m_output, *m_temp;
 	QCheckBox *m_keepTemp, *m_test;
 	QComboBox *m_language;
+	// File name prefix / suffix (C#: rdoPrefix*, rdoPostfix*, txtPrefix...).
+	QRadioButton *m_prefix[3], *m_suffix[3];
+	QLineEdit *m_prefixText, *m_suffixText;
+	QLabel *m_namePreview;
 	bool m_rootChanged = false, m_languageChanged = false;
+
+	app::NameStyle nameStyle() const;
+	void updatePreview();
 };
 
 class PluginsDialog : public QDialog

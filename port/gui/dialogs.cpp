@@ -6,11 +6,13 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFormLayout>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QStandardPaths>
 #include <QThread>
 #include <QTreeWidget>
@@ -92,8 +94,44 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 	auto *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
 	connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
 	connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
+	// ---- file name prefix and suffix, with a preview (C#: frmOptions) ----
+	const app::NameStyle style = app::nameStyle();
+	auto *names = new QGroupBox(tr("File name"), this);
+	auto *nv = new QVBoxLayout(names);
+	m_namePreview = new QLabel(names);
+	m_namePreview->setAlignment(Qt::AlignCenter);
+	m_namePreview->setTextInteractionFlags(Qt::TextSelectableByMouse);
+	nv->addWidget(m_namePreview);
+	auto *sides = new QHBoxLayout;
+	auto side = [&](const QString &title, QRadioButton **radio, QLineEdit *&text, int mode, const QString &value,
+	                const QString &none, const QString &custom) {
+		auto *box = new QGroupBox(title, names);
+		auto *g = new QFormLayout(box);
+		radio[0] = new QRadioButton(none, box);
+		radio[1] = new QRadioButton(tr("Add the date and &time"), box);
+		radio[2] = new QRadioButton(custom, box);
+		text = new QLineEdit(value, box);
+		g->addRow(radio[0]);
+		g->addRow(radio[1]);
+		g->addRow(radio[2], text);
+		radio[qBound(0, mode, 2)]->setChecked(true);
+		for (int i = 0; i < 3; i++)
+			connect(radio[i], &QRadioButton::toggled, this, &PreferencesDialog::updatePreview);
+		// As C#: typing picks "custom", emptying the box picks "none".
+		connect(text, &QLineEdit::textEdited, this, [radio](const QString &t) {
+			radio[t.isEmpty() ? 0 : 2]->setChecked(true);
+		});
+		connect(text, &QLineEdit::textChanged, this, &PreferencesDialog::updatePreview);
+		sides->addWidget(box);
+	};
+	side(tr("Prefix"), m_prefix, m_prefixText, style.prefixMode, style.prefix, tr("&No prefix"), tr("&Custom prefix"));
+	side(tr("Suffix"), m_suffix, m_suffixText, style.suffixMode, style.suffix, tr("No s&uffix"), tr("Custo&m suffix"));
+	nv->addLayout(sides);
+	updatePreview();
+
 	auto *v = new QVBoxLayout(this);
 	v->addLayout(f);
+	v->addWidget(names);
 	v->addWidget(buttons);
 	resize(640, sizeHint().height());
 }
@@ -107,10 +145,33 @@ void PreferencesDialog::accept()
 	s.setValue(QStringLiteral("paths/temp"), m_temp->text().trimmed());
 	s.setValue(QStringLiteral("encode/keep_temp"), m_keepTemp->isChecked());
 	s.setValue(QStringLiteral("startup/test_encoders"), m_test->isChecked());
+	app::setNameStyle(nameStyle());
 	const QString lang = m_language->currentData().toString();
 	m_languageChanged = lang != i18n::chosen();
 	s.setValue(QStringLiteral("ui/language"), lang);
 	QDialog::accept();
+}
+
+app::NameStyle PreferencesDialog::nameStyle() const
+{
+	app::NameStyle n;
+	for (int i = 0; i < 3; i++) {
+		if (m_prefix[i]->isChecked())
+			n.prefixMode = i;
+		if (m_suffix[i]->isChecked())
+			n.suffixMode = i;
+	}
+	n.prefix = m_prefixText->text();
+	n.suffix = m_suffixText->text();
+	return n;
+}
+
+void PreferencesDialog::updatePreview()
+{
+	// C#'s example name, in the format chosen last.
+	const QString ext = app::settings().value(QStringLiteral("ui/format"), QStringLiteral("mkv")).toString();
+	m_namePreview->setText(QStringLiteral("<b>%1.%2</b>").arg(
+		app::decorateName(QStringLiteral("Erdentempel - S01E13 - Aufbruch Bluray-1080p"), nameStyle()).toHtmlEscaped(), ext));
 }
 
 // ---- Plugins --------------------------------------------------------------------
