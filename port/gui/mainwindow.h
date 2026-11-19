@@ -12,7 +12,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	explicit MainWindow(QWidget *parent = nullptr);
+	explicit MainWindow(const QString &rootDir = QString(), QWidget *parent = nullptr);
 
 private:
 	struct CtxDeleter { void operator()(ifme_ctx *c) const { ifme_destroy(c); } };
@@ -21,4 +21,5 @@ private:
 	QPlainTextEdit *m_log = nullptr;
 
 	void showSystemInfo();
+	void showPlugins();
 };

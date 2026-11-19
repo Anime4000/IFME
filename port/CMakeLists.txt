@@ -23,17 +23,31 @@ endif()
 # ---------------------------------------------------------------------------
 # libifmecore (C11, no Qt)
 # ---------------------------------------------------------------------------
-# cpu_x86.c / cpu_other.c are both listed; each compiles to nothing unless the
-# compiler targets its architecture (CMAKE_SYSTEM_PROCESSOR is unreliable and
-# can even be empty, e.g. when the environment lacks PROCESSOR_ARCHITECTURE).
+# cJSON 1.7.18 (MIT), vendored so every platform builds the same code.
+add_library(cjson STATIC core/third_party/cjson/cJSON.c)
+target_include_directories(cjson PUBLIC core/third_party/cjson)
+set_target_properties(cjson PROPERTIES POSITION_INDEPENDENT_CODE ON)
+if(NOT WIN32)
+    target_link_libraries(cjson PUBLIC m)
+endif()
+
+# Platform files are all listed; each one compiles to nothing on the wrong OS
+# or CPU (CMAKE_SYSTEM_PROCESSOR is unreliable and can even be empty).
 add_library(ifmecore STATIC
     core/src/core.c
+    core/src/argv.c
+    core/src/json_relax.c
+    core/src/plugins.c
     core/src/platform/paths.c
+    core/src/platform/fs.c
+    core/src/platform/proc_win32.c
+    core/src/platform/proc_posix.c
     core/src/platform/cpu_x86.c
     core/src/platform/cpu_other.c)
 
 target_include_directories(ifmecore PUBLIC core/include)
 target_compile_definitions(ifmecore PRIVATE IFME_VERSION="${PROJECT_VERSION}")
+target_link_libraries(ifmecore PRIVATE cjson)
 
 if(WIN32)
     target_compile_definitions(ifmecore PUBLIC UNICODE _UNICODE)

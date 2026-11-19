@@ -63,13 +63,48 @@ CPU         AMD Ryzen 9 3950X 16-Core Processor (x86_64)
 SIMD        SSE4.2:yes AVX:yes AVX2:yes FMA3:yes AVX-512F:no
 ```
 
+### Plugins
+
+The new core reads the same `Plugins/**/_plugin.a*.json` and `_plugin.v*.json`
+manifests as IFME today. Point it at an existing install with `--root`:
+
+```bash
+./build/ifmecli --root "/d/Program Files/IFME" --list-plugins
+./build/ifmecli --root "/d/Program Files/IFME" --self-test          # plugins with "TestRequired"
+./build/ifmecli --root "/d/Program Files/IFME" --self-test --all -v # every usable plugin, full detail
+./build/ifmecli --root "/d/Program Files/IFME" --list-plugins --json
+./build/ifme --root "/d/Program Files/IFME"                          # GUI
+```
+
+Behaviour compared with `PluginsLoad.cs`:
+
+- Manifests may contain comments and trailing commas (Newtonsoft accepted them).
+- Encoders run **without a shell**, as argument lists, so folders with spaces,
+  `$`, backticks or non-Latin characters work on every platform.
+- A missing encoder program is reported at load time (`missing`).
+- A self-test passes only if the encoder exits with 0 **and** writes a non-empty
+  file. The audio test command follows a real encode (`MediaEncoding.cs`); the
+  old test dropped exhale's preset and sent stereo to mono-only AMR-NB, and its
+  exit-code-only check hid both.
+- Optional `"Arch": ["x86_64", "arm64"]` in a manifest overrides `"X64"`, for
+  Apple Silicon and ARM Linux builds.
+- Not yet: the user's disabled-plugin list and remembering test failures
+  (needs the settings file, a later milestone).
+
 ## Layout
 
 ```
 core/include/ifme.h          public C API (extern "C", UTF-8, opaque handles)
-core/src/core.c              context lifetime, helpers
+core/src/core.c              context lifetime, string helpers
+core/src/plugins.c           manifest loading, self-test
+core/src/argv.c              argument lists built from manifest templates
+core/src/json_relax.c        accept comments / trailing commas
 core/src/platform/paths.c    executable folder, per-user config folder
+core/src/platform/fs.c       files, folders, PATH lookup (UTF-16 APIs on Windows)
+core/src/platform/proc_*.c   run "a | b" pipelines: Job Objects (Windows),
+                             process groups + fork/exec (Linux, macOS)
 core/src/platform/cpu_*.c    CPU model and SIMD flags (x86 / everything else)
+core/third_party/cjson/      cJSON 1.7.18 (MIT)
 cli/ifmecli.c                command-line front-end
 gui/                         Qt front-end
 res/                         Windows manifest and resource script
@@ -78,9 +113,10 @@ res/                         Windows manifest and resource script
 ## Roadmap
 
 - [x] 0. Skeleton: core library, CLI and GUI build on Windows; paths and CPU detection
-- [ ] 1. `--list-plugins` / `--self-test`: read the existing plugin manifests (cJSON)
+- [x] 1. `--list-plugins` / `--self-test`: read the existing plugin manifests (cJSON),
+      run `ffmpeg | encoder` pipelines without a shell
 - [ ] 2. `--probe FILE`: run ffprobe, parse its JSON
-- [ ] 3. Process layer: spawn without a shell, pipes (`ffmpeg | encoder`), pause/resume/stop
+- [ ] 3. Process layer: live progress from stderr, pause/resume/stop on demand
       (Job Objects on Windows, process groups on Linux/macOS)
 - [ ] 4. Video encode (single and multi-pass) with progress and ETA
 - [ ] 5. Audio encode and muxing

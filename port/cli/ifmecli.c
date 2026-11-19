@@ -7,6 +7,7 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "ifme.h"
 
@@ -15,15 +16,25 @@
 #include <windows.h>
 #endif
 
+static bool verbose = false;
+
 static void print_usage(FILE *out)
 {
 	fprintf(out,
 		"Usage: ifmecli [OPTIONS]\n"
 		"\n"
 		"Options:\n"
-		"  -i, --info       Show system information (paths, CPU features)\n"
-		"  -V, --version    Show version and exit\n"
-		"  -h, --help       Show this message and exit\n");
+		"  -i, --info           Show system information (paths, CPU features)\n"
+		"  -l, --list-plugins   List encoder plugins and their status\n"
+		"  -t, --self-test      Encode the sample files with each plugin that asks\n"
+		"                       for a test (\"TestRequired\")\n"
+		"  -a, --all            With --self-test: test every usable plugin\n"
+		"      --json           With --list-plugins: print JSON instead of a table\n"
+		"  -r, --root DIR       IFME folder holding Plugins/ and Samples/\n"
+		"                       (default: the folder of this program)\n"
+		"  -v, --verbose        More detail (paths, full failure output)\n"
+		"  -V, --version        Show version and exit\n"
+		"  -h, --help           Show this message and exit\n");
 }
 
 static const char *yes_no(bool v)
@@ -31,12 +42,13 @@ static const char *yes_no(bool v)
 	return v ? "yes" : "no";
 }
 
-static int print_info(const ifme_ctx *ctx)
+static void print_info(const ifme_ctx *ctx)
 {
 	const ifme_cpu_info *cpu = ifme_cpu(ctx);
 
 	printf("IFME core   %s\n", ifme_version());
 	printf("App folder  %s\n", ifme_app_dir(ctx));
+	printf("Root        %s\n", ifme_root_dir(ctx));
 	printf("Config      %s\n", ifme_config_dir(ctx));
 	printf("CPU         %s (%s)\n", cpu->brand, cpu->arch);
 
@@ -48,8 +60,100 @@ static int print_info(const ifme_ctx *ctx)
 
 	if (cpu->hypervisor)
 		printf("Hypervisor  %s\n", cpu->hypervisor_vendor[0] ? cpu->hypervisor_vendor : "unknown");
+}
 
-	return 0;
+static bool load_plugins(ifme_ctx *ctx)
+{
+	if (ifme_plugins_load(ctx) < 0) {
+		fprintf(stderr, "ifmecli: no Plugins folder in %s (use --root DIR)\n", ifme_root_dir(ctx));
+		return false;
+	}
+	return true;
+}
+
+/* Print `text` indented, one line at a time. */
+static void print_indented(const char *text, const char *indent)
+{
+	const char *p = text;
+	while (*p) {
+		const char *nl = strchr(p, '\n');
+		size_t len = nl ? (size_t)(nl - p) : strlen(p);
+		printf("%s%.*s\n", indent, (int)len, p);
+		p += len + (nl ? 1 : 0);
+	}
+}
+
+static void print_plugin_table(const ifme_ctx *ctx)
+{
+	size_t n = ifme_plugin_count(ctx);
+	int usable = 0;
+
+	for (int pass = 0; pass < 2; pass++) {
+		ifme_plugin_kind kind = pass == 0 ? IFME_PLUGIN_AUDIO : IFME_PLUGIN_VIDEO;
+		printf("%s plugins\n", kind == IFME_PLUGIN_AUDIO ? "Audio" : "Video");
+
+		for (size_t i = 0; i < n; i++) {
+			const ifme_plugin_info *p = ifme_plugin_at(ctx, i);
+			if (p->kind != kind)
+				continue;
+
+			bool ok = p->status == IFME_PLUGIN_OK || p->status == IFME_PLUGIN_BUILTIN;
+			usable += ok;
+
+			printf("  %-11s %s%s%s%s\n", ifme_plugin_status_name(p->status), p->name,
+			       *p->version ? " " : "", p->version, p->from_path ? "  [PATH]" : "");
+
+			if (!ok && *p->message && !verbose) {
+				/* First line only; --verbose shows everything. */
+				const char *nl = strchr(p->message, '\n');
+				printf("              %.*s\n", nl ? (int)(nl - p->message) : (int)strlen(p->message), p->message);
+			}
+
+			if (verbose) {
+				printf("              guid     %s\n", p->guid);
+				printf("              manifest %s\n", p->manifest);
+				if (*p->binary)
+					printf("              binary   %s\n", p->binary);
+				if (*p->message)
+					print_indented(p->message, "              ");
+			}
+		}
+		printf("\n");
+	}
+
+	printf("%d of %zu plugins usable\n", usable, n);
+}
+
+static void on_test_start(void *user, const ifme_plugin_info *p)
+{
+	(void)user;
+	printf("  %-48s ", p->name);
+	fflush(stdout);
+}
+
+static void on_test_result(void *user, const ifme_plugin_info *p, ifme_test_outcome outcome,
+                           const char *detail, unsigned elapsed_ms)
+{
+	int *counts = user;
+	(void)p;
+
+	const char *label = outcome == IFME_TEST_PASS ? "PASS" : outcome == IFME_TEST_FAIL ? "FAIL" : "SKIP";
+	counts[outcome]++;
+	printf("%s  %5.1f s", label, elapsed_ms / 1000.0);
+
+	if (outcome == IFME_TEST_PASS) {
+		printf("  (%s)\n", detail);
+		return;
+	}
+
+	printf("\n");
+	if (verbose || outcome == IFME_TEST_SKIPPED) {
+		print_indented(detail, "      ");
+	} else {
+		/* Reason and the encoder's last line; --verbose adds the commands. */
+		const char *nl = strchr(detail, '\n');
+		printf("      %.*s\n", nl ? (int)(nl - detail) : (int)strlen(detail), detail);
+	}
 }
 
 int main(int argc, char *argv[])
@@ -59,21 +163,33 @@ int main(int argc, char *argv[])
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
+	enum { OPT_JSON = 1000 };
 	static const struct option long_opts[] = {
-		{ "info",    no_argument, NULL, 'i' },
-		{ "version", no_argument, NULL, 'V' },
-		{ "help",    no_argument, NULL, 'h' },
+		{ "info",         no_argument,       NULL, 'i' },
+		{ "list-plugins", no_argument,       NULL, 'l' },
+		{ "self-test",    no_argument,       NULL, 't' },
+		{ "all",          no_argument,       NULL, 'a' },
+		{ "json",         no_argument,       NULL, OPT_JSON },
+		{ "root",         required_argument, NULL, 'r' },
+		{ "verbose",      no_argument,       NULL, 'v' },
+		{ "version",      no_argument,       NULL, 'V' },
+		{ "help",         no_argument,       NULL, 'h' },
 		{ NULL, 0, NULL, 0 }
 	};
 
-	bool want_info = false;
+	bool want_info = false, want_list = false, want_test = false, test_all = false, json = false;
+	const char *root = NULL;
 	int opt;
 
-	while ((opt = getopt_long(argc, argv, "iVh", long_opts, NULL)) != -1) {
+	while ((opt = getopt_long(argc, argv, "iltar:vVh", long_opts, NULL)) != -1) {
 		switch (opt) {
-		case 'i':
-			want_info = true;
-			break;
+		case 'i': want_info = true; break;
+		case 'l': want_list = true; break;
+		case 't': want_test = true; break;
+		case 'a': test_all = true; break;
+		case OPT_JSON: json = true; break;
+		case 'r': root = optarg; break;
+		case 'v': verbose = true; break;
 		case 'V':
 			printf("ifmecli %s\n", ifme_version());
 			return 0;
@@ -86,7 +202,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (!want_info) {
+	if (!want_info && !want_list && !want_test) {
 		print_usage(stdout);
 		return 0;
 	}
@@ -97,7 +213,58 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	int rc = print_info(ctx);
+	int rc = 0;
+
+	if (root && !ifme_set_root_dir(ctx, root)) {
+		fprintf(stderr, "ifmecli: folder not found: %s\n", root);
+		rc = 2;
+		goto out;
+	}
+
+	if (want_info) {
+		print_info(ctx);
+		if (want_list || want_test)
+			printf("\n");
+	}
+
+	if (want_list || want_test) {
+		if (!load_plugins(ctx)) {
+			rc = 1;
+			goto out;
+		}
+	}
+
+	if (want_test) {
+		int counts[3] = { 0, 0, 0 };
+		ifme_selftest_callbacks cb = { on_test_start, on_test_result, counts };
+
+		printf("Self-test (%s)\n", test_all ? "all usable plugins" : "plugins with TestRequired");
+		int failed = ifme_plugins_selftest(ctx, test_all, &cb);
+
+		if (failed < 0) {
+			fprintf(stderr, "ifmecli: cannot run the self-test (temporary folder?)\n");
+			rc = 1;
+			goto out;
+		}
+
+		printf("\n%d passed, %d failed, %d skipped\n\n",
+		       counts[IFME_TEST_PASS], counts[IFME_TEST_FAIL], counts[IFME_TEST_SKIPPED]);
+		if (failed > 0)
+			rc = 1;
+	}
+
+	if (want_list) {
+		if (json) {
+			char *text = ifme_plugins_json(ctx);
+			if (text)
+				printf("%s\n", text);
+			ifme_free(text);
+		} else {
+			print_plugin_table(ctx);
+		}
+	}
+
+out:
 	ifme_destroy(ctx);
 	return rc;
 }
