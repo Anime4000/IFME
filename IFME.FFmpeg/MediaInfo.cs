@@ -32,7 +32,9 @@ namespace IFME.FFmpeg
                 if (OS.IsProgramInPath("ffprobe"))
                     return "ffprobe";
                 else
-                    return Path.Combine("Plugins", "ffmpeg64", "ffprobe");
+                    // Resolve against the install folder (not the working directory, which file
+                    // dialogs can move) and pick the bundle matching the OS, like MediaEncoding.FFmpeg.
+                    return AppPath.Combine("Plugins", OS.Is64bit ? "ffmpeg64" : "ffmpeg32", "ffprobe");
 			} 
 		}
 

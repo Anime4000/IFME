@@ -72,31 +72,6 @@ namespace IFME
             OpenURL("https://discord.gg/4f6MDpfug2");
         }
 
-        private void OpenURL(string url)
-        {
-            try
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    Process.Start("xdg-open", url);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    Process.Start("open", url);
-                }
-                else
-                {
-                    throw new PlatformNotSupportedException("Unsupported OS");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed to open URL: " + ex.Message);
-            }
-        }
+        private void OpenURL(string url) => OS.OpenUrl(url);
     }
 }
