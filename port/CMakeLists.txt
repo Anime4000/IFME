@@ -157,7 +157,7 @@ if(IFME_BUILD_GUI)
         endif()
         add_custom_target(deploy
             COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy-linux.sh"
-                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_I18N_OUT}" "${IFME_QT_PLUGIN_HINT}"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${CMAKE_CURRENT_SOURCE_DIR}/i18n" "${IFME_QT_PLUGIN_HINT}"
             DEPENDS ifme ifmecli
             COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
             VERBATIM)
@@ -167,7 +167,7 @@ if(IFME_BUILD_GUI)
         get_filename_component(IFME_QT_BIN "${IFME_QMAKE}" DIRECTORY)
         add_custom_target(deploy
             COMMAND "${IFME_BASH}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/deploy.sh"
-                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_BIN}" "${IFME_I18N_OUT}"
+                    "$<TARGET_FILE:ifme>" "$<TARGET_FILE:ifmecli>" "${IFME_DEPLOY_DIR}" "${IFME_DEPLOY_FROM}" "${IFME_QT_BIN}" "${CMAKE_CURRENT_SOURCE_DIR}/i18n"
             DEPENDS ifme ifmecli
             COMMENT "Copying the portable build to ${IFME_DEPLOY_DIR}"
             VERBATIM)

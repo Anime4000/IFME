@@ -14,7 +14,14 @@ gui=$1 cli=$2 dest=$3 from=$4 bin=$5 i18n=${6:-}
 # Interface translations (i18n_qt/*.json; IFME 8 has i18n/) and, for those languages, Qt's
 # own strings (qtbase_*.qm: standard buttons) when Qt's translations are installed.
 copy_translations() {   # <qt translations dir>
-    [[ -n $i18n && -d $i18n ]] || return 0
+    # The sources' i18n/ (next to this script's folder) when none was given.
+    if [[ -z $i18n || ! -d $i18n ]]; then
+        i18n=$(cd "$(dirname "${BASH_SOURCE[0]}")/../i18n" 2>/dev/null && pwd || true)
+    fi
+    if [[ -z $i18n ]] || ! compgen -G "$i18n/*.json" >/dev/null; then
+        echo "deploy: no translations found (port/i18n/*.json), i18n_qt/ left out" >&2
+        return 0
+    fi
     rm -rf "$dest/i18n_qt" "$dest/translations"   # (the old name)
     mkdir -p "$dest/i18n_qt"
     cp -f "$i18n"/*.json "$dest/i18n_qt/" 2>/dev/null || true
@@ -61,4 +68,4 @@ for wad in jason.wad resources.wad; do
     fi
 done
 
-echo "deploy: $(find "$dest" -type f | wc -l) files, $(du -sh "$dest" | cut -f1) in $dest"
+echo "deploy: $(find "$dest" -type f | wc -l) files, $(find "$dest/i18n_qt" -name '*.json' 2>/dev/null | wc -l) translations, $(du -sh "$dest" | cut -f1) in $dest"
