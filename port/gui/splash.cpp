@@ -11,6 +11,7 @@
 #include <QTimer>
 
 #include "app.h"
+#include "wad.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -42,7 +43,7 @@ SplashScreen::SplashScreen(app::Core &core, bool testEncoders, QWidget *parent)
 	: QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 	, m_core(core)
 	, m_test(testEncoders)
-	, m_image(QStringLiteral(":/ifme/splash.png"))
+	, m_image(wad::image(QStringLiteral("SplashScreen14.png")))   // resources.wad, as IFME 8
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(QStringLiteral("IFME"));
@@ -85,6 +86,9 @@ SplashScreen::SplashScreen(app::Core &core, bool testEncoders, QWidget *parent)
 
 	m_version->setText(tr("Alpha Version %1 (%2)")
 		.arg(QString::fromUtf8(ifme_version()), QString::fromLatin1(app::CodeName)));
+	if (m_image.isNull())
+		appendLog(wad::resourcesPath().isEmpty() ? tr("resources.wad not found: no artwork")
+		                                         : tr("SplashScreen14.png is missing from resources.wad"));
 	m_loading->setText(tr("Initializing..."));
 	m_status->setText(tr("Loading..."));
 	m_contrib->setText(QStringLiteral("%1\n\n%2")

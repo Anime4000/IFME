@@ -59,6 +59,11 @@ add_library(ifmecore STATIC
 target_include_directories(ifmecore PUBLIC core/include)
 # IFME 9 alpha (the .NET release is 8.x).
 set(IFME_VERSION_STRING "${PROJECT_VERSION}-alpha")
+# Shared with IFME 8's release (AssemblyProduct / AssemblyTrademark): shown on
+# the splash screen, in About and in the Windows file details.
+set(IFME_CODENAME "Yoake no Shirabe")
+set(IFME_TRADEMARKS "Anime4000, Rigaya, MulticoreWare, VideoLAN, IETF, Xiph.Org Foundation, Josh Coalson, Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.")
+string(TIMESTAMP IFME_COPYRIGHT_YEAR "%Y" UTC)
 target_compile_definitions(ifmecore PRIVATE IFME_VERSION="${IFME_VERSION_STRING}")
 target_link_libraries(ifmecore PRIVATE cjson)
 
@@ -71,24 +76,35 @@ endif()
 # project next to this folder.
 set(IFME_ART_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../IFME/Resources")
 
-# Windows: embed the manifest (UTF-8 code page, long paths) in every executable,
-# and the IFME icon in the two programs.
+# Windows: embed the manifest (UTF-8 code page, long paths) in every executable;
+# the two programs also get the IFME icon and file details (version, copyright).
 if(WIN32)
     set(IFME_MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/res/ifme.manifest")
     configure_file(res/ifme.rc.in "${CMAKE_CURRENT_BINARY_DIR}/ifme.rc" @ONLY)
     set(IFME_WIN_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme.rc")
-    set(IFME_APP_RESOURCES "${IFME_WIN_RESOURCES}")
+    set(IFME_GUI_RESOURCES "${IFME_WIN_RESOURCES}")
+    set(IFME_CLI_RESOURCES "${IFME_WIN_RESOURCES}")
     if(EXISTS "${IFME_ART_DIR}/ifme-zenui.ico")
         set(IFME_ICON "${IFME_ART_DIR}/ifme-zenui.ico")
-        configure_file(res/ifme-app.rc.in "${CMAKE_CURRENT_BINARY_DIR}/ifme-app.rc" @ONLY)
-        set(IFME_APP_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme-app.rc")
+        foreach(prog gui cli)
+            if(prog STREQUAL "gui")
+                set(IFME_EXE_NAME "ifme9.exe")
+                set(IFME_EXE_DESCRIPTION "Internet Friendly Media Encoder")
+            else()
+                set(IFME_EXE_NAME "ifmecli.exe")
+                set(IFME_EXE_DESCRIPTION "Internet Friendly Media Encoder (command line)")
+            endif()
+            configure_file(res/ifme-app.rc.in "${CMAKE_CURRENT_BINARY_DIR}/ifme-${prog}.rc" @ONLY)
+        endforeach()
+        set(IFME_GUI_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme-gui.rc")
+        set(IFME_CLI_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/ifme-cli.rc")
     endif()
 endif()
 
 # ---------------------------------------------------------------------------
 # ifmecli (C)
 # ---------------------------------------------------------------------------
-add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c cli/encode_cmd.c ${IFME_APP_RESOURCES})
+add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c cli/encode_cmd.c ${IFME_CLI_RESOURCES})
 target_link_libraries(ifmecli PRIVATE ifmecore cjson)
 
 # ---------------------------------------------------------------------------
@@ -96,10 +112,12 @@ target_link_libraries(ifmecli PRIVATE ifmecore cjson)
 # ---------------------------------------------------------------------------
 if(IFME_BUILD_GUI)
     find_package(Qt6 REQUIRED COMPONENTS Widgets)
+    find_package(ZLIB REQUIRED)   # deflated entries in the .wad files
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTORCC ON)
-    if(NOT EXISTS "${IFME_ART_DIR}/SplashScreen14.png")
-        message(FATAL_ERROR "IFME artwork not found in ${IFME_ART_DIR} (the GUI uses IFME/Resources)")
+    # The icon is built in; the rest of the artwork is read from resources.wad.
+    if(NOT EXISTS "${IFME_ART_DIR}/ifme-zenui.ico")
+        message(FATAL_ERROR "IFME icon not found in ${IFME_ART_DIR} (the GUI uses IFME/Resources/ifme-zenui.ico)")
     endif()
 
     add_executable(ifme WIN32 MACOSX_BUNDLE
@@ -114,11 +132,13 @@ if(IFME_BUILD_GUI)
         gui/mainwindow.cpp gui/mainwindow.h
         gui/profiles.cpp gui/profiles.h
         gui/i18n.cpp gui/i18n.h
+        gui/wad.cpp gui/wad.h
         gui/queueitem.h
         gui/resources.qrc
-        ${IFME_APP_RESOURCES})
+        ${IFME_GUI_RESOURCES})
 
-    target_link_libraries(ifme PRIVATE ifmecore Qt6::Widgets)
+    target_link_libraries(ifme PRIVATE ifmecore Qt6::Widgets ZLIB::ZLIB)
+    target_compile_definitions(ifme PRIVATE IFME_CODENAME="${IFME_CODENAME}")
 
     # Interface translations (i18n/*.json, see tools/i18n_update.py) go to
     # i18n_qt/ next to the programs (IFME 8's are in i18n/), read at start-up.
@@ -206,10 +226,11 @@ if(IFME_BUILD_TESTS)
     if(IFME_BUILD_GUI)
         add_executable(test_gui tests/test_gui.cpp
             gui/app.cpp gui/widgets.cpp gui/widgets.h gui/settingstabs.cpp gui/settingstabs.h
-            gui/profiles.cpp gui/profiles.h gui/i18n.cpp gui/i18n.h gui/resources.qrc)
+            gui/profiles.cpp gui/profiles.h gui/i18n.cpp gui/i18n.h gui/wad.cpp gui/wad.h gui/resources.qrc)
         add_dependencies(test_gui ifme_translations)
         target_include_directories(test_gui PRIVATE gui)
-        target_link_libraries(test_gui PRIVATE ifmecore Qt6::Widgets)
+        target_link_libraries(test_gui PRIVATE ifmecore Qt6::Widgets ZLIB::ZLIB)
+        target_compile_definitions(test_gui PRIVATE IFME_TEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
         add_test(NAME gui COMMAND test_gui "${IFME_TEST_ROOT}")
     endif()
 endif()

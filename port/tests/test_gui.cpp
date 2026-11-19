@@ -17,6 +17,7 @@
 #include "profiles.h"
 #include "queueitem.h"
 #include "settingstabs.h"
+#include "wad.h"
 #include "widgets.h"
 
 static int g_checks = 0, g_failed = 0;
@@ -270,6 +271,28 @@ int main(int argc, char **argv)
 		std::printf("profiles: skipped (no IFME folder with Profiles/)\n");
 	else
 		testProfiles(root);
+
+	// .wad files: a deflated one made by a zip tool (tests/data), and IFME 8's
+	// own stored ones with the artwork the GUI reads.
+	wad::Archive z;
+	CHECK(z.open(QStringLiteral(IFME_TEST_DATA "/deflate.wad")));
+	CHECK(z.read(QStringLiteral("hello.TXT")) == QByteArray("Hello from a deflated .wad\n").repeated(20));   // any case
+	CHECK(z.read(QStringLiteral("Stored.txt")) == "kept as is");
+	QPixmap px;
+	CHECK(px.loadFromData(z.read(QStringLiteral("Pixel.png"))) && px.size() == QSize(4, 3));
+	CHECK(z.read(QStringLiteral("missing.png")).isEmpty() && !z.contains(QStringLiteral("missing.png")));
+	CHECK(!wad::Archive().open(QStringLiteral(IFME_TEST_DATA "/../test_gui.cpp")));   // not a zip
+	if (!root.isEmpty() && !wad::find(root, QStringLiteral("resources.wad")).isEmpty()) {
+		wad::openResources(root);
+		CHECK(!wad::resourcesPath().isEmpty());
+		for (const char *name : { "SplashScreen14.png", "Banner_4a.png", "Banner_2b.png", "Banner_About.png",
+		                          "Avatar1_Ichika.png", "Avatar2_Fumiko.png", "Avatar3_Miho.png", "Avatar4_Erika.png" })
+			CHECK(!wad::image(QLatin1String(name)).isNull());
+		CHECK(wad::image(QStringLiteral("SplashScreen14.png")).size() == QSize(1920, 1080));
+		wad::Archive jason;
+		CHECK(jason.open(wad::find(root, QStringLiteral("jason.wad"))) &&
+		      jason.read(QStringLiteral("Language.json")).contains("\"jpn\""));
+	}
 
 	// Translations (last: they change the interface text the checks above use).
 	const QVector<i18n::Language> langs = i18n::available();

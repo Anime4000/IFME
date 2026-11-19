@@ -8,6 +8,7 @@
 #include "i18n.h"
 #include "mainwindow.h"
 #include "splash.h"
+#include "wad.h"
 
 int main(int argc, char *argv[])
 {
@@ -61,6 +62,7 @@ int main(int argc, char *argv[])
 			rootDir = QDir::cleanPath(exe.filePath(QStringLiteral("../Debug")));
 	}
 	core.setRoot(rootDir);
+	wad::openResources(core.root());   // artwork, from resources.wad as IFME 8
 	i18n::install(app, parser.isSet(language) ? parser.value(language) : i18n::chosen());
 	app::loadLanguages(core.root());   // Language.json from jason.wad
 

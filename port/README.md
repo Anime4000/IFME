@@ -312,7 +312,12 @@ The same window as IFME today, on the finished core:
   a batch; an unknown name exits with code 2.
 - Settings live in `ifme-qt.ini` in IFME's config folder.
 
-The artwork is used as is from `../IFME/Resources` (one copy in the repository).
+The artwork (splash screen, banners, About) is read at start-up from
+`resources.wad` in the IFME folder or next to the program, the same file IFME 8
+uses, so replacing an image inside it changes it without rebuilding; the wad may
+be stored (as IFME 8's build makes it) or deflated (any zip tool). Only the icon
+is built in, from `../IFME/Resources`. Without `resources.wad` the windows show
+no artwork and the splash screen says so.
 Not yet: file name prefix/postfix, the C# "shut down when done" option,
 a macOS `.icns` app icon and a Linux `.desktop` file.
 
