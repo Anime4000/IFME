@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
 		QStringLiteral("Output format for the files given, e.g. mkv, mp4, m4a."), QStringLiteral("ext"));
 	QCommandLineOption output({ QStringLiteral("o"), QStringLiteral("output-dir") },
 		QStringLiteral("Folder to save the encoded files to."), QStringLiteral("dir"));
+	QCommandLineOption profile({ QStringLiteral("p"), QStringLiteral("profile") },
+		QStringLiteral("Encode the files with this profile (its name or file name, see Profiles/)."), QStringLiteral("name"));
 	QCommandLineOption start(QStringLiteral("start"), QStringLiteral("Start encoding the files at once."));
 	QCommandLineOption quit(QStringLiteral("quit-when-done"),
 		QStringLiteral("Quit after encoding (exit code 0 if every file worked)."));
@@ -35,7 +37,7 @@ int main(int argc, char *argv[])
 	QCommandLineOption settingsFile(QStringLiteral("settings"), QStringLiteral("Use this settings file."),
 		QStringLiteral("file"));
 	settingsFile.setFlags(QCommandLineOption::HiddenFromHelp);
-	for (const QCommandLineOption &o : { root, format, output, start, quit, noSplash, shots, settingsFile })
+	for (const QCommandLineOption &o : { root, format, output, profile, start, quit, noSplash, shots, settingsFile })
 		parser.addOption(o);
 	parser.addPositionalArgument(QStringLiteral("files"), QStringLiteral("Media files or folders to add."),
 	                             QStringLiteral("[files...]"));
@@ -66,6 +68,9 @@ int main(int argc, char *argv[])
 			window->setOutputDir(QDir(parser.value(output)).absolutePath());
 		if (parser.isSet(format))
 			window->setFormat(parser.value(format));
+		bool profileOk = true;
+		if (parser.isSet(profile))
+			profileOk = window->setProfile(parser.value(profile));
 		window->addFiles(parser.positionalArguments());
 		window->show();
 		if (parser.isSet(shots)) {
@@ -74,6 +79,10 @@ int main(int argc, char *argv[])
 			return;
 		}
 		window->setQuitWhenDone(parser.isSet(quit));
+		if (!profileOk && parser.isSet(quit)) {   // a batch must not run with the wrong settings
+			QTimer::singleShot(0, &app, [] { QCoreApplication::exit(2); });
+			return;
+		}
 		if (parser.isSet(start))
 			QTimer::singleShot(0, window, [window] { window->startEncoding(false); });
 	};

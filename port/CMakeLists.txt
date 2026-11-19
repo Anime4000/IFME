@@ -112,6 +112,7 @@ if(IFME_BUILD_GUI)
         gui/settingstabs.cpp gui/settingstabs.h
         gui/dialogs.cpp gui/dialogs.h
         gui/mainwindow.cpp gui/mainwindow.h
+        gui/profiles.cpp gui/profiles.h
         gui/queueitem.h
         gui/resources.qrc
         ${IFME_APP_RESOURCES})
@@ -190,9 +191,10 @@ if(IFME_BUILD_TESTS)
     # GUI track rules (Language boxes, batching, kept selections), off-screen.
     if(IFME_BUILD_GUI)
         add_executable(test_gui tests/test_gui.cpp
-            gui/app.cpp gui/widgets.cpp gui/widgets.h gui/settingstabs.cpp gui/settingstabs.h gui/resources.qrc)
+            gui/app.cpp gui/widgets.cpp gui/widgets.h gui/settingstabs.cpp gui/settingstabs.h
+            gui/profiles.cpp gui/profiles.h gui/resources.qrc)
         target_include_directories(test_gui PRIVATE gui)
         target_link_libraries(test_gui PRIVATE ifmecore Qt6::Widgets)
-        add_test(NAME gui COMMAND test_gui)
+        add_test(NAME gui COMMAND test_gui "${IFME_TEST_ROOT}")
     endif()
 endif()

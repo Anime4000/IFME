@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QCoreApplication>
+#include <QDesktopServices>
 #include <QDir>
 #include <QDirIterator>
 #include <QDragEnterEvent>
@@ -14,9 +15,11 @@
 #include <QFontDatabase>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QInputDialog>
 #include <QJsonDocument>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPlainTextEdit>
@@ -29,6 +32,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QToolBar>
+#include <QToolButton>
 #include <QTreeWidget>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -223,6 +227,34 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	split->setStretchFactor(1, 3);
 	bv->addWidget(split, 1);
 
+	// ---- profile (C#: cboProfile + btnProfileSaveLoad with its menu) ----
+	auto *prow = new QHBoxLayout;
+	m_profile = new QComboBox(body);
+	m_profile->setPlaceholderText(tr("(none) - pick a profile to apply it to the selected files and new ones"));
+	m_profile->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+	m_profile->setMinimumContentsLength(30);
+	m_profileMenu = new QToolButton(body);
+	m_profileMenu->setText(tr("Sa&ve as..."));
+	m_profileMenu->setToolTip(tr("Save the selected file's settings as a new profile"));
+	m_profileMenu->setPopupMode(QToolButton::MenuButtonPopup);
+	auto *pm = new QMenu(m_profileMenu);
+	pm->addAction(tr("&Save as..."), this, &MainWindow::saveProfile);
+	pm->addAction(tr("&Rename..."), this, &MainWindow::renameProfile);
+	pm->addAction(tr("&Delete"), this, &MainWindow::deleteProfile);
+	pm->addSeparator();
+	pm->addAction(tr("&Open the Profiles folder"), this, [this] {
+		QDir().mkpath(profiles::folder(m_core.root()));
+		QDesktopServices::openUrl(QUrl::fromLocalFile(profiles::folder(m_core.root())));
+	});
+	pm->addAction(tr("Re&load profiles"), this, &MainWindow::reloadProfiles);
+	m_profileMenu->setMenu(pm);
+	auto *plabel = new QLabel(tr("Pro&file:"), body);
+	plabel->setBuddy(m_profile);
+	prow->addWidget(plabel);
+	prow->addWidget(m_profile, 1);
+	prow->addWidget(m_profileMenu);
+	bv->addLayout(prow);
+
 	// ---- format, output folder, start/pause/stop ----
 	auto *bar = new QHBoxLayout;
 	m_format = new QComboBox(body);
@@ -256,6 +288,8 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 
 	connect(m_queue, &QTreeWidget::itemSelectionChanged, this, &MainWindow::selectionChanged);
 	connect(m_format, &QComboBox::activated, this, &MainWindow::formatChanged);
+	connect(m_profile, &QComboBox::activated, this, &MainWindow::profileChosen);
+	connect(m_profileMenu, &QToolButton::clicked, this, &MainWindow::saveProfile);
 	connect(browse, &QPushButton::clicked, this, [this] {
 		const QString dir = QFileDialog::getExistingDirectory(this, tr("Save encoded files to"), m_outDir->text());
 		if (!dir.isEmpty())
@@ -279,6 +313,7 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 			m_worker->stop();
 	});
 
+	reloadProfiles();
 	resize(1024, 720);
 	restoreGeometry(app::settings().value(QStringLiteral("ui/geometry")).toByteArray());
 	selectionChanged();
@@ -395,6 +430,11 @@ void MainWindow::addFile(const QString &path)
 	}
 	item->id = m_nextId++;
 	item->info = mediaText(item->media);
+	if (const profiles::Profile *p = currentProfile()) {
+		for (const QString &w : profiles::apply(m_core, *p, *item,
+		         [this](const QString &in, const QString &e) { return outputFor(in, e); }))
+			log(w);
+	}
 
 	auto *row = new QTreeWidgetItem(m_queue);
 	row->setData(0, Qt::UserRole, item->id);
@@ -435,8 +475,10 @@ void MainWindow::selectionChanged()
 	for (SettingsTab *t : m_settingsTabs)
 		t->setItems(m_worker ? QVector<QueueItem *>() : items);
 	m_info->setPlainText(items.isEmpty() ? QString() : items.first()->info);
-	if (!items.isEmpty())
+	if (!items.isEmpty()) {
 		m_format->setCurrentIndex(qMax(0, m_format->findData(items.first()->container())));
+		showProfile(items.first()->profile);
+	}
 	m_loadingSelection = false;
 }
 
@@ -450,7 +492,9 @@ void MainWindow::formatChanged()
 			items << it.get();
 
 	QSettings &s = app::settings();
+	showProfile(QString());   // as C#: the profile no longer matches
 	for (QueueItem *it : items) {
+		it->profile.clear();
 		it->job[QStringLiteral("output")] = outputFor(it->input, ext);
 
 		// As C#: an encoder the new format cannot hold is replaced by one it can.
@@ -662,6 +706,8 @@ void MainWindow::setEncoding(bool on)
 	m_stop->setEnabled(on);
 	m_pause->setText(tr("&Pause"));
 	m_format->setEnabled(!on);
+	m_profile->setEnabled(!on);
+	m_profileMenu->setEnabled(!on);
 	m_outDir->setEnabled(!on);
 	for (QAction *a : m_editActions)
 		a->setEnabled(!on);
@@ -681,7 +727,162 @@ void MainWindow::reloadPlugins()
 	m_core.setRoot(app::settings().value(QStringLiteral("paths/root")).toString().isEmpty()
 		? QCoreApplication::applicationDirPath() : app::settings().value(QStringLiteral("paths/root")).toString());
 	m_core.loadPlugins();
+	reloadProfiles();
 	selectionChanged();
+}
+
+// ---- profiles ------------------------------------------------------------------
+
+void MainWindow::reloadProfiles()
+{
+	const QString keep = m_profilePath;
+	QStringList warnings;
+	m_profiles = profiles::load(m_core.root(), &warnings);
+	for (const QString &w : warnings)
+		log(w);
+	m_profile->clear();
+	for (const profiles::Profile &p : m_profiles) {
+		m_profile->addItem(p.name, p.path);
+		m_profile->setItemData(m_profile->count() - 1, QStringLiteral("%1\n%2%3\n%4")
+			.arg(p.container.isEmpty() ? QStringLiteral("?") : p.container.toUpper(),
+			     p.author.isEmpty() ? QString() : tr("by %1").arg(p.author),
+			     p.url.isEmpty() ? QString() : QStringLiteral(" (%1)").arg(p.url),
+			     QDir::toNativeSeparators(p.path)), Qt::ToolTipRole);
+	}
+	showProfile(keep);
+}
+
+const profiles::Profile *MainWindow::currentProfile() const
+{
+	for (const profiles::Profile &p : m_profiles)
+		if (!m_profilePath.isEmpty() && p.path == m_profilePath)
+			return &p;
+	return nullptr;
+}
+
+void MainWindow::showProfile(const QString &path)
+{
+	const int i = path.isEmpty() ? -1 : m_profile->findData(path);
+	m_profile->setCurrentIndex(i);
+	m_profilePath = i < 0 ? QString() : path;
+}
+
+bool MainWindow::setProfile(const QString &name)
+{
+	int found = -1;
+	for (int i = 0; i < m_profiles.size() && found < 0; i++)
+		if (m_profiles[i].name.compare(name, Qt::CaseInsensitive) == 0 ||
+		    QFileInfo(m_profiles[i].path).completeBaseName().compare(name, Qt::CaseInsensitive) == 0)
+			found = i;
+	if (found < 0) {
+		const QString msg = tr("No profile named \"%1\" in %2").arg(name, QDir::toNativeSeparators(profiles::folder(m_core.root())));
+		log(msg);
+		m_progressText->setText(msg);
+		return false;
+	}
+	m_profile->setCurrentIndex(found);
+	profileChosen(found);
+	return true;
+}
+
+void MainWindow::profileChosen(int index)
+{
+	if (index < 0 || index >= m_profiles.size())
+		return;
+	const profiles::Profile &p = m_profiles[index];
+	m_profilePath = p.path;
+	if (!p.container.isEmpty()) {
+		m_format->setCurrentIndex(qMax(0, m_format->findData(p.container)));
+		app::settings().setValue(QStringLiteral("ui/format"), p.container);
+	}
+
+	// C# (SetProfileData): the selected files; without a selection the
+	// profile waits for the files added next.
+	const QVector<QueueItem *> items = selected();
+	QStringList warnings;
+	for (QueueItem *it : items) {
+		warnings << profiles::apply(m_core, p, *it, [this](const QString &in, const QString &e) { return outputFor(in, e); });
+		refreshRow(*it);
+	}
+	warnings.removeDuplicates();
+	for (const QString &w : warnings)
+		log(w);
+	m_progressText->setText(warnings.isEmpty()
+		? tr("Profile \"%1\" applied to %n file(s).", nullptr, static_cast<int>(items.size())).arg(p.name)
+		: tr("Profile \"%1\" applied with %2 change(s), see Logging.").arg(p.name).arg(warnings.size()));
+	selectionChanged();
+	settingsChanged();
+}
+
+void MainWindow::saveProfile()
+{
+	const QVector<QueueItem *> items = selected();
+	if (items.isEmpty()) {
+		QMessageBox::information(this, tr("Save profile"), tr("Select a file whose settings the profile should keep."));
+		return;
+	}
+	bool ok = false;
+	const QString name = QInputDialog::getText(this, tr("Save profile"),
+		tr("Name for a profile with %1's settings (format, video and audio encoder):").arg(QFileInfo(items.first()->input).fileName()),
+		QLineEdit::Normal, QString(), &ok).trimmed();
+	if (!ok || name.isEmpty())
+		return;
+	QString author = app::settings().value(QStringLiteral("profiles/author")).toString();
+	if (author.isEmpty())
+		author = qEnvironmentVariable("USERNAME", qEnvironmentVariable("USER"));
+
+	QString err;
+	const QString path = profiles::save(m_core.root(), profiles::fromItem(*items.first(), name, author), &err);
+	if (path.isEmpty()) {
+		QMessageBox::warning(this, tr("Save profile"), tr("Cannot save the profile: %1").arg(err));
+		return;
+	}
+	items.first()->profile = path;
+	m_profilePath = path;
+	reloadProfiles();
+	m_progressText->setText(tr("Profile \"%1\" saved.").arg(name));
+}
+
+void MainWindow::renameProfile()
+{
+	const profiles::Profile *p = currentProfile();
+	if (!p) {
+		QMessageBox::information(this, tr("Rename profile"), tr("Choose the profile to rename first."));
+		return;
+	}
+	bool ok = false;
+	const QString name = QInputDialog::getText(this, tr("Rename profile"), tr("New name:"),
+		QLineEdit::Normal, p->name, &ok).trimmed();
+	if (!ok || name.isEmpty() || name == p->name)
+		return;
+	QString err;
+	if (!profiles::rename(*p, name, &err))
+		QMessageBox::warning(this, tr("Rename profile"), tr("Cannot rename the profile: %1").arg(err));
+	reloadProfiles();
+}
+
+void MainWindow::deleteProfile()
+{
+	const profiles::Profile *p = currentProfile();
+	if (!p) {
+		QMessageBox::information(this, tr("Delete profile"), tr("Choose the profile to delete first."));
+		return;
+	}
+	if (QMessageBox::question(this, tr("Delete profile"),
+	        tr("Delete the profile \"%1\"?\n\n%2 goes to the recycle bin.").arg(p->name, QDir::toNativeSeparators(p->path)))
+	    != QMessageBox::Yes)
+		return;
+	QString err;
+	const profiles::Profile copy = *p;
+	if (!profiles::remove(copy, &err)) {
+		QMessageBox::warning(this, tr("Delete profile"), tr("Cannot delete the profile: %1").arg(err));
+		return;
+	}
+	for (const auto &it : m_items)
+		if (it->profile == copy.path)
+			it->profile.clear();
+	m_profilePath.clear();
+	reloadProfiles();
 }
 
 void MainWindow::showPlugins()

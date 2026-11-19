@@ -16,6 +16,7 @@ struct QueueItem {
 	State state = Ready;
 	double percent = -1;
 	QString message;      // last progress text or error
+	QString profile;      // path of the profile last applied (empty: none)
 
 	QString container() const
 	{

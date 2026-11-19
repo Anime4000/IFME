@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "profiles.h"
 #include "queueitem.h"
 
 class QComboBox;
@@ -15,6 +16,7 @@ class QPushButton;
 class QTabWidget;
 class QThread;
 class QTreeWidget;
+class QToolButton;
 class QTreeWidgetItem;
 class EncodeWorker;
 class SettingsTab;
@@ -31,6 +33,9 @@ public:
 	void addFiles(const QStringList &paths);
 	void setFormat(const QString &ext);
 	void setOutputDir(const QString &dir);
+	// Use the profile whose name (or file name) is `name` for the files added
+	// next and the selected ones; false when there is none.
+	bool setProfile(const QString &name);
 	void startEncoding(bool askOverwrite = true);
 	void setQuitWhenDone(bool on) { m_quitWhenDone = on; }
 	// Developer aid: write a PNG of every tab and dialog into `dir`.
@@ -50,7 +55,10 @@ private:
 	QTabWidget *m_tabs;
 	QVector<SettingsTab *> m_settingsTabs;
 	QPlainTextEdit *m_info, *m_log;
-	QComboBox *m_format;
+	QComboBox *m_format, *m_profile;
+	QToolButton *m_profileMenu;
+	QVector<profiles::Profile> m_profiles;
+	QString m_profilePath;   // profile new files get (C#: what cboProfile shows)
 	QLineEdit *m_outDir;
 	QPushButton *m_start, *m_pause, *m_stop;
 	QLabel *m_progressText;
@@ -79,4 +87,12 @@ private:
 	void showAbout();
 	void log(const QString &line);
 	void reloadPlugins();
+
+	void reloadProfiles();
+	void profileChosen(int index);
+	void showProfile(const QString &path);   // select it in the box, or none
+	const profiles::Profile *currentProfile() const;
+	void saveProfile();
+	void renameProfile();
+	void deleteProfile();
 };

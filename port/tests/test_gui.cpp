@@ -4,12 +4,14 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QDir>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QTemporaryDir>
 #include <QTreeWidget>
 #include <cstdio>
 
 #include "app.h"
+#include "profiles.h"
 #include "queueitem.h"
 #include "settingstabs.h"
 #include "widgets.h"
@@ -116,6 +118,111 @@ static void testTrackTab(SettingsTab *tab, const char *key)
 	tab->setItems({});
 }
 
+static QJsonObject firstOf(const QueueItem &it, const char *key)
+{
+	return it.job.value(QLatin1String(key)).toArray().first().toObject();
+}
+
+static void testProfiles(const QString &root)
+{
+	app::Core core;
+	core.setRoot(root);
+	core.loadPlugins();
+	QTemporaryDir out;
+	const auto outputFor = [&](const QString &in, const QString &ext) {
+		return QDir(out.path()).filePath(QFileInfo(in).completeBaseName() + QLatin1Char('.') + ext);
+	};
+	// The bundled samples: .mp4 has only video, .m4a only audio.
+	auto newItem = [&](const QString &ext, const char *sample = "wonderland_online_dungeon.mp4") {
+		QueueItem it;
+		it.input = QDir(root).filePath(QStringLiteral("Samples/") + QLatin1String(sample));
+		QString err;
+		it.media = core.probe(it.input, &err);
+		it.job = core.jobNew(it.input, outputFor(it.input, ext), core.defaultVideo(ext, QString()),
+		                     core.defaultAudio(ext, QString()), &err);
+		return it;
+	};
+
+	QStringList warnings;
+	const QVector<profiles::Profile> list = profiles::load(root, &warnings);
+	CHECK(list.size() >= 10 && warnings.isEmpty());
+	const profiles::Profile *x265 = nullptr, *wmv = nullptr;
+	for (const profiles::Profile &p : list) {
+		if (p.path.endsWith(QStringLiteral("Profile_1000-00-00_00-00-00_0002.json")))
+			x265 = &p;
+		if (p.path.endsWith(QStringLiteral("longwu9t_wmv-mso_pp.json")))
+			wmv = &p;
+	}
+	CHECK(x265 && x265->container == "mkv" && x265->name.contains("x265"));
+	CHECK(wmv && wmv->container == "wmv" && wmv->author == "longwu9t");
+	if (!x265 || !wmv)
+		return;
+
+	// x265 + Nero AAC into MKV (the file was queued as MP4).
+	QueueItem a = newItem(QStringLiteral("mp4"));
+	CHECK(!a.job.isEmpty());
+	const QStringList w = profiles::apply(core, *x265, a, outputFor);
+	CHECK(a.container() == "mkv" && a.profile == x265->path);
+	const QJsonObject v = firstOf(a, "video");
+	CHECK(v.value("plugin").toString() == "deadbeef-0265-0265-0265-026502650265");
+	CHECK(v.value("preset").toString() == "veryslow" && v.value("tune").toString() == "ssim");
+	CHECK(v.value("value").toDouble() == 24.0 && v.value("encoder_args").toString() == "--pme --pmode");
+	CHECK(!v.contains("fps") && v.value("width").toInt() > 0);   // 0 in the profile: the source's
+	CHECK(w.isEmpty() || !core.find(QStringLiteral("deadbeef-1aac-1aac-1aac-1aac2aac3aac")));
+
+	// Its audio side on the audio sample, also queued as MP4.
+	QueueItem m = newItem(QStringLiteral("mp4"), "wonderland_online_dungeon.m4a");
+	const QStringList wa = profiles::apply(core, *x265, m, outputFor);
+	CHECK(m.container() == "mkv" && m.job.value("video").toArray().isEmpty());
+	const QJsonObject au = firstOf(m, "audio");
+	if (core.find(QStringLiteral("deadbeef-1aac-1aac-1aac-1aac2aac3aac"))) {
+		CHECK(au.value("plugin").toString() == "deadbeef-1aac-1aac-1aac-1aac2aac3aac");
+		CHECK(au.value("quality").toString() == "0.6" && au.value("sample_rate").toInt() == 48000);
+		CHECK(wa.isEmpty());
+	} else {
+		CHECK(!wa.isEmpty());   // Nero missing: replaced, and said so
+	}
+
+	// WMV for PowerPoint: container and encoder change together.
+	QueueItem b = newItem(QStringLiteral("mkv"));
+	profiles::apply(core, *wmv, b, outputFor);
+	CHECK(b.container() == "wmv");
+	if (core.find(QStringLiteral("deadbeef-9000-9000-9000-100920093009")))
+		CHECK(firstOf(b, "video").value("plugin").toString() == "deadbeef-9000-9000-9000-100920093009");
+
+	// Round trip in a scratch IFME folder, in the .NET file format.
+	QTemporaryDir scratch;
+	QString err;
+	QueueItem both = a;   // the video item with the audio item's track
+	both.job[QStringLiteral("audio")] = m.job.value(QStringLiteral("audio"));
+	const QString path = profiles::save(scratch.path(),
+		profiles::fromItem(both, QStringLiteral("Round trip"), QStringLiteral("tester")), &err);
+	CHECK(!path.isEmpty() && QFileInfo(path).fileName().startsWith("Profile_"));
+	QVector<profiles::Profile> mine = profiles::load(scratch.path());
+	CHECK(mine.size() == 1 && mine.value(0).name == "Round trip" && mine.value(0).container == "mkv");
+	if (mine.size() != 1)
+		return;
+	CHECK(mine[0].json.value("Container").toString() == "MKV");   // C#'s FileContainer name
+	CHECK(mine[0].json.value("Video").toObject().value("Quality").toObject().value("Width").toInt() == 0);
+	QueueItem c = newItem(QStringLiteral("mp4"));
+	profiles::apply(core, mine[0], c, outputFor);
+	const QJsonObject cv = firstOf(c, "video");
+	for (const char *k : { "plugin", "preset", "tune", "value", "passes", "encoder_args", "bit_depth", "chroma" })
+		CHECK(cv.value(QLatin1String(k)) == v.value(QLatin1String(k)));
+	CHECK(c.container() == "mkv");
+	QueueItem d = newItem(QStringLiteral("mp4"), "wonderland_online_dungeon.m4a");
+	profiles::apply(core, mine[0], d, outputFor);
+	const QJsonObject da = firstOf(d, "audio");
+	for (const char *k : { "plugin", "mode", "quality", "sample_rate", "channels" })
+		CHECK(da.value(QLatin1String(k)) == au.value(QLatin1String(k)));
+
+	CHECK(profiles::rename(mine[0], QStringLiteral("Renamed"), &err));
+	mine = profiles::load(scratch.path());
+	CHECK(mine.size() == 1 && mine.value(0).name == "Renamed" && mine.value(0).container == "mkv");
+	CHECK(!mine.isEmpty() && profiles::remove(mine[0], &err, false));
+	CHECK(profiles::load(scratch.path()).isEmpty());
+}
+
 int main(int argc, char **argv)
 {
 	qputenv("QT_QPA_PLATFORM", "offscreen");
@@ -151,6 +258,14 @@ int main(int argc, char **argv)
 		if (c->text().contains(QStringLiteral("emux")))
 			remux = c;
 	CHECK(remux && !remux->isEnabled());
+
+	// Profiles: the bundled .NET ones, applied to a real file, and a round
+	// trip through save / load / rename / delete. Needs the IFME folder.
+	const QString root = argc > 1 ? QString::fromLocal8Bit(argv[1]) : QString();
+	if (root.isEmpty() || !QFileInfo::exists(root + QStringLiteral("/Profiles")))
+		std::printf("profiles: skipped (no IFME folder with Profiles/)\n");
+	else
+		testProfiles(root);
 
 	std::printf("%d checks, %d failed\n", g_checks, g_failed);
 	return g_failed ? 1 : 0;

@@ -265,6 +265,7 @@ Differences from C#:
 ./build/ifme9 --root "/d/Program Files/IFME"        # remembered in Preferences
 ./build/ifme9 movie.mkv other.mp4                    # add files (or folders)
 ./build/ifme9 -f mp4 -o out --start --quit-when-done movie.mkv   # batch, exit code 0 if all worked
+./build/ifme9 -p "High Compression & Quality (x264 AAC)" -o out --start --quit-when-done *.mkv
 ```
 
 The same window as IFME today, on the finished core:
@@ -301,10 +302,18 @@ The same window as IFME today, on the finished core:
 - **About** (black, as frmAbout) with the banner and the four characters;
   the splash has the acrylic blur of C# on Windows 10 1803 and later; IFME's
   icon on the window and in `ifme9.exe` / `ifmecli.exe`.
+- **Profiles** from `Profiles/` in the IFME folder, the same JSON files as
+  IFME 8 (both read each other's): pick one to set the format, video and
+  audio encoders and fast remux of the selected files and of files added
+  afterwards; **Save as...** keeps the selected file's settings, the menu
+  next to it renames or deletes (to the recycle bin) a profile. An encoder a
+  profile names that is missing or disabled is replaced by a default, and
+  the Logging tab says so. `-p NAME` (name or file name) does the same for
+  a batch; an unknown name exits with code 2.
 - Settings live in `ifme-qt.ini` in IFME's config folder.
 
 The artwork is used as is from `../IFME/Resources` (one copy in the repository).
-Not yet: profiles, translations (i18n), file name prefix/postfix, the C#
+Not yet: translations (i18n), file name prefix/postfix, the C#
 "shut down when done" option, a macOS `.icns` app icon and a Linux
 `.desktop` file.
 
