@@ -6,6 +6,7 @@
 #include <QPixmap>
 
 #include "app.h"
+#include "wad.h"
 
 // Same layout as C#'s frmAbout (600 x 700).
 AboutDialog::AboutDialog(QWidget *parent)
@@ -42,7 +43,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 	auto *banner = new QLabel(this);
 	banner->setGeometry(0, 0, 600, 64);
 	banner->setScaledContents(true);
-	banner->setPixmap(QPixmap(QStringLiteral(":/ifme/banner-about.png")));
+	banner->setPixmap(wad::image(QStringLiteral("Banner_About.png")));   // resources.wad, as IFME 8
 
 	label({ 0, 64, 600, 48 }, QStringLiteral("'%1'").arg(QLatin1String(app::CodeName)), 14, false);
 	label({ 0, 112, 600, 50 }, tr("Version %1 (Qt)").arg(QString::fromUtf8(ifme_version())), 14, true);
@@ -54,14 +55,15 @@ AboutDialog::AboutDialog(QWidget *parent)
 	     "http://pixiv.me/ray53c", 10, true);
 	struct Char { const char *file, *name; int x; };
 	const Char chars[] = {
-		{ ":/ifme/ichika.png", "Ichika", 91 }, { ":/ifme/fumiko.png", "Fumiko", 197 },
-		{ ":/ifme/miho.png", "Miho", 303 }, { ":/ifme/erika.png", "Erika", 409 },
+		{ "Avatar1_Ichika.png", "Ichika", 91 }, { "Avatar2_Fumiko.png", "Fumiko", 197 },
+		{ "Avatar3_Miho.png", "Miho", 303 }, { "Avatar4_Erika.png", "Erika", 409 },
 	};
 	for (const Char &c : chars) {
 		auto *pic = new QLabel(this);
 		pic->setGeometry(c.x, 210 + 59, 100, 150);
-		pic->setPixmap(QPixmap(QString::fromLatin1(c.file))
-			.scaled(100, 150, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		const QPixmap art = wad::image(QString::fromLatin1(c.file));
+		if (!art.isNull())
+			pic->setPixmap(art.scaled(100, 150, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		pic->setAlignment(Qt::AlignCenter);
 		label({ c.x, 210 + 59 + 150, 100, 24 }, QString::fromLatin1(c.name), 9, true);
 	}

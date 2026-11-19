@@ -6,11 +6,12 @@
 #include <QPainter>
 
 #include "app.h"
+#include "wad.h"
 
 BannerWidget::BannerWidget(QWidget *parent)
 	: QWidget(parent)
-	, m_left(QStringLiteral(":/ifme/banner-left.png"))
-	, m_right(QStringLiteral(":/ifme/banner-right.png"))
+	, m_left(wad::image(QStringLiteral("Banner_4a.png")))     // resources.wad, as IFME 8
+	, m_right(wad::image(QStringLiteral("Banner_2b.png")))
 {
 	setFixedHeight(64);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
