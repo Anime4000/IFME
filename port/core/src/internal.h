@@ -6,6 +6,7 @@
 #define IFME_INTERNAL_H
 
 #include <stdarg.h>
+#include <stdatomic.h>
 #include <stdint.h>
 
 #include "ifme.h"
@@ -103,16 +104,32 @@ char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name);
 enum {
 	IFME_RUN_OK = 0,          /* every stage ran to completion          */
 	IFME_RUN_START_FAILED = -1,
-	IFME_RUN_TIMEOUT = -2     /* killed after timeout_ms                */
+	IFME_RUN_TIMEOUT = -2,    /* killed after timeout_ms                */
+	IFME_RUN_STOPPED = -3     /* killed because control->want_stop      */
 };
+
+/* Requests from any thread (or a signal handler) to a running pipeline. The
+ * runner polls these every few milliseconds and does the OS work itself, so
+ * callers never race with process start-up or tear-down. */
+typedef struct ifme_control {
+	atomic_int want_pause;    /* 1: suspend every process, 0: run          */
+	atomic_int want_stop;     /* 1: kill the whole pipeline                */
+	atomic_int paused;        /* runner's actual state                     */
+} ifme_control;
 
 typedef struct ifme_run_opts {
 	const char *cwd;          /* NULL: inherit                                   */
-	int timeout_ms;           /* <= 0: no limit                                  */
+	int timeout_ms;           /* <= 0: no limit (time spent paused not counted)  */
 	bool capture_stdout;      /* last stage's stdout -> result.out (else null)   */
 	bool capture_stderr;      /* every stage's stderr -> result.err              */
-	const char *stderr_path;  /* if not capturing: append stderr here (NULL: drop) */
+	const char *stderr_path;  /* if not capturing/streaming: append stderr here  */
 	size_t capture_limit;     /* per buffer; 0 = 64 MiB. Excess is read and dropped */
+
+	/* Streaming: every stderr line (split on \r and \n, empty lines skipped). */
+	void (*on_line)(void *user, const char *line);
+	void (*on_tick)(void *user);   /* about every 50 ms while running */
+	void *user;
+	ifme_control *control;         /* NULL: no pause/stop              */
 } ifme_run_opts;
 
 typedef struct ifme_run_result {
@@ -139,5 +156,42 @@ typedef struct ifme_capture {
 
 void ifme_capture_append(ifme_capture *c, const char *buf, size_t n);
 void ifme_capture_finish(ifme_capture *c, char **out, size_t *out_len);
+
+/* Splits a byte stream into lines on \r or \n (progress output uses \r). */
+typedef struct ifme_linebuf {
+	char buf[4096];
+	size_t len;
+} ifme_linebuf;
+
+void ifme_linebuf_feed(ifme_linebuf *lb, const char *data, size_t n,
+                       void (*cb)(void *user, const char *line), void *user);
+void ifme_linebuf_flush(ifme_linebuf *lb, void (*cb)(void *user, const char *line), void *user);
+
+/* Shared bookkeeping for the runner loops. */
+typedef struct ifme_run_state {
+	uint64_t deadline;        /* 0: none                                    */
+	uint64_t paused_since;    /* 0: running                                 */
+	uint64_t last_tick;
+	bool paused;
+	bool stopped;
+	bool timed_out;
+} ifme_run_state;
+
+/* ---- progress.c ------------------------------------------------------------ */
+typedef struct ifme_progress_parser {
+	long long total_frames;     /* 0: unknown; encoders may report it        */
+	double fps_history[5];      /* moving average for the ETA (as in C#)     */
+	int history_count, history_pos;
+	uint64_t start_ms;          /* to derive fps when an encoder omits it    */
+	long long start_frame;
+} ifme_progress_parser;
+
+enum { IFME_LINE_LOG = 0, IFME_LINE_STATUS = 1, IFME_LINE_PROGRESS = 2 };
+
+void ifme_progress_init(ifme_progress_parser *pp, long long total_frames);
+/* Classify one output line; for IFME_LINE_PROGRESS *out is filled. */
+int  ifme_progress_feed(ifme_progress_parser *pp, const char *line, ifme_progress *out);
+/* Copy without ANSI colour codes and backspaces, trimmed. Caller frees. */
+char *ifme_clean_line(const char *line);
 
 #endif /* IFME_INTERNAL_H */

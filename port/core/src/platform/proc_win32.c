@@ -15,6 +15,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <tlhelp32.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -184,32 +185,83 @@ static bool spawn(const ifme_argv *stage, const wchar_t *wcwd, HANDLE in, HANDLE
 	return true;
 }
 
+/* Suspend or resume every thread of every process in the job. Windows has
+ * no documented "suspend process" call, so walk a Toolhelp thread snapshot. */
+static void job_suspend(HANDLE job, bool suspend)
+{
+	struct {
+		JOBOBJECT_BASIC_PROCESS_ID_LIST head;
+		ULONG_PTR more[255];
+	} list;
+	memset(&list, 0, sizeof(list));
+
+	if (!QueryInformationJobObject(job, JobObjectBasicProcessIdList, &list, sizeof(list), NULL))
+		return;
+
+	DWORD count = list.head.NumberOfProcessIdsInList;
+	HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	if (snap == INVALID_HANDLE_VALUE)
+		return;
+
+	THREADENTRY32 te;
+	te.dwSize = sizeof(te);
+
+	for (BOOL ok = Thread32First(snap, &te); ok; ok = Thread32Next(snap, &te)) {
+		bool ours = false;
+		for (DWORD i = 0; i < count && !ours; i++)
+			ours = list.head.ProcessIdList[i] == (ULONG_PTR)te.th32OwnerProcessID;
+		if (!ours)
+			continue;
+
+		HANDLE th = OpenThread(THREAD_SUSPEND_RESUME, FALSE, te.th32ThreadID);
+		if (th) {
+			if (suspend)
+				SuspendThread(th);
+			else
+				ResumeThread(th);
+			CloseHandle(th);
+		}
+		te.dwSize = sizeof(te);
+	}
+
+	CloseHandle(snap);
+}
+
+typedef struct stream_reader {
+	HANDLE h;                    /* NULL once at end-of-file */
+	ifme_capture *capture;       /* NULL: don't keep the bytes */
+	ifme_linebuf *lines;         /* NULL: don't split into lines */
+	const ifme_run_opts *opts;
+} stream_reader;
+
 /* Read whatever is waiting in an anonymous pipe without blocking. Anonymous
- * pipes cannot be poll()ed on Windows, but PeekNamedPipe works on them.
- * Closes the handle and sets it to NULL at end-of-file. */
-static bool drain(HANDLE *h, ifme_capture *c)
+ * pipes cannot be poll()ed on Windows, but PeekNamedPipe works on them. */
+static bool drain(stream_reader *r)
 {
 	char buf[65536];
 	bool got = false;
 
-	while (*h) {
+	while (r->h) {
 		DWORD avail = 0, n = 0;
 
-		if (!PeekNamedPipe(*h, NULL, 0, NULL, &avail, NULL)) {
-			CloseHandle(*h);           /* ERROR_BROKEN_PIPE: writer gone */
-			*h = NULL;
+		if (!PeekNamedPipe(r->h, NULL, 0, NULL, &avail, NULL)) {
+			CloseHandle(r->h);         /* ERROR_BROKEN_PIPE: writer gone */
+			r->h = NULL;
 			break;
 		}
 		if (avail == 0)
 			break;
 
-		if (!ReadFile(*h, buf, avail < sizeof(buf) ? avail : (DWORD)sizeof(buf), &n, NULL) || n == 0) {
-			CloseHandle(*h);
-			*h = NULL;
+		if (!ReadFile(r->h, buf, avail < sizeof(buf) ? avail : (DWORD)sizeof(buf), &n, NULL) || n == 0) {
+			CloseHandle(r->h);
+			r->h = NULL;
 			break;
 		}
 
-		ifme_capture_append(c, buf, n);
+		if (r->capture)
+			ifme_capture_append(r->capture, buf, n);
+		if (r->lines)
+			ifme_linebuf_feed(r->lines, buf, n, r->opts->on_line, r->opts->user);
 		got = true;
 	}
 	return got;
@@ -223,6 +275,50 @@ static bool make_pipe(HANDLE *read_end, HANDLE *write_end, SECURITY_ATTRIBUTES *
 	/* Only the write end is meant for children. */
 	SetHandleInformation(*read_end, HANDLE_FLAG_INHERIT, 0);
 	return true;
+}
+
+/* Apply pause/stop requests, the timeout and the tick callback. */
+static void apply_control(HANDLE job, const ifme_run_opts *opts, ifme_run_state *st,
+                          char *message, size_t message_len)
+{
+	ifme_control *c = opts->control;
+	uint64_t now = ifme_now_ms();
+
+	if (c && !st->stopped && atomic_load(&c->want_stop)) {
+		if (st->paused)
+			job_suspend(job, false);   /* not required to kill, but tidy */
+		TerminateJobObject(job, 1);
+		st->stopped = true;
+		snprintf(message, message_len, "stopped");
+	}
+
+	if (c && !st->stopped) {
+		bool want = atomic_load(&c->want_pause) != 0;
+		if (want != st->paused) {
+			job_suspend(job, want);
+			st->paused = want;
+			atomic_store(&c->paused, want ? 1 : 0);
+
+			if (want) {
+				st->paused_since = now;
+			} else {
+				if (st->deadline)
+					st->deadline += now - st->paused_since;   /* pause doesn't count */
+				st->paused_since = 0;
+			}
+		}
+	}
+
+	if (st->deadline && !st->paused && !st->stopped && !st->timed_out && now >= st->deadline) {
+		TerminateJobObject(job, 1);
+		st->timed_out = true;
+		snprintf(message, message_len, "timed out after %d s", opts->timeout_ms / 1000);
+	}
+
+	if (opts->on_tick && now - st->last_tick >= 50) {
+		st->last_tick = now;
+		opts->on_tick(opts->user);
+	}
 }
 
 int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
@@ -241,9 +337,19 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 		return res->status;
 	}
 
+	if (opts->control && atomic_load(&opts->control->want_stop)) {
+		res->status = IFME_RUN_STOPPED;
+		snprintf(res->message, sizeof(res->message), "stopped");
+		return res->status;
+	}
+
 	SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };   /* inheritable */
 	ifme_capture cap_out = { 0 }, cap_err = { 0 };
 	cap_out.limit = cap_err.limit = opts->capture_limit;
+	ifme_linebuf *lines = opts->on_line ? calloc(1, sizeof(ifme_linebuf)) : NULL;
+
+	stream_reader out_r = { NULL, &cap_out, NULL, opts };
+	stream_reader err_r = { NULL, opts->capture_stderr ? &cap_err : NULL, lines, opts };
 
 	HANDLE job = CreateJobObjectW(NULL, NULL);
 	JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits;
@@ -257,24 +363,26 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 	HANDLE null_out = CreateFileW(L"NUL", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
 	                              &sa, OPEN_EXISTING, 0, NULL);
 
-	HANDLE out_read = NULL, out_write = null_out;
-	HANDLE err_read = NULL, err_write = null_out;
+	HANDLE out_write = null_out, err_write = null_out;
 	wchar_t *wcwd = (opts->cwd && *opts->cwd) ? ifme_utf8_to_wide(opts->cwd) : NULL;
 	HANDLE *procs = calloc(count, sizeof(HANDLE));
 	size_t started = 0;
+	ifme_run_state st;
+	memset(&st, 0, sizeof(st));
 
-	if (!job || null_in == INVALID_HANDLE_VALUE || null_out == INVALID_HANDLE_VALUE || !procs) {
+	if (!job || null_in == INVALID_HANDLE_VALUE || null_out == INVALID_HANDLE_VALUE || !procs ||
+	    (opts->on_line && !lines)) {
 		set_error(res->message, sizeof(res->message), "cannot prepare", "pipeline", GetLastError());
 		goto done;
 	}
 
-	if (opts->capture_stdout && !make_pipe(&out_read, &out_write, &sa)) {
+	if (opts->capture_stdout && !make_pipe(&out_r.h, &out_write, &sa)) {
 		set_error(res->message, sizeof(res->message), "cannot create", "stdout pipe", GetLastError());
 		goto done;
 	}
 
-	if (opts->capture_stderr) {
-		if (!make_pipe(&err_read, &err_write, &sa)) {
+	if (opts->capture_stderr || opts->on_line) {
+		if (!make_pipe(&err_r.h, &err_write, &sa)) {
 			set_error(res->message, sizeof(res->message), "cannot create", "stderr pipe", GetLastError());
 			goto done;
 		}
@@ -331,17 +439,19 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 		err_write = null_out;
 	}
 
-	uint64_t deadline = opts->timeout_ms > 0 ? ifme_now_ms() + (uint64_t)opts->timeout_ms : 0;
-	bool timed_out = false, stragglers_killed = false;
+	st.deadline = opts->timeout_ms > 0 ? ifme_now_ms() + (uint64_t)opts->timeout_ms : 0;
+	bool stragglers_killed = false;
 
 	for (;;) {
-		bool got = drain(&out_read, &cap_out);
-		got = drain(&err_read, &cap_err) || got;
+		bool got = drain(&out_r);
+		got = drain(&err_r) || got;
+
+		apply_control(job, opts, &st, res->message, sizeof(res->message));
 
 		bool exited = WaitForMultipleObjects((DWORD)count, procs, TRUE, 0) == WAIT_OBJECT_0;
 
 		if (exited) {
-			if (!out_read && !err_read)
+			if (!out_r.h && !err_r.h)
 				break;
 
 			/* A grandchild may still hold our pipe open; the stages are done,
@@ -352,21 +462,18 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 			}
 		}
 
-		if (deadline && !timed_out && ifme_now_ms() >= deadline) {
-			TerminateJobObject(job, 1);
-			timed_out = true;
-			snprintf(res->message, sizeof(res->message), "timed out after %d s", opts->timeout_ms / 1000);
-		}
-
 		if (!got) {
-			if (out_read || err_read)
+			if (out_r.h || err_r.h)
 				Sleep(5);
 			else
-				WaitForMultipleObjects((DWORD)count, procs, TRUE, 100);
+				WaitForMultipleObjects((DWORD)count, procs, TRUE, 20);
 		}
 	}
 
-	res->status = timed_out ? IFME_RUN_TIMEOUT : IFME_RUN_OK;
+	if (lines)
+		ifme_linebuf_flush(lines, opts->on_line, opts->user);
+
+	res->status = st.stopped ? IFME_RUN_STOPPED : st.timed_out ? IFME_RUN_TIMEOUT : IFME_RUN_OK;
 
 	DWORD code = 0;
 	if (GetExitCodeProcess(procs[count - 1], &code))
@@ -378,10 +485,12 @@ kill:
 		TerminateJobObject(job, 1);
 
 done:
-	if (out_read)
-		CloseHandle(out_read);
-	if (err_read)
-		CloseHandle(err_read);
+	if (opts->control)
+		atomic_store(&opts->control->paused, 0);
+	if (out_r.h)
+		CloseHandle(out_r.h);
+	if (err_r.h)
+		CloseHandle(err_r.h);
 	if (out_write && out_write != null_out)
 		CloseHandle(out_write);
 	if (err_write && err_write != null_out)
@@ -389,6 +498,7 @@ done:
 
 	ifme_capture_finish(&cap_out, &res->out, &res->out_len);
 	ifme_capture_finish(&cap_err, &res->err, &res->err_len);
+	free(lines);
 
 	for (size_t i = 0; procs && i < started; i++)
 		CloseHandle(procs[i]);

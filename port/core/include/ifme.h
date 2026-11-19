@@ -198,6 +198,65 @@ void ifme_media_free(ifme_media *media);
  * under "ffprobe". Caller frees with ifme_free(). */
 char *ifme_media_json(const ifme_media *media, bool include_raw);
 
+/* ------------------------------------------------------------------------ */
+/* Running encoders: progress, pause, resume, stop                          */
+/* ------------------------------------------------------------------------ */
+
+typedef struct ifme_progress {
+	long long frame;             /* frames done, -1 unknown                      */
+	long long total_frames;      /* 0 unknown                                    */
+	double percent;              /* 0..100, -1 unknown                           */
+	double fps;                  /* -1 unknown                                   */
+	double kbps;                 /* -1 unknown                                   */
+	long long eta_sec;           /* -1 until enough samples / total unknown      */
+} ifme_progress;
+
+typedef struct ifme_task ifme_task;
+
+typedef struct ifme_task_callbacks {
+	/* Every encoder output line. is_status: a progress-style line that a UI
+	 * should show in place (status bar) rather than append to the log. */
+	void (*on_output)(void *user, const char *line, bool is_status);
+	/* Parsed progress (x264, x265, VVenC, SVT-AV1, NVEncC/QSVEncC, FFmpeg). */
+	void (*on_progress)(void *user, const ifme_progress *progress);
+	/* About every 50 ms on the thread running ifme_task_exec(). */
+	void (*on_tick)(void *user);
+	void *user;
+} ifme_task_callbacks;
+
+typedef enum ifme_task_result {
+	IFME_TASK_DONE = 0,          /* finished, exit code 0                        */
+	IFME_TASK_FAILED,            /* finished with a non-zero exit code           */
+	IFME_TASK_STOPPED,           /* ended by ifme_task_stop()                    */
+	IFME_TASK_ERROR              /* could not start (see err)                    */
+} ifme_task_result;
+
+/* A task controls one running pipeline. Create one per job. */
+ifme_task *ifme_task_create(void);
+void       ifme_task_destroy(ifme_task *task);
+
+/* Safe from any thread, and from a signal / console-control handler. They
+ * take effect within a few milliseconds; pause/resume act on every process
+ * of the pipeline (Windows: all threads of the job; POSIX: SIGSTOP/SIGCONT
+ * to the process group). Stop kills the whole pipeline. A stop requested
+ * before ifme_task_exec() makes it return IFME_TASK_STOPPED at once. */
+void ifme_task_pause(ifme_task *task);
+void ifme_task_resume(ifme_task *task);
+void ifme_task_stop(ifme_task *task);
+bool ifme_task_is_paused(const ifme_task *task);
+
+/* Run a pipeline and block until it ends. argv holds one or more commands
+ * separated by a "|" element, e.g.
+ *   { "ffmpeg", "-i", "in.mkv", "-f", "yuv4mpegpipe", "-", "|",
+ *     "x265", "--y4m", "-", "-o", "out.h265" }
+ * No shell is involved. "ffmpeg"/"ffprobe" fall back to the bundled copy.
+ * total_frames (0 = unknown) enables percentage and ETA. */
+ifme_task_result ifme_task_exec(ifme_task *task, ifme_ctx *ctx,
+                                const char *const *argv, size_t argc,
+                                const char *cwd, long long total_frames,
+                                const ifme_task_callbacks *cb,
+                                int *exit_code, char *err, size_t err_len);
+
 /* Free memory returned by functions documented as "caller frees". */
 void ifme_free(void *ptr);
 

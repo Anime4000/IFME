@@ -51,6 +51,35 @@ void ifme_capture_finish(ifme_capture *c, char **out, size_t *out_len)
 	c->len = c->cap = 0;
 }
 
+static void emit(ifme_linebuf *lb, void (*cb)(void *, const char *), void *user)
+{
+	lb->buf[lb->len] = '\0';
+	if (lb->len > 0 && cb)
+		cb(user, lb->buf);
+	lb->len = 0;
+}
+
+void ifme_linebuf_feed(ifme_linebuf *lb, const char *data, size_t n,
+                       void (*cb)(void *user, const char *line), void *user)
+{
+	for (size_t i = 0; i < n; i++) {
+		char c = data[i];
+
+		if (c == '\n' || c == '\r') {
+			emit(lb, cb, user);
+		} else {
+			if (lb->len + 1 >= sizeof(lb->buf))
+				emit(lb, cb, user);       /* overlong line: deliver in pieces */
+			lb->buf[lb->len++] = c;
+		}
+	}
+}
+
+void ifme_linebuf_flush(ifme_linebuf *lb, void (*cb)(void *user, const char *line), void *user)
+{
+	emit(lb, cb, user);
+}
+
 void ifme_run_result_free(ifme_run_result *res)
 {
 	if (!res)

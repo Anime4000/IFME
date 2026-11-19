@@ -57,21 +57,72 @@ static void move_fd(int fd, int target)
 		dup2(fd, target);
 }
 
-/* Read what is ready on *fd; close it and set -1 at end-of-file. */
-static bool drain_fd(int *fd, ifme_capture *c)
+typedef struct stream_reader {
+	int fd;                      /* -1 once at end-of-file */
+	ifme_capture *capture;       /* NULL: don't keep the bytes */
+	ifme_linebuf *lines;         /* NULL: don't split into lines */
+	const ifme_run_opts *opts;
+} stream_reader;
+
+/* Read what is ready; close the descriptor at end-of-file. */
+static void drain_fd(stream_reader *r)
 {
 	char buf[65536];
-	ssize_t n = read(*fd, buf, sizeof(buf));
+	ssize_t n = read(r->fd, buf, sizeof(buf));
 
 	if (n > 0) {
-		ifme_capture_append(c, buf, (size_t)n);
-		return true;
+		if (r->capture)
+			ifme_capture_append(r->capture, buf, (size_t)n);
+		if (r->lines)
+			ifme_linebuf_feed(r->lines, buf, (size_t)n, r->opts->on_line, r->opts->user);
+		return;
 	}
 	if (n == 0 || (errno != EINTR && errno != EAGAIN)) {
-		close(*fd);
-		*fd = -1;
+		close(r->fd);
+		r->fd = -1;
 	}
-	return false;
+}
+
+/* Apply pause/stop requests, the timeout and the tick callback. */
+static void apply_control(pid_t pgid, const ifme_run_opts *opts, ifme_run_state *st,
+                          char *message, size_t message_len)
+{
+	ifme_control *c = opts->control;
+	uint64_t now = ifme_now_ms();
+
+	if (c && !st->stopped && atomic_load(&c->want_stop)) {
+		killpg(pgid, SIGKILL);       /* works on stopped processes too */
+		st->stopped = true;
+		snprintf(message, message_len, "stopped");
+	}
+
+	if (c && !st->stopped) {
+		bool want = atomic_load(&c->want_pause) != 0;
+		if (want != st->paused) {
+			killpg(pgid, want ? SIGSTOP : SIGCONT);
+			st->paused = want;
+			atomic_store(&c->paused, want ? 1 : 0);
+
+			if (want) {
+				st->paused_since = now;
+			} else {
+				if (st->deadline)
+					st->deadline += now - st->paused_since;   /* pause doesn't count */
+				st->paused_since = 0;
+			}
+		}
+	}
+
+	if (st->deadline && !st->paused && !st->stopped && !st->timed_out && now >= st->deadline) {
+		killpg(pgid, SIGKILL);
+		st->timed_out = true;
+		snprintf(message, message_len, "timed out after %d s", opts->timeout_ms / 1000);
+	}
+
+	if (opts->on_tick && now - st->last_tick >= 50) {
+		st->last_tick = now;
+		opts->on_tick(opts->user);
+	}
 }
 
 int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
@@ -90,12 +141,22 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 		return res->status;
 	}
 
+	if (opts->control && atomic_load(&opts->control->want_stop)) {
+		res->status = IFME_RUN_STOPPED;
+		snprintf(res->message, sizeof(res->message), "stopped");
+		return res->status;
+	}
+
 	ifme_capture cap_out = { 0 }, cap_err = { 0 };
 	cap_out.limit = cap_err.limit = opts->capture_limit;
+	ifme_linebuf *lines = opts->on_line ? calloc(1, sizeof(ifme_linebuf)) : NULL;
+
+	stream_reader out_r = { -1, &cap_out, NULL, opts };
+	stream_reader err_r = { -1, opts->capture_stderr ? &cap_err : NULL, lines, opts };
+	int out_write = -1, err_write = -1;
 
 	int null_in = open_cloexec("/dev/null", O_RDONLY);
 	int null_out = open_cloexec("/dev/null", O_WRONLY);
-	int out_pipe[2] = { -1, -1 }, err_pipe[2] = { -1, -1 };
 	int log_fd = -1;
 
 	pid_t *pids = calloc(count, sizeof(pid_t));
@@ -103,27 +164,37 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 	char **paths = calloc(count, sizeof(char *));
 	pid_t pgid = 0;
 	size_t started = 0;
+	ifme_run_state st;
+	memset(&st, 0, sizeof(st));
 
-	if (null_in < 0 || null_out < 0 || !pids || !status || !paths) {
+	if (null_in < 0 || null_out < 0 || !pids || !status || !paths || (opts->on_line && !lines)) {
 		snprintf(res->message, sizeof(res->message), "cannot prepare pipeline: %s", strerror(errno));
 		goto done;
 	}
 
-	if (opts->capture_stdout && !make_pipe(out_pipe)) {
-		snprintf(res->message, sizeof(res->message), "cannot create pipe: %s", strerror(errno));
-		goto done;
-	}
-	if (opts->capture_stderr) {
-		if (!make_pipe(err_pipe)) {
+	if (opts->capture_stdout) {
+		int fds[2];
+		if (!make_pipe(fds)) {
 			snprintf(res->message, sizeof(res->message), "cannot create pipe: %s", strerror(errno));
 			goto done;
 		}
+		out_r.fd = fds[0];
+		out_write = fds[1];
+	}
+	if (opts->capture_stderr || opts->on_line) {
+		int fds[2];
+		if (!make_pipe(fds)) {
+			snprintf(res->message, sizeof(res->message), "cannot create pipe: %s", strerror(errno));
+			goto done;
+		}
+		err_r.fd = fds[0];
+		err_write = fds[1];
 	} else if (opts->stderr_path) {
 		log_fd = open_cloexec(opts->stderr_path, O_WRONLY | O_CREAT | O_APPEND);
 	}
 
-	const int last_out = out_pipe[1] >= 0 ? out_pipe[1] : null_out;
-	const int err_fd = err_pipe[1] >= 0 ? err_pipe[1] : log_fd >= 0 ? log_fd : null_out;
+	const int last_out = out_write >= 0 ? out_write : null_out;
+	const int err_fd = err_write >= 0 ? err_write : log_fd >= 0 ? log_fd : null_out;
 
 	/* Resolve every program before forking: execv needs a path and PATH lookup
 	 * allocates, which the child must not do. */
@@ -204,42 +275,43 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 	}
 
 	/* Every child has its copy now; keeping ours would hide end-of-file. */
-	if (out_pipe[1] >= 0) {
-		close(out_pipe[1]);
-		out_pipe[1] = -1;
+	if (out_write >= 0) {
+		close(out_write);
+		out_write = -1;
 	}
-	if (err_pipe[1] >= 0) {
-		close(err_pipe[1]);
-		err_pipe[1] = -1;
+	if (err_write >= 0) {
+		close(err_write);
+		err_write = -1;
 	}
 
-	uint64_t deadline = opts->timeout_ms > 0 ? ifme_now_ms() + (uint64_t)opts->timeout_ms : 0;
+	st.deadline = opts->timeout_ms > 0 ? ifme_now_ms() + (uint64_t)opts->timeout_ms : 0;
 	size_t remaining = count;
-	bool timed_out = false, stragglers_killed = false;
+	bool stragglers_killed = false;
 
 	for (;;) {
 		struct pollfd pfd[2];
-		int *which[2];
+		stream_reader *which[2];
 		nfds_t n = 0;
 
-		if (out_pipe[0] >= 0) {
-			pfd[n].fd = out_pipe[0];
+		if (out_r.fd >= 0) {
+			pfd[n].fd = out_r.fd;
 			pfd[n].events = POLLIN;
-			which[n++] = &out_pipe[0];
+			which[n++] = &out_r;
 		}
-		if (err_pipe[0] >= 0) {
-			pfd[n].fd = err_pipe[0];
+		if (err_r.fd >= 0) {
+			pfd[n].fd = err_r.fd;
 			pfd[n].events = POLLIN;
-			which[n++] = &err_pipe[0];
+			which[n++] = &err_r;
 		}
 
-		/* Also serves as the 20 ms sleep when nothing is captured. */
+		/* Also serves as the 20 ms sleep when nothing is streamed. */
 		if (poll(n ? pfd : NULL, n, 20) > 0) {
-			for (nfds_t k = 0; k < n; k++) {
+			for (nfds_t k = 0; k < n; k++)
 				if (pfd[k].revents & (POLLIN | POLLHUP | POLLERR))
-					drain_fd(which[k], which[k] == &out_pipe[0] ? &cap_out : &cap_err);
-			}
+					drain_fd(which[k]);
 		}
+
+		apply_control(pgid, opts, &st, res->message, sizeof(res->message));
 
 		for (size_t i = 0; i < count; i++) {
 			if (pids[i] <= 0)
@@ -253,7 +325,7 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 		}
 
 		if (remaining == 0) {
-			if (out_pipe[0] < 0 && err_pipe[0] < 0)
+			if (out_r.fd < 0 && err_r.fd < 0)
 				break;
 
 			/* A grandchild may still hold our pipe open; the stages are done,
@@ -263,19 +335,16 @@ int ifme_run(const ifme_argv *stages, size_t count, const ifme_run_opts *opts,
 				stragglers_killed = true;
 			}
 		}
-
-		if (deadline && !timed_out && ifme_now_ms() >= deadline) {
-			killpg(pgid, SIGKILL);
-			timed_out = true;
-			snprintf(res->message, sizeof(res->message), "timed out after %d s", opts->timeout_ms / 1000);
-		}
 	}
 
-	res->status = timed_out ? IFME_RUN_TIMEOUT : IFME_RUN_OK;
+	if (lines)
+		ifme_linebuf_flush(lines, opts->on_line, opts->user);
+
+	res->status = st.stopped ? IFME_RUN_STOPPED : st.timed_out ? IFME_RUN_TIMEOUT : IFME_RUN_OK;
 	{
-		int st = status[count - 1];
-		res->exit_code = WIFEXITED(st) ? WEXITSTATUS(st)
-		               : WIFSIGNALED(st) ? 128 + WTERMSIG(st) : -1;
+		int s = status[count - 1];
+		res->exit_code = WIFEXITED(s) ? WEXITSTATUS(s)
+		               : WIFSIGNALED(s) ? 128 + WTERMSIG(s) : -1;
 	}
 	goto done;
 
@@ -287,14 +356,20 @@ kill:
 			waitpid(pids[i], NULL, 0);
 
 done:
-	for (int k = 0; k < 2; k++) {
-		if (out_pipe[k] >= 0)
-			close(out_pipe[k]);
-		if (err_pipe[k] >= 0)
-			close(err_pipe[k]);
-	}
+	if (opts->control)
+		atomic_store(&opts->control->paused, 0);
+	if (out_r.fd >= 0)
+		close(out_r.fd);
+	if (err_r.fd >= 0)
+		close(err_r.fd);
+	if (out_write >= 0)
+		close(out_write);
+	if (err_write >= 0)
+		close(err_write);
+
 	ifme_capture_finish(&cap_out, &res->out, &res->out_len);
 	ifme_capture_finish(&cap_err, &res->err, &res->err_len);
+	free(lines);
 
 	for (size_t i = 0; paths && i < count; i++)
 		free(paths[i]);

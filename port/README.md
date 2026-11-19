@@ -111,6 +111,51 @@ ffprobe comes from `PATH`, else `<root>/Plugins/ffmpeg64`. Compared with
   application) and other upper-case tags are found.
 - A `0/0` frame rate is `0`, not NaN; a failure reports ffprobe's reason.
 
+### Running encoders: progress, pause, resume, stop
+
+`--exec` runs any pipeline without a shell; separate commands with a `"|"`
+argument. `ffmpeg`/`ffprobe` fall back to the bundled copy.
+
+```bash
+./build/ifmecli --root "/d/Program Files/IFME" --exec --frames 495 -- \
+    ffmpeg -v error -i in.mp4 -strict -1 -f yuv4mpegpipe - "|" \
+    "/d/Program Files/IFME/Plugins/h265_x265/x265.exe" --y4m - -o "out file.h265"
+```
+
+```
+[ 49.7%] frame 246/495  42.22 fps  920 kb/s  ETA 00:00:06   [p]ause [r]esume [q]uit
+```
+
+In a terminal: **p** pauses, **r** resumes, **q** or **Ctrl+C** stops the whole
+pipeline (Windows: every thread of the Job Object is suspended / the job is
+terminated; Linux/macOS: SIGSTOP / SIGCONT / SIGKILL to the process group).
+Progress is read from x264, x265, VVenC, SVT-AV1, NVEncC/QSVEncC and FFmpeg.
+Compared with `ProcessManager.cs`:
+
+- SVT-AV1 progress works (the plugin's `--progress 2` output is coloured with
+  ANSI codes in a format C# did not match, so C# showed nothing).
+- x264/x265 report their own total, which fills in an unknown frame count.
+- The ETA is no longer rounded to whole fps first, so encoders slower than
+  0.5 fps (VVenC at 4K) get one.
+
+For the GUI the same is available as `ifme_task_*` in `ifme.h`; pause, resume
+and stop are safe from any thread.
+
+### Tests
+
+```bash
+cmake -B build -G Ninja -DIFME_TEST_ROOT="/d/Program Files/IFME"
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
+
+- `units`: progress parser on real encoder output, line splitting, argument
+  templates, relaxed JSON.
+- `task`: a real `ffmpeg | x265` encode is paused (no frame may advance for
+  2 s), resumed, then stopped while paused (must return within 3 s); plus
+  stop-before-start, a failing command and a missing program. Skipped when
+  `IFME_TEST_ROOT` is not set.
+
 ## Layout
 
 ```
@@ -118,6 +163,8 @@ core/include/ifme.h          public C API (extern "C", UTF-8, opaque handles)
 core/src/core.c              context lifetime, string helpers
 core/src/plugins.c           manifest loading, self-test
 core/src/probe.c             media information from ffprobe
+core/src/progress.c          frame / fps / bitrate / ETA from encoder output
+core/src/task.c              public task API: exec, pause, resume, stop
 core/src/argv.c              argument lists built from manifest templates
 core/src/json_relax.c        accept comments / trailing commas
 core/src/platform/paths.c    executable folder, per-user config folder
@@ -128,6 +175,8 @@ core/src/platform/proc_*.c   run "a | b" pipelines and capture stdout/stderr:
 core/src/platform/cpu_*.c    CPU model and SIMD flags (x86 / everything else)
 core/third_party/cjson/      cJSON 1.7.18 (MIT)
 cli/ifmecli.c                command-line front-end
+cli/exec_ui.c                --exec: live progress line, p/r/q keys, Ctrl+C
+tests/                       ctest: unit tests and a real-pipeline test
 gui/                         Qt front-end
 res/                         Windows manifest and resource script
 ```
@@ -138,8 +187,8 @@ res/                         Windows manifest and resource script
 - [x] 1. `--list-plugins` / `--self-test`: read the existing plugin manifests (cJSON),
       run `ffmpeg | encoder` pipelines without a shell
 - [x] 2. `--probe FILE`: run ffprobe, parse its JSON; GUI accepts dropped files
-- [ ] 3. Process layer: live progress from stderr, pause/resume/stop on demand
-      (Job Objects on Windows, process groups on Linux/macOS)
+- [x] 3. Process layer: live progress from stderr, pause/resume/stop on demand
+      (Job Objects on Windows, process groups on Linux/macOS); `--exec`; ctest
 - [ ] 4. Video encode (single and multi-pass) with progress and ETA
 - [ ] 5. Audio encode and muxing
 - [ ] 6. Subtitles, fonts, attachments, metadata

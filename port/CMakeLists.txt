@@ -6,6 +6,9 @@ project(ifme
     LANGUAGES C CXX)
 
 option(IFME_BUILD_GUI "Build the Qt GUI (needs Qt 6 Widgets)" ON)
+option(IFME_BUILD_TESTS "Build the tests (ctest)" ON)
+set(IFME_TEST_ROOT "" CACHE PATH
+    "IFME install with Plugins/ and Samples/ for integration tests (empty: skip them)")
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -39,6 +42,8 @@ add_library(ifmecore STATIC
     core/src/json_relax.c
     core/src/plugins.c
     core/src/probe.c
+    core/src/progress.c
+    core/src/task.c
     core/src/platform/paths.c
     core/src/platform/fs.c
     core/src/platform/proc_common.c
@@ -66,7 +71,7 @@ endif()
 # ---------------------------------------------------------------------------
 # ifmecli (C)
 # ---------------------------------------------------------------------------
-add_executable(ifmecli cli/ifmecli.c ${IFME_WIN_RESOURCES})
+add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c ${IFME_WIN_RESOURCES})
 target_link_libraries(ifmecli PRIVATE ifmecore)
 
 # ---------------------------------------------------------------------------
@@ -88,4 +93,27 @@ if(IFME_BUILD_GUI)
         MACOSX_BUNDLE_BUNDLE_NAME "IFME"
         MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.anime4000.ifme"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+endif()
+
+# ---------------------------------------------------------------------------
+# Tests:  cmake -B build -DIFME_TEST_ROOT=/path/to/IFME  &&  ctest --test-dir build
+# ---------------------------------------------------------------------------
+if(IFME_BUILD_TESTS)
+    enable_testing()
+    find_package(Threads REQUIRED)
+
+    # White-box tests of internal helpers (progress parser, argv, JSON).
+    add_executable(test_units tests/test_units.c)
+    target_include_directories(test_units PRIVATE core/src)
+    target_link_libraries(test_units PRIVATE ifmecore cjson)
+    if(NOT WIN32)
+        target_link_libraries(test_units PRIVATE m)
+    endif()
+    add_test(NAME units COMMAND test_units)
+
+    # Real ffmpeg | x265 pipeline: pause, resume, stop. Skipped without a root.
+    add_executable(test_task tests/test_task.c)
+    target_link_libraries(test_task PRIVATE ifmecore Threads::Threads)
+    add_test(NAME task COMMAND test_task "${IFME_TEST_ROOT}")
+    set_tests_properties(task PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 300)
 endif()

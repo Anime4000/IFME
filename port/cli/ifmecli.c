@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "ifme.h"
+#include "exec_ui.h"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -22,9 +23,14 @@ static void print_usage(FILE *out)
 {
 	fprintf(out,
 		"Usage: ifmecli [OPTIONS] [FILE...]\n"
+		"       ifmecli [OPTIONS] --exec [--frames N] -- COMMAND [ARGS] [\"|\" COMMAND [ARGS]]...\n"
 		"\n"
 		"Options:\n"
 		"  -i, --info           Show system information (paths, CPU features)\n"
+		"  -x, --exec           Run COMMAND (a pipeline: separate commands with a \"|\"\n"
+		"                       argument) with live progress, no shell involved.\n"
+		"                       Keys: p pause, r resume, q / Ctrl+C stop\n"
+		"      --frames N       With --exec: total frames, for percentage and ETA\n"
 		"  -p, --probe          Show media information for each FILE (ffprobe)\n"
 		"      --framerate N    With --probe: frame rate for image sequences\n"
 		"                       (e.g. ifmecli -p --framerate 24 img%%04d.png)\n"
@@ -263,9 +269,11 @@ int main(int argc, char *argv[])
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-	enum { OPT_JSON = 1000, OPT_FRAMERATE };
+	enum { OPT_JSON = 1000, OPT_FRAMERATE, OPT_FRAMES };
 	static const struct option long_opts[] = {
 		{ "info",         no_argument,       NULL, 'i' },
+		{ "exec",         no_argument,       NULL, 'x' },
+		{ "frames",       required_argument, NULL, OPT_FRAMES },
 		{ "probe",        no_argument,       NULL, 'p' },
 		{ "framerate",    required_argument, NULL, OPT_FRAMERATE },
 		{ "list-plugins", no_argument,       NULL, 'l' },
@@ -280,13 +288,16 @@ int main(int argc, char *argv[])
 	};
 
 	bool want_info = false, want_list = false, want_test = false, want_probe = false;
-	bool test_all = false, json = false;
+	bool want_exec = false, test_all = false, json = false;
 	const char *root = NULL, *frame_rate = NULL;
+	long long frames = 0;
 	int opt;
 
-	while ((opt = getopt_long(argc, argv, "ipltar:vVh", long_opts, NULL)) != -1) {
+	while ((opt = getopt_long(argc, argv, "ixpltar:vVh", long_opts, NULL)) != -1) {
 		switch (opt) {
 		case 'i': want_info = true; break;
+		case 'x': want_exec = true; break;
+		case OPT_FRAMES: frames = atoll(optarg); break;
 		case 'p': want_probe = true; break;
 		case OPT_FRAMERATE: frame_rate = optarg; break;
 		case 'l': want_list = true; break;
@@ -305,6 +316,24 @@ int main(int argc, char *argv[])
 			print_usage(stderr);
 			return 2;
 		}
+	}
+
+	if (want_exec) {
+		if (optind >= argc) {
+			fprintf(stderr, "ifmecli: --exec needs a command after \"--\"\n");
+			return 2;
+		}
+
+		ifme_ctx *ctx = ifme_create();
+		if (!ctx || (root && !ifme_set_root_dir(ctx, root))) {
+			fprintf(stderr, "ifmecli: %s\n", ctx ? "root folder not found" : "out of memory");
+			ifme_destroy(ctx);
+			return 2;
+		}
+
+		int status = run_exec(ctx, argv + optind, argc - optind, frames);
+		ifme_destroy(ctx);
+		return status;
 	}
 
 	/* Bare files mean --probe. */
