@@ -108,6 +108,10 @@ char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name);
 /* Any tool: PATH first, then <root>/Plugins/<subdir>/<name>. Caller frees. */
 char *ifme_find_tool(const ifme_ctx *ctx, const char *name, const char *subdir);
 
+/* Audio rate-control arguments of a manifest's Mode entry for `quality`
+ * (self-test and real encodes use the same rule). */
+void ifme_audio_quality_args(ifme_argv *out, const struct cJSON *mode, const char *quality);
+
 /* ---- jsonutil.c: lenient accessors (case-insensitive keys, numbers may be
  * strings, as Newtonsoft accepted) ---------------------------------------- */
 const struct cJSON *ifme_jget(const struct cJSON *o, const char *key);
@@ -215,6 +219,7 @@ typedef struct ifme_progress_parser {
 	int history_count, history_pos;
 	uint64_t start_ms;          /* to derive fps when an encoder omits it    */
 	long long start_frame;
+	double total_seconds;       /* 0: unknown; for time-only (audio) progress */
 } ifme_progress_parser;
 
 enum { IFME_LINE_LOG = 0, IFME_LINE_STATUS = 1, IFME_LINE_PROGRESS = 2 };

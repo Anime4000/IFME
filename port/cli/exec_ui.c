@@ -167,6 +167,18 @@ static void status_text(const ui *u, bool paused, char *buf, size_t len)
 		snprintf(kbps, sizeof(kbps), "  %.0f kb/s", p->kbps);
 	format_eta(p->eta_sec, eta, sizeof(eta));
 
+	if (p->frame < 0 && p->time_sec >= 0) {
+		/* Time-only progress (audio): "time 00:01:02/00:04:00". */
+		char done[32], all[40] = "";
+		format_eta((long long)p->time_sec, done, sizeof(done));
+		if (p->total_sec > 0) {
+			all[0] = '/';
+			format_eta((long long)(p->total_sec + 0.5), all + 1, sizeof(all) - 1);
+		}
+		snprintf(buf, len, "%s%stime %s%s%s  ETA %s", state, pct, done, all, kbps, eta);
+		return;
+	}
+
 	snprintf(buf, len, "%s%sframe %lld%s%s%s  ETA %s", state, pct, p->frame, total, fps, kbps, eta);
 }
 
@@ -255,6 +267,10 @@ static void finish_status(ui *u, bool done)
 {
 	if (done && u->have_progress && u->last.total_frames > 0) {
 		u->last.frame = u->last.total_frames;
+		u->last.percent = 100;
+		u->last.eta_sec = 0;
+	} else if (done && u->have_progress && u->last.frame < 0 && u->last.total_sec > 0) {
+		u->last.time_sec = u->last.total_sec;
 		u->last.percent = 100;
 		u->last.eta_sec = 0;
 	}

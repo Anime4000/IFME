@@ -103,11 +103,35 @@ static bool int_before(const char *line, const char *at, long long *out)
 }
 
 typedef struct match {
-	long long frame;
+	long long frame;     /* -1: time-only progress (FFmpeg audio) */
 	long long total;     /* 0 if the line doesn't say */
 	double fps;          /* -1 unknown */
 	double kbps;         /* -1 unknown */
+	double time;         /* media seconds done, -1 unknown */
+	double speed;        /* FFmpeg "speed=1.5x", -1 unknown */
 } match;
+
+/* FFmpeg "time=00:01:02.50" (also "-00:00:00.02" at the start) -> seconds. */
+static bool time_after(const char *s, const char *key, double *out)
+{
+	const char *p = find_key(s, key);
+	if (!p)
+		return false;
+	p += strlen(key);
+	while (*p == ' ')
+		p++;
+
+	bool negative = *p == '-';
+	if (negative)
+		p++;
+
+	int h, m;
+	double sec;
+	if (sscanf(p, "%d:%d:%lf", &h, &m, &sec) != 3)
+		return false;
+	*out = negative ? 0 : h * 3600.0 + m * 60.0 + sec;
+	return true;
+}
 
 /* vvenc [info]: stats:  frame=   15 fps=  69.4 avg_fps=  69.4 bitrate= ... avg_bitrate=   133.30 kbps */
 static bool match_vvenc(const char *s, match *m)
@@ -170,6 +194,24 @@ static bool match_ffmpeg(const char *s, match *m)
 	m->frame = (long long)f;
 	m->fps = fps;
 	m->kbps = num_after(s, "bitrate=", &kb) ? kb : -1;   /* "bitrate=N/A" early on */
+	if (!time_after(s, "time=", &m->time))
+		m->time = -1;
+	return true;
+}
+
+/* FFmpeg without video (audio encodes, the WAV pipe):
+ * "size=     512KiB time=00:00:31.92 bitrate= 131.4kbits/s speed=63.8x" */
+static bool match_ffmpeg_time(const char *s, match *m)
+{
+	double t, kb, sp;
+	if (find_key(s, "frame=") || !time_after(s, "time=", &t))
+		return false;
+	if (!find_key(s, "size=") && !find_key(s, "speed="))
+		return false;
+	m->frame = -1;
+	m->time = t;
+	m->kbps = num_after(s, "bitrate=", &kb) ? kb : -1;
+	m->speed = num_after(s, "speed=", &sp) ? sp : -1;
 	return true;
 }
 
@@ -260,9 +302,10 @@ int ifme_progress_feed(ifme_progress_parser *pp, const char *line, ifme_progress
 		return IFME_LINE_LOG;
 	}
 
-	match m = { -1, 0, -1, -1 };
+	match m = { -1, 0, -1, -1, -1, -1 };
 	bool ok = match_vvenc(s, &m) || match_x26x(s, &m) || match_svt(s, &m) ||
-	          match_svt_legacy(s, &m) || match_frames_colon(s, &m) || match_ffmpeg(s, &m);
+	          match_svt_legacy(s, &m) || match_frames_colon(s, &m) || match_ffmpeg(s, &m) ||
+	          match_ffmpeg_time(s, &m);
 
 	if (!ok) {
 		int kind = looks_like_status(s) ? IFME_LINE_STATUS : IFME_LINE_LOG;
@@ -271,11 +314,39 @@ int ifme_progress_feed(ifme_progress_parser *pp, const char *line, ifme_progress
 	}
 	free(s);
 
+	uint64_t now = ifme_now_ms();
+	out->time_sec = m.time;
+	out->total_sec = pp->total_seconds;
+
+	/* Time-only progress: percent from media time, ETA from FFmpeg's speed
+	 * (media seconds per wall second), else from elapsed time. */
+	if (m.frame < 0) {
+		if (pp->start_ms == 0)
+			pp->start_ms = now;
+		out->frame = -1;
+		out->total_frames = 0;
+		out->fps = -1;
+		out->kbps = m.kbps;
+		out->percent = -1;
+		out->eta_sec = -1;
+		if (pp->total_seconds > 0) {
+			double pct = m.time * 100.0 / pp->total_seconds;
+			out->percent = pct > 100 ? 100 : pct;
+
+			double left = pp->total_seconds - m.time;
+			double speed = m.speed;
+			if (speed <= 0 && m.time > 0 && now > pp->start_ms)
+				speed = m.time * 1000.0 / (double)(now - pp->start_ms);
+			if (speed > 0)
+				out->eta_sec = left > 0 ? (long long)(left / speed + 0.5) : 0;
+		}
+		return IFME_LINE_PROGRESS;
+	}
+
 	if (m.total > 0 && pp->total_frames <= 0)
 		pp->total_frames = m.total;
 
 	/* No fps from the encoder: derive it from frames over wall time. */
-	uint64_t now = ifme_now_ms();
 	if (pp->start_frame < 0) {
 		pp->start_frame = m.frame;
 		pp->start_ms = now;
@@ -292,6 +363,9 @@ int ifme_progress_feed(ifme_progress_parser *pp, const char *line, ifme_progress
 
 	if (pp->total_frames > 0) {
 		double pct = (double)m.frame * 100.0 / (double)pp->total_frames;
+		out->percent = pct > 100 ? 100 : pct;
+	} else if (pp->total_seconds > 0 && m.time >= 0) {
+		double pct = m.time * 100.0 / pp->total_seconds;
 		out->percent = pct > 100 ? 100 : pct;
 	}
 

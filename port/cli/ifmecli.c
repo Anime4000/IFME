@@ -28,11 +28,12 @@ static void print_usage(FILE *out)
 		"       ifmecli [OPTIONS] --encode INPUT [-o OUTPUT] [--video PLUGIN] [ENCODE OPTIONS]\n"
 		"       ifmecli [OPTIONS] --job JOB.json\n"
 		"\n"
-		"Encoding (video only for now; defaults come from the source and the plugin):\n"
+		"Encoding (defaults come from the source and the plugins):\n"
 		"  -e, --encode INPUT   Encode INPUT (keys while running: p pause, r resume, q stop)\n"
 		"  -o, --output FILE    Output file; its extension picks the container\n"
 		"                       (default: INPUT name + .ifme.<plugin container>)\n"
-		"      --video PLUGIN   Video plugin: GUID or part of its name (default: x265)\n"
+		"      --video PLUGIN   Video plugin: GUID or part of its name (default: x265),\n"
+		"                       \"copy\" (keep the stream) or \"none\" (audio only)\n"
 		"      --preset NAME    --tune NAME     encoder preset / tune\n"
 		"      --mode N         Rate-control mode index (see --print-job \"_help\")\n"
 		"      --value V        CRF / QP / bitrate for that mode\n"
@@ -41,6 +42,13 @@ static void print_usage(FILE *out)
 		"      --bit-depth N    --chroma 420|422|444\n"
 		"      --start T        --duration T    encode only a part (HH:MM:SS or seconds)\n"
 		"      --encoder-args S Extra encoder arguments; --filter S extra ffmpeg -vf filter\n"
+		"      --audio PLUGIN   Audio plugin for every audio track, \"copy\" or \"none\"\n"
+		"                       (default: Opus for MKV/WebM, AAC for MP4)\n"
+		"      --audio-mode N   --audio-quality Q   mode index and quality (see _help)\n"
+		"      --sample-rate HZ --channels N    0 keeps the source\n"
+		"      --audio-copy     Copy audio as it is when the container takes it, else encode\n"
+		"      --audio-args S   --audio-filter S    extra encoder arguments / ffmpeg -af\n"
+		"      --add-audio FILE Also take the audio tracks of FILE (repeatable, up to 8)\n"
 		"      --temp-dir DIR   --keep-temp     where intermediate files go / keep them\n"
 		"      --print-job      Print the job as JSON instead of running it\n"
 		"      --job FILE       Run a job file (as printed by --print-job, then edited)\n"
@@ -292,7 +300,9 @@ int main(int argc, char *argv[])
 	enum {
 		OPT_JSON = 1000, OPT_FRAMERATE, OPT_FRAMES, OPT_VIDEO, OPT_PRESET, OPT_TUNE, OPT_MODE,
 		OPT_VALUE, OPT_PASSES, OPT_SIZE, OPT_FPS, OPT_BITS, OPT_CHROMA, OPT_START, OPT_DURATION,
-		OPT_ENC_ARGS, OPT_FILTER, OPT_TEMP, OPT_KEEP_TEMP, OPT_PRINT_JOB, OPT_JOB
+		OPT_ENC_ARGS, OPT_FILTER, OPT_TEMP, OPT_KEEP_TEMP, OPT_PRINT_JOB, OPT_JOB,
+		OPT_AUDIO, OPT_AUDIO_MODE, OPT_AUDIO_QUALITY, OPT_SAMPLE_RATE, OPT_CHANNELS,
+		OPT_AUDIO_COPY, OPT_AUDIO_ARGS, OPT_AUDIO_FILTER, OPT_ADD_AUDIO
 	};
 	static const struct option long_opts[] = {
 		{ "info",         no_argument,       NULL, 'i' },
@@ -314,6 +324,15 @@ int main(int argc, char *argv[])
 		{ "duration",     required_argument, NULL, OPT_DURATION },
 		{ "encoder-args", required_argument, NULL, OPT_ENC_ARGS },
 		{ "filter",       required_argument, NULL, OPT_FILTER },
+		{ "audio",        required_argument, NULL, OPT_AUDIO },
+		{ "audio-mode",   required_argument, NULL, OPT_AUDIO_MODE },
+		{ "audio-quality",required_argument, NULL, OPT_AUDIO_QUALITY },
+		{ "sample-rate",  required_argument, NULL, OPT_SAMPLE_RATE },
+		{ "channels",     required_argument, NULL, OPT_CHANNELS },
+		{ "audio-copy",   no_argument,       NULL, OPT_AUDIO_COPY },
+		{ "audio-args",   required_argument, NULL, OPT_AUDIO_ARGS },
+		{ "audio-filter", required_argument, NULL, OPT_AUDIO_FILTER },
+		{ "add-audio",    required_argument, NULL, OPT_ADD_AUDIO },
 		{ "temp-dir",     required_argument, NULL, OPT_TEMP },
 		{ "keep-temp",    no_argument,       NULL, OPT_KEEP_TEMP },
 		{ "print-job",    no_argument,       NULL, OPT_PRINT_JOB },
@@ -340,6 +359,7 @@ int main(int argc, char *argv[])
 	encode_opts eo;
 	memset(&eo, 0, sizeof(eo));
 	eo.mode = -1;
+	eo.audio_mode = eo.sample_rate = eo.channels = -1;
 	bool want_encode = false;
 
 	while ((opt = getopt_long(argc, argv, "ixe:o:pltar:vVh", long_opts, NULL)) != -1) {
@@ -363,6 +383,22 @@ int main(int argc, char *argv[])
 		case OPT_DURATION: eo.trim_duration = optarg; break;
 		case OPT_ENC_ARGS: eo.encoder_args = optarg; break;
 		case OPT_FILTER: eo.filter = optarg; break;
+		case OPT_AUDIO: eo.audio = optarg; break;
+		case OPT_AUDIO_MODE: eo.audio_mode = atoi(optarg); break;
+		case OPT_AUDIO_QUALITY: eo.audio_quality = optarg; break;
+		case OPT_SAMPLE_RATE: eo.sample_rate = atoi(optarg); break;
+		case OPT_CHANNELS: eo.channels = atoi(optarg); break;
+		case OPT_AUDIO_COPY: eo.audio_copy = true; break;
+		case OPT_AUDIO_ARGS: eo.audio_args = optarg; break;
+		case OPT_AUDIO_FILTER: eo.audio_filter = optarg; break;
+		case OPT_ADD_AUDIO:
+			if (eo.add_audio_count >= (int)(sizeof(eo.add_audio) / sizeof(eo.add_audio[0]))) {
+				fprintf(stderr, "ifmecli: at most %d --add-audio files\n",
+				        (int)(sizeof(eo.add_audio) / sizeof(eo.add_audio[0])));
+				return 2;
+			}
+			eo.add_audio[eo.add_audio_count++] = optarg;
+			break;
 		case OPT_TEMP: eo.temp_dir = optarg; break;
 		case OPT_KEEP_TEMP: eo.keep_temp = true; break;
 		case OPT_PRINT_JOB: eo.print_job = true; break;

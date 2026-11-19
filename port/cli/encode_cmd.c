@@ -92,7 +92,8 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 		return rc;
 	}
 
-	job_text = ifme_job_new(ctx, o->input, o->video ? o->video : "x265", err, sizeof(err));
+	job_text = ifme_job_new(ctx, o->input, o->output, o->video ? o->video : "x265", o->audio,
+	                        err, sizeof(err));
 	if (!job_text) {
 		fprintf(stderr, "ifmecli: %s\n", err[0] ? err : "cannot create job");
 		return 2;
@@ -105,9 +106,58 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 		return 1;
 	}
 
+	/* --add-audio: the other file's audio tracks, with the same defaults
+	 * (same output container, so the same audio plugin), then "input". */
+	cJSON *audios = cJSON_GetObjectItem(job, "audio");
+	for (int i = 0; i < o->add_audio_count; i++) {
+		const cJSON *out = cJSON_GetObjectItem(job, "output");
+		char *extra = ifme_job_new(ctx, o->add_audio[i], cJSON_IsString(out) ? out->valuestring : NULL,
+		                           "none", o->audio, err, sizeof(err));
+		cJSON *ej = extra ? cJSON_Parse(extra) : NULL;
+		ifme_free(extra);
+		if (!ej) {
+			fprintf(stderr, "ifmecli: --add-audio %s: %s\n", o->add_audio[i], err[0] ? err : "no audio");
+			cJSON_Delete(job);
+			return 2;
+		}
+		const cJSON *src_in = cJSON_GetObjectItem(ej, "input");
+		cJSON *e;
+		cJSON_ArrayForEach(e, cJSON_GetObjectItem(ej, "audio"))
+			set_string(e, "input", cJSON_IsString(src_in) ? src_in->valuestring : o->add_audio[i]);
+
+		cJSON *list = cJSON_DetachItemFromObjectCaseSensitive(ej, "audio");
+		while (list && list->child)
+			cJSON_AddItemToArray(audios, cJSON_DetachItemViaPointer(list, list->child));
+		cJSON_Delete(list);
+		cJSON_Delete(ej);
+	}
+
+	/* Video options apply to the first video track (NULL when there is none:
+	 * cJSON ignores edits of NULL). Audio options apply to every audio track. */
 	cJSON *v = cJSON_GetArrayItem(cJSON_GetObjectItem(job, "video"), 0);
 
-	set_string(job, "output", o->output);
+	cJSON *a;
+	cJSON_ArrayForEach(a, cJSON_GetObjectItem(job, "audio")) {
+		const cJSON *plugin = cJSON_GetObjectItem(a, "plugin");
+		if (cJSON_IsString(plugin) && strcmp(plugin->valuestring, "copy") == 0)
+			continue;
+		if (o->audio_mode >= 0) {
+			set_number(a, "mode", o->audio_mode);
+			cJSON_DeleteItemFromObjectCaseSensitive(a, "quality");   /* that mode's default */
+		}
+		set_string(a, "quality", o->audio_quality);
+		if (o->sample_rate >= 0)
+			set_number(a, "sample_rate", o->sample_rate);
+		if (o->channels >= 0)
+			set_number(a, "channels", o->channels);
+		if (o->audio_copy) {
+			cJSON_DeleteItemFromObjectCaseSensitive(a, "copy");
+			cJSON_AddBoolToObject(a, "copy", true);
+		}
+		set_string(a, "encoder_args", o->audio_args);
+		set_string(a, "filter", o->audio_filter);
+	}
+
 	set_string(job, "temp_dir", o->temp_dir);
 	if (o->keep_temp) {
 		cJSON_DeleteItemFromObjectCaseSensitive(job, "keep_temp");

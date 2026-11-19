@@ -141,10 +141,11 @@ Compared with `ProcessManager.cs`:
 For the GUI the same is available as `ifme_task_*` in `ifme.h`; pause, resume
 and stop are safe from any thread.
 
-### Encoding (video)
+### Encoding
 
 ```bash
-# defaults from the source and the plugin (x265 unless --video says otherwise)
+# defaults from the source and the plugins (x265 unless --video says otherwise;
+# audio: Opus for MKV/WebM, AAC for MP4, every audio track of the input)
 ./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv
 
 # two-pass 600 kb/s, 10-bit, 1280x720, only 00:01:00-00:01:30
@@ -156,21 +157,54 @@ and stop are safe from any thread.
 ./build/ifmecli -r "/d/Program Files/IFME" --job job.json
 ```
 
-`--video` takes a GUID or any unique part of a plugin name ("x264", "Fraunhofer",
-"H.265 Rigaya"). While encoding: p pause, r resume, q / Ctrl+C stop (temp
-files are removed, no partial output is left).
+```bash
+# audio: another plugin and quality, 48 kHz stereo, copy when the container takes it
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mp4 \
+    --audio "Nero" --audio-mode 1 --audio-quality 160 --sample-rate 48000 --channels 2
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv --audio-copy
 
-This ports `MediaEncoding.Video()`: the same piped (`ffmpeg | encoder`) and
-direct command shapes, multi-pass, `{0}` mode templates, raw streams wrapped
-by MP4Box, then the video tracks written to the output container by ffmpeg.
-Checked with x264 (10-bit 4:2:2), x265 (CRF, 2-pass), SVT-AV1, VVenC, VP9
-(FFmpeg-based) and NVEncC on Windows. Not yet ported: audio, subtitles,
-attachments and metadata (milestones 5-6), fast remux, auto-crop, hard subs.
+# keep the video, re-encode only the audio; or audio only
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv --video copy --audio opus
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv --video none     # -> movie.ifme.opus
 
-Differences from C#: frame rates such as 24000/1001 stay exact; a missing
-N-bit encoder is an error message instead of a crash; scaling is only added
-when the size changes; MP4Box gets the frame rate explicitly, and ffmpeg wraps
-raw streams when MP4Box is absent.
+# add the audio tracks of other files (a dub, a commentary)
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mp4 -o out.mkv --add-audio dub.m4a
+```
+
+`--video` / `--audio` take a GUID, any unique part of a plugin name ("x264",
+"Fraunhofer", "H.265 Rigaya", "exhale"), `copy` or `none`. While encoding:
+p pause, r resume, q / Ctrl+C stop (temp files are removed, no partial output
+is left). In a job file, every audio entry has its own plugin, mode, quality,
+sample rate, channels, language and title, and may name its own `"input"`;
+any entry can be switched off with `"enable": false`.
+
+This ports `MediaEncoding.Video()`, `.Audio()` and `.Muxing()`: the same
+piped (`ffmpeg | encoder`) and direct command shapes, multi-pass, `{0}` mode
+templates, raw streams wrapped by MP4Box; audio through a 16-bit WAV pipe or
+directly, with the manifest's down-/up-mix rules (`MultiChannelSupport`,
+`MonoSupport`, `SingleChannelOnly`); then every track written to the output
+by ffmpeg with language and title per stream and C#'s `encoding_tool` /
+`comment` tags. Checked on Windows with x264 (10-bit 4:2:2), x265 (CRF,
+2-pass), SVT-AV1, VVenC, VP9 and NVEncC for video, and FFmpeg AAC / Opus,
+Nero AAC and exhale (piped), AMR-NB (mono only) for audio, plus stream copies
+into MKV, MP4 and WebM. Not yet ported: subtitles, attachments, chapters and
+metadata (milestone 6), video fast remux, auto-crop, hard subs, MP4 movflags.
+
+Differences from C#:
+
+- Frame rates such as 24000/1001 stay exact; a missing N-bit encoder is an
+  error message instead of a crash; scaling is only added when the size
+  changes; MP4Box gets the frame rate explicitly, and ffmpeg wraps raw streams
+  when MP4Box is absent.
+- Audio progress is shown (FFmpeg's `time=` against the length); C# had none.
+- Down-/up-mixing follows the chosen channel count; C# looked only at the
+  source, so mono picked for a stereo source on an eSBR mode became stereo.
+- `--audio-copy` (C#'s "fast remux") also works on trimmed jobs, and copying
+  a video stream now honours the trim.
+- Track titles are written where MP4 players read them (`handler_name`).
+- Chapters are left out until milestone 6 handles them on purpose; before,
+  they came in by accident (neroAacEnc writes one, which became an extra
+  data track in MP4).
 
 ### Tests
 
@@ -180,15 +214,18 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-- `units`: progress parser on real encoder output, line splitting, argument
-  templates, relaxed JSON.
+- `units`: progress parser on real encoder output (frames and FFmpeg's
+  audio `time=`), line splitting, argument templates, relaxed JSON.
 - `task`: a real `ffmpeg | x265` encode is paused (no frame may advance for
   2 s), resumed, then stopped while paused (must return within 3 s); plus
   stop-before-start, a failing command and a missing program. Skipped when
   `IFME_TEST_ROOT` is not set.
 - `encode`: job defaults, a short trimmed/downscaled x265 encode to a file
   with a Japanese name (checked with ffprobe), stop during an encode (temp
-  folder removed, no output left), and clear errors for bad jobs.
+  folder removed, no output left), the default audio plugin per container,
+  an x265 + Opus encode taking its audio from a separate file (language,
+  title, length checked), AAC refused by WebM falling back to Opus, and
+  clear errors for bad jobs.
 
 ## Layout
 
@@ -199,7 +236,8 @@ core/src/plugins.c           manifest loading, self-test
 core/src/probe.c             media information from ffprobe
 core/src/progress.c          frame / fps / bitrate / ETA from encoder output
 core/src/task.c              public task API: exec, pause, resume, stop
-core/src/encode.c            encoding jobs: defaults (ifme_job_new), video encode
+core/src/encode.c            encoding jobs: defaults (ifme_job_new), video and
+                             audio encode, muxing into the output
 core/src/jsonutil.c          lenient JSON accessors (Newtonsoft-compatible)
 core/src/argv.c              argument lists built from manifest templates
 core/src/json_relax.c        accept comments / trailing commas
@@ -227,6 +265,6 @@ res/                         Windows manifest and resource script
 - [x] 3. Process layer: live progress from stderr, pause/resume/stop on demand
       (Job Objects on Windows, process groups on Linux/macOS); `--exec`; ctest
 - [x] 4. Video encode (single and multi-pass) with progress and ETA; job JSON
-- [ ] 5. Audio encode and muxing
+- [x] 5. Audio encode (piped, direct, copy with fallback, extra files) and muxing
 - [ ] 6. Subtitles, fonts, attachments, metadata
 - [ ] 7. GUI on top of the finished core

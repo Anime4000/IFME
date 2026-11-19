@@ -1,5 +1,19 @@
 /*
- * encode.c - encoding jobs: video (port of MediaEncoding.Video)
+ * encode.c - encoding jobs (port of MediaEncoding.Video, .Audio, .Muxing)
+ *
+ * Audio, as C#:
+ *   pipe:     ffmpeg -i IN [-ss -t] -map 0:N -acodec pcm_s16le {hz} {ch} [-af]
+ *             -f wav - | ENCODER {Input} {Command} {quality} {user} {Output} OUT
+ *   direct:   ENCODER {Input} IN [-ss -t] -map 0:N {Command} {Codec} {quality}
+ *             {hz} {ch} [-af] {user} {Output} OUT
+ *   copy:     ffmpeg -c:a copy into the output's container; with "copy": true,
+ *             a refused codec falls back to encoding (C#'s FastMuxAudio).
+ *   Then all tracks -> output with ffmpeg -c copy, language/title per stream.
+ * Audio differences: the channel choice is respected when down/up-mixing
+ * (C# looked at the source only), copying works with a trim, and progress
+ * comes from FFmpeg's "time=" (C# showed none for audio).
+ *
+ * Video:
  *
  * Same command shapes as the C# encoder:
  *   pipe:     ffmpeg -i IN -map 0:N [-ss -t] -pix_fmt .. -vf scale,fps,.. -f y4m - |
@@ -16,8 +30,8 @@
  *  - Scaling is only added when the size actually changes.
  *  - Frame rates such as 24000/1001 are kept exact (C# printed a rounded float).
  *  - When MP4Box is missing, ffmpeg wraps the raw stream instead.
- * Not ported yet: fast remux, auto-crop, hard subtitles, thumbnails
- * (they depend on later milestones).
+ * Not ported yet: video fast remux, auto-crop, hard subtitles, thumbnails,
+ * subtitle/attachment tracks, metadata.ini, MP4 movflags (later milestones).
  */
 
 #include <stdio.h>
@@ -28,6 +42,7 @@
 #include "cJSON.h"
 
 #define VIDEO_COPY_GUID "00000000-0000-0000-0000-000000000000"
+#define AUDIO_COPY_GUID "aaaaaaaa-0000-0000-0000-000000000000"
 #define LOG_KEEP 8
 
 typedef struct enc {
@@ -36,6 +51,7 @@ typedef struct enc {
 	const ifme_task_callbacks *cb;
 	char *ffmpeg;
 	char *input;               /* absolute */
+	char *output;              /* absolute */
 	char *temp;
 	const cJSON *job;
 	ifme_media *media;
@@ -226,8 +242,9 @@ static void enc_tick(void *user)
 		E->cb->on_tick(E->cb->user);
 }
 
-/* Run stages in the temp folder with progress; fills E->err on failure. */
-static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total_frames)
+/* Run stages in the temp folder with progress; fills E->err on failure.
+ * total_frames / total_sec (0: unknown) turn encoder output into a percent. */
+static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total_frames, double total_sec)
 {
 	for (size_t i = 0; i < n; i++) {
 		char *cmd = ifme_argv_display(&stages[i]);
@@ -241,6 +258,7 @@ static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total
 	}
 
 	ifme_progress_init(&E->parser, total_frames);
+	E->parser.total_seconds = total_sec > 0 ? total_sec : 0;
 	E->recent_count = E->recent_pos = 0;
 
 	ifme_run_opts opts;
@@ -280,9 +298,41 @@ static ifme_task_result run(enc *E, ifme_argv *stages, size_t n, long long total
 	return result;
 }
 
-static ifme_task_result run1(enc *E, ifme_argv *a, long long total)
+static ifme_task_result run1(enc *E, ifme_argv *a, double total_sec)
 {
-	return run(E, a, 1, total);
+	return run(E, a, 1, 0, total_sec);
+}
+
+/* Seconds this job covers: the trim, else the whole input. */
+static double job_seconds(const enc *E)
+{
+	return E->trim_seconds > 0 ? E->trim_seconds : E->media->duration;
+}
+
+/* "-ss START -t DURATION" after the input, as C# did (accurate seeking, and
+ * audio and video cut at the same points). */
+static void push_trim(enc *E, ifme_argv *a)
+{
+	if (E->trim_seconds <= 0)
+		return;
+	const cJSON *trim = ifme_jget(E->job, "trim");
+	ifme_argv_push(a, "-ss");
+	ifme_argv_push(a, ifme_jstr(trim, "start") ? ifme_jstr(trim, "start") : "0");
+	ifme_argv_push(a, "-t");
+	ifme_argv_push(a, ifme_jstr(trim, "duration"));
+}
+
+static bool is_copy(const char *plugin, const char *builtin_guid)
+{
+	return plugin && (ifme_strcasecmp(plugin, "copy") == 0 || ifme_strcasecmp(plugin, builtin_guid) == 0);
+}
+
+/* Extension of the output file ("mkv" when it has none). */
+static const char *output_ext(const char *path)
+{
+	const char *base = ifme_basename(path);
+	const char *dot = strrchr(base, '.');
+	return (dot && dot[1]) ? dot + 1 : "mkv";
 }
 
 /* ---- video ------------------------------------------------------------------ */
@@ -328,19 +378,20 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	const char *plugin_query = ifme_jstr(item, "plugin");
 
 	/* Built-in "copy" entry: keep the stream as it is. */
-	if (plugin_query && ifme_strcasecmp(plugin_query, VIDEO_COPY_GUID) == 0) {
+	if (is_copy(plugin_query, VIDEO_COPY_GUID)) {
 		char *out = ifme_strdupf("video%04zu_%s.mkv", idx, lang);
 		ifme_argv a = { 0 };
 		ifme_argv_push(&a, E->ffmpeg);
-		ifme_argv_split(&a, "-hide_banner -v error -i");
+		ifme_argv_split(&a, "-hide_banner -v error -stats -i");
 		ifme_argv_push(&a, E->input);
-		ifme_argv_pushf(&a, "-map");
+		push_trim(E, &a);
+		ifme_argv_push(&a, "-map");
 		ifme_argv_pushf(&a, "0:%d", stream);
 		ifme_argv_split(&a, "-c:v copy -y");
 		ifme_argv_push(&a, out);
 
 		stage(E, "Video %zu/%zu: copying stream", idx + 1, count);
-		ifme_task_result r = run1(E, &a, 0);
+		ifme_task_result r = run1(E, &a, job_seconds(E));
 		ifme_argv_free(&a);
 		if (r == IFME_TASK_DONE)
 			*result = out;
@@ -433,7 +484,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	const char *out_file = raw_output ? raw_file : fmt_file;
 
 	/* Frame count: (trim or full) duration x frame rate, rounded up. */
-	double seconds = E->trim_seconds > 0 ? E->trim_seconds : E->media->duration;
+	double seconds = job_seconds(E);
 	long long frames = (long long)(seconds * fps_value);
 	if ((double)frames < seconds * fps_value)
 		frames++;
@@ -457,17 +508,10 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	if (vl > 0 && vl < sizeof(vf))
 		vf[vl - 1] = '\0';
 
-	const cJSON *trim = ifme_jget(E->job, "trim");
-
 	ifme_argv cmd_ff = { 0 };
 	ifme_argv_push(&cmd_ff, "-map");
 	ifme_argv_pushf(&cmd_ff, "0:%d", stream);
-	if (E->trim_seconds > 0) {
-		ifme_argv_push(&cmd_ff, "-ss");
-		ifme_argv_push(&cmd_ff, ifme_jstr(trim, "start") ? ifme_jstr(trim, "start") : "0");
-		ifme_argv_push(&cmd_ff, "-t");
-		ifme_argv_push(&cmd_ff, ifme_jstr(trim, "duration"));
-	}
+	push_trim(E, &cmd_ff);
 	ifme_argv_push(&cmd_ff, "-pix_fmt");
 	ifme_argv_push(&cmd_ff, yuv);
 	ifme_argv_push(&cmd_ff, "-vf");
@@ -643,7 +687,7 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 		else
 			stage(E, "Video %zu/%zu: %s", idx + 1, count, plugin_name);
 
-		r = run(E, st, n, frames);
+		r = run(E, st, n, frames, seconds);
 		ifme_argv_free(&st[0]);
 		ifme_argv_free(&st[1]);
 	}
@@ -706,6 +750,375 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 	return r;
 }
 
+/* ---- audio (port of MediaEncoding.Audio) --------------------------------------- */
+
+static const ifme_stream_audio *source_audio(const ifme_media *m, int stream)
+{
+	for (size_t i = 0; i < m->audio_count; i++)
+		if (m->audio[i].id == stream)
+			return &m->audio[i];
+	return NULL;
+}
+
+/* C# keeps "Channels" in a SortedList and passes -ac unless the choice is
+ * its first (lowest) key, normally 0 = "Auto". */
+static int first_channel_key(const cJSON *channels)
+{
+	int lowest = 0;
+	bool any = false;
+	for (const cJSON *c = channels ? channels->child : NULL; c; c = c->next) {
+		int k = c->string ? atoi(c->string) : 0;
+		if (!any || k < lowest)
+			lowest = k;
+		any = true;
+	}
+	return lowest;
+}
+
+/* "-ar" / "-ac" unless the manifest says otherwise; a key set to null means
+ * the encoder takes no such argument. */
+static const char *audio_arg_name(const cJSON *ac, const char *key, const char *fallback)
+{
+	const cJSON *v = ifme_jget(ac, key);
+	if (!v)
+		return fallback;
+	return cJSON_IsString(v) && v->valuestring[0] ? v->valuestring : NULL;
+}
+
+/* Media seconds a track covers: the trim, else its own file's length. */
+static double track_seconds(const enc *E, const ifme_media *m)
+{
+	return E->trim_seconds > 0 ? E->trim_seconds : m->duration;
+}
+
+/* Copy the stream into the output's container (C#'s "fast remux"). */
+static ifme_task_result copy_audio(enc *E, size_t idx, size_t count, const char *in,
+                                   const ifme_media *med, int stream, const char *lang, char **result)
+{
+	char *out = ifme_strdupf("audio%04zu_%s.%s", idx, lang, output_ext(E->output));
+	ifme_argv a = { 0 };
+	ifme_argv_push(&a, E->ffmpeg);
+	ifme_argv_split(&a, "-hide_banner -v error -stats -i");
+	ifme_argv_push(&a, in);
+	push_trim(E, &a);
+	ifme_argv_push(&a, "-map");
+	ifme_argv_pushf(&a, "0:%d", stream);
+	ifme_argv_split(&a, "-c:a copy -y");
+	ifme_argv_push(&a, out);
+
+	stage(E, "Audio %zu/%zu: copying stream", idx + 1, count);
+	ifme_task_result r = run1(E, &a, track_seconds(E, med));
+	ifme_argv_free(&a);
+
+	/* As C#: a file of 1 KiB or less means the container refused the codec. */
+	char *path = ifme_path_join(E->temp, out);
+	if (r == IFME_TASK_DONE && ifme_file_size(path) <= 1024) {
+		fail(E, "audio %zu: the stream cannot be copied into .%s", idx + 1, output_ext(E->output));
+		r = IFME_TASK_FAILED;
+	}
+	if (r != IFME_TASK_DONE && path)
+		ifme_delete_file(path);
+	free(path);
+
+	if (r == IFME_TASK_DONE)
+		*result = out;
+	else
+		free(out);
+	return r;
+}
+
+/* Encode audio item `idx` from file `in` (probed as `med`); on success
+ * *result is the track file in E->temp and *lang_out its language. */
+static ifme_task_result encode_audio_from(enc *E, size_t idx, size_t count, const cJSON *item,
+                                          const char *in, const ifme_media *med,
+                                          char **result, char **lang_out)
+{
+	*result = NULL;
+
+	int stream = ifme_jint(item, "stream", med->audio_count ? med->audio[0].id : -1);
+	const ifme_stream_audio *src = source_audio(med, stream);
+	if (!src) {
+		fail(E, "audio %zu: %s has no audio stream %d", idx + 1, ifme_basename(in), stream);
+		return IFME_TASK_ERROR;
+	}
+
+	const char *lang = ifme_jstr(item, "language");
+	if (!lang || !*lang)
+		lang = (src->language && *src->language) ? src->language : "und";
+	*lang_out = ifme_strdup(lang);
+	const char *plugin_query = ifme_jstr(item, "plugin");
+
+	if (is_copy(plugin_query, AUDIO_COPY_GUID))
+		return copy_audio(E, idx, count, in, med, stream, lang, result);
+
+	/* "copy": true tries the stream as it is first and encodes only if the
+	 * output container refuses it. Unlike C#, this also works with a trim. */
+	if (ifme_jbool(item, "copy", false)) {
+		ifme_task_result r = copy_audio(E, idx, count, in, med, stream, lang, result);
+		if (r == IFME_TASK_DONE || r == IFME_TASK_STOPPED)
+			return r;
+		char *note = ifme_strdupf("%s; encoding it instead", E->err ? E->err : "copy failed");
+		if (note)
+			log_line(E, note);
+		free(note);
+		if (E->err && E->err_len)
+			E->err[0] = '\0';
+	}
+
+	char why[512];
+	int pi = ifme_plugin_find(E->ctx, IFME_PLUGIN_AUDIO, plugin_query ? plugin_query : "", why, sizeof(why));
+	if (pi < 0) {
+		fail(E, "audio %zu: %s", idx + 1, why[0] ? why : "no \"plugin\" given");
+		return IFME_TASK_ERROR;
+	}
+
+	const cJSON *manifest = ifme_plugin_json(E->ctx, (size_t)pi);
+	const cJSON *ac = ifme_jget(manifest, "Audio");
+	const cJSON *args = ifme_jget(ac, "Args");
+	const char *plugin_name = ifme_plugin_at(E->ctx, (size_t)pi)->name;
+	const char *en = ifme_plugin_at(E->ctx, (size_t)pi)->binary;
+
+	int mode_count = cJSON_GetArraySize(ifme_jget(ac, "Mode"));
+	int mode = ifme_jint(item, "mode", 0);
+	if (mode < 0 || mode >= mode_count) {
+		fail(E, "audio %zu: %s has modes 0..%d, job asks for %d", idx + 1, plugin_name, mode_count - 1, mode);
+		return IFME_TASK_ERROR;
+	}
+	const cJSON *m = ifme_jitem(ac, "Mode", mode);
+	const char *mode_name = ifme_jstr(m, "Name") ? ifme_jstr(m, "Name") : "?";
+	stage(E, "Audio %zu/%zu: %s, %s", idx + 1, count, plugin_name, mode_name);
+
+	/* ---- quality, sample rate, channels ---------------------------------------- */
+	char *quality = ifme_jscalar(item, "quality");
+	if (!quality || !*quality) {
+		free(quality);
+		quality = ifme_jscalar(m, "Default");
+	}
+	ifme_argv qu = { 0 };
+	ifme_audio_quality_args(&qu, m, quality);
+	free(quality);
+
+	int hz = ifme_jint(item, "sample_rate", ifme_jint(ac, "SampleRateDefault", 0));
+	int ch = ifme_jint(item, "channels", ifme_jint(ac, "ChannelDefault", 0));
+	const char *hz_args = audio_arg_name(ac, "SampleRateArgs", "-ar");
+	const char *ch_args = audio_arg_name(ac, "ChannelArgs", "-ac");
+
+	/* Channels the encoder will actually get. C# down-mixed every source of
+	 * 2+ channels and up-mixed mono based on the source alone, so a mono
+	 * choice on a stereo source still became stereo; here the choice counts. */
+	bool pass_ch = ch != first_channel_key(ifme_jget(ac, "Channels"));
+	int effective = pass_ch && ch > 0 ? ch : src->channels;
+
+	if (!ifme_jbool(m, "MultiChannelSupport", true) && effective > 2) {
+		char *w = ifme_strdupf("%s, %s: no multi-channel support, down-mixing to stereo", plugin_name, mode_name);
+		log_line(E, w);
+		free(w);
+		ch = 2;
+		pass_ch = true;
+	}
+	if (!ifme_jbool(m, "MonoSupport", true) && effective == 1) {
+		char *w = ifme_strdupf("%s, %s: no mono support, up-mixing to stereo", plugin_name, mode_name);
+		log_line(E, w);
+		free(w);
+		ch = 2;
+		pass_ch = true;
+	}
+
+	ifme_argv hzch = { 0 };
+	if (hz != 0 && hz_args) {
+		ifme_argv_split(&hzch, hz_args);
+		ifme_argv_pushf(&hzch, "%d", hz);
+	}
+	if (ifme_jbool(m, "SingleChannelOnly", false)) {
+		ifme_argv_split(&hzch, "-ac 1");   /* literal, as in MediaEncoding.cs */
+	} else if (pass_ch && ch_args) {
+		ifme_argv_split(&hzch, ch_args);
+		ifme_argv_pushf(&hzch, "%d", ch);
+	}
+
+	const char *filter = ifme_jstr(item, "filter");
+	const char *user_args = ifme_jstr(item, "encoder_args");
+	const char *ffmpeg_args = ifme_jstr(item, "ffmpeg_args");
+	const char *ext = ifme_jstr(ac, "Extension");
+	char *out_file = ifme_strdupf("audio%04zu_%s.%s", idx, lang, ext && *ext ? ext : "mka");
+
+	/* ---- command --------------------------------------------------------------- */
+	ifme_argv st[2] = { { 0 }, { 0 } };
+	ifme_argv *a;
+	size_t n;
+
+	if (ifme_jbool(args, "Pipe", false)) {
+		/* ffmpeg decodes to 16-bit WAV on stdout, the encoder reads stdin. */
+		ifme_argv *ff = &st[0];
+		ifme_argv_push(ff, E->ffmpeg);
+		ifme_argv_split(ff, "-hide_banner -v error -stats -i");
+		ifme_argv_push(ff, in);
+		push_trim(E, ff);
+		ifme_argv_push(ff, "-map");
+		ifme_argv_pushf(ff, "0:%d", stream);
+		ifme_argv_split(ff, "-acodec pcm_s16le");
+		for (size_t i = 0; i < hzch.n; i++)
+			ifme_argv_push(ff, hzch.v[i]);
+		if (!ifme_is_disabled(filter)) {
+			ifme_argv_push(ff, "-af");
+			ifme_argv_push(ff, filter);
+		}
+		ifme_argv_split(ff, "-f wav");
+		ifme_argv_split(ff, ffmpeg_args);
+		ifme_argv_push(ff, "-");
+
+		a = &st[1];
+		ifme_argv_push(a, en);
+		ifme_argv_split(a, ifme_jstr(args, "Input"));
+		ifme_argv_split(a, ifme_jstr(args, "Command"));
+		for (size_t i = 0; i < qu.n; i++)
+			ifme_argv_push(a, qu.v[i]);
+		n = 2;
+	} else {
+		a = &st[0];
+		ifme_argv_push(a, en);
+		ifme_argv_split(a, ifme_jstr(args, "Input"));
+		ifme_argv_push(a, in);
+		push_trim(E, a);
+		ifme_argv_push(a, "-map");
+		ifme_argv_pushf(a, "0:%d", stream);
+		ifme_argv_split(a, ifme_jstr(args, "Command"));
+		ifme_argv_split(a, ifme_jstr(args, "Codec"));
+		for (size_t i = 0; i < qu.n; i++)
+			ifme_argv_push(a, qu.v[i]);
+		for (size_t i = 0; i < hzch.n; i++)
+			ifme_argv_push(a, hzch.v[i]);
+		if (!ifme_is_disabled(filter)) {
+			ifme_argv_push(a, "-af");
+			ifme_argv_push(a, filter);
+		}
+		n = 1;
+	}
+	ifme_argv_split(a, user_args);
+	ifme_argv_split(a, ifme_jstr(args, "Output"));
+	ifme_argv_push(a, out_file);
+
+	ifme_task_result r = run(E, st, n, 0, track_seconds(E, med));
+	ifme_argv_free(&st[0]);
+	ifme_argv_free(&st[1]);
+	ifme_argv_free(&qu);
+	ifme_argv_free(&hzch);
+
+	if (r == IFME_TASK_DONE) {
+		char *path = ifme_path_join(E->temp, out_file);
+		if (ifme_file_size(path) <= 0) {
+			fail(E, "audio %zu: %s finished but wrote no %s", idx + 1, plugin_name, out_file);
+			r = IFME_TASK_FAILED;
+		}
+		free(path);
+	}
+
+	if (r == IFME_TASK_DONE)
+		*result = out_file;
+	else
+		free(out_file);
+	return r;
+}
+
+/* An audio entry may name its own "input" (C#: MediaQueueAudio.FilePath), e.g.
+ * a dub or a commentary in a separate file; otherwise it is the job's input. */
+static ifme_task_result encode_audio(enc *E, size_t idx, size_t count, const cJSON *item,
+                                     char **result, char **lang_out)
+{
+	const char *own = ifme_jstr(item, "input");
+	if (!own || !*own)
+		return encode_audio_from(E, idx, count, item, E->input, E->media, result, lang_out);
+
+	char *path = ifme_absolute_path(own);
+	char why[512];
+	ifme_media *m = path ? ifme_probe(E->ctx, path, NULL, why, sizeof(why)) : NULL;
+	ifme_task_result r = IFME_TASK_ERROR;
+	if (m)
+		r = encode_audio_from(E, idx, count, item, path, m, result, lang_out);
+	else
+		fail(E, "audio %zu: %s", idx + 1, path ? why : "out of memory");
+	ifme_media_free(m);
+	free(path);
+	return r;
+}
+
+/* ---- muxing (port of MediaEncoding.Muxing) -------------------------------------- */
+
+#if defined(_WIN32)
+#define IFME_OS_NAME "windows"
+#elif defined(__APPLE__)
+#define IFME_OS_NAME "macos"
+#elif defined(__linux__)
+#define IFME_OS_NAME "linux"
+#else
+#define IFME_OS_NAME "unix"
+#endif
+
+typedef struct track {
+	char *file;          /* in E->temp */
+	char kind;           /* 'v' or 'a' */
+	char *lang;
+	const char *title;   /* from the job, may be NULL */
+} track;
+
+/* Every track file -> the output container, with language/title per stream
+ * and the same encoding_tool/comment tags as C#. */
+static ifme_task_result mux(enc *E, const track *tracks, size_t count)
+{
+	stage(E, "Writing %s", ifme_basename(E->output));
+
+	ifme_argv a = { 0 };
+	ifme_argv_push(&a, E->ffmpeg);
+	ifme_argv_split(&a, "-strict -2 -hide_banner -v error -stats");
+	for (size_t i = 0; i < count; i++) {
+		ifme_argv_push(&a, "-i");
+		ifme_argv_push(&a, tracks[i].file);
+	}
+	for (size_t i = 0; i < count; i++) {
+		ifme_argv_push(&a, "-map");
+		ifme_argv_pushf(&a, "%zu:%c", i, tracks[i].kind);
+	}
+	/* Chapters arrive by accident otherwise (neroAacEnc writes one, copied
+	 * tracks bring the source's); they are handled on purpose in milestone 6. */
+	ifme_argv_split(&a, "-map_chapters -1 -c copy");
+
+	const ifme_cpu_info *cpu = &E->ctx->cpu;
+	ifme_argv_push(&a, "-metadata:g");
+	ifme_argv_pushf(&a, "encoding_tool=ifme%s/%s/%s/%s", ifme_version(), cpu->arch,
+	                IFME_OS_NAME, cpu->hypervisor ? "vm" : "baremetal");
+	ifme_argv_push(&a, "-metadata:g");
+	ifme_argv_pushf(&a, "comment=%s%s%s", cpu->brand,
+	                cpu->hypervisor ? "/" : "", cpu->hypervisor ? cpu->hypervisor_vendor : "");
+
+	/* MP4-family files keep a track's name in its handler, not a title tag. */
+	static const char *const iso[] = { "mp4", "m4v", "m4a", "mov", "3gp", "3g2" };
+	bool iso_bmff = false;
+	for (size_t i = 0; i < sizeof(iso) / sizeof(iso[0]); i++)
+		iso_bmff |= ifme_strcasecmp(output_ext(E->output), iso[i]) == 0;
+
+	for (size_t i = 0; i < count; i++) {
+		ifme_argv_pushf(&a, "-metadata:s:%zu", i);
+		ifme_argv_pushf(&a, "language=%s", tracks[i].lang ? tracks[i].lang : "und");
+		if (tracks[i].title && *tracks[i].title) {
+			ifme_argv_pushf(&a, "-metadata:s:%zu", i);
+			ifme_argv_pushf(&a, "%s=%s", iso_bmff ? "handler_name" : "title", tracks[i].title);
+		}
+	}
+
+	ifme_argv_push(&a, "-y");
+	ifme_argv_push(&a, E->output);
+	ifme_task_result r = run1(E, &a, job_seconds(E));
+	ifme_argv_free(&a);
+
+	if (r == IFME_TASK_DONE && ifme_file_size(E->output) <= 0) {
+		fail(E, "no output written to %s", E->output);
+		r = IFME_TASK_FAILED;
+	}
+	if (r != IFME_TASK_DONE)
+		ifme_delete_file(E->output);   /* no half-written file */
+	return r;
+}
+
 /* ---- job ------------------------------------------------------------------------ */
 
 static unsigned long job_counter;
@@ -730,9 +1143,8 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 	free(strict);
 	E.job = job;
 
-	char *output = NULL;
-	char **tracks = NULL;
-	size_t track_count = 0;
+	track *tracks = NULL;
+	size_t track_count = 0, track_cap = 0;
 	bool keep_temp = false;
 
 	if (!ctx || !task) {
@@ -752,8 +1164,16 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 	const char *input = ifme_jstr(job, "input");
 	const char *out_rel = ifme_jstr(job, "output");
 	const cJSON *videos = ifme_jget(job, "video");
-	size_t video_count = (size_t)cJSON_GetArraySize(videos);
+	const cJSON *audios = ifme_jget(job, "audio");
+	size_t video_count = 0, audio_count = 0;
 	keep_temp = ifme_jbool(job, "keep_temp", false);
+
+	/* Entries with "enable": false are skipped (C#'s per-track checkbox). */
+	const cJSON *it;
+	cJSON_ArrayForEach(it, videos)
+		video_count += ifme_jbool(it, "enable", true);
+	cJSON_ArrayForEach(it, audios)
+		audio_count += ifme_jbool(it, "enable", true);
 
 	if (!input || !*input) {
 		fail(&E, "job has no \"input\"");
@@ -763,13 +1183,13 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 		fail(&E, "job has no \"output\"");
 		goto out;
 	}
-	if (!cJSON_IsArray(videos) || video_count == 0) {
-		fail(&E, "job has no \"video\" entries (audio-only jobs come with milestone 5)");
+	if (video_count + audio_count == 0) {
+		fail(&E, "job has no \"video\" or \"audio\" entries");
 		goto out;
 	}
 
 	E.input = ifme_absolute_path(input);
-	output = ifme_absolute_path(out_rel);
+	E.output = ifme_absolute_path(out_rel);
 
 	const cJSON *trim = ifme_jget(job, "trim");
 	if (cJSON_IsObject(trim)) {
@@ -809,49 +1229,58 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 		goto out;
 	}
 
-	tracks = calloc(video_count, sizeof(char *));
+	tracks = calloc(video_count + audio_count, sizeof(track));
 	if (!tracks)
 		goto out;
+	track_cap = video_count + audio_count;
 
-	for (size_t i = 0; i < video_count; i++) {
-		r = encode_video(&E, i, video_count, cJSON_GetArrayItem(videos, (int)i), &tracks[i]);
+	/* Same order as C#: video, then audio; tracks keep that order in the output. */
+	size_t vi = 0;
+	cJSON_ArrayForEach(it, videos) {
+		if (!ifme_jbool(it, "enable", true))
+			continue;
+		track *t = &tracks[track_count];
+		r = encode_video(&E, vi, video_count, it, &t->file);
 		if (r != IFME_TASK_DONE)
 			goto out;
+		const ifme_stream_video *src = source_video(E.media, ifme_jint(it, "stream", first_video_stream(E.media)));
+		const char *lang = ifme_jstr(it, "language");
+		if (!lang || !*lang)
+			lang = (src && src->language && *src->language) ? src->language : "und";
+		t->kind = 'v';
+		t->lang = ifme_strdup(lang);
+		t->title = ifme_jstr(it, "title");
 		track_count++;
+		vi++;
 	}
 
-	/* Write every video track into the output container. */
-	stage(&E, "Writing %s", ifme_basename(output));
-	ifme_argv a = { 0 };
-	ifme_argv_push(&a, E.ffmpeg);
-	ifme_argv_split(&a, "-hide_banner -v error");
-	for (size_t i = 0; i < track_count; i++) {
-		ifme_argv_push(&a, "-i");
-		ifme_argv_push(&a, tracks[i]);
+	size_t ai = 0;
+	cJSON_ArrayForEach(it, audios) {
+		if (!ifme_jbool(it, "enable", true))
+			continue;
+		track *t = &tracks[track_count];
+		r = encode_audio(&E, ai, audio_count, it, &t->file, &t->lang);
+		if (r != IFME_TASK_DONE)
+			goto out;
+		t->kind = 'a';
+		t->title = ifme_jstr(it, "title");
+		track_count++;
+		ai++;
 	}
-	for (size_t i = 0; i < track_count; i++) {
-		ifme_argv_push(&a, "-map");
-		ifme_argv_pushf(&a, "%zu:v", i);
-	}
-	ifme_argv_split(&a, "-c copy -metadata:g encoding_tool=IFME -y");
-	ifme_argv_push(&a, output);
-	r = run1(&E, &a, 0);
-	ifme_argv_free(&a);
 
-	if (r == IFME_TASK_DONE && ifme_file_size(output) <= 0) {
-		fail(&E, "no output written to %s", output);
-		r = IFME_TASK_FAILED;
-	}
+	r = mux(&E, tracks, track_count);
 
 out:
 	if (E.temp && !keep_temp) {
 		ifme_clear_dir(E.temp);
 		ifme_rmdir(E.temp);
 	}
-	for (size_t i = 0; tracks && i < track_count; i++)
-		free(tracks[i]);
+	for (size_t i = 0; tracks && i < track_cap; i++) {
+		free(tracks[i].file);
+		free(tracks[i].lang);
+	}
 	free(tracks);
-	free(output);
+	free(E.output);
 	free(E.temp);
 	free(E.ffmpeg);
 	free(E.input);
@@ -889,7 +1318,223 @@ static void add_strings(cJSON *obj, const char *name, const cJSON *arr)
 	}
 }
 
-char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *video_plugin,
+static bool format_has(const cJSON *manifest, const char *container)
+{
+	const cJSON *f;
+	cJSON_ArrayForEach(f, ifme_jget(manifest, "Format")) {
+		if (cJSON_IsString(f) && ifme_strcasecmp(f->valuestring, container) == 0)
+			return true;
+	}
+	return false;
+}
+
+static const char *first_format(const cJSON *manifest, const char *fallback)
+{
+	const cJSON *fmt = cJSON_GetArrayItem(ifme_jget(manifest, "Format"), 0);
+	return cJSON_IsString(fmt) && fmt->valuestring[0] ? fmt->valuestring : fallback;
+}
+
+#define OPUS_GUID "deadface-f00d-f00d-f00d-f00df00df00d"
+#define AAC_GUID  "deadbeef-0aac-0aac-0aac-0aac0aac0aac"
+
+/* Audio plugin for a container: FFmpeg Opus where it fits (MKV, WebM), else
+ * FFmpeg AAC (MP4), else the first usable plugin listing the container. */
+static int default_audio_plugin(ifme_ctx *ctx, const char *container)
+{
+	static const char *const preferred[] = { OPUS_GUID, AAC_GUID };
+	for (size_t i = 0; i < sizeof(preferred) / sizeof(preferred[0]); i++) {
+		int pi = ifme_plugin_find(ctx, IFME_PLUGIN_AUDIO, preferred[i], NULL, 0);
+		if (pi >= 0 && format_has(ifme_plugin_json(ctx, (size_t)pi), container))
+			return pi;
+	}
+	for (size_t i = 0; i < ifme_plugin_count(ctx); i++) {
+		const ifme_plugin_info *p = ifme_plugin_at(ctx, i);
+		if (p->kind == IFME_PLUGIN_AUDIO && p->status == IFME_PLUGIN_OK &&
+		    format_has(ifme_plugin_json(ctx, i), container))
+			return (int)i;
+	}
+	return -1;
+}
+
+static bool is_none(const char *plugin)
+{
+	return !plugin || !*plugin || ifme_strcasecmp(plugin, "none") == 0;
+}
+
+/* Values of a manifest list as text: numbers and strings ("128", "0.5", "g"). */
+static char *join_values(const cJSON *arr)
+{
+	size_t cap = 256, len = 0;
+	char *s = malloc(cap);
+	if (!s)
+		return NULL;
+	s[0] = '\0';
+
+	const cJSON *e;
+	cJSON_ArrayForEach(e, arr) {
+		char item[64];
+		if (cJSON_IsString(e))
+			snprintf(item, sizeof(item), "%s", e->valuestring);
+		else if (cJSON_IsNumber(e))
+			snprintf(item, sizeof(item), "%g", e->valuedouble);
+		else
+			continue;
+
+		size_t need = len + strlen(item) + 3;
+		if (need > cap) {
+			char *grown = realloc(s, cap = need * 2);
+			if (!grown) {
+				free(s);
+				return NULL;
+			}
+			s = grown;
+		}
+		len += (size_t)sprintf(s + len, "%s%s", len ? ", " : "", item);
+	}
+	return s;
+}
+
+static void add_video_entry(cJSON *videos, ifme_ctx *ctx, int pi, const ifme_stream_video *src)
+{
+	cJSON *v = cJSON_CreateObject();
+	cJSON_AddItemToArray(videos, v);
+
+	char fps[32];
+	fps_string(source_fps(src), fps, sizeof(fps));
+
+	cJSON_AddNumberToObject(v, "stream", src->id);
+	cJSON_AddStringToObject(v, "language", src->language && *src->language ? src->language : "und");
+	if (pi < 0) {
+		cJSON_AddStringToObject(v, "plugin", "copy");
+		return;
+	}
+
+	const cJSON *vc = ifme_jget(ifme_plugin_json(ctx, (size_t)pi), "Video");
+	const cJSON *mode0 = ifme_jitem(vc, "Mode", 0);
+	const char *ps = ifme_jstr(vc, "PresetDefault"), *tu = ifme_jstr(vc, "TuneDefault");
+	const cJSON *mv = ifme_jget(mode0, "Value");
+
+	cJSON_AddStringToObject(v, "plugin", ifme_plugin_at(ctx, (size_t)pi)->guid);
+	cJSON_AddStringToObject(v, "preset", ps ? ps : "");
+	cJSON_AddStringToObject(v, "tune", tu ? tu : "");
+	cJSON_AddNumberToObject(v, "mode", 0);
+	cJSON_AddNumberToObject(v, "value", ifme_jdouble(mv, "Default", 0));
+	cJSON_AddNumberToObject(v, "passes", ifme_jbool(mode0, "MultiPass", false) ? 2 : 1);
+	cJSON_AddStringToObject(v, "encoder_args", "");
+	cJSON_AddNumberToObject(v, "width", src->width);
+	cJSON_AddNumberToObject(v, "height", src->height);
+	cJSON_AddStringToObject(v, "fps", fps);
+	cJSON_AddNumberToObject(v, "bit_depth",
+		supported_or(ifme_jget(vc, "Encoder"), "BitDepth", src->bit_depth, 8));
+	cJSON_AddNumberToObject(v, "chroma",
+		supported_or(ifme_jget(vc, "Chroma"), "Value", src->chroma, 420));
+	cJSON_AddStringToObject(v, "ffmpeg_args", "");
+	cJSON_AddStringToObject(v, "filter", "");
+
+	/* Read-only hints for people and UIs editing the job. */
+	cJSON *help = cJSON_AddObjectToObject(v, "_help");
+	cJSON_AddStringToObject(help, "plugin_name", ifme_plugin_at(ctx, (size_t)pi)->name);
+	add_strings(help, "presets", ifme_jget(vc, "Preset"));
+	add_strings(help, "tunes", ifme_jget(vc, "Tune"));
+	cJSON *modes = cJSON_AddArrayToObject(help, "modes");
+	const cJSON *m;
+	int k = 0;
+	cJSON_ArrayForEach(m, ifme_jget(vc, "Mode")) {
+		const cJSON *mv2 = ifme_jget(m, "Value");
+		int dp = ifme_jint(mv2, "DecimalPlace", 0);
+		if (dp < 0 || dp > 6)
+			dp = 0;
+		char *line = ifme_strdupf("%d: %s (%.*f..%.*f, default %.*f)%s", k++,
+			ifme_jstr(m, "Name") ? ifme_jstr(m, "Name") : "?",
+			dp, ifme_jdouble(mv2, "Min", 0), dp, ifme_jdouble(mv2, "Max", 0),
+			dp, ifme_jdouble(mv2, "Default", 0),
+			ifme_jbool(m, "MultiPass", false) ? ", multi-pass" : "");
+		cJSON_AddItemToArray(modes, cJSON_CreateString(line ? line : ""));
+		free(line);
+	}
+	cJSON *depths = cJSON_AddArrayToObject(help, "bit_depths");
+	cJSON_ArrayForEach(m, ifme_jget(vc, "Encoder"))
+		cJSON_AddItemToArray(depths, cJSON_CreateNumber(ifme_jint(m, "BitDepth", 0)));
+	cJSON *chromas = cJSON_AddArrayToObject(help, "chromas");
+	cJSON_ArrayForEach(m, ifme_jget(vc, "Chroma"))
+		cJSON_AddItemToArray(chromas, cJSON_CreateNumber(ifme_jint(m, "Value", 0)));
+}
+
+static void add_audio_entry(cJSON *audios, ifme_ctx *ctx, int pi, const ifme_stream_audio *src)
+{
+	cJSON *a = cJSON_CreateObject();
+	cJSON_AddItemToArray(audios, a);
+
+	cJSON_AddNumberToObject(a, "stream", src->id);
+	cJSON_AddStringToObject(a, "language", src->language && *src->language ? src->language : "und");
+	cJSON_AddStringToObject(a, "title", src->title ? src->title : "");
+	if (pi < 0) {
+		cJSON_AddStringToObject(a, "plugin", "copy");
+		return;
+	}
+
+	const cJSON *ac = ifme_jget(ifme_plugin_json(ctx, (size_t)pi), "Audio");
+	const cJSON *mode0 = ifme_jitem(ac, "Mode", 0);
+	char *quality = ifme_jscalar(mode0, "Default");
+
+	cJSON_AddStringToObject(a, "plugin", ifme_plugin_at(ctx, (size_t)pi)->guid);
+	cJSON_AddNumberToObject(a, "mode", 0);
+	cJSON_AddStringToObject(a, "quality", quality ? quality : "");
+	cJSON_AddNumberToObject(a, "sample_rate", ifme_jint(ac, "SampleRateDefault", 0));
+	cJSON_AddNumberToObject(a, "channels", ifme_jint(ac, "ChannelDefault", 0));
+	cJSON_AddBoolToObject(a, "copy", false);
+	cJSON_AddStringToObject(a, "encoder_args", "");
+	cJSON_AddStringToObject(a, "ffmpeg_args", "");
+	cJSON_AddStringToObject(a, "filter", "");
+	free(quality);
+
+	cJSON *help = cJSON_AddObjectToObject(a, "_help");
+	cJSON_AddStringToObject(help, "plugin_name", ifme_plugin_at(ctx, (size_t)pi)->name);
+	char *srcinfo = ifme_strdupf("%s, %d Hz, %d channel%s", src->codec ? src->codec : "?",
+	                             src->sample_rate, src->channels, src->channels == 1 ? "" : "s");
+	cJSON_AddStringToObject(help, "source", srcinfo ? srcinfo : "");
+	free(srcinfo);
+
+	cJSON *modes = cJSON_AddArrayToObject(help, "modes");
+	const cJSON *m;
+	int k = 0;
+	cJSON_ArrayForEach(m, ifme_jget(ac, "Mode")) {
+		char *values = join_values(ifme_jget(m, "Quality"));
+		char *def = ifme_jscalar(m, "Default");
+		char *line = ifme_strdupf("%d: %s [%s], default %s", k++,
+			ifme_jstr(m, "Name") ? ifme_jstr(m, "Name") : "?",
+			values ? values : "", def ? def : "?");
+		cJSON_AddItemToArray(modes, cJSON_CreateString(line ? line : ""));
+		free(line);
+		free(def);
+		free(values);
+	}
+
+	/* As the C# loader: the default rate is always offered; 0 = keep the source. */
+	cJSON *rates = cJSON_AddArrayToObject(help, "sample_rates");
+	int def_rate = ifme_jint(ac, "SampleRateDefault", 0);
+	bool has_def = false;
+	cJSON_ArrayForEach(m, ifme_jget(ac, "SampleRate")) {
+		if (cJSON_IsNumber(m) && m->valueint == def_rate)
+			has_def = true;
+	}
+	if (!has_def)
+		cJSON_AddItemToArray(rates, cJSON_CreateNumber(def_rate));
+	cJSON_ArrayForEach(m, ifme_jget(ac, "SampleRate"))
+		if (cJSON_IsNumber(m))
+			cJSON_AddItemToArray(rates, cJSON_CreateNumber(m->valueint));
+
+	cJSON *chans = cJSON_AddArrayToObject(help, "channels");
+	for (const cJSON *c = ifme_jget(ac, "Channels") ? ifme_jget(ac, "Channels")->child : NULL; c; c = c->next) {
+		char *line = ifme_strdupf("%s: %s", c->string ? c->string : "?",
+		                          cJSON_IsString(c) ? c->valuestring : "");
+		cJSON_AddItemToArray(chans, cJSON_CreateString(line ? line : ""));
+		free(line);
+	}
+}
+
+char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
+                   const char *video_plugin, const char *audio_plugin,
                    char *err, size_t err_len)
 {
 	if (err && err_len)
@@ -897,10 +1542,24 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *video_plugin,
 	if (!ctx || !input)
 		return NULL;
 
-	int pi = ifme_plugin_find(ctx, IFME_PLUGIN_VIDEO, video_plugin ? video_plugin : "", err, err_len);
-	bool copy = video_plugin && ifme_strcasecmp(video_plugin, VIDEO_COPY_GUID) == 0;
-	if (pi < 0 && !copy)
-		return NULL;
+	/* plugin index, or -1: copy, -3: none */
+	int vpi = -3, api = -3;
+	bool audio_auto = audio_plugin == NULL;
+
+	if (is_copy(video_plugin, VIDEO_COPY_GUID)) {
+		vpi = -1;
+	} else if (!is_none(video_plugin)) {
+		vpi = ifme_plugin_find(ctx, IFME_PLUGIN_VIDEO, video_plugin, err, err_len);
+		if (vpi < 0)
+			return NULL;
+	}
+	if (is_copy(audio_plugin, AUDIO_COPY_GUID)) {
+		api = -1;
+	} else if (!audio_auto && !is_none(audio_plugin)) {
+		api = ifme_plugin_find(ctx, IFME_PLUGIN_AUDIO, audio_plugin, err, err_len);
+		if (api < 0)
+			return NULL;
+	}
 
 	char *abs_input = ifme_absolute_path(input);
 	ifme_media *media = ifme_probe(ctx, abs_input, NULL, err, err_len);
@@ -909,104 +1568,83 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *video_plugin,
 		return NULL;
 	}
 
-	int stream = first_video_stream(media);
-	const ifme_stream_video *src = source_video(media, stream);
-	if (!src) {
+	bool has_video = vpi != -3 && first_video_stream(media) >= 0;
+	bool has_audio = media->audio_count > 0 && (audio_auto || api != -3);
+
+	/* Container: the output's extension, else the video plugin's first format,
+	 * else (audio only) the audio plugin's: Opus for a plain audio file. */
+	const char *container = "mkv";
+	if (output && *output)
+		container = output_ext(output);
+	else if (has_video && vpi >= 0)
+		container = first_format(ifme_plugin_json(ctx, (size_t)vpi), "mkv");
+
+	if (has_audio && audio_auto) {
+		api = default_audio_plugin(ctx, container);
+		if (api < 0) {
+			if (err && err_len)
+				snprintf(err, err_len, "no usable audio plugin supports .%s "
+				         "(choose one, \"copy\" or \"none\")", container);
+			ifme_media_free(media);
+			free(abs_input);
+			return NULL;
+		}
+	}
+	if (!(output && *output) && !has_video && has_audio && api >= 0)
+		container = first_format(ifme_plugin_json(ctx, (size_t)api), "mkv");
+
+	cJSON *job = cJSON_CreateObject();
+	cJSON *videos = cJSON_CreateArray();
+	cJSON *audios = cJSON_CreateArray();
+
+	if (has_video)
+		add_video_entry(videos, ctx, vpi, source_video(media, first_video_stream(media)));
+	for (size_t i = 0; has_audio && i < media->audio_count; i++)
+		add_audio_entry(audios, ctx, api, &media->audio[i]);
+
+	if (cJSON_GetArraySize(videos) + cJSON_GetArraySize(audios) == 0) {
 		if (err && err_len)
-			snprintf(err, err_len, "%s has no video stream", input);
-		ifme_media_free(media);
-		free(abs_input);
-		return NULL;
+			snprintf(err, err_len, "%s: nothing to encode (%zu video, %zu audio streams%s)", input,
+			         media->video_count, media->audio_count,
+			         is_none(video_plugin) && !audio_auto && is_none(audio_plugin)
+			         ? "; video and audio are both \"none\"" : "");
+		goto fail;
 	}
 
-	const cJSON *manifest = copy ? NULL : ifme_plugin_json(ctx, (size_t)pi);
-	const cJSON *vc = ifme_jget(manifest, "Video");
-	const cJSON *mode0 = ifme_jitem(vc, "Mode", 0);
-	const cJSON *fmt = cJSON_GetArrayItem(ifme_jget(manifest, "Format"), 0);
-	const char *container = cJSON_IsString(fmt) ? fmt->valuestring : "mkv";
-
 	/* Output next to the input: "<name>.ifme.<container>". */
-	char *output = NULL;
-	{
+	char *out_path = NULL;
+	if (output && *output) {
+		out_path = ifme_absolute_path(output);
+	} else {
 		char *base = ifme_strdup(abs_input);
 		char *dot = base ? strrchr(base, '.') : NULL;
 		const char *slash = base ? ifme_basename(base) : NULL;
 		if (dot && dot > slash)
 			*dot = '\0';
-		output = base ? ifme_strdupf("%s.ifme.%s", base, container) : NULL;
+		out_path = base ? ifme_strdupf("%s.ifme.%s", base, container) : NULL;
 		free(base);
 	}
 
-	cJSON *job = cJSON_CreateObject();
 	cJSON_AddStringToObject(job, "input", abs_input);
-	cJSON_AddStringToObject(job, "output", output ? output : "");
+	cJSON_AddStringToObject(job, "output", out_path ? out_path : "");
 	cJSON_AddStringToObject(job, "temp_dir", "");
 	cJSON_AddBoolToObject(job, "keep_temp", false);
-
-	cJSON *videos = cJSON_AddArrayToObject(job, "video");
-	cJSON *v = cJSON_CreateObject();
-	cJSON_AddItemToArray(videos, v);
-
-	char fps[32];
-	fps_string(source_fps(src), fps, sizeof(fps));
-
-	cJSON_AddNumberToObject(v, "stream", stream);
-	if (copy) {
-		cJSON_AddStringToObject(v, "plugin", VIDEO_COPY_GUID);
-	} else {
-		const char *ps = ifme_jstr(vc, "PresetDefault"), *tu = ifme_jstr(vc, "TuneDefault");
-		const cJSON *mv = ifme_jget(mode0, "Value");
-
-		cJSON_AddStringToObject(v, "plugin", ifme_plugin_at(ctx, (size_t)pi)->guid);
-		cJSON_AddStringToObject(v, "preset", ps ? ps : "");
-		cJSON_AddStringToObject(v, "tune", tu ? tu : "");
-		cJSON_AddNumberToObject(v, "mode", 0);
-		cJSON_AddNumberToObject(v, "value", ifme_jdouble(mv, "Default", 0));
-		cJSON_AddNumberToObject(v, "passes", ifme_jbool(mode0, "MultiPass", false) ? 2 : 1);
-		cJSON_AddStringToObject(v, "encoder_args", "");
-		cJSON_AddNumberToObject(v, "width", src->width);
-		cJSON_AddNumberToObject(v, "height", src->height);
-		cJSON_AddStringToObject(v, "fps", fps);
-		cJSON_AddNumberToObject(v, "bit_depth",
-			supported_or(ifme_jget(vc, "Encoder"), "BitDepth", src->bit_depth, 8));
-		cJSON_AddNumberToObject(v, "chroma",
-			supported_or(ifme_jget(vc, "Chroma"), "Value", src->chroma, 420));
-		cJSON_AddStringToObject(v, "ffmpeg_args", "");
-		cJSON_AddStringToObject(v, "filter", "");
-
-		/* Read-only hints for people and UIs editing the job. */
-		cJSON *help = cJSON_AddObjectToObject(v, "_help");
-		cJSON_AddStringToObject(help, "plugin_name", ifme_plugin_at(ctx, (size_t)pi)->name);
-		add_strings(help, "presets", ifme_jget(vc, "Preset"));
-		add_strings(help, "tunes", ifme_jget(vc, "Tune"));
-		cJSON *modes = cJSON_AddArrayToObject(help, "modes");
-		const cJSON *m;
-		int k = 0;
-		cJSON_ArrayForEach(m, ifme_jget(vc, "Mode")) {
-			const cJSON *mv2 = ifme_jget(m, "Value");
-			int dp = ifme_jint(mv2, "DecimalPlace", 0);
-			if (dp < 0 || dp > 6)
-				dp = 0;
-			char *line = ifme_strdupf("%d: %s (%.*f..%.*f, default %.*f)%s", k++,
-				ifme_jstr(m, "Name") ? ifme_jstr(m, "Name") : "?",
-				dp, ifme_jdouble(mv2, "Min", 0), dp, ifme_jdouble(mv2, "Max", 0),
-				dp, ifme_jdouble(mv2, "Default", 0),
-				ifme_jbool(m, "MultiPass", false) ? ", multi-pass" : "");
-			cJSON_AddItemToArray(modes, cJSON_CreateString(line ? line : ""));
-			free(line);
-		}
-		cJSON *depths = cJSON_AddArrayToObject(help, "bit_depths");
-		cJSON_ArrayForEach(m, ifme_jget(vc, "Encoder"))
-			cJSON_AddItemToArray(depths, cJSON_CreateNumber(ifme_jint(m, "BitDepth", 0)));
-		cJSON *chromas = cJSON_AddArrayToObject(help, "chromas");
-		cJSON_ArrayForEach(m, ifme_jget(vc, "Chroma"))
-			cJSON_AddItemToArray(chromas, cJSON_CreateNumber(ifme_jint(m, "Value", 0)));
-	}
+	cJSON_AddItemToObject(job, "video", videos);
+	cJSON_AddItemToObject(job, "audio", audios);
+	videos = audios = NULL;
 
 	char *text = cJSON_Print(job);
 	cJSON_Delete(job);
-	free(output);
+	free(out_path);
 	ifme_media_free(media);
 	free(abs_input);
 	return text;
+
+fail:
+	cJSON_Delete(videos);
+	cJSON_Delete(audios);
+	cJSON_Delete(job);
+	ifme_media_free(media);
+	free(abs_input);
+	return NULL;
 }

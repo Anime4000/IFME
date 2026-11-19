@@ -139,6 +139,54 @@ static void test_eta(void)
 	CHECK_NEAR(p.percent, 100);
 }
 
+/* Audio: FFmpeg reports media time, no frames. */
+static void test_time_progress(void)
+{
+	ifme_progress_parser pp;
+	ifme_progress p;
+
+	/* Real FFmpeg 7 audio stats; ETA from speed (30 s left at 15x = 2 s). */
+	ifme_progress_init(&pp, 0);
+	pp.total_seconds = 60;
+	p = feed(&pp, "size=     512KiB time=00:00:30.00 bitrate= 139.8kbits/s speed=  15x elapsed=0:00:02.00",
+	         IFME_LINE_PROGRESS);
+	CHECK(p.frame == -1);
+	CHECK_NEAR(p.time_sec, 30);
+	CHECK_NEAR(p.total_sec, 60);
+	CHECK_NEAR(p.percent, 50);
+	CHECK_NEAR(p.kbps, 139.8);
+	CHECK(p.eta_sec == 2);
+
+	/* The WAV pipe of piped encoders: no bitrate, hours, and the negative
+	 * start time FFmpeg prints for some codecs. */
+	p = feed(&pp, "size=N/A time=01:00:00.00 bitrate=N/A speed=60.1x", IFME_LINE_PROGRESS);
+	CHECK_NEAR(p.time_sec, 3600);
+	CHECK(p.kbps < 0);
+	CHECK_NEAR(p.percent, 100);
+	CHECK(p.eta_sec == 0);
+	p = feed(&pp, "size=       0KiB time=-00:00:00.02 bitrate=N/A speed=N/A", IFME_LINE_PROGRESS);
+	CHECK_NEAR(p.time_sec, 0);
+
+	/* Unknown length: no percent, no ETA. */
+	ifme_progress_init(&pp, 0);
+	p = feed(&pp, "size=  64KiB time=00:00:04.00 bitrate= 131.1kbits/s speed=40x", IFME_LINE_PROGRESS);
+	CHECK(p.percent < 0 && p.eta_sec == -1);
+
+	/* FFmpeg video lines also carry the time; with no frame total, the
+	 * percent comes from it (stream copies, the final mux). */
+	ifme_progress_init(&pp, 0);
+	pp.total_seconds = 20;
+	p = feed(&pp, "frame=  150 fps=0.0 q=-1.0 size=1024KiB time=00:00:05.00 bitrate=1677.7kbits/s speed=10x",
+	         IFME_LINE_PROGRESS);
+	CHECK(p.frame == 150);
+	CHECK_NEAR(p.time_sec, 5);
+	CHECK_NEAR(p.percent, 25);
+
+	/* A "time=" without size=/speed= is not progress. */
+	ifme_progress_init(&pp, 0);
+	feed(&pp, "Input #0, wav, from 'pipe:': time=00:00:01.00", IFME_LINE_LOG);
+}
+
 static void test_clean_line(void)
 {
 	char *s = ifme_clean_line("  \x1b[33mhello\x1b[0m\tworld\b  ");
@@ -212,6 +260,7 @@ int main(void)
 {
 	test_progress_formats();
 	test_eta();
+	test_time_progress();
 	test_clean_line();
 	test_linebuf_split();
 	test_argv_and_json();

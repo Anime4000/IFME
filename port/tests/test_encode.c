@@ -8,7 +8,10 @@
  *   2. a short x265 encode (trimmed, downscaled) produces the right file
  *   3. stopping a running encode returns STOPPED, removes the temp folder
  *      and leaves no output behind
- *   4. bad jobs give clear errors (unknown plugin, mode, bit depth, input)
+ *   4. audio: the default plugin follows the container, an A/V encode with
+ *      the audio from a separate file (language, title, trim), and "copy"
+ *      falling back to encoding when the container refuses the codec
+ *   5. bad jobs give clear errors (unknown plugin, mode, bit depth, input)
  */
 
 #include <pthread.h>
@@ -20,6 +23,9 @@
 
 #include "ifme.h"
 #include "cJSON.h"
+
+#define OPUS_GUID "deadface-f00d-f00d-f00d-f00df00df00d"
+#define AAC_GUID  "deadbeef-0aac-0aac-0aac-0aac0aac0aac"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -140,7 +146,7 @@ int main(int argc, char **argv)
 	}
 
 	/* ---- 1. defaults ---------------------------------------------------------- */
-	char *job = ifme_job_new(ctx, sample, "x265", err, sizeof(err));
+	char *job = ifme_job_new(ctx, sample, NULL, "x265", NULL, err, sizeof(err));
 	CHECK(job != NULL);
 	if (!job) {
 		fprintf(stderr, "%s\n", err);
@@ -209,7 +215,106 @@ int main(int argc, char **argv)
 	CHECK(!exists(out2));
 	ifme_task_destroy(r.task);
 
-	/* ---- 4. bad jobs -------------------------------------------------------------- */
+	/* ---- 4. audio ------------------------------------------------------------------- */
+	char *m4a = join(root, "Samples/wonderland_online_dungeon.m4a");
+	char *av_out = join(work, "test av 音声.mkv");
+	char *webm_out = join(work, "test fallback.webm");
+	char *bad_audio = NULL;
+	if (!exists(m4a) || ifme_plugin_find(ctx, IFME_PLUGIN_AUDIO, OPUS_GUID, err, sizeof(err)) < 0) {
+		printf("audio:    skipped (%s)\n", exists(m4a) ? err : "no m4a sample");
+	} else {
+		/* Default plugin follows the container: Opus for MKV/WebM and plain
+		 * audio files, AAC for MP4. */
+		char *ja = ifme_job_new(ctx, m4a, NULL, "x265", NULL, err, sizeof(err));
+		CHECK(ja != NULL);
+		cJSON *jj = ja ? cJSON_Parse(ja) : NULL;
+		const cJSON *a0 = cJSON_GetArrayItem(cJSON_GetObjectItem(jj, "audio"), 0);
+		const cJSON *jout = cJSON_GetObjectItem(jj, "output");
+		CHECK(cJSON_GetArraySize(cJSON_GetObjectItem(jj, "video")) == 0);
+		CHECK(a0 && strcmp(cJSON_GetObjectItem(a0, "plugin")->valuestring, OPUS_GUID) == 0);
+		CHECK(cJSON_IsString(jout) && strstr(jout->valuestring, ".ifme.opus") != NULL);
+		cJSON_Delete(jj);
+		ifme_free(ja);
+
+		char *jm = ifme_job_new(ctx, m4a, "out.mp4", "none", NULL, err, sizeof(err));
+		jj = jm ? cJSON_Parse(jm) : NULL;
+		a0 = cJSON_GetArrayItem(cJSON_GetObjectItem(jj, "audio"), 0);
+		CHECK(a0 && strcmp(cJSON_GetObjectItem(a0, "plugin")->valuestring, AAC_GUID) == 0);
+		cJSON_Delete(jj);
+		ifme_free(jm);
+
+		/* Video from the sample, audio from the separate .m4a ("input"),
+		 * tagged Japanese with a title; trimmed and downscaled. */
+		remove(av_out);
+		char *jv = ifme_job_new(ctx, sample, av_out, "x265", NULL, err, sizeof(err));
+		char *jx = ifme_job_new(ctx, m4a, av_out, "none", NULL, err, sizeof(err));
+		CHECK(jv && jx);
+		cJSON *job_av = jv ? cJSON_Parse(jv) : NULL;
+		cJSON *job_x = jx ? cJSON_Parse(jx) : NULL;
+		cJSON *vv = cJSON_GetArrayItem(cJSON_GetObjectItem(job_av, "video"), 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(vv, "width", cJSON_CreateNumber(320));
+		cJSON_ReplaceItemInObjectCaseSensitive(vv, "height", cJSON_CreateNumber(200));
+		cJSON_ReplaceItemInObjectCaseSensitive(vv, "preset", cJSON_CreateString("ultrafast"));
+		cJSON *ax = cJSON_DetachItemFromArray(cJSON_GetObjectItem(job_x, "audio"), 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(ax, "language", cJSON_CreateString("jpn"));
+		cJSON_ReplaceItemInObjectCaseSensitive(ax, "title", cJSON_CreateString("BGM テスト"));
+		cJSON_AddStringToObject(ax, "input", m4a);
+		cJSON_AddItemToArray(cJSON_GetObjectItem(job_av, "audio"), ax);
+		cJSON *trim = cJSON_AddObjectToObject(job_av, "trim");
+		cJSON_AddStringToObject(trim, "start", "1");
+		cJSON_AddStringToObject(trim, "duration", "3");
+		char *av_job = cJSON_Print(job_av);
+
+		CHECK(encode_now(ctx, av_job, err, sizeof(err)) == IFME_TASK_DONE);
+		if (err[0])
+			printf("  error: %s\n", err);
+		m = ifme_probe(ctx, av_out, NULL, err, sizeof(err));
+		CHECK(m && m->video_count == 1 && m->audio_count == 1);
+		if (m && m->audio_count == 1) {
+			const ifme_stream_audio *as = &m->audio[0];
+			CHECK(strcmp(as->codec, "opus") == 0);
+			CHECK(as->sample_rate == 48000 && as->channels == 2);
+			CHECK(strcmp(as->language, "jpn") == 0);
+			CHECK(strcmp(as->title, "BGM テスト") == 0);
+			CHECK(m->duration > 2.9 && m->duration < 3.2);
+			printf("a/v:      %s + %s %d Hz %d ch [%s] \"%s\" %.3f s\n", m->video[0].codec, as->codec,
+			       as->sample_rate, as->channels, as->language, as->title, m->duration);
+		}
+		ifme_media_free(m);
+
+		/* "copy": true into WebM: AAC is refused, so it is encoded to Opus. */
+		remove(webm_out);
+		char *jw = ifme_job_new(ctx, m4a, webm_out, "none", NULL, err, sizeof(err));
+		cJSON *job_w = jw ? cJSON_Parse(jw) : NULL;
+		cJSON *aw = cJSON_GetArrayItem(cJSON_GetObjectItem(job_w, "audio"), 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(aw, "copy", cJSON_CreateTrue());
+		char *webm_job = cJSON_Print(job_w);
+		CHECK(encode_now(ctx, webm_job, err, sizeof(err)) == IFME_TASK_DONE);
+		m = ifme_probe(ctx, webm_out, NULL, err, sizeof(err));
+		CHECK(m && m->audio_count == 1 && strcmp(m->audio[0].codec, "opus") == 0);
+		printf("fallback: aac -> %s in .webm\n", m && m->audio_count ? m->audio[0].codec : "?");
+		ifme_media_free(m);
+
+		/* Bad audio mode. */
+		cJSON_ReplaceItemInObjectCaseSensitive(aw, "mode", cJSON_CreateNumber(7));
+		bad_audio = cJSON_Print(job_w);
+		CHECK(encode_now(ctx, bad_audio, err, sizeof(err)) == IFME_TASK_ERROR);
+		printf("bad audio:     %s\n", err);
+		CHECK(strstr(err, "audio 1") != NULL);
+
+		cJSON_free(av_job);
+		cJSON_free(webm_job);
+		cJSON_Delete(job_av);
+		cJSON_Delete(job_x);
+		cJSON_Delete(job_w);
+		ifme_free(jv);
+		ifme_free(jx);
+		ifme_free(jw);
+		remove(av_out);
+		remove(webm_out);
+	}
+
+	/* ---- 5. bad jobs -------------------------------------------------------------- */
 	char *b1 = edit_job(job, "video", "plugin", "no-such-encoder", 0);
 	CHECK(encode_now(ctx, b1, err, sizeof(err)) == IFME_TASK_ERROR);
 	printf("bad plugin:    %s\n", err);
@@ -231,7 +336,8 @@ int main(int argc, char **argv)
 	CHECK(encode_now(ctx, "{ not json", err, sizeof(err)) == IFME_TASK_ERROR);
 
 	remove(out);
-	cJSON_free(b1); cJSON_free(b2); cJSON_free(b3); cJSON_free(b4);
+	cJSON_free(b1); cJSON_free(b2); cJSON_free(b3); cJSON_free(b4); cJSON_free(bad_audio);
+	free(m4a); free(av_out); free(webm_out);
 	cJSON_free(s1); cJSON_free(s2); cJSON_free(slow);
 	cJSON_free(j2); cJSON_free(j3); cJSON_free(j4); cJSON_free(j5); cJSON_free(short_job);
 	ifme_free(job);

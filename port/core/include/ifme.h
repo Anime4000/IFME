@@ -209,6 +209,8 @@ typedef struct ifme_progress {
 	double fps;                  /* -1 unknown                                   */
 	double kbps;                 /* -1 unknown                                   */
 	long long eta_sec;           /* -1 until enough samples / total unknown      */
+	double time_sec;             /* media time done (FFmpeg "time="), -1 unknown */
+	double total_sec;            /* media time to do, 0 unknown                  */
 } ifme_progress;
 
 typedef struct ifme_task ifme_task;
@@ -270,25 +272,47 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
                      char *err, size_t err_len);
 
 /* A job (JSON) for `input` with every setting filled in from the source
- * (ffprobe) and the plugin's defaults - what the GUI would show. Edit it, then
- * pass it to ifme_encode(). Each video entry also carries a read-only "_help"
- * object (presets, tunes, modes with ranges). Caller frees; NULL on error.
+ * (ffprobe) and the plugins' defaults - what the GUI would show. Edit it, then
+ * pass it to ifme_encode(). Each entry also carries a read-only "_help"
+ * object (presets, modes with ranges, ...). Caller frees; NULL on error.
+ *
+ * output: NULL for "<input name>.ifme.<container>"; otherwise its extension
+ * is the container (and decides the default audio plugin).
+ *
+ * video_plugin / audio_plugin: a GUID or a unique part of a plugin name,
+ * "copy" (keep the streams as they are) or "none" (leave them out).
+ * video_plugin NULL is "none". audio_plugin NULL picks a plugin that fits the
+ * container: FFmpeg Opus (MKV, WebM), FFmpeg AAC (MP4), else the first
+ * usable one listing it. Without an output, the container is the video
+ * plugin's first format (the audio plugin's for audio-only jobs, e.g. Opus).
+ * Every audio stream of the input gets an entry.
  *
  *   { "input": "...", "output": "...", "temp_dir": "", "keep_temp": false,
  *     "trim": { "start": "00:01:00", "duration": "00:00:30" },   (optional)
- *     "video": [ { "stream": 0, "plugin": "<guid>", "preset": "medium",
- *                  "tune": "", "mode": 0, "value": 25.5, "passes": 1,
- *                  "encoder_args": "", "width": 1920, "height": 1080,
- *                  "fps": "24000/1001", "bit_depth": 10, "chroma": 420,
- *                  "ffmpeg_args": "", "filter": "",
- *                  "deinterlace": { "mode": 0, "field": 1 } } ] }   (optional) */
-char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *video_plugin,
+ *     "video": [ { "stream": 0, "language": "und", "plugin": "<guid>",
+ *                  "preset": "medium", "tune": "", "mode": 0, "value": 25.5,
+ *                  "passes": 1, "encoder_args": "", "width": 1920,
+ *                  "height": 1080, "fps": "24000/1001", "bit_depth": 10,
+ *                  "chroma": 420, "ffmpeg_args": "", "filter": "",
+ *                  "deinterlace": { "mode": 0, "field": 1 } } ],  (optional)
+ *     "audio": [ { "stream": 1, "language": "jpn", "title": "",
+ *                  "plugin": "<guid>", "mode": 0, "quality": "128",
+ *                  "sample_rate": 48000, "channels": 0, "copy": false,
+ *                  "encoder_args": "", "ffmpeg_args": "", "filter": "" } ] }
+ *
+ * Any entry may have "enable": false. Audio "sample_rate"/"channels" 0 keep
+ * the source; "copy": true tries the stream as it is first and encodes only
+ * when the output container refuses it. An audio entry may add
+ * "input": "other file" to take its stream from there (a separate dub). */
+char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
+                   const char *video_plugin, const char *audio_plugin,
                    char *err, size_t err_len);
 
 /* Run a job and block until it ends. Progress, output lines and stages are
  * reported through cb; pause/resume/stop through `task` as with
- * ifme_task_exec(). Milestone 4: encodes the video tracks and writes them to
- * "output" (container chosen by its extension); audio/subtitles come later. */
+ * ifme_task_exec(). Encodes the video and audio tracks, then writes them to
+ * "output" (container chosen by its extension) with language/title tags.
+ * Subtitles, attachments and metadata come in a later milestone. */
 ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_json,
                              const ifme_task_callbacks *cb, char *err, size_t err_len);
 

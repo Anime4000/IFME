@@ -530,7 +530,15 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
 			return (int)i;
 	}
 
-	/* Then a unique part of the name. */
+	/* Then the whole name ("FFmpeg AAC" is also part of other names)... */
+	for (size_t i = 0; i < ctx->plugin_count; i++) {
+		const ifme_plugin *p = ctx->plugins[i];
+		if (p->info.kind == kind && p->info.status == IFME_PLUGIN_OK &&
+		    ifme_strcasecmp(p->name, query) == 0)
+			return (int)i;
+	}
+
+	/* ...then a unique part of the name. */
 	int found = -1, matches = 0;
 	size_t used = 0;
 	for (size_t i = 0; i < ctx->plugin_count; i++) {
@@ -750,6 +758,24 @@ static size_t build_video_test(const cJSON *section, const char *encoder, const 
 	return n;
 }
 
+/* Quality: "{Args} {QualityPrefix}{quality}{QualityPostfix}".
+ *   "Args": "-b:a"  -> flag and value        (most encoders)
+ *   "Args": ""      -> bare positional value (exhale preset "9")
+ *   "Args": null, or a disabled word like "none" -> no quality at all
+ *                     (WAV/FLAC: a stray "0" would become an output file) */
+void ifme_audio_quality_args(ifme_argv *out, const cJSON *mode, const char *quality)
+{
+	const cJSON *mode_args = jget(mode, "Args");
+	if (!cJSON_IsString(mode_args) ||
+	    (!blank(mode_args->valuestring) && ifme_is_disabled(mode_args->valuestring)))
+		return;
+
+	const char *pre = jstr(mode, "QualityPrefix"), *post = jstr(mode, "QualityPostfix");
+	ifme_argv_split(out, mode_args->valuestring);
+	if (quality && *quality)
+		ifme_argv_pushf(out, "%s%s%s", pre ? pre : "", quality, post ? post : "");
+}
+
 /* Build an audio test command the way a real encode does (MediaEncoding.cs),
  * using Mode[0] and its default quality. The old C# TestAudio() differed: it
  * dropped the quality value when the mode's Args was blank (exhale then got no
@@ -761,23 +787,10 @@ static size_t build_audio_test(const cJSON *section, const char *encoder, const 
 	const cJSON *args = jget(section, "Args");
 	const cJSON *mode = jitem(section, "Mode", 0);
 
-	/* Quality: "{Args} {QualityPrefix}{Default}{QualityPostfix}".
-	 *   "Args": "-b:a"  -> flag and value        (most encoders)
-	 *   "Args": ""      -> bare positional value (exhale preset "9")
-	 *   "Args": null, or a disabled word like "none" -> no quality at all
-	 *                     (WAV/FLAC: a stray "0" would become an output file) */
 	ifme_argv quality = { 0 };
-	const cJSON *mode_args = jget(mode, "Args");
-	if (cJSON_IsString(mode_args) &&
-	    (blank(mode_args->valuestring) || !ifme_is_disabled(mode_args->valuestring))) {
-		const char *pre = jstr(mode, "QualityPrefix"), *post = jstr(mode, "QualityPostfix");
-		char *def = jscalar(mode, "Default");
-
-		ifme_argv_split(&quality, mode_args->valuestring);
-		if (def && *def)
-			ifme_argv_pushf(&quality, "%s%s%s", pre ? pre : "", def, post ? post : "");
-		free(def);
-	}
+	char *def = jscalar(mode, "Default");
+	ifme_audio_quality_args(&quality, mode, def);
+	free(def);
 
 	/* Missing keys fall back to the C# defaults "-ar" / "-ac". */
 	const cJSON *hz_key = jget(section, "SampleRateArgs"), *ch_key = jget(section, "ChannelArgs");
