@@ -29,57 +29,81 @@ internal partial class API
 	[DllImport("kernel32.dll")]
 	private static extern bool CloseHandle(IntPtr hHandle);
 
-	internal class WindowsProcess
+	internal static class WindowsProcess
 	{
-		internal int[] ListParentChild(int value)
+		/// <summary>
+		/// Reads the whole process table in a single WMI query, including creation time so
+		/// stale parent links (PID reuse) can be detected.
+		/// </summary>
+		internal static List<ProcessEx.ProcessEntry> Snapshot()
 		{
-			var plist = new List<int>();
-			var query = $"Select * From Win32_Process Where ParentProcessId = {value}";
-			ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-			ManagementObjectCollection processList = searcher.Get();
+			var list = new List<ProcessEx.ProcessEntry>();
 
-			foreach (ManagementObject item in processList)
+			using (var searcher = new ManagementObjectSearcher("SELECT ProcessId, ParentProcessId, CreationDate FROM Win32_Process"))
+			using (var processList = searcher.Get())
 			{
-				plist.Add(int.Parse(item["ProcessId"].ToString()));
-			}
-
-			return plist.ToArray();
-		}
-
-		internal void PauseParentChild(int value)
-		{
-			foreach (var pid in ListParentChild(value))
-			{
-				var id = Process.GetProcessById(pid);
-
-				foreach (ProcessThread t in id.Threads)
+				foreach (ManagementObject item in processList)
 				{
-					IntPtr th;
-					th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-					if ((th != IntPtr.Zero))
+					using (item)
 					{
-						SuspendThread(th);
-						CloseHandle(th);
+						long start = 0;
+
+						try
+						{
+							if (item["CreationDate"] is string created && created.Length > 0)
+								start = ManagementDateTimeConverter.ToDateTime(created).ToUniversalTime().Ticks;
+						}
+						catch
+						{
+							// Leave unknown
+						}
+
+						list.Add(new ProcessEx.ProcessEntry
+						{
+							Id = Convert.ToInt32(item["ProcessId"]),
+							ParentId = Convert.ToInt32(item["ParentProcessId"]),
+							StartTime = start
+						});
 					}
 				}
 			}
+
+			return list;
 		}
 
-		internal void ResumeParentChild(int value)
+		internal static void Suspend(int[] pids)
 		{
-			foreach (var pid in ListParentChild(value))
-			{
-				var id = Process.GetProcessById(pid);
+			ForEachThread(pids, th => SuspendThread(th));
+		}
 
-				foreach (ProcessThread t in id.Threads)
+		internal static void Resume(int[] pids)
+		{
+			ForEachThread(pids, th => ResumeThread(th));
+		}
+
+		private static void ForEachThread(int[] pids, Action<IntPtr> action)
+		{
+			foreach (var pid in pids)
+			{
+				try
 				{
-					IntPtr th;
-					th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
-					if ((th != IntPtr.Zero))
+					using (var proc = Process.GetProcessById(pid))
 					{
-						ResumeThread(th);
-						CloseHandle(th);
+						foreach (ProcessThread t in proc.Threads)
+						{
+							IntPtr th = OpenThread(ThreadAccess.SUSPEND_RESUME, false, Convert.ToUInt32(t.Id));
+
+							if (th != IntPtr.Zero)
+							{
+								action(th);
+								CloseHandle(th);
+							}
+						}
 					}
+				}
+				catch
+				{
+					// Process exited between the snapshot and now.
 				}
 			}
 		}

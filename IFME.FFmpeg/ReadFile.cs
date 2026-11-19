@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using IFME.OSManager;
 
 namespace IFME.FFmpeg
 {
     internal class ReadFile
     {
-        private string _output = string.Empty;
-
         internal string Media(string filePath, string frameRate = "")
         {
             var fps = string.Empty;
@@ -19,35 +13,32 @@ namespace IFME.FFmpeg
             if (!string.IsNullOrEmpty(frameRate))
                 fps = $"-framerate {frameRate}";
 
-            var args = $"{MediaInfo.FFmpegProbe} -v quiet -print_format json -show_format -show_streams {fps} \"{filePath}\"";
+            // Quote the probe path: it is absolute (under the install folder) when ffprobe is not
+            // in PATH, and install folders such as "Program Files" contain spaces.
+            var args = $"\"{MediaInfo.FFmpegProbe}\" -v quiet -print_format json -show_format -show_streams {fps} \"{filePath}\"";
 
-            Environment.SetEnvironmentVariable("NEMU", args, EnvironmentVariableTarget.Process);
+            // Previously the command went through a process-wide "NEMU" variable, which two
+            // files probed in parallel could overwrite before the shell read it.
+            var info = OS.ShellStartInfo(args);
+            info.RedirectStandardOutput = true;
+            info.StandardOutputEncoding = Encoding.UTF8; // make Unicode aware
 
-            var p = new Process()
+            var output = new StringBuilder();
+
+            using (var p = new Process { StartInfo = info })
             {
-                StartInfo = new ProcessStartInfo(OS.Console, OS.ConsoleEnv("NEMU"))
+                p.OutputDataReceived += (sender, e) =>
                 {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    StandardOutputEncoding = Encoding.UTF8 // make Unicode aware
-                }
-            };
+                    if (e.Data != null)
+                        output.Append(e.Data);
+                };
 
-            p.OutputDataReceived += new DataReceivedEventHandler(ConsoleStandardHandler);
+                p.Start();
+                p.BeginOutputReadLine();
+                p.WaitForExit();
+            }
 
-            p.Start();
-
-            p.BeginOutputReadLine();
-
-            p.WaitForExit();
-
-            return _output;
-        }
-
-        private void ConsoleStandardHandler(object sender, DataReceivedEventArgs e)
-        {
-            _output += e.Data;
+            return output.ToString();
         }
     }
 }
