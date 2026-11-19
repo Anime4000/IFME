@@ -19,7 +19,8 @@ typedef struct track {
 	char kind;           /* 'v' video, 'a' audio, 's' subtitle, 'c' cover art */
 	char *lang;
 	const char *title;   /* from the job, may be NULL */
-	bool is_default;     /* subtitles: the "default" flag */
+	bool is_default;     /* audio, subtitles: the "default" flag */
+	bool forced;         /* subtitles: the "forced" flag */
 } track;
 
 /* A file in <temp>/attachment, attached to Matroska outputs. */

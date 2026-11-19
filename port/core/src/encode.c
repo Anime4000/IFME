@@ -1138,15 +1138,25 @@ static ifme_task_result mux(enc *E, const track *tracks, size_t count)
 	static const char *const iso[] = { "mp4", "m4v", "m4a", "mov", "3gp", "3g2", NULL };
 	bool iso_bmff = enc_ext_is(E->output, iso);
 
-	/* The first video and the first audio track are the default ones. Set
-	 * explicitly: once any -disposition is given (subtitles, cover art),
-	 * FFmpeg stops choosing defaults itself. */
+	/* Default tracks: the first video; the audio tracks the job flags (as the
+	 * source did), else the first. Set explicitly: once any -disposition is
+	 * given (subtitles, cover art), FFmpeg stops choosing defaults itself. */
+	bool flagged_a = false;
+	for (size_t i = 0; i < count; i++)
+		flagged_a |= tracks[i].kind == 'a' && tracks[i].is_default;
 	bool seen_v = false, seen_a = false;
 	for (size_t i = 0; i < count; i++) {
-		bool *seen = tracks[i].kind == 'v' ? &seen_v : &seen_a;
+		bool on;
+		if (tracks[i].kind == 'v')
+			on = !seen_v;
+		else
+			on = flagged_a ? tracks[i].is_default : !seen_a;
+		if (tracks[i].kind == 'v')
+			seen_v = true;
+		else
+			seen_a = true;
 		ifme_argv_pushf(&a, "-disposition:%zu", i);
-		ifme_argv_push(&a, *seen ? "0" : "default");
-		*seen = true;
+		ifme_argv_push(&a, on ? "default" : "0");
 	}
 
 	for (size_t i = 0; i < count; i++) {
@@ -1324,6 +1334,7 @@ ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_jso
 			goto out;
 		t->kind = 'a';
 		t->title = ifme_jstr(it, "title");
+		t->is_default = ifme_jbool(it, "default", false);
 		track_count++;
 		ai++;
 	}
@@ -1535,6 +1546,7 @@ static void add_audio_entry(cJSON *audios, ifme_ctx *ctx, int pi, const ifme_str
 	cJSON_AddNumberToObject(a, "stream", src->id);
 	cJSON_AddStringToObject(a, "language", src->language && *src->language ? src->language : "und");
 	cJSON_AddStringToObject(a, "title", src->title ? src->title : "");
+	cJSON_AddBoolToObject(a, "default", src->is_default);
 	if (pi < 0) {
 		cJSON_AddStringToObject(a, "plugin", "copy");
 		return;
@@ -1666,8 +1678,15 @@ char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *output,
 
 	if (has_video)
 		add_video_entry(videos, ctx, vpi, source_video(media, first_video_stream(media)));
-	for (size_t i = 0; has_audio && i < media->audio_count; i++)
+	bool any_default = false;
+	for (size_t i = 0; has_audio && i < media->audio_count; i++) {
 		add_audio_entry(audios, ctx, api, &media->audio[i]);
+		any_default |= media->audio[i].is_default;
+	}
+	if (!any_default && cJSON_GetArraySize(audios) > 0) {   /* none flagged: the first, as before */
+		cJSON *first = cJSON_GetArrayItem(audios, 0);
+		cJSON_ReplaceItemInObjectCaseSensitive(first, "default", cJSON_CreateTrue());
+	}
 
 	if (cJSON_GetArraySize(videos) + cJSON_GetArraySize(audios) == 0) {
 		if (err && err_len)

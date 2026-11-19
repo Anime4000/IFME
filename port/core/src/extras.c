@@ -329,6 +329,7 @@ static ifme_task_result do_subtitles(enc *E)
 		t->lang = ifme_strdup(lang);
 		t->title = ifme_jstr(it, "title");
 		t->is_default = ifme_jbool(it, "default", false);
+		t->forced = ifme_jbool(it, "forced", false);
 	}
 	return IFME_TASK_DONE;
 }
@@ -719,7 +720,8 @@ void enc_mux_extras(enc *E, ifme_argv *in, ifme_argv *opt, size_t first_input, s
 
 		any_sub = true;
 		ifme_argv_pushf(opt, "-disposition:%zu", ns);
-		ifme_argv_push(opt, t->is_default ? "default" : "0");
+		ifme_argv_push(opt, t->is_default && t->forced ? "default+forced"
+		                    : t->is_default ? "default" : t->forced ? "forced" : "0");
 		ifme_argv_pushf(opt, "-metadata:s:%zu", ns);
 		ifme_argv_pushf(opt, "language=%s", t->lang ? t->lang : "und");
 		if (t->title && *t->title) {
@@ -780,6 +782,11 @@ void enc_job_extras(cJSON *job, const ifme_media *m, const char *container,
 
 	/* As C#: subtitles and fonts only go with video. */
 	if (has_video && m->subtitle_count) {
+		/* The source's default subtitle (e.g. English of German + English);
+		 * when it flags none, the first one, as C#. */
+		bool flagged = false;
+		for (size_t i = 0; i < m->subtitle_count; i++)
+			flagged |= m->subtitle[i].is_default;
 		cJSON *subs = cJSON_AddArrayToObject(job, "subtitles");
 		for (size_t i = 0; i < m->subtitle_count; i++) {
 			const ifme_stream_subtitle *s = &m->subtitle[i];
@@ -787,7 +794,8 @@ void enc_job_extras(cJSON *job, const ifme_media *m, const char *container,
 			cJSON_AddNumberToObject(e, "stream", s->id);
 			cJSON_AddStringToObject(e, "language", s->language && *s->language ? s->language : "und");
 			cJSON_AddStringToObject(e, "title", s->title ? s->title : "");
-			cJSON_AddBoolToObject(e, "default", i == 0);   /* C#: the first one */
+			cJSON_AddBoolToObject(e, "default", flagged ? s->is_default : i == 0);
+			cJSON_AddBoolToObject(e, "forced", s->forced);
 			cJSON *help = cJSON_AddObjectToObject(e, "_help");
 			cJSON_AddStringToObject(help, "format", s->codec ? s->codec : "?");
 			cJSON_AddItemToArray(subs, e);

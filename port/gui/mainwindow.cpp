@@ -103,6 +103,8 @@ QString mediaText(const QJsonObject &m)
 		row(QStringLiteral("Bit depth"), QStringLiteral("%1 bits").arg(n(a, "bit_depth")));
 		row(QStringLiteral("Language"), s(a, "language"));
 		row(QStringLiteral("Title"), s(a, "title"));
+		row(QStringLiteral("Default"), a.value(QStringLiteral("default")).toBool() ? QStringLiteral("Yes") : QStringLiteral("No"));
+		row(QStringLiteral("Forced"), a.value(QStringLiteral("forced")).toBool() ? QStringLiteral("Yes") : QStringLiteral("No"));
 	}
 	const QJsonArray subs = m.value(QStringLiteral("subtitle")).toArray();
 	for (int i = 0; i < subs.size(); i++) {
@@ -112,6 +114,8 @@ QString mediaText(const QJsonObject &m)
 		row(QStringLiteral("Format"), s(t, "codec"));
 		row(QStringLiteral("Language"), s(t, "language"));
 		row(QStringLiteral("Title"), s(t, "title"));
+		row(QStringLiteral("Default"), t.value(QStringLiteral("default")).toBool() ? QStringLiteral("Yes") : QStringLiteral("No"));
+		row(QStringLiteral("Forced"), t.value(QStringLiteral("forced")).toBool() ? QStringLiteral("Yes") : QStringLiteral("No"));
 	}
 	const QJsonArray att = m.value(QStringLiteral("attachment")).toArray();
 	for (int i = 0; i < att.size(); i++) {

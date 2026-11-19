@@ -11,6 +11,8 @@
 		public string Language { get; internal set; }
 		public string Codec { get; internal set; }
 		public string Title { get; internal set; }
+		public bool Default { get; internal set; } = false;   // disposition: the track players pick first
+		public bool Forced { get; internal set; } = false;    // disposition: shown even with subtitles off
 	}
 
 	public partial class StreamVideo : StreamCommon

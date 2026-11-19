@@ -109,6 +109,12 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 	/* --add-audio: the other file's audio tracks, with the same defaults
 	 * (same output container, so the same audio plugin), then "input". */
 	cJSON *audios = cJSON_GetObjectItem(job, "audio");
+	/* An added file's own "default" flag (any single-track file has one) only
+	 * counts when no track before it is the default already. */
+	bool have_default = false;
+	const cJSON *prev;
+	cJSON_ArrayForEach(prev, audios)
+		have_default |= cJSON_IsTrue(cJSON_GetObjectItem(prev, "default"));
 	for (int i = 0; i < o->add_audio_count; i++) {
 		const cJSON *out = cJSON_GetObjectItem(job, "output");
 		char *extra = ifme_job_new(ctx, o->add_audio[i], cJSON_IsString(out) ? out->valuestring : NULL,
@@ -122,8 +128,13 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 		}
 		const cJSON *src_in = cJSON_GetObjectItem(ej, "input");
 		cJSON *e;
-		cJSON_ArrayForEach(e, cJSON_GetObjectItem(ej, "audio"))
+		cJSON_ArrayForEach(e, cJSON_GetObjectItem(ej, "audio")) {
 			set_string(e, "input", cJSON_IsString(src_in) ? src_in->valuestring : o->add_audio[i]);
+			const bool flagged = cJSON_IsTrue(cJSON_GetObjectItem(e, "default"));
+			cJSON_DeleteItemFromObjectCaseSensitive(e, "default");
+			cJSON_AddBoolToObject(e, "default", flagged && !have_default);
+			have_default |= flagged;
+		}
 
 		cJSON *list = cJSON_DetachItemFromObjectCaseSensitive(ej, "audio");
 		while (list && list->child)

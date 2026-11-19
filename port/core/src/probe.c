@@ -276,6 +276,8 @@ static void parse(media_impl *m, const char *path)
 			a->channels = jint(stream, "channels", 2);
 			a->bit_depth = audio_bits(stream);
 			a->duration = pub->duration;
+			a->is_default = jint(jget(stream, "disposition"), "default", 0) != 0;
+			a->forced = jint(jget(stream, "disposition"), "forced", 0) != 0;
 		} else if (!ifme_strcasecmp(type, "subtitle")) {
 			if (!grow((void **)&m->subtitle, pub->subtitle_count, sizeof(*m->subtitle)))
 				continue;
@@ -285,6 +287,8 @@ static void parse(media_impl *m, const char *path)
 			s->language = keep(m, lang);
 			s->codec = keep(m, subtitle_ext(codec));
 			s->title = keep(m, title);
+			s->is_default = jint(jget(stream, "disposition"), "default", 0) != 0;
+			s->forced = jint(jget(stream, "disposition"), "forced", 0) != 0;
 		} else if (!ifme_strcasecmp(type, "attachment")) {
 			if (!grow((void **)&m->attachment, pub->attachment_count, sizeof(*m->attachment)))
 				continue;
@@ -453,6 +457,8 @@ char *ifme_media_json(const ifme_media *media, bool include_raw)
 		cJSON_AddNumberToObject(s, "channels", a->channels);
 		cJSON_AddNumberToObject(s, "bit_depth", a->bit_depth);
 		cJSON_AddNumberToObject(s, "duration", a->duration);
+		cJSON_AddBoolToObject(s, "default", a->is_default);
+		cJSON_AddBoolToObject(s, "forced", a->forced);
 		cJSON_AddItemToArray(arr, s);
 	}
 
@@ -464,6 +470,8 @@ char *ifme_media_json(const ifme_media *media, bool include_raw)
 		cJSON_AddStringToObject(s, "language", t->language);
 		cJSON_AddStringToObject(s, "codec", t->codec);
 		cJSON_AddStringToObject(s, "title", t->title);
+		cJSON_AddBoolToObject(s, "default", t->is_default);
+		cJSON_AddBoolToObject(s, "forced", t->forced);
 		cJSON_AddItemToArray(arr, s);
 	}
 

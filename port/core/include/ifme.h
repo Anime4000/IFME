@@ -161,6 +161,8 @@ typedef struct ifme_stream_audio {
 	int channels;
 	int bit_depth;               /* 8, 16 or 24 (float/32-bit sources -> 24)     */
 	double duration;
+	bool is_default;             /* the container's "default" flag (disposition)  */
+	bool forced;                 /* "forced" flag                                */
 } ifme_stream_audio;
 
 typedef struct ifme_stream_subtitle {
@@ -168,6 +170,8 @@ typedef struct ifme_stream_subtitle {
 	const char *language;
 	const char *codec;           /* file extension style: "srt", "ass", "sup"... */
 	const char *title;
+	bool is_default;             /* the container's "default" flag (disposition)  */
+	bool forced;                 /* "forced" flag (e.g. signs, foreign parts)    */
 } ifme_stream_subtitle;
 
 typedef struct ifme_stream_attachment {
@@ -304,19 +308,23 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
  *                  "copy": false } ],  (optional)
  *     "audio": [ { "stream": 1, "language": "jpn", "title": "",
  *                  "plugin": "<guid>", "mode": 0, "quality": "128",
- *                  "sample_rate": 48000, "channels": 0, "copy": false,
+ *                  "sample_rate": 48000, "channels": 0, "copy": false, "default": true,
  *                  "encoder_args": "", "ffmpeg_args": "", "filter": "" } ] }
  *
  * Any entry may have "enable": false. Audio "sample_rate"/"channels" 0 keep
  * the source; "copy": true tries the stream as it is first and encodes only
- * when the output container refuses it; video "copy": true remuxes the
+ * when the output container refuses it. "default" is the track players pick
+ * first: new jobs take the source's flags (the first track when it flags
+ * none); the output gets them for audio and subtitles, and "forced" for
+ * subtitles; video "copy": true remuxes the
  * stream into the output's container first and encodes only if that fails
  * (not when the job is trimmed). An audio entry may add
  * "input": "other file" to take its stream from there (a separate dub).
  *
  * Everything else the output keeps (only keys that apply are written):
  *     "subtitles":   [ { "stream": 2, "language": "eng", "title": "",
- *                        "default": true, "input": "(optional) other.srt" } ],
+ *                        "default": true, "forced": false,
+ *                        "input": "(optional) other.srt" } ],
  *     "burn_subtitle": false,      burn the first subtitle into the video
  *     "attachments": [ { "stream": 4, "filename": "font.ttf",
  *                        "mime_type": "...", "input": "(optional)" },

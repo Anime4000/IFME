@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace IFME
@@ -41,6 +43,24 @@ namespace IFME
 
         private static bool IsExitError(int ExitCode) => ExitCode <= -1 || ExitCode == 1;
         private static string IsCompatible(FileContainer value) => value.GetEnumMemberValue().ToLower();
+
+        // The queue track a temp file was made from: audio{i:D4}_lang.ext, or
+        // subtitle0000_{i:D4}_lang.ext (subtitle{i:D4}_{e:D4}_... when taken from
+        // another video, which has no flags of its own here).
+        private static T TrackOf<T>(List<T> tracks, string file, string kind) where T : MediaQueueCommon
+        {
+            var m = Regex.Match(Path.GetFileName(file), $@"^{kind}(\d{{4}})_(?:(\d{{4}})_)?");
+            if (!m.Success)
+                return null;
+            int index = int.Parse(m.Groups[1].Value);
+            if (kind == "subtitle")
+            {
+                if (index != 0 || !m.Groups[2].Success)
+                    return null;
+                index = int.Parse(m.Groups[2].Value);
+            }
+            return index >= 0 && index < tracks.Count ? tracks[index] : null;
+        }
 
         /// <summary>
         /// Waits until a file can be opened exclusively, i.e. the encoder that produced it
@@ -665,18 +685,28 @@ namespace IFME
             // Every produced stream must be fully flushed and unlocked before muxing.
             WaitForFilesReady(tempDir, "*");
 
+            // Default tracks are set explicitly: once any -disposition is given
+            // (subtitles, cover art), FFmpeg stops choosing defaults itself.
+            // Video: the first. Audio and subtitles: the source's default (its
+            // "default" flag), else the first, as before.
+            var firstVideo = true;
             foreach (var video in Directory.GetFiles(tempDir, "video*"))
             {
                 argVideo += $"-i \"{Path.GetFileName(video)}\" ";
-                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(video)}\" -metadata:s:{x} language={Language.FromFileNameCode(video)}  ";
+                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(video)}\" -metadata:s:{x} language={Language.FromFileNameCode(video)} -disposition:{x} {(firstVideo ? "default" : "0")} ";
                 map += $" -map {x}:0";
                 x++;
+                firstVideo = false;
             }
 
-            foreach (var audio in Directory.GetFiles(tempDir, "audio*"))
+            var audioFiles = Directory.GetFiles(tempDir, "audio*");
+            var audioFlagged = audioFiles.Any(f => TrackOf(queue.Audio, f, "audio")?.Default == true);
+            for (int a = 0; a < audioFiles.Length; a++)
             {
+                var audio = audioFiles[a];
+                var isDefault = audioFlagged ? TrackOf(queue.Audio, audio, "audio")?.Default == true : a == 0;
                 argAudio += $"-i \"{Path.GetFileName(audio)}\" ";
-                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(audio)}\" -metadata:s:{x} language={Language.FromFileNameCode(audio)} ";
+                metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(audio)}\" -metadata:s:{x} language={Language.FromFileNameCode(audio)} -disposition:{x} {(isDefault ? "default" : "0")} ";
                 map += $" -map {x}:0";
                 x++;
             }
@@ -686,10 +716,16 @@ namespace IFME
                 if (!queue.HardSub)
                 {
                     var d = 0;
-                    foreach (var subtitle in Directory.GetFiles(tempDir, "subtitle*"))
+                    var subtitleFiles = Directory.GetFiles(tempDir, "subtitle*");
+                    var subtitleFlagged = subtitleFiles.Any(f => TrackOf(queue.Subtitle, f, "subtitle")?.Default == true);
+                    foreach (var subtitle in subtitleFiles)
                     {
+                        var track = TrackOf(queue.Subtitle, subtitle, "subtitle");
+                        var isDefault = subtitleFlagged ? track?.Default == true : d == 0;
+                        var forced = track?.Forced == true;
+                        var disposition = isDefault && forced ? "default+forced" : isDefault ? "default" : forced ? "forced" : "0";
                         argSubtitle += $"-i \"{Path.GetFileName(subtitle)}\" ";
-                        metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} {(d == 0 ? $"-disposition:s:{d} default " : "")}";
+                        metadata += $"-metadata:s:{x} title=\"{Language.FromFileNameFull(subtitle)}\" -metadata:s:{x} language={Language.FromFileNameCode(subtitle)} -disposition:{x} {disposition} ";
                         map += $" -map {x}:0";
                         x++;
                         d++;

@@ -530,7 +530,7 @@ AudioTab::AudioTab(app::Core &core, QWidget *parent)
 	: SettingsTab(core, parent)
 {
 	auto *top = new QVBoxLayout(this);
-	m_tracks = makeTree({ tr("Id"), tr("Language"), tr("Title"), tr("Source"), tr("Encoder"), tr("File") }, this);
+	m_tracks = makeTree({ tr("Id"), tr("Language"), tr("Title"), tr("Default"), tr("Source"), tr("Encoder"), tr("File") }, this);
 	useLanguageColumn(m_tracks);
 	auto *row = new QHBoxLayout;
 	row->addWidget(m_tracks, 1);
@@ -623,6 +623,7 @@ QJsonObject AudioTab::entryFor(app::Core &core, const QJsonObject &s, const QStr
 	e[QStringLiteral("title")] = s.value(QStringLiteral("title")).toString();
 	if (!input.isEmpty())
 		e[QStringLiteral("input")] = input;
+	e[QStringLiteral("default")] = input.isEmpty() && s.value(QStringLiteral("default")).toBool();
 	e[QStringLiteral("_help")] = QJsonObject{ { QStringLiteral("source"), QStringLiteral("%1, %2 Hz, %3 channels")
 		.arg(s.value(QStringLiteral("codec")).toString()).arg(s.value(QStringLiteral("sample_rate")).toInt())
 		.arg(s.value(QStringLiteral("channels")).toInt()) } };
@@ -669,12 +670,14 @@ void AudioTab::reload()
 		const QString input = e.value(QStringLiteral("input")).toString();
 		auto *row = new QTreeWidgetItem(m_tracks, {
 			QString::number(e.value(QStringLiteral("stream")).toInt()), app::languageName(e.value(QStringLiteral("language")).toString(QStringLiteral("und"))),
-			e.value(QStringLiteral("title")).toString(),
+			e.value(QStringLiteral("title")).toString(), QString(),
 			jget(e.value(QStringLiteral("_help")).toObject(), QStringLiteral("source")).toString(),
 			plug == QLatin1String("copy") ? tr("Copy") : p ? p->name : tr("(unavailable: %1)").arg(plug),
 			input.isEmpty() ? tr("(this file)") : QFileInfo(input).fileName() });
 		row->setFlags(row->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
 		row->setCheckState(0, e.value(QStringLiteral("enable")).toBool(true) ? Qt::Checked : Qt::Unchecked);
+		row->setCheckState(3, e.value(QStringLiteral("default")).toBool() ? Qt::Checked : Qt::Unchecked);
+		row->setToolTip(3, tr("The track players pick first (the source's choice when it has one)"));
 		row->setData(0, Qt::UserRole, i);
 		row->setData(1, Qt::UserRole, e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 	}
@@ -853,6 +856,8 @@ void AudioTab::trackEdited(QTreeWidgetItem *row, int column)
 		e[QStringLiteral("language")] = row->data(1, Qt::UserRole).toString();
 	else if (column == 2)
 		e[QStringLiteral("title")] = row->text(2);
+	else if (column == 3)
+		e[QStringLiteral("default")] = row->checkState(3) == Qt::Checked;
 	audio[i] = e;
 	it->job[QStringLiteral("audio")] = audio;
 	emit changed();
@@ -872,7 +877,7 @@ SubtitleTab::SubtitleTab(app::Core &core, QWidget *parent)
 	m_notice = new QLabel(this);
 	m_notice->setWordWrap(true);
 	top->addWidget(m_notice);
-	m_tracks = makeTree({ tr("Id"), tr("Language"), tr("Title"), tr("Default"), tr("Format"), tr("File") }, this);
+	m_tracks = makeTree({ tr("Id"), tr("Language"), tr("Title"), tr("Default"), tr("Forced"), tr("Format"), tr("File") }, this);
 	useLanguageColumn(m_tracks);
 	auto *row = new QHBoxLayout;
 	row->addWidget(m_tracks, 1);
@@ -939,12 +944,15 @@ void SubtitleTab::reload()
 		const QString input = e.value(QStringLiteral("input")).toString();
 		auto *row = new QTreeWidgetItem(m_tracks, {
 			QString::number(e.value(QStringLiteral("stream")).toInt()), app::languageName(e.value(QStringLiteral("language")).toString(QStringLiteral("und"))),
-			e.value(QStringLiteral("title")).toString(), QString(),
+			e.value(QStringLiteral("title")).toString(), QString(), QString(),
 			jget(e.value(QStringLiteral("_help")).toObject(), QStringLiteral("format")).toString(),
 			input.isEmpty() ? tr("(this file)") : QFileInfo(input).fileName() });
 		row->setFlags(row->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
 		row->setCheckState(0, e.value(QStringLiteral("enable")).toBool(true) ? Qt::Checked : Qt::Unchecked);
 		row->setCheckState(3, e.value(QStringLiteral("default")).toBool() ? Qt::Checked : Qt::Unchecked);
+		row->setCheckState(4, e.value(QStringLiteral("forced")).toBool() ? Qt::Checked : Qt::Unchecked);
+		row->setToolTip(3, tr("The subtitle players show first (the source's choice when it has one)"));
+		row->setToolTip(4, tr("Shown even when subtitles are off (signs, foreign-language parts)"));
 		row->setData(0, Qt::UserRole, i);
 		row->setData(1, Qt::UserRole, e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 	}
@@ -969,6 +977,8 @@ void SubtitleTab::trackEdited(QTreeWidgetItem *row, int column)
 		e[QStringLiteral("title")] = row->text(2);
 	else if (column == 3)
 		e[QStringLiteral("default")] = row->checkState(3) == Qt::Checked;
+	else if (column == 4)
+		e[QStringLiteral("forced")] = row->checkState(4) == Qt::Checked;
 	subs[i] = e;
 	it->job[QStringLiteral("subtitles")] = subs;
 	emit changed();

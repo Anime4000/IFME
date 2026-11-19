@@ -12,6 +12,13 @@ namespace IFME.FFmpeg
 	{
 		private static StringComparison IgnoreCase { get { return StringComparison.InvariantCultureIgnoreCase; } }
 
+		// ffprobe's "disposition": { "default": 1, "forced": 0, ... } (0 when absent).
+		private static bool Disposition(dynamic stream, string key)
+		{
+			try { return (int)stream.disposition[key] != 0; }
+			catch (Exception) { return false; }
+		}
+
 		public string FilePath { get; internal set; } = string.Empty;
 		public ulong FileSize { get; internal set; } = 0;
 		public ulong BitRate { get; internal set; } = 0;
@@ -161,6 +168,8 @@ namespace IFME.FFmpeg
 							FrameCount = (int)(Duration * afps),
 							Duration = Duration,
 							Disposition_AttachedPic = dap,
+							Default = Disposition(stream, "default"),
+							Forced = Disposition(stream, "forced"),
 						});
 					}
 
@@ -209,6 +218,8 @@ namespace IFME.FFmpeg
 							BitDepth = bitdepth,
 							Channel = channel,
 							Duration = Duration,
+							Default = Disposition(stream, "default"),
+							Forced = Disposition(stream, "forced"),
 						});
 					}
 
@@ -237,7 +248,9 @@ namespace IFME.FFmpeg
 							Id = id,
 							Language = lang,
 							Codec = FormatId.Get(codec),
-							Title = title
+							Title = title,
+							Default = Disposition(stream, "default"),
+							Forced = Disposition(stream, "forced"),
 						});
 					}
 
@@ -308,7 +321,9 @@ namespace IFME.FFmpeg
 					$"Sampling rate               : {item.SampleRate} Hz{Environment.NewLine}" +
 					$"Bit Depth                   : {item.BitDepth} bits{Environment.NewLine}" +
 					$"Language                    : {item.Language}{Environment.NewLine}" +
-					$"Title                       : {item.Title}{Environment.NewLine}";
+					$"Title                       : {item.Title}{Environment.NewLine}" +
+					$"Default                     : {(item.Default ? "Yes" : "No")}{Environment.NewLine}" +
+					$"Forced                      : {(item.Forced ? "Yes" : "No")}{Environment.NewLine}";
 			}
 
 			var s = 0;
@@ -319,7 +334,9 @@ namespace IFME.FFmpeg
 					$"ID                          : {item.Id}{Environment.NewLine}" +
 					$"Format                      : {item.Codec}{Environment.NewLine}" +
 					$"Language                    : {item.Language}{Environment.NewLine}" +
-					$"Title                       : {item.Title}{Environment.NewLine}";
+					$"Title                       : {item.Title}{Environment.NewLine}" +
+					$"Default                     : {(item.Default ? "Yes" : "No")}{Environment.NewLine}" +
+					$"Forced                      : {(item.Forced ? "Yes" : "No")}{Environment.NewLine}";
 			}
 
 			var t = 0;
