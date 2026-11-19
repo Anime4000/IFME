@@ -1,6 +1,7 @@
 // widgets.h - small widgets: the main-window banner and a progress-bar cell.
 #pragma once
 
+#include <QAbstractItemView>
 #include <QComboBox>
 #include <QPixmap>
 #include <QStyledItemDelegate>
@@ -21,10 +22,16 @@ private:
 	QPixmap m_left, m_right;
 };
 
+// Whole-row selection that keeps its highlight when the list loses focus (as
+// a .NET ListView with HideSelection off), also after a theme change.
+void stickySelection(QAbstractItemView *view);
+
 // Language picker (C#: cboVideoLang etc.): full names shown, ISO 639-2 codes
 // as data. A code missing from the list is added so it is not lost.
 class LanguageCombo : public QComboBox
 {
+	Q_OBJECT
+
 public:
 	explicit LanguageCombo(QWidget *parent = nullptr);
 	void setCode(const QString &code);

@@ -182,6 +182,10 @@ and stop are safe from any thread.
     --audio "Nero" --audio-mode 1 --audio-quality 160 --sample-rate 48000 --channels 2
 ./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv --audio-copy
 
+# just change the container: remux video and audio as they are, encode only
+# what the new format refuses (C#'s Smart Stream Copy / fast remux)
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mp4 --video-copy --audio-copy
+
 # keep the video, re-encode only the audio; or audio only
 ./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv --video copy --audio opus
 ./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv --video none     # -> movie.ifme.opus
@@ -215,7 +219,7 @@ with language, title and default flag per stream and C#'s `encoding_tool` /
 Nero AAC and exhale (piped), AMR-NB (mono only) for audio, plus stream copies
 into MKV, MP4 and WebM; SRT/ASS subtitles, a font and a cover into MKV, MP4
 (`mov_text`), WebM (WebVTT); ASS and SRT burned into MP4 / TS; cover art
-into MP3, FLAC and M4A. Not yet ported: video fast remux, auto-crop.
+into MP3, FLAC and M4A. Not yet ported: auto-crop.
 
 Where things go: MKV takes every subtitle (pictures too) and attachment, with
 cover art as a `cover.jpg` attachment; MP4 and WebM take text subtitles;
@@ -234,7 +238,9 @@ Differences from C#:
 - Down-/up-mixing follows the chosen channel count; C# looked only at the
   source, so mono picked for a stereo source on an eSBR mode became stereo.
 - `--audio-copy` (C#'s "fast remux") also works on trimmed jobs, and copying
-  a video stream now honours the trim.
+  a video stream now honours the trim. `--video-copy` (the Video tab's fast
+  remux) is skipped on trimmed jobs, as C#: a copied stream can only be cut
+  at key frames, so those are encoded.
 - Track titles are written where MP4 players read them (`handler_name`).
 - Trimmed jobs get their chapters and text subtitles cut to the same part:
   events are shifted, clipped and dropped as needed (C# kept the chapters of
@@ -268,13 +274,19 @@ The same window as IFME today, on the finished core:
   that fail are disabled from then on (Preferences can turn the test off,
   the Plugins window turns plugins back on).
 - **Banner** on top (the right image fades over the left one), the toolbar
-  under it with **Donate** on the right, the queue (name, in ► out format,
+  under it, the queue (name, in ► out format,
   duration, size, status, progress bar), and the tabs **Media Info**,
   **Video**, **Audio**, **Subtitle**, **Attachment**, **Advanced** (trim,
   cover art, tags, chapters, MP4 flags) and **Logging**. Drop files or
   folders onto the window.
 - Languages are picked by name from `Language.json` in `jason.wad`, as C#
-  does (a built-in copy of `../IFME/Language.json` when there is no wad).
+  does (a built-in copy of `../IFME/Language.json` when there is no wad):
+  a Language box on the Video, Audio and Subtitle tabs, or double-click a
+  track's Language cell.
+- Lists select whole rows and keep the selection visible. Track changes
+  (language, encoder settings) go to the selected tracks, or all tracks
+  when none is selected, in every file selected in the queue; with several
+  files, selected tracks are matched by position.
 - Settings come from the plugin manifests (presets, tunes, rate-control modes
   with their ranges, bit depths, chroma; audio modes, qualities, sample rates,
   channels). Encoder-wide settings apply to every selected file; preset, mode

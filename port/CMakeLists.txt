@@ -186,4 +186,13 @@ if(IFME_BUILD_TESTS)
     target_link_libraries(test_encode PRIVATE ifmecore cjson Threads::Threads)
     add_test(NAME encode COMMAND test_encode "${IFME_TEST_ROOT}" "${CMAKE_CURRENT_BINARY_DIR}")
     set_tests_properties(encode PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 600)
+
+    # GUI track rules (Language boxes, batching, kept selections), off-screen.
+    if(IFME_BUILD_GUI)
+        add_executable(test_gui tests/test_gui.cpp
+            gui/app.cpp gui/widgets.cpp gui/widgets.h gui/settingstabs.cpp gui/settingstabs.h gui/resources.qrc)
+        target_include_directories(test_gui PRIVATE gui)
+        target_link_libraries(test_gui PRIVATE ifmecore Qt6::Widgets)
+        add_test(NAME gui COMMAND test_gui)
+    endif()
 endif()

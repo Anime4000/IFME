@@ -16,6 +16,7 @@
 #include <QVBoxLayout>
 
 #include "app.h"
+#include "widgets.h"
 
 // ---- Preferences --------------------------------------------------------------
 
@@ -91,6 +92,7 @@ PluginsDialog::PluginsDialog(app::Core &core, bool canTest, QWidget *parent)
 	m_list = new QTreeWidget(this);
 	m_list->setHeaderLabels({ tr("Name"), tr("Kind"), tr("Version"), tr("Status"), tr("Note") });
 	m_list->setRootIsDecorated(false);
+	stickySelection(m_list);
 	m_list->setSortingEnabled(false);
 	m_list->header()->setStretchLastSection(true);
 

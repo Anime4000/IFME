@@ -5,7 +5,6 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QCoreApplication>
-#include <QDesktopServices>
 #include <QDir>
 #include <QDirIterator>
 #include <QDragEnterEvent>
@@ -174,13 +173,6 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	act(QStyle::SP_FileDialogDetailedView, tr("&Plugins"), &MainWindow::showPlugins, false);
 	act(QStyle::SP_FileDialogInfoView, tr("Pr&eferences"), &MainWindow::showPreferences);
 	act(QStyle::SP_MessageBoxInformation, tr("A&bout"), &MainWindow::showAbout, false);
-	auto *spacer = new QWidget(tb);
-	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	tb->addWidget(spacer);
-	QAction *donate = tb->addAction(tr("&Donate"));   // text only, as frmMain
-	connect(donate, &QAction::triggered, this, [] {
-		QDesktopServices::openUrl(QUrl(QString::fromLatin1(app::DonateUrl)));
-	});
 
 	// ---- banner, queue, tabs ----
 	auto *central = new QWidget(this);
@@ -197,6 +189,7 @@ MainWindow::MainWindow(app::Core &core, QWidget *parent)
 	m_queue->setHeaderLabels({ tr("Name"), tr("Type"), tr("Duration"), tr("Size"), tr("Status"), tr("Progress") });
 	m_queue->setRootIsDecorated(false);
 	m_queue->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	stickySelection(m_queue);
 	m_queue->setItemDelegateForColumn(ColProgress, new ProgressDelegate(m_queue));
 	m_queue->header()->setSectionResizeMode(ColName, QHeaderView::Stretch);
 	m_queue->header()->setStretchLastSection(false);

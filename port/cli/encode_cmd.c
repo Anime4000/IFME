@@ -249,6 +249,10 @@ int cmd_encode(ifme_ctx *ctx, const encode_opts *o)
 		set_number(v, "bit_depth", o->bit_depth);
 	if (o->chroma > 0)
 		set_number(v, "chroma", o->chroma);
+	if (o->video_copy && v) {
+		cJSON_DeleteItemFromObjectCaseSensitive(v, "copy");
+		cJSON_AddBoolToObject(v, "copy", true);
+	}
 	if (o->size) {
 		int w = 0, h = 0;
 		if (sscanf(o->size, "%dx%d", &w, &h) != 2 || w <= 0 || h <= 0) {

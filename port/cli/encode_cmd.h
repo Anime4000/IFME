@@ -13,6 +13,7 @@ typedef struct encode_opts {
 	const char *audio_quality, *audio_args, *audio_filter;
 	int audio_mode, sample_rate, channels;  /* -1: not given */
 	bool audio_copy;            /* try the source audio as it is first */
+	bool video_copy;            /* try remuxing the source video first */
 	const char *add_audio[8];   /* --add-audio FILE: audio tracks from other files */
 	int add_audio_count;
 	const char *add_subtitle[8];     /* --add-subtitle FILE (.srt, .ass, or any media) */

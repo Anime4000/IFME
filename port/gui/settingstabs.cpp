@@ -97,6 +97,7 @@ QTreeWidget *makeTree(const QStringList &headers, QWidget *parent)
 	t->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed |
 	                   QAbstractItemView::SelectedClicked);
 	t->header()->setStretchLastSection(true);
+	stickySelection(t);
 	return t;
 }
 
@@ -129,6 +130,41 @@ void SettingsTab::each(const std::function<void(QueueItem &)> &fn)
 	emit changed();
 }
 
+QVector<int> SettingsTab::selectedRows(QTreeWidget *list)
+{
+	QVector<int> rows;
+	for (QTreeWidgetItem *r : list->selectedItems())
+		rows << list->indexOfTopLevelItem(r);
+	std::sort(rows.begin(), rows.end());
+	return rows;
+}
+
+void SettingsTab::selectRows(QTreeWidget *list, const QVector<int> &rows)
+{
+	for (int i : rows)
+		if (QTreeWidgetItem *r = list->topLevelItem(i))
+			r->setSelected(true);
+}
+
+void SettingsTab::setTrackLanguage(const QString &key, QTreeWidget *list, const QString &code)
+{
+	if (m_loading || code.isEmpty())
+		return;
+	const QVector<int> rows = selectedRows(list);
+	each([&](QueueItem &it) {
+		QJsonArray tracks = it.job.value(key).toArray();
+		for (int i = 0; i < tracks.size(); i++) {
+			if (!applies(rows, i))
+				continue;
+			QJsonObject e = tracks[i].toObject();
+			e[QStringLiteral("language")] = code;
+			tracks[i] = e;
+		}
+		it.job[key] = tracks;
+	});
+	setItems(m_items);   // show the new names, keeping the selection
+}
+
 // ---- Video ------------------------------------------------------------------
 
 VideoTab::VideoTab(app::Core &core, QWidget *parent)
@@ -142,7 +178,7 @@ VideoTab::VideoTab(app::Core &core, QWidget *parent)
 	m_streams = makeTree({ tr("Id"), tr("Codec"), tr("Resolution"), tr("fps"), tr("Bit Depth"),
 	                       tr("Pixel Format"), tr("Language") }, this);
 	m_streams->setMaximumHeight(70);
-	m_streams->setSelectionMode(QAbstractItemView::NoSelection);
+	m_streams->setSelectionMode(QAbstractItemView::SingleSelection);
 	top->addWidget(m_streams);
 
 	m_settings = new QWidget(this);
@@ -171,6 +207,10 @@ VideoTab::VideoTab(app::Core &core, QWidget *parent)
 	vrow->addWidget(m_passes);
 	ef->addRow(tr("Value:"), vrow);
 	ef->addRow(tr("Encoder CLI:"), m_args);
+	m_remux = new QCheckBox(tr("&Remux the video as it is when the format allows it (fast remux), else encode"), enc);
+	m_remux->setToolTip(tr("C#'s Smart Stream Copy: copies the stream into the new format without encoding. "
+	                       "Falls back to the encoder above if the format refuses the codec, and when trimming."));
+	ef->addRow(m_remux);
 	cols->addWidget(enc, 3);
 
 	auto *pic = new QGroupBox(tr("Picture"), m_settings);
@@ -235,6 +275,7 @@ VideoTab::VideoTab(app::Core &core, QWidget *parent)
 			setField(QStringLiteral("fps"), v, false);
 	});
 	connect(m_filter, &QLineEdit::textEdited, this, [this](const QString &s) { setField(QStringLiteral("filter"), s, false); });
+	connect(m_remux, &QCheckBox::toggled, this, [this](bool on) { setField(QStringLiteral("copy"), on, false); });
 	auto deint = [this] {
 		m_deintMode->setEnabled(m_deint->isChecked());
 		m_deintField->setEnabled(m_deint->isChecked());
@@ -255,12 +296,15 @@ VideoTab::VideoTab(app::Core &core, QWidget *parent)
 	connect(m_deintMode, &QComboBox::activated, this, deint);
 	connect(m_deintField, &QComboBox::activated, this, deint);
 	connect(m_lang, &QComboBox::activated, this, [this] {
-		if (QueueItem *it = current()) {   // this item only
-			QJsonObject e = videoEntry(*it);
-			e[QStringLiteral("language")] = m_lang->code();
-			setVideoEntry(*it, e);
-			emit changed();
-		}
+		const QString code = m_lang->code();
+		each([&](QueueItem &it) {   // every selected file, as C#
+			QJsonObject e = videoEntry(it);
+			if (e.isEmpty())
+				return;
+			e[QStringLiteral("language")] = code;
+			setVideoEntry(it, e);
+		});
+		setItems(m_items);
 	});
 }
 
@@ -316,6 +360,7 @@ void VideoTab::switchPlugin(app::Core &core, QueueItem &it, const QString &guid)
 	e[QStringLiteral("chroma")] = supportedOr(jget(vc, QStringLiteral("Chroma")).toArray(), QStringLiteral("Value"),
 		src.value(QStringLiteral("chroma")).toInt(420), 420);
 	keep("filter", QString());
+	keep("copy", false);
 	if (old.contains(QStringLiteral("deinterlace")))
 		e[QStringLiteral("deinterlace")] = old.value(QStringLiteral("deinterlace"));
 	setVideoEntry(it, e);
@@ -324,21 +369,27 @@ void VideoTab::switchPlugin(app::Core &core, QueueItem &it, const QString &guid)
 void VideoTab::reload()
 {
 	QueueItem *it = current();
+	const QVector<int> keep = selectedRows(m_streams);
 	m_streams->clear();
 	if (!it)
 		return;
 
+	// The stream being encoded shows the language it will be written with.
+	const QJsonObject job = videoEntry(*it);
 	for (const QJsonValue &v : it->media.value(QStringLiteral("video")).toArray()) {
 		const QJsonObject s = v.toObject();
 		if (s.value(QStringLiteral("attached_pic")).toBool())
 			continue;
+		const bool encoded = !job.isEmpty() && job.value(QStringLiteral("stream")).toInt(-1) == s.value(QStringLiteral("id")).toInt();
+		const QString lang = (encoded ? job : s).value(QStringLiteral("language")).toString(QStringLiteral("und"));
 		new QTreeWidgetItem(m_streams, {
 			QString::number(s.value(QStringLiteral("id")).toInt()), s.value(QStringLiteral("codec")).toString(),
 			QStringLiteral("%1x%2").arg(s.value(QStringLiteral("width")).toInt()).arg(s.value(QStringLiteral("height")).toInt()),
 			QString::number(s.value(QStringLiteral("frame_rate_avg")).toDouble(), 'f', 3),
 			QString::number(s.value(QStringLiteral("bit_depth")).toInt()),
-			s.value(QStringLiteral("pix_fmt")).toString(), s.value(QStringLiteral("language")).toString() });
+			s.value(QStringLiteral("pix_fmt")).toString(), app::languageName(lang) });
 	}
+	selectRows(m_streams, keep);
 
 	const QString container = it->container();
 	const QJsonObject e = videoEntry(*it);
@@ -432,6 +483,8 @@ void VideoTab::reload()
 	m_deintMode->setEnabled(p && m_deint->isChecked());
 	m_deintField->setEnabled(p && m_deint->isChecked());
 	m_filter->setText(e.value(QStringLiteral("filter")).toString());
+	m_remux->setEnabled(p != nullptr);   // "Copy" already keeps the stream
+	m_remux->setChecked(e.value(QStringLiteral("copy")).toBool());
 	m_lang->setCode(e.value(QStringLiteral("language")).toString());
 }
 
@@ -490,7 +543,16 @@ AudioTab::AudioTab(app::Core &core, QWidget *parent)
 	row->addLayout(btns);
 	top->addLayout(row, 1);
 
-	m_settings = new QGroupBox(tr("Encoder (selected tracks; all tracks when several files are selected)"), this);
+	auto *lrow = new QHBoxLayout;
+	m_lang = new LanguageCombo(this);
+	auto *llabel = new QLabel(tr("&Language:"), this);
+	llabel->setBuddy(m_lang);
+	lrow->addWidget(llabel);
+	lrow->addWidget(m_lang, 1);
+	lrow->addStretch(2);
+	top->addLayout(lrow);
+
+	m_settings = new QGroupBox(tr("Encoder (selected tracks, or all tracks when none is selected, in every selected file)"), this);
 	auto *f = new QFormLayout(m_settings);
 	m_encoder = new QComboBox(m_settings);
 	m_mode = new QComboBox(m_settings);
@@ -526,6 +588,9 @@ AudioTab::AudioTab(app::Core &core, QWidget *parent)
 		m_loading = false;
 	});
 	connect(m_tracks, &QTreeWidget::itemChanged, this, &AudioTab::trackEdited);
+	connect(m_lang, &QComboBox::activated, this, [this] {
+		setTrackLanguage(QStringLiteral("audio"), m_tracks, m_lang->code());
+	});
 	connect(m_add, &QPushButton::clicked, this, &AudioTab::addFile);
 	connect(m_remove, &QPushButton::clicked, this, &AudioTab::removeSelected);
 	connect(m_encoder, &QComboBox::activated, this, [this] { changePlugin(m_encoder->currentData().toString()); });
@@ -590,6 +655,7 @@ void AudioTab::switchPlugin(app::Core &core, QJsonObject &e, const QString &guid
 
 void AudioTab::reload()
 {
+	const QVector<int> keep = selectedRows(m_tracks);
 	m_tracks->clear();
 	QueueItem *it = current();
 	if (!it)
@@ -613,6 +679,7 @@ void AudioTab::reload()
 		row->setData(1, Qt::UserRole, e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 	}
 	m_remove->setEnabled(!audio.isEmpty());
+	selectRows(m_tracks, keep);
 	loadSettings();
 }
 
@@ -640,8 +707,10 @@ void AudioTab::loadSettings()
 {
 	const QJsonObject e = shown();
 	m_settings->setEnabled(!e.isEmpty());
+	m_lang->setEnabled(!e.isEmpty());
 	if (e.isEmpty() || !current())
 		return;
+	m_lang->setCode(e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 
 	QList<QPair<QString, QVariant>> encs;
 	for (const app::Plugin *p : m_core.compatible(true, current()->container()))
@@ -693,12 +762,11 @@ void AudioTab::setField(const QString &key, const QJsonValue &value, bool plugin
 	if (m_loading)
 		return;
 	const QString shownPlugin = normPlugin(shown().value(QStringLiteral("plugin")));
-	const QVector<int> sel = targets();
-	const bool many = m_items.size() > 1;
+	const QVector<int> rows = selectedRows(m_tracks);
 	each([&](QueueItem &it) {
 		QJsonArray audio = it.job.value(QStringLiteral("audio")).toArray();
 		for (int i = 0; i < audio.size(); i++) {
-			if (!many && !sel.contains(i))
+			if (!applies(rows, i))
 				continue;
 			QJsonObject e = audio[i].toObject();
 			const QString plug = normPlugin(e.value(QStringLiteral("plugin")));
@@ -715,12 +783,11 @@ void AudioTab::changePlugin(const QString &guid)
 {
 	if (m_loading)
 		return;
-	const QVector<int> sel = targets();
-	const bool many = m_items.size() > 1;
+	const QVector<int> rows = selectedRows(m_tracks);
 	each([&](QueueItem &it) {
 		QJsonArray audio = it.job.value(QStringLiteral("audio")).toArray();
 		for (int i = 0; i < audio.size(); i++) {
-			if (!many && !sel.contains(i))
+			if (!applies(rows, i))
 				continue;
 			QJsonObject e = audio[i].toObject();
 			switchPlugin(m_core, e, guid);
@@ -789,6 +856,11 @@ void AudioTab::trackEdited(QTreeWidgetItem *row, int column)
 	audio[i] = e;
 	it->job[QStringLiteral("audio")] = audio;
 	emit changed();
+	if (column == 1) {   // keep the Language box in step
+		m_loading = true;
+		loadSettings();
+		m_loading = false;
+	}
 }
 
 // ---- Subtitle -------------------------------------------------------------------
@@ -812,23 +884,49 @@ SubtitleTab::SubtitleTab(app::Core &core, QWidget *parent)
 	btns->addStretch();
 	row->addLayout(btns);
 	top->addLayout(row, 1);
+	auto *lrow = new QHBoxLayout;
+	m_lang = new LanguageCombo(this);
+	auto *llabel = new QLabel(tr("&Language:"), this);
+	llabel->setBuddy(m_lang);
+	lrow->addWidget(llabel);
+	lrow->addWidget(m_lang, 1);
+	lrow->addStretch(2);
+	top->addLayout(lrow);
 	m_burn = new QCheckBox(tr("&Burn subtitle into the video (the first ticked one; text formats only)"), this);
 	top->addWidget(m_burn);
 
 	connect(add, &QPushButton::clicked, this, &SubtitleTab::addFile);
 	connect(remove, &QPushButton::clicked, this, &SubtitleTab::removeSelected);
 	connect(m_tracks, &QTreeWidget::itemChanged, this, &SubtitleTab::trackEdited);
+	connect(m_tracks, &QTreeWidget::itemSelectionChanged, this, &SubtitleTab::showLanguage);
+	connect(m_lang, &QComboBox::activated, this, [this] {
+		setTrackLanguage(QStringLiteral("subtitles"), m_tracks, m_lang->code());
+	});
 	connect(m_burn, &QCheckBox::toggled, this, [this](bool on) {
 		each([&](QueueItem &it) { it.job[QStringLiteral("burn_subtitle")] = on; });
 	});
 }
 
+void SubtitleTab::showLanguage()
+{
+	// The first selected track's language (the first track when none is).
+	const QVector<int> rows = selectedRows(m_tracks);
+	const QJsonArray subs = current() ? current()->job.value(QStringLiteral("subtitles")).toArray() : QJsonArray();
+	const int i = rows.isEmpty() ? 0 : rows.first();
+	m_lang->setEnabled(i < subs.size());
+	if (i < subs.size())
+		m_lang->setCode(subs[i].toObject().value(QStringLiteral("language")).toString(QStringLiteral("und")));
+}
+
 void SubtitleTab::reload()
 {
+	const QVector<int> keep = selectedRows(m_tracks);
 	m_tracks->clear();
 	QueueItem *it = current();
-	if (!it)
+	if (!it) {
+		showLanguage();
 		return;
+	}
 	const QString c = it->container();
 	const bool soft = c == QLatin1String("mkv") || c == QLatin1String("mp4") || c == QLatin1String("webm") ||
 	                  c == QLatin1String("m4v") || c == QLatin1String("mov");
@@ -848,7 +946,10 @@ void SubtitleTab::reload()
 		row->setCheckState(0, e.value(QStringLiteral("enable")).toBool(true) ? Qt::Checked : Qt::Unchecked);
 		row->setCheckState(3, e.value(QStringLiteral("default")).toBool() ? Qt::Checked : Qt::Unchecked);
 		row->setData(0, Qt::UserRole, i);
+		row->setData(1, Qt::UserRole, e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 	}
+	selectRows(m_tracks, keep);
+	showLanguage();
 	m_burn->setChecked(it->job.value(QStringLiteral("burn_subtitle")).toBool());
 }
 
@@ -871,6 +972,8 @@ void SubtitleTab::trackEdited(QTreeWidgetItem *row, int column)
 	subs[i] = e;
 	it->job[QStringLiteral("subtitles")] = subs;
 	emit changed();
+	if (column == 1)
+		showLanguage();
 }
 
 void SubtitleTab::addFile()
@@ -978,7 +1081,6 @@ void AttachmentTab::reload()
 		row->setFlags(row->flags() | Qt::ItemIsUserCheckable);
 		row->setCheckState(0, e.value(QStringLiteral("enable")).toBool(true) ? Qt::Checked : Qt::Unchecked);
 		row->setData(0, Qt::UserRole, i);
-		row->setData(1, Qt::UserRole, e.value(QStringLiteral("language")).toString(QStringLiteral("und")));
 	}
 }
 

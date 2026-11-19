@@ -21,9 +21,6 @@ inline constexpr const char *TradeMarks =
 	"Erik de Castro Lopo, Jean Le Feuvre, People@GPAC, FFmpeg Team, Nero AG, Moritz Bunkus, "
 	"AMD, Intel, Nvidia, Google, Alliance for Open Media, et al.";
 
-inline constexpr const char *DonateUrl =
-	"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U";
-
 // User settings: an INI file in IFME's config folder (or the file given to
 // setSettingsFile() before the first use, for tests).
 QSettings &settings();

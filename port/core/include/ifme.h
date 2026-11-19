@@ -300,7 +300,8 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
  *                  "passes": 1, "encoder_args": "", "width": 1920,
  *                  "height": 1080, "fps": "24000/1001", "bit_depth": 10,
  *                  "chroma": 420, "ffmpeg_args": "", "filter": "",
- *                  "deinterlace": { "mode": 0, "field": 1 } } ],  (optional)
+ *                  "deinterlace": { "mode": 0, "field": 1 },
+ *                  "copy": false } ],  (optional)
  *     "audio": [ { "stream": 1, "language": "jpn", "title": "",
  *                  "plugin": "<guid>", "mode": 0, "quality": "128",
  *                  "sample_rate": 48000, "channels": 0, "copy": false,
@@ -308,7 +309,9 @@ int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
  *
  * Any entry may have "enable": false. Audio "sample_rate"/"channels" 0 keep
  * the source; "copy": true tries the stream as it is first and encodes only
- * when the output container refuses it. An audio entry may add
+ * when the output container refuses it; video "copy": true remuxes the
+ * stream into the output's container first and encodes only if that fails
+ * (not when the job is trimmed). An audio entry may add
  * "input": "other file" to take its stream from there (a separate dub).
  *
  * Everything else the output keeps (only keys that apply are written):

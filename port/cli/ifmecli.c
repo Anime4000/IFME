@@ -42,6 +42,7 @@ static void print_usage(FILE *out)
 		"      --bit-depth N    --chroma 420|422|444\n"
 		"      --start T        --duration T    encode only a part (HH:MM:SS or seconds)\n"
 		"      --encoder-args S Extra encoder arguments; --filter S extra ffmpeg -vf filter\n"
+		"      --video-copy     Remux video as it is when the container takes it, else encode\n"
 		"      --audio PLUGIN   Audio plugin for every audio track, \"copy\" or \"none\"\n"
 		"                       (default: Opus for MKV/WebM, AAC for MP4)\n"
 		"      --audio-mode N   --audio-quality Q   mode index and quality (see _help)\n"
@@ -322,7 +323,7 @@ int main(int argc, char *argv[])
 		OPT_VALUE, OPT_PASSES, OPT_SIZE, OPT_FPS, OPT_BITS, OPT_CHROMA, OPT_START, OPT_DURATION,
 		OPT_ENC_ARGS, OPT_FILTER, OPT_TEMP, OPT_KEEP_TEMP, OPT_PRINT_JOB, OPT_JOB,
 		OPT_AUDIO, OPT_AUDIO_MODE, OPT_AUDIO_QUALITY, OPT_SAMPLE_RATE, OPT_CHANNELS,
-		OPT_AUDIO_COPY, OPT_AUDIO_ARGS, OPT_AUDIO_FILTER, OPT_ADD_AUDIO,
+		OPT_AUDIO_COPY, OPT_VIDEO_COPY, OPT_AUDIO_ARGS, OPT_AUDIO_FILTER, OPT_ADD_AUDIO,
 		OPT_ADD_SUB, OPT_ADD_ATT, OPT_COVER, OPT_MOVFLAGS, OPT_NO_SUBS, OPT_NO_ATT, OPT_NO_COVER,
 		OPT_NO_META, OPT_NO_CHAPTERS, OPT_BURN
 	};
@@ -352,6 +353,7 @@ int main(int argc, char *argv[])
 		{ "sample-rate",  required_argument, NULL, OPT_SAMPLE_RATE },
 		{ "channels",     required_argument, NULL, OPT_CHANNELS },
 		{ "audio-copy",   no_argument,       NULL, OPT_AUDIO_COPY },
+		{ "video-copy",   no_argument,       NULL, OPT_VIDEO_COPY },
 		{ "audio-args",   required_argument, NULL, OPT_AUDIO_ARGS },
 		{ "audio-filter", required_argument, NULL, OPT_AUDIO_FILTER },
 		{ "add-audio",    required_argument, NULL, OPT_ADD_AUDIO },
@@ -421,6 +423,7 @@ int main(int argc, char *argv[])
 		case OPT_SAMPLE_RATE: eo.sample_rate = atoi(optarg); break;
 		case OPT_CHANNELS: eo.channels = atoi(optarg); break;
 		case OPT_AUDIO_COPY: eo.audio_copy = true; break;
+		case OPT_VIDEO_COPY: eo.video_copy = true; break;
 		case OPT_AUDIO_ARGS: eo.audio_args = optarg; break;
 		case OPT_AUDIO_FILTER: eo.audio_filter = optarg; break;
 		case OPT_ADD_AUDIO:

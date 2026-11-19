@@ -23,6 +23,8 @@
  *             (FFmpeg-based plugins get the -map/-pix_fmt/-vf part instead)
  *   raw output (x264, x265, VVC, NVEncC...) -> MP4Box into the plugin's
  *   container, then every video track -> the job's output file.
+ *   "copy": true remuxes the stream into the output's container first and
+ *   encodes only if that fails (C#'s FastMuxVideo, "Smart Stream Copy").
  *
  * Differences from C#, on purpose:
  *  - Commands are argument lists, run without a shell.
@@ -361,6 +363,53 @@ static ifme_task_result encode_video(enc *E, size_t idx, size_t count, const cJS
 
 	const char *lang = (src->language && *src->language) ? src->language : "und";
 	const char *plugin_query = ifme_jstr(item, "plugin");
+
+	/* "copy": true remuxes the stream into the output's container as it is
+	 * and encodes only if that fails, as C#: ffmpeg refuses the codec, or the
+	 * file is 8 KiB or less. As C#, not with a trim (a copied stream can only
+	 * be cut at key frames, so the encode keeps the exact cut). */
+	if (!enc_is_copy(plugin_query, VIDEO_COPY_GUID) && ifme_jbool(item, "copy", false)) {
+		if (E->trim_seconds > 0) {
+			enc_log(E, "Video: not remuxing, the job is trimmed; encoding instead");
+		} else {
+			char *out = ifme_strdupf("video%04zu_%s.%s", idx, lang, enc_output_ext(E->output));
+			ifme_argv a = { 0 };
+			ifme_argv_push(&a, E->ffmpeg);
+			ifme_argv_split(&a, "-hide_banner -v error -stats -i");
+			ifme_argv_push(&a, E->input);
+			ifme_argv_push(&a, "-map");
+			ifme_argv_pushf(&a, "0:%d", stream);
+			ifme_argv_split(&a, "-c:v copy -y");
+			ifme_argv_push(&a, out);
+
+			enc_stage(E, "Video %zu/%zu: remuxing stream", idx + 1, count);
+			ifme_task_result r = enc_run1(E, &a, enc_job_seconds(E));
+			ifme_argv_free(&a);
+
+			char *path = ifme_path_join(E->temp, out);
+			if (r == IFME_TASK_DONE && ifme_file_size(path) <= 8192) {
+				enc_fail(E, "video %zu: the stream cannot be remuxed into .%s", idx + 1, enc_output_ext(E->output));
+				r = IFME_TASK_FAILED;
+			}
+			if (r != IFME_TASK_DONE && path)
+				ifme_delete_file(path);
+			free(path);
+			if (r == IFME_TASK_DONE || r == IFME_TASK_STOPPED) {
+				if (r == IFME_TASK_DONE)
+					*result = out;
+				else
+					free(out);
+				return r;
+			}
+			free(out);
+			char *note = ifme_strdupf("%s; encoding it instead", E->err && *E->err ? E->err : "remux failed");
+			if (note)
+				enc_log(E, note);
+			free(note);
+			if (E->err && E->err_len)
+				E->err[0] = '\0';
+		}
+	}
 
 	/* Built-in "copy" entry: keep the stream as it is. */
 	if (enc_is_copy(plugin_query, VIDEO_COPY_GUID)) {

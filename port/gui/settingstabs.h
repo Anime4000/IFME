@@ -44,6 +44,14 @@ protected:
 	QueueItem *current() const { return m_items.isEmpty() ? nullptr : m_items.first(); }
 	virtual void reload() = 0;
 	void each(const std::function<void(QueueItem &)> &fn);   // edit all, then changed()
+
+	// Track rules, as C# (cboAudioLang etc.) with per-position batching: a
+	// change goes to the tracks selected in `list` (all tracks when none is
+	// selected), in every selected file.
+	static QVector<int> selectedRows(QTreeWidget *list);
+	static void selectRows(QTreeWidget *list, const QVector<int> &rows);
+	static bool applies(const QVector<int> &rows, int i) { return rows.isEmpty() || rows.contains(i); }
+	void setTrackLanguage(const QString &key, QTreeWidget *list, const QString &code);
 };
 
 // ---- Video ------------------------------------------------------------------
@@ -68,7 +76,7 @@ private:
 	QComboBox *m_deintMode, *m_deintField;
 	QDoubleSpinBox *m_value;
 	QSpinBox *m_passes, *m_width, *m_height;
-	QCheckBox *m_deint;
+	QCheckBox *m_deint, *m_remux;
 	QLineEdit *m_args, *m_filter;
 	LanguageCombo *m_lang;
 	QWidget *m_settings;
@@ -101,6 +109,7 @@ private:
 	QLineEdit *m_args, *m_filter;
 	QPushButton *m_add, *m_remove;
 	QWidget *m_settings;
+	LanguageCombo *m_lang;
 
 	QVector<int> targets() const;          // audio entries of current() the settings apply to
 	QJsonObject shown() const;             // the entry whose settings are shown
@@ -128,6 +137,8 @@ private:
 	QTreeWidget *m_tracks;
 	QCheckBox *m_burn;
 	QLabel *m_notice;
+	LanguageCombo *m_lang;
+	void showLanguage();
 	void addFile();
 	void removeSelected();
 	void trackEdited(QTreeWidgetItem *it, int column);

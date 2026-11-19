@@ -1,6 +1,8 @@
 #include "widgets.h"
 
 #include <QApplication>
+#include <QEvent>
+#include <QTreeView>
 #include <QPainter>
 
 #include "app.h"
@@ -27,6 +29,46 @@ void BannerWidget::paintEvent(QPaintEvent *)
 	// The right image fades in over the left one through its alpha channel.
 	p.drawPixmap(QRect(0, 0, w, height()), m_left);
 	p.drawPixmap(QRect(width() - w, 0, w, height()), m_right);
+}
+
+namespace {
+
+class StickySelection : public QObject
+{
+public:
+	explicit StickySelection(QAbstractItemView *view) : QObject(view), m_view(view)
+	{
+		apply();
+		view->installEventFilter(this);
+	}
+
+	bool eventFilter(QObject *, QEvent *e) override
+	{
+		if (e->type() == QEvent::ApplicationPaletteChange || e->type() == QEvent::StyleChange)
+			apply();
+		return false;
+	}
+
+private:
+	void apply()
+	{
+		QPalette p = QApplication::palette(m_view);
+		for (QPalette::ColorRole r : { QPalette::Highlight, QPalette::HighlightedText })
+			p.setColor(QPalette::Inactive, r, p.color(QPalette::Active, r));
+		m_view->setPalette(p);
+	}
+
+	QAbstractItemView *m_view;
+};
+
+}  // namespace
+
+void stickySelection(QAbstractItemView *view)
+{
+	view->setSelectionBehavior(QAbstractItemView::SelectRows);
+	if (auto *tree = qobject_cast<QTreeView *>(view))
+		tree->setAllColumnsShowFocus(true);
+	new StickySelection(view);
 }
 
 LanguageCombo::LanguageCombo(QWidget *parent)
