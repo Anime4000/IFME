@@ -44,6 +44,8 @@ add_library(ifmecore STATIC
     core/src/probe.c
     core/src/progress.c
     core/src/task.c
+    core/src/jsonutil.c
+    core/src/encode.c
     core/src/platform/paths.c
     core/src/platform/fs.c
     core/src/platform/proc_common.c
@@ -71,8 +73,8 @@ endif()
 # ---------------------------------------------------------------------------
 # ifmecli (C)
 # ---------------------------------------------------------------------------
-add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c ${IFME_WIN_RESOURCES})
-target_link_libraries(ifmecli PRIVATE ifmecore)
+add_executable(ifmecli cli/ifmecli.c cli/exec_ui.c cli/encode_cmd.c ${IFME_WIN_RESOURCES})
+target_link_libraries(ifmecli PRIVATE ifmecore cjson)
 
 # ---------------------------------------------------------------------------
 # ifme GUI (Qt 6, C++)
@@ -103,7 +105,7 @@ if(IFME_BUILD_TESTS)
     find_package(Threads REQUIRED)
 
     # White-box tests of internal helpers (progress parser, argv, JSON).
-    add_executable(test_units tests/test_units.c)
+    add_executable(test_units tests/test_units.c ${IFME_WIN_RESOURCES})
     target_include_directories(test_units PRIVATE core/src)
     target_link_libraries(test_units PRIVATE ifmecore cjson)
     if(NOT WIN32)
@@ -112,8 +114,14 @@ if(IFME_BUILD_TESTS)
     add_test(NAME units COMMAND test_units)
 
     # Real ffmpeg | x265 pipeline: pause, resume, stop. Skipped without a root.
-    add_executable(test_task tests/test_task.c)
+    add_executable(test_task tests/test_task.c ${IFME_WIN_RESOURCES})
     target_link_libraries(test_task PRIVATE ifmecore Threads::Threads)
     add_test(NAME task COMMAND test_task "${IFME_TEST_ROOT}")
     set_tests_properties(task PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 300)
+
+    # Encoding jobs: defaults, a short real encode, stop + cleanup, bad jobs.
+    add_executable(test_encode tests/test_encode.c ${IFME_WIN_RESOURCES})
+    target_link_libraries(test_encode PRIVATE ifmecore cjson Threads::Threads)
+    add_test(NAME encode COMMAND test_encode "${IFME_TEST_ROOT}" "${CMAKE_CURRENT_BINARY_DIR}")
+    set_tests_properties(encode PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 600)
 endif()

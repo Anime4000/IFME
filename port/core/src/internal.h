@@ -94,11 +94,42 @@ char    *ifme_wide_to_utf8(const wchar_t *w);
 #endif
 
 /* ---- plugins.c ------------------------------------------------------------ */
+struct cJSON;
+
 void ifme_plugins_clear(ifme_ctx *ctx);
+
+/* The resolved manifest (encoder paths are absolute) of plugin `index`. */
+const struct cJSON *ifme_plugin_json(const ifme_ctx *ctx, size_t index);
 
 /* An FFmpeg tool ("ffmpeg", "ffprobe"): PATH first, then the bundled copy in
  * <root>/Plugins/ffmpeg64 (ffmpeg32 on 32-bit x86). Caller frees. */
 char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name);
+
+/* Any tool: PATH first, then <root>/Plugins/<subdir>/<name>. Caller frees. */
+char *ifme_find_tool(const ifme_ctx *ctx, const char *name, const char *subdir);
+
+/* ---- jsonutil.c: lenient accessors (case-insensitive keys, numbers may be
+ * strings, as Newtonsoft accepted) ---------------------------------------- */
+const struct cJSON *ifme_jget(const struct cJSON *o, const char *key);
+const char *ifme_jstr(const struct cJSON *o, const char *key);          /* NULL if not a string */
+bool        ifme_jnum(const struct cJSON *o, const char *key, double *out);
+int         ifme_jint(const struct cJSON *o, const char *key, int def);
+double      ifme_jdouble(const struct cJSON *o, const char *key, double def);
+bool        ifme_jbool(const struct cJSON *o, const char *key, bool def);
+char       *ifme_jscalar(const struct cJSON *o, const char *key);       /* caller frees */
+const struct cJSON *ifme_jitem(const struct cJSON *o, const char *key, int index);
+
+/* ---- fs.c (more) ------------------------------------------------------------ */
+/* Rename, or copy + delete across drives; replaces `to`. */
+bool ifme_move_file(const char *from, const char *to);
+bool ifme_delete_file(const char *path);
+/* File name without folder; points into `path`. */
+const char *ifme_basename(const char *path);
+/* Absolute version of a path that may not exist yet. Caller frees. */
+char *ifme_absolute_path(const char *path);
+
+/* ---- task.c ---------------------------------------------------------------- */
+struct ifme_control *ifme_task_control(ifme_task *task);
 
 /* ---- platform/proc_*.c ---------------------------------------------------- */
 enum {

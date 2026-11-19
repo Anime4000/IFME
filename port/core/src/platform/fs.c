@@ -460,3 +460,113 @@ char *ifme_find_in_path(const char *name)
 	free(list);
 	return found;
 }
+
+const char *ifme_basename(const char *path)
+{
+	const char *a = strrchr(path, '/'), *b = strrchr(path, '\\');
+	const char *cut = a > b ? a : b;
+	return cut ? cut + 1 : path;
+}
+
+#ifdef _WIN32
+
+bool ifme_delete_file(const char *path)
+{
+	wchar_t *w = ifme_utf8_to_wide(path);
+	BOOL ok = w && DeleteFileW(w);
+	free(w);
+	return ok;
+}
+
+bool ifme_move_file(const char *from, const char *to)
+{
+	wchar_t *wf = ifme_utf8_to_wide(from), *wt = ifme_utf8_to_wide(to);
+	/* COPY_ALLOWED: falls back to copy + delete when the target is on
+	 * another drive (temp folder on C:, output on D:). */
+	BOOL ok = wf && wt && MoveFileExW(wf, wt, MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED |
+	                                          MOVEFILE_WRITE_THROUGH);
+	free(wf);
+	free(wt);
+	return ok;
+}
+
+#else
+
+#include <errno.h>
+#include <fcntl.h>
+
+bool ifme_delete_file(const char *path)
+{
+	return unlink(path) == 0;
+}
+
+static bool copy_file(const char *from, const char *to)
+{
+	int in = open(from, O_RDONLY | O_CLOEXEC);
+	if (in < 0)
+		return false;
+
+	int out = open(to, O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0644);
+	if (out < 0) {
+		close(in);
+		return false;
+	}
+
+	char buf[1 << 16];
+	bool ok = true;
+	for (;;) {
+		ssize_t n = read(in, buf, sizeof(buf));
+		if (n == 0)
+			break;
+		if (n < 0) {
+			if (errno == EINTR)
+				continue;
+			ok = false;
+			break;
+		}
+		for (ssize_t off = 0; off < n;) {
+			ssize_t w = write(out, buf + off, (size_t)(n - off));
+			if (w < 0) {
+				if (errno == EINTR)
+					continue;
+				ok = false;
+				break;
+			}
+			off += w;
+		}
+		if (!ok)
+			break;
+	}
+
+	close(in);
+	if (close(out) != 0)
+		ok = false;
+	if (!ok)
+		unlink(to);
+	return ok;
+}
+
+bool ifme_move_file(const char *from, const char *to)
+{
+	if (rename(from, to) == 0)
+		return true;
+	/* EXDEV: different file systems (e.g. /tmp is tmpfs). */
+	return errno == EXDEV && copy_file(from, to) && unlink(from) == 0;
+}
+
+#endif
+
+char *ifme_absolute_path(const char *path)
+{
+#ifdef _WIN32
+	return ifme_full_path(path);   /* GetFullPathNameW works for new files too */
+#else
+	if (ifme_path_is_absolute(path))
+		return ifme_strdup(path);
+
+	char cwd[4096];
+	if (!getcwd(cwd, sizeof(cwd)))
+		return ifme_strdup(path);
+	return ifme_path_join(cwd, path);
+#endif
+}

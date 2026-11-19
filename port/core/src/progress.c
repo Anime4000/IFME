@@ -228,6 +228,11 @@ static bool looks_like_status(const char *s)
 	    strstr(s, "frame=") || strstr(s, "size="))
 		return true;
 
+	/* MP4Box: "Import: |====      | (40/100)", "ISO File Writing: |...| (99/100)" */
+	const char *bar = strstr(s, "/100)");
+	if (bar && strchr(s, '|') && bar[5] == '\0')
+		return true;
+
 	/* SVT-AV1 default progress: bare frame numbers. */
 	for (const char *p = s; *p; p++)
 		if (!isdigit((unsigned char)*p) && *p != ' ')

@@ -189,3 +189,8 @@ out:
 	free(stages);
 	return result;
 }
+
+ifme_control *ifme_task_control(ifme_task *task)
+{
+	return task ? &task->control : NULL;
+}

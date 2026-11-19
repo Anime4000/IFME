@@ -58,7 +58,7 @@ typedef struct job {
 static void *worker(void *arg)
 {
 	job *j = arg;
-	ifme_task_callbacks cb = { NULL, on_progress, NULL, NULL };
+	ifme_task_callbacks cb = { .on_progress = on_progress };
 	j->result = ifme_task_exec(j->task, j->ctx, j->argv, j->argc, NULL, 0, &cb,
 	                           &j->exit_code, j->err, sizeof(j->err));
 	return NULL;

@@ -221,6 +221,8 @@ typedef struct ifme_task_callbacks {
 	void (*on_progress)(void *user, const ifme_progress *progress);
 	/* About every 50 ms on the thread running ifme_task_exec(). */
 	void (*on_tick)(void *user);
+	/* A new step of a job begins, e.g. "Video 1/1: pass 1 of 2" (ifme_encode). */
+	void (*on_stage)(void *user, const char *stage);
 	void *user;
 } ifme_task_callbacks;
 
@@ -256,6 +258,39 @@ ifme_task_result ifme_task_exec(ifme_task *task, ifme_ctx *ctx,
                                 const char *cwd, long long total_frames,
                                 const ifme_task_callbacks *cb,
                                 int *exit_code, char *err, size_t err_len);
+
+/* ------------------------------------------------------------------------ */
+/* Encoding jobs                                                            */
+/* ------------------------------------------------------------------------ */
+
+/* Find a usable plugin of `kind` by GUID, or by a case-insensitive part of
+ * its name ("x265", "svt"). Returns its index, -1 if none matches, -2 if the
+ * name matches more than one (err lists them). Loads plugins if needed. */
+int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
+                     char *err, size_t err_len);
+
+/* A job (JSON) for `input` with every setting filled in from the source
+ * (ffprobe) and the plugin's defaults - what the GUI would show. Edit it, then
+ * pass it to ifme_encode(). Each video entry also carries a read-only "_help"
+ * object (presets, tunes, modes with ranges). Caller frees; NULL on error.
+ *
+ *   { "input": "...", "output": "...", "temp_dir": "", "keep_temp": false,
+ *     "trim": { "start": "00:01:00", "duration": "00:00:30" },   (optional)
+ *     "video": [ { "stream": 0, "plugin": "<guid>", "preset": "medium",
+ *                  "tune": "", "mode": 0, "value": 25.5, "passes": 1,
+ *                  "encoder_args": "", "width": 1920, "height": 1080,
+ *                  "fps": "24000/1001", "bit_depth": 10, "chroma": 420,
+ *                  "ffmpeg_args": "", "filter": "",
+ *                  "deinterlace": { "mode": 0, "field": 1 } } ] }   (optional) */
+char *ifme_job_new(ifme_ctx *ctx, const char *input, const char *video_plugin,
+                   char *err, size_t err_len);
+
+/* Run a job and block until it ends. Progress, output lines and stages are
+ * reported through cb; pause/resume/stop through `task` as with
+ * ifme_task_exec(). Milestone 4: encodes the video tracks and writes them to
+ * "output" (container chosen by its extension); audio/subtitles come later. */
+ifme_task_result ifme_encode(ifme_task *task, ifme_ctx *ctx, const char *job_json,
+                             const ifme_task_callbacks *cb, char *err, size_t err_len);
 
 /* Free memory returned by functions documented as "caller frees". */
 void ifme_free(void *ptr);

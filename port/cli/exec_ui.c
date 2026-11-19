@@ -249,9 +249,47 @@ static void on_tick(void *user)
 	draw_status(u, false);
 }
 
-/* ---- entry point ----------------------------------------------------------- */
+/* Close the current status line: the last progress line an encoder prints
+ * comes before its last frame, so a clean finish is shown as 100 %. */
+static void finish_status(ui *u, bool done)
+{
+	if (done && u->have_progress && u->last.total_frames > 0) {
+		u->last.frame = u->last.total_frames;
+		u->last.percent = 100;
+		u->last.eta_sec = 0;
+	}
 
-int run_exec(ifme_ctx *ctx, char **argv, int argc, long long total_frames)
+	if (u->have_progress || u->raw_status[0])
+		draw_status(u, true);
+	if (u->tty_out && u->status_drawn)
+		printf("\n");
+	u->status_drawn = false;
+}
+
+static void on_stage(void *user, const char *stage)
+{
+	ui *u = user;
+
+	/* A new step starts, so the previous one finished. */
+	finish_status(u, true);
+	u->have_progress = false;
+	u->raw_status[0] = '\0';
+
+	printf("==> %s\n", stage);
+	fflush(stdout);
+}
+
+/* ---- entry points ----------------------------------------------------------- */
+
+typedef struct run_args {
+	ifme_ctx *ctx;
+	char **argv;
+	int argc;
+	long long total_frames;
+	const char *job_json;
+} run_args;
+
+static int run_ui(const run_args *ra)
 {
 	ifme_task *task = ifme_task_create();
 	if (!task) {
@@ -266,26 +304,20 @@ int run_exec(ifme_ctx *ctx, char **argv, int argc, long long total_frames)
 	g_task = task;
 	u.keys = keys_begin();
 
-	ifme_task_callbacks cb = { on_output, on_progress, on_tick, &u };
-	char err[512];
+	ifme_task_callbacks cb = { .on_output = on_output, .on_progress = on_progress,
+	                          .on_tick = on_tick, .on_stage = on_stage, .user = &u };
+	char err[1024];
 	int exit_code = -1;
 	unsigned long long t0 = now_ms();
+	ifme_task_result r;
 
-	ifme_task_result r = ifme_task_exec(task, ctx, (const char *const *)argv, (size_t)argc,
-	                                    NULL, total_frames, &cb, &exit_code, err, sizeof(err));
+	if (ra->job_json)
+		r = ifme_encode(task, ra->ctx, ra->job_json, &cb, err, sizeof(err));
+	else
+		r = ifme_task_exec(task, ra->ctx, (const char *const *)ra->argv, (size_t)ra->argc,
+		                   NULL, ra->total_frames, &cb, &exit_code, err, sizeof(err));
 
-	/* The last progress line an encoder prints comes before its last frame;
-	 * a clean finish is 100 %. */
-	if (r == IFME_TASK_DONE && u.have_progress && u.last.total_frames > 0) {
-		u.last.frame = u.last.total_frames;
-		u.last.percent = 100;
-		u.last.eta_sec = 0;
-	}
-
-	if (u.have_progress || u.raw_status[0])
-		draw_status(&u, true);
-	if (u.tty_out && u.status_drawn)
-		printf("\n");
+	finish_status(&u, r == IFME_TASK_DONE);
 
 	keys_end();
 	g_task = NULL;
@@ -307,4 +339,16 @@ int run_exec(ifme_ctx *ctx, char **argv, int argc, long long total_frames)
 		fprintf(stderr, "ifmecli: %s\n", err);
 		return 1;
 	}
+}
+
+int run_exec(ifme_ctx *ctx, char **argv, int argc, long long total_frames)
+{
+	run_args ra = { ctx, argv, argc, total_frames, NULL };
+	return run_ui(&ra);
+}
+
+int run_encode(ifme_ctx *ctx, const char *job_json)
+{
+	run_args ra = { ctx, NULL, 0, 0, job_json };
+	return run_ui(&ra);
 }

@@ -7,4 +7,7 @@
  * keys. Returns a process exit status for ifmecli. */
 int run_exec(ifme_ctx *ctx, char **argv, int argc, long long total_frames);
 
+/* Run an encoding job (JSON) with the same live display, plus stage headings. */
+int run_encode(ifme_ctx *ctx, const char *job_json);
+
 #endif

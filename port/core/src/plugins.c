@@ -495,6 +495,71 @@ const ifme_plugin_info *ifme_plugin_at(const ifme_ctx *ctx, size_t index)
 	return (ctx && index < ctx->plugin_count) ? &ctx->plugins[index]->info : NULL;
 }
 
+const cJSON *ifme_plugin_json(const ifme_ctx *ctx, size_t index)
+{
+	return (ctx && index < ctx->plugin_count) ? ctx->plugins[index]->json : NULL;
+}
+
+static bool contains_ci(const char *hay, const char *needle)
+{
+	size_t n = strlen(needle);
+	for (; *hay; hay++)
+		if (ifme_starts_with_ci(hay, needle))
+			return true;
+	return n == 0;
+}
+
+int ifme_plugin_find(ifme_ctx *ctx, ifme_plugin_kind kind, const char *query,
+                     char *err, size_t err_len)
+{
+	if (err && err_len)
+		err[0] = '\0';
+	if (!ctx || !query || !*query)
+		return -1;
+	if (!ctx->plugins_loaded && ifme_plugins_load(ctx) < 0) {
+		if (err && err_len)
+			snprintf(err, err_len, "no Plugins folder in %s", ctx->root_dir);
+		return -1;
+	}
+
+	/* Exact GUID first. */
+	for (size_t i = 0; i < ctx->plugin_count; i++) {
+		const ifme_plugin *p = ctx->plugins[i];
+		if (p->info.kind == kind && p->info.status == IFME_PLUGIN_OK &&
+		    ifme_strcasecmp(p->guid, query) == 0)
+			return (int)i;
+	}
+
+	/* Then a unique part of the name. */
+	int found = -1, matches = 0;
+	size_t used = 0;
+	for (size_t i = 0; i < ctx->plugin_count; i++) {
+		const ifme_plugin *p = ctx->plugins[i];
+		if (p->info.kind != kind || p->info.status != IFME_PLUGIN_OK || !contains_ci(p->name, query))
+			continue;
+
+		if (matches++ == 0) {
+			found = (int)i;
+			if (err && err_len)
+				used = (size_t)snprintf(err, err_len, "\"%s\" matches several plugins: %s", query, p->name);
+		} else if (err && used < err_len) {
+			used += (size_t)snprintf(err + used, err_len - used, ", %s", p->name);
+		}
+	}
+
+	if (matches > 1)
+		return -2;
+	if (matches == 0) {
+		if (err && err_len)
+			snprintf(err, err_len, "no usable %s plugin matches \"%s\" (see --list-plugins)",
+			         kind == IFME_PLUGIN_VIDEO ? "video" : "audio", query);
+		return -1;
+	}
+	if (err && err_len)
+		err[0] = '\0';
+	return found;
+}
+
 const char *ifme_plugin_status_name(ifme_plugin_status status)
 {
 	switch (status) {
@@ -547,12 +612,16 @@ char *ifme_plugins_json(const ifme_ctx *ctx)
 
 char *ifme_find_ff_tool(const ifme_ctx *ctx, const char *name)
 {
-	/* Same order as MediaEncoding.FFmpeg: PATH first, then the bundled copy. */
+	return ifme_find_tool(ctx, name, strcmp(ctx->cpu.arch, "x86") == 0 ? "ffmpeg32" : "ffmpeg64");
+}
+
+char *ifme_find_tool(const ifme_ctx *ctx, const char *name, const char *folder)
+{
+	/* Same order as MediaEncoding.FFmpeg / .MP4Box: PATH first, then bundled. */
 	char *found = ifme_find_in_path(name);
 	if (found)
 		return found;
 
-	const char *folder = strcmp(ctx->cpu.arch, "x86") == 0 ? "ffmpeg32" : "ffmpeg64";
 	char *plugins = ifme_path_join(ctx->root_dir, "Plugins");
 	char *dir = plugins ? ifme_path_join(plugins, folder) : NULL;
 	char *bin = dir ? ifme_path_join(dir, name) : NULL;

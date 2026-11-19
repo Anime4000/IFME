@@ -141,6 +141,37 @@ Compared with `ProcessManager.cs`:
 For the GUI the same is available as `ifme_task_*` in `ifme.h`; pause, resume
 and stop are safe from any thread.
 
+### Encoding (video)
+
+```bash
+# defaults from the source and the plugin (x265 unless --video says otherwise)
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mkv
+
+# two-pass 600 kb/s, 10-bit, 1280x720, only 00:01:00-00:01:30
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv -o out.mp4 \
+    --video x265 --mode 2 --value 600 --bit-depth 10 --size 1280x720 --start 60 --duration 30
+
+# save the job, edit it, run it later (the "_help" block lists presets/modes)
+./build/ifmecli -r "/d/Program Files/IFME" --encode movie.mkv --video svt --print-job > job.json
+./build/ifmecli -r "/d/Program Files/IFME" --job job.json
+```
+
+`--video` takes a GUID or any unique part of a plugin name ("x264", "Fraunhofer",
+"H.265 Rigaya"). While encoding: p pause, r resume, q / Ctrl+C stop (temp
+files are removed, no partial output is left).
+
+This ports `MediaEncoding.Video()`: the same piped (`ffmpeg | encoder`) and
+direct command shapes, multi-pass, `{0}` mode templates, raw streams wrapped
+by MP4Box, then the video tracks written to the output container by ffmpeg.
+Checked with x264 (10-bit 4:2:2), x265 (CRF, 2-pass), SVT-AV1, VVenC, VP9
+(FFmpeg-based) and NVEncC on Windows. Not yet ported: audio, subtitles,
+attachments and metadata (milestones 5-6), fast remux, auto-crop, hard subs.
+
+Differences from C#: frame rates such as 24000/1001 stay exact; a missing
+N-bit encoder is an error message instead of a crash; scaling is only added
+when the size changes; MP4Box gets the frame rate explicitly, and ffmpeg wraps
+raw streams when MP4Box is absent.
+
 ### Tests
 
 ```bash
@@ -155,6 +186,9 @@ ctest --test-dir build --output-on-failure
   2 s), resumed, then stopped while paused (must return within 3 s); plus
   stop-before-start, a failing command and a missing program. Skipped when
   `IFME_TEST_ROOT` is not set.
+- `encode`: job defaults, a short trimmed/downscaled x265 encode to a file
+  with a Japanese name (checked with ffprobe), stop during an encode (temp
+  folder removed, no output left), and clear errors for bad jobs.
 
 ## Layout
 
@@ -165,6 +199,8 @@ core/src/plugins.c           manifest loading, self-test
 core/src/probe.c             media information from ffprobe
 core/src/progress.c          frame / fps / bitrate / ETA from encoder output
 core/src/task.c              public task API: exec, pause, resume, stop
+core/src/encode.c            encoding jobs: defaults (ifme_job_new), video encode
+core/src/jsonutil.c          lenient JSON accessors (Newtonsoft-compatible)
 core/src/argv.c              argument lists built from manifest templates
 core/src/json_relax.c        accept comments / trailing commas
 core/src/platform/paths.c    executable folder, per-user config folder
@@ -175,7 +211,8 @@ core/src/platform/proc_*.c   run "a | b" pipelines and capture stdout/stderr:
 core/src/platform/cpu_*.c    CPU model and SIMD flags (x86 / everything else)
 core/third_party/cjson/      cJSON 1.7.18 (MIT)
 cli/ifmecli.c                command-line front-end
-cli/exec_ui.c                --exec: live progress line, p/r/q keys, Ctrl+C
+cli/exec_ui.c                live progress line, p/r/q keys, Ctrl+C (--exec, --encode)
+cli/encode_cmd.c             --encode / --job / --print-job
 tests/                       ctest: unit tests and a real-pipeline test
 gui/                         Qt front-end
 res/                         Windows manifest and resource script
@@ -189,7 +226,7 @@ res/                         Windows manifest and resource script
 - [x] 2. `--probe FILE`: run ffprobe, parse its JSON; GUI accepts dropped files
 - [x] 3. Process layer: live progress from stderr, pause/resume/stop on demand
       (Job Objects on Windows, process groups on Linux/macOS); `--exec`; ctest
-- [ ] 4. Video encode (single and multi-pass) with progress and ETA
+- [x] 4. Video encode (single and multi-pass) with progress and ETA; job JSON
 - [ ] 5. Audio encode and muxing
 - [ ] 6. Subtitles, fonts, attachments, metadata
 - [ ] 7. GUI on top of the finished core
