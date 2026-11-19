@@ -292,6 +292,24 @@ int main(int argc, char **argv)
 	app::setNameStyle(n);
 	CHECK(app::nameStyle().prefixMode == 2 && app::nameStyle().prefix == "[IFME] " && app::nameStyle().suffixMode == 0);
 
+	// Existing outputs: IFME 8's name_2, name_3... by default.
+	CHECK(app::existingFiles() == app::Existing::Number);
+	app::setExistingFiles(app::Existing::Ask);
+	CHECK(app::existingFiles() == app::Existing::Ask);
+	app::setExistingFiles(app::Existing::Number);
+	{
+		QTemporaryDir dir;
+		const QString a = QDir::toNativeSeparators(QDir(dir.path()).filePath(QStringLiteral("[IFME] show.mkv")));
+		CHECK(app::numberedPath(a, {}) == a);                       // free: unchanged
+		QFile made(a);
+		CHECK(made.open(QIODevice::WriteOnly));
+		made.close();
+		const QString a2 = QDir::toNativeSeparators(QDir(dir.path()).filePath(QStringLiteral("[IFME] show_2.mkv")));
+		const QString a3 = QDir::toNativeSeparators(QDir(dir.path()).filePath(QStringLiteral("[IFME] show_3.mkv")));
+		CHECK(app::numberedPath(a, {}) == a2);                      // exists
+		CHECK(app::numberedPath(a, { a2.toLower() }) == a3);       // _2 taken by this batch
+	}
+
 	// .wad files: a deflated one made by a zip tool (tests/data), and IFME 8's
 	// own stored ones with the artwork the GUI reads.
 	wad::Archive z;

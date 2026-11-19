@@ -127,6 +127,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 	side(tr("Prefix"), m_prefix, m_prefixText, style.prefixMode, style.prefix, tr("&No prefix"), tr("&Custom prefix"));
 	side(tr("Suffix"), m_suffix, m_suffixText, style.suffixMode, style.suffix, tr("No s&uffix"), tr("Custo&m suffix"));
 	nv->addLayout(sides);
+	auto *er = new QHBoxLayout;
+	m_existing = new QComboBox(names);
+	m_existing->addItem(tr("Add a number (name_2, name_3...)"), int(app::Existing::Number));
+	m_existing->addItem(tr("Ask before encoding starts"), int(app::Existing::Ask));
+	m_existing->addItem(tr("Overwrite it"), int(app::Existing::Overwrite));
+	m_existing->setCurrentIndex(qMax(0, m_existing->findData(int(app::existingFiles()))));
+	m_existing->setToolTip(tr("Adding a number never stops a batch to ask, as IFME 8 does"));
+	auto *el = new QLabel(tr("If the file already &exists:"), names);
+	el->setBuddy(m_existing);
+	er->addWidget(el);
+	er->addWidget(m_existing, 1);
+	nv->addLayout(er);
 	updatePreview();
 
 	auto *v = new QVBoxLayout(this);
@@ -146,6 +158,7 @@ void PreferencesDialog::accept()
 	s.setValue(QStringLiteral("encode/keep_temp"), m_keepTemp->isChecked());
 	s.setValue(QStringLiteral("startup/test_encoders"), m_test->isChecked());
 	app::setNameStyle(nameStyle());
+	app::setExistingFiles(app::Existing(m_existing->currentData().toInt()));
 	const QString lang = m_language->currentData().toString();
 	m_languageChanged = lang != i18n::chosen();
 	s.setValue(QStringLiteral("ui/language"), lang);

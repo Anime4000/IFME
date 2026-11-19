@@ -320,7 +320,10 @@ is built in, from `../IFME/Resources`. Without `resources.wad` the windows show
 no artwork and the splash screen says so.
 Output names get IFME 8's prefix and suffix (Preferences > File name: none,
 the date and time, or custom text; by default the prefix `[IFME] `), applied
-when encoding starts.
+when encoding starts. An existing output gets a number (`name_2.mkv`,
+`name_3.mkv`...), as IFME 8 does, so a batch never waits for an answer; also
+two queued files that would write the same name. Preferences can switch this
+to asking first or overwriting.
 
 Not yet: the C# "shut down when done" option,
 a macOS `.icns` app icon and a Linux `.desktop` file.
