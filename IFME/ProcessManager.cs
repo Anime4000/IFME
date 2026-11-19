@@ -50,27 +50,16 @@ namespace IFME
 			// Don't launch anything else once the user has asked to stop.
 			Token.ThrowIfCancellationRequested();
 
-			var EnvId = RandomGen.String(7);
-
 			// replace double or more space with single space except in quote char (" ' `)
 			Command = Regex.Replace(Command, "\\s{2,}(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)", " ");
 
-			Environment.SetEnvironmentVariable(EnvId, Command, EnvironmentVariableTarget.Process);
+			// The command lives in the child's own environment block rather than IFME's, so two
+			// jobs launched at the same moment can no longer overwrite each other's command.
+			var startInfo = OS.ShellStartInfo(Command, WorkingDirectory);
+			startInfo.RedirectStandardError = true;
+			startInfo.RedirectStandardOutput = true;
 
-			var cmd = OS.IsWindows ? "cmd" : "bash";
-			var arg = OS.IsWindows ? $"/c %{EnvId}%" : $"-c 'eval ${EnvId}'";
-
-			using (Process proc = new Process
-			{
-				StartInfo = new ProcessStartInfo(cmd, arg)
-				{
-					CreateNoWindow = true,
-					UseShellExecute = false,
-					WorkingDirectory = WorkingDirectory,
-					RedirectStandardError = true,
-					RedirectStandardOutput = true
-				}
-			})
+			using (Process proc = new Process { StartInfo = startInfo })
 			{
 #if DEBUG
 				Report.Log($"[DEBG] Command Line: {Command}");
@@ -108,8 +97,6 @@ namespace IFME
 				{
 					lock (SyncRoot)
 						ProcessId.Remove(proc.Id);
-
-					Environment.SetEnvironmentVariable(EnvId, null, EnvironmentVariableTarget.Process);
 				}
 
 				Token.ThrowIfCancellationRequested();
@@ -334,7 +321,7 @@ namespace IFME
 
 		internal static void Donate()
 		{
-			Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
+			OS.OpenUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4CKYN7X3DGA7U");
 		}
 	}
 }

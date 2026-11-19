@@ -329,7 +329,7 @@ namespace IFME
 
         private void lblFileNameEx_Click(object sender, EventArgs e)
         {
-            Process.Start("https://www.youtube.com/watch?v=V47hPO7gSok");
+            OS.OpenUrl("https://www.youtube.com/watch?v=V47hPO7gSok");
         }
 
         private void btnFactoryReset_Click(object sender, EventArgs e)

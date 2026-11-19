@@ -73,6 +73,9 @@ public enum SIMDFlags : uint
             }
         }
 
+        // libcpufeature.c is compiled as plain C: every export is cdecl, and its `bool`
+        // is the 1-byte C99 type, hence the I1 return marshalling below. The default
+        // 4-byte BOOL marshalling also read the undefined upper bytes of EAX/RAX.
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr get_cpu_brand_string();
 
@@ -80,17 +83,21 @@ public enum SIMDFlags : uint
         private static extern IntPtr get_hypervisor_vendor();
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool is_running_in_vm();
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint get_simd_flags();
 
         [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool is_avx_supported();
 
-        [DllImport("libcpufeature", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool is_avx2_supported();
 
-        [DllImport("libcpufeature", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("libcpufeature", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool is_fma3_supported();
     }
